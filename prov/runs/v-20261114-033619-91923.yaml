@@ -1,0 +1,563 @@
+run: v-20261114-033619-91923
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-one-label
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 4
+  key: ead2dcaae8d948bac805dba05c4cf104
+  spans:
+  - start: 13484
+    end: 18277
+  verdict: supported
+  quote: Data for the image classification task consists of photographs collected from Flickr4 and other search engines, manually
+    labeled with the presence of one of 1000 object categories.
+  note: The passage also states that each image has one ground truth label.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-task
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 4
+  key: 5dc104d7eb5cc731b22ad7f1f183ee6c
+  spans:
+  - start: 13484
+    end: 18277
+  verdict: supported
+  quote: The quality of a labeling is evaluated based on the label that best matches the ground truth label for the image
+  note: The passage states both how algorithms label each image and how the labeling is evaluated.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-benchmark
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 1
+  key: 8b769f1b9c3771b962e2485455d4398b
+  spans:
+  - start: 0
+    end: 3196
+  verdict: supported
+  quote: The ImageNet Large Scale Visual Recognition Challenge is a benchmark in object category classification and detection
+    on hundreds of object categories and millions of images.
+  note: The abstract states the claim directly.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-single-label
+  work: beyer-2020-are-we-done-imagenet
+  locator: p. 2
+  key: 1b6ee07d5e3daa7bd47933d83519a94b
+  spans:
+  - start: 3247
+    end: 8441
+  verdict: supported
+  quote: Real-world images often contain multiple objects of interest. Yet, ImageNet annotations are limited to assigning
+    a single label to each image
+  note: The passage also says this can grossly underrepresent an image’s content.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-drop
+  work: recht-2019-imagenet-classifiers-generalize
+  locator: p. 1
+  key: efdd89a9e985cc699e8633c46c59b2f2
+  spans:
+  - start: 0
+    end: 2748
+  verdict: supported
+  quote: We evaluate a broad range of models and find accuracy drops of 3% – 15% on CIFAR-10 and 11% – 14% on ImageNet.
+  note: The passage attributes those drops to new test sets built by closely following the original creation processes.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-no-ancestor
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 5
+  key: 98e8c8c329154c4ad975a70fa598340f
+  spans:
+  - start: 18277
+    end: 22913
+  verdict: supported
+  quote: for any synsets i and j, i is not an ancestor of j in the ImageNet hierarchy.
+  note: This directly states the selection rule for the classification task’s 1000 synsets.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-639
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 5
+  key: e163f2e8a82755226ad1bcb32b3a47ef
+  spans:
+  - start: 18277
+    end: 22913
+  verdict: supported
+  quote: The exact 1000 synsets used for the image classification and single-object localization tasks have changed over the
+    years.
+  note: The following sentence gives 639 as the number used in all five challenges.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-dogs
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 7
+  key: 39a3449518f94c7fa103b1e98add384d
+  spans:
+  - start: 23435
+    end: 28621
+  verdict: supported
+  quote: In ILSVRC2012, 90 synsets were replaced with categories corresponding to dog breeds to allow for evaluation of more
+    fine-grained object classification
+  note: The passage also says the synsets remained consistent since 2012.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-split-source
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 7
+  key: f503415502063dd3576a8f2fb4e6d131
+  spans:
+  - start: 23435
+    end: 28621
+  verdict: supported
+  quote: Training images are taken directly from ImageNet. Additional images are collected for the ILSVRC using this strategy
+    and randomly partitioned into the validation and test sets.
+  note: The passage states the claim directly.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-test-new
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 4
+  key: ff4572b5956b43dd20c2ab98f2429721
+  spans:
+  - start: 13484
+    end: 18277
+  verdict: supported
+  quote: New test images are collected and labeled especially for this competition and are not part of the previously published
+    ImageNet dataset
+  note: The passage states the claim for new competition test images.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-splits
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 9
+  key: 6c6561abfa531c946f39c2743a9f6d50
+  spans:
+  - start: 31789
+    end: 36594
+  verdict: supported
+  quote: 'ILSVRC2012-14
+
+
+    Train images (per class)
+
+    1,261,406 (668-3047)
+
+    1,229,413 (384-1300)
+
+    1,281,167 (732-1300)'
+  note: The aligned table columns give the claimed training, validation and test counts for ILSVRC2012–14.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-test-precision
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 7
+  key: 707da21bec28c194ba63992a83573640
+  spans:
+  - start: 23435
+    end: 28621
+  verdict: supported
+  quote: 'we manually checked 1500 ILSVRC2012-2014 image
+
+    classification test set images'
+  note: The passage reports five errors in that check, corresponding to 99.7% precision.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-top5
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 15
+  key: 921b8fee0cdcc264f7a88eca3aafb548
+  spans:
+  - start: 57260
+    end: 61756
+  verdict: supported
+  quote: 'An algorithm is allowed to return 5 labels ci1 , . . . ci5 ,
+
+    and is considered correct if cij = Ci for some j.'
+  note: The passage also defines algorithm error as the fraction of test images on which it makes a mistake.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-one-metric
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 15
+  key: 02e6d10ad2a5a2c85621e433425b533e
+  spans:
+  - start: 57260
+    end: 61756
+  verdict: supported
+  quote: 'all three measures of error (top-5, top-1, and hierarchical) produced
+
+    the same ordering of results.'
+  note: The passage says top-1 and hierarchical error were evaluated and only top-5 was used since ILSVRC2012.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-hidden
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 39
+  key: 55b6d655dfec5e364303b748a98bbe80
+  spans:
+  - start: 175454
+    end: 180828
+  verdict: unsupported
+  quote: 'we release the new training/validation/test
+
+    images, training/validation annotations'
+  note: The cited passage does not say that ILSVRC2010 test annotations were released or that other test annotations stayed
+    hidden; that statement appears in the supplied surrounding section.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-server
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 39
+  key: a6bfd0a2945f0e45f082a13aae6ec47f
+  spans:
+  - start: 175454
+    end: 180828
+  verdict: unsupported
+  quote: Teams can use this code to evaluate their performance on the validation data.
+  note: The cited passage does not describe the post-challenge evaluation server or its weekly submission limit; those details
+    appear in the supplied surrounding section.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-val
+  work: northcutt-2021-pervasive-label-errors
+  locator: p. 4
+  key: 6ab8e0e4163cc50ded5999c3480d07b4
+  spans:
+  - start: 11660
+    end: 16405
+  verdict: supported
+  quote: Because the ImageNet test set labels are not publicly available, the ILSVRC 2012 validation set is used.
+  note: The table footnote states the reason and substitution directly.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-extra-data
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 19
+  key: 84ae6bbc303a1b4d749ad86f75eaa59b
+  spans:
+  - start: 73211
+    end: 77151
+  verdict: supported
+  quote: 'In 2012, SuperVision also submitted
+
+    entries trained with the extra data from the ImageNet Fall 2011 release, and obtained 15.3% classification error'
+  note: The table reports SuperVision’s 16.4% classification error, while its caption distinguishes the extra-data entries.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-resize
+  work: krizhevsky-2012-imagenet-classification
+  locator: Section 2
+  key: a9a69ed10ad429014f61bddd0cf8f845
+  spans:
+  - start: 5436
+    end: 7185
+  verdict: supported
+  quote: 'we first rescaled the image such that the shorter side was of length 256, and then
+
+    cropped out the central 256×256 patch'
+  note: The passage states this image preparation procedure.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-val-errors
+  work: northcutt-2021-pervasive-label-errors
+  locator: p. 2
+  key: df82e0572076e5e0a9b798122bd8642a
+  spans:
+  - start: 3300
+    end: 6847
+  verdict: supported
+  quote: 'We identify, for example, 2916 (6%) errors in the ImageNet validation
+
+    set'
+  note: The passage describes algorithmic identification followed by human validation.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-val-errors-20
+  work: northcutt-2021-pervasive-label-errors
+  locator: p. 10
+  key: 64fa9ea014d1db037276932b4cb7e0f0
+  spans:
+  - start: 37013
+    end: 41445
+  verdict: supported
+  quote: 'we can more accurately estimate that the ImageNet validation set contains
+
+    closer to 20% label errors'
+  note: The passage says this estimate includes errors inferred among images the method did not flag.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-duplicates
+  work: northcutt-2021-pervasive-label-errors
+  locator: p. 10
+  key: 789d40ebdd863f7af33ac59130c2189d
+  spans:
+  - start: 37013
+    end: 41445
+  verdict: supported
+  quote: 'ImageNet contains duplicate class labels, e.g.
+
+    “maillot” (638 & 639) and “crane” (134 & 517)'
+  note: The passage states both examples directly.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-ranking
+  work: northcutt-2021-pervasive-label-errors
+  locator: p. 1
+  key: dde1b9fbcbb03a9b10b35b29f2354eca
+  spans:
+  - start: 0
+    end: 3300
+  verdict: supported
+  quote: 'ResNet-18 outperforms ResNet-50 if the prevalence
+
+    of originally mislabeled test examples increases by just 6%.'
+  note: The preceding words specify ImageNet with corrected labels.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-label-problems
+  work: beyer-2020-are-we-done-imagenet
+  locator: p. 2
+  key: b552208031cf36dfe9363fae8c45ea17
+  spans:
+  - start: 3247
+    end: 8441
+  verdict: supported
+  quote: Single label per image.
+  note: The passage also identifies overly restrictive label proposals and arbitrary distinctions between essentially duplicate
+    classes.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-real
+  work: beyer-2020-are-we-done-imagenet
+  locator: p. 4
+  key: 017dbe47ca01f104f839520387b71368
+  spans:
+  - start: 10856
+    end: 14393
+  verdict: supported
+  quote: 'results in 57 553 labels for 46 837 images.
+
+    We discard the 3163 images that are assigned no label.'
+  note: The passage identifies these as the new validation-set labels used for ReaL accuracy.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-real-gains
+  work: beyer-2020-are-we-done-imagenet
+  locator: pp. 1 to 2
+  key: 8f863ac7e1867bac1cb8945040cd1c95
+  spans:
+  - start: 0
+    end: 8441
+  verdict: supported
+  quote: 'While early progress on ImageNet almost perfectly
+
+    translates into corresponding gains in ReaL accuracy, we find this association to be significantly
+
+    weaker for more recent models.'
+  note: The passage states the claimed comparison directly.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-v2
+  work: recht-2019-imagenet-classifiers-generalize
+  locator: p. 6
+  key: 2827b724f2409bcc899c6386eb2a8598
+  spans:
+  - start: 14988
+    end: 18755
+  verdict: supported
+  quote: 'we followed the original process of utilizing the Flickr image
+
+    hosting service'
+  note: The passage also states that the final ImageNet test set contained 10,000 images.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-v2-drop
+  work: recht-2019-imagenet-classifiers-generalize
+  locator: p. 7
+  key: 2cdefcf922defbb1560630c544b2ac41
+  spans:
+  - start: 18755
+    end: 21547
+  verdict: supported
+  quote: 'the best model on ImageNet [39] sees an
+
+    11% drop from 83% to 72% in top-1 accuracy'
+  note: The passage compares the original test results with those on the rebuilt test set.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-comparable
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 22
+  key: 52dbbafa542c5c2c01ad2a366d266491
+  spans:
+  - start: 88004
+    end: 93119
+  verdict: unsupported
+  quote: 'the large scale of the dataset
+
+    has remained the same (Table 2), making the results
+
+    comparable across the years.'
+  note: The passage attributes comparability across years to the dataset’s retained scale and separately says it has not changed
+    since 2012.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-five-years
+  work: recht-2019-imagenet-classifiers-generalize
+  locator: pp. 1 to 2
+  key: 8e05879c52d614cdedae40cffefc8e9e
+  spans:
+  - start: 0
+    end: 5153
+  verdict: supported
+  quote: 'On ImageNet,
+
+    the accuracy loss amounts to approximately five years of progress'
+  note: The introduction states the attribution directly.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-beyer-question
+  work: beyer-2020-are-we-done-imagenet
+  locator: p. 1
+  key: b10265232529d2b15251adf953cdf51a
+  spans:
+  - start: 0
+    end: 3247
+  verdict: supported
+  quote: 'we ask whether this progress continues
+
+    to be as general as before.'
+  note: The passage then says they use Reassessed Labels to re-evaluate recent classification progress.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-2010
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 17
+  key: 8533a09d739505dbaf51fbb812d65a14
+  spans:
+  - start: 63227
+    end: 67917
+  verdict: unsupported
+  quote: 'The winning entry from
+
+    NEC team (Lin et al., 2011) used SIFT (Lowe, 2004)
+
+    and LBP (Ahonen et al., 2006) features'
+  note: The cited passage supports the task, winner and features but cuts off before the stochastic SVM; its continuation
+    appears in the supplied surrounding section.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-2012
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 18
+  key: d370aff5d868570ed8c54c4566ae15a0
+  spans:
+  - start: 67917
+    end: 73211
+  verdict: supported
+  quote: 'The second place in image
+
+    classification went to the ISI team, which used Fisher
+
+    vectors'
+  note: The passage also describes SuperVision’s winning deep network, 60 million parameters and dropout.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-alexnet
+  work: krizhevsky-2012-imagenet-classification
+  locator: the abstract
+  key: 5973a4fadf8b803add060e8ec3eab2ff
+  spans:
+  - start: 245
+    end: 1263
+  verdict: supported
+  quote: 'achieved a winning top-5 test error rate of 15.3%,
+
+    compared to 26.2% achieved by the second-best entry.'
+  note: The abstract states the claimed competition result directly.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-reduction
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 22
+  key: fd3c940c4e15253bd14e1876a0864f78
+  spans:
+  - start: 88004
+    end: 93119
+  verdict: supported
+  quote: 'there has been a 2.4x reduction in image
+
+    classification error (from 16.4% to 6.7%)'
+  note: The passage places this reduction after stating that the dataset has not changed since 2012.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-human
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 31
+  key: b8b67fefc62c30f1dc0714e01292263a
+  spans:
+  - start: 122202
+    end: 126993
+  verdict: supported
+  quote: 'The GoogLeNet classification error on
+
+    this sample was estimated to be 6.8%'
+  note: The passage identifies the 1,500-image sample and estimates the human annotator’s error at 5.1%.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-resnet
+  work: he-2016-deep-residual-learning
+  locator: p. 1
+  key: 3d546f39be4ede9bbc0737085f8b3af5
+  spans:
+  - start: 0
+    end: 4312
+  verdict: supported
+  quote: 'An ensemble of these residual nets achieves 3.57% error
+
+    on the ImageNet test set. This result won the 1st place'
+  note: The passage specifies residual nets up to 152 layers and the ILSVRC 2015 classification task.

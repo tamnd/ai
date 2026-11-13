@@ -1,0 +1,36 @@
+run: v-20261114-033606-91090
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: imagenet
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet
+  claim: c-subset
+  work: russakovsky-2015-imagenet-large-scale
+  locator: pp. 8 to 9
+  key: d8f68c1949bd1ff41d7feb63d75f87ef
+  spans:
+  - start: 28621
+    end: 36594
+  verdict: supported
+  quote: are 1000 object classes and approximately 1.2 million training images, 50 thousand validation images and 100 thousand
+    test images.
+  note: The section identifies the classes as synsets, and the passage gives the claimed image counts.
+- slug: imagenet
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet
+  claim: c-query-expansion
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 7
+  key: 6d8e2a70e3504e2cb9e55ad0b367ec7d
+  spans:
+  - start: 23435
+    end: 28621
+  verdict: supported
+  quote: To further enlarge and diversify the candidate pool, we translate the queries into other languages, including Chinese,
+    Spanish, Dutch and Italian.
+  note: The passage also states the search engine limit, the condition for adding parent-synset words, and the use of WordNets
+    for translation.

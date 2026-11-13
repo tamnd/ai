@@ -1,0 +1,290 @@
+run: v-20261114-033951-1169
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-def
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 4
+  key: 2fe49911eca2903beaf1119b551690a3
+  spans:
+  - start: 13484
+    end: 18277
+  verdict: supported
+  quote: Each image contains one ground truth label. For each image, algorithms produce a list of object categories present
+    in the image.
+  note: The passage also specifies that the labels come from 1000 object categories.
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-top5
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 15
+  key: 921b8fee0cdcc264f7a88eca3aafb548
+  spans:
+  - start: 57260
+    end: 61756
+  verdict: supported
+  quote: An algorithm is allowed to return 5 labels ci1 , . . . ci5 , and is considered correct if cij = Ci for some j.
+  note: The passage defines algorithm error as the fraction of test images on which it makes a mistake.
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-top1
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 15
+  key: 0e6870dd535a3ba9e2f123ed42ec243b
+  spans:
+  - start: 57260
+    end: 61756
+  verdict: supported
+  quote: algorithms were penalized if their highest-confidence output label ci1 did not match ground truth class Ci
+  note: This directly states the top-1 error rule.
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-features
+  work: russakovsky-2015-imagenet-large-scale
+  locator: pp. 17 to 18
+  key: 915c3e950bddb8c1c7a5dce04ba513bd
+  spans:
+  - start: 63227
+    end: 73211
+  verdict: supported
+  quote: The winning entry from NEC team (Lin et al., 2011) used SIFT (Lowe, 2004) and LBP (Ahonen et al., 2006) features
+  note: The sentence continues across the page break to specify a stochastic SVM.
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-fisher
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 18
+  key: 08db9995e7bdbf22acd4c9c72fcaaee5
+  spans:
+  - start: 67917
+    end: 73211
+  verdict: supported
+  quote: The second place in image classification went to the ISI team, which used Fisher
+  note: The next line completes “Fisher vectors,” within the ILSVRC2012 paragraph.
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-alexnet-arch
+  work: krizhevsky-2012-imagenet-classification
+  locator: the abstract
+  key: 1286197cceb97bba0045e5a5e54d17d7
+  spans:
+  - start: 245
+    end: 1263
+  verdict: supported
+  quote: The neural network, which has 60 million parameters and 650,000 neurons, consists of five convolutional layers
+  note: The abstract also specifies the max-pooling layers, three fully-connected layers, and final 1000-way softmax.
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-alexnet-dropout
+  work: krizhevsky-2012-imagenet-classification
+  locator: the abstract
+  key: 202c06fddad0d8cb2a8cc0cae0031fb2
+  spans:
+  - start: 245
+    end: 1263
+  verdict: supported
+  quote: To reduce overfitting in the fully-connected layers we employed a recently-developed regularization method called
+    “dropout”
+  note: The passage directly states the method and its purpose.
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-alexnet-win
+  work: krizhevsky-2012-imagenet-classification
+  locator: the abstract
+  key: eaa69a2c165fe2426132c904bca1580b
+  spans:
+  - start: 245
+    end: 1263
+  verdict: supported
+  quote: achieved a winning top-5 test error rate of 15.3%, compared to 26.2% achieved by the second-best entry
+  note: The passage attributes this result to a variant entered in ILSVRC-2012.
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-googlenet
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 18
+  key: 508d20572da50244e9e27324077b96f9
+  spans:
+  - start: 67917
+    end: 73211
+  verdict: unsupported
+  quote: The winning image classification with provided data team was GoogLeNet
+  note: The claim should specify the provided-data classification track; the passage identifies a separate external-data track.
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-resnet-idea
+  work: he-2016-deep-residual-learning
+  locator: p. 1
+  key: 9f81ba21fb49d8791bbadf46286e8ebb
+  spans:
+  - start: 0
+    end: 4312
+  verdict: supported
+  quote: We provide comprehensive empirical evidence showing that these residual networks are easier to optimize, and can
+    gain accuracy from considerably increased depth.
+  note: The preceding sentences state the training difficulty and residual-function reformulation.
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-resnet-result
+  work: he-2016-deep-residual-learning
+  locator: p. 1
+  key: 67399c1c3d509d2534eab90d1700daed
+  spans:
+  - start: 0
+    end: 4312
+  verdict: supported
+  quote: we evaluate residual nets with a depth of up to 152 layers
+  note: The following sentence gives the ensemble’s 3.57% ImageNet test error.
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-vit
+  work: dosovitskiy-2021-image-worth-16x16-words
+  locator: the abstract
+  key: 45b7aa549d135a4a1f17d50a9cfb6bfe
+  spans:
+  - start: 0
+    end: 1395
+  verdict: supported
+  quote: a pure transformer applied directly to sequences of image patches can perform very well on image classification tasks
+  note: This describes the approach attributed to Vision Transformer.
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-vit-result
+  work: dosovitskiy-2021-image-worth-16x16-words
+  locator: the abstract
+  key: 2fd0c849298bd8106410396e12e24c4d
+  spans:
+  - start: 0
+    end: 1395
+  verdict: supported
+  quote: Vision Transformer (ViT) attains excellent results compared to state-of-the-art convolutional networks while requiring
+    substantially fewer computational resources to train
+  note: The passage expressly limits this result to the stated pre-training and transfer setting.
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-fine
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 15
+  key: 6f0c3ef1a758dd663ba891c75a8070b9
+  spans:
+  - start: 57260
+    end: 61756
+  verdict: supported
+  quote: confusing two nearby classes (such as two different breeds of dogs) is not as harmful as confusing a dog for a container
+    ship
+  note: The passage presents this as the intuition behind hierarchical error.
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-multi
+  work: beyer-2020-are-we-done-imagenet
+  locator: p. 2
+  key: fcf62fd3300eb87bd7dec17d4fcab4a7
+  spans:
+  - start: 3247
+    end: 8441
+  verdict: supported
+  quote: Real-world images often contain multiple objects of interest. Yet, ImageNet annotations are limited to assigning
+    a single label to each image
+  note: The passage says exactly what the attribution claims.
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-errors
+  work: northcutt-2021-pervasive-label-errors
+  locator: p. 2
+  key: df82e0572076e5e0a9b798122bd8642a
+  spans:
+  - start: 3300
+    end: 6847
+  verdict: unsupported
+  quote: We identify, for example, 2916 (6%) errors in the ImageNet validation set
+  note: The passage supports the count and percentage but does not establish the stated 50,000-image, pre-trained-model, or
+    crowd-worker scope.
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-shift
+  work: recht-2019-imagenet-classifiers-generalize
+  locator: p. 1
+  key: efdd89a9e985cc699e8633c46c59b2f2
+  spans:
+  - start: 0
+    end: 2748
+  verdict: supported
+  quote: We evaluate a broad range of models and find accuracy drops of 3% – 15% on CIFAR-10 and 11% – 14% on ImageNet.
+  note: The passage says the new test sets closely follow the original dataset creation processes.
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-ilsvrc
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 1
+  key: 6026b67783f70b943d59e54b591aafb3
+  spans:
+  - start: 0
+    end: 3196
+  verdict: supported
+  quote: The challenge has been run annually from 2010 to present, attracting participation from more than fifty institutions.
+  note: The passage directly supports the historical claim as reported in the 2015 source.
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-breakthrough
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 22
+  key: 5894ea569287f5696b8b7b709fa74a8d
+  spans:
+  - start: 88004
+    end: 93119
+  verdict: supported
+  quote: The major breakthrough came in 2012 with the win of the SuperVision team on image classification and single-object
+    localization tasks
+  note: The surrounding passage also states the role of GPU computing and the reliance of top 2014 contestants on convolutional
+    neural networks.
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-reduction
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 22
+  key: fd3c940c4e15253bd14e1876a0864f78
+  spans:
+  - start: 88004
+    end: 93119
+  verdict: unsupported
+  quote: For consistency, here we consider only teams that use the provided training data.
+  note: The claim should limit the 2.4x reduction from 16.4% to 6.7% to entries using provided training data.
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-human
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 31
+  key: b8b67fefc62c30f1dc0714e01292263a
+  spans:
+  - start: 122202
+    end: 126993
+  verdict: supported
+  quote: Annotator A1 evaluated a total of 1500 test set images. The GoogLeNet classification error on this sample was estimated
+    to be 6.8%.
+  note: The passage gives the human error as 5.1%, and Table 9 identifies the measure as top-5 classification error.

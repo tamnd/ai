@@ -1,0 +1,32 @@
+# The versions of the ILSVRC-2012 classification benchmark (spec 10.3).
+- id: test
+  name: ILSVRC-2012 test
+  metric: top-5 error
+  date: {v: "2012", src: "russakovsky-2015-imagenet-large-scale", loc: "p. 7"}
+  size: {v: 100000, unit: items, src: "russakovsky-2015-imagenet-large-scale", loc: "p. 9"}
+  data: {location: "the test images of ILSVRC2012, from image-net.org; the labels are hidden", hash: null, licence: "the terms of ImageNet; see the fact licence"}
+  protocol: {scorer: "the evaluation server of the organisers, at most two submissions per week", unit: "images with an error / all test images"}
+  human_baseline: {v: 0.051, note: "one annotator on 1500 test images (Russakovsky et al., 2015, p. 31)"}
+  known_issues: "the labels are hidden, so the label errors of this split have not been studied in the sources of this page"
+- id: val
+  name: ILSVRC-2012 validation
+  metric: top-5 error
+  date: {v: "2012", src: "russakovsky-2015-imagenet-large-scale", loc: "p. 7"}
+  size: {v: 50000, unit: items, src: "russakovsky-2015-imagenet-large-scale", loc: "p. 9"}
+  data: {location: "ILSVRC2012_img_val.tar and the devkit, from image-net.org", hash: "md5:29b22e2961454d5413ddabcf34fc5622", licence: "the terms of ImageNet; see the fact licence"}
+  protocol: {scorer: "top-5 or top-1 error computed by the author of each result", unit: "images with an error / all validation images"}
+  known_issues: "label errors in about 6% of the images, possibly closer to 20% (Northcutt et al., 2021, pp. 2 and 10); one label per image (Beyer et al., 2020, p. 2)"
+- id: imagenetv2-matched-frequency
+  name: ImageNetV2
+  metric: top-1 accuracy
+  date: {v: "2019", src: "recht-2019-imagenet-classifiers-generalize"}
+  derived_from: {version: val, rule: "a test set of 10,000 images collected again with the process of the original data"}
+  size: {v: 10000, unit: items, src: "recht-2019-imagenet-classifiers-generalize", loc: "p. 6"}
+  protocol: {scorer: "top-1 and top-5 accuracy", unit: "correct images / all images"}
+- id: real
+  name: ImageNet ReaL
+  metric: ReaL accuracy
+  date: {v: "2020", src: "beyer-2020-are-we-done-imagenet"}
+  derived_from: {version: val, rule: "the validation images with Reassessed Labels: 57,553 labels for 46,837 images, and 3163 images with no label left out"}
+  size: {v: 46837, unit: items, src: "beyer-2020-are-we-done-imagenet", loc: "p. 4"}
+  protocol: {scorer: "ReaL accuracy: the top-1 prediction is correct if it is one of the labels of the image (Beyer et al., 2020, p. 4)", unit: "correct images / all labeled images"}

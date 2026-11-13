@@ -1,0 +1,141 @@
+# The claims of the image-classification page (spec 07). The build computes the labels.
+- id: c-def
+  type: definitional
+  text: "In the ImageNet image classification task, each image contains one ground truth label from 1000 object categories, and algorithms produce a list of object categories present in the image."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 4", stance: for}
+
+- id: c-top5
+  type: definitional
+  text: "An algorithm may return 5 labels for each image and is correct if one of them equals the ground truth label; the error is the fraction of test images on which the algorithm makes a mistake."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 15", stance: for}
+
+- id: c-top1
+  type: definitional
+  text: "Under top-1 error, algorithms are penalized if their highest-confidence output label does not match the ground truth class."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 15", stance: for}
+
+- id: c-features
+  type: historical
+  text: "In ILSVRC2010 the winning entry from the NEC team used SIFT and LBP features with a stochastic SVM."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "pp. 17 to 18", stance: for}
+
+- id: c-fisher
+  type: historical
+  text: "In 2012 the second place in classification went to the ISI team, which used Fisher vectors."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 18", stance: for}
+
+- id: c-alexnet-arch
+  type: historical
+  text: "The network of Krizhevsky et al. has 60 million parameters and 650,000 neurons, and consists of five convolutional layers, some followed by max-pooling layers, and three fully-connected layers with a final 1000-way softmax."
+  evidence:
+    - {work: "krizhevsky-2012-imagenet-classification", role: original, locator: "the abstract", stance: for}
+
+- id: c-alexnet-dropout
+  type: historical
+  text: "To reduce overfitting in the fully-connected layers, Krizhevsky et al. employed the regularization method called dropout."
+  evidence:
+    - {work: "krizhevsky-2012-imagenet-classification", role: original, locator: "the abstract", stance: for}
+
+- id: c-alexnet-win
+  type: historical
+  text: "A variant of the model of Krizhevsky et al. won the ILSVRC-2012 competition with a top-5 test error rate of 15.3%, compared to 26.2% for the second-best entry."
+  evidence:
+    - {work: "krizhevsky-2012-imagenet-classification", role: original, locator: "the abstract", stance: for}
+
+- id: c-googlenet
+  type: historical
+  text: "In 2014 the winning classification team with the provided training data was GoogLeNet, which explored an improved convolutional neural network architecture combining the multi-scale idea with intuitions from the Hebbian principle and additional dimension reduction layers."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 18", stance: for}
+
+- id: c-resnet-idea
+  type: historical
+  text: "Deeper neural networks are more difficult to train; residual networks reformulate the layers as learning residual functions with reference to the layer inputs, are easier to optimize, and can gain accuracy from considerably increased depth."
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "p. 1", stance: for}
+
+- id: c-resnet-result
+  type: historical
+  text: "An ensemble of residual nets with a depth of up to 152 layers achieves 3.57% error on the ImageNet test set."
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "p. 1", stance: for}
+
+- id: c-vit
+  type: definitional
+  text: "The Vision Transformer applies a pure transformer directly to sequences of image patches for image classification."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "the abstract", stance: for}
+
+- id: c-vit-result
+  type: attributive
+  text: "Dosovitskiy et al. report that, when pre-trained on large amounts of data and transferred to mid-sized or small image recognition benchmarks, the Vision Transformer attains excellent results compared to convolutional networks while requiring substantially fewer computational resources to train."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "the abstract", stance: for}
+
+- id: c-fine
+  type: attributive
+  text: "Russakovsky et al. write that confusing two nearby classes, such as two different breeds of dogs, is not as harmful as confusing a dog for a container ship, the intuition behind the hierarchical error."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 15", stance: for}
+
+- id: c-multi
+  type: attributive
+  text: "Beyer et al. write that real-world images often contain multiple objects of interest, yet ImageNet annotations assign a single label to each image."
+  evidence:
+    - {work: "beyer-2020-are-we-done-imagenet", role: original, locator: "p. 2", stance: for}
+
+- id: c-errors
+  type: empirical
+  text: "Northcutt et al. identify 2916 errors, 6% of the images, in the ImageNet validation set."
+  scope:
+    models: "confident learning, with the flagged errors validated by human evaluation"
+    data: [imagenet-ilsvrc-2012]
+    scale: "the ImageNet validation set"
+    setting: "putative label errors found by the algorithm and validated by people"
+  evidence:
+    - {work: "northcutt-2021-pervasive-label-errors", role: original, locator: "p. 2", stance: for}
+
+- id: c-shift
+  type: empirical
+  text: "On an ImageNet test set rebuilt with the original process, the accuracy drops of a wide range of classification models range from 11% to 14%."
+  scope:
+    models: "a wide range of image classification models"
+    data: [imagenet-ilsvrc-2012]
+    scale: "a rebuilt ImageNet test set"
+    setting: "accuracy on the rebuilt test set against the original test set"
+  evidence:
+    - {work: "recht-2019-imagenet-classifiers-generalize", role: original, locator: "p. 1", stance: for}
+
+- id: c-ilsvrc
+  type: historical
+  text: "The ImageNet Large Scale Visual Recognition Challenge has been run annually from 2010, attracting participation from more than fifty institutions."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 1", stance: for}
+
+- id: c-breakthrough
+  type: attributive
+  text: "Russakovsky et al. write that with efficient implementations and GPU computing it became possible to learn neural networks directly from the image data without multi-stage hand-tuned pipelines of extracted features and classifiers, that the breakthrough came in 2012 with the win of the SuperVision team, and that by 2014 the top contestants relied heavily on convolutional neural networks."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 22", stance: for}
+
+- id: c-reduction
+  type: historical
+  text: "Considering only teams that use the provided training data, from 2012 to 2014 there has been a 2.4x reduction in image classification error, from 16.4% to 6.7%."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 22", stance: for}
+
+- id: c-human
+  type: empirical
+  text: "A human annotator who evaluated 1500 test images had an estimated error of 5.1%, while the GoogLeNet error on this sample was 6.8%."
+  scope:
+    models: "GoogLeNet and a human annotator"
+    data: [imagenet-ilsvrc-2012]
+    scale: "1500 test images"
+    setting: "top-5 classification error"
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 31", stance: for}
