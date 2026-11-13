@@ -1,0 +1,36 @@
+run: v-20261114-034525-13421
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-first-self-attention
+  work: vaswani-2017-attention
+  locator: Section 2
+  key: 63836098ca880781ee081ec7d672798b
+  spans:
+  - start: 4824
+    end: 6652
+  verdict: supported
+  quote: the best of our knowledge, however, the Transformer is the first transduction model relying entirely on self-attention
+    to compute representations of its input and output
+  note: The passage makes the same qualified claim about the Transformer.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-why-scale
+  work: vaswani-2017-attention
+  locator: Section 3.2.1
+  key: 9dac946668aa07766693181898661d79
+  spans:
+  - start: 9321
+    end: 10874
+  verdict: supported
+  quote: 'the dot products grow large in magnitude, pushing the softmax function into regions where it has
+
+    extremely small gradients 4 . To counteract this effect, we scale the dot products'
+  note: The authors present this as their suspicion for large dk and say they scale the dot products to counteract it.
