@@ -113,7 +113,7 @@ def test_tokenizers():
     line = "He said &quot;no&quot; &amp; left -- at 3-4 pm, with 1,000.5 votes."
     assert t13a(line) == 'He said " no " & left -- at 3 - 4 pm , with 1,000.5 votes .'
     assert t13a("a<skipped>b well-\nknown") == "ab wellknown"
-    assert intl("Der Preis stieg um 3,5 % – ein Rekord!") == "Der Preis stieg um 3,5 % – ein Rekord !"
+    assert intl("Der Preis stieg um 3,5 % \u2013 ein Rekord!") == "Der Preis stieg um 3,5 % \u2013 ein Rekord !"
     assert intl("It ended in 1999.") == "It ended in 1999."
     assert intl("Cost: $5, or €4.50!") == "Cost : $ 5 , or € 4.50!"
     assert intl("«Bonjour», dit-il.") == "« Bonjour » , dit - il ."

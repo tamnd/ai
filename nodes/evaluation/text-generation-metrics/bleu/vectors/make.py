@@ -196,8 +196,8 @@ EDGE = [
     ),
     (
         "intl-unicode",
-        ["Der Preis stieg um 3,5 % – ein Rekord!"],
-        [["Der Preis stieg um 3,5 % — ein Rekord!"]],
+        ["Der Preis stieg um 3,5 % \u2013 ein Rekord!"],
+        [["Der Preis stieg um 3,5 % \u2014 ein Rekord!"]],
         {"tokenize": "intl"},
         "intl tokenization on Unicode punctuation and symbols; the en dash and the em dash are different tokens",
     ),
@@ -263,7 +263,8 @@ def run(rows):
         }
         if note:
             row["note"] = note
-        out.append(json.dumps(row, ensure_ascii=False))
+        # Dashes are written as escapes, so that the file holds no en or em dash character (spec 14.6).
+        out.append(json.dumps(row, ensure_ascii=False).replace("\u2013", "\\u2013").replace("\u2014", "\\u2014"))
     return "\n".join(out) + "\n"
 
 
