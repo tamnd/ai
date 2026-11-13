@@ -4,6 +4,10 @@ positions:
     claim: "Scaling deep learning models will not by itself lead to artificial general intelligence, and other ideas or architectures are needed."
     held_by: [lecun-2022-path-autonomous-machine-intelligence, marcus-2018-deep-learning-critical-appraisal, marcus-2020-next-decade-ai, chollet-2019-measure-of-intelligence, chollet-2024-arc-prize-2024-report, lake-2017-building-machines-learn-think]
     relies_on: [c-lecun-position, c-lecun-tokens, c-lecun-reasoning, c-marcus-2018, c-marcus-data, c-marcus-2020, c-chollet-local, c-lake-2017, c-arc-scaling-era, c-arc-new-ideas, c-lake-scan, c-dziri, c-dziri-multiplication, c-mckenzie, c-mckenzie-concl, c-repeat]
+  - id: p-scaling-hypothesis
+    claim: "Scaling up neural networks with their data and compute is the main route to artificial general intelligence, and scaled models already show parts of it."
+    held_by: [bubeck-2023-sparks-agi, gwern-2020-scaling-hypothesis, aguera-y-arcas-2023-agi-already-here]
+    relies_on: [c-gwern-hypothesis, c-gwern-more, c-gwern-blessings, c-noema-already, c-noema-novel, c-bubeck-agi, c-brown-fewshot, c-power-law, c-emergent-def, c-wei-question, c-def-emerging]
   - id: p-ill-posed
     claim: "The term artificial general intelligence has no shared meaning or measure, so the question has no definite answer, and research should state specific goals instead."
     held_by: [raji-2021-everything-whole-wide-world-benchmark, altmeyer-2024-stop-unscientific-agi-claims, blili-hamelin-2025-stop-treating-agi]
@@ -12,8 +16,4 @@ positions:
     claim: "Scaled models are a basis, and further gains toward general capability come from methods added to them, such as test-time computation, reinforcement learning and learning from experience."
     held_by: [snell-2024-scaling-test-time-compute, silver-2025-era-of-experience, deepseek-2025-r1]
     relies_on: [c-silver-imitation, c-silver-limit, c-silver-experience, c-snell-motivation, c-snell-4x, c-snell-14x, c-r1-rl, c-r1-aime, c-arc-2024-score, c-arc-ttt, c-arc-greenblatt]
-  - id: p-scaling-hypothesis
-    claim: "Scaling up neural networks with their data and compute is the main route to artificial general intelligence, and scaled models already show parts of it."
-    held_by: [bubeck-2023-sparks-agi, gwern-2020-scaling-hypothesis, aguera-y-arcas-2023-agi-already-here]
-    relies_on: [c-gwern-hypothesis, c-gwern-more, c-gwern-blessings, c-noema-already, c-noema-novel, c-bubeck-agi, c-brown-fewshot, c-power-law, c-emergent-def, c-wei-question, c-def-emerging]
-order: by-independent-sources
+order: by-first-source

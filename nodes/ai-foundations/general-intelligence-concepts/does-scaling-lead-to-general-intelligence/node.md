@@ -86,9 +86,8 @@ Their median year for full use of the stock is 2028, at around 4e14 tokens. {#c-
 
 ## Positions
 
-The positions are listed by the number of independent sources that hold them, counted as distinct authors of works with standing (peer-reviewed or preprint).
-The counts are four, three, two and one.
-The third position is also held in a report by a developer about its own models, and the fourth in two essays.
+The positions are listed by the date of the first source that holds them: 2017, 2020, 2021 and 2024.
+The position that scaling is the main route is held in one preprint and two essays, and the position on added methods is also held in a report by a developer about its own models.
 Each position has the same parts: the claim, the argument in its proponents' terms, the evidence, and the objections.
 
 ### Scaling is not enough
@@ -123,6 +122,31 @@ Their models have up to 9 billion parameters and 900 billion training tokens.
 In their comparison, none of six other models does.
 DeepSeek-AI (2025) report that pure reinforcement learning (RL) incentivizes reasoning in LLMs on verifiable tasks, a report about their own models. {#c-r1-rl}
 Villalobos et al. (2024) argue that synthetic data, transfer learning from data-rich domains and gains in data efficiency might support further progress. {#c-villalobos-escape}
+
+### Scaling is the main route
+
+**Claim.** Scaling up neural networks with their data and compute is the main route to AGI, and scaled models already show parts of it.
+
+**Argument.** Gwern Branwen (2020) states the scaling hypothesis: intelligence is "'just' simple neural units & learning algorithms applied to diverse experiences" at an unreached scale. {#c-gwern-hypothesis}
+On this hypothesis, as computing resources permit such algorithms to run at the necessary scale, networks get ever more intelligent. {#c-gwern-more}
+Branwen reads the meta-learning of GPT-3 as a demonstration that networks become more generalizable and human-like when made very large. {#c-gwern-blessings}
+Blaise Agüera y Arcas and Peter Norvig (2023) argue that the most important parts of AGI have already been achieved by advanced LLMs. {#c-noema-already}
+They write that "frontier models perform competently even on novel tasks they were not trained for". {#c-noema-novel}
+Sébastien Bubeck et al. (2023) argue that GPT-4, trained with unprecedented compute and data, could be viewed as an early, incomplete AGI system. {#c-bubeck-agi}
+
+**Evidence.** Tom Brown et al. (2020) find that scaling up language models greatly improves task-agnostic, few-shot performance, up to the 175 billion parameters of GPT-3. {#c-brown-fewshot}
+Jason Wei et al. (2022) call an ability emergent if larger models have it and smaller ones lack it, so extrapolation cannot predict it. {#c-emergent-def}
+They ask whether further scaling could endow even larger language models with further emergent abilities. {#c-wei-question}
+Morris et al. (2024) class the language models of September 2023, such as ChatGPT, Bard and Llama 2, as Level 1, "Emerging AGI". {#c-def-emerging}
+
+**Objections.** Bubeck et al. (2023) themselves discuss a possible need for "a new paradigm that moves beyond next-word prediction". {#c-bubeck-paradigm}
+Melanie Mitchell (2021) names as a fallacy the assumption that narrow intelligence is on a continuum with general intelligence. {#c-mitchell-fallacy}
+Chollet (2019) argues that unlimited priors or training data let experimenters buy arbitrary levels of skill, which masks a system's generalization power. {#c-chollet-buy}
+He adds that more training data can raise skill on a task without affecting generalization at all. {#c-chollet-moredata}
+Rylan Schaeffer et al. (2023) find that apparent emergent abilities come from nonlinear metrics, and that continuous metrics show smooth, predictable change. {#c-mirage}
+Wei et al. (2022) write that other approaches beyond scaling will likely play a key role, such as architectures, data quality and training procedures. {#c-wei-beyond}
+Subbarao Kambhampati (2024) reports that GPT4 reached 30% accuracy on Blocks World plans, and fell sharply when action and object names were obfuscated. {#c-kambhampati-obfuscation}
+He argues that LLM answers still need checking by sound external verifiers, in frameworks he calls LLM-Modulo. {#c-kambhampati-modulo}
 
 ### The question is not well posed
 
@@ -163,31 +187,6 @@ DeepSeek-AI (2025) write that scaling pure RL remains an open challenge for comp
 On ARC-AGI-2, as of May 14, 2025, the listed systems score at most 3.0%, the score of o3 (Medium), which scores 53.0% on ARC-AGI-1. {#c-arc2-scores}
 The authors of ARC-AGI-2 do not treat accuracies below 5% as meaningful. {#c-arc2-noise}
 
-### Scaling is the main route
-
-**Claim.** Scaling up neural networks with their data and compute is the main route to AGI, and scaled models already show parts of it.
-
-**Argument.** Gwern Branwen (2020) states the scaling hypothesis: intelligence is "'just' simple neural units & learning algorithms applied to diverse experiences" at an unreached scale. {#c-gwern-hypothesis}
-On this hypothesis, as computing resources permit such algorithms to run at the necessary scale, networks get ever more intelligent. {#c-gwern-more}
-Branwen reads the meta-learning of GPT-3 as a demonstration that networks become more generalizable and human-like when made very large. {#c-gwern-blessings}
-Blaise Agüera y Arcas and Peter Norvig (2023) argue that the most important parts of AGI have already been achieved by advanced LLMs. {#c-noema-already}
-They write that "frontier models perform competently even on novel tasks they were not trained for". {#c-noema-novel}
-Sébastien Bubeck et al. (2023) argue that GPT-4, trained with unprecedented compute and data, could be viewed as an early, incomplete AGI system. {#c-bubeck-agi}
-
-**Evidence.** Tom Brown et al. (2020) find that scaling up language models greatly improves task-agnostic, few-shot performance, up to the 175 billion parameters of GPT-3. {#c-brown-fewshot}
-Jason Wei et al. (2022) call an ability emergent if larger models have it and smaller ones lack it, so extrapolation cannot predict it. {#c-emergent-def}
-They ask whether further scaling could endow even larger language models with further emergent abilities. {#c-wei-question}
-Morris et al. (2024) class the language models of September 2023, such as ChatGPT, Bard and Llama 2, as Level 1, "Emerging AGI". {#c-def-emerging}
-
-**Objections.** Bubeck et al. (2023) themselves discuss a possible need for "a new paradigm that moves beyond next-word prediction". {#c-bubeck-paradigm}
-Melanie Mitchell (2021) names as a fallacy the assumption that narrow intelligence is on a continuum with general intelligence. {#c-mitchell-fallacy}
-Chollet (2019) argues that unlimited priors or training data let experimenters buy arbitrary levels of skill, which masks a system's generalization power. {#c-chollet-buy}
-He adds that more training data can raise skill on a task without affecting generalization at all. {#c-chollet-moredata}
-Rylan Schaeffer et al. (2023) find that apparent emergent abilities come from nonlinear metrics, and that continuous metrics show smooth, predictable change. {#c-mirage}
-Wei et al. (2022) write that other approaches beyond scaling will likely play a key role, such as architectures, data quality and training procedures. {#c-wei-beyond}
-Subbarao Kambhampati (2024) reports that GPT4 reached 30% accuracy on Blocks World plans, and fell sharply when action and object names were obfuscated. {#c-kambhampati-obfuscation}
-He argues that LLM answers still need checking by sound external verifiers, in frameworks he calls LLM-Modulo. {#c-kambhampati-modulo}
-
 ## Evidence so far
 
 > [!note]
@@ -202,7 +201,7 @@ It gives no date for the survey; the panel worked on the study between summer 20
 
 ## What would settle it
 
-The positions do not agree on one decisive test, and the fourth position doubts that one exists.
+The positions do not agree on one decisive test, and the position that the question is not well posed doubts that one exists.
 Chollet (2019) proposes the Abstraction and Reasoning Corpus (ARC) as a measure of human-like general fluid intelligence, allowing fair comparisons of AI systems with humans. {#c-chollet-arc}
 For ARC-AGI-2, 407 participants made 13,405 attempts at test pairs, and solved 8,277 (62%) of them. {#c-arc2-humans}
 A task was kept only if at least two participants solved it within two attempts. {#c-arc2-selection}
