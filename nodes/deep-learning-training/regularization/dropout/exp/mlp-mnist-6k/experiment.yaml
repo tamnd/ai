@@ -17,7 +17,7 @@ base_config:
   test_images: 10000
 data:
   - {dataset: mnist, version: "lecun-1998", subset: "train[:6000], test", pin: "S:mnist-ai-data"}
-seeds: {n: 10, base: 20261113}
+seeds: {n: 5, base: 20261113}  # 10 seeds of both arms do not fit the 600 seconds of cpu-small; the power with 5 is about 0.98, from one pilot seed and an assumed sd of 0.15 points (rule R07)
 budget: cpu-small
 framework: pytorch
 uses_impl: ../../impl/pytorch/dropout.py
