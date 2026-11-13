@@ -1,2 +1,1493 @@
-# The area tree of spec 05.2. The tree comes in its own pull request.
-[]
+# The area tree of spec 05.2. It has 9 groups, 52 top areas and their sub-areas.
+# Each node has one primary area, and the node directory is nodes/<top>/<sub>/<slug>/.
+# A change to this file is its own pull request, with a note on what the area holds and what it does not.
+- id: ai-foundations
+  name: AI foundations
+  group: A
+  summary: What AI is, what an agent is, and how we measure intelligence.
+  children:
+    - id: definitions-of-ai
+      name: Definitions of AI
+    - id: agents-and-environments
+      name: Agents and environments
+    - id: rationality-and-bounded-rationality
+      name: Rationality and bounded rationality
+    - id: decision-theory-for-ai
+      name: Decision theory for AI
+    - id: problem-formulation
+      name: Problem formulation
+    - id: paradigms-of-ai
+      name: Paradigms of AI
+    - id: measuring-intelligence
+      name: Measuring intelligence
+    - id: general-intelligence-concepts
+      name: General intelligence concepts
+    - id: computability-and-limits-of-ai
+      name: Computability and limits of AI
+- id: learning-theory
+  name: Learning theory
+  group: A
+  summary: When and why a learner can generalize from a finite sample.
+  children:
+    - id: statistical-learning-framework
+      name: Statistical learning framework
+    - id: pac-learning
+      name: PAC learning
+    - id: vc-dimension-and-growth
+      name: VC dimension and growth
+    - id: rademacher-and-covering
+      name: Rademacher and covering
+    - id: generalization-bounds
+      name: Generalization bounds
+    - id: pac-bayes
+      name: PAC-Bayes
+    - id: stability-and-generalization
+      name: Stability and generalization
+    - id: online-learning-theory
+      name: Online learning theory
+    - id: learning-in-the-limit
+      name: Learning in the limit
+    - id: computational-hardness-of-learning
+      name: Computational hardness of learning
+    - id: no-free-lunch-and-inductive-bias
+      name: No free lunch and inductive bias
+    - id: deep-learning-theory
+      name: Deep learning theory
+    - id: kernel-regime-and-ntk
+      name: Kernel regime and NTK
+    - id: implicit-bias-and-overparameterization
+      name: Implicit bias and overparameterization
+- id: math-for-ai
+  name: Math for AI
+  group: A
+  summary: The mathematics that AI uses. Most items are bridge cards to math2.
+  children:
+    - id: linear-algebra-for-ml
+      name: Linear algebra for ML
+    - id: matrix-calculus-and-autodiff
+      name: Matrix calculus and autodiff
+    - id: probability-for-ml
+      name: Probability for ML
+    - id: statistics-for-ml
+      name: Statistics for ML
+    - id: information-theory-for-ml
+      name: Information theory for ML
+    - id: high-dimensional-geometry
+      name: High-dimensional geometry
+    - id: concentration-and-random-matrices
+      name: Concentration and random matrices
+    - id: numerical-methods-for-ml
+      name: Numerical methods for ML
+    - id: graphs-for-ml
+      name: Graphs for ML
+    - id: functional-analysis-for-ml
+      name: Functional analysis for ML
+- id: optimization-for-learning
+  name: Optimization for learning
+  group: A
+  summary: How a learner finds the parameters that minimize a loss.
+  children:
+    - id: empirical-risk-minimization
+      name: Empirical risk minimization
+    - id: gradient-descent-and-variants
+      name: Gradient descent and variants
+    - id: stochastic-gradient-methods
+      name: Stochastic gradient methods
+    - id: momentum-and-acceleration
+      name: Momentum and acceleration
+    - id: adaptive-optimizers
+      name: Adaptive optimizers
+    - id: second-order-and-quasi-newton
+      name: Second-order and quasi-Newton
+    - id: constrained-and-proximal-methods
+      name: Constrained and proximal methods
+    - id: nonconvex-optimization-theory
+      name: Nonconvex optimization theory
+    - id: learning-rate-schedules
+      name: Learning rate schedules
+    - id: large-batch-and-distributed-optimization
+      name: Large-batch and distributed optimization
+    - id: zeroth-order-and-black-box
+      name: Zeroth-order and black-box
+    - id: hyperparameter-optimization
+      name: Hyperparameter optimization
+    - id: bilevel-and-meta-optimization
+      name: Bilevel and meta-optimization
+- id: search-and-evolutionary-computation
+  name: Search and evolutionary computation
+  group: B
+  summary: Search through a space of states or candidates, and methods that copy natural evolution.
+  children:
+    - id: state-space-search
+      name: State space search
+    - id: uninformed-search
+      name: Uninformed search
+    - id: informed-search-and-heuristics
+      name: Informed search and heuristics
+    - id: local-search
+      name: Local search
+    - id: metaheuristics
+      name: Metaheuristics
+    - id: genetic-algorithms
+      name: Genetic algorithms
+    - id: genetic-programming
+      name: Genetic programming
+    - id: evolution-strategies-and-cma
+      name: Evolution strategies and CMA
+    - id: swarm-intelligence
+      name: Swarm intelligence
+    - id: neuroevolution
+      name: Neuroevolution
+    - id: quality-diversity-and-open-endedness
+      name: Quality-diversity and open-endedness
+    - id: artificial-life
+      name: Artificial life
+- id: constraints-and-satisfiability
+  name: Constraints and satisfiability
+  group: B
+  summary: Problems that a set of constraints defines, and the solvers that AI uses for them.
+  children:
+    - id: constraint-satisfaction-problems
+      name: Constraint satisfaction problems
+    - id: constraint-propagation
+      name: Constraint propagation
+    - id: constraint-programming
+      name: Constraint programming
+    - id: sat-in-ai
+      name: SAT in AI
+    - id: smt-and-optimization-modulo-theories
+      name: SMT and optimization modulo theories
+    - id: distributed-constraints
+      name: Distributed constraints
+    - id: constraint-learning
+      name: Constraint learning
+- id: planning-and-scheduling
+  name: Planning and scheduling
+  group: B
+  summary: How an agent finds a sequence of actions that reaches a goal.
+  children:
+    - id: classical-planning
+      name: Classical planning
+    - id: planning-languages
+      name: Planning languages
+    - id: heuristic-planning
+      name: Heuristic planning
+    - id: hierarchical-task-networks
+      name: Hierarchical task networks
+    - id: temporal-and-resource-planning
+      name: Temporal and resource planning
+    - id: planning-under-uncertainty
+      name: Planning under uncertainty
+    - id: epistemic-and-multi-agent-planning
+      name: Epistemic and multi-agent planning
+    - id: scheduling-in-ai
+      name: Scheduling in AI
+    - id: plan-recognition
+      name: Plan recognition
+    - id: generalized-planning
+      name: Generalized planning
+    - id: planning-with-language-models
+      name: Planning with language models
+- id: knowledge-representation
+  name: Knowledge representation
+  group: B
+  summary: How a system stores facts and rules, and how it reasons with them.
+  children:
+    - id: propositional-and-first-order-logic-for-ai
+      name: Propositional and first-order logic for AI
+    - id: description-logics-and-ontologies
+      name: Description logics and ontologies
+    - id: semantic-web
+      name: Semantic web
+    - id: knowledge-graphs
+      name: Knowledge graphs
+    - id: frames-and-semantic-networks
+      name: Frames and semantic networks
+    - id: commonsense-knowledge
+      name: Commonsense knowledge
+    - id: nonmonotonic-reasoning
+      name: Nonmonotonic reasoning
+    - id: belief-revision
+      name: Belief revision
+    - id: reasoning-about-action-and-change
+      name: Reasoning about action and change
+    - id: spatial-and-temporal-reasoning
+      name: Spatial and temporal reasoning
+    - id: answer-set-programming
+      name: Answer set programming
+    - id: argumentation-frameworks
+      name: Argumentation frameworks
+    - id: neuro-symbolic-ai
+      name: Neuro-symbolic AI
+- id: automated-reasoning
+  name: Automated reasoning
+  group: B
+  summary: Theorem proving, logic programming and program synthesis in AI.
+  children:
+    - id: automated-theorem-proving
+      name: Automated theorem proving
+    - id: interactive-theorem-proving-and-ai
+      name: Interactive theorem proving and AI
+    - id: logic-programming
+      name: Logic programming
+    - id: inductive-logic-programming
+      name: Inductive logic programming
+    - id: program-synthesis
+      name: Program synthesis
+    - id: neural-theorem-proving
+      name: Neural theorem proving
+    - id: ai-for-formal-verification
+      name: AI for formal verification
+- id: probabilistic-reasoning
+  name: Probabilistic reasoning
+  group: B
+  summary: Reasoning under uncertainty with graphical models and inference.
+  children:
+    - id: uncertainty-and-probability-in-ai
+      name: Uncertainty and probability in AI
+    - id: bayesian-networks
+      name: Bayesian networks
+    - id: markov-random-fields
+      name: Markov random fields
+    - id: exact-inference
+      name: Exact inference
+    - id: sampling-based-inference
+      name: Sampling-based inference
+    - id: variational-inference
+      name: Variational inference
+    - id: temporal-probabilistic-models
+      name: Temporal probabilistic models
+    - id: filtering-and-tracking
+      name: Filtering and tracking
+    - id: probabilistic-programming
+      name: Probabilistic programming
+    - id: decision-networks-and-value-of-information
+      name: Decision networks and value of information
+    - id: dempster-shafer-and-other-calculi
+      name: Dempster-Shafer and other calculi
+- id: classical-ai-systems
+  name: Classical AI systems
+  group: B
+  summary: Expert systems, production rules, cognitive architectures and other systems before statistical learning.
+  children:
+    - id: expert-systems
+      name: Expert systems
+    - id: rule-based-production-systems
+      name: Rule-based production systems
+    - id: case-based-reasoning
+      name: Case-based reasoning
+    - id: fuzzy-logic-and-soft-computing
+      name: Fuzzy logic and soft computing
+    - id: cognitive-architectures
+      name: Cognitive architectures
+    - id: blackboard-and-agent-architectures
+      name: Blackboard and agent architectures
+    - id: natural-language-systems-before-statistics
+      name: Natural language systems before statistics
+- id: games-and-multi-agent-systems
+  name: Games and multi-agent systems
+  group: B
+  summary: Game playing, game theory and systems of many agents.
+  children:
+    - id: game-theory-for-ai
+      name: Game theory for AI
+    - id: adversarial-search-in-ai
+      name: Adversarial search in AI
+    - id: monte-carlo-tree-search
+      name: Monte Carlo tree search
+    - id: imperfect-information-games
+      name: Imperfect-information games
+    - id: general-game-playing
+      name: General game playing
+    - id: game-ai-milestones
+      name: Game AI milestones
+    - id: agent-architectures-and-bdi
+      name: Agent architectures and BDI
+    - id: coordination-and-cooperation
+      name: Coordination and cooperation
+    - id: negotiation-and-bargaining
+      name: Negotiation and bargaining
+    - id: mechanism-design-and-auctions
+      name: Mechanism design and auctions
+    - id: computational-social-choice
+      name: Computational social choice
+    - id: agent-communication
+      name: Agent communication
+    - id: emergent-communication
+      name: Emergent communication
+- id: supervised-learning
+  name: Supervised learning
+  group: C
+  summary: Learning a map from inputs to labels with labelled examples.
+  children:
+    - id: learning-problem-setup
+      name: Learning problem setup
+    - id: linear-regression
+      name: Linear regression
+    - id: logistic-regression-and-glms
+      name: Logistic regression and GLMs
+    - id: nearest-neighbours
+      name: Nearest neighbours
+    - id: decision-trees
+      name: Decision trees
+    - id: naive-bayes-and-generative-classifiers
+      name: Naive Bayes and generative classifiers
+    - id: support-vector-machines
+      name: Support vector machines
+    - id: kernel-methods
+      name: Kernel methods
+    - id: ensembles-and-bagging
+      name: Ensembles and bagging
+    - id: boosting
+      name: Boosting
+    - id: gradient-boosted-trees
+      name: Gradient boosted trees
+    - id: model-selection-and-validation
+      name: Model selection and validation
+    - id: classical-regularization
+      name: Classical regularization
+    - id: feature-engineering
+      name: Feature engineering
+    - id: imbalanced-and-cost-sensitive
+      name: Imbalanced and cost-sensitive
+    - id: structured-prediction
+      name: Structured prediction
+    - id: learning-to-rank-classical
+      name: Classical learning to rank
+    - id: tabular-learning
+      name: Tabular learning
+- id: unsupervised-learning
+  name: Unsupervised learning
+  group: C
+  summary: Finding structure in data with no labels.
+  children:
+    - id: clustering-in-practice
+      name: Clustering in practice
+    - id: dimensionality-reduction
+      name: Dimensionality reduction
+    - id: manifold-learning
+      name: Manifold learning
+    - id: density-estimation
+      name: Density estimation
+    - id: matrix-factorization
+      name: Matrix factorization
+    - id: topic-models
+      name: Topic models
+    - id: anomaly-detection
+      name: Anomaly detection
+    - id: independent-component-and-source-separation
+      name: Independent component and source separation
+    - id: classical-representation-learning
+      name: Classical representation learning
+- id: probabilistic-machine-learning
+  name: Probabilistic machine learning
+  group: C
+  summary: Learning with probability models, priors and uncertainty.
+  children:
+    - id: bayesian-inference-for-ml
+      name: Bayesian inference for ML
+    - id: latent-variable-models
+      name: Latent variable models
+    - id: mixture-models-and-em
+      name: Mixture models and EM
+    - id: gaussian-processes
+      name: Gaussian processes
+    - id: bayesian-nonparametrics
+      name: Bayesian nonparametrics
+    - id: bayesian-neural-networks
+      name: Bayesian neural networks
+    - id: uncertainty-quantification
+      name: Uncertainty quantification
+    - id: conformal-prediction
+      name: Conformal prediction
+    - id: approximate-bayesian-computation
+      name: Approximate Bayesian computation
+- id: learning-settings
+  name: Learning settings
+  group: C
+  summary: Settings other than plain supervised learning, such as transfer, few-shot and continual learning.
+  children:
+    - id: semi-supervised-learning
+      name: Semi-supervised learning
+    - id: weak-supervision
+      name: Weak supervision
+    - id: positive-unlabeled-learning
+      name: Positive-unlabeled learning
+    - id: active-learning
+      name: Active learning
+    - id: transfer-learning
+      name: Transfer learning
+    - id: domain-adaptation
+      name: Domain adaptation
+    - id: multi-task-learning
+      name: Multi-task learning
+    - id: meta-learning
+      name: Meta-learning
+    - id: few-shot-and-zero-shot
+      name: Few-shot and zero-shot
+    - id: continual-learning
+      name: Continual learning
+    - id: federated-learning
+      name: Federated learning
+    - id: online-and-streaming-learning
+      name: Online and streaming learning
+    - id: curriculum-learning
+      name: Curriculum learning
+    - id: learning-with-noisy-labels
+      name: Learning with noisy labels
+- id: time-series-and-sequential-data
+  name: Time series and sequential data
+  group: C
+  summary: Forecasting, classification and anomaly detection on data in time order.
+  children:
+    - id: forecasting-classical
+      name: Classical forecasting
+    - id: deep-forecasting
+      name: Deep forecasting
+    - id: time-series-classification
+      name: Time series classification
+    - id: sequence-anomaly-detection
+      name: Sequence anomaly detection
+    - id: spatio-temporal-learning
+      name: Spatio-temporal learning
+    - id: time-series-foundation-models
+      name: Time series foundation models
+    - id: event-sequences-and-point-processes
+      name: Event sequences and point processes
+- id: reinforcement-learning
+  name: Reinforcement learning
+  group: C
+  summary: How an agent learns to act from rewards.
+  children:
+    - id: markov-decision-processes
+      name: Markov decision processes
+    - id: dynamic-programming-in-rl
+      name: Dynamic programming in RL
+    - id: monte-carlo-and-td-learning
+      name: Monte Carlo and TD learning
+    - id: function-approximation-in-rl
+      name: Function approximation in RL
+    - id: deep-q-learning
+      name: Deep Q-learning
+    - id: policy-gradient-methods
+      name: Policy gradient methods
+    - id: actor-critic-methods
+      name: Actor-critic methods
+    - id: model-based-rl
+      name: Model-based RL
+    - id: exploration
+      name: Exploration
+    - id: multi-armed-bandits
+      name: Multi-armed bandits
+    - id: contextual-bandits
+      name: Contextual bandits
+    - id: offline-rl
+      name: Offline RL
+    - id: imitation-learning
+      name: Imitation learning
+    - id: inverse-rl-and-reward-learning
+      name: Inverse RL and reward learning
+    - id: hierarchical-rl
+      name: Hierarchical RL
+    - id: multi-agent-rl
+      name: Multi-agent RL
+    - id: partially-observable-rl
+      name: Partially observable RL
+    - id: rl-theory
+      name: RL theory
+    - id: reward-design-and-shaping
+      name: Reward design and shaping
+    - id: rl-environments-and-benchmarks
+      name: RL environments and benchmarks
+- id: causal-inference-and-discovery
+  name: Causal inference and discovery
+  group: C
+  summary: "Cause and effect: identification, estimation and discovery of causal structure."
+  children:
+    - id: causal-graphical-models
+      name: Causal graphical models
+    - id: structural-causal-models
+      name: Structural causal models
+    - id: identification-and-do-calculus
+      name: Identification and do-calculus
+    - id: potential-outcomes
+      name: Potential outcomes
+    - id: treatment-effect-estimation
+      name: Treatment effect estimation
+    - id: causal-discovery
+      name: Causal discovery
+    - id: counterfactual-reasoning
+      name: Counterfactual reasoning
+    - id: causal-representation-learning
+      name: Causal representation learning
+    - id: causality-and-invariance-in-ml
+      name: Causality and invariance in ML
+- id: deep-learning-foundations
+  name: Deep learning foundations
+  group: D
+  summary: The parts of a neural network and why a network can learn.
+  children:
+    - id: neural-network-basics
+      name: Neural network basics
+    - id: activation-functions
+      name: Activation functions
+    - id: loss-functions
+      name: Loss functions
+    - id: backpropagation-and-autodiff
+      name: Backpropagation and autodiff
+    - id: initialization
+      name: Initialization
+    - id: expressivity-and-approximation
+      name: Expressivity and approximation
+    - id: depth-and-width
+      name: Depth and width
+    - id: inductive-biases-of-networks
+      name: Inductive biases of networks
+    - id: biological-inspiration
+      name: Biological inspiration
+- id: deep-learning-training
+  name: Deep learning training
+  group: D
+  summary: The methods that make the training of a deep network stable and efficient.
+  children:
+    - id: regularization
+      name: Regularization
+    - id: normalization
+      name: Normalization
+    - id: data-augmentation
+      name: Data augmentation
+    - id: training-dynamics
+      name: Training dynamics
+    - id: batch-size-and-learning-rate
+      name: Batch size and learning rate
+    - id: mixed-precision-and-numerics
+      name: Mixed precision and numerics
+    - id: training-stability
+      name: Training stability
+    - id: loss-landscapes
+      name: Loss landscapes
+    - id: grokking-and-double-descent
+      name: Grokking and double descent
+    - id: hyperparameter-transfer
+      name: Hyperparameter transfer
+    - id: training-recipes
+      name: Training recipes
+- id: deep-learning-architectures
+  name: Deep learning architectures
+  group: D
+  summary: The designs of neural networks, from feedforward networks to transformers and state space models.
+  children:
+    - id: feedforward-networks
+      name: Feedforward networks
+    - id: convolutional-networks
+      name: Convolutional networks
+    - id: recurrent-networks
+      name: Recurrent networks
+    - id: residual-and-skip-connections
+      name: Residual and skip connections
+    - id: attention-mechanisms
+      name: Attention mechanisms
+    - id: transformers
+      name: Transformers
+    - id: position-encodings
+      name: Position encodings
+    - id: state-space-and-linear-recurrent-models
+      name: State space and linear recurrent models
+    - id: mixture-of-experts
+      name: Mixture of experts
+    - id: graph-neural-networks
+      name: Graph neural networks
+    - id: equivariant-and-geometric-networks
+      name: Equivariant and geometric networks
+    - id: memory-augmented-networks
+      name: Memory-augmented networks
+    - id: neural-odes-and-implicit-models
+      name: Neural ODEs and implicit models
+    - id: hypernetworks-and-dynamic-networks
+      name: Hypernetworks and dynamic networks
+    - id: hybrid-architectures
+      name: Hybrid architectures
+- id: generative-models
+  name: Generative models
+  group: D
+  summary: Models that learn a data distribution and sample from it.
+  children:
+    - id: autoencoders
+      name: Autoencoders
+    - id: variational-autoencoders
+      name: Variational autoencoders
+    - id: generative-adversarial-networks
+      name: Generative adversarial networks
+    - id: normalizing-flows
+      name: Normalizing flows
+    - id: diffusion-models
+      name: Diffusion models
+    - id: flow-matching
+      name: Flow matching
+    - id: autoregressive-models
+      name: Autoregressive models
+    - id: energy-based-models
+      name: Energy-based models
+    - id: discrete-and-masked-generative-models
+      name: Discrete and masked generative models
+    - id: latent-generative-models
+      name: Latent generative models
+    - id: guidance-and-conditioning
+      name: Guidance and conditioning
+    - id: consistency-and-distillation-of-samplers
+      name: Consistency and distillation of samplers
+- id: self-supervised-learning
+  name: Self-supervised learning
+  group: D
+  summary: Learning representations from data with labels that the data itself supplies.
+  children:
+    - id: pretext-tasks
+      name: Pretext tasks
+    - id: contrastive-learning
+      name: Contrastive learning
+    - id: masked-modelling
+      name: Masked modelling
+    - id: self-distillation
+      name: Self-distillation
+    - id: joint-embedding-predictive-architectures
+      name: Joint-embedding predictive architectures
+    - id: embeddings-and-metric-learning
+      name: Embeddings and metric learning
+    - id: word-and-sentence-embeddings
+      name: Word and sentence embeddings
+- id: language-models
+  name: Language models
+  group: D
+  summary: Models of text, from n-gram models to large language models.
+  children:
+    - id: statistical-language-models
+      name: Statistical language models
+    - id: neural-language-models
+      name: Neural language models
+    - id: tokenization
+      name: Tokenization
+    - id: pretraining-objectives
+      name: Pretraining objectives
+    - id: encoder-models
+      name: Encoder models
+    - id: decoder-only-models
+      name: Decoder-only models
+    - id: encoder-decoder-models
+      name: Encoder-decoder models
+    - id: scaling-laws
+      name: Scaling laws
+    - id: in-context-learning
+      name: In-context learning
+    - id: long-context
+      name: Long context
+    - id: decoding-and-sampling
+      name: Decoding and sampling
+    - id: emergent-and-surprising-behaviour
+      name: Emergent and surprising behaviour
+    - id: knowledge-and-memorization-in-lms
+      name: Knowledge and memorization in LMs
+    - id: hallucination
+      name: Hallucination
+    - id: language-model-evaluation
+      name: Language model evaluation
+- id: post-training
+  name: Post-training
+  group: D
+  summary: What changes a pretrained model into a useful and safe assistant.
+  children:
+    - id: supervised-fine-tuning
+      name: Supervised fine-tuning
+    - id: instruction-tuning
+      name: Instruction tuning
+    - id: reward-modelling
+      name: Reward modelling
+    - id: rlhf
+      name: RLHF
+    - id: preference-optimization
+      name: Preference optimization
+    - id: ai-feedback-and-constitutional-methods
+      name: AI feedback and constitutional methods
+    - id: parameter-efficient-fine-tuning
+      name: Parameter-efficient fine-tuning
+    - id: model-merging
+      name: Model merging
+    - id: safety-training-and-refusals
+      name: Safety training and refusals
+    - id: system-prompts-and-personas
+      name: System prompts and personas
+    - id: continued-pretraining-and-domain-adaptation
+      name: Continued pretraining and domain adaptation
+- id: reasoning-and-test-time-compute
+  name: Reasoning and test-time compute
+  group: D
+  summary: Prompting, chain of thought and other uses of compute at inference.
+  children:
+    - id: prompting
+      name: Prompting
+    - id: chain-of-thought
+      name: Chain of thought
+    - id: self-consistency-and-voting
+      name: Self-consistency and voting
+    - id: search-at-inference
+      name: Search at inference
+    - id: reinforcement-learning-with-verifiable-rewards
+      name: Reinforcement learning with verifiable rewards
+    - id: process-and-outcome-reward-models
+      name: Process and outcome reward models
+    - id: test-time-scaling
+      name: Test-time scaling
+    - id: reasoning-faithfulness
+      name: Reasoning faithfulness
+    - id: mathematical-reasoning-in-models
+      name: Mathematical reasoning in models
+    - id: planning-in-language-models
+      name: Planning in language models
+- id: multimodal-models
+  name: Multimodal models
+  group: D
+  summary: Models that use more than one modality, such as text, images and audio.
+  children:
+    - id: vision-language-pretraining
+      name: Vision-language pretraining
+    - id: vision-language-models
+      name: Vision-language models
+    - id: text-to-image
+      name: Text-to-image
+    - id: text-to-video
+      name: Text-to-video
+    - id: text-to-3d
+      name: Text-to-3D
+    - id: audio-language-models
+      name: Audio-language models
+    - id: any-to-any-models
+      name: Any-to-any models
+    - id: multimodal-grounding
+      name: Multimodal grounding
+    - id: multimodal-evaluation
+      name: Multimodal evaluation
+- id: efficient-ai
+  name: Efficient AI
+  group: D
+  summary: Methods that make models smaller, faster or cheaper.
+  children:
+    - id: quantization
+      name: Quantization
+    - id: pruning-and-sparsity
+      name: Pruning and sparsity
+    - id: knowledge-distillation
+      name: Knowledge distillation
+    - id: efficient-attention
+      name: Efficient attention
+    - id: kv-cache-and-memory-reduction
+      name: KV cache and memory reduction
+    - id: speculative-and-parallel-decoding
+      name: Speculative and parallel decoding
+    - id: efficient-architectures-for-devices
+      name: Efficient architectures for devices
+    - id: neural-architecture-search
+      name: Neural architecture search
+    - id: early-exit-and-adaptive-compute
+      name: Early-exit and adaptive compute
+    - id: energy-and-carbon-of-ai
+      name: Energy and carbon of AI
+- id: foundation-models
+  name: Foundation models
+  group: D
+  summary: The families and releases of large pretrained models. This is the home of model nodes.
+  children:
+    - id: model-families-and-lineage
+      name: Model families and lineage
+    - id: frontier-closed-models
+      name: Frontier closed models
+    - id: open-weight-llms
+      name: Open-weight LLMs
+    - id: small-language-models
+      name: Small language models
+    - id: code-models
+      name: Code models
+    - id: vision-foundation-models
+      name: Vision foundation models
+    - id: speech-foundation-models
+      name: Speech foundation models
+    - id: scientific-foundation-models
+      name: Scientific foundation models
+    - id: multimodal-model-families
+      name: Multimodal model families
+    - id: model-releases-and-cards
+      name: Model releases and cards
+    - id: open-and-closed-access
+      name: Open and closed access
+- id: natural-language-processing
+  name: Natural language processing
+  group: E
+  summary: The tasks and methods of human language processing.
+  children:
+    - id: text-preprocessing
+      name: Text preprocessing
+    - id: text-classification
+      name: Text classification
+    - id: sequence-labelling
+      name: Sequence labelling
+    - id: syntactic-parsing
+      name: Syntactic parsing
+    - id: semantic-parsing
+      name: Semantic parsing
+    - id: lexical-and-compositional-semantics
+      name: Lexical and compositional semantics
+    - id: information-extraction
+      name: Information extraction
+    - id: entity-linking
+      name: Entity linking
+    - id: question-answering
+      name: Question answering
+    - id: machine-translation
+      name: Machine translation
+    - id: summarization
+      name: Summarization
+    - id: dialogue-systems
+      name: Dialogue systems
+    - id: natural-language-generation
+      name: Natural language generation
+    - id: sentiment-and-affect
+      name: Sentiment and affect
+    - id: discourse-and-pragmatics
+      name: Discourse and pragmatics
+    - id: multilingual-and-low-resource-nlp
+      name: Multilingual and low-resource NLP
+    - id: computational-linguistics-foundations
+      name: Computational linguistics foundations
+- id: speech-and-audio
+  name: Speech and audio
+  group: E
+  summary: Speech recognition, speech synthesis, audio and music.
+  children:
+    - id: speech-recognition
+      name: Speech recognition
+    - id: speech-synthesis
+      name: Speech synthesis
+    - id: speaker-recognition-and-diarization
+      name: Speaker recognition and diarization
+    - id: spoken-language-understanding
+      name: Spoken language understanding
+    - id: speech-translation
+      name: Speech translation
+    - id: audio-classification-and-tagging
+      name: Audio classification and tagging
+    - id: audio-generation
+      name: Audio generation
+    - id: music-information-retrieval
+      name: Music information retrieval
+    - id: music-generation
+      name: Music generation
+    - id: source-separation-and-enhancement
+      name: Source separation and enhancement
+- id: computer-vision
+  name: Computer vision
+  group: E
+  summary: The tasks and methods of image and video processing.
+  children:
+    - id: image-formation-and-features
+      name: Image formation and features
+    - id: image-classification
+      name: Image classification
+    - id: object-detection
+      name: Object detection
+    - id: semantic-and-instance-segmentation
+      name: Semantic and instance segmentation
+    - id: open-vocabulary-and-promptable-vision
+      name: Open-vocabulary and promptable vision
+    - id: 3d-reconstruction-and-geometry
+      name: 3D reconstruction and geometry
+    - id: neural-rendering
+      name: Neural rendering
+    - id: video-understanding
+      name: Video understanding
+    - id: tracking
+      name: Tracking
+    - id: human-pose-and-motion
+      name: Human pose and motion
+    - id: faces-and-biometrics
+      name: Faces and biometrics
+    - id: ocr-and-document-understanding
+      name: OCR and document understanding
+    - id: low-level-vision
+      name: Low-level vision
+    - id: image-generation-and-editing
+      name: Image generation and editing
+    - id: visual-reasoning
+      name: Visual reasoning
+    - id: remote-sensing
+      name: Remote sensing
+- id: robotics-and-embodied-ai
+  name: Robotics and embodied AI
+  group: E
+  summary: AI in machines that sense and act in the physical world.
+  children:
+    - id: robot-perception
+      name: Robot perception
+    - id: localization-and-slam
+      name: Localization and SLAM
+    - id: motion-planning-in-robotics
+      name: Motion planning in robotics
+    - id: manipulation
+      name: Manipulation
+    - id: locomotion
+      name: Locomotion
+    - id: robot-learning
+      name: Robot learning
+    - id: sim-to-real
+      name: Sim-to-real
+    - id: vision-language-action-models
+      name: Vision-language-action models
+    - id: human-robot-interaction
+      name: Human-robot interaction
+    - id: autonomous-driving
+      name: Autonomous driving
+    - id: aerial-and-field-robotics
+      name: Aerial and field robotics
+    - id: embodied-ai-simulators
+      name: Embodied AI simulators
+- id: ai-agents
+  name: AI agents
+  group: E
+  summary: Systems that use models in a loop with tools, memory and plans.
+  children:
+    - id: agent-loops-and-architectures
+      name: Agent loops and architectures
+    - id: tool-use-and-function-calling
+      name: Tool use and function calling
+    - id: agent-memory
+      name: Agent memory
+    - id: agent-planning-and-reflection
+      name: Agent planning and reflection
+    - id: multi-agent-llm-systems
+      name: Multi-agent LLM systems
+    - id: web-and-computer-use-agents
+      name: Web and computer use agents
+    - id: coding-agents
+      name: Coding agents
+    - id: research-agents
+      name: Research agents
+    - id: agent-protocols
+      name: Agent protocols
+    - id: agent-sandboxing-and-permissions
+      name: Agent sandboxing and permissions
+    - id: agent-evaluation
+      name: Agent evaluation
+- id: retrieval-and-recommendation
+  name: Retrieval and recommendation
+  group: E
+  summary: Search, retrieval-augmented generation and recommender systems.
+  children:
+    - id: information-retrieval-models
+      name: Information retrieval models
+    - id: sparse-retrieval
+      name: Sparse retrieval
+    - id: dense-retrieval
+      name: Dense retrieval
+    - id: vector-indexes-in-practice
+      name: Vector indexes in practice
+    - id: reranking
+      name: Reranking
+    - id: retrieval-augmented-generation
+      name: Retrieval augmented generation
+    - id: recommender-systems
+      name: Recommender systems
+    - id: collaborative-filtering
+      name: Collaborative filtering
+    - id: sequential-recommendation
+      name: Sequential recommendation
+    - id: search-and-ranking-systems
+      name: Search and ranking systems
+- id: ai-for-science
+  name: AI for science
+  group: F
+  summary: AI in biology, chemistry, physics, climate, mathematics and other sciences.
+  children:
+    - id: protein-structure-and-design
+      name: Protein structure and design
+    - id: drug-discovery
+      name: Drug discovery
+    - id: chemistry-and-materials
+      name: Chemistry and materials
+    - id: genomics-and-biology
+      name: Genomics and biology
+    - id: weather-and-climate
+      name: Weather and climate
+    - id: physics-and-simulation
+      name: Physics and simulation
+    - id: astronomy-and-cosmology
+      name: Astronomy and cosmology
+    - id: mathematics-and-ai
+      name: Mathematics and AI
+    - id: earth-and-environment
+      name: Earth and environment
+    - id: autonomous-laboratories
+      name: Autonomous laboratories
+    - id: science-agents
+      name: Science agents
+- id: ai-applications
+  name: AI applications
+  group: F
+  summary: AI in medicine, code, law, finance, education, art and other fields.
+  children:
+    - id: healthcare-and-medicine
+      name: Healthcare and medicine
+    - id: medical-imaging
+      name: Medical imaging
+    - id: software-engineering-and-code
+      name: Software engineering and code
+    - id: law-and-legal-practice
+      name: Law and legal practice
+    - id: finance-and-trading
+      name: Finance and trading
+    - id: education
+      name: Education
+    - id: creative-arts-and-design
+      name: Creative arts and design
+    - id: writing-and-media
+      name: Writing and media
+    - id: games-and-entertainment
+      name: Games and entertainment
+    - id: transportation-and-logistics
+      name: Transportation and logistics
+    - id: manufacturing-and-industry
+      name: Manufacturing and industry
+    - id: energy-and-utilities
+      name: Energy and utilities
+    - id: agriculture-and-food
+      name: Agriculture and food
+    - id: public-sector-and-government
+      name: Public sector and government
+    - id: military-and-defence
+      name: Military and defence
+    - id: marketing-and-commerce
+      name: Marketing and commerce
+    - id: customer-service
+      name: Customer service
+    - id: accessibility-and-assistive
+      name: Accessibility and assistive
+    - id: cybersecurity-applications
+      name: Cybersecurity applications
+- id: data-for-ai
+  name: Data for AI
+  group: G
+  summary: How training and evaluation data is collected, filtered, labelled and documented.
+  children:
+    - id: web-crawls-and-corpora
+      name: Web crawls and corpora
+    - id: data-curation-and-filtering
+      name: Data curation and filtering
+    - id: deduplication
+      name: Deduplication
+    - id: data-labelling-and-annotation
+      name: Data labelling and annotation
+    - id: synthetic-data
+      name: Synthetic data
+    - id: data-mixtures-and-curricula
+      name: Data mixtures and curricula
+    - id: data-documentation
+      name: Data documentation
+    - id: dataset-licensing-and-consent
+      name: Dataset licensing and consent
+    - id: multimodal-datasets
+      name: Multimodal datasets
+    - id: evaluation-data-construction
+      name: Evaluation data construction
+    - id: data-attribution-and-valuation
+      name: Data attribution and valuation
+- id: ml-systems
+  name: ML systems
+  group: G
+  summary: The systems that train and serve models at scale.
+  children:
+    - id: training-systems
+      name: Training systems
+    - id: data-parallelism
+      name: Data parallelism
+    - id: tensor-and-sequence-parallelism
+      name: Tensor and sequence parallelism
+    - id: pipeline-parallelism
+      name: Pipeline parallelism
+    - id: expert-parallelism
+      name: Expert parallelism
+    - id: memory-optimization
+      name: Memory optimization
+    - id: compilers-and-graph-optimization
+      name: Compilers and graph optimization
+    - id: gpu-kernels
+      name: GPU kernels
+    - id: inference-serving
+      name: Inference serving
+    - id: batching-and-scheduling
+      name: Batching and scheduling
+    - id: fault-tolerance-and-checkpointing
+      name: Fault tolerance and checkpointing
+    - id: mlops-and-deployment
+      name: MLOps and deployment
+    - id: experiment-tracking-and-reproducibility
+      name: Experiment tracking and reproducibility
+    - id: cluster-and-datacenter-scale
+      name: Cluster and datacenter scale
+- id: ai-hardware
+  name: AI hardware
+  group: G
+  summary: Chips, accelerators and data centres for AI.
+  children:
+    - id: gpus
+      name: GPUs
+    - id: tpus-and-custom-asics
+      name: TPUs and custom ASICs
+    - id: other-accelerators
+      name: Other accelerators
+    - id: wafer-scale-and-dataflow
+      name: Wafer-scale and dataflow
+    - id: interconnects
+      name: Interconnects
+    - id: memory-and-hbm
+      name: Memory and HBM
+    - id: ai-datacenters-and-power
+      name: AI datacenters and power
+    - id: edge-and-mobile-npus
+      name: Edge and mobile NPUs
+    - id: neuromorphic-and-analog
+      name: Neuromorphic and analog
+    - id: historical-ai-hardware
+      name: Historical AI hardware
+    - id: compute-trends-and-supply-chain
+      name: Compute trends and supply chain
+- id: ai-software
+  name: AI software
+  group: G
+  summary: Frameworks, libraries, engines and tools built for AI.
+  children:
+    - id: deep-learning-frameworks
+      name: Deep learning frameworks
+    - id: classical-ml-libraries
+      name: Classical ML libraries
+    - id: model-hubs-and-weight-formats
+      name: Model hubs and weight formats
+    - id: training-libraries
+      name: Training libraries
+    - id: serving-and-inference-engines
+      name: Serving and inference engines
+    - id: local-inference-runtimes
+      name: Local inference runtimes
+    - id: llm-application-frameworks
+      name: LLM application frameworks
+    - id: agent-frameworks-and-sdks
+      name: Agent frameworks and SDKs
+    - id: evaluation-harnesses
+      name: Evaluation harnesses
+    - id: data-and-labelling-tools
+      name: Data and labelling tools
+    - id: rl-and-simulation-environments
+      name: RL and simulation environments
+    - id: notebooks-and-experiment-tools
+      name: Notebooks and experiment tools
+- id: evaluation
+  name: Evaluation
+  group: G
+  summary: Metrics, benchmarks and the methods that measure models. This is the home of metric and benchmark nodes.
+  children:
+    - id: evaluation-methodology
+      name: Evaluation methodology
+    - id: classification-and-regression-metrics
+      name: Classification and regression metrics
+    - id: ranking-and-retrieval-metrics
+      name: Ranking and retrieval metrics
+    - id: text-generation-metrics
+      name: Text generation metrics
+    - id: image-and-video-generation-metrics
+      name: Image and video generation metrics
+    - id: speech-metrics
+      name: Speech metrics
+    - id: statistical-testing-for-ml
+      name: Statistical testing for ML
+    - id: benchmarks-and-their-design
+      name: Benchmarks and their design
+    - id: leaderboards-and-comparability
+      name: Leaderboards and comparability
+    - id: human-evaluation-and-arenas
+      name: Human evaluation and arenas
+    - id: model-graded-evaluation
+      name: Model-graded evaluation
+    - id: contamination-and-leakage
+      name: Contamination and leakage
+    - id: calibration-evaluation
+      name: Calibration evaluation
+    - id: capability-and-dangerous-capability-evaluations
+      name: Capability and dangerous capability evaluations
+    - id: efficiency-and-cost-evaluation
+      name: Efficiency and cost evaluation
+- id: ai-safety-and-alignment
+  name: AI safety and alignment
+  group: H
+  summary: How to make AI systems do what their designers intend, and the risks when they do not.
+  children:
+    - id: the-alignment-problem
+      name: The alignment problem
+    - id: specification-gaming-and-reward-hacking
+      name: Specification gaming and reward hacking
+    - id: goal-misgeneralization
+      name: Goal misgeneralization
+    - id: scalable-oversight
+      name: Scalable oversight
+    - id: deceptive-alignment-and-scheming
+      name: Deceptive alignment and scheming
+    - id: sycophancy-and-honesty
+      name: Sycophancy and honesty
+    - id: power-seeking-and-instrumental-convergence
+      name: Power-seeking and instrumental convergence
+    - id: ai-control
+      name: AI control
+    - id: model-organisms-of-misalignment
+      name: Model organisms of misalignment
+    - id: catastrophic-and-existential-risk
+      name: Catastrophic and existential risk
+    - id: agent-foundations
+      name: Agent foundations
+    - id: cooperative-ai
+      name: Cooperative AI
+    - id: corrigibility
+      name: Corrigibility
+    - id: situational-awareness
+      name: Situational awareness
+    - id: safety-cases
+      name: Safety cases
+- id: interpretability
+  name: Interpretability
+  group: H
+  summary: Methods that explain what a model computes and why.
+  children:
+    - id: interpretable-models
+      name: Interpretable models
+    - id: feature-attribution
+      name: Feature attribution
+    - id: explainable-ai-methods
+      name: Explainable AI methods
+    - id: probing
+      name: Probing
+    - id: mechanistic-interpretability
+      name: Mechanistic interpretability
+    - id: circuits
+      name: Circuits
+    - id: superposition-and-features
+      name: Superposition and features
+    - id: sparse-autoencoders-and-dictionaries
+      name: Sparse autoencoders and dictionaries
+    - id: representation-engineering-and-steering
+      name: Representation engineering and steering
+    - id: concept-based-explanations
+      name: Concept-based explanations
+    - id: interpretability-evaluation
+      name: Interpretability evaluation
+- id: robustness-security-and-privacy
+  name: Robustness, security and privacy
+  group: H
+  summary: Attacks on AI systems, the defences, and privacy in machine learning.
+  children:
+    - id: adversarial-examples
+      name: Adversarial examples
+    - id: certified-and-adversarial-robustness
+      name: Certified and adversarial robustness
+    - id: distribution-shift-and-ood
+      name: Distribution shift and OOD
+    - id: jailbreaks
+      name: Jailbreaks
+    - id: prompt-injection
+      name: Prompt injection
+    - id: data-poisoning-and-backdoors
+      name: Data poisoning and backdoors
+    - id: model-extraction
+      name: Model extraction
+    - id: membership-and-attribute-inference
+      name: Membership and attribute inference
+    - id: differential-privacy-in-ml
+      name: Differential privacy in ML
+    - id: machine-unlearning
+      name: Machine unlearning
+    - id: watermarking-and-content-provenance
+      name: Watermarking and content provenance
+    - id: synthetic-media-and-deepfakes
+      name: Synthetic media and deepfakes
+    - id: red-teaming
+      name: Red teaming
+    - id: ai-supply-chain-security
+      name: AI supply chain security
+    - id: ai-threat-taxonomies
+      name: AI threat taxonomies
+- id: fairness-and-ethics
+  name: Fairness and ethics
+  group: H
+  summary: Fairness, bias, transparency, accountability and other ethical questions of AI.
+  children:
+    - id: ethics-of-ai
+      name: Ethics of AI
+    - id: ai-principles-and-guidelines
+      name: AI principles and guidelines
+    - id: fairness-definitions
+      name: Fairness definitions
+    - id: bias-measurement
+      name: Bias measurement
+    - id: bias-mitigation
+      name: Bias mitigation
+    - id: transparency-and-documentation
+      name: Transparency and documentation
+    - id: accountability-and-auditing
+      name: Accountability and auditing
+    - id: human-oversight-and-contestability
+      name: Human oversight and contestability
+    - id: human-ai-interaction-and-trust
+      name: Human-AI interaction and trust
+    - id: ai-and-human-rights
+      name: AI and human rights
+    - id: ai-and-labour-ethics
+      name: AI and labour ethics
+    - id: ai-welfare-and-moral-status
+      name: AI welfare and moral status
+- id: ai-governance-and-law
+  name: AI governance and law
+  group: H
+  summary: Laws, regulations, standards and policies about AI.
+  children:
+    - id: eu-ai-law
+      name: EU AI law
+    - id: united-states-ai-policy
+      name: United States AI policy
+    - id: china-ai-regulation
+      name: China AI regulation
+    - id: uk-ai-policy
+      name: UK AI policy
+    - id: other-national-ai-policies
+      name: Other national AI policies
+    - id: international-ai-governance
+      name: International AI governance
+    - id: ai-standards
+      name: AI standards
+    - id: frontier-ai-policies-and-commitments
+      name: Frontier AI policies and commitments
+    - id: compute-and-export-controls
+      name: Compute and export controls
+    - id: copyright-and-ai
+      name: Copyright and AI
+    - id: liability-and-product-safety
+      name: Liability and product safety
+    - id: data-protection-and-ai
+      name: Data protection and AI
+    - id: sector-regulation
+      name: Sector regulation
+    - id: ai-incidents-and-reporting
+      name: AI incidents and reporting
+    - id: ai-safety-institutes
+      name: AI safety institutes
+- id: history-of-ai
+  name: History of AI
+  group: I
+  summary: The history of AI from the early automata to the present.
+  children:
+    - id: precursors-and-automata
+      name: Precursors and automata
+    - id: cybernetics-and-early-computing
+      name: Cybernetics and early computing
+    - id: the-birth-of-ai
+      name: The birth of AI
+    - id: early-symbolic-ai
+      name: Early symbolic AI
+    - id: first-ai-winter
+      name: First AI winter
+    - id: knowledge-based-systems-era
+      name: Knowledge-based systems era
+    - id: second-ai-winter
+      name: Second AI winter
+    - id: statistical-and-probabilistic-turn
+      name: The statistical and probabilistic turn
+    - id: connectionism-revival
+      name: Connectionism revival
+    - id: deep-learning-revolution
+      name: Deep learning revolution
+    - id: transformer-and-foundation-model-era
+      name: Transformer and foundation model era
+    - id: histories-by-country
+      name: Histories by country
+- id: philosophy-and-cognitive-science
+  name: Philosophy and cognitive science
+  group: I
+  summary: Philosophical arguments about machine minds, and the relation of AI to the study of the mind.
+  children:
+    - id: philosophy-of-ai
+      name: Philosophy of AI
+    - id: can-machines-think
+      name: Can machines think
+    - id: consciousness-and-machine-minds
+      name: Consciousness and machine minds
+    - id: meaning-and-understanding
+      name: Meaning and understanding
+    - id: symbol-grounding
+      name: Symbol grounding
+    - id: embodiment-and-situated-cognition
+      name: Embodiment and situated cognition
+    - id: cognitive-science-and-ai
+      name: Cognitive science and AI
+    - id: neuroscience-and-ai
+      name: Neuroscience and AI
+    - id: computational-models-of-mind
+      name: Computational models of mind
+    - id: theories-of-intelligence
+      name: Theories of intelligence
+- id: ai-and-society
+  name: AI and society
+  group: I
+  summary: The economics of AI and its effects on work, culture and public life.
+  children:
+    - id: economics-of-ai
+      name: Economics of AI
+    - id: labour-and-automation
+      name: Labour and automation
+    - id: ai-industry-and-investment
+      name: AI industry and investment
+    - id: ai-geopolitics
+      name: AI geopolitics
+    - id: open-source-and-open-weights-movement
+      name: Open-source and open-weights movement
+    - id: public-opinion-and-discourse
+      name: Public opinion and discourse
+    - id: ai-in-culture-and-fiction
+      name: AI in culture and fiction
+    - id: ai-forecasting-and-timelines
+      name: AI forecasting and timelines
+    - id: ai-and-education-systems
+      name: AI and education systems
+    - id: ai-and-information-ecosystem
+      name: AI and information ecosystem
+    - id: ai-and-the-environment
+      name: AI and the environment
+- id: people-and-institutions
+  name: People and institutions
+  group: I
+  summary: The people, labs, companies, venues and awards of AI.
+  children:
+    - id: researchers
+      name: Researchers
+    - id: engineers-and-builders
+      name: Engineers and builders
+    - id: labs-and-companies
+      name: Labs and companies
+    - id: universities-and-research-groups
+      name: Universities and research groups
+    - id: government-bodies-and-regulators
+      name: Government bodies and regulators
+    - id: standards-bodies
+      name: Standards bodies
+    - id: funders
+      name: Funders
+    - id: conferences-and-venues
+      name: Conferences and venues
+    - id: awards-and-prizes
+      name: Awards and prizes
+    - id: competitions-and-challenges
+      name: Competitions and challenges
+    - id: landmark-works
+      name: Landmark works
+    - id: notable-events
+      name: Notable events
