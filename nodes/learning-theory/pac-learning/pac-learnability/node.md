@@ -125,7 +125,7 @@ The class is learnable, but only by seeing a large part of the domain, which is 
 ## Common confusions
 
 **PAC learnable is not the same as learnable in polynomial time.**
-The textbook definition has no runtime requirement, while Valiant's has one. {#c-runtime-difference}
+Valiant's definition requires an algorithm that runs in polynomial time, and the definition above has no such requirement. {#c-runtime-difference}
 The two come apart: the class of 3-term DNF formulas over $n$ variables has at most $3^{3n}$ members, so ERM needs at most $(3n \log 3 + \log(1/\delta))/\epsilon$ examples, but unless RP = NP no polynomial time algorithm learns it properly. {#c-3dnf-hard}
 It is learnable in polynomial time by a learner that returns a 3-CNF formula, outside the class. {#c-3dnf-improper}
 
@@ -151,8 +151,8 @@ A bound quoted without saying which case it is in can be off by a factor of $1/\
 
 Leslie Valiant introduced the model in "A Theory of the Learnable", in 1984. {#c-valiant-1984}
 He asked for an algorithm that, for every target of the class and every distribution, deduces with probability at least $1 - h^{-1}$ a program that errs rarely, in time polynomial in $h$ and the size of the target, and he showed that bounded CNF expressions are learnable in this sense.
-Valiant received the 2010 Turing Award, and Shalev-Shwartz and Ben-David name the introduction of the PAC model as the work it recognized. {#c-turing-award}
 The statistical side has an older root in the uniform convergence results of Vapnik and Chervonenkis (1971).
 Blumer, Ehrenfeucht, Haussler and Warmuth tied the two in 1989, by showing that a class is learnable from a number of examples independent of the distribution exactly when its VC dimension is finite.
 David Haussler extended the model in 1992 to the agnostic setting and to general losses, which is the form that covers regression and neural networks.
-The two uses of the term survive: in computational learning theory, after Valiant, PAC learnable often includes polynomial time, while Shalev-Shwartz and Ben-David (2014) separate the statistical question from the computational one and leave the runtime out. {#c-two-uses}
+The two uses of the term survive: in computational learning theory, after Valiant, PAC learnable often includes polynomial time.
+Shalev-Shwartz and Ben-David (2014) instead treat the number of examples and the computation as two separate resources, and study the first before they turn to the second. {#c-two-uses}

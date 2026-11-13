@@ -54,9 +54,9 @@
 
 - id: c-runtime-difference
   type: attributive
-  text: "Valiant's definition requires that the runtime of the learning algorithm be polynomial, while Shalev-Shwartz and Ben-David distinguish the statistical aspect of learning from the computational aspect."
+  text: "Valiant's definition of learnable requires an algorithm that runs in polynomial time."
   evidence:
-    - {work: "shalev-shwartz-ben-david-2014-understanding-machine-learning", role: original, locator: "pp. 50 to 51", stance: for}
+    - {work: "valiant-1984-theory-of-the-learnable", role: original, locator: "Section 3", stance: for}
 
 - id: c-3dnf-hard
   type: mathematical
@@ -98,15 +98,8 @@
   evidence:
     - {work: "valiant-1984-theory-of-the-learnable", role: original, locator: "the abstract", stance: for}
 
-- id: c-turing-award
-  type: historical
-  text: "Valiant was named the winner of the 2010 Turing Award for the introduction of the PAC model."
-  evidence:
-    - {work: "shalev-shwartz-ben-david-2014-understanding-machine-learning", role: review, locator: "pp. 50 to 51", stance: for}
-
 - id: c-two-uses
   type: attributive
-  text: "Valiant's definition asks for a learning algorithm whose runtime is polynomial, while Shalev-Shwartz and Ben-David separate the statistical aspect of learning from the computational aspect."
+  text: "The book refers to the samples and the computation a learner needs as two types of resources, the sample complexity and the computational complexity, and studies the statistical perspective of learning before it turns to the computational complexity."
   evidence:
-    - {work: "valiant-1984-theory-of-the-learnable", role: original, locator: "Section 3", stance: for}
-    - {work: "shalev-shwartz-ben-david-2014-understanding-machine-learning", role: original, locator: "pp. 50 to 51", stance: for}
+    - {work: "shalev-shwartz-ben-david-2014-understanding-machine-learning", role: original, locator: "p. 100", stance: for}
