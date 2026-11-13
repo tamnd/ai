@@ -1,0 +1,11 @@
+question: "Can a language model trained only on text understand language, in the sense of connecting its words to what they mean?"
+positions:
+  - id: p-form-without-meaning
+    claim: "A model trained only on the form of language does not understand it."
+    held_by: [bender-2020-climbing-nlu-acl, harnad-2024-language-writ-large-frontiers, floridi-2023-agency-without-intelligence]
+    relies_on: [c-bk-form, c-harnad-2024, c-floridi]
+  - id: p-meaning-from-text
+    claim: "A model trained on text can capture important aspects of meaning, and the in-principle argument does not settle the question."
+    held_by: [piantadosi-2022-meaning-without-reference, sogaard-2022-understanding-models-synthese, pavlick-2023-symbols-grounding-philtrans]
+    relies_on: [c-ph-conceptual-role, c-sogaard, c-pavlick]
+order: by-independent-sources
