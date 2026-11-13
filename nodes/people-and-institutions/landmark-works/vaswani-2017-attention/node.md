@@ -16,6 +16,8 @@ same_as:
   wikidata: Q30249683
   wikipedia: Attention_Is_All_You_Need
   arxiv: ["1706.03762"]
+  dblp: conf/nips/VaswaniSPUJGKP17
+  url: "https://proceedings.neurips.cc/paper_files/paper/2017/hash/3f5ee243547dee91fbd053c1c4a845aa-Abstract.html"
 sources:
   - {paper: "Vaswani, Shazeer, Parmar, Uszkoreit, Jones, Gomez, Kaiser and Polosukhin (2017)", title: "Attention Is All You Need", locator: "arXiv 1706.03762v7, Sections 1 to 7 and Tables 2 to 4", note: "the work itself"}
   - {paper: "Bahdanau, Cho and Bengio (2015)", title: "Neural Machine Translation by Jointly Learning to Align and Translate", locator: "ICLR 2015, Section 1", note: "the attention model that the paper builds on"}
@@ -25,6 +27,13 @@ sources:
   - {paper: "Post (2018)", title: "A Call for Clarity in Reporting BLEU Scores", locator: "WMT 2018, the abstract and Table 2"}
   - {paper: "Xiong et al. (2020)", title: "On Layer Normalization in the Transformer Architecture", locator: "ICML 2020, the abstract"}
   - {paper: "Hahn (2020)", title: "Theoretical Limitations of Self-Attention in Neural Sequence Models", locator: "TACL 8, the abstract"}
+type: "paper"
+authors: ["Ashish Vaswani", "Noam Shazeer", "Niki Parmar", "Jakob Uszkoreit", "Llion Jones", "Aidan N. Gomez", "Łukasz Kaiser", "Illia Polosukhin"]
+year: 2017
+venue: "NeurIPS 2017"
+standing: "peer-reviewed"
+licence_class: "D"
+cited: {"version": "arXiv 1706.03762v7", "url": "https://arxiv.org/pdf/1706.03762v7", "format": "pdf"}
 ---
 
 "Attention Is All You Need" is the paper that proposed the Transformer, a network architecture based only on attention, with no recurrence and no convolution. {#c-propose}
