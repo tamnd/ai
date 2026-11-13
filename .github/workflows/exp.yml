@@ -27,7 +27,7 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
-  AIK_VERSION: v0.1.5
+  AIK_VERSION: v0.1.7
   GO_VERSION: "1.27.x"
 
 jobs:
