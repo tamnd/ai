@@ -1,0 +1,263 @@
+# The claims of the transformer page (spec 07). The build computes the labels.
+- id: c-post-ln
+  type: attributive
+  text: "In the original Transformer, the output of each sublayer is LayerNorm(x + Sublayer(x)): the normalization comes after the residual addition."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-base-config
+  type: attributive
+  text: "The base Transformer has 6 layers in the encoder and 6 in the decoder, a model width of 512, 8 attention heads and a feedforward width of 2048."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Sections 3.1 to 3.3 and Table 3, the row base", stance: for}
+
+- id: c-encoder-decoder-only
+  type: attributive
+  text: "BERT uses only the encoder of the Transformer, and GPT uses only a decoder with no attention over an encoder."
+  evidence:
+    - {work: "devlin-2019-bert", role: original, locator: "NAACL 2019, Section 3", stance: for}
+    - {work: "radford-2018-improving-language-understanding", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-tied-embeddings
+  type: attributive
+  text: "The original Transformer shares one weight matrix between the two embedding layers and the linear layer before the softmax, and multiplies the embeddings by the square root of the model width."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 3.4", stance: for}
+
+- id: c-pe-linear-offset
+  type: mathematical
+  text: "With sinusoidal positional encodings, for any fixed offset k, the encoding of position pos + k is a linear function of the encoding of position pos that depends only on k."
+  assumes: ["the encoding of eq-pe, with a sine and a cosine of the same frequency in each pair of dimensions"]
+  derivation: "node.md#components"
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 3.5", stance: for}
+
+- id: c-learned-pe-same
+  type: empirical
+  text: "Learned positional embeddings gave nearly the same development BLEU and perplexity as sinusoidal encodings in the base Transformer."
+  scope:
+    models: "the base Transformer, 65 million parameters"
+    data: [wmt-2014-en-de, newstest2013]
+    scale: "65 million parameters, 100,000 training steps"
+    setting: "English to German translation, development set newstest2013"
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Table 3, row E", stance: for}
+
+- id: c-causal-mask
+  type: mathematical
+  text: "With the causal mask, the output at position t depends only on the inputs at positions 1 to t, so the predictions of all positions of a sequence can be trained in one pass without any position seeing a later token."
+  assumes: ["the mask entry M_ts is minus infinity for s > t and 0 otherwise", "the other sublayers act on each position separately"]
+  derivation: "node.md#components"
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Sections 3.1 and 3.2.3", stance: for}
+
+- id: c-dot-variance
+  type: mathematical
+  text: "If the entries of a query and a key are independent with mean 0 and variance 1, their dot product has mean 0 and variance d_k."
+  assumes: ["the 2 d_k entries are independent", "each entry has mean 0 and variance 1"]
+  derivation: "node.md#components"
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 3.2.1, footnote 4", stance: for}
+
+- id: c-scale-reason
+  type: attributive
+  text: "Vaswani et al. scale the scores by 1 / sqrt(d_k) because they suspect that for large d_k the dot products grow large and push the softmax into regions with extremely small gradients."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 3.2.1", stance: for}
+
+- id: c-head-width
+  type: attributive
+  text: "The base Transformer uses d_k = d_v = d_model / h = 64, so that the total cost of multi-head attention is close to that of one head with full width."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 3.2.2", stance: for}
+
+- id: c-single-head-worse
+  type: empirical
+  text: "With one attention head instead of 8, at the same cost, the base Transformer had a development BLEU 0.9 lower."
+  scope:
+    models: "the base Transformer"
+    data: [wmt-2014-en-de, newstest2013]
+    scale: "about 65 million parameters"
+    setting: "English to German translation, development set newstest2013, beam search, no checkpoint averaging"
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Table 3, row A", stance: for}
+
+- id: c-param-counts
+  type: attributive
+  text: "Vaswani et al. report 65 million parameters for the base Transformer and 213 million for the big one."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Table 3, the column params", stance: for}
+
+- id: c-flops-per-token
+  type: mathematical
+  text: "A forward pass of a decoder-only Transformer costs about 2N + 2 L T d_model FLOPs per token, with N the parameters outside the embedding and a multiply-add counted as 2 FLOPs, and a training step costs about 6N FLOPs per token when T is small against d_model."
+  assumes: ["a multiply-add is 2 FLOPs", "the softmax, the normalizations, the activations and the embedding are not counted", "the backward pass costs twice the forward pass"]
+  derivation: "node.md#computation-and-cost"
+  evidence:
+    - {work: "kaplan-2020-scaling-laws", role: original, locator: "Section 2.1 and Table 1", stance: for}
+
+- id: c-complexity-table
+  type: mathematical
+  text: "A self-attention layer costs O(T^2 d) operations, needs O(1) sequential operations and has a maximum path length of O(1) between positions; a recurrent layer costs O(T d^2), needs O(T) sequential operations and has a maximum path length of O(T)."
+  assumes: ["T is the sequence length and d the representation width", "full attention with no restriction to a neighbourhood"]
+  derivation: "node.md#computation-and-cost"
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 4 and Table 1", stance: for}
+
+- id: c-mqa-cache
+  type: attributive
+  text: "Multi-query attention uses one set of keys and values for all heads, and grouped-query attention uses one set for each group of heads, to reduce the memory and the bandwidth of the key-value cache at inference."
+  evidence:
+    - {work: "shazeer-2019-fast-transformer-decoding", role: original, locator: "arXiv 1911.02150, Sections 2 and 3", stance: for}
+    - {work: "ainslie-2023-gqa", role: original, locator: "EMNLP 2023, Section 2", stance: for}
+
+- id: c-wmt-data
+  type: attributive
+  text: "The Transformer was trained on WMT 2014 English to German, about 4.5 million sentence pairs with a shared byte-pair vocabulary of about 37,000 tokens, and on WMT 2014 English to French, 36 million sentences with a vocabulary of 32,000 word pieces."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 5.1", stance: for}
+
+- id: c-label-smoothing
+  type: empirical
+  text: "Label smoothing with epsilon 0.1 made the perplexity of the Transformer worse but improved its accuracy and its BLEU score."
+  scope:
+    models: "the Transformer, base and big"
+    data: [wmt-2014-en-de, wmt-2014-en-fr]
+    scale: "65 to 213 million parameters"
+    setting: "machine translation, cross-entropy with label smoothing 0.1"
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 5.4, Label Smoothing", stance: for}
+
+- id: c-residual-dropout
+  type: attributive
+  text: "The base Transformer applies dropout with rate 0.1 to the output of each sublayer before the residual addition and normalization, and to the sums of the embeddings and the positional encodings."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 5.4, Residual Dropout", stance: for}
+
+- id: c-training-time
+  type: historical
+  text: "On one machine with 8 NVIDIA P100 GPUs, the base Transformer was trained for 100,000 steps in 12 hours, and the big one for 300,000 steps in 3.5 days."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 5.2", stance: for}
+
+- id: c-pre-ln-warmup
+  type: mathematical
+  text: "At initialization, the expected gradients of the parameters near the output layer of a post-LN Transformer are large, and those of a pre-LN Transformer are well behaved, so a pre-LN Transformer can be trained without the learning-rate warmup."
+  assumes: ["the initialization and the simplifying assumptions of Xiong et al. (2020), Section 3"]
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "ICML 2020, Sections 3 and 4", stance: for}
+
+- id: c-gpt2-init
+  type: attributive
+  text: "GPT-2 moves layer normalization to the input of each sub-block, adds one after the last self-attention block, and scales the initial weights of the residual layers by 1 / sqrt(N), with N the number of residual layers."
+  evidence:
+    - {work: "radford-2019-language-models-unsupervised-multitask", role: original, locator: "Section 2.3", stance: for}
+
+- id: c-permutation-equivariance
+  type: mathematical
+  text: "Without positional encodings and without a mask, a Transformer encoder is permutation equivariant: permuting the input positions permutes the output positions in the same way."
+  assumes: ["no positional encoding", "no attention mask", "the feedforward network and the normalization act on each position separately"]
+  derivation: "node.md#inductive-biases"
+
+- id: c-vit-data-hungry
+  type: empirical
+  text: "A vision Transformer does worse than ResNets of similar size when trained on ImageNet alone, and better after pre-training on much larger datasets such as JFT-300M."
+  scope:
+    models: "ViT-B, ViT-L and ViT-H against BiT ResNets"
+    data: [imagenet, imagenet-21k, jft-300m]
+    scale: "86 to 632 million parameters"
+    setting: "pre-training on each dataset, then transfer to image classification"
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "ICLR 2021, Section 4.2 and Figure 3", stance: for}
+
+- id: c-wmt-bleu
+  type: empirical
+  text: "The big Transformer reached 28.4 BLEU on WMT 2014 English to German and 41.8 on English to French, better than the earlier models that the paper compares, at a fraction of their training cost."
+  scope:
+    models: "the big Transformer, 213 million parameters"
+    data: [wmt-2014-en-de, wmt-2014-en-fr, newstest2014]
+    scale: "213 million parameters, 300,000 steps on 8 P100 GPUs"
+    setting: "test set newstest2014, beam size 4, length penalty 0.6, averaged checkpoints"
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "arXiv 1706.03762v7, Table 2 and Section 6.1", stance: for}
+
+- id: c-wmt-bleu-base
+  type: empirical
+  text: "The base Transformer reached 27.3 BLEU on WMT 2014 English to German and 38.1 on English to French."
+  scope:
+    models: "the base Transformer, 65 million parameters"
+    data: [wmt-2014-en-de, wmt-2014-en-fr, newstest2014]
+    scale: "65 million parameters, 100,000 steps on 8 P100 GPUs"
+    setting: "test set newstest2014, beam size 4, length penalty 0.6, averaged checkpoints"
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Table 2", stance: for}
+
+- id: c-parsing
+  type: empirical
+  text: "A 4-layer Transformer reached 91.3 F1 on English constituency parsing when trained on the Wall Street Journal part of the Penn Treebank only, and 92.7 F1 in a semi-supervised setting."
+  scope:
+    models: "a Transformer with 4 layers and d_model = 1024"
+    data: [penn-treebank-wsj]
+    scale: "about 40,000 training sentences, or about 17 million in the semi-supervised setting"
+    setting: "constituency parsing as sequence to sequence, section 23 of the WSJ"
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 6.3 and Table 4", stance: for}
+
+- id: c-flash-memory
+  type: attributive
+  text: "FlashAttention computes exact attention in tiles without writing the T by T matrix to the high-bandwidth memory of the GPU, so its extra memory is linear in the sequence length."
+  evidence:
+    - {work: "dao-2022-flashattention", role: original, locator: "NeurIPS 35, Section 3", stance: for}
+
+- id: c-length-extrapolation
+  type: empirical
+  text: "Language models with sinusoidal position encodings get worse on sequences much longer than those of training, and models with linear biases on the attention scores (ALiBi) do not."
+  scope:
+    models: "decoder-only language models of 247 million and 1.3 billion parameters"
+    data: [wikitext-103, cc100-roberta]
+    scale: "up to 1.3 billion parameters"
+    setting: "train on sequences of length L, evaluate perplexity on longer sequences"
+  evidence:
+    - {work: "press-2022-train-short-test-long", role: original, locator: "ICLR 2022, Sections 2 and 4", stance: for}
+
+- id: c-formal-limits
+  type: mathematical
+  text: "A Transformer with hard attention and a fixed number of layers and heads cannot recognize parity or the Dyck language of two bracket types for all input lengths, and with soft attention the effect of changing one input on the output shrinks as the input grows."
+  assumes: ["the attention models of Hahn (2020), hard or soft", "a fixed number of layers and heads", "inputs of unbounded length"]
+  evidence:
+    - {work: "hahn-2020-theoretical-limitations-self-attention", role: original, locator: "TACL 8, Sections 5 and 6", stance: for}
+
+- id: c-attention-not-explanation
+  type: empirical
+  text: "On several text classification and question answering tasks, attention distributions very different from those of the trained model gave nearly the same predictions, so attention weights do not reliably explain a prediction."
+  scope:
+    models: "recurrent, convolutional and averaging encoders with additive or scaled dot-product attention"
+    data: [sst, imdb, 20-newsgroups, mimic-iii, cnn-qa, babi, snli]
+    scale: "small single-layer models"
+    setting: "adversarial and permuted attention distributions"
+  evidence:
+    - {work: "jain-2019-attention-not-explanation", role: original, locator: "NAACL 2019, Sections 4 and 5", stance: for}
+
+- id: c-bahdanau
+  type: historical
+  text: "Bahdanau, Cho and Bengio added attention to a recurrent encoder-decoder for machine translation, so that the decoder could use all the states of the encoder and not only a fixed-length vector."
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "ICLR 2015; arXiv 1409.0473, Section 3", stance: for}
+
+- id: c-published-2017
+  type: historical
+  text: "Attention Is All You Need was posted to arXiv in June 2017 and published at NeurIPS 2017."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "arXiv 1706.03762v1, 12 June 2017; NeurIPS 30 proceedings", stance: for}
+
+- id: c-authors
+  type: historical
+  text: "The paper gives the affiliations Google Brain, Google Research and the University of Toronto."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "the title page", stance: for}
+
+- id: c-equal-contribution
+  type: historical
+  text: "The authors of Attention Is All You Need state that they contributed equally and that the order of the names is random."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "the title page, footnote", stance: for}

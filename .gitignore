@@ -9,3 +9,4 @@ bin/
 obj/
 .DS_Store
 .hypothesis/
+.ruff_cache/
