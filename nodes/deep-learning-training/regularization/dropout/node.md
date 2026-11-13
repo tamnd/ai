@@ -27,19 +27,19 @@ same_as:
   al: dropout
 sources:
   - {paper: "Srivastava, Hinton, Krizhevsky, Sutskever and Salakhutdinov (2014)", title: "Dropout: A Simple Way to Prevent Neural Networks from Overfitting", locator: "JMLR 15(56), 1929 to 1958", note: "the full study and the canonical reference"}
-  - {paper: "Hinton, Srivastava, Krizhevsky, Sutskever and Salakhutdinov (2012)", title: "Improving neural networks by preventing co-adaptation of feature detectors", locator: "arXiv 1207.0580", note: "the first publication"}
+  - {paper: "Hinton, Srivastava, Krizhevsky, Sutskever and Salakhutdinov (2012)", title: "Improving neural networks by preventing co-adaptation of feature detectors", locator: "arXiv 1207.0580", note: "the 2012 preprint"}
   - {book: "Goodfellow, Bengio and Courville (2016), Deep Learning", locator: "Section 7.12", note: "the textbook treatment, with the ensemble view"}
-  - {paper: "Wager, Wang and Liang (2013)", title: "Dropout Training as Adaptive Regularization", locator: "NeurIPS 26, the sections on generalized linear models"}
-  - {paper: "Baldi and Sadowski (2013)", title: "Understanding Dropout", locator: "NeurIPS 26, the sections on the normalized weighted geometric mean"}
-  - {paper: "Gal and Ghahramani (2016)", title: "Dropout as a Bayesian Approximation: Representing Model Uncertainty in Deep Learning", locator: "ICML 2016, PMLR 48, Sections 3 and 4"}
-  - {paper: "Li, Chen, Hu and Yang (2019)", title: "Understanding the Disharmony between Dropout and Batch Normalization by Variance Shift", locator: "CVPR 2019, the sections on variance shift"}
-  - {paper: "Zaremba, Sutskever and Vinyals (2014)", title: "Recurrent Neural Network Regularization", locator: "arXiv 1409.2329, Section 3"}
+  - {paper: "Wager, Wang and Liang (2013)", title: "Dropout Training as Adaptive Regularization", locator: "the abstract, Section 2.1"}
+  - {paper: "Baldi and Sadowski (2013)", title: "Understanding Dropout", locator: "Section 3.1"}
+  - {paper: "Gal and Ghahramani (2016)", title: "Dropout as a Bayesian Approximation: Representing Model Uncertainty in Deep Learning", locator: "Sections 3 and 4"}
+  - {paper: "Li, Chen, Hu and Yang (2019)", title: "Understanding the Disharmony between Dropout and Batch Normalization by Variance Shift", locator: "the abstract, Section 3"}
+  - {paper: "Zaremba, Sutskever and Vinyals (2014)", title: "Recurrent Neural Network Regularization", locator: "Section 3.2"}
   - {paper: "Wan, Zeiler, Zhang, LeCun and Fergus (2013)", title: "Regularization of Neural Networks using DropConnect", locator: "ICML 2013, PMLR 28(3), the model description"}
   - {paper: "Tompson, Goroshin, Jain, LeCun and Bregler (2015)", title: "Efficient Object Localization Using Convolutional Networks", locator: "CVPR 2015, Section 3.2"}
   - {paper: "Ghiasi, Lin and Le (2018)", title: "DropBlock: A regularization method for convolutional networks", locator: "NeurIPS 31, Section 3"}
   - {paper: "Huang, Sun, Liu, Sedra and Weinberger (2016)", title: "Deep Networks with Stochastic Depth", locator: "ECCV 2016, Section 3"}
-  - {paper: "Krizhevsky, Sutskever and Hinton (2012)", title: "ImageNet Classification with Deep Convolutional Neural Networks", locator: "NeurIPS 25, Section 4.2"}
-  - {paper: "Chowdhery et al. (2022)", title: "PaLM: Scaling Language Modeling with Pathways", locator: "arXiv 2204.02311, Section 5"}
+  - {paper: "Krizhevsky, Sutskever and Hinton (2012)", title: "ImageNet Classification with Deep Convolutional Neural Networks", locator: "Section 4.2"}
+  - {paper: "Chowdhery et al. (2022)", title: "PaLM: Scaling Language Modeling with Pathways", locator: "Section 5"}
   - {paper: "Bishop (1995)", title: "Training with Noise is Equivalent to Tikhonov Regularization", locator: "Neural Computation 7(1), 108 to 116"}
   - {paper: "Vaswani et al. (2017)", title: "Attention Is All You Need", locator: "NeurIPS 30, Section 5.4"}
   - {url: "https://docs.pytorch.org/docs/stable/generated/torch.nn.Dropout.html", title: "torch.nn.Dropout", locator: "the parameters p and inplace", note: "the PyTorch default and its scaling"}
@@ -108,7 +108,7 @@ $$ \mathbb{E}_{\mathbf{M}} \sum_i (y_i - \hat{y}_i)^2 = \lVert \mathbf{y} - \mat
 
 This is ridge regression with a different penalty for each weight, scaled by the energy of its input feature. {#c-linear-ridge}
 Srivastava et al. (2014, Section 9.1) give the same result for the original form of dropout.
-Wager et al. (2013) extend it to generalized linear models, where the penalty is close to an L2 penalty scaled by an estimate of the Fisher information. {#c-adaptive-l2}
+Wager et al. (2013) extend it to generalized linear models, where, to first order, the penalty is an L2 penalty applied after the features are scaled by an estimate of the inverse diagonal Fisher information. {#c-adaptive-l2}
 
 ## Worked example
 
@@ -144,8 +144,8 @@ Srivastava et al. (2014, Section 11) report two to three times the training time
 
 ## Evidence
 
-Srivastava et al. (2014) report lower test error with dropout than without it on each of their benchmarks. {#c-reduces-error}
-The benchmarks are MNIST, SVHN, CIFAR-10, CIFAR-100, ImageNet, TIMIT and Reuters, with networks of the size of that time.
+Srivastava et al. (2014) report a lower test error with dropout than for the same networks without it, on MNIST, SVHN, CIFAR-10, CIFAR-100, TIMIT and Reuters. {#c-reduces-error}
+Their benchmarks also include ImageNet, where the baselines are other methods rather than the same network without dropout. The networks are of the size of that time.
 The same study shows that the weight scaling rule at test time gives about the same error as the average over many sampled masks (Section 7.5). {#c-weight-scaling-close}
 Baldi and Sadowski (2013) show that for one layer with a logistic output, the scaled network computes the normalized weighted geometric mean of the sub-networks. {#c-geometric-mean}
 
@@ -157,7 +157,7 @@ Li et al. (2019) suggest putting dropout after the last batch normalization laye
 Dropout on the recurrent connections of an LSTM, with a new mask at each time step, interferes with the memory of the network.
 Zaremba et al. (2014) apply dropout only to the connections between layers, not to the recurrent ones. {#c-rnn-nonrecurrent}
 With a lot of data per parameter, dropout gives less benefit, because the network overfits less (Srivastava et al. 2014, Section 7.4).
-Some large language models are trained with no dropout at all, such as PaLM (Chowdhery et al. 2022, Section 5). {#c-llm-no-dropout}
+Some large language models are trained with no dropout at all: PaLM was trained without it, and used a rate of 0.1 only for finetuning (Chowdhery et al. 2022, Section 5). {#c-llm-no-dropout}
 
 ## Variants
 
@@ -193,7 +193,7 @@ In recurrent networks, apply it between layers, or use the same mask at each tim
 
 ## History
 
-Geoffrey Hinton, Nitish Srivastava, Alex Krizhevsky, Ilya Sutskever and Ruslan Salakhutdinov first described dropout in 2012, in the preprint arXiv 1207.0580. {#c-first-2012}
-Krizhevsky, Sutskever and Hinton (2012) used it in the first two fully connected layers of AlexNet, the winning entry of the ImageNet challenge of 2012. {#c-alexnet}
+Geoffrey Hinton, Nitish Srivastava, Alex Krizhevsky, Ilya Sutskever and Ruslan Salakhutdinov described dropout in 2012, in the preprint arXiv 1207.0580: they reduced overfitting by randomly omitting half of the feature detectors on each training case. {#c-first-2012}
+Krizhevsky, Sutskever and Hinton (2012) used it in the first two fully connected layers of AlexNet, and a variant of AlexNet won the ImageNet challenge of 2012. {#c-alexnet}
 The full study, with the experiments, the theory for linear models and the practical guide, is Srivastava et al. (2014) in the Journal of Machine Learning Research. {#c-canonical-2014}
 The idea is related to older work on training with noise: Bishop (1995) showed that training with small input noise is close to Tikhonov regularization.
