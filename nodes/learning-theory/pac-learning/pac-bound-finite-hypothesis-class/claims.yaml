@@ -49,7 +49,7 @@
 
 - id: c-valiant-definition
   type: historical
-  text: "Valiant defined a class of programs as learnable when an algorithm, running in polynomial time, deduces with probability at least 1 - 1/h a program of the class that errs with small probability, for every program of the class and every distribution."
+  text: "Valiant defined a class of programs as learnable when an algorithm runs in time polynomial in an adjustable parameter h and the size of the program, and for all programs of the class and all distributions over the vectors on which the program outputs 1, deduces with probability at least 1 - 1/h a program of the class that never outputs one when it should not and misses at most a 1/h share of the positive examples, which he calls one-sided error learning."
   evidence:
     - {work: "valiant-1984-theory-of-the-learnable", role: original, locator: "Section 3", stance: for}
 

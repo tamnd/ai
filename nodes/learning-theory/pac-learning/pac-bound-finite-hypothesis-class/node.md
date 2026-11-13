@@ -148,7 +148,7 @@ The tests of the Lean module check these consistency facts on the same instance.
 
 ## History
 
-Leslie Valiant defined learnability from examples in 1984, asking for a program with small error found in polynomial time with high probability. {#c-valiant-definition}
+Leslie Valiant defined learnability from examples in 1984, asking for a program found in polynomial time that, with high probability, never accepts a negative example and misses only a small share of the positive ones under the distribution of positive examples. {#c-valiant-definition}
 His Section 4 bounds the number of examples by a lemma on independent trials, and his Section 5 uses it to show that, for each fixed $k$, the conjunctive normal form expressions with at most $k$ literals in each clause are learnable from examples. {#c-valiant-cnf}
 Anselm Blumer, Andrzej Ehrenfeucht, David Haussler and Manfred Warmuth stated the counting argument for any learner that returns a short consistent hypothesis, in "Occam's Razor" (1987), and extended it to infinite classes through the VC dimension in 1989.
 David Haussler gave the agnostic setting in 1992, and the bound through uniform convergence and Hoeffding's inequality became the form of the textbooks of Kearns and Vazirani (1994), Shalev-Shwartz and Ben-David (2014) and Mohri et al. (2018).
