@@ -4,6 +4,7 @@
 
 import pytest
 import torch
+
 from dropout import Dropout
 
 torch.set_default_dtype(torch.float64)
@@ -114,3 +115,8 @@ def test_from_params():
 def test_mask_shape():
     with pytest.raises(ValueError):
         Dropout(0.5)(t(X), mask=torch.ones(3))
+
+
+def test_p_is_a_float():
+    # p is a Python float, whatever number type came in, as in the NumPy config.
+    assert type(Dropout(0).p) is float
