@@ -1,0 +1,13 @@
+# SPDX-License-Identifier: CC0-1.0
+# The datasets that the experiments read, pinned by sha256 (spec 9.5). aik exp run fetches each file from its url into build/data/<pin>/ and checks the size and the sha256 before the run.
+- id: mnist-ai-data
+  dataset: mnist
+  version: "lecun-1998"
+  files:
+    - {name: train-images-idx3-ubyte.gz, sha256: "440fcabf73cc546fa21475e81ea370265605f56be210a4024d2ca8f203523609", bytes: 9912422, url: "https://ossci-datasets.s3.amazonaws.com/mnist/train-images-idx3-ubyte.gz"}
+    - {name: train-labels-idx1-ubyte.gz, sha256: "3552534a0a558bbed6aed32b30c495cca23d567ec52cac8be1a0730e8010255c", bytes: 28881, url: "https://ossci-datasets.s3.amazonaws.com/mnist/train-labels-idx1-ubyte.gz"}
+    - {name: t10k-images-idx3-ubyte.gz, sha256: "8d422c7b0a1c1c79245a5bcf07fe86e33eeafee792b84584aec276f5a2dbc4e6", bytes: 1648877, url: "https://ossci-datasets.s3.amazonaws.com/mnist/t10k-images-idx3-ubyte.gz"}
+    - {name: t10k-labels-idx1-ubyte.gz, sha256: "f7ae60f92e00ec6debd23a6088c31dbd2371eca3ffa0defaefb259924204aec6", bytes: 4542, url: "https://ossci-datasets.s3.amazonaws.com/mnist/t10k-labels-idx1-ubyte.gz"}
+  origin: "The original files of LeCun, Cortes and Burges at http://yann.lecun.com/exdb/mnist/. The url of each file is the copy of the PyTorch project, and the sha256 is the same as the original."
+  licence: {spdx: CC-BY-SA-3.0, source: "the MNIST page of Yann LeCun, Corinna Cortes and Christopher J. C. Burges"}
+  mirror: allowed

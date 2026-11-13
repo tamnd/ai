@@ -1,0 +1,97 @@
+# SPDX-License-Identifier: CC0-1.0
+#
+# This workflow runs the cpu-small experiments (spec 9.4.1) in the sandbox, with the runner image of the framework that manifests/images.yaml pins. It runs when a pull request changes an experiment or the data pins, and by hand.
+#
+# aik exp run -update writes results.json in the work tree of the job. The job uploads it as an artifact, and a person commits it in the pull request (rule R05). The job has no secrets.
+name: Experiments
+
+on:
+  pull_request:
+    paths:
+      - "nodes/**/exp/**"
+      - "nodes/**/impl/**"
+      - "registers/data-pins.yaml"
+      - ".github/workflows/exp.yml"
+  workflow_dispatch:
+    inputs:
+      nodes:
+        description: "The slugs of the nodes or experiments to run, separated by spaces"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  AIK_VERSION: v0.1.1
+  GO_VERSION: "1.27.x"
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: false
+      - name: Install aik
+        run: go install "github.com/tamnd/ai-agent/cmd/aik@${AIK_VERSION}"
+      - name: Find the experiments
+        id: find
+        env:
+          NODES: ${{ inputs.nodes }}
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if [ -n "$NODES" ]; then
+            list="$NODES"
+          else
+            # The nodes whose experiments, code or data pins changed in the pull request.
+            list=$(git diff --name-only "$BASE" HEAD -- 'nodes/**/exp/**' 'nodes/**/impl/**' \
+              | sed -n 's#^\(nodes/.*\)/\(exp\|impl\)/.*#\1#p' | sort -u \
+              | while read -r d; do [ -d "$d/exp" ] && basename "$d"; done | tr '\n' ' ')
+          fi
+          echo "The experiments of: ${list:-none}"
+          echo "list=$list" >> "$GITHUB_OUTPUT"
+      # The data cache is keyed by the register of the pins, so a changed pin fetches its files again.
+      - uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        if: steps.find.outputs.list != ''
+        with:
+          path: build/data
+          key: data-${{ hashFiles('registers/data-pins.yaml') }}
+      - name: Run the experiments
+        if: steps.find.outputs.list != ''
+        env:
+          LIST: ${{ steps.find.outputs.list }}
+        run: |
+          # shellcheck disable=SC2086
+          aik exp run -sandbox docker -update $LIST 2>&1 | tee exp.log
+          {
+            echo '```'
+            grep -v '^run ' exp.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        if: always() && steps.find.outputs.list != ''
+        with:
+          path: build/data
+          key: data-${{ hashFiles('registers/data-pins.yaml') }}
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always() && steps.find.outputs.list != ''
+        with:
+          name: experiments
+          path: |
+            nodes/**/exp/*/results.json
+            nodes/**/exp/*/figures/
+            build/exp/**/log.txt
+            build/exp/**/metrics.json
+          retention-days: 30
+          if-no-files-found: ignore

@@ -1,0 +1,13 @@
+claim: c-reduces-error
+primary:
+  metric: test_error
+  at: final
+  compare: {treatment: dropout, control: no-dropout}
+  direction: lower
+  test: welch-t
+  alpha: 0.01
+  min_effect: {kind: relative, value: 0.03}
+secondary:
+  - {metric: test_loss, compare: {treatment: dropout, control: no-dropout}, direction: lower, test: bootstrap-diff}
+  - {metric: train_loss, compare: {treatment: dropout, control: no-dropout}, direction: higher, test: bootstrap-diff, note: "dropout should fit the training set less"}
+report: {ci: 0.95, bootstrap: {resamples: 10000, method: bca}}
