@@ -1,0 +1,243 @@
+# The claims of the vaswani-2017-attention page (spec 07). The build computes the labels.
+# Locators are of arXiv 1706.03762v7, the text of the work card.
+- id: c-propose
+  type: attributive
+  text: "Vaswani et al. propose the Transformer, a network architecture based solely on attention mechanisms, dispensing with recurrence and convolutions entirely."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "the abstract", stance: for}
+
+- id: c-affiliations
+  type: historical
+  text: "The paper gives the affiliations Google Brain, Google Research and the University of Toronto."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "the title page", stance: for}
+
+- id: c-venue
+  type: historical
+  text: "The paper appeared at the 31st Conference on Neural Information Processing Systems (NIPS 2017) in Long Beach."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "the abstract", stance: for}
+
+- id: c-first-self-attention
+  type: attributive
+  text: "To the best of their knowledge, the authors say, the Transformer is the first transduction model relying entirely on self-attention to compute representations of its input and output."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 2", stance: for}
+
+- id: c-scaled-dot-product
+  type: definitional
+  text: "Scaled dot-product attention computes the dot products of the query with all keys, divides each by the square root of dk, and applies a softmax function to obtain the weights on the values."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 3.2.1", stance: for}
+
+- id: c-why-scale
+  type: attributive
+  text: "The authors suspect that for large values of dk the dot products grow large in magnitude, pushing the softmax function into regions where it has extremely small gradients, and they scale the dot products to counteract this effect."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 3.2.1", stance: for}
+
+- id: c-multi-head
+  type: definitional
+  text: "Multi-head attention linearly projects the queries, keys and values h times with different learned linear projections and performs the attention function on each projected version in parallel."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 3.2.2", stance: for}
+
+- id: c-eight-heads
+  type: historical
+  text: "The paper employs h = 8 parallel attention heads with dk = dv = 64."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 3.2.2", stance: for}
+
+- id: c-positional
+  type: definitional
+  text: "Because the model contains no recurrence and no convolution, positional encodings built from sine and cosine functions of different frequencies are added to the input embeddings to give the order of the sequence."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 3.5", stance: for}
+
+- id: c-stacks
+  type: definitional
+  text: "The encoder and the decoder are each a stack of N = 6 identical layers, with a residual connection around each sub-layer followed by layer normalization."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-three-measures
+  type: attributive
+  text: "The paper compares self-attention layers with recurrent and convolutional layers by the total computational complexity per layer, the minimum number of sequential operations, and the path length between long-range dependencies."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 4", stance: for}
+
+- id: c-uszkoreit
+  type: historical
+  text: "Jakob proposed replacing RNNs with self-attention and started the effort to evaluate this idea."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "the abstract", stance: for}
+
+- id: c-shazeer
+  type: historical
+  text: "The author footnote says that Noam proposed scaled dot-product attention, multi-head attention and the parameter-free position representation."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "the abstract", stance: for}
+
+- id: c-equal-contribution
+  type: historical
+  text: "The paper says that the authors made an equal contribution and that the listing order is random."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "the abstract", stance: for}
+
+- id: c-context-attention
+  type: attributive
+  text: "The paper says that the dominant sequence transduction models were recurrent or convolutional networks with an encoder and a decoder, and that the best performing models connected the encoder and decoder through an attention mechanism."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "the abstract", stance: for}
+
+- id: c-bahdanau
+  type: attributive
+  text: "Bahdanau, Cho and Bengio extend the encoder-decoder so that it searches for positions in the source sentence where the most relevant information is concentrated, instead of encoding the whole sentence into a single fixed-length vector."
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "Section 1", stance: for}
+
+- id: c-sequential
+  type: attributive
+  text: "Vaswani et al. argue that the inherently sequential nature of recurrent models precludes parallelization within training examples."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 1", stance: for}
+
+- id: c-attention-with-rnn
+  type: attributive
+  text: "The paper notes that in all but a few cases attention mechanisms are used in conjunction with a recurrent network."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 1", stance: for}
+
+- id: c-convolutional
+  type: attributive
+  text: "In ByteNet and ConvS2S, which compute hidden representations in parallel for all positions, the number of operations required to relate two positions grows in the distance between positions."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 2", stance: for}
+
+- id: c-constant-path
+  type: attributive
+  text: "In the Transformer the number of operations required to relate two positions is reduced to a constant number of operations."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 2", stance: for}
+
+- id: c-training-time
+  type: historical
+  text: "The models were trained on one machine with 8 NVIDIA P100 GPUs, the base models for 100,000 steps or 12 hours and the big models for 300,000 steps or 3.5 days."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 5.2", stance: for}
+
+- id: c-warmup
+  type: historical
+  text: "The Adam optimizer was used with a learning rate increasing linearly for the first warmup_steps training steps and decreasing thereafter proportionally to the inverse square root of the step number, with warmup_steps = 4000."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 5.3", stance: for}
+
+- id: c-en-de
+  type: empirical
+  text: "On the WMT 2014 English-to-German translation task the big Transformer model reaches a BLEU score of 28.4, more than 2.0 BLEU above the best previously reported models, including ensembles."
+  scope:
+    models: "the Transformer (big)"
+    data: [wmt-2014-en-de]
+    scale: "3.5 days of training on 8 P100 GPUs"
+    setting: "English to German translation, WMT 2014"
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 6.1", stance: for}
+
+- id: c-en-fr
+  type: empirical
+  text: "On the WMT 2014 English-to-French translation task the model achieves a single-model BLEU score of 41.8 after training for 3.5 days on eight GPUs."
+  scope:
+    models: "the Transformer, a single model"
+    data: [wmt-2014-en-fr]
+    scale: "3.5 days of training on eight GPUs"
+    setting: "English to French translation, WMT 2014"
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "the abstract", stance: for}
+
+- id: c-heads
+  type: empirical
+  text: "Keeping the amount of computation constant, single-head attention is 0.9 BLEU worse than the best setting, and quality also drops off with too many heads."
+  scope:
+    models: "the base Transformer"
+    data: [wmt-2014-en-de, newstest2013]
+    scale: "about 65 million parameters"
+    setting: "English to German translation, development set newstest2013, no checkpoint averaging"
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 6.2", stance: for}
+
+- id: c-learned-positions
+  type: empirical
+  text: "Replacing the sinusoidal positional encoding with learned positional embeddings gives nearly identical results to the base model."
+  scope:
+    models: "the base Transformer"
+    data: [wmt-2014-en-de, newstest2013]
+    scale: "about 65 million parameters"
+    setting: "English to German translation, development set newstest2013"
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 6.2", stance: for}
+
+- id: c-parsing
+  type: empirical
+  text: "On English constituency parsing, the Transformer with 4 layers reaches 91.3 F1 on WSJ Section 23 trained on WSJ only, and 92.7 F1 in the semi-supervised setting."
+  scope:
+    models: "a 4-layer Transformer with dmodel = 1024"
+    data: [penn-treebank-wsj]
+    scale: "about 40K training sentences for WSJ only, about 17M sentences semi-supervised"
+    setting: "constituency parsing, WSJ Section 23"
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 6.3", stance: for}
+
+- id: c-code
+  type: historical
+  text: "The code used to train and evaluate the models is available in tensor2tensor."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 7", stance: for}
+
+- id: c-bert
+  type: attributive
+  text: "BERT's model architecture is a multi-layer bidirectional Transformer encoder based on the original implementation described in Vaswani et al. (2017)."
+  evidence:
+    - {work: "devlin-2019-bert", role: original, locator: "Section 3", stance: for}
+
+- id: c-gpt
+  type: attributive
+  text: "Radford et al. say that their model largely follows the original transformer work, a 12-layer decoder-only transformer with masked self-attention heads."
+  evidence:
+    - {work: "radford-2018-improving-language-understanding", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-vit
+  type: attributive
+  text: "In model design the vision Transformer follows the original Transformer (Vaswani et al., 2017) as closely as possible."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "Section 3", stance: for}
+
+- id: c-en-fr-41-0
+  type: historical
+  text: "On the WMT 2014 English-to-French translation task, Section 6.1 gives the big model a BLEU score of 41.0."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 6.1", stance: for}
+
+- id: c-post-variation
+  type: attributive
+  text: "Post reports differences in BLEU as high as 1.8 between commonly used configurations, mainly from different tokenization and normalization schemes applied to the reference."
+  evidence:
+    - {work: "post-2018-call-for-clarity-wmt", role: original, locator: "the abstract", stance: for}
+
+- id: c-post-vaswani
+  type: attributive
+  text: "Post lists Vaswani et al. (2017) among benchmarks set by well-cited papers that use different BLEU configurations, where which one was used is unclear."
+  evidence:
+    - {work: "post-2018-call-for-clarity-wmt", role: original, locator: "Table 2", stance: for}
+
+- id: c-post-ln
+  type: attributive
+  text: "Xiong et al. argue that for the original Post-LN Transformer the expected gradients of the parameters near the output layer are large at initialization, so that the learning rate warm-up stage is needed."
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "the abstract", stance: for}
+
+- id: c-hahn
+  type: mathematical
+  assumes: ["soft or hard attention", "a number of layers and heads that does not grow with the input length"]
+  text: "Hahn finds that self-attention cannot model periodic finite-state languages, nor hierarchical structure, unless the number of layers or heads increases with input length."
+  evidence:
+    - {work: "hahn-2020-theoretical-limitations-self-attention", role: original, locator: "the abstract", stance: for}
