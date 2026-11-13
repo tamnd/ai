@@ -1,0 +1,438 @@
+# The claims of the chinese-room page (spec 07). The build computes the labels.
+- id: c-published-1980
+  type: historical
+  text: "Searle's article Minds, brains, and programs was published in The Behavioral and Brain Sciences in 1980."
+  evidence:
+    - {work: "searle-1980-minds-brains-programs-bbs", role: original, locator: "the title page", stance: for}
+
+- id: c-target-schank
+  type: attributive
+  text: "Searle considers the work of Roger Schank and his colleagues at Yale on programs that answer questions about stories, such as a story in which a man is served a burned hamburger in a restaurant."
+  evidence:
+    - {work: "searle-1980-minds-brains-programs-bbs", role: original, locator: "p. 417", stance: for}
+
+- id: c-room-setup
+  type: attributive
+  text: "Searle imagines that he is locked in a room and given batches of Chinese writing and rules in English that let him identify the Chinese symbols entirely by their shapes."
+  evidence:
+    - {work: "searle-1980-minds-brains-programs-bbs", role: original, locator: "p. 418", stance: for}
+
+- id: c-no-understanding
+  type: attributive
+  text: "Searle says that he does not understand a word of the Chinese stories, although his answers are indistinguishable from those of native Chinese speakers."
+  evidence:
+    - {work: "searle-1980-minds-brains-programs-bbs", role: original, locator: "p. 418", stance: for}
+
+- id: c-not-sufficient
+  type: attributive
+  text: "Searle argues that the computer and the program do not provide sufficient conditions of understanding, since they are functioning and there is no understanding."
+  evidence:
+    - {work: "searle-1980-minds-brains-programs-bbs", role: original, locator: "p. 418", stance: for}
+
+- id: c-never-sufficient
+  type: attributive
+  text: "Searle argues that instantiating a computer program is never by itself a sufficient condition of intentionality."
+  evidence:
+    - {work: "searle-1980-minds-brains-programs-bbs", role: original, locator: "p. 417", stance: for}
+
+- id: c-causal-powers
+  type: attributive
+  text: "Searle argues that any mechanism capable of producing intentionality must have causal powers equal to those of the brain."
+  evidence:
+    - {work: "searle-1980-minds-brains-programs-bbs", role: original, locator: "p. 417", stance: for}
+
+- id: c-machines-can-think
+  type: attributive
+  text: "To the question whether a machine could think, Searle answers that only a machine could think, namely brains and machines with internal causal powers equivalent to those of brains."
+  evidence:
+    - {work: "searle-1980-minds-brains-programs-bbs", role: original, locator: "p. 417", stance: for}
+
+- id: c-syntax-no-semantics
+  type: attributive
+  text: "Searle says that formal symbol manipulations by themselves have only a syntax but no semantics."
+  evidence:
+    - {work: "searle-1980-minds-brains-programs-bbs", role: original, locator: "p. 422", stance: for}
+
+- id: c-simulation
+  type: attributive
+  text: "Searle says that no one supposes that a computer simulation of a fire will burn the neighborhood down."
+  evidence:
+    - {work: "searle-1980-minds-brains-programs-bbs", role: original, locator: "p. 423", stance: for}
+
+- id: c-axioms-1990
+  type: attributive
+  text: "Searle states as an axiom that syntax by itself is neither constitutive of nor sufficient for semantics."
+  evidence:
+    - {work: "searle-1990-brains-mind-computer-program-sciam", role: original, locator: "p. 27", stance: for}
+
+- id: c-conclusion-1990
+  type: attributive
+  text: "Searle concludes that programs are neither constitutive of nor sufficient for minds."
+  evidence:
+    - {work: "searle-1990-brains-mind-computer-program-sciam", role: original, locator: "p. 27", stance: for}
+
+- id: c-room-axiom3
+  type: attributive
+  text: "Searle says that the Chinese room demonstrated that having the symbols by themselves is not sufficient for having the semantics."
+  evidence:
+    - {work: "searle-1990-brains-mind-computer-program-sciam", role: original, locator: "p. 27", stance: for}
+
+- id: c-axiom4
+  type: attributive
+  text: "Searle adds the axiom that brains cause minds, and concludes that any other system capable of causing minds would have to have causal powers at least equivalent to those of brains."
+  evidence:
+    - {work: "searle-1990-brains-mind-computer-program-sciam", role: original, locator: "p. 29", stance: for}
+
+- id: c-reductio
+  type: attributive
+  text: "Cole summarizes the narrow argument as a reductio ad absurdum against strong AI, and says that it is not directed at weak AI."
+  evidence:
+    - {work: "cole-2024-chinese-room-sep", role: original, locator: "Section 3", stance: for}
+
+- id: c-strong-weak
+  type: attributive
+  text: "Searle distinguishes weak AI, on which the computer is a tool in the study of the mind and to which, at least as far as this article is concerned, he has no objection, from strong AI, on which the appropriately programmed computer really is a mind."
+  evidence:
+    - {work: "searle-1980-minds-brains-programs-bbs", role: original, locator: "p. 417", stance: for}
+
+- id: c-bbs-commentary
+  type: historical
+  text: "Searle's article in the journal was published along with comments and criticisms by 27 cognitive science researchers, followed by Searle's replies."
+  evidence:
+    - {work: "cole-2024-chinese-room-sep", role: review, locator: "Section 3", stance: for}
+
+- id: c-labels
+  type: attributive
+  text: "Cole says that Searle discussed responses to the argument that he had come across in giving the argument in talks at various places."
+  evidence:
+    - {work: "cole-2024-chinese-room-sep", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-place-labels
+  type: attributive
+  text: "The replies carry the names Berkeley, Stanford and Yale."
+  evidence:
+    - {work: "searle-1980-minds-brains-programs-bbs", role: original, locator: "p. 421", stance: for}
+
+- id: c-antecedents
+  type: attributive
+  text: "Cole traces the historical background of the argument to Leibniz' mill, Turing's paper machine and the Chinese nation."
+  evidence:
+    - {work: "cole-2024-chinese-room-sep", role: original, locator: "Section 2", stance: for}
+
+- id: c-most-common
+  type: attributive
+  text: "Cole quotes Searle as calling the systems reply perhaps the most common reply."
+  evidence:
+    - {work: "cole-2024-chinese-room-sep", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-systems-reply
+  type: attributive
+  text: "The systems reply, as Searle states it, holds that the individual in the room does not understand, but is part of a whole system with rules, scratch paper and data banks, and the system does understand."
+  evidence:
+    - {work: "searle-1980-minds-brains-programs-bbs", role: original, locator: "p. 419", stance: for}
+
+- id: c-systems-proponents
+  type: attributive
+  text: "Cole says that Ned Block was one of the first to press the systems reply, along with Jack Copeland, Daniel Dennett, Douglas Hofstadter, Jerry Fodor, John Haugeland, Ray Kurzweil and Georges Rey."
+  evidence:
+    - {work: "cole-2024-chinese-room-sep", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-systems-answer
+  type: attributive
+  text: "Searle answers that if the individual memorizes the rules and the data banks and does all the calculations in his head, even outdoors, he still understands nothing of the Chinese, and neither does the system."
+  evidence:
+    - {work: "searle-1980-minds-brains-programs-bbs", role: original, locator: "p. 419", stance: for}
+
+- id: c-virtual-mind
+  type: attributive
+  text: "Cole reports that Minsky and Sloman and Croucher suggested a virtual mind reply when the argument first appeared: running the program may create a mind distinct from the person who runs it."
+  evidence:
+    - {work: "cole-2024-chinese-room-sep", role: original, locator: "Section 4.1.1", stance: for}
+
+- id: c-virtual-mind-views
+  type: attributive
+  text: "Cole lists Maudlin, Perlis, Chalmers and Block among those who endorse versions of the virtual mind reply, and Penrose and Harnad among its critics."
+  evidence:
+    - {work: "cole-2024-chinese-room-sep", role: original, locator: "Section 4.1.1", stance: for}
+
+- id: c-robot-reply
+  type: attributive
+  text: "The robot reply, as Searle states it, puts a computer inside a robot that does something like perceiving, walking, moving about and hammering nails, and holds that the robot would have genuine understanding and other mental states."
+  evidence:
+    - {work: "searle-1980-minds-brains-programs-bbs", role: original, locator: "p. 420", stance: for}
+
+- id: c-robot-proponents
+  type: attributive
+  text: "Cole lists Boden, Crane, Dennett, Fodor, Harnad, Moravec and Rey among those who endorse versions of the robot reply."
+  evidence:
+    - {work: "cole-2024-chinese-room-sep", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-robot-answer
+  type: attributive
+  text: "Searle answers that the robot reply tacitly concedes that cognition is not solely formal symbol manipulation, and that if he runs the program inside the robot he is the robot's homunculus and understands nothing except the rules."
+  evidence:
+    - {work: "searle-1980-minds-brains-programs-bbs", role: original, locator: "p. 420", stance: for}
+
+- id: c-fodor-robot
+  type: attributive
+  text: "Fodor grants that instantiating the same program as the brain is not by itself sufficient for propositional attitudes, but finds Searle's treatment of the robot reply unconvincing, given the right kinds of causal linkages."
+  evidence:
+    - {work: "fodor-1980-searle-only-brains-bbs", role: original, locator: "p. 431", stance: for}
+
+- id: c-crane
+  type: attributive
+  text: "Cole reports that Crane argues that a person who also began to act in the world of Chinese people would learn what the symbols mean."
+  evidence:
+    - {work: "cole-2024-chinese-room-sep", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-brain-sim-reply
+  type: attributive
+  text: "The brain simulator reply, as Searle states it, holds that a program that simulates the actual sequence of neuron firings at the synapses of the brain of a native Chinese speaker would understand the stories."
+  evidence:
+    - {work: "searle-1980-minds-brains-programs-bbs", role: original, locator: "p. 420", stance: for}
+
+- id: c-brain-sim-answer
+  type: attributive
+  text: "Searle answers with a man who operates water pipes with valves, each water connection corresponding to a synapse; neither the man nor the water pipes understand Chinese, because the simulation has only the formal structure of the neuron firings."
+  evidence:
+    - {work: "searle-1980-minds-brains-programs-bbs", role: original, locator: "p. 421", stance: for}
+
+- id: c-hofstadter
+  type: attributive
+  text: "Hofstadter argues that once we accept that a tangle of cells gives rise to an I, a water-pipe I should seem no more weird."
+  evidence:
+    - {work: "hofstadter-1980-reductionism-religion-bbs", role: original, locator: "p. 433", stance: for}
+
+- id: c-pylyshyn
+  type: attributive
+  text: "Pylyshyn asks what Searle's view implies if the cells of a brain are replaced one by one with chips that keep the same input-output function."
+  evidence:
+    - {work: "pylyshyn-1980-causal-power-machines-bbs", role: original, locator: "p. 442", stance: for}
+
+- id: c-combination
+  type: attributive
+  text: "The combination reply, as Searle states it, takes the previous three replies together: a robot with a brain-shaped computer programmed with all the synapses of a human brain, whose behavior is indistinguishable from human behavior, is a system to which we would have to ascribe intentionality."
+  evidence:
+    - {work: "searle-1980-minds-brains-programs-bbs", role: original, locator: "p. 421", stance: for}
+
+- id: c-combination-rey
+  type: attributive
+  text: "Cole reports that Rey argues that it is reasonable to attribute intentionality to such a system as a whole."
+  evidence:
+    - {work: "cole-2024-chinese-room-sep", role: original, locator: "Section 4.3", stance: for}
+
+- id: c-combination-answer
+  type: attributive
+  text: "Searle agrees that it would be rational and indeed irresistible to accept that such a robot had intentionality, as long as we knew nothing more about it."
+  evidence:
+    - {work: "searle-1980-minds-brains-programs-bbs", role: original, locator: "p. 421", stance: for}
+
+- id: c-combination-withdraw
+  type: attributive
+  text: "Searle says that as soon as we knew that the behavior was the result of a formal program, and that the actual causal properties of the physical substance were irrelevant, we would abandon the assumption of intentionality."
+  evidence:
+    - {work: "searle-1980-minds-brains-programs-bbs", role: original, locator: "p. 421", stance: for}
+
+- id: c-spouse
+  type: attributive
+  text: "Cole remarks that on Searle's answer one would cease to attribute understanding even to a spouse who was revealed to have a silicon secret."
+  evidence:
+    - {work: "cole-2024-chinese-room-sep", role: original, locator: "Section 4.3", stance: for}
+
+- id: c-other-minds
+  type: attributive
+  text: "The other minds reply, as Searle states it, holds that we know that other people understand Chinese only by their behavior, so if a computer passes the behavioral tests we must attribute cognition to it."
+  evidence:
+    - {work: "searle-1980-minds-brains-programs-bbs", role: original, locator: "p. 421", stance: for}
+
+- id: c-other-minds-answer
+  type: attributive
+  text: "Searle answers that the problem is not how he knows that other people have cognitive states, but what it is that he is attributing when he attributes cognitive states to them."
+  evidence:
+    - {work: "searle-1980-minds-brains-programs-bbs", role: original, locator: "p. 421, p. 422", stance: for}
+
+- id: c-other-minds-counter
+  type: attributive
+  text: "Cole reports critics who argue that if the evidence that humans understand is the same as the evidence that a robot understands, presuppositions about our own species are not relevant, since presuppositions are sometimes false."
+  evidence:
+    - {work: "cole-2024-chinese-room-sep", role: original, locator: "Section 4.4", stance: for}
+
+- id: c-many-mansions
+  type: attributive
+  text: "The many mansions reply, as Searle states it, holds that eventually we will be able to build devices that have whatever causal processes are essential for intentionality, and that will be artificial intelligence."
+  evidence:
+    - {work: "searle-1980-minds-brains-programs-bbs", role: original, locator: "p. 422", stance: for}
+
+- id: c-many-mansions-answer
+  type: attributive
+  text: "Searle has no objection to the many mansions reply, save that it trivializes the project of strong AI by redefining it as whatever artificially produces and explains cognition."
+  evidence:
+    - {work: "searle-1980-minds-brains-programs-bbs", role: original, locator: "p. 422", stance: for}
+
+- id: c-block-intuitions
+  type: attributive
+  text: "Block argues that the argument depends for its force on intuitions that certain entities do not think, and that such intuitions can be overruled by evidence, as with the motion of the earth."
+  evidence:
+    - {work: "block-1980-intuitions-homunculi-bbs", role: original, locator: "p. 425", stance: for}
+
+- id: c-dennett-pump
+  type: attributive
+  text: "Dennett calls the Chinese room an intuition pump, a device for provoking intuitions by variations on a thought experiment, and argues that its intuitions are not to be trusted."
+  evidence:
+    - {work: "dennett-1980-milk-human-intentionality-bbs", role: original, locator: "p. 429", stance: for}
+
+- id: c-searle-zero
+  type: attributive
+  text: "Searle concedes that there are degrees of understanding but holds that there are clear cases of no understanding, and that the computer's understanding is not partial or incomplete but zero."
+  evidence:
+    - {work: "searle-1980-minds-brains-programs-bbs", role: original, locator: "p. 419", stance: for}
+
+- id: c-intuition-back
+  type: attributive
+  text: "Cole reports critics who argue that Searle has pushed the reliance on intuition back into the room, and that perhaps he does understand, albeit unconsciously."
+  evidence:
+    - {work: "cole-2024-chinese-room-sep", role: original, locator: "Section 4.5", stance: for}
+
+- id: c-churchland-agree
+  type: attributive
+  text: "The Churchlands agree that the man in the room does not understand Chinese."
+  evidence:
+    - {work: "churchland-1990-could-machine-think-sciam", role: original, locator: "p. 34", stance: for}
+
+- id: c-churchland-brains
+  type: attributive
+  text: "The Churchlands argue that classical AI is unlikely to yield conscious machines, and that systems that mimic the brain might."
+  evidence:
+    - {work: "churchland-1990-could-machine-think-sciam", role: original, locator: "p. 32", stance: for}
+
+- id: c-luminous-room
+  type: attributive
+  text: "For the Churchlands, axiom 3 is false; indeed it begs the question, for all its intuitive plausibility."
+  evidence:
+    - {work: "churchland-1990-could-machine-think-sciam", role: original, locator: "p. 35", stance: for}
+
+- id: c-luminous-magnet
+  type: attributive
+  text: "The Churchlands compare axiom 3 to an argument that light is not electromagnetic because a man who pumps a bar magnet in a dark room produces no visible light."
+  evidence:
+    - {work: "churchland-1990-could-machine-think-sciam", role: original, locator: "p. 35", stance: for}
+
+- id: c-searle-luminous-answer
+  type: attributive
+  text: "Searle answers that the analogy with the luminous room fails, because formal symbols, unlike magnets, have no physical causal powers."
+  evidence:
+    - {work: "searle-1990-brains-mind-computer-program-sciam", role: original, locator: "p. 30", stance: for}
+
+- id: c-searle-logical-truth
+  type: attributive
+  text: "Searle takes the claim that uninterpreted formal symbols are not identical to mental contents as a logical truth, and puts the analogy between syntax and electromagnetism to a dilemma."
+  evidence:
+    - {work: "searle-1990-brains-mind-computer-program-sciam", role: original, locator: "p. 31", stance: for}
+
+- id: c-searle-gym
+  type: attributive
+  text: "Searle answers parallel, connectionist systems with a Chinese gym, a hall of monolingual English-speaking men who carry out the same operations and understand no Chinese."
+  evidence:
+    - {work: "searle-1990-brains-mind-computer-program-sciam", role: original, locator: "p. 28", stance: for}
+
+- id: c-not-syntax-alone
+  type: attributive
+  text: "Cole reports critics, among them Boden, Dennett and Chalmers, who argue that a computer running a program is not the same as syntax alone, but a complex causal system."
+  evidence:
+    - {work: "cole-2024-chinese-room-sep", role: original, locator: "Section 5.1", stance: for}
+
+- id: c-most-discussed
+  type: attributive
+  text: "Cole says that the Chinese room argument has probably been the most widely discussed philosophical argument in cognitive science since the Turing test."
+  evidence:
+    - {work: "cole-2024-chinese-room-sep", role: original, locator: "Section 1", stance: for}
+
+- id: c-minds-i
+  type: historical
+  text: "Hofstadter and Dennett reprinted Searle's article in their collection The Mind's I in 1981, followed by a reflection."
+  evidence:
+    - {work: "hofstadter-1981-minds-i", role: original, locator: "Chapter 22", stance: for}
+
+- id: c-preston-bishop
+  type: historical
+  text: "Preston and Bishop edited Views into the Chinese Room, a volume of new essays on Searle and artificial intelligence, published in 2002."
+  evidence:
+    - {work: "preston-2002-views-chinese-room", role: original, locator: "the title page", stance: for}
+
+- id: c-harnad-grounding
+  type: attributive
+  text: "Harnad uses the Chinese room to state the symbol grounding problem: the meaning of the symbols of a formal system is parasitic on the meanings in our heads, not intrinsic to the system."
+  evidence:
+    - {work: "harnad-1990-symbol-grounding-physica-d", role: original, locator: "Section 2.1", stance: for}
+
+- id: c-harnad-hybrid
+  type: attributive
+  text: "Harnad proposes that symbols be grounded bottom-up in iconic and categorical representations of sensory input."
+  evidence:
+    - {work: "harnad-1990-symbol-grounding-physica-d", role: original, locator: "the abstract", stance: for}
+
+- id: c-sep-llm
+  type: attributive
+  text: "Cole asks whether large language models make a difference to the Chinese room argument and its replies."
+  evidence:
+    - {work: "cole-2024-chinese-room-sep", role: original, locator: "Section 4.6", stance: for}
+
+- id: c-mitchell-krakauer
+  type: attributive
+  text: "Mitchell and Krakauer survey the debate over whether large language models understand language."
+  evidence:
+    - {work: "mitchell-2023-debate-understanding-pnas", role: original, locator: "the abstract", stance: for}
+
+- id: c-bk-form
+  type: attributive
+  text: "Bender and Koller argue that a system trained only on form has a priori no way to learn meaning."
+  evidence:
+    - {work: "bender-2020-climbing-nlu-acl", role: original, locator: "the abstract", stance: for}
+
+- id: c-bk-searle
+  type: attributive
+  text: "For Bender and Koller, we must be extra careful in devising evaluations for machine understanding, as Searle elaborates with his Chinese Room experiment."
+  evidence:
+    - {work: "bender-2020-climbing-nlu-acl", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-harnad-2024
+  type: attributive
+  text: "Harnad argues that ChatGPT does not understand, because it lacks direct sensorimotor grounding that connects its words to their referents."
+  evidence:
+    - {work: "harnad-2024-language-writ-large-frontiers", role: original, locator: "the abstract", stance: for}
+
+- id: c-floridi
+  type: attributive
+  text: "Floridi argues that large language models do not think, reason or understand."
+  evidence:
+    - {work: "floridi-2023-agency-without-intelligence", role: original, locator: "p. 1", stance: for}
+
+- id: c-ph-reply
+  type: attributive
+  text: "Piantadosi and Hill argue that the octopus test of Bender and Koller assumes that reference determines meaning, and they argue against that view of meaning."
+  evidence:
+    - {work: "piantadosi-2022-meaning-without-reference", role: original, locator: "p. 1", stance: for}
+
+- id: c-ph-conceptual-role
+  type: attributive
+  text: "Piantadosi and Hill argue that large language models likely capture important aspects of meaning through conceptual role, the relationships among internal states."
+  evidence:
+    - {work: "piantadosi-2022-meaning-without-reference", role: original, locator: "the abstract", stance: for}
+
+- id: c-sogaard
+  type: attributive
+  text: "Søgaard distinguishes inferential from referential semantics, offers the Color Radio thought experiment against Searle, and argues that Searle conflates understanding with awareness of understanding."
+  evidence:
+    - {work: "sogaard-2022-understanding-models-synthese", role: original, locator: "Section 3", stance: for}
+
+- id: c-pavlick
+  type: attributive
+  text: "Pavlick answers the arguments that LLMs lack symbolic structure and lack grounding, and concludes that it is premature to make claims about intrinsic inabilities of LLMs."
+  evidence:
+    - {work: "pavlick-2023-symbols-grounding-philtrans", role: original, locator: "the abstract, Section 4", stance: for}
+
+- id: c-harnad-parasitic
+  type: attributive
+  text: "Harnad points to the parasitism of indirect verbal grounding on direct sensorimotor grounding."
+  evidence:
+    - {work: "harnad-2024-language-writ-large-frontiers", role: original, locator: "the abstract", stance: for}

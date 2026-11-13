@@ -1,0 +1,618 @@
+run: v-20261114-031124-37381
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-published-1980
+  work: searle-1980-minds-brains-programs-bbs
+  locator: the title page
+  key: dfb91a5fb5f6716a86dd45c27aa60b82
+  spans:
+  - start: 0
+    end: 6347
+  verdict: supported
+  quote: THE BEHAVIORAL AND BRAIN SCIENCES (1980) 3,417-457
+  note: The title page identifies the article, journal and year.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-target-schank
+  work: searle-1980-minds-brains-programs-bbs
+  locator: p. 417
+  key: c7f25800ae27b5547ad75411540d48f7
+  spans:
+  - start: 0
+    end: 6347
+  verdict: supported
+  quote: 'I wiII consider the work of Roger Schank and his colleagues
+
+    at Yale'
+  note: Searle describes their story-question program and gives the burned-hamburger example.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-never-sufficient
+  work: searle-1980-minds-brains-programs-bbs
+  locator: the abstract
+  key: 2c01bcaaf32b3e9bde9979665c42b715
+  spans:
+  - start: 116096
+    end: 120580
+  verdict: unsupported
+  quote: 'not, in and ot itselt, a sufficent condition tor haVing those
+
+    propositional attitudes'
+  note: The passage gives Fodor’s narrower account; Searle’s stated proposition in the article’s abstract would support the
+    claim.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-causal-powers
+  work: searle-1980-minds-brains-programs-bbs
+  locator: the abstract
+  key: 00acfa5d12458ee0d4115b93a1598f80
+  spans:
+  - start: 116096
+    end: 120580
+  verdict: unsupported
+  quote: 'with internal causal powers equivalent to those of
+
+    brains'
+  note: The passage links those powers to machines that could think, but does not state the claim about every mechanism producing
+    intentionality; the abstract would.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-machines-can-think
+  work: searle-1980-minds-brains-programs-bbs
+  locator: the abstract
+  key: 2da3846c12dbe81b601d8a115bb9dae2
+  spans:
+  - start: 116096
+    end: 120580
+  verdict: unsupported
+  quote: 'only a machine could think, and only very special kinds of
+
+    machines'
+  note: The passage does not say that we are precisely such machines; a passage containing Searle’s fuller statement would
+    be needed.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-simulation
+  work: searle-1980-minds-brains-programs-bbs
+  locator: p. 423
+  key: 675a35a88ea0d45598fae6ec0c7b3e3b
+  spans:
+  - start: 46888
+    end: 55141
+  verdict: supported
+  quote: 'No
+
+    one supposes that computer simulations of a five-alarm fire
+
+    will burn the neighborhood down'
+  note: Searle makes the claimed comparison directly.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-axioms-1990
+  work: searle-1990-brains-mind-computer-program-sciam
+  locator: p. 27
+  key: a3b94e796904c3f9a3558bb10f234fec
+  spans:
+  - start: 6349
+    end: 11972
+  verdict: supported
+  quote: 'Axiom
+
+
+    3. Syntax. by itself is nei­
+
+
+    ther constitutive of nor sufficient for
+
+    semantics.'
+  note: Searle states the claim as Axiom 3.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-conclusion-1990
+  work: searle-1990-brains-mind-computer-program-sciam
+  locator: p. 27
+  key: a510cc47593e84e72f73cd091fc11557
+  spans:
+  - start: 6349
+    end: 11972
+  verdict: supported
+  quote: 'Conclusion 1. Programs are neither
+
+    constitutive of nor suffiCient for minds.'
+  note: The passage states the claimed conclusion.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-room-axiom3
+  work: searle-1990-brains-mind-computer-program-sciam
+  locator: p. 27
+  key: 25da9ec00f0c33c6756545ccc293cf5a
+  spans:
+  - start: 6349
+    end: 11972
+  verdict: supported
+  quote: 'Chinese room demonstrated. Having
+
+    the symbols by themselves-just hav­
+
+    ing the syntax-is not sufficient for
+
+    having the semantics.'
+  note: Searle explicitly attributes this point to the Chinese room.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-axiom4
+  work: searle-1990-brains-mind-computer-program-sciam
+  locator: p. 29
+  key: 57fb750691a5dadb960a3bc843f80c46
+  spans:
+  - start: 17353
+    end: 23230
+  verdict: supported
+  quote: 'Conclusion 2. Any other system capable of causing minds would have to
+
+    have causal powers (at least) equivalent to those of brains.'
+  note: The passage also states Axiom 4 as ‘Brains cause minds.’
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-strong-weak
+  work: searle-1980-minds-brains-programs-bbs
+  locator: p. 417
+  key: 425414502637e0346cc20c8e8710ea0a
+  spans:
+  - start: 0
+    end: 6347
+  verdict: unsupported
+  quote: 'I have no objection to the claims of weak AI, &t least as far
+
+    as this article is concerned.'
+  note: The distinction is stated, but the claim omits Searle’s qualification on having no objection.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-place-labels
+  work: searle-1980-minds-brains-programs-bbs
+  locator: p. 421
+  key: 4e2e78629410107a1b3e333757816dfd
+  spans:
+  - start: 30965
+    end: 39007
+  verdict: supported
+  quote: IV. The combination reply (Berkeley and Stanford).
+  note: The passage also labels the other minds reply ‘Yale.’
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-systems-reply
+  work: searle-1980-minds-brains-programs-bbs
+  locator: p. 419
+  key: f6e98ee71352979cf61df92b98c53368
+  spans:
+  - start: 14626
+    end: 22736
+  verdict: supported
+  quote: 'he is merely part of a
+
+    whole system, and the system does understand the story.'
+  note: Searle’s statement of the systems reply includes the rules, scratch paper and data banks.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-systems-answer
+  work: searle-1980-minds-brains-programs-bbs
+  locator: p. 419
+  key: f34d56028df9d26fcfd6533d50a89fd9
+  spans:
+  - start: 14626
+    end: 22736
+  verdict: supported
+  quote: 'We can even get rid of the room and suppose he works
+
+    outdoors. All the same, he understands nothing of the
+
+    Chinese, and.~ fortiori neither does the system'
+  note: Searle reaches that conclusion after having the individual internalize the rules and data banks.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-fodor-robot
+  work: fodor-1980-searle-only-brains-bbs
+  locator: p. 431
+  key: 2a697fddff14e6f7f69b4530fbfb2e9b
+  spans:
+  - start: 118226
+    end: 127159
+  verdict: supported
+  quote: Searle's treatment of the "robot reply" is quite unconvincing.
+  note: Fodor also grants the program point and discusses the right kinds of causal linkages.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-brain-sim-answer
+  work: searle-1980-minds-brains-programs-bbs
+  locator: p. 421
+  key: 8bc621b7c5ffc790430710515e2c1305
+  spans:
+  - start: 30965
+    end: 39007
+  verdict: supported
+  quote: 'each water connection corresponds to a
+
+    synapse in the Chinese brain'
+  note: Searle says neither the man nor the pipes understand and that the simulator reproduces only formal structure.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-hofstadter
+  work: hofstadter-1980-reductionism-religion-bbs
+  locator: p. 433
+  key: 31ff7c7d231f6e0c190610c7c3b499fb
+  spans:
+  - start: 136415
+    end: 145502
+  verdict: supported
+  quote: 'then it should seem
+
+    no more weird to accept a water-pipe "I."'
+  note: Hofstadter draws this conclusion after describing how a network of cells can create an ‘I.’
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-combination
+  work: searle-1980-minds-brains-programs-bbs
+  locator: p. 421
+  key: 8b73381197dcbb59d467f5bbca0e0e24
+  spans:
+  - start: 30965
+    end: 39007
+  verdict: unsupported
+  quote: 'Surely in such a case we
+
+    would have to ascribe intentionality to the system.'
+  note: The combination reply calls for attributing intentionality; the claim turns that attribution into a categorical assertion
+    that the robot would have it.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-combination-answer
+  work: searle-1980-minds-brains-programs-bbs
+  locator: p. 421
+  key: 19f4672172301caa2b21135f7693b32c
+  spans:
+  - start: 30965
+    end: 39007
+  verdict: supported
+  quote: 'we would find it rational
+
+    and indeed irresistible to accept the hypothesis that the robot
+
+    had intentionality, as long as we knew nothing more about it.'
+  note: The claim preserves Searle’s condition and his description of accepting a hypothesis.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-combination-withdraw
+  work: searle-1980-minds-brains-programs-bbs
+  locator: p. 421
+  key: 4b4954d878946c6c919a76859d32601a
+  spans:
+  - start: 30965
+    end: 39007
+  verdict: unsupported
+  quote: 'the behavior was the result of a formal program, and that the
+
+    actual causal properties of the physical substance were
+
+    irrelevant we would abandon the assumption of intentionality.'
+  note: Searle requires both the formal-program explanation and the irrelevance of the substance’s causal properties; the
+    claim drops the second condition.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-other-minds
+  work: searle-1980-minds-brains-programs-bbs
+  locator: p. 421
+  key: 14a0a4804d69e7bf8f8e088788eb72bf
+  spans:
+  - start: 30965
+    end: 39007
+  verdict: supported
+  quote: 'Only by
+
+    their behavior. Now the computer can pass the behavioral
+
+    tests as well as they can (in principle)'
+  note: Searle’s statement of the other minds reply draws the claimed attribution from that comparison.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-block-intuitions
+  work: block-1980-intuitions-homunculi-bbs
+  locator: p. 425
+  key: 40901a75d4281eb0aa075da6a39dcbc6
+  spans:
+  - start: 63314
+    end: 72582
+  verdict: supported
+  quote: 'Searle''s argument depends for its force on intuitions that certain
+
+    entities do not think.'
+  note: Block then uses the evidence for the earth’s motion to explain why such intuitions can be overruled.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-dennett-pump
+  work: dennett-1980-milk-human-intentionality-bbs
+  locator: p. 429
+  key: 88d181ece9c33e7d11a19d2fc65266da
+  spans:
+  - start: 99700
+    end: 109165
+  verdict: supported
+  quote: 'constructed what one might call an intuition pump, a device for
+
+    provoking a family of intuitions by producing variations on a basic
+
+    thought experiment.'
+  note: Dennett applies the term to Searle’s argument and cautions against trusting its elicited intuitions.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-searle-zero
+  work: searle-1980-minds-brains-programs-bbs
+  locator: p. 419
+  key: 0ebef3596c6ad05dd2e2011da0189107
+  spans:
+  - start: 14626
+    end: 22736
+  verdict: supported
+  quote: 'The
+
+    computer understanding is not just (like my understanding of
+
+    German) partial or incomplete; it is zero.'
+  note: Searle also accepts degrees of understanding while identifying clear cases where it does not apply.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-luminous-room
+  work: churchland-1990-could-machine-think-sciam
+  locator: p. 35
+  key: 51728eeea9403cd4072af6f50a466183
+  spans:
+  - start: 18102
+    end: 25899
+  verdict: supported
+  quote: 'First, axiom 3 of the above argument is
+
+    false. Indeed, it begs the question de­
+
+    spite its intuitive plausibility.'
+  note: The Churchlands say this of axiom 3 in their parallel argument about light.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-luminous-magnet
+  work: churchland-1990-could-machine-think-sciam
+  locator: p. 35
+  key: 69afbd2a1910e2004d922334c70e3d9c
+  spans:
+  - start: 18102
+    end: 25899
+  verdict: supported
+  quote: 'Consider a dark room containing a
+
+    man holding a bar magnet or charged
+
+    object.'
+  note: Their parallel argument has the man pump the magnet and treats the lack of visible luminance as an objection.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-searle-logical-truth
+  work: searle-1990-brains-mind-computer-program-sciam
+  locator: p. 31
+  key: ebfd3011dff884ef913938f23ccbb8d5
+  spans:
+  - start: 27609
+    end: 35356
+  verdict: supported
+  quote: 'I take it as a
+
+    logical truth.'
+  note: Searle applies this to the distinction between uninterpreted symbols and mental contents, then presents the dilemma
+    for the analogy.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-harnad-grounding
+  work: harnad-1990-symbol-grounding-physica-d
+  locator: Section 2.1
+  key: 696bfdca285f51e8574478f4b4105c85
+  spans:
+  - start: 13400
+    end: 15516
+  verdict: supported
+  quote: "It will be parasitic on the fact that the\nsymbols have meaning for\n us,"
+  note: Harnad uses the Chinese room to explain why the system’s interpreted meaning is not intrinsic.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-harnad-hybrid
+  work: harnad-1990-symbol-grounding-physica-d
+  locator: the abstract
+  key: fe9e380ccb392eebb378e1e3ae59ad04
+  spans:
+  - start: 313
+    end: 2672
+  verdict: supported
+  quote: 'Symbolic representations must
+
+    be grounded bottom-up in nonsymbolic representations of two kinds'
+  note: Harnad identifies those kinds as iconic and categorical representations tied to sensory projections.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-mitchell-krakauer
+  work: mitchell-2023-debate-understanding-pnas
+  locator: the abstract
+  key: d6268a5174dfb2eb73172d971e9ea569
+  spans:
+  - start: 240
+    end: 35864
+  verdict: supported
+  quote: 'We survey a current, heated debate in the AI research community on whether large pre-trained
+
+    language models can be said to understand language'
+  note: The abstract states the claimed survey topic.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-bk-form
+  work: bender-2020-climbing-nlu-acl
+  locator: the abstract
+  key: b61cbf633c4de3e6b74d11a3ac5bd96a
+  spans:
+  - start: 267
+    end: 897
+  verdict: supported
+  quote: 'we argue that a system trained only on form has a
+
+    priori no way to learn meaning.'
+  note: The abstract states the claim directly.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-bk-searle
+  work: bender-2020-climbing-nlu-acl
+  locator: Section 3.2
+  key: befed521aaf727db460474ed730515df
+  spans:
+  - start: 13503
+    end: 16337
+  verdict: supported
+  quote: 'This means we must be extra careful in devising
+
+    evaluations for machine understanding, as Searle
+
+    (1980) elaborates with his Chinese Room experiment'
+  note: Bender and Koller state the evaluation concern and connect it to Searle’s experiment.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-harnad-2024
+  work: harnad-2024-language-writ-large-frontiers
+  locator: the abstract
+  key: a78d5407e4c3c44049327c97ca08dd2d
+  spans:
+  - start: 338
+    end: 1887
+  verdict: supported
+  quote: 'It is
+
+    not true that it understands.'
+  note: Harnad also identifies the missing direct sensorimotor grounding that connects words to referents.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-floridi
+  work: floridi-2023-agency-without-intelligence
+  locator: p. 1
+  key: 44867da07f1ec8f5e821402c4568974e
+  spans:
+  - start: 0
+    end: 2628
+  verdict: supported
+  quote: They do not think, reason or understand
+  note: Floridi applies this statement to the listed large language models.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-ph-reply
+  work: piantadosi-2022-meaning-without-reference
+  locator: p. 1
+  key: 0d4ba0eeb2fc43f8d7b4613f1d1fe82c
+  spans:
+  - start: 0
+    end: 4108
+  verdict: unsupported
+  quote: 'The octopus test assumes that reference determines meaning, but in
+
+    fact cognitive scientists and philosophers have'
+  note: The passage cuts off before stating the alleged problems; a continuation of the ‘Meaning and reference’ section would
+    support the full claim.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-ph-conceptual-role
+  work: piantadosi-2022-meaning-without-reference
+  locator: the abstract
+  key: fe5ecd18b8e836b6b95ac2d02fea8017
+  spans:
+  - start: 225
+    end: 35960
+  verdict: supported
+  quote: 'they likely capture important aspects
+
+    of meaning'
+  note: The abstract connects that qualified claim to conceptual role and relationships among internal representational states.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-sogaard
+  work: sogaard-2022-understanding-models-synthese
+  locator: Section 3
+  key: a182da2e72c588e0d8901d47d2805bb7
+  spans:
+  - start: 10679
+    end: 33237
+  verdict: supported
+  quote: 'The Color Radio thought experiment is designed to suggest the plausibility of
+
+    unsupervised grounding'
+  note: Søgaard also distinguishes inferential from referential semantics and endorses the criticism that Searle conflates
+    understanding with awareness of it.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-pavlick
+  work: pavlick-2023-symbols-grounding-philtrans
+  locator: the abstract, Section 4
+  key: 1189a92246c518a754ec8e3916fb2a05
+  spans:
+  - start: 5698
+    end: 14428
+  - start: 59428
+    end: 62676
+  verdict: supported
+  quote: Overall, I conclude it is premature to make claims about intrinsic (in)abilities of LLM.
+  note: Pavlick addresses both symbolic structure and grounding before reaching this conclusion.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-harnad-parasitic
+  work: harnad-2024-language-writ-large-frontiers
+  locator: the abstract
+  key: 99306f8b1489665e9a46270d41e61fe7
+  spans:
+  - start: 338
+    end: 1887
+  verdict: supported
+  quote: the parasitism of indirect verbal grounding on direct sensorimotor grounding
+  note: Harnad explicitly lists this relationship in the abstract.
