@@ -1,0 +1,114 @@
+# The scope rules of spec 18.5. A rule decides the default outcome of a row of the universe register from its signals.
+# A row with the outcome row-only names the rule that excluded it. A curator or a person can override a rule for one item with a reason.
+# A change to a rule is its own pull request. The field default names the open question of spec 22 that can still change it.
+- id: S-M1
+  kind: model
+  outcome: card
+  rule: Each model in the database of Epoch AI is a card.
+  source: epoch-ai
+- id: S-M2
+  kind: model
+  outcome: card
+  rule: A Hub repository is a card when it is a base or instruction model and has at least 10,000 downloads in the last 30 days or 100 likes. A quantization, a merge or a fine-tune of a carded model is not a card. The card of its base model counts it.
+  source: huggingface
+  thresholds: {downloads_30d: 10000, likes: 100}
+  default: Q-06
+- id: S-M3
+  kind: model
+  outcome: card
+  rule: Each model that a developer in registers/watch.yaml announces on its own pages is a card, also when the weights are closed.
+  source: watch
+- id: S-M4
+  kind: model
+  outcome: node
+  rule: A model is a node when Epoch AI marks it notable or frontier, when it introduced a method or an architecture that has a node, when a canon or frontier source names it, or when a family node needs it. Frontier means the top 5 by training compute at release.
+  default: Q-04
+- id: S-W1
+  kind: work
+  outcome: card
+  rule: A work of OpenAlex subfield 1702, or of the arXiv categories of crosswalk/arxiv.yaml, is a card when it is in the top 2% by citations for its year and subfield.
+  source: openalex
+  thresholds: {citation_percentile: 98}
+  default: Q-07
+- id: S-W2
+  kind: work
+  outcome: card
+  rule: A work that a node, a card, a result or a fact cites is a card, with any number of citations.
+- id: S-W3
+  kind: work
+  outcome: card
+  rule: A work that won a best paper, an outstanding paper or a test-of-time award at a venue of registers/venues.yaml is a card.
+- id: S-W4
+  kind: work
+  outcome: node
+  rule: A work is a node only as a canon work of spec 5.10, or when a person promotes it with aik promote because the work itself is the subject.
+- id: S-D1
+  kind: dataset
+  outcome: card
+  rule: A dataset is a card when it has at least one result in the Papers with Code dump, when a carded model names it as training data, or when it is a Hub dataset with 1,000 downloads in the last 30 days or 50 likes.
+  thresholds: {downloads_30d: 1000, likes: 50}
+- id: S-D2
+  kind: dataset
+  outcome: node
+  rule: A dataset is a node when it is the base of a benchmark, a pretraining corpus of a notable model, or canon.
+- id: S-B1
+  kind: benchmark
+  outcome: card
+  rule: A benchmark with at least one result card is a card. It is a node when it has 20 or more results from 5 or more developers, when the card of a notable model uses it, or when it is canon.
+  thresholds: {node_results: 20, node_developers: 5}
+- id: S-R1
+  kind: result
+  outcome: card
+  rule: Each result of a notable or carded model on a carded benchmark that a source reports with a locator is a result card (spec 10.6).
+- id: S-I1
+  kind: incident
+  outcome: card
+  rule: Each incident of the AI Incident Database is a card. A curator links it to its risk nodes with instance_of.
+  source: aiid
+- id: S-L1
+  kind: policy
+  outcome: card
+  rule: Each AI-specific act, regulation, executive order, guidance and treaty of the OECD.AI database and of the official journals in registers/watch.yaml is a policy card. Each article or section that a node or a card cites is a provision card. A policy in force in the EU, the US federal government, a US state with an AI law, China, the UK, Japan, Korea, Canada, India or Brazil is a node. An international instrument, such as the Council of Europe convention, the OECD principles or the G7 Hiroshima code, is a node.
+  source: oecd-ai
+- id: S-L2
+  kind: standard
+  outcome: card
+  rule: Each standard of registers/standards.yaml is a card. About 200 of them are nodes.
+- id: S-P1
+  kind: person
+  outcome: card
+  rule: A person is a card when they are an author of 5 or more carded works, of a canon work or of the technical report of a notable model, or when they hold an award of registers/awards.yaml. A card holds only public professional facts.
+  thresholds: {carded_works: 5}
+- id: S-P2
+  kind: person
+  outcome: node
+  rule: A person is a node when a history section of a node names their contribution and a person reviewer approves the page.
+  default: Q-14
+- id: S-O1
+  kind: organization
+  outcome: card
+  rule: An organization is a card when it develops a carded model, hosts 20 or more carded authors, issues a policy, or funds a notable model.
+  thresholds: {carded_authors: 20}
+- id: S-S1
+  kind: software
+  outcome: card
+  rule: A software repository is a card when a node or a model card names it, or when it has 5,000 GitHub stars and an AI topic. When programming owns the item, the card is a bridge card.
+  source: github
+  thresholds: {stars: 5000}
+- id: S-H1
+  kind: hardware
+  outcome: card
+  rule: Each accelerator in the hardware data of Epoch AI, and each chip that a notable model trained on, is a card.
+  source: epoch-ai
+- id: S-E1
+  kind: exercise
+  outcome: card
+  rule: An exercise from a course of spec 5.7 or a canon work is a card with a locator. The text of the exercise is never copied.
+- id: S-V1
+  kind: event
+  outcome: card
+  rule: Each conference, workshop, competition and milestone is a card. About 300 of them are nodes.
+- id: S-X1
+  kind: idea
+  outcome: node
+  rule: A concept, definition, method, architecture, task, metric, theorem, finding, argument, open problem or risk is a node when a canon work, a frontier source, a course or two independent works name it. When only one work names it, it is a part of the page that it varies, or a card when people search for its name.

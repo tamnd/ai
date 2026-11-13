@@ -1,0 +1,280 @@
+# The pages that the daily job reads (spec 14.9).
+# A developer here announces models on its own pages, so each model that it announces is a card (rule S-M3). The journals, the policy database, the regulators and the institutes give the policy and provision cards (rule S-L1). The standards bodies give the standard cards (rule S-L2).
+# region is an ISO 3166-1 alpha-2 code, EU for the European Union, or INT for an international body. A URL here is an entry point, not a source of facts: each fact cites the page that states it.
+# A change to this file is its own pull request with a reason.
+- id: openai
+  name: OpenAI
+  type: developer
+  region: US
+  url: https://openai.com/news/
+  gives: models
+- id: anthropic
+  name: Anthropic
+  type: developer
+  region: US
+  url: https://www.anthropic.com/news
+  gives: models
+- id: google-deepmind
+  name: Google DeepMind
+  type: developer
+  region: GB
+  url: https://deepmind.google/discover/blog/
+  gives: models
+- id: google-research
+  name: Google Research
+  type: developer
+  region: US
+  url: https://research.google/blog/
+  gives: models
+- id: meta-ai
+  name: Meta AI
+  type: developer
+  region: US
+  url: https://ai.meta.com/blog/
+  gives: models
+- id: microsoft-research
+  name: Microsoft Research
+  type: developer
+  region: US
+  url: https://www.microsoft.com/en-us/research/blog/
+  gives: models
+- id: mistral-ai
+  name: Mistral AI
+  type: developer
+  region: FR
+  url: https://mistral.ai/news
+  gives: models
+- id: xai
+  name: xAI
+  type: developer
+  region: US
+  url: https://x.ai/news
+  gives: models
+- id: nvidia
+  name: NVIDIA
+  type: developer
+  region: US
+  url: https://blogs.nvidia.com/
+  gives: models
+- id: amazon-science
+  name: Amazon Science
+  type: developer
+  region: US
+  url: https://www.amazon.science/blog
+  gives: models
+- id: apple-ml
+  name: Apple Machine Learning Research
+  type: developer
+  region: US
+  url: https://machinelearning.apple.com/
+  gives: models
+- id: ibm-research
+  name: IBM Research
+  type: developer
+  region: US
+  url: https://research.ibm.com/blog
+  gives: models
+- id: cohere
+  name: Cohere
+  type: developer
+  region: CA
+  url: https://cohere.com/blog
+  gives: models
+- id: ai21-labs
+  name: AI21 Labs
+  type: developer
+  region: IL
+  url: https://www.ai21.com/blog/
+  gives: models
+- id: ai2
+  name: Allen Institute for AI
+  type: developer
+  region: US
+  url: https://allenai.org/blog
+  gives: models
+- id: qwen
+  name: Qwen team of Alibaba
+  type: developer
+  region: CN
+  url: https://qwenlm.github.io/blog/
+  gives: models
+- id: deepseek
+  name: DeepSeek
+  type: developer
+  region: CN
+  url: https://api-docs.deepseek.com/
+  gives: models
+- id: moonshot-ai
+  name: Moonshot AI
+  type: developer
+  region: CN
+  url: https://www.moonshot.ai/
+  gives: models
+- id: zhipu-ai
+  name: Zhipu AI
+  type: developer
+  region: CN
+  url: https://z.ai/
+  gives: models
+- id: minimax
+  name: MiniMax
+  type: developer
+  region: CN
+  url: https://www.minimax.io/news
+  gives: models
+- id: baidu-research
+  name: Baidu Research
+  type: developer
+  region: CN
+  url: https://research.baidu.com/Blog
+  gives: models
+- id: tencent-hunyuan
+  name: Tencent Hunyuan
+  type: developer
+  region: CN
+  url: https://hunyuan.tencent.com/
+  gives: models
+- id: bytedance-seed
+  name: ByteDance Seed
+  type: developer
+  region: CN
+  url: https://seed.bytedance.com/en/blog
+  gives: models
+- id: stability-ai
+  name: Stability AI
+  type: developer
+  region: GB
+  url: https://stability.ai/news
+  gives: models
+- id: black-forest-labs
+  name: Black Forest Labs
+  type: developer
+  region: DE
+  url: https://bfl.ai/blog
+  gives: models
+- id: hugging-face
+  name: Hugging Face
+  type: developer
+  region: US
+  url: https://huggingface.co/blog
+  gives: models
+- id: eleutherai
+  name: EleutherAI
+  type: developer
+  region: US
+  url: https://blog.eleuther.ai/
+  gives: models
+- id: tii
+  name: Technology Innovation Institute
+  type: developer
+  region: AE
+  url: https://falconllm.tii.ae/
+  gives: models
+- id: lg-ai-research
+  name: LG AI Research
+  type: developer
+  region: KR
+  url: https://www.lgresearch.ai/
+  gives: models
+- id: sakana-ai
+  name: Sakana AI
+  type: developer
+  region: JP
+  url: https://sakana.ai/blog/
+  gives: models
+- id: reka
+  name: Reka
+  type: developer
+  region: US
+  url: https://reka.ai/news
+  gives: models
+- id: eur-lex
+  name: EUR-Lex, the Official Journal of the EU
+  type: journal
+  region: EU
+  url: https://eur-lex.europa.eu/oj/direct-access.html
+  gives: policy
+- id: federal-register
+  name: Federal Register
+  type: journal
+  region: US
+  url: https://www.federalregister.gov/
+  gives: policy
+- id: uk-legislation
+  name: legislation.gov.uk
+  type: journal
+  region: GB
+  url: https://www.legislation.gov.uk/
+  gives: policy
+- id: oecd-ai
+  name: OECD.AI policy database
+  type: database
+  region: INT
+  url: https://oecd.ai/en/dashboards/overview
+  gives: policy
+- id: eu-ai-office
+  name: European AI Office
+  type: regulator
+  region: EU
+  url: https://digital-strategy.ec.europa.eu/en/policies/ai-office
+  gives: policy
+- id: cac
+  name: Cyberspace Administration of China
+  type: regulator
+  region: CN
+  url: https://www.cac.gov.cn/
+  gives: policy
+- id: council-of-europe-ai
+  name: Council of Europe, artificial intelligence
+  type: regulator
+  region: INT
+  url: https://www.coe.int/en/web/artificial-intelligence
+  gives: policy
+- id: uk-aisi
+  name: UK AI Security Institute
+  type: institute
+  region: GB
+  url: https://www.aisi.gov.uk/
+  gives: policy
+- id: us-caisi
+  name: US Center for AI Standards and Innovation
+  type: institute
+  region: US
+  url: https://www.nist.gov/caisi
+  gives: policy
+- id: japan-aisi
+  name: Japan AI Safety Institute
+  type: institute
+  region: JP
+  url: https://aisi.go.jp/
+  gives: policy
+- id: korea-aisi
+  name: Korea AI Safety Institute
+  type: institute
+  region: KR
+  url: https://www.aisi.re.kr/
+  gives: policy
+- id: canada-aisi
+  name: Canadian AI Safety Institute
+  type: institute
+  region: CA
+  url: https://ised-isde.canada.ca/site/ised/en/canadian-artificial-intelligence-safety-institute
+  gives: policy
+- id: nist-ai
+  name: NIST artificial intelligence
+  type: standards-body
+  region: US
+  url: https://www.nist.gov/artificial-intelligence
+  gives: standard
+- id: iso-sc42
+  name: ISO/IEC JTC 1/SC 42
+  type: standards-body
+  region: INT
+  url: https://www.iso.org/committee/6794475.html
+  gives: standard
+- id: cen-cenelec-jtc21
+  name: CEN-CENELEC JTC 21
+  type: standards-body
+  region: EU
+  url: https://www.cencenelec.eu/areas-of-work/cen-cenelec-topics/artificial-intelligence/
+  gives: standard
