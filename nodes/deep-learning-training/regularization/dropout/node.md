@@ -1,5 +1,5 @@
 ---
-tag: NEW-dropout
+tag: Y8VNMB
 kind: method
 slug: dropout
 name: Dropout

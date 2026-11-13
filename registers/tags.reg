@@ -1,2 +1,3 @@
 # Each line is a tag and its slug (spec 04.3). A tag never changes and is never used again.
 # Tags are 6 characters of Crockford base32. aik mint gives the next one.
+Y8VNMB dropout
