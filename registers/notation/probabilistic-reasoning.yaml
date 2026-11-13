@@ -1,0 +1,8 @@
+# The notation of the area probabilistic-reasoning (spec 06.4).
+area: probabilistic-reasoning
+symbols:
+  - {symbol: "X", meaning: "a random variable"}
+  - {symbol: "Y", meaning: "a second random variable"}
+  - {symbol: "\\mathbf{z}", meaning: "a latent variable"}
+  - {symbol: "q_\\phi", meaning: "a variational distribution with the parameters \\phi"}
+  - {symbol: "\\phi", meaning: "the parameters of a variational distribution"}

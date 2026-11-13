@@ -1,0 +1,10 @@
+# The notation of the area generative-models (spec 06.4). In diffusion pages, the time index counts the noising steps.
+area: generative-models
+symbols:
+  - {symbol: "\\mathbf{x}_0", meaning: "a data point, in diffusion pages"}
+  - {symbol: "\\mathbf{x}_t", meaning: "the data point after t noising steps, in diffusion pages"}
+  - {symbol: "\\boldsymbol{\\epsilon}", meaning: "the noise, in diffusion pages"}
+  - {symbol: "\\boldsymbol{\\epsilon}_\\theta", meaning: "the noise predictor, in diffusion pages"}
+  - {symbol: "\\beta_t", meaning: "the noise variance at step t"}
+  - {symbol: "\\bar{\\alpha}_t", meaning: "the product of 1 - \\beta_s for s from 1 to t"}
+  - {symbol: "\\mathbf{z}", meaning: "a latent variable"}

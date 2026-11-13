@@ -1,0 +1,60 @@
+# The global notation register of spec 06.4. The notation check reads each formula of a page as a KaTeX tree and finds each symbol here, in the override of the area of the page (registers/notation/<top>.yaml), or in the notation block of the front matter (rule S09).
+# The symbol field is KaTeX source. \mathbf{x} and x are different symbols.
+# The choices follow Goodfellow, Bengio and Courville, Deep Learning (2016), section "Notation", and Prince, Understanding Deep Learning (2023), appendix A. When a source uses another notation, the page uses ours and maps the symbols of the source once in a note.
+# A local symbol of a page may not redefine a symbol of this file.
+version: n-2026.11
+sources:
+  - {src: goodfellow-2016-deep-learning, loc: "Notation"}
+  - {src: prince-2023-understanding-deep-learning, loc: "Appendix A"}
+classes:
+  # A class is a family of symbols. Any letter in the class style is a symbol of the class.
+  - {id: scalar, style: "a", meaning: "a scalar, in italic lower case"}
+  - {id: vector, style: "\\mathbf{a}", meaning: "a column vector, in bold lower case"}
+  - {id: matrix, style: "\\mathbf{A}", meaning: "a matrix, in bold upper case"}
+  - {id: tensor, style: "\\mathsf{A}", meaning: "a tensor of order 3 or more, in sans-serif upper case"}
+  - {id: set, style: "\\mathcal{A}", meaning: "a set, in calligraphic upper case, unless a symbol below gives it another meaning"}
+symbols:
+  # Data
+  - {symbol: "\\mathbf{x}", meaning: "an input"}
+  - {symbol: "y", meaning: "a target; \\mathbf{y} for a vector target"}
+  - {symbol: "\\hat{y}", meaning: "a prediction"}
+  - {symbol: "\\mathcal{D}", meaning: "a dataset, \\mathcal{D} = \\{(\\mathbf{x}_i, y_i)\\}_{i=1}^{N}"}
+  - {symbol: "N", meaning: "the number of examples in a dataset"}
+  - {symbol: "i", meaning: "the index of an example"}
+  - {symbol: "p_{\\text{data}}", meaning: "the data distribution"}
+  # Models and parameters
+  - {symbol: "\\theta", meaning: "all the parameters of a model"}
+  - {symbol: "\\mathbf{W}", meaning: "the weight matrix of a layer"}
+  - {symbol: "\\mathbf{b}", meaning: "the bias vector of a layer"}
+  - {symbol: "f_\\theta", meaning: "a model with the parameters \\theta"}
+  - {symbol: "p_\\theta", meaning: "the distribution of a model with the parameters \\theta"}
+  # Training
+  - {symbol: "\\ell", meaning: "the loss of one example"}
+  - {symbol: "\\mathcal{L}", meaning: "the total loss, \\mathcal{L}(\\theta); L is a number of layers"}
+  - {symbol: "\\eta", meaning: "the learning rate"}
+  - {symbol: "t", meaning: "a step of training or a time step"}
+  - {symbol: "\\nabla_\\theta", meaning: "the gradient with respect to \\theta"}
+  # Probability and information
+  - {symbol: "\\mathbb{E}", meaning: "an expectation"}
+  - {symbol: "\\Pr", meaning: "the probability of an event"}
+  - {symbol: "p", meaning: "a density or a mass function, p(\\cdot)"}
+  - {symbol: "D_{\\mathrm{KL}}", meaning: "the KL divergence, D_{\\mathrm{KL}}(p \\,\\|\\, q)"}
+  - {symbol: "H", meaning: "the entropy, H(p); the horizon in reinforcement learning pages"}
+  # Functions
+  - {symbol: "\\sigma", meaning: "the logistic function, \\sigma(\\cdot); a standard deviation only in statistics pages, by override"}
+  - {symbol: "\\mathrm{softmax}", meaning: "the softmax function"}
+  # Learning theory
+  - {symbol: "\\mathcal{H}", meaning: "a hypothesis class"}
+  - {symbol: "d_{\\mathrm{VC}}", meaning: "the VC dimension"}
+  # Shapes and sizes
+  - {symbol: "B", meaning: "the batch size"}
+  - {symbol: "T", meaning: "the sequence length"}
+  - {symbol: "d_{\\text{model}}", meaning: "the model width"}
+  - {symbol: "h", meaning: "the number of attention heads"}
+  - {symbol: "d_k", meaning: "the width of a query and a key of one head"}
+  - {symbol: "d_v", meaning: "the width of a value of one head"}
+  - {symbol: "L", meaning: "the number of layers"}
+  - {symbol: "d_{\\text{ff}}", meaning: "the width of the feedforward block"}
+  - {symbol: "\\mathcal{V}", meaning: "the vocabulary, with size |\\mathcal{V}|; V is the value function in reinforcement learning pages"}
+# Tensor shapes in prose use the order of shapes.yaml (spec 08.6), for example [B, T, d_model].
+shape_order: [B, T, h, d_k, d_model]
