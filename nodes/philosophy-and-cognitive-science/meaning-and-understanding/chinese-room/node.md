@@ -8,22 +8,6 @@ area: philosophy-and-cognitive-science/meaning-and-understanding
 level: core
 summary: >-
   A thought experiment of John Searle (1980): a person who follows a rule book to answer Chinese questions without knowing Chinese, offered as a case where running a program does not give understanding.
-properties:
-  premises:
-    - "Computer programs are formal: a program is defined by the manipulation of symbols by their form alone (Searle 1990, axiom 1)."
-    - "Human minds have mental contents: their thoughts are about things (Searle 1990, axiom 2)."
-    - "Syntax by itself is neither constitutive of nor sufficient for semantics (Searle 1990, axiom 3), the point that Searle says the Chinese room demonstrated."
-  conclusion: "Programs are neither constitutive of nor sufficient for minds (Searle 1990, conclusion 1)."
-  replies:
-    - {name: "the systems reply", summary: "The person does not understand, but the whole system of person, rules and data does.", sources: [searle-1980-minds-brains-programs-bbs, cole-2024-chinese-room-sep]}
-    - {name: "the virtual mind reply", summary: "Running the program may create a mind that is neither the person nor the physical system.", sources: [cole-2024-chinese-room-sep]}
-    - {name: "the robot reply", summary: "A computer that runs a robot body with perception and action would understand.", sources: [searle-1980-minds-brains-programs-bbs, fodor-1980-searle-only-brains-bbs, cole-2024-chinese-room-sep]}
-    - {name: "the brain simulator reply", summary: "A program that simulates the neuron firings of a Chinese speaker's brain would understand.", sources: [searle-1980-minds-brains-programs-bbs, hofstadter-1980-reductionism-religion-bbs, pylyshyn-1980-causal-power-machines-bbs]}
-    - {name: "the combination reply", summary: "Of a robot with a brain-shaped computer that simulates every synapse, we would have to ascribe intentionality to the whole system.", sources: [searle-1980-minds-brains-programs-bbs]}
-    - {name: "the other minds reply", summary: "We attribute understanding to other people by their behaviour, so we must attribute it to a computer that behaves the same.", sources: [searle-1980-minds-brains-programs-bbs, cole-2024-chinese-room-sep]}
-    - {name: "the many mansions reply", summary: "Future devices may have whatever causal processes intentionality needs, and that will be artificial intelligence.", sources: [searle-1980-minds-brains-programs-bbs]}
-    - {name: "the intuition reply", summary: "The argument rests on intuitions about what can think, and evidence can overrule such intuitions.", sources: [block-1980-intuitions-homunculi-bbs, dennett-1980-milk-human-intentionality-bbs, cole-2024-chinese-room-sep]}
-    - {name: "the reply to axiom 3", summary: "Whether syntax suffices for semantics is the open question, so assuming that it does not begs the question.", sources: [churchland-1990-could-machine-think-sciam, cole-2024-chinese-room-sep]}
 history:
   year: 1980
   note: "Searle (1980), Behavioral and Brain Sciences 3(3), 417 to 457, with open peer commentary; restated as axioms in Searle (1990), Scientific American 262(1)."
@@ -50,6 +34,21 @@ sources:
   - {paper: "Søgaard (2022)", title: "Understanding models understanding language", locator: "Synthese 200, Section 3"}
   - {paper: "Pavlick (2023)", title: "Symbols and grounding in large language models", locator: "Philosophical Transactions of the Royal Society A 381, Sections 3 and 4"}
   - {paper: "Mitchell and Krakauer (2023)", title: "The debate over understanding in AI's large language models", locator: "PNAS 120(13), the abstract", note: "a survey of the debate"}
+premises:
+  - "Computer programs are formal: a program is defined by the manipulation of symbols by their form alone (Searle 1990, axiom 1)."
+  - "Human minds have mental contents: their thoughts are about things (Searle 1990, axiom 2)."
+  - "Syntax by itself is neither constitutive of nor sufficient for semantics (Searle 1990, axiom 3), the point that Searle says the Chinese room demonstrated."
+conclusion: "Programs are neither constitutive of nor sufficient for minds (Searle 1990, conclusion 1)."
+replies:
+  - {name: "the systems reply", summary: "The person does not understand, but the whole system of person, rules and data does.", sources: [searle-1980-minds-brains-programs-bbs, cole-2024-chinese-room-sep]}
+  - {name: "the virtual mind reply", summary: "Running the program may create a mind that is neither the person nor the physical system.", sources: [cole-2024-chinese-room-sep]}
+  - {name: "the robot reply", summary: "A computer that runs a robot body with perception and action would understand.", sources: [searle-1980-minds-brains-programs-bbs, fodor-1980-searle-only-brains-bbs, cole-2024-chinese-room-sep]}
+  - {name: "the brain simulator reply", summary: "A program that simulates the neuron firings of a Chinese speaker's brain would understand.", sources: [searle-1980-minds-brains-programs-bbs, hofstadter-1980-reductionism-religion-bbs, pylyshyn-1980-causal-power-machines-bbs]}
+  - {name: "the combination reply", summary: "Of a robot with a brain-shaped computer that simulates every synapse, we would have to ascribe intentionality to the whole system.", sources: [searle-1980-minds-brains-programs-bbs]}
+  - {name: "the other minds reply", summary: "We attribute understanding to other people by their behaviour, so we must attribute it to a computer that behaves the same.", sources: [searle-1980-minds-brains-programs-bbs, cole-2024-chinese-room-sep]}
+  - {name: "the many mansions reply", summary: "Future devices may have whatever causal processes intentionality needs, and that will be artificial intelligence.", sources: [searle-1980-minds-brains-programs-bbs]}
+  - {name: "the intuition reply", summary: "The argument rests on intuitions about what can think, and evidence can overrule such intuitions.", sources: [block-1980-intuitions-homunculi-bbs, dennett-1980-milk-human-intentionality-bbs, cole-2024-chinese-room-sep]}
+  - {name: "the reply to axiom 3", summary: "Whether syntax suffices for semantics is the open question, so assuming that it does not begs the question.", sources: [churchland-1990-could-machine-think-sciam, cole-2024-chinese-room-sep]}
 ---
 
 The Chinese room is a thought experiment of the philosopher John Searle, published in 1980 in The Behavioral and Brain Sciences. {#c-published-1980}
