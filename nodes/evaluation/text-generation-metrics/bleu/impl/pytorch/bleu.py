@@ -149,14 +149,13 @@ def score(
     # The orders that have at least one hypothesis n-gram; the totals do not grow with n, so they are a prefix.
     reached = torch.cumprod((t > 0).to(torch.int64), 0).bool()
     safe_t = torch.where(reached, t, torch.ones_like(t))
-    zero = reached & (c == 0)
+    zero = reached & (c == 0)  # an order that is not reached has no match either, so its precision stays 0
     p = 100.0 * c / safe_t
     if smooth_method == "exp":  # eq: eq-smooth-exp, 1/2, 1/4, ... of a count for each order with no match
         p = torch.where(zero, 100.0 / (2.0 ** torch.cumsum(zero.to(torch.float64), 0) * safe_t), p)
     elif smooth_method == "floor":
         assert smooth_value is not None
         p = torch.where(zero, 100.0 * smooth_value / safe_t, p)
-    p = torch.where(reached, p, torch.zeros_like(p))
 
     order = int(reached.sum().item()) if effective_order else big_n
     used = p[:order]

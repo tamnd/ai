@@ -152,14 +152,13 @@ def score(
     # The orders that have at least one hypothesis n-gram; the totals do not grow with n, so they are a prefix.
     reached = jnp.cumprod(t > 0).astype(bool)
     safe_t = jnp.where(reached, t, 1.0)
-    zero = reached & (c == 0)
+    zero = reached & (c == 0)  # an order that is not reached has no match either, so its precision stays 0
     p = 100.0 * c / safe_t
     if smooth_method == "exp":  # eq: eq-smooth-exp, 1/2, 1/4, ... of a count for each order with no match
         p = jnp.where(zero, 100.0 / (2.0 ** jnp.cumsum(zero) * safe_t), p)
     elif smooth_method == "floor":
         assert smooth_value is not None
         p = jnp.where(zero, 100.0 * smooth_value / safe_t, p)
-    p = jnp.where(reached, p, 0.0)
 
     order = int(reached.sum()) if effective_order else big_n
     used = p[:order]

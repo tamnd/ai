@@ -121,6 +121,27 @@ def test_tokenizers():
     assert TOKENIZERS["none"]("a.b") == "a.b"
 
 
+def test_brevity_penalty_edges():
+    got = score([""], [[""]])  # c = r = 0: no penalty, and no n-gram to score
+    assert (got["score"], got["bp"], got["sys_len"], got["ref_len"]) == (0.0, 1.0, 0, 0)
+    assert score(["the"], [["the cat"]])["bp"] == near(math.exp(-1.0))  # c = 1 is short but not empty
+    assert score(["the cat sat"], [["the cat sat"]])["bp"] == 1.0  # c = r
+
+
+def test_order_one():
+    got = score(["the cat sat"], [["the cat sat on"]], max_ngram_order=1)
+    assert got["precisions"] == near([100.0])
+    assert got["score"] == near(100.0 * math.exp(1.0 - 4.0 / 3.0))
+
+
+def test_one_percent_precision():
+    # One matching unigram in 100 gives p_1 = 1 percent; the score is small but not 0.
+    hyp = " ".join(["a"] + [f"x{i}" for i in range(99)])
+    got = score([hyp], [["a"]])
+    assert got["precisions"] == near([1.0, 100.0 / (2 * 99), 100.0 / (4 * 98), 100.0 / (8 * 97)])
+    assert got["score"] == near(0.35896057761679323)
+
+
 @pytest.mark.parametrize(
     ("preds", "refs", "opts"),
     [
