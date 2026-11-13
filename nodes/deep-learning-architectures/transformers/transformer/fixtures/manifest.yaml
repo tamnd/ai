@@ -1,0 +1,10 @@
+# Written by fixtures/make.py; do not edit.
+seed: 20170612
+config: {d_model: 16, n_heads: 4, d_ff: 64, n_layers: 2, vocab: 50}
+inputs: {B: 2, S: 6, T: 5, padded: "the last 2 source tokens of sentence 1"}
+dtype: float64
+numpy: "2.5.4"
+files:
+  params-small.npz: {sha256: f7011f1d19b07807be9c28b80a89d3abb20eb1b40ab3ceb5527b18f304bfb31e}
+  input-small.npz: {sha256: d0e83e7cee1fc4cd1bb8b4441cdfb3470467650dcecd8b996e45c5a33b5c8735}
+  expected-small.npz: {sha256: 413e760846b31caaf50d755abbc9d7eadab60f3d88a1bd02060ea918697b6404}

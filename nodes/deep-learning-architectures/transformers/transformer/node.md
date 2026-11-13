@@ -148,19 +148,27 @@ The decoder output at position $t$ goes through the output matrix and a softmax,
 
 ## Shapes and parameters
 
-The table is generated from `shapes.yaml`.
-The parameter count of one encoder layer is $4 d_{\text{model}}^2 + 4 d_{\text{model}}$ for the four projections of attention with their biases, plus $2 d_{\text{model}} d_{\text{ff}} + d_{\text{ff}} + d_{\text{model}}$ for the feedforward network, plus $4 d_{\text{model}}$ for the scales and shifts of the two layer normalizations.
-A decoder layer adds a second attention and a third normalization.
-With tied embeddings, the embedding adds $|\mathcal{V}|\, d_{\text{model}}$ once.
+The tables below come from `shapes.yaml`, and so does every formula and count in this section.
+Write $d_{\text{model}}$ for the width, $h$ for the number of heads, $d_{\text{ff}}$ for the width of the feedforward network, $L$ for the number of layers in the encoder and again in the decoder, and $|\mathcal{V}|$ for the size of the vocabulary.
+The self-attention of an encoder layer has {shape:enc_attn.params} parameters, for the four projections with their biases.
+Its feedforward network has {shape:enc_ffn.params}, and each of its two layer normalizations has {shape:norm.params}, a scale and a shift for each feature.
+So an encoder layer has {shape:enc_layer.params} parameters.
+A decoder layer adds the attention over the encoder and a third normalization, for {shape:dec_layer.params}.
+The positional encoding has no parameters, and with tied embeddings the embedding matrix adds {shape:embed.params} once.
+For the sizes of the base model in Table 3, and a vocabulary of 37,000 tokens, the formula gives {shape:params@base} parameters; for the big model it gives {shape:params@big}.
 The paper reports 65 million parameters for the base model and 213 million for the big model (Table 3). {#c-param-counts}
 It gives the shared vocabulary only as about 37,000 tokens (Section 5.1), so the count from the formula and the reported count need not agree exactly.
 
 ## Computation and cost
 
-Count a multiply-add as 2 FLOPs, and leave out the softmax, the normalizations and the activations.
-For one position in one layer, the four projections of attention cost $8 d_{\text{model}}^2$ FLOPs, and the feedforward network costs $4 d_{\text{model}} d_{\text{ff}}$.
-The scores $\mathbf{Q}\mathbf{K}^\top$ cost $2 T d_{\text{model}}$ over all heads, and the weighted sum of the values costs another $2 T d_{\text{model}}$.
-So a forward pass costs about $2N$ FLOPs per token for the $N$ weights outside the embedding, plus $4 L T d_{\text{model}}$ for the attention itself, or about half of that with a causal mask, where a position attends on average to half of the sequence.
+Count a multiply-add as 2 FLOPs, and leave out the biases, the softmax, the normalizations and the activations.
+Take a batch of $B$ pairs, with $S$ tokens in each source and $T$ in each target.
+The self-attention of an encoder layer costs {shape:enc_attn.flops_forward} FLOPs: the first term is the four projections, and the second is the scores $\mathbf{Q}\mathbf{K}^\top$ and the weighted sum of the values, over all heads.
+Its feedforward network costs {shape:enc_ffn.flops_forward}.
+In a decoder layer, the masked self-attention costs {shape:dec_attn.flops_forward}, and the attention over the encoder costs {shape:cross_attn.flops_forward}, because its keys and values are projections of the $S$ positions of the encoder.
+The count takes the full $T \times T$ matrix of scores in the masked self-attention, as a dense matrix product computes it, though half of it is masked.
+The output layer costs {shape:logits.flops_forward}, so the forward pass costs {shape:flops_forward} FLOPs in all.
+With $S = T$, the terms of the projections and the feedforward networks come to $2N$ FLOPs per target token, for the $N =$ {shape:params_non_embedding} weights of the layers when their biases are left out; the output layer adds twice the size of the embedding, and the scores and the weighted sums add a term that grows with $T$.
 Kaplan et al. (2020, Section 2.1) use the same count, $2N + 2 L T d_{\text{model}}$ per token for a decoder, and about 6 times $N$ per token for a step of training, because the backward pass costs about twice the forward pass. {#c-flops-per-token}
 
 The cost in the length of the sequence is the main limit of the architecture.
@@ -170,7 +178,7 @@ Self-attention is cheaper than a recurrent layer when $T < d_{\text{model}}$, wh
 
 At inference, a decoder writes one token at a time.
 It keeps the keys and the values of the earlier positions, so that each new token costs $O(T d_{\text{model}})$ in attention and not $O(T^2 d_{\text{model}})$.
-This cache holds $2 L T d_{\text{model}}$ numbers per sequence, which is the main memory cost of serving long contexts.
+This cache holds {shape:kv_cache} numbers per sequence, which is the main memory cost of serving long contexts.
 Multi-query attention (Shazeer 2019) and grouped-query attention (Ainslie et al. 2023) share keys and values across heads to shrink it. {#c-mqa-cache}
 
 ## Training
