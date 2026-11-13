@@ -32,6 +32,23 @@ sources:
   - {paper: "Schaeffer, Miranda and Koyejo (2023)", title: "Are Emergent Abilities of Large Language Models a Mirage?", locator: "the abstract"}
   - {paper: "Sharma and Kaplan (2020)", title: "A Neural Scaling Law from the Dimension of the Data Manifold", locator: "the abstract"}
   - {paper: "Bahri, Dyer, Kaplan, Lee and Sharma (2024)", title: "Explaining Neural Scaling Laws", locator: "the abstract"}
+claim: >-
+  The test loss of a neural network falls as a power law in its parameters, its training data or its training compute, over several orders of magnitude, while the other two do not limit it.
+first_reported: {work: hestness-2017-deep-learning-scaling-predictable, note: "power-law learning curves in machine translation, language modeling, image classification and speech recognition"}
+replications:
+  - {work: kaplan-2020-scaling-laws, note: "Transformer language models, in parameters, data and compute"}
+  - {work: henighan-2020-scaling-laws-autoregressive-generative, note: "images, video, image-text and mathematics"}
+  - {work: zhai-2022-scaling-vision-transformers, note: "Vision Transformers"}
+  - {work: hoffmann-2022-training-compute-optimal, note: "language models, with a different compute-optimal allocation"}
+scale_range:
+  - {range: "language models of 70 million to over 16 billion parameters, trained on 5 to 500 billion tokens", work: hoffmann-2022-training-compute-optimal}
+failures:
+  - {work: besiroglu-2024-chinchilla-scaling-replication, note: "a refit of Approach 3 of Hoffmann et al. differs substantially from the reported fit"}
+  - {work: sorscher-2022-beyond-neural-scaling-laws, note: "with a good pruning metric, error can fall faster than a power law in the pruned data size"}
+  - {work: caballero-2023-broken-neural-scaling-laws, note: "a smoothly broken power law extrapolates better than a single power law"}
+explanations:
+  - {name: "the data manifold", summary: "A network that regresses on a data manifold of intrinsic dimension d gives exponents of about 4/d.", sources: [sharma-2020-neural-scaling-law-data-manifold]}
+  - {name: "variance-limited and resolution-limited regimes", summary: "Scaling in data and in model size each has a variance-limited and a resolution-limited regime, four in all.", sources: [bahri-2024-explaining-neural-scaling-laws]}
 ---
 
 Neural scaling laws are the empirical finding that the test loss of a neural network falls as a power law in its number of parameters, its training data and its training compute.
