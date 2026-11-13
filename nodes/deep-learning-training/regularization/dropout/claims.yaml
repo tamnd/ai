@@ -46,6 +46,7 @@
   evidence:
     - {work: "srivastava-2014-dropout-jmlr", role: original, locator: "Section 6 and Tables 2 to 9", stance: for}
     - {work: "hinton-2012-improving-neural-networks-arxiv", role: original, locator: "Sections 2 to 7", stance: for}
+  exp: [mlp-mnist-2k, mlp-mnist-6k]
   small_scale: "yes"
   small_scale_note: "A small multilayer perceptron on MNIST shows the effect on one GPU or a CPU in minutes."
 
