@@ -1,0 +1,60 @@
+# SPDX-License-Identifier: MIT
+# The options of BLEU that change the score, and the vector rows that pin each value (spec 08.7.5). The rows are in
+# official.jsonl and edge.jsonl; every row was computed by sacreBLEU 2.6.0 (make.py). The page shows this as the
+# table of its Variants section.
+default:
+  signature: "nrefs:1|case:mixed|eff:no|tok:13a|smooth:exp|version:2.6.0"
+  used_by: "WMT shared tasks and papers that report a sacreBLEU signature (Post, 2018)"
+options:
+  tokenize:
+    13a:
+      meaning: "mteval-v13a.pl of NIST, the WMT default: HTML entities unescaped, punctuation split off except in numbers"
+      used_by: "WMT and the default of sacreBLEU"
+      rows: {official.jsonl: [worked-example, corpus-3seg-2ref, corpus-4seg-1ref], edge.jsonl: [13a-entities]}
+    intl:
+      meaning: "the international tokenization of mteval-v14.pl: Unicode punctuation split off unless next to a digit, every Unicode symbol split off"
+      used_by: "evaluations with non-ASCII punctuation"
+      rows: {edge.jsonl: [intl-unicode, intl-year-dot]}
+    char:
+      meaning: "every character is a token, spaces dropped"
+      used_by: "languages written without spaces, such as Chinese and Japanese, when no word segmenter is used"
+      rows: {edge.jsonl: [char-cjk]}
+    none:
+      meaning: "split on whitespace only; the caller has tokenized the text"
+      used_by: "multi-bleu.perl of Moses on pre-tokenized text; such scores differ from sacreBLEU (Post, 2018, Section 2.2)"
+      rows: {edge.jsonl: [tokenize-none, trailing-space]}
+  lowercase:
+    "false":
+      meaning: "case-sensitive"
+      rows: {edge.jsonl: [case-sensitive]}
+    "true":
+      meaning: "case-insensitive"
+      used_by: "Papineni et al. (2002, Section 2.3), who fold case"
+      rows: {official.jsonl: [papineni-clipping], edge.jsonl: [lowercase]}
+  smooth_method:
+    exp:
+      meaning: "orders with no match get the counts 1/2, 1/4, ... (mteval-v13a); method 3 of Chen and Cherry (2014)"
+      rows: {edge.jsonl: [no-4gram-exp, two-zero-orders-exp]}
+    floor:
+      meaning: "orders with no match get the count smooth_value, 0.1 by default; method 1 of Chen and Cherry (2014)"
+      rows: {edge.jsonl: [no-4gram-floor, no-4gram-floor-0.5]}
+    add-k:
+      meaning: "add smooth_value, 1 by default, to the matches and the totals of the orders 2 and up; method 2 of Chen and Cherry (2014), from Lin and Och (2004)"
+      rows: {edge.jsonl: [no-4gram-add-k]}
+    none:
+      meaning: "no smoothing; one order with no match makes BLEU 0, as in Papineni et al. (2002)"
+      rows: {edge.jsonl: [no-4gram-none]}
+  max_ngram_order:
+    "4":
+      meaning: "BLEU-4, the baseline of Papineni et al. (2002, Section 2.3)"
+      rows: {official.jsonl: [worked-example]}
+    "2":
+      meaning: "BLEU-2"
+      rows: {edge.jsonl: [max-order-2]}
+  effective_order:
+    "false":
+      meaning: "the mean always runs over K orders; the corpus default"
+      rows: {edge.jsonl: [one-word]}
+    "true":
+      meaning: "the mean runs over the orders that the hypotheses have; the default of sacrebleu.sentence_bleu"
+      rows: {official.jsonl: [sentence-effective-order], edge.jsonl: [one-word-effective-order]}

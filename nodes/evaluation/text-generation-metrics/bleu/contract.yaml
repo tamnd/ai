@@ -1,0 +1,21 @@
+# SPDX-License-Identifier: MIT
+# The contract of the BLEU page (spec 04.4 and 08.7.5). Every framework version's score reproduces every row of
+# vectors/ within the tolerance; the rows come from sacreBLEU, the official implementation.
+entry: score
+inputs:
+  predictions: {type: "list[str]", meaning: one hypothesis per segment}
+  references: {type: "list[list[str]]", meaning: "for each segment, its references; every segment has the same number of references"}
+options:
+  tokenize: {type: str, default: "13a", values: ["13a", "none", "intl", "char"], meaning: "the tokenizer applied to the hypotheses and the references before counting: 13a is the mteval-v13a tokenizer of WMT, intl the Unicode one of mteval-v14, char splits into characters, none splits on whitespace only"}
+  lowercase: {type: bool, default: false, meaning: lowercase the hypotheses and the references before tokenizing}
+  smooth_method: {type: str, default: exp, values: [none, floor, add-k, exp], meaning: "what to do with an order that has no matching n-gram: nothing, a floor count, add k to the counts of the orders 2 and up, or the geometric sequence 1/2, 1/4, ... of mteval-v13a"}
+  smooth_value: {type: "float | null", default: null, meaning: "the floor count for floor (0.1 when null) or k for add-k (1 when null); ignored by none and exp"}
+  max_ngram_order: {type: int, default: 4, meaning: the largest n-gram order N}
+  effective_order: {type: bool, default: false, meaning: "average only over the orders that have at least one hypothesis n-gram, for sentence-level BLEU"}
+output:
+  score: {type: float, meaning: BLEU on a 0 to 100 scale}
+  precisions: {type: "list[float]", meaning: the modified n-gram precisions in percent}
+  bp: {type: float, meaning: the brevity penalty}
+  sys_len: {type: int, meaning: the number of hypothesis tokens in the corpus}
+  ref_len: {type: int, meaning: "the effective reference length: the sum over segments of the reference length closest to the hypothesis length, the shorter one on a tie"}
+tolerance: {rtol: 1.0e-9, atol: 1.0e-9}
