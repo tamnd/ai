@@ -67,7 +67,7 @@
 
 - id: c-3dnf-improper
   type: mathematical
-  text: "3-term DNF is learnable in time polynomial in n by rewriting each formula as a conjunction over (2n)^3 variables and solving ERM over conjunctions, which returns a hypothesis outside the original class."
+  text: "3-term DNF is learnable in time polynomial in n by rewriting each formula as a conjunction over (2n)^3 variables and solving ERM over conjunctions, which gives a hypothesis that may lie outside the original class."
   assumes: ["the data are realizable by a 3-term DNF formula"]
   evidence:
     - {work: "shalev-shwartz-ben-david-2014-understanding-machine-learning", role: original, locator: "p. 108", stance: for}

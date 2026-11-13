@@ -34,7 +34,7 @@
 
 - id: c-agnostic-bound
   type: mathematical
-  text: "A finite class is agnostic PAC learnable by ERM with sample complexity at most the ceiling of 2 log(2|H|/delta)/epsilon^2."
+  text: "For a loss function into $[0, 1]$, a finite class is agnostic PAC learnable by ERM with sample complexity at most $\\lceil 2 \\log(2|H|/\\delta)/\\epsilon^2 \\rceil$."
   assumes: ["H is finite", "the loss takes values in [0, 1]", "the sample is i.i.d.", "epsilon > 0 and delta > 0"]
   derivation: "derivations/agnostic.md"
   evidence:
@@ -42,14 +42,14 @@
 
 - id: c-lower-bound
   type: mathematical
-  text: "For a class of VC dimension $d$, the sample complexity of PAC learning is at least $C_1 (d + \\log(1/\\delta))/\\epsilon$ for an absolute constant $C_1$."
+  text: "For binary classification with the 0-1 loss and a class of VC dimension $d$, the sample complexity of PAC learning is at least $C_1 (d + \\log(1/\\delta))/\\epsilon$ for an absolute constant $C_1$."
   assumes: ["the VC dimension d of H is finite", "binary classification with the 0-1 loss"]
   evidence:
     - {work: "shalev-shwartz-ben-david-2014-understanding-machine-learning", role: original, locator: "pp. 72 to 73", stance: for}
 
 - id: c-valiant-definition
   type: historical
-  text: "Valiant defined a class of programs as learnable when an algorithm runs in time polynomial in an adjustable parameter h and the size of the program, and for all programs of the class and all distributions over the vectors on which the program outputs 1, deduces with probability at least 1 - 1/h a program of the class that never outputs one when it should not and misses at most a 1/h share of the positive examples, which he calls one-sided error learning."
+  text: "Valiant defined a class of programs as learnable when an algorithm runs in time polynomial in an adjustable parameter h, the size of the program and the number of variables, and for all programs of the class and all distributions over the vectors on which the program outputs 1, deduces with probability at least 1 - 1/h a program of the class that never outputs one when it should not and misses at most a 1/h share of the positive examples, which he calls one-sided error learning."
   evidence:
     - {work: "valiant-1984-theory-of-the-learnable", role: original, locator: "Section 3", stance: for}
 

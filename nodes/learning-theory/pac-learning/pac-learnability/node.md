@@ -127,7 +127,7 @@ The class is learnable, but only by seeing a large part of the domain, which is 
 **PAC learnable is not the same as learnable in polynomial time.**
 Valiant's definition requires an algorithm that runs in polynomial time, and the definition above has no such requirement. {#c-runtime-difference}
 The two come apart: the class of 3-term DNF formulas over $n$ variables has at most $3^{3n}$ members, so ERM needs at most $(3n \log 3 + \log(1/\delta))/\epsilon$ examples, but unless RP = NP no polynomial time algorithm learns it properly. {#c-3dnf-hard}
-It is learnable in polynomial time by a learner that returns a 3-CNF formula, outside the class. {#c-3dnf-improper}
+It is learnable in polynomial time by a learner that returns a 3-CNF formula, which may lie outside the class. {#c-3dnf-improper}
 
 **Proper and improper learning.**
 Definition 3.1 lets the algorithm return any hypothesis, while Definition 3.4 asks for $h \in \mathcal{H}$.

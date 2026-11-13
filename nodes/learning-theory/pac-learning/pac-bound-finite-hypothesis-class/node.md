@@ -62,7 +62,7 @@ With twice the accuracy, every ERM hypothesis then satisfies $L_{\mathcal{D}}(h_
 
 $$ m \ge \frac{2 \log(2 |\mathcal{H}| / \delta)}{\epsilon^2} . $$ {#eq-agnostic-m}
 
-So a finite class is agnostic PAC learnable, with sample complexity at most $\lceil 2 \log(2|\mathcal{H}|/\delta) / \epsilon^2 \rceil$. {#c-agnostic-bound}
+So, for a loss with values in $[0, 1]$, a finite class is agnostic PAC learnable, with sample complexity at most $\lceil 2 \log(2|\mathcal{H}|/\delta) / \epsilon^2 \rceil$. {#c-agnostic-bound}
 
 Here $\log$ is the natural logarithm.
 
@@ -109,7 +109,7 @@ It counts a sample once for each bad hypothesis that fits it, so it loses most w
 The thresholds on $k$ points form a class of size about $k$ but have VC dimension 1, and their sample complexity does not grow with $k$, while the bound grows as $\log k$ (Shalev-Shwartz and Ben-David 2014, Section 6.3.4).
 
 For the classes that are as rich as their size allows, the bound is tight up to a constant.
-The VC dimension $d$ of a finite class is at most $\log_2 |\mathcal{H}|$, and the fundamental theorem of PAC learning gives the lower bound $m_{\mathcal{H}}(\epsilon, \delta) \ge C_1 (d + \log(1/\delta))/\epsilon$ in the realizable case. {#c-lower-bound}
+The VC dimension $d$ of a finite class is at most $\log_2 |\mathcal{H}|$, and the fundamental theorem of PAC learning gives the lower bound $m_{\mathcal{H}}(\epsilon, \delta) \ge C_1 (d + \log(1/\delta))/\epsilon$ in the realizable case of binary classification with the 0-1 loss. {#c-lower-bound}
 The class of all $2^d$ labelings of $d$ points has $\log_2 |\mathcal{H}| = d$, so its sample complexity is $\Theta((\log |\mathcal{H}| + \log(1/\delta))/\epsilon)$.
 In the agnostic case the same theorem gives $\Theta((d + \log(1/\delta))/\epsilon^2)$, so the $1/\epsilon^2$ rate cannot be improved either.
 
@@ -148,7 +148,7 @@ The tests of the Lean module check these consistency facts on the same instance.
 
 ## History
 
-Leslie Valiant defined learnability from examples in 1984, asking for a program found in polynomial time that, with high probability, never accepts a negative example and misses only a small share of the positive ones under the distribution of positive examples. {#c-valiant-definition}
+Leslie Valiant defined learnability from examples in 1984, asking for a program found in time polynomial in the size of the target and the number of variables that, with high probability, never accepts a negative example and misses only a small share of the positive ones under the distribution of positive examples. {#c-valiant-definition}
 His Section 4 bounds the number of examples by a lemma on independent trials, and his Section 5 uses it to show that, for each fixed $k$, the conjunctive normal form expressions with at most $k$ literals in each clause are learnable from examples. {#c-valiant-cnf}
 Anselm Blumer, Andrzej Ehrenfeucht, David Haussler and Manfred Warmuth stated the counting argument for any learner that returns a short consistent hypothesis, in "Occam's Razor" (1987), and extended it to infinite classes through the VC dimension in 1989.
 David Haussler gave the agnostic setting in 1992, and the bound through uniform convergence and Hoeffding's inequality became the form of the textbooks of Kearns and Vazirani (1994), Shalev-Shwartz and Ben-David (2014) and Mohri et al. (2018).
