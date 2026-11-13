@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: CC0-1.0
 #
-# The Lean job comes back when the Lean package AI exists (spec 11).
-#
 # The jobs that run code from the content (audit, tests, site) have no secrets. Only the deploy job has the Cloudflare token, and it runs no code from the content: it uploads the site that the site job made.
 name: CI
 
@@ -99,6 +97,39 @@ jobs:
         with:
           name: results-${{ matrix.lang }}
           path: build/results
+          retention-days: 7
+          if-no-files-found: ignore
+
+  # The Lean package AI in lean/ (spec 11). lean-action builds it with the Mathlib cache, runs lake test and audits the
+  # axioms of the AI library; aik then extracts the declarations and checks the lean fields of the nodes (F01, F03, F07)
+  # and the elaboration time of each module (F10).
+  lean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: leanprover/lean-action@fe408643ea7367d8c0404a8be3975bb145f5fb64 # v1.7.0
+        with:
+          lake-package-directory: lean
+          use-mathlib-cache: true
+          test: true
+          axiom-audit: true
+          axiom-audit-root: AI
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: false
+      - name: Install aik
+        run: go install "github.com/tamnd/ai-agent/cmd/aik@${AIK_VERSION}"
+      - name: Extract the declarations and check the lean fields
+        run: aik lean build -no-build -time
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: lean-decls
+          path: build/lean/decls.jsonl
           retention-days: 7
           if-no-files-found: ignore
 
