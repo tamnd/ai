@@ -1,0 +1,76 @@
+# SPDX-License-Identifier: CC0-1.0
+#
+# This workflow refreshes the bridge cards of cards/bridge from the indexes of algorithm, math2 and programming (spec 5.9 and 20.6). It runs each week, by hand, and when a neighbour sends the event neighbour-release. When the cards change, it opens a pull request and starts CI on its branch.
+#
+# The job runs no code from the content. It runs aik, which reads the indexes of the neighbours and writes JSON lines.
+name: Bridge
+
+on:
+  schedule:
+    - cron: "23 4 * * 1"
+  workflow_dispatch:
+  repository_dispatch:
+    types: [neighbour-release]
+
+permissions: {}
+
+concurrency:
+  group: bridge
+  cancel-in-progress: false
+
+env:
+  AIK_VERSION: v0.0.8
+  GO_VERSION: "1.27.x"
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: false
+      - name: Install aik
+        run: go install "github.com/tamnd/ai-agent/cmd/aik@${AIK_VERSION}"
+      - name: Sync the bridge cards
+        run: aik bridge sync al m2 pg | tee "$RUNNER_TEMP/bridge.txt"
+      - name: Audit the cards
+        run: aik check -main
+      - name: Open a pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          if [ -z "$(git status --porcelain -- cards/bridge)" ]; then
+            echo "The bridge cards did not change."
+            exit 0
+          fi
+          branch="bridge/$(date -u +%Y-%m-%d)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$branch"
+          git add cards/bridge
+          git commit -s -q -m "Refresh the bridge cards"
+          git push -q --force "https://x-access-token:${GH_TOKEN}@github.com/${REPO}.git" "HEAD:refs/heads/${branch}"
+          {
+            echo "This pull request refreshes the bridge cards from the indexes of algorithm, math2 and programming (spec 5.9)."
+            echo
+            echo "A renamed item keeps its old slug. An item that left a neighbour is retired, and \`aik check\` reports each link to it as a broken-bridge gap (L02)."
+            echo
+            echo '```'
+            cat "$RUNNER_TEMP/bridge.txt"
+            echo '```'
+          } > "$RUNNER_TEMP/body.md"
+          if [ -z "$(gh pr list -R "$REPO" --head "$branch" --json number -q '.[].number')" ]; then
+            gh pr create -R "$REPO" --base main --head "$branch" --title "Refresh the bridge cards" --body-file "$RUNNER_TEMP/body.md" --label "area: cards" --label "type: chore"
+          fi
+          # A pull request that the workflow token opens does not start CI, so the job starts it on the branch.
+          gh workflow run ci.yml -R "$REPO" --ref "$branch"
