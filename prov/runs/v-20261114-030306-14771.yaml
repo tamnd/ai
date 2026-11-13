@@ -1,0 +1,77 @@
+run: v-20261114-030306-14771
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: bleu
+  verifier: codex:gpt-6-sol
+  tag: V3JG9E
+  claim: c-tokenization-changes
+  work: post-2018-call-for-clarity-wmt
+  locator: p. 3, Table 1
+  key: 9c90c8b63d4e31abaa0ae462d7388100
+  spans:
+  - start: 7829
+    end: 11872
+  verdict: supported
+  quote: as high as 1.8 for one arc, and averaging around 1.0.
+  note: The passage attributes these BLEU differences to processing the online-B system output and its references across the
+    Table 1 language arcs.
+- slug: bleu
+  verifier: codex:gpt-6-sol
+  tag: V3JG9E
+  claim: c-pairwise-accuracy
+  work: kocmi-2021-ship-or-not-wmt
+  locator: Section 5.1, Table 2
+  key: 4850708ed9f6b4e7f154d5784546c7ba
+  spans:
+  - start: 17107
+    end: 30361
+  verdict: supported
+  quote: 'COMET
+
+    COMET-src
+
+    Prism
+
+    BLEURT
+
+    ESIM
+
+    BERTScore
+
+    ChrF
+
+    TER
+
+    CharacTER
+
+    BLEU
+
+    Prism-src
+
+    EED
+
+
+    83.4
+
+    83.2
+
+    80.6
+
+    80.0
+
+    78.7
+
+    78.3
+
+    75.6
+
+    75.6
+
+    74.9
+
+    74.6'
+  note: Table 2 assigns those accuracies to COMET, ChrF and BLEU in its All column, which contains 3,344 system pairs.

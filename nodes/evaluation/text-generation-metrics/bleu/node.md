@@ -34,7 +34,7 @@ sources:
   - {paper: "Koehn (2004)", title: "Statistical Significance Tests for Machine Translation Evaluation", locator: "EMNLP 2004, Sections 5 and 6", note: "bootstrap and paired bootstrap resampling of BLEU"}
   - {paper: "Mathur, Baldwin and Cohn (2020)", title: "Tangled up in BLEU: Reevaluating the Evaluation of Automatic Machine Translation Evaluation Metrics", locator: "ACL 2020, pages 4984 to 4997, Sections 4.2, 5 and 6"}
   - {paper: "Kocmi, Federmann, Grundkiewicz, Junczys-Dowmunt, Matsushita and Menezes (2021)", title: "To Ship or Not to Ship: An Extensive Evaluation of Automatic Metrics for Machine Translation", locator: "WMT 2021, pages 478 to 494, Table 2 and Section 5"}
-  - {paper: "Freitag et al. (2022)", title: "Results of WMT22 Metrics Shared Task: Stop Using BLEU – Neural Metrics Are Better and More Robust", locator: "WMT 2022, pages 46 to 68, the title and the conclusions"}
+  - {paper: "Freitag et al. (2022)", title: "Results of WMT22 Metrics Shared Task: Stop Using BLEU - Neural Metrics Are Better and More Robust", locator: "WMT 2022, pages 46 to 68, the title and the conclusions"}
   - {paper: "Popović (2015)", title: "chrF: character n-gram F-score for automatic MT evaluation", locator: "WMT 2015, pages 392 to 395", note: "the character n-gram metric that sacreBLEU also computes"}
 ---
 
@@ -104,7 +104,7 @@ When every order has a match, smoothing changes nothing.
 - **A zero precision.** Without smoothing, one $p_n = 0$ makes BLEU 0, whatever the other orders are. {#c-zero-precision}
 - **Corpus level.** The counts and the lengths are summed over the segments before any division. So BLEU is a function of $2K + 2$ sums, it does not depend on the order of the segments, and it is not the mean of the sentence scores.
 - **No recall.** A hypothesis gets no reward for covering more of a reference. The brevity penalty stands in for recall, because output that leaves content out is usually short (Papineni et al., 2002, Section 2.2.1).
-- **More references, higher scores.** A second reference can only raise a clipped count. Papineni et al. (2002, Section 3) and Post (2018, Section 2.1) both report higher BLEU with more references. {#c-more-references} This is not a theorem, because a nearer but longer reference can lower BP. Scores on different numbers of references cannot be compared.
+- **More references, higher scores.** A second reference can only raise a clipped count. Papineni et al. (2002, Section 3) report a human translator at 0.3468 against four references and 0.2571 against two. {#c-more-references} Post (2018, Section 2.1) reports the WMT17 English to Finnish system online-B at 22.04 with one reference and 25.25 with two. {#c-more-references-post} This is not a theorem, because a nearer but longer reference can lower BP. Scores on different numbers of references cannot be compared.
 - **Copies.** Output that copies one reference of each segment scores 100 if some segment has at least $K$ tokens. If no segment has a 4-gram, $p_4$ is 0 and so is the score, unless effective order is on.
 
 ## Worked example
@@ -161,7 +161,7 @@ Second, the `intl` tokenizer reads the Unicode categories from Python's `unicode
 The two can differ on characters that only the newer of the two Unicode tables knows.
 
 > [!pitfall]
-> **A different tokenizer.** BLEU on text that the user tokenized, or that `13a` tokenizes a second time, differs from the BLEU of other papers. Post (2018, Table 1) measured changes of up to 1.8 points from the tokenization of the references alone. {#c-tokenization-changes} The test `test_tokenizers` checks the exact output of `13a`, `intl`, `char` and `none`. Its inputs have HTML entities, dashes between digits, decimal numbers and Unicode punctuation.
+> **A different tokenizer.** BLEU on text that the user tokenized, or that `13a` tokenizes a second time, differs from the BLEU of other papers. Post (2018, Table 1) measured changes of up to 1.8 points, and around 1.0 on average, from processing the same output and its references in different ways. {#c-tokenization-changes} The test `test_tokenizers` checks the exact output of `13a`, `intl`, `char` and `none`. Its inputs have HTML entities, dashes between digits, decimal numbers and Unicode punctuation.
 
 > [!pitfall]
 > **The wrong reference length.** With several references, $r$ uses the reference closest in length to each hypothesis, and the shorter one on a tie. It is not the shortest, the longest or the mean. The test `test_closest_reference_length` checks the tie and the nearer reference.
@@ -202,7 +202,7 @@ The review supports BLEU for the diagnostic evaluation of machine translation sy
 It does not support BLEU for single texts, for tasks other than machine translation, or for testing scientific hypotheses.
 Kocmi et al. (2021, Table 2) measured how often a metric orders a pair of systems as human judges do.
 Over 3,344 pairs, BLEU did so 74.6 percent of the time, chrF 75.6 percent and COMET 83.4 percent. {#c-pairwise-accuracy}
-The WMT22 metrics task put its advice in its title: "Stop Using BLEU – Neural Metrics Are Better and More Robust" (Freitag et al., 2022). {#c-wmt22-stop}
+The WMT22 metrics task put its advice in its title: "Stop Using BLEU - Neural Metrics Are Better and More Robust" (Freitag et al., 2022). {#c-wmt22-stop}
 BLEU stays in use because it is cheap and deterministic, it needs no model, and its signature makes a score reproducible.
 
 ## Variants
@@ -226,10 +226,10 @@ chrF (Popović, 2015) replaces word n-grams with character n-grams and adds reca
 
 ## History
 
-Kishore Papineni, Salim Roukos, Todd Ward and Wei-Jing Zhu of IBM described BLEU in IBM Research Report RC22176 in 2001, and published it at ACL 2002. {#c-introduced-2002}
+Kishore Papineni, Salim Roukos, Todd Ward and Wei-Jing Zhu of IBM described BLEU in IBM Research Report RC22176 in 2001. {#c-report-2001} They published it at ACL 2002, the 40th Annual Meeting of the Association for Computational Linguistics. {#c-introduced-2002}
 They presented it as an "understudy" to human judges, for when a system needs quick or frequent evaluations.
 The `mteval` scripts of NIST became the reference implementation of the evaluation campaigns, and the WMT shared tasks reported BLEU for years.
-Matt Post released sacreBLEU in 2018, with a signature that records every option, so that the scores of different papers can be compared. {#c-sacrebleu-2018}
+Matt Post released sacreBLEU in 2018. It expects detokenized output, applies its own tokenization, and prints a version string that records the settings, so that the scores of different papers can be compared. {#c-sacrebleu-2018}
 Over the same years, a line of studies found BLEU weaker than its wide use suggested.
 They include Callison-Burch et al. (2006), Reiter (2018), Mathur et al. (2020), Kocmi et al. (2021) and the WMT22 metrics task.
 
