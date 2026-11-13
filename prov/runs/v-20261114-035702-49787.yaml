@@ -1,0 +1,690 @@
+run: v-20261114-035702-49787
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-bias-data
+  work: eu-2026-ai-act-consolidated-text-2026-07-27
+  locator: Article 4a
+  key: c07487b48443c4757150b84620de61fe
+  spans:
+  - start: 48461
+    end: 53360
+  verdict: supported
+  quote: providers of such systems may exceptionally process special categories of personal data, subject to appropriate safeguards
+  note: Article 4a also limits that processing to what is strictly necessary for bias detection and correction.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-proposal
+  work: ep-oeil-2021-0106-cod-artificial-intelligence-act
+  locator: p. 1
+  key: ecfda95a17eff6f0c394849d4b7bfb2b
+  spans:
+  - start: 0
+    end: 75357
+  verdict: supported
+  quote: "21/04/2021 \n                         Legislative proposal published"
+  note: The entry gives the claimed date and COM reference in procedure 2021/0106(COD).
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-ep-2023
+  work: ep-oeil-2021-0106-cod-artificial-intelligence-act
+  locator: p. 1
+  key: 1f16f5bf904fbf64b27e7075c2dd91a1
+  spans:
+  - start: 0
+    end: 75357
+  verdict: supported
+  quote: Matter referred back to the committee responsible for interinstitutional negotiations
+  note: The passage records both events on 14 June 2023.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-ep-2024
+  work: ep-oeil-2021-0106-cod-artificial-intelligence-act
+  locator: p. 1
+  key: f2d5143282d92260678c0075b9da2357
+  spans:
+  - start: 0
+    end: 75357
+  verdict: supported
+  quote: "13/03/2024 \n                         Decision by Parliament, 1st reading"
+  note: The same entry gives reference T9-0138/2024.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-council
+  work: ep-oeil-2021-0106-cod-artificial-intelligence-act
+  locator: p. 1
+  key: d5a09fe282d4ee5dfe2288f76c3257aa
+  spans:
+  - start: 0
+    end: 75357
+  verdict: unsupported
+  quote: "13/03/2024 \n                         Decision by Parliament, 1st reading"
+  note: The passage ends before the claimed Council adoption; a later event entry would be needed.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-signed
+  work: ep-oeil-2021-0106-cod-artificial-intelligence-act
+  locator: p. 1
+  key: 38e8d2049e1150f4e71f8cff3710f78e
+  spans:
+  - start: 0
+    end: 75357
+  verdict: unsupported
+  quote: "13/03/2024 \n                         Decision by Parliament, 1st reading"
+  note: The passage ends before any final-act signing entry; a later event entry would be needed.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-in-force-rule
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 113
+  key: 936e54dff94881e5f85f60b65f1504eb
+  spans:
+  - start: 847998
+    end: 849539
+  verdict: supported
+  quote: This Regulation shall enter into force on the twentieth day following that of its publication
+  note: Article 113 states the claimed entry-into-force rule.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-apply-2025
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 113
+  key: 158322083c84250358082b9a89209036
+  spans:
+  - start: 847998
+    end: 849539
+  verdict: supported
+  quote: Chapters I and II shall apply from 2 February 2025
+  note: The passage states the claimed date directly.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-ec-2025-feb
+  work: ec-ai-act-policy-page
+  locator: p. 1
+  key: 10d46e5d7779b46abc4ee205d18639c2
+  spans:
+  - start: 0
+    end: 20972
+  verdict: supported
+  quote: prohibited AI practices and AI literacy obligations entered into application from 2 February 2025
+  note: The Commission's application timeline uses the claimed wording.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-apply-2025-gpai
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 113
+  key: 2c76f244dc369ec5a44aa73e5e4d1a97
+  spans:
+  - start: 847998
+    end: 849539
+  verdict: supported
+  quote: Chapter III Section 4, Chapter V, Chapter VII and Chapter XII and Article 78 shall apply from 2 August 2025, with
+    the exception of Article 101
+  note: The passage states the claimed provisions, date and exception.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-ec-2025-aug
+  work: ec-ai-act-policy-page
+  locator: p. 1
+  key: 5749923f2db5f3cbff8f094a38004855
+  spans:
+  - start: 0
+    end: 20972
+  verdict: supported
+  quote: the governance rules and the obligations for GPAI models became applicable on 2 August 2025
+  note: The Commission's timeline states the claim directly.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-cop-published
+  work: ec-gpai-code-of-practice-page
+  locator: p. 1
+  key: 682070cfcb426074ed7df49d561acde8
+  spans:
+  - start: 0
+    end: 6849
+  verdict: supported
+  quote: The  code was published on July 10, 2025
+  note: The Commission page gives the claimed publication date.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-omni-proposal
+  work: ep-oeil-2025-0359-cod-digital-omnibus-ai
+  locator: p. 1
+  key: 7e11ed94770f5592f5e4d31d705ea13e
+  spans:
+  - start: 0
+    end: 69403
+  verdict: supported
+  quote: "19/11/2025 \n                         Legislative proposal published"
+  note: The entry identifies COM(2025)0836 under procedure 2025/0359(COD).
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-omni-adopted
+  work: ep-oeil-2025-0359-cod-digital-omnibus-ai
+  locator: p. 1
+  key: 1dd91f513c8a0f842aa0dd3bdb36f61d
+  spans:
+  - start: 0
+    end: 69403
+  verdict: supported
+  quote: "29/06/2026 \n                         Act adopted by Council after Parliament's 1st reading"
+  note: The passage also records Parliament's first-reading decision on 16 June 2026.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-omni-published
+  work: ep-oeil-2025-0359-cod-digital-omnibus-ai
+  locator: p. 1
+  key: 821063fbe78b1499feb165e1492aadac
+  spans:
+  - start: 0
+    end: 69403
+  verdict: unsupported
+  quote: "08/07/2026 \n                         Final act signed"
+  note: The signing is shown, but the passage ends before any Official Journal publication entry.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-omni-in-force
+  work: ec-ai-act-policy-page
+  locator: p. 1
+  key: d8dc42054076e8c8d0b7a98d81ee43f5
+  spans:
+  - start: 0
+    end: 20972
+  verdict: supported
+  quote: entered into force on 27 July 2026
+  note: The Commission page gives the claimed date for the AI Omnibus.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-apply-general
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 113
+  key: eba7ee9fda74ef43cc8add4a344b5321
+  spans:
+  - start: 847998
+    end: 849539
+  verdict: supported
+  quote: "It shall apply from 2 August 2026.\n\n                   However:"
+  note: Article 113 gives the general date followed by exceptions.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-prohibit-intimate-date
+  work: eu-2026-ai-act-consolidated-text-2026-07-27
+  locator: Article 113
+  key: bb294e7936d5a92acf75c1706ae4d224
+  spans:
+  - start: 525633
+    end: 615017
+  verdict: supported
+  quote: points (ba) and (bb), and Article 5(1a) and (1b) which shall apply from 2 December 2026
+  note: The amended Article 113 states the claimed exception and date.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-synthetic-legacy
+  work: eu-2026-ai-act-consolidated-text-2026-07-27
+  locator: Article 111(4)
+  key: 79789f89005a8c87ed2d9ccdac3346ea
+  spans:
+  - start: 516294
+    end: 516699
+  verdict: supported
+  quote: shall take the necessary steps in order to comply with Article 50(2) by 2 December 2026
+  note: Article 111(4) states the obligation and deadline for the specified providers.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-high-risk-dates
+  work: eu-2026-ai-act-consolidated-text-2026-07-27
+  locator: Article 113
+  key: 33fb59d612111b40464cd8cd89318bd5
+  spans:
+  - start: 525633
+    end: 615017
+  verdict: unsupported
+  quote: Chapter III, Sections 1, 2, and 3, with the exception of Article 6(5)
+  note: The claim should preserve the Article 6(5) exception.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-public-2030
+  work: eu-2026-ai-act-consolidated-text-2026-07-27
+  locator: Article 111(2)
+  key: 44113a195d793489ccfaf3be79d9b38a
+  spans:
+  - start: 515103
+    end: 515941
+  verdict: supported
+  quote: providers and deployers of high-risk AI systems intended to be used by public authorities shall take the necessary
+    steps
+  note: The passage sets the claimed compliance deadline of 2 August 2030.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-original-2027
+  work: eu-2026-regulation-2026-1744-digital-omnibus-ai
+  locator: the title page
+  key: a040ef6e9324ba364aabdb73d2fba936
+  spans:
+  - start: 0
+    end: 276007
+  verdict: supported
+  quote: The entry into application of its provisions is staggered, with all rules entering into application by 2 August 2027
+  note: The recital states the claim as a historical description.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-ai-office
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 64(1)
+  key: 862684a8dff1c2aa9a13fdaf5a7d2d7b
+  spans:
+  - start: 669725
+    end: 669906
+  verdict: supported
+  quote: The Commission shall develop Union expertise and capabilities in the field of AI through the AI Office
+  note: The passage states the claim directly.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-board
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 65(2)
+  key: 5e151768bcb636efb6d177e3418a828d
+  spans:
+  - start: 670464
+    end: 670949
+  verdict: supported
+  quote: The Board shall be composed of one representative per Member State. The European Data Protection Supervisor shall
+    participate as observer.
+  note: The passage also says the AI Office attends without voting.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-panel
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 68(1)
+  key: 0cbf467ee2fa011660afb9eb5000afb8
+  spans:
+  - start: 693015
+    end: 693442
+  verdict: unsupported
+  quote: The Commission shall, by means of an implementing act, make provisions on the establishment of a scientific panel
+  note: The claim should say the Commission shall make provisions for its establishment by implementing act.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-national
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 70(1)
+  key: cf6ac3839f2cef44738e2d4d752249d6
+  spans:
+  - start: 704546
+    end: 705352
+  verdict: supported
+  quote: at least one notifying authority and at least one market surveillance authority
+  note: Article 70(1) requires each Member State to establish or designate these as national competent authorities.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-complaint
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 85
+  key: 7abbd7296d939d2128506c596fa63267
+  spans:
+  - start: 766773
+    end: 767610
+  verdict: supported
+  quote: any natural or legal person having grounds to consider that there has been an infringement
+  note: Article 85 says such a person may complain to the relevant market surveillance authority.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-ai-office-competence
+  work: eu-2026-ai-act-consolidated-text-2026-07-27
+  locator: Article 75(1)
+  key: 7c09b6cba1d9b9956537f63b2f254396
+  spans:
+  - start: 388580
+    end: 395310
+  verdict: supported
+  quote: The AI Office shall be exclusively competent for the supervision and enforcement of the obligations under this Regulation
+  note: Article 75(1) lists both claimed system categories and exceptions to the first.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-dsa
+  work: eu-2026-ai-act-consolidated-text-2026-07-27
+  locator: Article 75(1)
+  key: 063a3f39606f1682c3b5c2ba8dd8e75b
+  spans:
+  - start: 388580
+    end: 395310
+  verdict: supported
+  quote: AI systems that constitute or that are integrated into a very large online platform or very large online search engine
+  note: Article 75(1)(b) places these designated systems within the AI Office's exclusive competence.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-ec-enforcement
+  work: ec-ai-act-policy-page
+  locator: p. 1
+  key: a8867a9106a36b815f1975f767d62a26
+  spans:
+  - start: 0
+    end: 20972
+  verdict: supported
+  quote: It can request technical documentation, evaluate models, require corrective measures and issue fines for non-compliance.
+  note: The preceding sentence gives the 2 August 2026 responsibility date and identifies GPAI models.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-penalties-national
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 99(1)
+  key: c1d38429003c9254ce3b870da7af7f65
+  spans:
+  - start: 799338
+    end: 800056
+  verdict: supported
+  quote: Member States shall lay down the rules on penalties and other enforcement measures
+  note: Article 99(1) also requires the penalties to be effective, proportionate and dissuasive.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-fines-prohibited
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 99(3)
+  key: 70709d7844d47cb287536dcb8c35db57
+  spans:
+  - start: 800403
+    end: 800760
+  verdict: supported
+  quote: up to EUR 35 000 000 or, if the offender is an undertaking, up to 7 %
+  note: Article 99(3) gives the claimed fine ceiling and higher-of rule.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-fines-operators
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 99(4)
+  key: 519b610da751084e98c5aef1ccbe61ae
+  spans:
+  - start: 800760
+    end: 804387
+  verdict: unsupported
+  quote: Non-compliance with any of the following provisions related to operators or notified bodies
+  note: The claim should limit this fine tier to the specific provisions listed in Article 99(4).
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-fines-info
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 99(5)
+  key: e88fc932ad54867d313099fb42215b64
+  spans:
+  - start: 804387
+    end: 804909
+  verdict: unsupported
+  quote: in reply to a request
+  note: The claim should limit the fine to incorrect, incomplete or misleading information supplied in reply to a request.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-fines-sme
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 99(6)
+  key: fce07baf90eaf82f2b71c6d05628a25a
+  spans:
+  - start: 804909
+    end: 805164
+  verdict: supported
+  quote: In the case of SMEs, including start-ups, each fine referred to in this Article
+  note: Article 99(6) applies the lower percentage-or-amount ceiling.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-fines-smc
+  work: eu-2026-ai-act-consolidated-text-2026-07-27
+  locator: Article 99(6a)
+  key: 8dec8b561b10a7ef316e0ed9894aa256
+  spans:
+  - start: 489355
+    end: 489638
+  verdict: supported
+  quote: In the case of SMCs, each fine referred to in paragraphs 4 and 5
+  note: Article 99(6a) applies the lower percentage-or-amount ceiling to those fines.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-fines-gpai
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 101(1)
+  key: c3aa98f02ec505c25c5e0a57f032cec8
+  spans:
+  - start: 819412
+    end: 822255
+  verdict: supported
+  quote: fines not exceeding 3 % of their annual total worldwide turnover in the preceding financial year or EUR 15 000 000,
+    whichever is higher
+  note: Article 101(1) states the claimed maximum, subject to its listed grounds.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-omni-proposal-reasons
+  work: ec-2025-com-2025-836-digital-omnibus-ai-proposal
+  locator: p. 3
+  key: cc514706bde6ae4e0395904cc4caf08a
+  spans:
+  - start: 6581
+    end: 9309
+  verdict: unsupported
+  quote: Guidelines on the competences and designation procedure for conformity assessment
+  note: The cited passage lists planned guidance; the earlier text in the surrounding section describes the claimed consultation
+    findings.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-omni-proposal-mechanism
+  work: ec-2025-com-2025-836-digital-omnibus-ai-proposal
+  locator: p. 30
+  key: 999873c540e75a17cf7c361dd404c6a1
+  spans:
+  - start: 89706
+    end: 92294
+  verdict: supported
+  quote: 6 months after the adoption of that decision as regards AI systems classified as high-risk pursuant to Article 6(2)
+    and Annex III
+  note: The proposal also specifies 12 months for Annex I and the claimed fallback dates.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-omni-proposal-synthetic
+  work: ec-2025-com-2025-836-digital-omnibus-ai-proposal
+  locator: p. 30
+  key: d2cc93b67699b78477df21d6f47de8c3
+  spans:
+  - start: 89706
+    end: 92294
+  verdict: supported
+  quote: comply with Article 50(2) by 2 February 2027
+  note: The proposed Article 111(4) gives that deadline for the specified systems.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-high-risk-fixed
+  work: eu-2026-ai-act-consolidated-text-2026-07-27
+  locator: Article 113
+  key: 057c1160b7b3c1196750f0ee9c0b76e3
+  spans:
+  - start: 525633
+    end: 615017
+  verdict: unsupported
+  quote: Chapter III, Sections 1, 2, and 3, with the exception of Article 6(5)
+  note: The claim should preserve the Article 6(5) exception to those fixed application dates.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-synthetic-adopted
+  work: eu-2026-ai-act-consolidated-text-2026-07-27
+  locator: Article 111(4)
+  key: 6a43aaed92a0ae03adf564757e9944eb
+  spans:
+  - start: 516294
+    end: 516699
+  verdict: supported
+  quote: shall take the necessary steps in order to comply with Article 50(2) by 2 December 2026
+  note: The amended Article 111(4) gives the claimed deadline for the marking obligation.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-omni-reasons
+  work: eu-2026-regulation-2026-1744-digital-omnibus-ai
+  locator: the title page
+  key: 410380cdb4850b492999cb4497da03b8
+  spans:
+  - start: 0
+    end: 276007
+  verdict: supported
+  quote: has resulted in a compliance burden that is heavier than expected
+  note: Recital 2 attributes that burden to the claimed delays.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-ec-omnibus-changes
+  work: ec-ai-act-policy-page
+  locator: p. 1
+  key: 9e18399a9718a65a7abbf62ca388706a
+  spans:
+  - start: 0
+    end: 20972
+  verdict: supported
+  quote: These  amendments  were also added to the AI Act
+  note: The following list includes each amendment named in the claim.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-sandbox-original
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 57(1)
+  key: 464e16ecc6c523ba4db85bfa39f66667
+  spans:
+  - start: 611512
+    end: 612224
+  verdict: supported
+  quote: establish at least one AI regulatory sandbox at national level, which shall be operational by 2 August 2026
+  note: The adopted Article 57(1) states the claimed requirement and date.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-sandbox-amended
+  work: eu-2026-ai-act-consolidated-text-2026-07-27
+  locator: Article 57(1)
+  key: 455e53a571b42d6059ea46781f2f9865
+  spans:
+  - start: 281820
+    end: 282612
+  verdict: supported
+  quote: establish at least one AI regulatory sandbox at national level, which shall be operational by 2 August 2027
+  note: The amended Article 57(1) states the claimed date.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-guidelines-prohibited
+  work: ec-ai-act-policy-page
+  locator: p. 1
+  key: d92eabc5deb463e6a087312a62303c77
+  spans:
+  - start: 0
+    end: 20972
+  verdict: supported
+  quote: The Commission published 2 key documents to support the practical application of the prohibited practices
+  note: The next entries name guidelines on prohibited practices and on the AI system definition.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-gpai-guidance
+  work: ec-ai-act-policy-page
+  locator: p. 1
+  key: 22d85b043912303d30421a8ec3cdb29c
+  spans:
+  - start: 0
+    end: 20972
+  verdict: supported
+  quote: In July 2025, the Commission published 3 instruments
+  note: The following three entries are the guidelines, Code and training-content template named in the claim.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-cop-voluntary
+  work: ec-gpai-code-of-practice-page
+  locator: p. 1
+  key: e4373ed9a1e0c49832b44b6b9e847d0d
+  spans:
+  - start: 0
+    end: 6849
+  verdict: supported
+  quote: a voluntary tool, prepared by  independent experts  in a multi-stakeholder process
+  note: The passage says the Code helps industry comply with obligations for providers of GPAI models.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-cop-chapters
+  work: ec-gpai-code-of-practice-page
+  locator: p. 1
+  key: 5ad3d09e8f3490a1f3c15019984426fe
+  spans:
+  - start: 0
+    end: 6849
+  verdict: supported
+  quote: The Chapters on  Transparency  and  Copyright  offer all providers of general-purpose AI models a way to demonstrate
+    compliance
+  note: The passage ties those chapters to Article 53 and the Safety and Security chapter to Article 55 systemic-risk providers.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-cop-adequate
+  work: ec-gpai-code-of-practice-page
+  locator: p. 1
+  key: bab303045a04df41fe773d15e7554b8a
+  spans:
+  - start: 0
+    end: 6849
+  verdict: supported
+  quote: The  Commission  and the  AI Board  have confirmed that the code is an  adequate voluntary tool
+  note: The passage says the tool helps GPAI providers demonstrate compliance with the AI Act.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-transparency-guidance
+  work: ec-ai-act-policy-page
+  locator: p. 1
+  key: 7a58a1ea6f6f3c19f129f580e3aacbaf
+  spans:
+  - start: 0
+    end: 20972
+  verdict: supported
+  quote: The Commission has also developed other guidance to support compliance with the AI Act’s transparency rules
+  note: The next two entries name the Code of Practice and the claimed transparency guidelines.

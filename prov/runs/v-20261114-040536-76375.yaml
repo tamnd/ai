@@ -1,0 +1,22 @@
+run: v-20261114-040536-76375
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-transp-deep-fake
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 50(4)
+  key: bf39cd24830326cde2944f4c27935488
+  spans:
+  - start: 577638
+    end: 578948
+  verdict: supported
+  quote: Deployers of an AI system that generates or manipulates image, audio or video content constituting a deep fake, shall
+    disclose
+  note: Article 50(4) states the disclosure duty, the law-enforcement exception, and the limited disclosure duty for evidently
+    artistic or analogous works.

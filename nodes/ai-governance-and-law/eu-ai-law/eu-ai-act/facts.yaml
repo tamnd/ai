@@ -1,0 +1,35 @@
+# The facts of the eu-ai-act page (spec 04.9). The build computes the status of each fact.
+- id: jurisdiction
+  value: European Union
+  sources:
+    - {src: eu-2024-regulation-2024-1689-ai-act, loc: "the title page", value: European Union, kind: primary}
+- id: type
+  value: regulation
+  sources:
+    - {src: eu-2024-regulation-2024-1689-ai-act, loc: "the title page", value: regulation, kind: primary}
+- id: adopted
+  value: 2024-06-13
+  note: "The date of the act, the day on which the Presidents of the European Parliament and of the Council signed it; the Council adopted it on 21 May 2024, after Parliament's first-reading position of 13 March 2024."
+  sources:
+    - {src: eu-2024-regulation-2024-1689-ai-act, loc: "the title page", value: 2024-06-13, kind: primary}
+    - {src: ep-oeil-2021-0106-cod-artificial-intelligence-act, loc: "p. 1", value: 2024-06-13, kind: secondary}
+- id: published
+  value: 2024-07-12
+  sources:
+    - {src: eu-2024-regulation-2024-1689-ai-act, loc: "the title page", value: 2024-07-12, kind: primary}
+    - {src: ep-oeil-2021-0106-cod-artificial-intelligence-act, loc: "p. 1", value: 2024-07-12, kind: secondary}
+- id: in_force
+  value: 2024-08-01
+  note: "Article 113 sets entry into force on the twentieth day after publication on 12 July 2024; Regulation (EU) 2026/1744, recital 1, states the date."
+  sources:
+    - {src: eu-2026-regulation-2026-1744-digital-omnibus-ai, loc: "Recital 1", value: 2024-08-01, kind: primary}
+    - {src: ec-ai-act-policy-page, loc: "p. 1", value: 2024-08-01, kind: secondary}
+- id: applies
+  value: 2026-08-02
+  sources:
+    - {src: eu-2024-regulation-2024-1689-ai-act, loc: "Article 113", value: 2026-08-02, kind: primary}
+    - {src: ec-ai-act-policy-page, loc: "p. 1", value: 2026-08-02, kind: secondary}
+- id: text
+  value: "http://data.europa.eu/eli/reg/2024/1689/oj"
+  sources:
+    - {src: eu-2024-regulation-2024-1689-ai-act, loc: "the title page", value: "http://data.europa.eu/eli/reg/2024/1689/oj", kind: primary}
