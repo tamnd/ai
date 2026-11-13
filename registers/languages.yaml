@@ -1,0 +1,17 @@
+# The register of the languages of the implementations. aik reads it until the framework register of spec 08.2 replaces it in milestone M0.
+# NumPy, PyTorch and JAX code is Python, so Python is the only language for now.
+- id: python
+  name: Python
+  tier: 1
+  ext: [py]
+  file_case: snake
+  test: {framework: pytest, file: test_<name>.py}
+  format: {tool: ruff format}
+  lint: {tool: ruff, args: [check]}
+  toolchain: Python 3.14, pytest 9
+  run: python3 -m pytest
+  comment: "#"
+  highlight: python
+  int: int
+  list: list[int]
+  since: 2026-11

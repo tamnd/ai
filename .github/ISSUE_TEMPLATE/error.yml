@@ -1,0 +1,18 @@
+name: Error on a page
+description: A page or a card has a wrong claim, a wrong number, a bad derivation step, a bug in the code or a broken scene.
+labels: ["type: bug", "status: triage"]
+body:
+  - type: input
+    id: url
+    attributes:
+      label: Page
+      description: For example https://ai.tamnd.com/dropout/#derivation
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What is wrong
+      description: Quote the part and say why it is wrong. Give a source if you can.
+    validations:
+      required: true

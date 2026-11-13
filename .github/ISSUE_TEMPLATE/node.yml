@@ -1,0 +1,29 @@
+name: New page or card
+description: Ask for a page or a card about an idea, a method, a model, a benchmark or another item of AI.
+labels: ["type: content", "status: triage"]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Name
+      description: For example "Dropout" or "MMLU".
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind
+      options: [concept, method, architecture, model, task, benchmark, dataset, metric, theorem, finding, argument, open problem, system, software, hardware, risk, incident, policy, standard, work, person, organization, event, other]
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Sources
+      description: Give one or two good sources, for example the first paper, a survey or an official text.
+  - type: checkboxes
+    id: write
+    attributes:
+      label: Help
+      options:
+        - label: I want to write this page or card.
