@@ -1,0 +1,127 @@
+# The claims of the dropout page (spec 07). The build computes the labels.
+- id: c-inverted-scaling
+  type: mathematical
+  text: "With inverted dropout, the expected value of each output unit equals its input: E[h_j m_j / (1 - p)] = h_j."
+  assumes: ["each mask entry m_j is Bernoulli with mean 1 - p", "0 <= p < 1"]
+  derivation: "node.md#derivation"
+  evidence:
+    - {work: "srivastava-2014-dropout-jmlr", role: original, locator: "Section 4", stance: for}
+
+- id: c-noise-variance
+  type: mathematical
+  text: "With inverted dropout, the variance of an output unit is p / (1 - p) times the square of its input."
+  assumes: ["each mask entry m_j is Bernoulli with mean 1 - p", "0 <= p < 1", "the input h_j is fixed"]
+  derivation: "node.md#derivation"
+
+- id: c-linear-ridge
+  type: mathematical
+  text: "For linear regression with dropout on the inputs, the expected squared loss is the least squares loss plus a ridge penalty on each weight, scaled by the sum of the squares of its input feature."
+  assumes: ["the model is linear", "the loss is the squared error", "the mask entries are independent and Bernoulli with mean 1 - p"]
+  derivation: "node.md#derivation"
+  evidence:
+    - {work: "srivastava-2014-dropout-jmlr", role: original, locator: "Section 9.1", stance: for}
+
+- id: c-adaptive-l2
+  type: mathematical
+  text: "For generalized linear models, dropout is close, to second order, to an L2 penalty scaled by an estimate of the diagonal of the Fisher information."
+  assumes: ["the model is a generalized linear model", "a second-order expansion of the loss in the noise"]
+  evidence:
+    - {work: "wager-2013-dropout-adaptive-regularization", role: original, locator: "NeurIPS 26, the sections on generalized linear models", stance: for}
+
+- id: c-geometric-mean
+  type: mathematical
+  text: "For one logistic unit, the network with scaled weights gives the normalized weighted geometric mean of the outputs of all its dropout sub-networks."
+  assumes: ["one layer with a logistic output", "independent dropout on the inputs of the unit"]
+  evidence:
+    - {work: "baldi-2013-understanding-dropout", role: original, locator: "NeurIPS 26, the sections on the normalized weighted geometric mean", stance: for}
+
+- id: c-reduces-error
+  type: empirical
+  text: "Dropout gave a lower test error than the same networks without dropout on MNIST, SVHN, CIFAR-10, CIFAR-100, ImageNet, TIMIT and Reuters."
+  scope:
+    models: "feedforward and convolutional networks of 2012 to 2014, up to the size of AlexNet"
+    data: [mnist, svhn, cifar-10, cifar-100, imagenet, timit, reuters-rcv1]
+    scale: "up to about 60 million parameters"
+    setting: "supervised classification, SGD with momentum, often with max-norm constraints"
+  evidence:
+    - {work: "srivastava-2014-dropout-jmlr", role: original, locator: "Section 6 and Tables 2 to 9", stance: for}
+    - {work: "hinton-2012-improving-neural-networks-arxiv", role: original, locator: "Sections 2 to 7", stance: for}
+  small_scale: "yes"
+  small_scale_note: "A small multilayer perceptron on MNIST shows the effect on one GPU or a CPU in minutes."
+
+- id: c-weight-scaling-close
+  type: empirical
+  text: "On MNIST, the weight scaling rule at test time gave about the same test error as the average of the predictions of about 50 sampled masks."
+  scope:
+    models: "the dropout networks of the MNIST experiments"
+    data: [mnist]
+    scale: "unknown"
+    setting: "test-time inference with sampled masks against weight scaling"
+  evidence:
+    - {work: "srivastava-2014-dropout-jmlr", role: original, locator: "Section 7.5, Figure 11", stance: for}
+  small_scale: "yes"
+  small_scale_note: "The comparison needs one trained network and repeated forward passes."
+
+- id: c-slower-training
+  type: empirical
+  text: "A dropout network typically takes two to three times longer to train than a standard network of the same architecture."
+  scope:
+    models: "the networks of the study"
+    data: [unknown]
+    scale: "unknown"
+    setting: "the authors' report of their own experiments"
+  evidence:
+    - {work: "srivastava-2014-dropout-jmlr", role: original, locator: "Section 11", stance: for}
+
+- id: c-variance-shift
+  type: empirical
+  text: "Dropout placed before batch normalization changes the variance of the units from training to inference, and this variance shift can lower the test accuracy."
+  scope:
+    models: "convolutional networks with batch normalization, such as ResNet, ResNeXt, DenseNet and Wide ResNet"
+    data: [cifar-10, cifar-100, imagenet]
+    scale: "unknown"
+    setting: "image classification"
+  evidence:
+    - {work: "li-2019-disharmony-dropout-batch-normalization", role: original, locator: "CVPR 2019, the sections on variance shift", stance: for}
+
+- id: c-typical-rates
+  type: attributive
+  text: "Srivastava et al. recommend keeping hidden units with probability 0.5 to 0.8 and real-valued inputs with probability 0.8."
+  evidence:
+    - {work: "srivastava-2014-dropout-jmlr", role: original, locator: "Appendix A.4", stance: for}
+
+- id: c-rnn-nonrecurrent
+  type: attributive
+  text: "Zaremba et al. apply dropout only to the non-recurrent connections of an LSTM."
+  evidence:
+    - {work: "zaremba-2014-recurrent-neural-network-regularization", role: original, locator: "arXiv 1409.2329, Section 3", stance: for}
+
+- id: c-llm-no-dropout
+  type: historical
+  text: "PaLM was trained without dropout."
+  evidence:
+    - {work: "chowdhery-2022-palm", role: original, locator: "arXiv 2204.02311, Section 5", stance: for}
+
+- id: c-mc-dropout
+  type: definitional
+  text: "Monte Carlo dropout keeps dropout on at inference and averages several forward passes, and reads the spread of the passes as the uncertainty of the prediction."
+  evidence:
+    - {work: "gal-2016-dropout-bayesian-approximation", role: original, locator: "ICML 2016, PMLR 48, Sections 3 and 4", stance: for}
+
+- id: c-first-2012
+  type: historical
+  text: "Dropout was first described in 2012 by Hinton, Srivastava, Krizhevsky, Sutskever and Salakhutdinov, in the preprint arXiv 1207.0580."
+  evidence:
+    - {work: "hinton-2012-improving-neural-networks-arxiv", role: original, locator: "the title page", stance: for}
+
+- id: c-canonical-2014
+  type: historical
+  text: "The full study of dropout is Srivastava et al. (2014), Journal of Machine Learning Research 15, pages 1929 to 1958."
+  evidence:
+    - {work: "srivastava-2014-dropout-jmlr", role: original, locator: "the title page", stance: for}
+
+- id: c-alexnet
+  type: historical
+  text: "AlexNet used dropout in its first two fully connected layers and was the winning entry of ILSVRC-2012."
+  evidence:
+    - {work: "krizhevsky-2012-imagenet-classification", role: original, locator: "NeurIPS 25, Section 4.2 and the abstract", stance: for}
