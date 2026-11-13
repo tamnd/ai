@@ -1,0 +1,28 @@
+# The models of the agents, by class and by role (spec 14.4).
+# A change to this file is a pull request with a new version. Provenance records the version, the model id and the prompt version of each change (spec 04.8), so we can find and queue again a page that an old model wrote.
+# The auditor of a page is never of the family of its writer (spec 15.5). When the other family is not available, the item waits, unless the writer was of the other family (Q-08).
+# Each provider here gives the user the rights in the output (spec 19).
+version: m-2026.11
+classes:
+  large: [claude-opus-5-5, claude-fable-5-2]
+  medium: [claude-sonnet-5-5]
+  small: [claude-haiku-5-5]
+  other:
+    writer: codex:gpt-6-luna
+    auditor: codex:gpt-6-sol
+writer_ladder: [other.writer, claude-haiku-5-5, claude-sonnet-5-5, claude-opus-5-5]
+# The kinds theorem, argument, open-problem, policy and finding start higher on the ladder (Default).
+writer_ladder_hard: [claude-sonnet-5-5, claude-opus-5-5, claude-fable-5-2]
+auditor_for:
+  claude-*: other.auditor
+  codex:*: claude-sonnet-5-5
+  # Only when the writer was not Claude. Else the item waits.
+  fallback_if_other_unavailable: claude-opus-5-5
+verifier: other.auditor
+# Two models of two families make the catalog of an area (spec 14.3).
+cataloguer: [claude-opus-5-5, other.auditor]
+curator: claude-sonnet-5-5
+harvester_extract: claude-haiku-5-5
+coder: claude-sonnet-5-5
+experimenter: claude-sonnet-5-5
+reviewer_assistant: claude-sonnet-5-5
