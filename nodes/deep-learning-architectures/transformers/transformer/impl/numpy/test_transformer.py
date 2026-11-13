@@ -9,6 +9,7 @@ import numpy as np
 import pytest
 from hypothesis import given, settings
 from hypothesis import strategies as st
+
 from transformer import (
     attention,
     config,
@@ -92,8 +93,13 @@ def test_shapes(c):
     logits, cache = forward(params, src, tgt, cfg)
     assert list(logits.shape) == blocks["logits"]["outputs"]["logits"]
     assert list(cache["memory"].shape) == blocks["enc_layer"]["outputs"]["y"]
-    got = {"enc_attn": cache["enc"][0], "dec_attn": cache["dec"][0]["self"], "cross_attn": cache["dec"][0]["cross"],
-           "enc_ffn": cache["enc"][0], "dec_ffn": cache["dec"][0]}
+    got = {
+        "enc_attn": cache["enc"][0],
+        "dec_attn": cache["dec"][0]["self"],
+        "cross_attn": cache["dec"][0]["cross"],
+        "enc_ffn": cache["enc"][0],
+        "dec_ffn": cache["dec"][0],
+    }
     for block, arrays in got.items():
         for name, shape in blocks[block]["internals"].items():
             assert list(arrays[name].shape) == shape, (block, name)
@@ -156,7 +162,9 @@ def test_attention_is_permutation_equivariant(seed):
     q, k, v = rng.normal(size=(5, 3)), rng.normal(size=(7, 3)), rng.normal(size=(7, 2))
     pq, pk = rng.permutation(5), rng.permutation(7)
     out, _ = attention(q, k, v)
-    moved, _ = attention(q[pq], k[pk], v[pk])  # permuting the queries permutes the rows; keys and values together do nothing
+    moved, _ = attention(
+        q[pq], k[pk], v[pk]
+    )  # permuting the queries permutes the rows; keys and values together do nothing
     np.testing.assert_allclose(moved, out[pq], rtol=1e-12, atol=1e-12)
 
 

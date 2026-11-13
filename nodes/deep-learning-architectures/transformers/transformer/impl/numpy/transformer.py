@@ -16,8 +16,14 @@ def config(d_model=512, n_heads=8, d_ff=2048, n_layers=6, vocab=37000):
     """Return the config of the model. The width of each head is d_model / n_heads."""
     if min(d_model, n_heads, d_ff, n_layers, vocab) < 1 or d_model % n_heads:
         raise ValueError("the sizes must be at least 1, and n_heads must divide d_model")
-    return {"d_model": d_model, "n_heads": n_heads, "d_head": d_model // n_heads, "d_ff": d_ff,
-            "n_layers": n_layers, "vocab": vocab}
+    return {
+        "d_model": d_model,
+        "n_heads": n_heads,
+        "d_head": d_model // n_heads,
+        "d_ff": d_ff,
+        "n_layers": n_layers,
+        "vocab": vocab,
+    }
 
 
 def _linear(rng, n_in, n_out):
@@ -45,11 +51,21 @@ def init(rng, cfg):
         W_2, b_2 = _linear(rng, F, M)
         return {"W_1": W_1, "b_1": b_1, "W_2": W_2, "b_2": b_2}
 
-    enc = [{"attn": _attn_params(rng, M), "ffn": ffn(), "norm1": _norm_params(M), "norm2": _norm_params(M)}
-           for _ in range(cfg["n_layers"])]
-    dec = [{"attn": _attn_params(rng, M), "cross": _attn_params(rng, M), "ffn": ffn(),
-            "norm1": _norm_params(M), "norm2": _norm_params(M), "norm3": _norm_params(M)}
-           for _ in range(cfg["n_layers"])]
+    enc = [
+        {"attn": _attn_params(rng, M), "ffn": ffn(), "norm1": _norm_params(M), "norm2": _norm_params(M)}
+        for _ in range(cfg["n_layers"])
+    ]
+    dec = [
+        {
+            "attn": _attn_params(rng, M),
+            "cross": _attn_params(rng, M),
+            "ffn": ffn(),
+            "norm1": _norm_params(M),
+            "norm2": _norm_params(M),
+            "norm3": _norm_params(M),
+        }
+        for _ in range(cfg["n_layers"])
+    ]
     return {"embed": rng.normal(0.0, M**-0.5, (cfg["vocab"], M)), "enc": enc, "dec": dec}  # embed: (V, M)
 
 

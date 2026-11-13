@@ -18,8 +18,14 @@ def config(d_model=512, n_heads=8, d_ff=2048, n_layers=6, vocab=37000):
     """Return the config of the model. The width of each head is d_model / n_heads."""
     if min(d_model, n_heads, d_ff, n_layers, vocab) < 1 or d_model % n_heads:
         raise ValueError("the sizes must be at least 1, and n_heads must divide d_model")
-    return {"d_model": d_model, "n_heads": n_heads, "d_head": d_model // n_heads, "d_ff": d_ff,
-            "n_layers": n_layers, "vocab": vocab}
+    return {
+        "d_model": d_model,
+        "n_heads": n_heads,
+        "d_head": d_model // n_heads,
+        "d_ff": d_ff,
+        "n_layers": n_layers,
+        "vocab": vocab,
+    }
 
 
 def _param(*shape):
@@ -60,9 +66,11 @@ class MultiHead(torch.nn.Module):
     def __init__(self, M, n_heads):
         super().__init__()
         self.n_heads = n_heads
-        for name in ("q", "k", "v", "o"):
-            setattr(self, "W_" + name, _param(M, M))
-            setattr(self, "b_" + name, _param(M))
+        # The projections of the queries, the keys, the values and the output, each (M, M) with a bias (M,).
+        self.W_q, self.b_q = _param(M, M), _param(M)
+        self.W_k, self.b_k = _param(M, M), _param(M)
+        self.W_v, self.b_v = _param(M, M), _param(M)
+        self.W_o, self.b_o = _param(M, M), _param(M)
 
     def forward(self, x, memory, allowed=None):
         # eq: multihead

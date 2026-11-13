@@ -19,8 +19,14 @@ def config(d_model=512, n_heads=8, d_ff=2048, n_layers=6, vocab=37000):
     """Return the config of the model. The width of each head is d_model / n_heads."""
     if min(d_model, n_heads, d_ff, n_layers, vocab) < 1 or d_model % n_heads:
         raise ValueError("the sizes must be at least 1, and n_heads must divide d_model")
-    return {"d_model": d_model, "n_heads": n_heads, "d_head": d_model // n_heads, "d_ff": d_ff,
-            "n_layers": n_layers, "vocab": vocab}
+    return {
+        "d_model": d_model,
+        "n_heads": n_heads,
+        "d_head": d_model // n_heads,
+        "d_ff": d_ff,
+        "n_layers": n_layers,
+        "vocab": vocab,
+    }
 
 
 def init(key, cfg):
@@ -46,8 +52,10 @@ def init(key, cfg):
 
     embed = jax.random.normal(next(keys), (cfg["vocab"], M)) * M**-0.5  # (V, M)
     enc = [{"attn": attn(), "ffn": ffn(), "norm1": norm(), "norm2": norm()} for _ in range(cfg["n_layers"])]
-    dec = [{"attn": attn(), "cross": attn(), "ffn": ffn(), "norm1": norm(), "norm2": norm(), "norm3": norm()}
-           for _ in range(cfg["n_layers"])]
+    dec = [
+        {"attn": attn(), "cross": attn(), "ffn": ffn(), "norm1": norm(), "norm2": norm(), "norm3": norm()}
+        for _ in range(cfg["n_layers"])
+    ]
     return {"embed": embed, "enc": enc, "dec": dec}
 
 

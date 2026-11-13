@@ -9,6 +9,7 @@ import jax
 import jax.numpy as jnp
 import numpy as np
 import pytest
+
 from transformer import apply, attention, config, init, param_count
 
 jax.config.update("jax_enable_x64", True)  # before any array is made: the tests run in float64
@@ -85,8 +86,13 @@ def test_shapes(c):
     tgt = jnp.asarray(rng.integers(0, k["V"], (k["B"], k["T"])))
     logits, cache = apply(params, src, tgt, cfg)
     assert list(logits.shape) == blocks["logits"]["outputs"]["logits"]
-    got = {"enc_attn": cache["enc"][0], "dec_attn": cache["dec"][0]["self"], "cross_attn": cache["dec"][0]["cross"],
-           "enc_ffn": cache["enc"][0], "dec_ffn": cache["dec"][0]}
+    got = {
+        "enc_attn": cache["enc"][0],
+        "dec_attn": cache["dec"][0]["self"],
+        "cross_attn": cache["dec"][0]["cross"],
+        "enc_ffn": cache["enc"][0],
+        "dec_ffn": cache["dec"][0],
+    }
     for block, arrays in got.items():
         for name, shape in blocks[block]["internals"].items():
             assert list(arrays[name].shape) == shape, (block, name)
@@ -112,7 +118,7 @@ def test_gradient():
 
     grads = jax.grad(loss)(params)
     leaves, tree = jax.tree_util.tree_flatten(params)
-    for n, (leaf, g) in enumerate(zip(leaves, jax.tree_util.tree_leaves(grads))):
+    for n, (leaf, g) in enumerate(zip(leaves, jax.tree_util.tree_leaves(grads), strict=True)):
         for i in range(min(leaf.size, 3)):
             h = 1e-6 * max(1.0, abs(float(leaf.reshape(-1)[i])))
 
@@ -130,3 +136,46 @@ def test_gradient_of_a_masked_row_is_finite():
     allowed = jnp.array([[True, False, False], [False, False, False], [True, True, True]])
     g = jax.grad(lambda q: attention(q, q, q, allowed)[0].sum())(q)
     assert bool(jnp.all(jnp.isfinite(g)))
+
+
+def copy_batch(n=8, length=5, vocab=8, seed=0):
+    # The copy task of the learning smoke test (8.7.6): the target is the source. Token 0 is the padding and token 1
+    # starts the target, so the sources use the tokens 2 to vocab - 1. The decoder reads the target shifted right.
+    src = jax.random.randint(jax.random.key(seed), (n, length), 2, vocab)  # (B, S)
+    tgt_in = jnp.concatenate([jnp.ones((n, 1), dtype=src.dtype), src[:, :-1]], axis=1)  # (B, T)
+    return src, tgt_in, src
+
+
+def test_learns():
+    # The model fits 8 sequences of the copy task in 150 steps of Adam, from a loss of about 2.5 to about 0.001. A
+    # wrong sign or a gradient that does not reach the weights leaves the loss far above the bound of 0.05; a uniform
+    # guess among the 6 source tokens is log 6 = 1.79. The test does not check the causal mask, because with no mask
+    # the decoder could copy the next token of its own input: the causal test of the NumPy reference does, and the
+    # shared fixture carries it here.
+    cfg = config(d_model=32, n_heads=4, d_ff=64, n_layers=1, vocab=8)
+    params = init(jax.random.key(0), cfg)
+    src, tgt_in, target = copy_batch()
+
+    def loss_fn(p):
+        logits, _ = apply(p, src, tgt_in, cfg)
+        logp = jax.nn.log_softmax(logits, axis=-1)  # (B, T, V)
+        return -jnp.take_along_axis(logp, target[..., None], axis=-1).mean()
+
+    @jax.jit
+    def step(p, m, v, t):
+        # One step of Adam with lr 1e-2, beta1 0.9, beta2 0.999, as torch.optim.Adam.
+        loss, g = jax.value_and_grad(loss_fn)(p)
+        m = jax.tree_util.tree_map(lambda m, g: 0.9 * m + 0.1 * g, m, g)
+        v = jax.tree_util.tree_map(lambda v, g: 0.999 * v + 0.001 * g * g, v, g)
+        c1, c2 = 1 - 0.9**t, 1 - 0.999**t
+        p = jax.tree_util.tree_map(lambda p, m, v: p - 1e-2 * (m / c1) / (jnp.sqrt(v / c2) + 1e-8), p, m, v)
+        return p, m, v, loss
+
+    m = jax.tree_util.tree_map(jnp.zeros_like, params)
+    v = jax.tree_util.tree_map(jnp.zeros_like, params)
+    losses = []
+    for t in range(1, 151):
+        params, m, v, loss = step(params, m, v, t)
+        losses.append(float(loss))
+    assert losses[0] > 1.0
+    assert losses[-1] < 0.05, losses[-1]

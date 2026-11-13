@@ -8,7 +8,8 @@ import pathlib
 import numpy as np
 import pytest
 import torch
-from transformer import Transformer, attention, config, param_count
+
+from transformer import MultiHead, Norm, Transformer, attention, config, param_count
 
 torch.set_default_dtype(torch.float64)
 
@@ -58,8 +59,13 @@ def test_shapes(c):
     tgt = torch.randint(0, k["V"], (k["B"], k["T"]))
     logits, cache = model(src, tgt)
     assert list(logits.shape) == blocks["logits"]["outputs"]["logits"]
-    got = {"enc_attn": cache["enc"][0], "dec_attn": cache["dec"][0]["self"], "cross_attn": cache["dec"][0]["cross"],
-           "enc_ffn": cache["enc"][0], "dec_ffn": cache["dec"][0]}
+    got = {
+        "enc_attn": cache["enc"][0],
+        "dec_attn": cache["dec"][0]["self"],
+        "cross_attn": cache["dec"][0]["cross"],
+        "enc_ffn": cache["enc"][0],
+        "dec_ffn": cache["dec"][0],
+    }
     for block, arrays in got.items():
         for name, shape in blocks[block]["internals"].items():
             assert list(arrays[name].shape) == shape, (block, name)
@@ -89,6 +95,7 @@ def test_gradient():
         p = params[name]
         model.zero_grad()
         loss().backward()
+        assert p.grad is not None
         grad = p.grad.clone()
         for i in range(min(p.numel(), 6)):
             flat = p.data.view(-1)
@@ -105,8 +112,11 @@ def test_gradient():
 def test_agrees_with_scaled_dot_product_attention():
     # The second oracle (8.7.3): torch's own attention on random inputs, with and without a mask.
     g = torch.Generator().manual_seed(2)
-    q, k, v = (torch.randn(2, 3, 5, 4, generator=g), torch.randn(2, 3, 7, 4, generator=g),
-               torch.randn(2, 3, 7, 4, generator=g))
+    q, k, v = (
+        torch.randn(2, 3, 5, 4, generator=g),
+        torch.randn(2, 3, 7, 4, generator=g),
+        torch.randn(2, 3, 7, 4, generator=g),
+    )
     allowed = torch.rand(2, 1, 5, 7, generator=g) > 0.3
     allowed[..., 0] = True  # every query sees a key, which sdpa needs to avoid NaN
     sdpa = torch.nn.functional.scaled_dot_product_attention
@@ -118,6 +128,7 @@ def test_agrees_with_multihead_attention():
     # torch.nn.MultiheadAttention computes x W^T; the reference computes x W, so the weights go in transposed.
     model = fixture()[0]
     layer = model.dec[0].attn
+    assert isinstance(layer, MultiHead)
     M, H = 16, 4
     mha = torch.nn.MultiheadAttention(M, H, batch_first=True)
     with torch.no_grad():
@@ -135,6 +146,7 @@ def test_agrees_with_multihead_attention():
 def test_agrees_with_layer_norm():
     model, _, _ = fixture()
     norm = model.enc[1].norm2
+    assert isinstance(norm, Norm)
     x = torch.randn(2, 6, 16, generator=torch.Generator().manual_seed(4)) * 3 + 1
     want = torch.nn.functional.layer_norm(x, (16,), norm.gamma, norm.beta, eps=1e-6)
     torch.testing.assert_close(norm(x), want, rtol=1e-10, atol=1e-12)
@@ -146,3 +158,35 @@ def test_fully_masked_row_is_zero():
     allowed[1] = False
     out, w = attention(q, q, q, allowed)
     assert torch.all(out[1] == 0) and torch.all(w[1] == 0) and torch.all(torch.isfinite(out))
+
+
+def copy_batch(n=8, length=5, vocab=8, seed=0):
+    # The copy task of the learning smoke test (8.7.6): the target is the source. Token 0 is the padding and token 1
+    # starts the target, so the sources use the tokens 2 to vocab - 1. The decoder reads the target shifted right.
+    g = torch.Generator().manual_seed(seed)
+    src = torch.randint(2, vocab, (n, length), generator=g)  # (B, S)
+    tgt_in = torch.cat([torch.ones(n, 1, dtype=torch.long), src[:, :-1]], dim=1)  # (B, T)
+    return src, tgt_in, src
+
+
+def test_learns():
+    # The model fits 8 sequences of the copy task in 150 steps of Adam, from a loss of about 2.5 to about 0.001. A
+    # wrong sign or a gradient that does not reach the weights leaves the loss far above the bound of 0.05; a uniform
+    # guess among the 6 source tokens is log 6 = 1.79. The test does not check the causal mask, because with no mask
+    # the decoder could copy the next token of its own input: the causal test of the NumPy reference does, and the
+    # shared fixture carries it here.
+    torch.manual_seed(0)
+    cfg = config(d_model=32, n_heads=4, d_ff=64, n_layers=1, vocab=8)
+    model = Transformer(cfg)
+    src, tgt_in, target = copy_batch()
+    opt = torch.optim.Adam(model.parameters(), lr=1e-2)
+    losses = []
+    for _ in range(150):
+        logits, _ = model(src, tgt_in)
+        loss = torch.nn.functional.cross_entropy(logits.reshape(-1, cfg["vocab"]), target.reshape(-1))
+        opt.zero_grad()
+        loss.backward()
+        opt.step()
+        losses.append(loss.item())
+    assert losses[0] > 1.0
+    assert losses[-1] < 0.05, losses[-1]
