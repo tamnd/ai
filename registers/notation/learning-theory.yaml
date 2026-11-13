@@ -1,0 +1,13 @@
+# The notation of the area learning-theory (spec 06.4). It follows Shalev-Shwartz and Ben-David, Understanding Machine Learning (2014), "Notation".
+area: learning-theory
+sources:
+  - {src: shalev-shwartz-ben-david-2014-understanding-machine-learning, loc: "Notation"}
+symbols:
+  - {symbol: "\\mathcal{X}", meaning: "the domain set"}
+  - {symbol: "\\mathcal{Y}", meaning: "the label set"}
+  - {symbol: "m", meaning: "the sample size"}
+  - {symbol: "\\epsilon", meaning: "the accuracy parameter"}
+  - {symbol: "\\delta", meaning: "the confidence parameter"}
+  - {symbol: "S", meaning: "a training sample of size m"}
+  - {symbol: "L_{\\mathcal{D}}", meaning: "the true risk of a hypothesis under the distribution \\mathcal{D}"}
+  - {symbol: "L_S", meaning: "the empirical risk of a hypothesis on the sample S"}

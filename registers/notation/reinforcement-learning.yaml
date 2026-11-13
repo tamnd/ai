@@ -1,0 +1,22 @@
+# The notation of the area reinforcement-learning (spec 06.4). It follows Sutton and Barto, Reinforcement Learning: An Introduction, second edition (2018), "Summary of Notation".
+# Upper case letters are random variables. Lower case letters are their values.
+area: reinforcement-learning
+sources:
+  - {src: sutton-barto-2018-reinforcement-learning, loc: "Summary of Notation"}
+symbols:
+  - {symbol: "S_t", meaning: "the state at time t, a random variable"}
+  - {symbol: "A_t", meaning: "the action at time t, a random variable; A without an index is the advantage, only in policy gradient pages"}
+  - {symbol: "R_{t+1}", meaning: "the reward after the action A_t, a random variable"}
+  - {symbol: "s", meaning: "a state"}
+  - {symbol: "a", meaning: "an action"}
+  - {symbol: "r", meaning: "a reward"}
+  - {symbol: "\\pi", meaning: "a policy"}
+  - {symbol: "\\gamma", meaning: "the discount rate"}
+  - {symbol: "G_t", meaning: "the return from time t"}
+  - {symbol: "v_\\pi", meaning: "the state value function of the policy \\pi"}
+  - {symbol: "q_\\pi", meaning: "the action value function of the policy \\pi"}
+  - {symbol: "V", meaning: "an estimate of a state value function"}
+  - {symbol: "Q", meaning: "an estimate of an action value function"}
+  - {symbol: "H", meaning: "the horizon"}
+  - {symbol: "\\alpha", meaning: "the step size"}
+  - {symbol: "\\varepsilon", meaning: "the probability of a random action in an epsilon-greedy policy"}
