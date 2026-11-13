@@ -1,0 +1,184 @@
+# The canon of spec 5.10 and 13.3. An item is core when at least two canon works name it (the canon match step of spec 14.3).
+# A work here is also a secondary source with locators. Its id is the src id that facts, claims and the notation register cite.
+# The toc and index fields hold the names of the chapters, the sections and the index terms, with their locators. They hold names only, never text (spec 19.3). The harvest step fills them from the public tables of contents and by hand, so they are empty in M0.
+# A change to the canon is a pull request with a reason.
+# Each ISBN was checked against Open Library on 2026-11-13. A work with no ISBN gives a DOI or the URL of its free online version.
+version: c-2026.11
+works:
+  - id: russell-norvig-2020-aima
+    title: "Artificial Intelligence: A Modern Approach"
+    authors: [Stuart Russell, Peter Norvig]
+    edition: 4
+    year: 2020
+    isbn: ["9780134610993"]
+    url: https://aima.cs.berkeley.edu/
+    covers: the whole field, symbolic and statistical
+    areas: [ai-foundations, search-and-evolutionary-computation, constraints-and-satisfiability, planning-and-scheduling, knowledge-representation, automated-reasoning, probabilistic-reasoning, games-and-multi-agent-systems, supervised-learning, reinforcement-learning, natural-language-processing, computer-vision, robotics-and-embodied-ai, philosophy-and-cognitive-science, ai-safety-and-alignment]
+    index: [toc, index]
+  - id: goodfellow-2016-deep-learning
+    title: Deep Learning
+    authors: [Ian Goodfellow, Yoshua Bengio, Aaron Courville]
+    year: 2016
+    isbn: ["9780262035613"]
+    url: https://www.deeplearningbook.org/
+    covers: deep learning foundations
+    areas: [math-for-ai, deep-learning-foundations, deep-learning-training, deep-learning-architectures, generative-models, unsupervised-learning]
+    index: [toc, index]
+  - id: bishop-2006-prml
+    title: Pattern Recognition and Machine Learning
+    authors: [Christopher M. Bishop]
+    year: 2006
+    isbn: ["9780387310732"]
+    url: https://www.microsoft.com/en-us/research/people/cmbishop/prml-book/
+    covers: probabilistic machine learning
+    areas: [supervised-learning, unsupervised-learning, probabilistic-machine-learning, probabilistic-reasoning]
+    index: [toc, index]
+  - id: bishop-bishop-2024-deep-learning
+    title: "Deep Learning: Foundations and Concepts"
+    authors: [Christopher M. Bishop, Hugh Bishop]
+    year: 2024
+    isbn: ["9783031454677"]
+    url: https://www.bishopbook.com/
+    covers: modern deep learning
+    areas: [deep-learning-foundations, deep-learning-training, deep-learning-architectures, generative-models, self-supervised-learning]
+    index: [toc, index]
+  - id: murphy-2022-pml
+    title: "Probabilistic Machine Learning: An Introduction and Advanced Topics"
+    authors: [Kevin P. Murphy]
+    year: 2022
+    # The first ISBN is the introduction (2022). The second is the advanced topics (2023).
+    isbn: ["9780262046824", "9780262048439"]
+    url: https://probml.github.io/pml-book/
+    covers: machine learning, both volumes
+    areas: [supervised-learning, unsupervised-learning, probabilistic-machine-learning, probabilistic-reasoning, generative-models, reinforcement-learning, causal-inference-and-discovery]
+    index: [toc, index]
+  - id: sutton-barto-2018-reinforcement-learning
+    title: "Reinforcement Learning: An Introduction"
+    authors: [Richard S. Sutton, Andrew G. Barto]
+    edition: 2
+    year: 2018
+    isbn: ["9780262039246"]
+    url: http://incompleteideas.net/book/the-book-2nd.html
+    covers: reinforcement learning
+    areas: [reinforcement-learning]
+    index: [toc, index]
+  - id: hastie-tibshirani-friedman-2009-esl
+    title: "The Elements of Statistical Learning"
+    authors: [Trevor Hastie, Robert Tibshirani, Jerome Friedman]
+    edition: 2
+    year: 2009
+    isbn: ["9780387848570"]
+    url: https://hastie.su.domains/ElemStatLearn/
+    covers: statistical learning
+    areas: [supervised-learning, unsupervised-learning, learning-theory]
+    index: [toc, index]
+  - id: shalev-shwartz-ben-david-2014-understanding-machine-learning
+    title: "Understanding Machine Learning: From Theory to Algorithms"
+    authors: [Shai Shalev-Shwartz, Shai Ben-David]
+    year: 2014
+    isbn: ["9781107057135"]
+    url: https://www.cs.huji.ac.il/~shais/UnderstandingMachineLearning/
+    covers: learning theory
+    areas: [learning-theory, optimization-for-learning, supervised-learning]
+    index: [toc, index]
+  - id: mohri-rostamizadeh-talwalkar-2018-foundations
+    title: Foundations of Machine Learning
+    authors: [Mehryar Mohri, Afshin Rostamizadeh, Ameet Talwalkar]
+    edition: 2
+    year: 2018
+    isbn: ["9780262039406"]
+    url: https://cs.nyu.edu/~mohri/mlbook/
+    covers: learning theory
+    areas: [learning-theory, supervised-learning, learning-settings]
+    index: [toc, index]
+  - id: prince-2023-understanding-deep-learning
+    title: Understanding Deep Learning
+    authors: [Simon J. D. Prince]
+    year: 2023
+    isbn: ["9780262048644"]
+    url: https://udlbook.github.io/udlbook/
+    covers: deep learning
+    areas: [deep-learning-foundations, deep-learning-training, deep-learning-architectures, generative-models, reinforcement-learning, fairness-and-ethics]
+    index: [toc, index]
+  - id: zhang-lipton-li-smola-2023-d2l
+    title: Dive into Deep Learning
+    authors: [Aston Zhang, Zachary C. Lipton, Mu Li, Alexander J. Smola]
+    year: 2023
+    isbn: ["9781009389433"]
+    url: https://d2l.ai/
+    covers: deep learning with code
+    areas: [deep-learning-foundations, deep-learning-training, deep-learning-architectures, natural-language-processing, computer-vision, optimization-for-learning]
+    index: [toc]
+  - id: jurafsky-martin-slp3
+    title: Speech and Language Processing
+    authors: [Daniel Jurafsky, James H. Martin]
+    edition: 3
+    # The third edition is a draft with dated releases. The harvest records the date of the release that it reads.
+    draft: true
+    url: https://web.stanford.edu/~jurafsky/slp3/
+    covers: natural language processing and speech
+    areas: [natural-language-processing, speech-and-audio, language-models]
+    index: [toc]
+  - id: szeliski-2022-computer-vision
+    title: "Computer Vision: Algorithms and Applications"
+    authors: [Richard Szeliski]
+    edition: 2
+    year: 2022
+    isbn: ["9783030343712"]
+    url: https://szeliski.org/Book/
+    covers: computer vision
+    areas: [computer-vision]
+    index: [toc, index]
+  - id: koller-friedman-2009-pgm
+    title: "Probabilistic Graphical Models: Principles and Techniques"
+    authors: [Daphne Koller, Nir Friedman]
+    year: 2009
+    isbn: ["9780262013192"]
+    covers: graphical models
+    areas: [probabilistic-reasoning, probabilistic-machine-learning]
+    index: [toc, index]
+  - id: mackay-2003-itila
+    title: "Information Theory, Inference, and Learning Algorithms"
+    authors: [David J. C. MacKay]
+    year: 2003
+    isbn: ["9780521642989"]
+    url: https://www.inference.org.uk/itila/
+    covers: inference and information
+    areas: [math-for-ai, probabilistic-machine-learning, probabilistic-reasoning]
+    index: [toc, index]
+  - id: thrun-burgard-fox-2005-probabilistic-robotics
+    title: Probabilistic Robotics
+    authors: [Sebastian Thrun, Wolfram Burgard, Dieter Fox]
+    year: 2005
+    isbn: ["9780262201629"]
+    covers: robotics
+    areas: [robotics-and-embodied-ai, probabilistic-reasoning]
+    index: [toc, index]
+  - id: pearl-2009-causality
+    title: "Causality: Models, Reasoning, and Inference"
+    authors: [Judea Pearl]
+    edition: 2
+    year: 2009
+    isbn: ["9780521895606"]
+    covers: causal inference
+    areas: [causal-inference-and-discovery]
+    index: [toc, index]
+  - id: ghallab-nau-traverso-2016-planning-and-acting
+    title: Automated Planning and Acting
+    authors: [Malik Ghallab, Dana Nau, Paolo Traverso]
+    year: 2016
+    isbn: ["9781107037274"]
+    url: https://projects.laas.fr/planning/
+    covers: planning
+    areas: [planning-and-scheduling]
+    index: [toc, index]
+  - id: hendrycks-2024-ai-safety-ethics-society
+    title: "Introduction to AI Safety, Ethics, and Society"
+    authors: [Dan Hendrycks]
+    year: 2024
+    # Open Library has no record of the ISBN that the website of the book gives, so the DOI of the open access edition of CRC Press is the identifier.
+    doi: 10.1201/9781003530336
+    url: https://www.aisafetybook.com/
+    covers: safety, ethics and governance
+    areas: [ai-safety-and-alignment, fairness-and-ethics, ai-governance-and-law, ai-and-society]
+    index: [toc]
