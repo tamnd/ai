@@ -1,0 +1,36 @@
+# The architecture scene (spec 12.6), first written by aik viz shapes from shapes.yaml.
+# It sets the layout and the controls only; every shape and count comes from shapes.yaml.
+title: Transformer
+controls:
+  - name: d_model
+    choices: [16, 512, 1024]
+  - name: n_heads
+    choices: [4, 8, 16]
+  - name: d_ff
+    choices: [64, 2048, 4096]
+  - name: n_layers
+    choices: [1, 2, 6]
+  - name: vocab
+    choices: [5, 20, 50, 37000]
+  - name: B
+    choices: [1, 2, 8, 32]
+  - name: S
+    choices: [6, 128, 512]
+  - name: T
+    choices: [5, 128, 512]
+presets:
+  - example
+  - base
+  - big
+stack:
+  - embed
+  - enc_layer
+  - dec_layer
+  - logits
+repeat:
+  enc_layer: n_layers
+  dec_layer: n_layers
+links:
+  embed: embedding@al
+  norm: layer-normalization@al
+  logits: softmax-regression@al
