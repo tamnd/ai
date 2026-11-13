@@ -16,6 +16,7 @@ The toolchain `aik` is in [tamnd/ai-agent](https://github.com/tamnd/ai-agent). T
 | --- | --- |
 | `nodes/<top>/<sub>/<slug>/` | One page: `node.md`, its claims, facts, derivations, code, experiments and scene. |
 | `cards/<kind>/` | The cards of models, benchmarks, datasets, results, works, people and the other card kinds, one card on each line. |
+| `cards/bridge/<site>/` | The bridge cards of the items of algorithm (`al`), math2 (`m2`) and programming (`pg`). `aik bridge sync` writes them from the index of each site, and the workflow `bridge.yml` refreshes them each week. Do not edit them by hand. |
 | `topics/areas.yaml` | The area tree of spec 05.2: 9 groups, 52 top areas and their sub-areas. |
 | `registers/` | The tags, the reserved slugs and the other registers. Only `aik` writes `tags.reg`. |
 | `manifests/` | The pinned runner images and the release manifests. |
