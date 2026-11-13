@@ -1,0 +1,148 @@
+# The framework register of spec 08.2. A framework is in this register before any implementation in it can merge (rule X12).
+# Each id is the directory name under impl/. The packages field names a pinned package set of spec 08.4. The image field names the CPU runner image ghcr.io/tamnd/<image> of spec 08.9.
+# The versions of the toolchains are in manifests/frameworks.yaml, not here.
+# Tier 1 is required for each method, architecture and metric node of the core. NumPy is the reference, so no other framework merges before the NumPy code of the same node is at X1 (rule X01).
+# Tier 2 is required for the core architectures and metrics only, from M3 (Q-36).
+# Tier 3 is open. A contributor adds a framework with a pull request that adds its entry, its image and its harness.
+# Tests run in float64. Experiments run in float32 (spec 09).
+
+- id: numpy
+  name: NumPy
+  tier: 1
+  language: python
+  ext: [py]
+  file_case: snake
+  packages: numpy-ref
+  test: {framework: pytest, file: "test_<name>.py"}
+  format: {tool: ruff-format}
+  lint: {tool: ruff, args: ["--select", "E,F,W,B,UP,NPY"]}
+  types: {tool: pyright, mode: basic}
+  mutation: {tool: mutmut}
+  image: aik-runner-numpy
+  default_dtype: float64
+  determinism: ["numpy.random.default_rng(seed)"]
+  highlight: python
+  since: 2026-11
+
+- id: pytorch
+  name: PyTorch
+  tier: 1
+  language: python
+  ext: [py]
+  file_case: snake
+  packages: pytorch-ref
+  test: {framework: pytest, file: "test_<name>.py"}
+  format: {tool: ruff-format}
+  lint: {tool: ruff, args: ["--select", "E,F,W,B,UP,NPY"]}
+  types: {tool: pyright, mode: basic}
+  mutation: {tool: mutmut}
+  image: aik-runner-pytorch
+  default_dtype: float64
+  determinism: ["torch.manual_seed(seed)", "torch.use_deterministic_algorithms(True)", "CUBLAS_WORKSPACE_CONFIG=:4096:8"]
+  highlight: python
+  since: 2026-11
+
+- id: jax
+  name: JAX
+  tier: 1
+  language: python
+  ext: [py]
+  file_case: snake
+  packages: jax-ref
+  test: {framework: pytest, file: "test_<name>.py"}
+  format: {tool: ruff-format}
+  lint: {tool: ruff, args: ["--select", "E,F,W,B,UP,NPY"]}
+  types: {tool: pyright, mode: basic}
+  mutation: {tool: mutmut}
+  image: aik-runner-jax
+  default_dtype: float64
+  # JAX uses float32 unless the test fixture sets jax_enable_x64.
+  determinism: ["jax.random.key(seed)", "jax.config.update(\"jax_enable_x64\", True)"]
+  highlight: python
+  since: 2026-11
+
+- id: c
+  name: C
+  tier: 2
+  language: c
+  ext: [c, h]
+  file_case: snake
+  packages: c-ref
+  test: {framework: assert, file: "test_<name>.c"}
+  format: {tool: clang-format}
+  lint: {tool: clang-tidy}
+  mutation: {tool: mull}
+  image: aik-runner-c
+  default_dtype: double
+  determinism: ["a seeded generator in the test file; no rand()"]
+  highlight: c
+  since: 2026-11
+
+- id: cpp
+  name: C++
+  tier: 2
+  language: cpp
+  ext: [cpp, hpp]
+  file_case: snake
+  packages: cpp-ref
+  test: {framework: assert, file: "test_<name>.cpp"}
+  format: {tool: clang-format}
+  lint: {tool: clang-tidy}
+  mutation: {tool: mull}
+  image: aik-runner-cpp
+  default_dtype: double
+  determinism: ["std::mt19937_64 with a fixed seed"]
+  highlight: cpp
+  since: 2026-11
+
+- id: rust
+  name: Rust
+  tier: 2
+  language: rust
+  ext: [rs]
+  file_case: snake
+  packages: rust-ref
+  test: {framework: cargo-test, file: "<name>.rs"}
+  format: {tool: rustfmt}
+  lint: {tool: clippy, args: ["--", "-D", "warnings"]}
+  mutation: {tool: cargo-mutants}
+  image: aik-runner-rust
+  default_dtype: f64
+  determinism: ["a seeded generator from the test fixture"]
+  highlight: rust
+  since: 2026-11
+
+- id: julia
+  name: Julia
+  tier: 2
+  language: julia
+  ext: [jl]
+  file_case: snake
+  packages: julia-ref
+  test: {framework: Test, file: "test_<name>.jl"}
+  format: {tool: JuliaFormatter}
+  lint: {tool: JET}
+  image: aik-runner-julia
+  default_dtype: Float64
+  determinism: ["Random.Xoshiro(seed)"]
+  highlight: julia
+  since: 2026-11
+
+- id: typescript
+  name: TypeScript
+  tier: 2
+  language: typescript
+  ext: [ts]
+  file_case: kebab
+  packages: typescript-ref
+  test: {framework: vitest, file: "<name>.test.ts"}
+  format: {tool: prettier}
+  lint: {tool: eslint}
+  types: {tool: tsc, mode: strict}
+  mutation: {tool: stryker}
+  image: aik-runner-typescript
+  default_dtype: Float64Array
+  # The same code runs the in-browser notebooks of spec 12.8.
+  determinism: ["a seeded generator from the test fixture; no Math.random()"]
+  highlight: typescript
+  since: 2026-11
