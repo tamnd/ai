@@ -1,3 +1,6 @@
 # SPDX-License-Identifier: CC0-1.0
-# The runner images of aik test (spec 08.7), pinned by digest. The Images workflow of tamnd/ai-agent builds them. Until it builds the NumPy, PyTorch and JAX images, the Python image of algorithm runs the tests.
-python: ghcr.io/tamnd/algo-runner-python@sha256:aae55f23bbcd4f4bceb44e5991aecf53134145a708f84bdd78bd77512c9b38f1
+# The runner images of aik test (spec 08.7), pinned by digest. The Images workflow of tamnd/ai-agent builds them from images/ in that repository. The digest of each image is in the step summary of the run on main.
+python: ghcr.io/tamnd/aik-runner-python@sha256:cde448c317a8446713b837087f910290488fcaacde0b8e4b74ea9d9ea6a181c6
+numpy: ghcr.io/tamnd/aik-runner-numpy@sha256:dae5ef6a575f92c66bcde79c2cd46398f1865636f4991677f089800e4220247a
+pytorch: ghcr.io/tamnd/aik-runner-pytorch@sha256:b28775511d7834857c7b599ee208566014b29633a4af52a07e5c115341ee66e4
+jax: ghcr.io/tamnd/aik-runner-jax@sha256:afc8c8e5491c176ddd3c84417c25867887e206b92f78184b3be0248f65e5a220
