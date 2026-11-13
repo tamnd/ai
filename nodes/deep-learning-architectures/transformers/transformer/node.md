@@ -68,7 +68,7 @@ A final linear layer and a softmax give the distribution of the next output toke
 The base model has $L = 6$, $d_{\text{model}} = 512$, $h = 8$ heads and $d_{\text{ff}} = 2048$ (Section 3 and Table 3). {#c-base-config}
 
 Many later models keep only one of the two stacks.
-BERT is an encoder only (Devlin et al. 2019), and GPT is a decoder only, with no attention over an encoder (Radford et al. 2018). {#c-encoder-decoder-only}
+BERT is a multi-layer bidirectional Transformer encoder (Devlin et al. 2019). {#c-bert-encoder} GPT, the generative pre-training of Radford et al. (2018), uses a multi-layer Transformer decoder as its language model. {#c-gpt-decoder}
 
 ## Components
 
@@ -128,7 +128,7 @@ $$ \mathrm{head}_r = \mathrm{Attention}(\mathbf{X}\mathbf{W}^Q_r, \mathbf{X}\mat
 
 with $\mathbf{W}^Q_r, \mathbf{W}^K_r \in \mathbb{R}^{d_{\text{model}} \times d_k}$, $\mathbf{W}^V_r \in \mathbb{R}^{d_{\text{model}} \times d_v}$ and $\mathbf{W}^O \in \mathbb{R}^{h d_v \times d_{\text{model}}}$.
 The base model uses $d_k = d_v = d_{\text{model}} / h = 64$, so multi-head attention costs about as much as one head of full width (Section 3.2.2). {#c-head-width}
-With one head, the base model lost 0.9 BLEU on the development set (Table 3, row A). {#c-single-head-worse}
+With one head at the same computation, the model was 0.9 BLEU worse on the development set than with the best number of heads (Table 3, rows A). {#c-single-head-worse}
 
 **Position-wise feedforward network.**
 Each position goes through the same two-layer network:
@@ -169,7 +169,7 @@ In a decoder layer, the masked self-attention costs {shape:dec_attn.flops_forwar
 The count takes the full $T \times T$ matrix of scores in the masked self-attention, as a dense matrix product computes it, though half of it is masked.
 The output layer costs {shape:logits.flops_forward}, so the forward pass costs {shape:flops_forward} FLOPs in all.
 With $S = T$, the terms of the projections and the feedforward networks come to $2N$ FLOPs per target token, for the $N =$ {shape:params_non_embedding} weights of the layers when their biases are left out; the output layer adds twice the size of the embedding, and the scores and the weighted sums add a term that grows with $T$.
-Kaplan et al. (2020, Section 2.1) use the same count, $2N + 2 L T d_{\text{model}}$ per token for a decoder, and about 6 times $N$ per token for a step of training, because the backward pass costs about twice the forward pass. {#c-flops-per-token}
+Kaplan et al. (2020, Section 2.1, Eq. 2.2) use the same count, $2N + 2 L T d_{\text{model}}$ per token for a decoder, and about 6 times $N$ per token for a step of training, because the backward pass costs about twice the forward pass. {#c-flops-per-token}
 
 The cost in the length of the sequence is the main limit of the architecture.
 The projections and the feedforward network grow linearly in $T$, but the scores grow as $T^2$, in FLOPs and in memory: each layer and each head forms a $T \times T$ matrix.
@@ -179,7 +179,7 @@ Self-attention is cheaper than a recurrent layer when $T < d_{\text{model}}$, wh
 At inference, a decoder writes one token at a time.
 It keeps the keys and the values of the earlier positions, so that each new token costs $O(T d_{\text{model}})$ in attention and not $O(T^2 d_{\text{model}})$.
 This cache holds {shape:kv_cache} numbers per sequence, which is the main memory cost of serving long contexts.
-Multi-query attention (Shazeer 2019) and grouped-query attention (Ainslie et al. 2023) share keys and values across heads to shrink it. {#c-mqa-cache}
+Multi-query attention shares the keys and values across all heads, which shrinks the cache and the memory bandwidth of incremental decoding (Shazeer 2019). {#c-mqa-cache} Grouped-query attention sits between the two, with more than one key-value head but fewer than the query heads (Ainslie et al. 2023). {#c-gqa}
 
 ## Training
 
@@ -208,7 +208,7 @@ Without positional information, self-attention and the feedforward network treat
 Permuting the input positions permutes the output positions in the same way, because each output row depends on the other rows only through sums over all of them. {#c-permutation-equivariance}
 So the only notion of order is the one the positional encoding gives.
 The architecture also does not assume locality: any position can attend to any other in one layer.
-Dosovitskiy et al. (2021, Section 3.1) note that a vision Transformer has much less image-specific inductive bias than a convolutional network, and they report that it does worse than ResNets when it is trained on ImageNet alone and better after pre-training on much larger datasets (Section 4.2). {#c-vit-data-hungry}
+Dosovitskiy et al. (2021, Section 3.1) note that a vision Transformer has much less image-specific inductive bias than a convolutional network, and they report that, trained on ImageNet without strong regularization, it is a few points less accurate than ResNets of comparable size, while after pre-training on ImageNet-21k or JFT-300M it approaches or beats the best earlier results on several image recognition benchmarks (Sections 1 and 4.2). {#c-vit-data-hungry}
 The causal mask of a decoder adds one bias: each prediction depends only on the past.
 
 ## Evidence
@@ -223,7 +223,7 @@ The cost of attention is quadratic in the length of the sequence, in compute and
 FlashAttention computes exact attention without storing the $T \times T$ matrix in the main memory of the GPU, which reduces the memory to linear in $T$ but not the FLOPs (Dao et al. 2022). {#c-flash-memory}
 Models with sinusoidal positions do not keep their quality on sequences longer than the ones they were trained on, which Press et al. (2022) show and address with linear biases on the scores (ALiBi). {#c-length-extrapolation}
 Hahn (2020) proves that self-attention with a fixed number of layers and heads cannot recognize some formal languages, such as parity and Dyck languages, for all lengths, under assumptions on the attention. {#c-formal-limits}
-Attention weights are not a reliable explanation of a prediction: Jain and Wallace (2019) find attention distributions that differ a lot from the original ones but give the same predictions. {#c-attention-not-explanation}
+Jain and Wallace (2019) find that learned attention weights often do not agree with gradient-based measures of feature importance, and that very different attention distributions can give the same predictions, so they conclude that attention weights are not a meaningful explanation of a prediction. {#c-attention-not-explanation}
 
 ## Variants and descendants
 
@@ -232,8 +232,8 @@ The main lines are the encoder-only models such as BERT, the decoder-only langua
 
 ## History
 
-Attention in neural networks for translation came before the Transformer: Bahdanau et al. (2015) added it to a recurrent encoder-decoder, so the decoder could look at all the states of the encoder and not only the last one. {#c-bahdanau}
-Vaswani et al. posted "Attention Is All You Need" to arXiv in June 2017 and presented it at NeurIPS 2017. {#c-published-2017}
+Attention in neural networks for translation came before the Transformer: Bahdanau et al. (2015) extended an encoder-decoder that encodes the source sentence into a fixed-length vector, letting the model search the source sentence for the parts relevant to predicting the next target word. {#c-bahdanau}
+Vaswani et al. published "Attention Is All You Need" at the 31st Conference on Neural Information Processing Systems (NIPS 2017, now NeurIPS), in Long Beach. {#c-published-2017}
 The paper gives the affiliations Google Brain, Google Research and the University of Toronto. {#c-authors}
 The paper says that the authors contributed equally and that the order of the names is random. {#c-equal-contribution}
 Within two years, BERT and GPT used the architecture for pre-trained language models, and within four the vision Transformer used it for images.

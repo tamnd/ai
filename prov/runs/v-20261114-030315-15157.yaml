@@ -1,0 +1,539 @@
+run: v-20261114-030315-15157
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-post-ln
+  work: vaswani-2017-attention
+  locator: Section 3.1
+  key: 8ca393b383fb93bd41d74b7fb5e1b1a3
+  spans:
+  - start: 7430
+    end: 8778
+  verdict: supported
+  quote: the output of each sub-layer is LayerNorm(x + Sublayer(x))
+  note: The passage gives this formula for the encoder and says the decoder uses the same residual connection and normalization.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-base-config
+  work: vaswani-2017-attention
+  locator: Sections 3.1 to 3.3, Table 3, p. 9
+  key: 5c3b2baad13119104a0f11960bd70a60
+  spans:
+  - start: 7430
+    end: 14242
+  - start: 21645
+    end: 27890
+  verdict: supported
+  quote: 'base
+
+
+    N
+
+
+    dmodel
+
+
+    dff
+
+
+    h'
+  note: The prose and base row together give six layers per stack, model dimension 512, eight heads and feed-forward dimension
+    2048.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-bert-encoder
+  work: devlin-2019-bert
+  locator: Section 3
+  key: c1edcdf9ed348939cdc173b2c4083633
+  spans:
+  - start: 10001
+    end: 12133
+  verdict: supported
+  quote: BERT’s model architecture is a multi-layer bidirectional Transformer encoder
+  note: The passage states the claim directly.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-gpt-decoder
+  work: radford-2018-improving-language-understanding
+  locator: Section 3.1
+  key: ea25f1135b5fac4bc5c8b409c5b4ccda
+  spans:
+  - start: 9498
+    end: 10519
+  verdict: supported
+  quote: we use a multi-layer Transformer decoder [34] for the language model
+  note: The passage states the claim directly.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-tied-embeddings
+  work: vaswani-2017-attention
+  locator: Section 3.4
+  key: 770a1e375bd50d558b0c53ef57389b50
+  spans:
+  - start: 14242
+    end: 15165
+  verdict: supported
+  quote: we share the same weight matrix between the two embedding layers and the pre-softmax
+  note: The passage also states that the embedding layers multiply those weights by the square root of the model dimension.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-pe-linear-offset
+  work: vaswani-2017-attention
+  locator: Section 3.5
+  key: 2a5ccde619dbe5c9c6ac7a22fbb55090
+  spans:
+  - start: 15165
+    end: 16738
+  verdict: supported
+  quote: for any fixed offset k, P Epos+k can be represented as a linear function of P Epos
+  note: The sinusoidal formulas support a linear relation determined by the fixed offset.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-learned-pe-same
+  work: vaswani-2017-attention
+  locator: Section 6.2, Table 3, p. 9
+  key: 1cd5914fb72ab4fcf324e1462b36ed3b
+  spans:
+  - start: 21645
+    end: 27890
+  verdict: supported
+  quote: we replace our sinusoidal positional encoding with learned positional embeddings [9], and observe nearly identical
+    results to the base model
+  note: The passage explicitly reports this result for the English-to-German development-set variation.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-dot-variance
+  work: vaswani-2017-attention
+  locator: p. 4
+  key: 8ca3142f05d2271d7af2807354fbd812
+  spans:
+  - start: 8999
+    end: 11544
+  verdict: supported
+  quote: 'their dot product, q · k = di=1
+
+    qi ki , has mean 0 and variance dk'
+  note: The preceding sentence supplies the stated independence, mean and variance assumptions.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-scale-reason
+  work: vaswani-2017-attention
+  locator: Section 3.2.1
+  key: d3af9ea82cc75c27aa95199172f7d34c
+  spans:
+  - start: 9321
+    end: 10874
+  verdict: supported
+  quote: 'We suspect that for large values of
+
+    dk , the dot products grow large in magnitude'
+  note: The passage connects that suspicion to small softmax gradients and scaling the dot products.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-head-width
+  work: vaswani-2017-attention
+  locator: Section 3.2.2
+  key: f1762d101afd6a0ede53301773bd3b75
+  spans:
+  - start: 10874
+    end: 12353
+  verdict: supported
+  quote: dk = dv = dmodel /h = 64. Due to the reduced dimension of each head
+  note: The passage gives eight heads and explicitly says their reduced dimensions make total cost similar to full-dimensional
+    single-head attention.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-single-head-worse
+  work: vaswani-2017-attention
+  locator: Section 6.2, Table 3, p. 9
+  key: 04b39cd815adcdfce087d6c160f01e61
+  spans:
+  - start: 21645
+    end: 27890
+  verdict: supported
+  quote: 'keeping the amount of computation constant, as described in Section 3.2.2. While single-head
+
+    attention is 0.9 BLEU worse than the best setting'
+  note: Section 6.2 places this comparison on the stated development set with beam search and no checkpoint averaging.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-param-counts
+  work: vaswani-2017-attention
+  locator: Table 3, p. 9
+  key: 9f9924a11796657d6066e4caee8220e0
+  spans:
+  - start: 21645
+    end: 27890
+  verdict: supported
+  quote: 'params
+
+    ×106
+
+    65'
+  note: Despite the displaced table cells, the base row has 65 million parameters and the final big row has 213 million.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-flops-per-token
+  work: kaplan-2020-scaling-laws
+  locator: Eq. 2.2, p. 7
+  key: 94d3d229a2126c7321b814133e695217
+  spans:
+  - start: 15910
+    end: 20102
+  verdict: supported
+  quote: Cforward ≈ 2N + 2nlayer nctx dmodel
+  note: The passage defines N without embeddings and derives approximately 6N training operations per token from a backward
+    pass costing about twice the forward pass.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-complexity-table
+  work: vaswani-2017-attention
+  locator: Section 4 and Table 1
+  key: 30514205b698d4c1cbaf5114863cf6cf
+  spans:
+  - start: 11544
+    end: 14777
+  - start: 16738
+    end: 19958
+  verdict: unsupported
+  quote: 'a self-attention layer connects all positions with a constant number of sequentially
+
+    executed operations, whereas a recurrent layer requires O(n) sequential operations'
+  note: The supplied passage does not give the claimed complexity and path-length formulas; Table 1 would be needed to support
+    them.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-mqa-cache
+  work: shazeer-2019-fast-transformer-decoding
+  locator: Sections 2 and 3
+  key: b1d0de33a1c75fee23863abc09706139
+  spans:
+  - start: 1834
+    end: 14422
+  verdict: unsupported
+  quote: the different heads share a single set of keys and values
+  note: The passage supports multi-query attention and its memory-access motivation, but does not describe grouped-query attention;
+    a grouped-query source is needed.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-mqa-cache
+  work: ainslie-2023-gqa
+  locator: Section 2
+  key: 70e713ba3e639d3503c7d7e8a4316807
+  spans:
+  - start: 2607
+    end: 5720
+  verdict: supported
+  quote: 'Grouped-query attention divides query heads into
+
+    G groups, each of which shares a single key head
+
+    and value head'
+  note: The passage also identifies multi-query attention as the single-group case and explains the cache-size and bandwidth
+    reductions.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-wmt-data
+  work: vaswani-2017-attention
+  locator: Section 5.1
+  key: 70b95e08744e238eb61b17f930154c76
+  spans:
+  - start: 20030
+    end: 20653
+  verdict: supported
+  quote: 'about 4.5 million
+
+    sentence pairs'
+  note: The passage also gives the shared 37,000-token vocabulary and the English-to-French dataset and 32,000-piece vocabulary.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-label-smoothing
+  work: vaswani-2017-attention
+  locator: Section 5.4 "Regularization"
+  key: a65e10089028c5be4a5c36cfe2bb2db0
+  spans:
+  - start: 21563
+    end: 22855
+  verdict: supported
+  quote: 'This
+
+    hurts perplexity, as the model learns to be more unsure, but improves accuracy and BLEU score'
+  note: The preceding sentence specifies label smoothing of 0.1 during training.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-residual-dropout
+  work: vaswani-2017-attention
+  locator: Section 5.4 "Regularization"
+  key: eae9a6388fe49395db2b3bc1353f9bde
+  spans:
+  - start: 21563
+    end: 22855
+  verdict: supported
+  quote: 'For the base model, we use a rate of
+
+    Pdrop = 0.1'
+  note: The same paragraph specifies both sublayer-output dropout and dropout on embedding-plus-position sums.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-training-time
+  work: vaswani-2017-attention
+  locator: Section 5.2
+  key: ac009f987dfcf52bc9a7450c8dfdc161
+  spans:
+  - start: 20653
+    end: 21080
+  verdict: supported
+  quote: We trained our models on one machine with 8 NVIDIA P100 GPUs
+  note: The passage gives 100,000 steps or 12 hours for base models and 300,000 steps or 3.5 days for big models.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-pre-ln-warmup
+  work: xiong-2020-layer-normalization-transformer
+  locator: Sections 3 and 4
+  key: 6e7cf2882457b59b05f12b7969ee43ea
+  spans:
+  - start: 9577
+    end: 39544
+  verdict: supported
+  quote: the gradients at initialization for Pre-LN Transformer are well-behaved
+  note: The passage also reports large gradients near the Post-LN output and deduces that Pre-LN training can omit warmup.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-gpt2-init
+  work: radford-2019-language-models-unsupervised-multitask
+  locator: Section 2.3
+  key: 04542c53676cf3e7bf135ceb53b47db5
+  spans:
+  - start: 16438
+    end: 17367
+  verdict: supported
+  quote: 'Layer normalization (Ba et al., 2016)
+
+    was moved to the input of each sub-block'
+  note: The passage also states the final normalization and the initialization factor of one over the square root of the number
+    of residual layers.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-vit-data-hungry
+  work: dosovitskiy-2021-image-worth-16x16-words
+  locator: Section 4.2, Figure 3
+  key: 0c2235dd80bdded1c670fb15e3fabf25
+  spans:
+  - start: 18622
+    end: 22431
+  - start: 23524
+    end: 26338
+  verdict: unsupported
+  quote: 'While
+
+    large ViT models perform worse than BiT
+
+    ResNets (shaded area) when pre-trained on
+
+    small datasets'
+  note: The passage supports the trend for large ViT models, but does not establish comparable model size or the result for
+    every model in the stated scope.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-wmt-bleu
+  work: vaswani-2017-attention
+  locator: the abstract, Table 2, Section 6.1, p. 8
+  key: 918057bdf6e5423c7c484eca4d068c75
+  spans:
+  - start: 661
+    end: 2898
+  - start: 18289
+    end: 24876
+  verdict: supported
+  quote: our model establishes a new single-model state-of-the-art BLEU score of 41.8
+  note: The abstract and Table 2 give 28.4 and 41.8 with lower training costs, although Section 6.1 inconsistently says 41.0
+    for English-to-French.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-wmt-bleu-base
+  work: vaswani-2017-attention
+  locator: Table 2, p. 8
+  key: 8c39d9d91b4fdd7547a361c1667a036e
+  spans:
+  - start: 18289
+    end: 24876
+  verdict: supported
+  quote: 'Transformer (base model)
+
+    Transformer (big)'
+  note: The ordered Table 2 entries assign 27.3 English-to-German and 38.1 English-to-French BLEU to the base model.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-parsing
+  work: vaswani-2017-attention
+  locator: Section 6.3 and Table 4
+  key: 7713b712c8bb3146abb486fdf6da1038
+  spans:
+  - start: 24876
+    end: 29186
+  verdict: supported
+  quote: 'Transformer (4 layers)
+
+    WSJ only, discriminative
+
+    91.3'
+  note: Table 4 also gives 92.7 F1 for the four-layer Transformer in the semi-supervised setting.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-flash-memory
+  work: dao-2022-flashattention
+  locator: Section 3, Figure 1
+  key: 8103828e67a12a942ae94c4ad8b4dc27
+  spans:
+  - start: 3605
+    end: 7731
+  - start: 13809
+    end: 20097
+  verdict: supported
+  quote: 'requires 𝑂 (𝑁) additional
+
+    memory beyond inputs and output'
+  note: The theorem also gives O(N²d) FLOPs, while Figure 1 and the text describe exact tiled attention without storing the
+    N × N matrix in HBM.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-length-extrapolation
+  work: press-2022-train-short-test-long
+  locator: the abstract, Section 1
+  key: d408e3f26433fd1bdd368f5e558fac4f
+  spans:
+  - start: 0
+    end: 3277
+  verdict: unsupported
+  quote: 'transformer language models (LMs) that use sinusoidal position embeddings have very weak
+
+    extrapolation abilities'
+  note: The passage supports the two stated extrapolation findings, but does not identify CC100-RoBERTa as data for the claimed
+    empirical scope.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-formal-limits
+  work: hahn-2020-theoretical-limitations-self-attention
+  locator: Sections 5 and 6
+  key: 69b98d35d85874485de81dce315ea1f9
+  spans:
+  - start: 16431
+    end: 47265
+  verdict: unsupported
+  quote: 'If we exchange
+
+    one input symbol xi (i < n), then the change'
+  note: The soft-attention bound excludes the final input position, so the claim should restrict the shrinking effect to a
+    changed nonfinal input symbol.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-attention-not-explanation
+  work: jain-2019-attention-not-explanation
+  locator: the abstract, Section 1
+  key: fe3460f56c11ba1e7828efce34f5c47d
+  spans:
+  - start: 201
+    end: 6171
+  verdict: unsupported
+  quote: 'at least for RNN-based
+
+    models'
+  note: The passage states the findings for the studied attention models but does not establish them for the full convolutional
+    and averaging encoder scope given in the claim.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-bahdanau
+  work: bahdanau-2015-neural-machine-translation
+  locator: the abstract, Section 3
+  key: 871e5003e276d3ba0a5d9073a32189bf
+  spans:
+  - start: 0
+    end: 1440
+  - start: 8873
+    end: 13861
+  verdict: supported
+  quote: 'allowing a model to automatically (soft-)search
+
+    for parts of a source sentence that are relevant to predicting a target word'
+  note: The abstract describes this as an extension of the fixed-length-vector encoder-decoder approach.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-published-2017
+  work: vaswani-2017-attention
+  locator: the title page
+  key: caf35c6b65d564073dba78b5c66e07f1
+  spans:
+  - start: 0
+    end: 2899
+  verdict: supported
+  quote: 31st Conference on Neural Information Processing Systems (NIPS 2017), Long Beach, CA, USA.
+  note: The title page states the venue, year and location directly.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-authors
+  work: vaswani-2017-attention
+  locator: the title page
+  key: f99eb9d47e1e5c3514d01f5b62949e9f
+  spans:
+  - start: 0
+    end: 2899
+  verdict: supported
+  quote: 'Google Brain
+
+    avaswani@google.com
+
+    Llion Jones∗
+
+    Google Research'
+  note: The title page also lists the University of Toronto affiliation.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-equal-contribution
+  work: vaswani-2017-attention
+  locator: the title page
+  key: 00b8382009e75c839ccf2861ed95a019
+  spans:
+  - start: 0
+    end: 2899
+  verdict: supported
+  quote: Equal contribution. Listing order is random.
+  note: The author footnote states both parts of the claim directly.
