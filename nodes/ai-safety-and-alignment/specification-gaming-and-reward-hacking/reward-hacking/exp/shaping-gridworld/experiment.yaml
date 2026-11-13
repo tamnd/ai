@@ -1,0 +1,28 @@
+id: shaping-gridworld
+claims: [c-coast-runners]
+question: "Does a tabular Q-learning agent, given a bonus each time it enters one cell of a gridworld, learn a policy that loops on the bonus and never reaches the goal?"
+scale_note:
+  here: "A 5 by 5 gridworld with a goal reward of 10, a bonus cell, slip probability 0.1 and discount 0.95, solved by tabular Q-learning for 3000 episodes of at most 100 steps."
+  source: "Krakovna et al. (2020) describe it for the deep RL agent of the Coast Runners boat race, and Ng et al. (1999) prove the condition for general Markov decision processes."
+replicates: null
+arms:
+  - {id: bonus, config: {shaping: bonus}}
+  - {id: potential, config: {shaping: potential}}
+base_config:
+  size: 5
+  start: [0, 0]
+  goal: [4, 4]
+  bonus: [0, 2]
+  goal_reward: 10.0
+  gamma: 0.95
+  slip: 0.1
+  horizon: 100
+  episodes: 3000
+  epsilon: 0.1
+  alpha: 0.1
+  eval_rollouts: 200
+data: []
+seeds: {n: 20, base: 20261114}
+budget: cpu-small
+framework: numpy
+metrics: [hacked, goal_rate, true_return, proxy_return]

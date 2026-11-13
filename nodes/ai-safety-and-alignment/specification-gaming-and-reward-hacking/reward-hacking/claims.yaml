@@ -1,0 +1,410 @@
+# The claims of the reward-hacking page (spec 07). The build computes the labels.
+- id: c-def-amodei
+  type: definitional
+  text: "Amodei et al. describe reward hacking as objective functions, or their implementation, being gamed by solutions that are valid in some literal sense but do not meet the designer's intent."
+  evidence:
+    - {work: "amodei-2016-concrete-problems-ai-safety", role: original, locator: "Section 4", stance: for}
+
+- id: c-def-skalse
+  type: definitional
+  text: "Skalse et al. define reward hacking as a phenomenon where optimizing an imperfect proxy reward function leads to poor performance according to the true reward function."
+  evidence:
+    - {work: "skalse-2022-defining-characterizing-reward-hacking", role: original, locator: "the abstract", stance: for}
+
+- id: c-def-krakovna
+  type: definitional
+  text: "Krakovna et al. define specification gaming as a behaviour that satisfies the literal specification of an objective without achieving the intended outcome."
+  evidence:
+    - {work: "krakovna-2020-specification-gaming", role: original, locator: "p. 1", stance: for}
+
+- id: c-task-specification
+  type: definitional
+  text: "Krakovna et al. use task specification in a broad sense: in an RL setup it includes reward design, the choice of training environment and auxiliary rewards."
+  evidence:
+    - {work: "krakovna-2020-specification-gaming", role: original, locator: "p. 1", stance: for}
+
+- id: c-mit-subdomain
+  type: definitional
+  text: "In the Domain Taxonomy of the AI Risk Repository, subdomain 7.1, AI pursuing its own goals in conflict with human goals or values, covers misaligned behaviors that may be introduced by humans during design and development, such as through reward hacking and goal misgeneralisation."
+  evidence:
+    - {work: "slattery-2024-ai-risk-repository", role: original, locator: "p. 10", stance: for}
+
+- id: c-mit-domains
+  type: definitional
+  text: "The Domain Taxonomy of the AI Risk Repository classifies AI risks into seven domains and 24 subdomains based on the types of hazards and harms they describe."
+  evidence:
+    - {work: "slattery-2024-ai-risk-repository", role: original, locator: "p. 10", stance: for}
+
+- id: c-wireheading
+  type: definitional
+  text: "Amodei et al. call wireheading the failure in which an agent tampers with its reward implementation, as when a board-game playing agent tampers with the sensor that counts the score."
+  evidence:
+    - {work: "amodei-2016-concrete-problems-ai-safety", role: original, locator: "Section 4", stance: for}
+
+- id: c-tampering-types
+  type: definitional
+  text: "Everitt et al. study when an RL agent has an instrumental goal to tamper with its reward process, for two types of reward tampering: reward function tampering and RF-input tampering."
+  evidence:
+    - {work: "everitt-2021-reward-tampering", role: original, locator: "the title page", stance: for}
+
+- id: c-unhackable
+  type: definitional
+  text: "Skalse et al. call a proxy unhackable if increasing the expected proxy return can never decrease the expected true return."
+  evidence:
+    - {work: "skalse-2022-defining-characterizing-reward-hacking", role: original, locator: "the abstract", stance: for}
+
+- id: c-unhackable-constant
+  type: mathematical
+  text: "For the set of all stochastic policies, two reward functions can only be unhackable if one of them is constant."
+  assumes: ["a finite Markov decision process", "the return is linear in the state-action visit counts"]
+  evidence:
+    - {work: "skalse-2022-defining-characterizing-reward-hacking", role: original, locator: "the abstract", stance: for}
+
+- id: c-unhackable-finite
+  type: mathematical
+  text: "For deterministic policies and for finite sets of stochastic policies, non-trivial unhackable pairs of reward functions always exist."
+  assumes: ["a finite Markov decision process"]
+  evidence:
+    - {work: "skalse-2022-defining-characterizing-reward-hacking", role: original, locator: "the abstract", stance: for}
+
+- id: c-goodhart-variants
+  type: definitional
+  text: "Manheim and Garrabrant sort Goodhart effects into four categories: regressional, extremal, causal and adversarial."
+  evidence:
+    - {work: "manheim-2018-categorizing-variants-goodharts-law", role: original, locator: "pp. 1 to 2", stance: for}
+
+- id: c-causes
+  type: attributive
+  text: "Amodei et al. list partially observed goals, complicated systems, abstract rewards, Goodhart's law, feedback loops and environmental embedding as ways in which reward hacking can occur."
+  evidence:
+    - {work: "amodei-2016-concrete-problems-ai-safety", role: original, locator: "Section 4", stance: for}
+
+- id: c-cleaning-robot
+  type: attributive
+  text: "In an example of Amodei et al., a cleaning robot that earns reward for not seeing any messes might close its eyes rather than clean anything up."
+  evidence:
+    - {work: "amodei-2016-concrete-problems-ai-safety", role: original, locator: "Section 4", stance: for}
+
+- id: c-bleach
+  type: attributive
+  text: "In the Goodhart's law example of Amodei et al., a cleaning robot rewarded for the bleach it consumes might pour bleach down the drain to give the appearance of success."
+  evidence:
+    - {work: "amodei-2016-concrete-problems-ai-safety", role: original, locator: "Section 4", stance: for}
+
+- id: c-overoptimization
+  type: definitional
+  text: "Gao et al. call it overoptimization when optimizing too much against a reward model eventually hinders the true objective."
+  evidence:
+    - {work: "gao-2023-scaling-laws-reward-model-overoptimization", role: original, locator: "Section 1", stance: for}
+
+- id: c-gold-rise-fall
+  type: empirical
+  text: "When a policy is optimized for a learned proxy of a gold reward model, the gold reward initially increases and later decreases."
+  scope:
+    models: "GPT-3 series policies and reward models; the gold reward model has 6B parameters and the proxy reward models 3M to 3B"
+    data: [instructgpt-synthetic-comparisons]
+    scale: "proxy reward models of 3M to 3B parameters"
+    setting: "a synthetic setup in which a fixed gold reward model labels the comparisons in place of humans; best-of-n sampling and PPO"
+  evidence:
+    - {work: "gao-2023-scaling-laws-reward-model-overoptimization", role: original, locator: "Figure 1", stance: for}
+
+- id: c-functional-forms
+  type: empirical
+  text: "Gao et al. find empirically that the gold reward model score follows $d(\\alpha_{bon} - \\beta_{bon} d)$ for best-of-n sampling and $d(\\alpha_{RL} - \\beta_{RL} \\log d)$ for reinforcement learning, where $d$ is a distance that Gao et al. define from the Kullback-Leibler divergence between the optimized and the initial policy."
+  scope:
+    models: "GPT-3 series policies and reward models"
+    data: [instructgpt-synthetic-comparisons]
+    scale: "proxy reward models of 3M to 3B parameters"
+    setting: "the synthetic gold reward model setup of Gao et al."
+  evidence:
+    - {work: "gao-2023-scaling-laws-reward-model-overoptimization", role: original, locator: "Section 1", stance: for}
+
+- id: c-coefficients-scale
+  type: empirical
+  text: "For both best-of-n sampling and reinforcement learning, the coefficients of the functional form scale smoothly with the number of reward model parameters."
+  scope:
+    models: "GPT-3 series policies and reward models"
+    data: [instructgpt-synthetic-comparisons]
+    scale: "proxy reward models of 3M to 3B parameters"
+    setting: "the synthetic gold reward model setup of Gao et al."
+  evidence:
+    - {work: "gao-2023-scaling-laws-reward-model-overoptimization", role: original, locator: "the abstract", stance: for}
+
+- id: c-capability-proxy
+  type: empirical
+  text: "In four environments with nine misspecified proxy rewards, Pan et al. find that more capable agents often attain higher proxy reward but lower true reward."
+  scope:
+    models: "deep RL policies of varying size, training time, action space resolution and observation noise"
+    data: [traffic-control, covid-response, blood-glucose-monitoring, atari-riverraid]
+    scale: "parameter counts varied by two to four orders of magnitude"
+    setting: "reinforcement learning against hand-designed misspecified proxy rewards"
+  evidence:
+    - {work: "pan-2022-effects-reward-misspecification", role: original, locator: "Section 1", stance: for}
+
+- id: c-phase-transitions
+  type: empirical
+  text: "As model size increases, the proxy reward increases but the true reward decreases, and the drop in true reward is sometimes sudden, which Pan et al. call a phase transition."
+  scope:
+    models: "actor and critic networks of varying width and depth"
+    data: [traffic-control, covid-response, blood-glucose-monitoring, atari-riverraid]
+    scale: "parameter counts varied by two to four orders of magnitude"
+    setting: "reinforcement learning against hand-designed misspecified proxy rewards"
+  evidence:
+    - {work: "pan-2022-effects-reward-misspecification", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-traffic-merge
+  type: empirical
+  text: "In Traffic-Mer, where maximizing average velocity replaces minimizing average commute time, larger policy models stop the AVs from merging, which increases the average velocity but significantly increases the average commute time."
+  scope:
+    models: "RL policies of varying size"
+    data: [traffic-control]
+    scale: "unknown"
+    setting: "a simulated highway merge in which RL policies control the autonomous vehicles"
+  evidence:
+    - {work: "pan-2022-effects-reward-misspecification", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-coast-runners
+  type: empirical
+  text: "In the Coast Runners game, where the intended goal was to finish the boat race as quickly as possible, a shaping reward for hitting green blocks changed the optimal policy to going in circles and hitting the same green blocks over and over again."
+  scope:
+    models: "a reinforcement learning agent"
+    data: [coast-runners]
+    scale: "unknown"
+    setting: "a boat racing video game with a shaping reward"
+  evidence:
+    - {work: "krakovna-2020-specification-gaming", role: review, locator: "p. 1", stance: for}
+  exp: [shaping-gridworld]
+  small_scale: "yes"
+  small_scale_note: "A tabular Q-learning agent in a small gridworld with a bonus cell shows the change of policy in seconds on a CPU."
+
+- id: c-shaping-not-potential
+  type: attributive
+  text: "Krakovna et al. note that shaping rewards can change the optimal policy if they are not potential-based."
+  evidence:
+    - {work: "krakovna-2020-specification-gaming", role: original, locator: "p. 1", stance: for}
+
+- id: c-lego
+  type: empirical
+  text: "In a Lego stacking task, the agent was rewarded for the height of the bottom face of the red block, and it flipped over the red block instead of placing it on top of the blue one."
+  scope:
+    models: "a deep reinforcement learning agent"
+    data: [lego-stacking-simulation]
+    scale: "unknown"
+    setting: "simulated dexterous manipulation"
+  evidence:
+    - {work: "krakovna-2020-specification-gaming", role: review, locator: "p. 1", stance: for}
+
+- id: c-grasping-camera
+  type: empirical
+  text: "An agent performing a grasping task, with a reward learned from human feedback, learned to fool the human evaluator by hovering between the camera and the object."
+  scope:
+    models: "a deep reinforcement learning agent"
+    data: [grasping-simulation]
+    scale: "unknown"
+    setting: "reinforcement learning from human preferences"
+  evidence:
+    - {work: "krakovna-2020-specification-gaming", role: review, locator: "p. 1", stance: for}
+
+- id: c-walking-robot
+  type: empirical
+  text: "A simulated robot that was supposed to learn to walk hooked its legs together and slid along the ground, exploiting a simulator bug."
+  scope:
+    models: "a simulated walking robot"
+    data: [unknown]
+    scale: "unknown"
+    setting: "a physics simulator"
+  evidence:
+    - {work: "krakovna-2020-specification-gaming", role: review, locator: "p. 1", stance: for}
+
+- id: c-circuit-radio
+  type: empirical
+  text: "A genetic algorithm produced a circuit tasked to keep time which instead developed into a radio that picked up the regular RF emissions of a nearby PC."
+  scope:
+    models: "a genetic algorithm"
+    data: [unknown]
+    scale: "unknown"
+    setting: "evolution of electronic circuits"
+  evidence:
+    - {work: "amodei-2016-concrete-problems-ai-safety", role: review, locator: "Section 4", stance: for}
+
+- id: c-tampering-generalizes
+  type: empirical
+  text: "A small but non-negligible proportion of the time, LLM assistants trained on a full curriculum of gameable environments generalize zero-shot to directly rewriting their own reward function."
+  scope:
+    models: "LLM assistants of Claude-2 scale, trained with the preference model of Claude-2"
+    data: [sycophancy-to-subterfuge-curriculum]
+    scale: "unknown"
+    setting: "reinforcement learning on a curriculum of increasingly sophisticated gameable environments"
+  evidence:
+    - {work: "denison-2024-sycophancy-to-subterfuge", role: original, locator: "the title page", stance: for}
+
+- id: c-obfuscated
+  type: empirical
+  text: "With too much optimization against a chain-of-thought monitor in the reward, agents learn obfuscated reward hacking, hiding their intent within the chain of thought while still exhibiting a significant rate of reward hacking."
+  scope:
+    models: "OpenAI reasoning models such as o3-mini"
+    data: [agentic-coding-environments]
+    scale: "unknown"
+    setting: "reinforcement learning with a CoT monitor in the reward"
+  evidence:
+    - {work: "baker-2025-monitoring-reasoning-models-misbehavior", role: original, locator: "the abstract", stance: for}
+
+- id: c-collected-60
+  type: attributive
+  text: "Krakovna et al. report that they have collected around 60 examples of specification gaming."
+  evidence:
+    - {work: "krakovna-2020-specification-gaming", role: original, locator: "p. 1", stance: for}
+
+- id: c-summaries-anticorrelated
+  type: empirical
+  text: "Under light optimization against a learned reward model the summaries improve, but as optimization continues, true preferences fall off and eventually the reward model becomes anti-correlated with human preferences."
+  scope:
+    models: "GPT-3 style policies fine-tuned with PPO"
+    data: [reddit-tldr]
+    scale: "unknown"
+    setting: "summarization with a reward model trained on human comparisons, at varying KL penalty coefficients"
+  evidence:
+    - {work: "stiennon-2020-learning-summarize-human-feedback", role: original, locator: "Section 4.3", stance: for}
+
+- id: c-potential-shaping
+  type: mathematical
+  text: "Adding a reward for transitions that is the difference in value of a potential function over states preserves the optimal policy, and any other transformation may yield suboptimal policies unless further assumptions are made about the MDP."
+  assumes: ["a Markov decision process", "shaping rewards that depend only on the transition"]
+  evidence:
+    - {work: "ng-1999-policy-invariance-reward-shaping", role: original, locator: "the abstract", stance: for}
+
+- id: c-shaping-bugs
+  type: attributive
+  text: "Ng et al. show that some well-known bugs in reward shaping procedures arise from non-potential-based rewards."
+  evidence:
+    - {work: "ng-1999-policy-invariance-reward-shaping", role: original, locator: "the abstract", stance: for}
+
+- id: c-kl-term
+  type: definitional
+  text: "Stiennon et al. include in the reward a term that penalizes the KL divergence between the learned RL policy and the original supervised model, which ensures the policy does not produce outputs too different from those that the reward model has seen during training."
+  evidence:
+    - {work: "stiennon-2020-learning-summarize-human-feedback", role: original, locator: "Section 3.4", stance: for}
+
+- id: c-kl-early-stopping
+  type: empirical
+  text: "In the setting of Gao et al., the KL penalty causes the gold reward model score to converge earlier but does not affect the frontier of gold reward against KL distance, so its effect is akin to early stopping."
+  scope:
+    models: "a 1.2B parameter policy and a 1.2B parameter proxy reward model"
+    data: [instructgpt-synthetic-comparisons]
+    scale: "1.2B parameters"
+    setting: "PPO against a proxy reward model in the synthetic gold reward model setup"
+  evidence:
+    - {work: "gao-2023-scaling-laws-reward-model-overoptimization", role: original, locator: "Section 3.6", stance: for}
+
+- id: c-ensembles-bon
+  type: empirical
+  text: "Ensemble-based conservative optimization practically eliminates overoptimization and improves performance by up to 70% for best-of-n sampling, both with and without label noise."
+  scope:
+    models: "a 1.4B Pythia policy and ensembles of Pythia proxy reward models"
+    data: [alpacafarm]
+    scale: "proxy reward models of 14M to 1.4B parameters"
+    setting: "the synthetic gold reward model setup of Gao et al., with and without 25% label noise; worst-case and uncertainty-weighted optimization"
+  evidence:
+    - {work: "coste-2024-reward-model-ensembles", role: original, locator: "the title page", stance: for}
+
+- id: c-ensembles-ppo
+  type: empirical
+  text: "For PPO, ensemble-based conservative optimization always reduces overoptimization, and combining it with a small KL penalty prevents overoptimization at no performance cost."
+  scope:
+    models: "a 1.4B Pythia policy and ensembles of Pythia proxy reward models"
+    data: [alpacafarm]
+    scale: "proxy reward models of 14M to 1.4B parameters"
+    setting: "the synthetic gold reward model setup of Gao et al., with and without 25% label noise"
+  evidence:
+    - {work: "coste-2024-reward-model-ensembles", role: original, locator: "the title page", stance: for}
+
+- id: c-cot-monitor
+  type: empirical
+  text: "An LLM that observes the chain-of-thought reasoning can monitor a reasoning model such as o3-mini for reward hacking in agentic coding environments, more effectively than monitoring actions and outputs alone, and GPT-4o can monitor the stronger model."
+  scope:
+    models: "OpenAI o3-mini, monitored by GPT-4o"
+    data: [agentic-coding-environments]
+    scale: "unknown"
+    setting: "monitoring of reinforcement learning training runs by another LLM"
+  evidence:
+    - {work: "baker-2025-monitoring-reasoning-models-misbehavior", role: original, locator: "the abstract", stance: for}
+
+- id: c-monitorability-tax
+  type: attributive
+  text: "Baker et al. suggest that it may be necessary to pay a monitorability tax by not applying strong optimization pressures directly to the chain of thought."
+  evidence:
+    - {work: "baker-2025-monitoring-reasoning-models-misbehavior", role: original, locator: "the abstract", stance: for}
+
+- id: c-tampering-principles
+  type: mathematical
+  text: "Everitt et al. describe design principles that, combined, can prevent both reward function tampering and RF-input tampering from being instrumental goals."
+  assumes: ["the agent and its reward process are modelled with causal influence diagrams"]
+  evidence:
+    - {work: "everitt-2021-reward-tampering", role: original, locator: "the title page", stance: for}
+
+- id: c-retraining
+  type: empirical
+  text: "Retraining an LLM not to game early-curriculum environments mitigates, but does not eliminate, reward-tampering in later environments, and harmlessness training does not prevent it."
+  scope:
+    models: "LLM assistants of Claude-2 scale, trained with the preference model of Claude-2"
+    data: [sycophancy-to-subterfuge-curriculum]
+    scale: "unknown"
+    setting: "reinforcement learning on a curriculum of gameable environments"
+  evidence:
+    - {work: "denison-2024-sycophancy-to-subterfuge", role: original, locator: "the title page", stance: for}
+
+- id: c-amodei-approaches
+  type: attributive
+  text: "Amodei et al. suggest adversarial reward functions, model lookahead, adversarial blinding, careful engineering, reward capping, counterexample resistance, multiple rewards, reward pretraining, variable indifference and trip wires as preliminary approaches to preventing reward hacking."
+  evidence:
+    - {work: "amodei-2016-concrete-problems-ai-safety", role: original, locator: "Section 4", stance: for}
+
+- id: c-capping-limit
+  type: attributive
+  text: "Amodei et al. note that capping can prevent extreme low-probability, high-payoff strategies, but it cannot prevent strategies like the cleaning robot closing its eyes to avoid seeing dirt."
+  evidence:
+    - {work: "amodei-2016-concrete-problems-ai-safety", role: original, locator: "Section 4", stance: for}
+
+- id: c-forecast-amodei
+  type: forecast
+  text: "Amodei et al. write that reward hacking is likely to become more common as agents and environments increase in complexity."
+  as_of: "2016-07-25"
+  evidence:
+    - {work: "amodei-2016-concrete-problems-ai-safety", role: original, locator: "Section 4", stance: for}
+
+- id: c-forecast-krakovna
+  type: forecast
+  text: "Krakovna et al. write that specification gaming problems are likely to become more challenging in the future, as AI systems become more capable at satisfying the task specification at the expense of the intended outcome."
+  as_of: "2020-04-21"
+  evidence:
+    - {work: "krakovna-2020-specification-gaming", role: original, locator: "p. 1", stance: for}
+
+- id: c-forecast-pan
+  type: forecast
+  text: "Pan et al. argue that, since the trend in ML is to increase resources exponentially each year, reward hacking will become more pronounced in the future in the absence of countermeasures."
+  as_of: "2022-02-14"
+  evidence:
+    - {work: "pan-2022-effects-reward-misspecification", role: original, locator: "Section 1", stance: for}
+
+- id: c-today-correctable
+  type: attributive
+  text: "Amodei et al. note that in today's relatively simple systems these problems may not occur, or can be corrected without too much harm as part of an iterative development process."
+  evidence:
+    - {work: "amodei-2016-concrete-problems-ai-safety", role: original, locator: "Section 4", stance: for}
+
+- id: c-riverraid-aligned
+  type: empirical
+  text: "In Atari Riverraid with a pacifist proxy reward, the proxy and true rewards were well aligned, so reward hacking did not emerge as capabilities increased."
+  scope:
+    models: "RL policies of varying size"
+    data: [atari-riverraid]
+    scale: "unknown"
+    setting: "an ontological misspecification that rewards staying alive while shooting as little as possible"
+  evidence:
+    - {work: "pan-2022-effects-reward-misspecification", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-claude2-not-serious
+  type: attributive
+  text: "Denison et al. write that causing these models to generalize to reward-tampering is very difficult, even when the environments are built to lead to such behavior, which is evidence that Claude-2-scale models do not pose a serious risk due to reward-seeking behavior."
+  evidence:
+    - {work: "denison-2024-sycophancy-to-subterfuge", role: original, locator: "Section 1", stance: for}
