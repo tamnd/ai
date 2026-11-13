@@ -131,7 +131,8 @@ jobs:
 
   deploy:
     needs: site
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    # Production is only the push to main and a run by hand on main. A run by hand on another branch, such as the one that bridge.yml starts, does not deploy.
+    if: (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) || (github.event_name != 'pull_request' && github.ref == 'refs/heads/main')
     runs-on: ubuntu-latest
     timeout-minutes: 10
     environment:
