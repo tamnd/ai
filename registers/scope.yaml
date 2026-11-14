@@ -38,6 +38,8 @@
   kind: work
   outcome: card
   rule: A work that won a best paper, an outstanding paper or a test-of-time award at a venue of registers/venues.yaml is a card.
+  source: acl
+  thresholds: {awards: 1}
 - id: S-W4
   kind: work
   outcome: node
