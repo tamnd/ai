@@ -1,0 +1,24 @@
+run: v-20261114-161656-75749
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: deepmind
+  verifier: codex:gpt-6-sol
+  tag: NEW-deepmind
+  claim: c-alphafold
+  work: jumper-2021-alphafold
+  locator: the abstract
+  key: 5517c13c1d160004fbe59d39b89beb77
+  spans:
+  - start: 0
+    end: 5412
+  verdict: supported
+  quote: 'the first computational method
+
+    that can regularly predict protein structures with atomic accuracy even in cases in which
+
+    no similar structure is known.'
+  note: The abstract makes the claimed statement, and the author affiliation identifies DeepMind in London.
