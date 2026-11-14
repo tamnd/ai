@@ -1,0 +1,24 @@
+id: mnist-split-5k
+claims: [c-learns-less-forgets-less]
+question: "After pretraining a 2-hidden-layer MLP on the MNIST digits 0 to 4 and fine-tuning it on 5000 images of the digits 5 to 9, does LoRA of rank 4 give a higher error on the new digits than full fine-tuning and a lower error on the old digits?"
+scale_note:
+  here: "A 784-128-128-10 ReLU MLP pretrained with Adam on 10,000 training images of the digits 0 to 4 for 3 epochs, then fine-tuned for 10 epochs on 5,000 training images of the digits 5 to 9; the new error is on the 4861 test images of the digits 5 to 9, and the old error on the 5139 test images of the digits 0 to 4 with the argmax over the logits of 0 to 4. LoRA adapts both hidden layers and trains the output layer. The learning rate of each arm is the one of 0.001, 0.003, 0.01 and 0.03 with the lowest new error on a validation split of 2,000 other training images of the digits 5 to 9, in a prototype with the seeds 100 to 102, which are not among the seeds here; full-small-lr is full fine-tuning at a ten times smaller rate."
+  source: "Biderman et al. (2024) fine-tune Llama-2-7B on code and math, by instruction fine-tuning and continued pretraining, with ranks 16 to 256, and measure forgetting on HellaSwag, WinoGrande and ARC-Challenge."
+replicates: null
+arms:
+  - {id: head, config: {mode: head, lr: 0.01}}
+  - {id: lora-r4, config: {mode: lora, rank: 4, lr: 0.01}}
+  - {id: full, config: {mode: full, lr: 0.01}}
+  - {id: full-small-lr, config: {mode: full, lr: 0.001}}
+base_config:
+  model: {hidden: 128, activation: relu}
+  pretrain: {digits: "0-4", images: 10000, epochs: 3, batch_size: 128, lr: 0.001, optimizer: adam}
+  finetune: {digits: "5-9", images: 5000, epochs: 10, batch_size: 128, optimizer: adam}
+  lora: {alpha: "equal to r, so s = 1", init: "A Gaussian with standard deviation 1/sqrt(d_in), B zero"}
+data:
+  - {dataset: mnist, version: "lecun-1998", subset: "train (split by digit), test", pin: "S:mnist-ai-data"}
+seeds: {n: 10, base: 20261115}
+budget: cpu-small
+framework: numpy
+uses_impl: ../../impl/numpy/lora.py
+metrics: [new_error, old_error, pretrained_old_error, train_error, trainable]
