@@ -1,0 +1,48 @@
+run: v-20261114-161515-72433
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-a100-sms
+  work: nvidia-2023-h100-architecture-whitepaper
+  locator: p. 39
+  key: 6c428881d5a81624f2d46b0208378ce7
+  spans:
+  - start: 58055
+    end: 59665
+  verdict: supported
+  quote: 'SMs
+
+
+    108
+
+
+    132
+
+
+    114'
+  note: The SMs row gives 108 for A100 and 132 for H100 SXM5.
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-a100-fp16
+  work: nvidia-2023-h100-architecture-whitepaper
+  locator: p. 39
+  key: 89e126246adb3f60f7094b2de7ccbf5a
+  spans:
+  - start: 58055
+    end: 59665
+  verdict: unsupported
+  quote: 'Peak FP16 Tensor TFLOPS with
+
+    FP16 Accumulate
+
+
+    312/6241'
+  note: The table gives 312/624 and lists FP8 as NA, but the passage does not identify 312 as the rate without sparsity; the
+    claim should omit that qualification.

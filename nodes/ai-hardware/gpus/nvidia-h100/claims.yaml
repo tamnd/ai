@@ -118,6 +118,7 @@
   text: "In NVIDIA's comparison of A100 and H100, the NVIDIA A100 has 108 SMs and the NVIDIA H100 SXM5 has 132 SMs."
   evidence:
     - {work: "nvidia-2023-h100-architecture-whitepaper", role: original, locator: "Table 3", stance: for}
+    - {work: "nvidia-2023-h100-architecture-whitepaper", role: original, locator: "p. 39", stance: for}
 
 - id: c-22
   type: attributive
@@ -133,9 +134,9 @@
 
 - id: c-a100-fp16
   type: definitional
-  text: "In NVIDIA's comparison of A100 and H100, the NVIDIA A100 has a peak FP16 Tensor rate of 312 TFLOPS without sparsity, and its peak FP8 Tensor rate is NA."
+  text: "In NVIDIA's comparison of A100 and H100, the NVIDIA A100 has a peak FP16 Tensor TFLOPS of 312/624, and its peak FP8 Tensor TFLOPS is NA."
   evidence:
-    - {work: "nvidia-2023-h100-architecture-whitepaper", role: original, locator: "Table 3", stance: for}
+    - {work: "nvidia-2023-h100-architecture-whitepaper", role: original, locator: "p. 39", stance: for}
 
 - id: c-6x
   type: attributive

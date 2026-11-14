@@ -88,7 +88,8 @@ NVIDIA counts this as a 22% increase in SMs. {#c-22}
 **Memory.** The A100 has 1555 GB/sec of memory bandwidth from 40 GB of HBM2. {#c-a100-mem}
 The H100 SXM5 has {fact:nvidia-h100/memory.bandwidth.sxm5} from 80 GB of HBM3.
 
-**Compute.** The A100 peaks at 312 TFLOPS on FP16 Tensor Core operations, dense, and has no FP8 Tensor Core rate. {#c-a100-fp16}
+In Table 3 the peak FP16 Tensor Core rate of the A100 is 312/624 TFLOPS, and its FP8 Tensor Core rate is NA. {#c-a100-fp16}
+As in Table 1, the second figure uses the sparsity feature.
 The H100 SXM5 peaks at {fact:nvidia-h100/peak_flops.fp16_tensor.sxm5} on FP16 Tensor Core operations, dense, and at {fact:nvidia-h100/peak_flops.fp8_tensor.sxm5} with FP8.
 NVIDIA puts the overall gain at about 6x the compute of the A100: more SMs, Tensor Cores 2x faster per SM, and another 2x from FP8 and the Transformer Engine. {#c-6x}
 
