@@ -20,6 +20,8 @@ same_as:
 lean:
   module: AI.LearningTheory.PacBoundFiniteHypothesisClass
   statement: AI.LearningTheory.PacBoundFiniteHypothesisClass.pac_bound_realizable
+  expected: true
+  steps: derivations/proof.md
 sources:
   - {book: "Shalev-Shwartz and Ben-David (2014), Understanding Machine Learning", locator: "Section 2.3.1 and Corollary 2.3, pp. 37 to 41", note: "the realizable case, with the misleading samples and the union bound"}
   - {book: "Shalev-Shwartz and Ben-David (2014), Understanding Machine Learning", locator: "Corollary 3.2, p. 44; Section 4.2, Corollary 4.6 and Remark 4.1, pp. 55 to 57", note: "the sample complexity in the PAC definition, and the agnostic case through uniform convergence and Hoeffding's inequality"}
