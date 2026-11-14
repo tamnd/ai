@@ -120,7 +120,7 @@ The generated experiment section gives the rate for each arm, with its test and 
 
 ## Evidence
 
-The examples above show that the failure is real in many settings, but they do not say how often it happens.
+The examples above document the failure in many settings, but they do not say how often it happens.
 Krakovna et al. report that they collected around 60 examples of specification gaming. {#c-collected-60}
 A list of examples gives no rate of the failure.
 
