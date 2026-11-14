@@ -1,0 +1,433 @@
+run: v-20261114-161400-68193
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-die
+  work: nvidia-2023-h100-architecture-whitepaper
+  locator: p. 17
+  key: 0e90c10389065c19a7bfaadf5091c9a5
+  spans:
+  - start: 27811
+    end: 30490
+  verdict: supported
+  quote: The full GH100 GPU that powers the H100 GPU is fabricated using TSMC’s 4N process customized for NVIDIA, with 80
+    billion transistors
+  note: The passage also gives the claimed 814 mm2 die size.
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-workloads
+  work: nvidia-2023-h100-architecture-whitepaper
+  locator: p. 18
+  key: 79c295707875c27f84b451d92ac78a93
+  spans:
+  - start: 30490
+    end: 32539
+  verdict: supported
+  quote: the H100 GPUs are primarily built for executing datacenter and edge compute workloads for AI, HPC, and data analytics,
+    but not graphics processing
+  note: The passage states the claim directly.
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-sxm5
+  work: nvidia-2023-h100-architecture-whitepaper
+  locator: p. 18
+  key: 93d26f6977bfe3799470e8e99267f8f9
+  spans:
+  - start: 30490
+    end: 32539
+  verdict: supported
+  quote: 132 SMs per GPU
+  note: The SXM5 list also specifies 80 GB HBM3 in five stacks.
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-pcie
+  work: nvidia-2023-h100-architecture-whitepaper
+  locator: p. 18
+  key: 0e658447dd8185527d4634db9ee29136
+  spans:
+  - start: 30490
+    end: 32539
+  verdict: supported
+  quote: 80 GB HBM2e, 5 HBM2e stacks
+  note: The PCIe list also specifies 114 SMs per GPU.
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-mma
+  work: nvidia-2023-h100-architecture-whitepaper
+  locator: p. 11
+  key: 2d445e023a012414ff3ec4685226bb73
+  spans:
+  - start: 14813
+    end: 17937
+  verdict: supported
+  quote: On a per SM basis, the Tensor Cores deliver 2x the MMA
+  note: The same sentence gives the claimed 4x FP8 comparison.
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-fp8-types
+  work: nvidia-2023-h100-architecture-whitepaper
+  locator: p. 23
+  key: 31711cbe80edd52a22ff9559202558f8
+  spans:
+  - start: 37341
+    end: 38291
+  verdict: supported
+  quote: E4M3 with 4 exponent bits, 3 mantissa bits, and 1 sign bit
+  note: The next bullet gives the claimed E5M2 bit allocation.
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-fp8-range
+  work: nvidia-2023-h100-architecture-whitepaper
+  locator: p. 23
+  key: 9f900dc8eeae258e1e8d32fdbed377a1
+  spans:
+  - start: 37341
+    end: 38291
+  verdict: supported
+  quote: E4M3 supports computations requiring less dynamic range with more precision, while E5M2 provides a wider dynamic
+    range and less precision.
+  note: The passage states the claim directly.
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-fp8-half
+  work: nvidia-2023-h100-architecture-whitepaper
+  locator: p. 23
+  key: 58df90a29b93f8430d6bdd08f52c9bde
+  spans:
+  - start: 37341
+    end: 38291
+  verdict: supported
+  quote: FP8 halves data storage requirements and doubles throughput compared to FP16 or BF16.
+  note: The passage states the claim directly.
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-te
+  work: nvidia-2023-h100-architecture-whitepaper
+  locator: p. 11
+  key: f31924a1d19031ac8ff68cc464096ecf
+  spans:
+  - start: 14813
+    end: 17937
+  verdict: supported
+  quote: New Transformer Engine uses a combination of software and custom Hopper Tensor Core technology designed specifically
+    to accelerate Transformer model training and inference.
+  note: The passage states the claim directly.
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-te-cast
+  work: nvidia-2023-h100-architecture-whitepaper
+  locator: p. 11
+  key: c573bdccef7e6973fa38c09148e115dd
+  spans:
+  - start: 14813
+    end: 17937
+  verdict: supported
+  quote: dynamically chooses between FP8 and 16-bit calculations, automatically handling re-casting and scaling between FP8
+    and 16-bit in each layer
+  note: The passage states the claim directly.
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-te-speedup
+  work: nvidia-2023-h100-architecture-whitepaper
+  locator: p. 11
+  key: ba0deb10d6a11399ff80a01c49d1f085
+  spans:
+  - start: 14813
+    end: 17937
+  verdict: supported
+  quote: up to 9x faster AI training and up to 30x faster AI inference speedups on large language models
+  note: The passage attributes these figures to the Transformer Engine relative to A100.
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-hbm
+  work: nvidia-2023-h100-architecture-whitepaper
+  locator: p. 36
+  key: f4ba6a3ae96d53c82623d2bbd195a9e4
+  spans:
+  - start: 53413
+    end: 55655
+  verdict: supported
+  quote: The PCIe H100 provides 80 GB of fast HBM2e with over 2 TB/sec of memory bandwidth.
+  note: The preceding sentence gives the claimed SXM5 capacity, bandwidth, and A100 comparison.
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-nvlink
+  work: nvidia-2023-h100-architecture-whitepaper
+  locator: p. 47
+  key: f5f07bf968b363d16407f02d97c1ab98
+  spans:
+  - start: 68211
+    end: 71214
+  verdict: supported
+  quote: Operating at 900 GB/sec total bandwidth for multi-GPU IO and shared memory accesses, the new NVLink provides 7x the
+    bandwidth of PCIe Gen 5.
+  note: The passage identifies this as fourth-generation NVLink in H100.
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-pcie-bridge
+  work: nvidia-2022-h100-pcie-product-brief
+  locator: p. 5
+  key: dd93f5d0ebc46e700f563ccc1ed1a992
+  spans:
+  - start: 5804
+    end: 8350
+  verdict: supported
+  quote: NVIDIA H100 PCIe cards use three NVIDIA® NVLink® bridges.
+  note: The following sentence says two cards can connect at 900 GB/s bidirectional bandwidth.
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-clusters
+  work: nvidia-2023-h100-architecture-whitepaper
+  locator: p. 11
+  key: 1439fc459db0d3c309305fde71bebe11
+  spans:
+  - start: 14813
+    end: 17937
+  verdict: supported
+  quote: now include Threads, Thread Blocks, Thread Block Clusters, and Grids.
+  note: The passage says the new Thread Block Cluster feature adds this level.
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-clusters-sm
+  work: nvidia-2023-h100-architecture-whitepaper
+  locator: p. 11
+  key: 14ca1f1c1fe7b03cabc6d00f551e0fbf
+  spans:
+  - start: 14813
+    end: 17937
+  verdict: supported
+  quote: Clusters enable multiple Thread Blocks running concurrently across multiple SMs to synchronize and collaboratively
+    fetch and exchange data.
+  note: The passage states the claim directly.
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-tma
+  work: nvidia-2023-h100-architecture-whitepaper
+  locator: p. 17
+  key: 48cbfe1f83053b7977f46ebbe90853ba
+  spans:
+  - start: 27811
+    end: 30490
+  verdict: supported
+  quote: Only a small number of CUDA threads are now required to manage the full memory bandwidth of H100 using the new Tensor
+    Memory Accelerator
+  note: The sentence also says most other threads can focus on general-purpose computations.
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-dgx
+  work: nvidia-2022-hopper-announcement
+  locator: p. 1
+  key: beccdca989965aee75208ab6560aeda7
+  spans:
+  - start: 0
+    end: 15956
+  verdict: supported
+  quote: NVIDIA's fourth-generation DGX™ system, DGX H100, features eight H100 GPUs
+  note: The press release states the announced system and GPU count.
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-a100-chip
+  work: nvidia-2023-h100-architecture-whitepaper
+  locator: p. 40
+  key: cc56805f2756097d236f39ea4773045e
+  spans:
+  - start: 59665
+    end: 60938
+  verdict: supported
+  quote: 'Transistors
+
+
+    54.2 billion
+
+
+    80 billion
+
+
+    80 billion'
+  note: The comparison’s first column also gives A100 a die size of 826 mm2 and the 7 nm N7 process.
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-a100-sms
+  work: nvidia-2023-h100-architecture-whitepaper
+  locator: Table 3
+  key: b10dcbc077e914b05cffb35edce479d4
+  spans:
+  - start: 6096
+    end: 59665
+  verdict: unsupported
+  quote: Comparison of NVIDIA A100 and H1001 Data Center GPUs ...................................39
+  note: The supplied passage lists Table 3 but cuts off before its SM counts; the table’s SM row would support the claim.
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-22
+  work: nvidia-2023-h100-architecture-whitepaper
+  locator: p. 28
+  key: ad8b4222ccdec20398e1a45d0a048388
+  spans:
+  - start: 41743
+    end: 42741
+  verdict: supported
+  quote: its 132 SMs providing a 22% SM count increase over A100’s 108 SMs.
+  note: The passage states the attributed comparison directly.
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-a100-mem
+  work: nvidia-2023-h100-architecture-whitepaper
+  locator: p. 40
+  key: 6f710842456d46f2a7e830cb2cafe201
+  spans:
+  - start: 59665
+    end: 60938
+  verdict: supported
+  quote: 'Memory Interface
+
+
+    5120-bit HBM2'
+  note: The comparison’s first column also gives A100 40 GB and 1555 GB/sec.
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-a100-fp16
+  work: nvidia-2023-h100-architecture-whitepaper
+  locator: Table 3
+  key: 95fe3a716c90fd2d9f41e1386f5b5446
+  spans:
+  - start: 6096
+    end: 59665
+  verdict: unsupported
+  quote: Comparison of NVIDIA A100 and H1001 Data Center GPUs ...................................39
+  note: The supplied passage lists Table 3 but omits its FP16 and FP8 rate rows; those rows would support the claim.
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-6x
+  work: nvidia-2023-h100-architecture-whitepaper
+  locator: p. 28
+  key: e023bfc1056cd626440b200294faf108
+  spans:
+  - start: 41743
+    end: 42741
+  verdict: supported
+  quote: Overall, H100 provides approximately 6x compute performance improvement over A100
+  note: The passage names all three claimed contributors and also mentions increased clock frequencies.
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-a100-tdp
+  work: nvidia-2023-h100-architecture-whitepaper
+  locator: p. 40
+  key: b4a72456b5fa2538319d2143480b76f9
+  spans:
+  - start: 59665
+    end: 60938
+  verdict: supported
+  quote: 'TDP1
+
+
+    400 Watts
+
+
+    700 Watts
+
+
+    350 Watts'
+  note: The comparison places 400 Watts in the A100 column.
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-announce
+  work: nvidia-2022-hopper-announcement
+  locator: p. 1
+  key: 82935159479cc9dfff2e562f296428b4
+  spans:
+  - start: 0
+    end: 15956
+  verdict: supported
+  quote: 'March 22, 2022
+
+    GTC—To power the next wave of AI data centers, NVIDIA today announced its next-generation accelerated computing platform'
+  note: The passage identifies Hopper architecture and separately announces H100 as its first GPU.
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-ampere
+  work: nvidia-2022-hopper-announcement
+  locator: p. 1
+  key: 73f94f7a4a8ff0a8168e450abba50895
+  spans:
+  - start: 0
+    end: 15956
+  verdict: supported
+  quote: Named for Grace Hopper, a pioneering U.S. computer scientist, the new architecture succeeds the NVIDIA Ampere architecture
+  note: The passage states the claim directly.
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-forms
+  work: nvidia-2022-hopper-announcement
+  locator: p. 1
+  key: 96a06d436d9b90be0cb67e2340480bad
+  spans:
+  - start: 0
+    end: 15956
+  verdict: supported
+  quote: H100 will come in SXM and PCIe form factors
+  note: The announcement states the claim directly.
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-q3
+  work: nvidia-2022-hopper-announcement
+  locator: p. 1
+  key: 301e18ae3261a0c5d2d574acb576ff19
+  spans:
+  - start: 0
+    end: 15956
+  verdict: supported
+  quote: NVIDIA H100 will be available starting in the third quarter.
+  note: The claim accurately reports the announcement’s stated availability plan.
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-nvl
+  work: nvidia-2024-h100-datasheet
+  locator: p. 2
+  key: 3eb0ca12a9f21218c903686dc9dd84e8
+  spans:
+  - start: 2483
+    end: 5104
+  verdict: supported
+  quote: 'Technical Specifications
+
+    H100 SXM
+
+
+    H100 NVL'
+  note: The H100 NVL column lists 94GB memory, 3.9TB/s bandwidth, and a PCIe dual-slot air-cooled form factor.

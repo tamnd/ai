@@ -1,0 +1,42 @@
+run: v-20261114-161538-72981
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-a100-fp16
+  work: nvidia-2023-h100-architecture-whitepaper
+  locator: Table 3
+  key: 90564cd57191f68b635fcda501d8a73d
+  spans:
+  - start: 6096
+    end: 59665
+  verdict: unsupported
+  quote: 'Table 3.
+
+    Comparison of NVIDIA A100 and H1001 Data Center GPUs'
+  note: The passage identifies the comparison table but ends before its rates; the table itself would support the numeric
+    parts of the claim.
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-a100-fp16
+  work: nvidia-2023-h100-architecture-whitepaper
+  locator: p. 39
+  key: d59f01c86db4c1167b4e7bf19efdcbce
+  spans:
+  - start: 58055
+    end: 59665
+  verdict: unsupported
+  quote: 'Peak FP16 Tensor TFLOPS with
+
+    FP16 Accumulate
+
+
+    312/6241'
+  note: The table gives 312/624 and lists NA for A100 FP8, but the passage does not explain that the second FP16 figure uses
+    Sparsity; a table footnote defining the slash values would support that part.

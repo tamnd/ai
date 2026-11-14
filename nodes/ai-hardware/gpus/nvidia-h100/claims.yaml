@@ -1,0 +1,181 @@
+# The claims of the nvidia-h100 page (spec 07). The build computes the labels.
+- id: c-die
+  type: definitional
+  text: "The full GH100 GPU that powers the H100 GPU is fabricated using TSMC's 4N process customized for NVIDIA, with 80 billion transistors and a die size of 814 mm2."
+  evidence:
+    - {work: "nvidia-2023-h100-architecture-whitepaper", role: original, locator: "p. 17", stance: for}
+
+- id: c-workloads
+  type: attributive
+  text: "NVIDIA writes that the H100 GPUs are primarily built for executing datacenter and edge compute workloads for AI, HPC, and data analytics, but not graphics processing."
+  evidence:
+    - {work: "nvidia-2023-h100-architecture-whitepaper", role: original, locator: "p. 18", stance: for}
+
+- id: c-sxm5
+  type: definitional
+  text: "The NVIDIA H100 GPU with SXM5 board form-factor has 132 SMs per GPU and 80 GB HBM3 in 5 HBM3 stacks."
+  evidence:
+    - {work: "nvidia-2023-h100-architecture-whitepaper", role: original, locator: "p. 18", stance: for}
+
+- id: c-pcie
+  type: definitional
+  text: "The NVIDIA H100 GPU with a PCIe Gen 5 board form-factor has 114 SMs per GPU and 80 GB HBM2e in 5 HBM2e stacks."
+  evidence:
+    - {work: "nvidia-2023-h100-architecture-whitepaper", role: original, locator: "p. 18", stance: for}
+
+- id: c-mma
+  type: definitional
+  text: "On a per SM basis, the H100 Tensor Cores deliver 2x the MMA (Matrix Multiply-Accumulate) computational rates of the A100 SM on equivalent data types, and 4x the rate of A100 using the new FP8 data type, compared to previous generation 16-bit floating point options."
+  evidence:
+    - {work: "nvidia-2023-h100-architecture-whitepaper", role: original, locator: "p. 11", stance: for}
+
+- id: c-fp8-types
+  type: definitional
+  text: "H100 FP8 Tensor Cores support two FP8 input types: E4M3 with 4 exponent bits, 3 mantissa bits, and 1 sign bit, and E5M2 with 5 exponent bits, 2 mantissa bits, and 1 sign bit."
+  evidence:
+    - {work: "nvidia-2023-h100-architecture-whitepaper", role: original, locator: "p. 23", stance: for}
+
+- id: c-fp8-range
+  type: definitional
+  text: "E4M3 supports computations requiring less dynamic range with more precision, while E5M2 provides a wider dynamic range and less precision."
+  evidence:
+    - {work: "nvidia-2023-h100-architecture-whitepaper", role: original, locator: "p. 23", stance: for}
+
+- id: c-fp8-half
+  type: definitional
+  text: "FP8 halves data storage requirements and doubles throughput compared to FP16 or BF16."
+  evidence:
+    - {work: "nvidia-2023-h100-architecture-whitepaper", role: original, locator: "p. 23", stance: for}
+
+- id: c-te
+  type: definitional
+  text: "The Transformer Engine uses a combination of software and custom Hopper Tensor Core technology designed specifically to accelerate Transformer model training and inference."
+  evidence:
+    - {work: "nvidia-2023-h100-architecture-whitepaper", role: original, locator: "p. 11", stance: for}
+
+- id: c-te-cast
+  type: definitional
+  text: "The Transformer Engine dynamically chooses between FP8 and 16-bit calculations, automatically handling re-casting and scaling between FP8 and 16-bit in each layer."
+  evidence:
+    - {work: "nvidia-2023-h100-architecture-whitepaper", role: original, locator: "p. 11", stance: for}
+
+- id: c-te-speedup
+  type: attributive
+  text: "NVIDIA reports that the Transformer Engine delivers up to 9x faster AI training and up to 30x faster AI inference speedups on large language models compared to the prior generation A100."
+  evidence:
+    - {work: "nvidia-2023-h100-architecture-whitepaper", role: original, locator: "p. 11", stance: for}
+
+- id: c-hbm
+  type: attributive
+  text: "NVIDIA writes that the H100 SXM5 GPU supports 80 GB of HBM3 memory delivering over 3 TB/sec of memory bandwidth, effectively a 2x increase over the memory bandwidth of A100, and that the PCIe H100 provides 80 GB of HBM2e with over 2 TB/sec of memory bandwidth."
+  evidence:
+    - {work: "nvidia-2023-h100-architecture-whitepaper", role: original, locator: "p. 36", stance: for}
+
+- id: c-nvlink
+  type: definitional
+  text: "The fourth-generation NVLink of H100 operates at 900 GB/sec total bandwidth for multi-GPU IO and shared memory accesses, which NVIDIA puts at 7x the bandwidth of PCIe Gen 5."
+  evidence:
+    - {work: "nvidia-2023-h100-architecture-whitepaper", role: original, locator: "p. 47", stance: for}
+
+- id: c-pcie-bridge
+  type: definitional
+  text: "NVIDIA H100 PCIe cards use three NVLink bridges, which allow two H100 PCIe cards to be connected to deliver 900 GB/s bidirectional bandwidth."
+  evidence:
+    - {work: "nvidia-2022-h100-pcie-product-brief", role: original, locator: "p. 5", stance: for}
+
+- id: c-clusters
+  type: definitional
+  text: "H100 adds Thread Block Clusters to the CUDA programming hierarchy, which then includes Threads, Thread Blocks, Thread Block Clusters, and Grids."
+  evidence:
+    - {work: "nvidia-2023-h100-architecture-whitepaper", role: original, locator: "p. 11", stance: for}
+
+- id: c-clusters-sm
+  type: definitional
+  text: "Clusters enable multiple Thread Blocks running concurrently across multiple SMs to synchronize and collaboratively fetch and exchange data."
+  evidence:
+    - {work: "nvidia-2023-h100-architecture-whitepaper", role: original, locator: "p. 11", stance: for}
+
+- id: c-tma
+  type: definitional
+  text: "Using the Tensor Memory Accelerator, only a small number of CUDA threads are required to manage the full memory bandwidth of H100, while most other CUDA threads can be focused on general-purpose computations."
+  evidence:
+    - {work: "nvidia-2023-h100-architecture-whitepaper", role: original, locator: "p. 17", stance: for}
+
+- id: c-dgx
+  type: historical
+  text: "NVIDIA announced the fourth-generation DGX system, DGX H100, which features eight H100 GPUs."
+  evidence:
+    - {work: "nvidia-2022-hopper-announcement", role: original, locator: "p. 1", stance: for}
+
+- id: c-a100-chip
+  type: definitional
+  text: "In NVIDIA's comparison of A100 and H100, the NVIDIA A100 has 54.2 billion transistors, a GPU die size of 826 mm2, and the TSMC 7 nm N7 manufacturing process."
+  evidence:
+    - {work: "nvidia-2023-h100-architecture-whitepaper", role: original, locator: "p. 40", stance: for}
+
+- id: c-a100-sms
+  type: definitional
+  text: "In NVIDIA's comparison of A100 and H100, the NVIDIA A100 has 108 SMs and the NVIDIA H100 SXM5 has 132 SMs."
+  evidence:
+    - {work: "nvidia-2023-h100-architecture-whitepaper", role: original, locator: "Table 3", stance: for}
+    - {work: "nvidia-2023-h100-architecture-whitepaper", role: original, locator: "p. 39", stance: for}
+
+- id: c-22
+  type: attributive
+  text: "NVIDIA writes that the 132 SMs of H100 provide a 22% SM count increase over the 108 SMs of A100."
+  evidence:
+    - {work: "nvidia-2023-h100-architecture-whitepaper", role: original, locator: "p. 28", stance: for}
+
+- id: c-a100-mem
+  type: definitional
+  text: "In NVIDIA's comparison of A100 and H100, the NVIDIA A100 has 40 GB of memory on a 5120-bit HBM2 interface, with a memory bandwidth of 1555 GB/sec."
+  evidence:
+    - {work: "nvidia-2023-h100-architecture-whitepaper", role: original, locator: "p. 40", stance: for}
+
+- id: c-a100-fp16
+  type: definitional
+  text: "In NVIDIA's comparison of A100 and H100, the NVIDIA A100 has a peak FP16 Tensor TFLOPS of 312/624, and its peak FP8 Tensor TFLOPS is NA."
+  evidence:
+    - {work: "nvidia-2023-h100-architecture-whitepaper", role: original, locator: "p. 39", stance: for}
+
+- id: c-6x
+  type: attributive
+  text: "NVIDIA writes that H100 provides approximately 6x compute performance improvement over A100, from its 132 SMs, from each H100 SM being 2x faster thanks to its new 4th Generation Tensor Core, and from another 2x improvement from the new FP8 format and associated Transformer Engine."
+  evidence:
+    - {work: "nvidia-2023-h100-architecture-whitepaper", role: original, locator: "p. 28", stance: for}
+
+- id: c-a100-tdp
+  type: definitional
+  text: "In NVIDIA's comparison of A100 and H100, the NVIDIA A100 has a TDP of 400 Watts."
+  evidence:
+    - {work: "nvidia-2023-h100-architecture-whitepaper", role: original, locator: "p. 40", stance: for}
+
+- id: c-announce
+  type: historical
+  text: "On March 22, 2022, at GTC, NVIDIA announced its next-generation accelerated computing platform with NVIDIA Hopper architecture and its first Hopper-based GPU, the NVIDIA H100."
+  evidence:
+    - {work: "nvidia-2022-hopper-announcement", role: original, locator: "p. 1", stance: for}
+
+- id: c-ampere
+  type: historical
+  text: "The Hopper architecture is named for Grace Hopper and succeeds the NVIDIA Ampere architecture."
+  evidence:
+    - {work: "nvidia-2022-hopper-announcement", role: original, locator: "p. 1", stance: for}
+
+- id: c-forms
+  type: historical
+  text: "NVIDIA announced that H100 will come in SXM and PCIe form factors."
+  evidence:
+    - {work: "nvidia-2022-hopper-announcement", role: original, locator: "p. 1", stance: for}
+
+- id: c-q3
+  type: historical
+  text: "NVIDIA announced that the H100 will be available starting in the third quarter."
+  evidence:
+    - {work: "nvidia-2022-hopper-announcement", role: original, locator: "p. 1", stance: for}
+
+- id: c-nvl
+  type: definitional
+  text: "NVIDIA's H100 datasheet lists the H100 SXM and the H100 NVL, a PCIe dual-slot air-cooled card with 94GB of GPU memory and 3.9TB/s of GPU memory bandwidth."
+  evidence:
+    - {work: "nvidia-2024-h100-datasheet", role: original, locator: "p. 2", stance: for}
