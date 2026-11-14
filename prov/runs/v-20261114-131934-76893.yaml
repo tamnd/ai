@@ -1,0 +1,179 @@
+run: v-20261114-131934-76893
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: alan-turing
+  verifier: codex:gpt-6-sol
+  tag: NEW-alan-turing
+  claim: c-years
+  work: hodges-2013-alan-turing-sep
+  locator: Section 1
+  key: c89f3dde239bc51ec262f1994d3e7963
+  spans:
+  - start: 1470
+    end: 7720
+  verdict: supported
+  quote: Alan Mathison Turing was born in London, 23 June 1912
+  note: The passage also dates his death to 7 June 1954.
+- slug: alan-turing
+  verifier: codex:gpt-6-sol
+  tag: NEW-alan-turing
+  claim: c-1936-founding
+  work: hodges-2013-alan-turing-sep
+  locator: Section 1
+  key: c50e901565184805b8f2a779cec97d5a
+  spans:
+  - start: 1470
+    end: 7720
+  verdict: supported
+  quote: It gave a definition of computation and an absolute limitation on what computation could achieve
+  note: Hodges says this of On Computable Numbers.
+- slug: alan-turing
+  verifier: codex:gpt-6-sol
+  tag: NEW-alan-turing
+  claim: c-founded-ai
+  work: hodges-2013-alan-turing-sep
+  locator: Section 1
+  key: 92ceeb060e44aabd6ad4d8dbaa3b03b8
+  spans:
+  - start: 1470
+    end: 7720
+  verdict: supported
+  quote: His contention was that the computer, when properly programmed, could rival the brain. It founded the ‘Artificial
+    Intelligence’ program of coming decades.
+  note: The claim follows both statements in the passage.
+- slug: alan-turing
+  verifier: codex:gpt-6-sol
+  tag: NEW-alan-turing
+  claim: c-unorganised
+  work: hodges-2013-alan-turing-sep
+  locator: Section 6
+  key: 27bf6dceab2655c20bc623e61de58eff
+  spans:
+  - start: 35320
+    end: 42234
+  verdict: supported
+  quote: These ideas included nets of logical components (‘unorganised machines’) whose properties could be ‘trained’ into
+    a desired function.
+  note: The passage places these ideas in Turing’s 1948 work on systems that could modify their own programs.
+- slug: alan-turing
+  verifier: codex:gpt-6-sol
+  tag: NEW-alan-turing
+  claim: c-genetic
+  work: hodges-2013-alan-turing-sep
+  locator: Section 6
+  key: dfdd4b9d3d784db480c8a46b90d6a18e
+  spans:
+  - start: 35320
+    end: 42234
+  verdict: supported
+  quote: By the expression ‘genetical or evolutionary search’, he also anticipated the ‘genetic algorithms’
+  note: Hodges states the attribution directly.
+- slug: alan-turing
+  verifier: codex:gpt-6-sol
+  tag: NEW-alan-turing
+  claim: c-kings
+  work: hodges-2013-alan-turing-sep
+  locator: Section 1
+  key: fbcc03367d7ddaad2d8da1a16676f59b
+  spans:
+  - start: 1470
+    end: 7720
+  verdict: supported
+  quote: Turing studied mathematics with increasing distinction and was elected a Fellow of the college in 1935.
+  note: The preceding sentence identifies the college as King’s College, Cambridge University.
+- slug: alan-turing
+  verifier: codex:gpt-6-sol
+  tag: NEW-alan-turing
+  claim: c-princeton
+  work: hodges-2013-alan-turing-sep
+  locator: Section 1
+  key: d20dca7399618be6276fd38ce1e00774
+  spans:
+  - start: 1470
+    end: 7720
+  verdict: supported
+  quote: It led him to Princeton for more advanced work in logic and other branches of mathematics.
+  note: The passage also says he chose to return to Britain in 1938.
+- slug: alan-turing
+  verifier: codex:gpt-6-sol
+  tag: NEW-alan-turing
+  claim: c-bletchley
+  work: hodges-2013-alan-turing-sep
+  locator: Section 1
+  key: ab12d354dee253cf959578f2c5e0384f
+  spans:
+  - start: 1470
+    end: 7720
+  verdict: supported
+  quote: From 1939 to 1945 Turing was almost totally engaged in the mastery of the German enciphering machine, Enigma
+  note: The same paragraph places this work at Bletchley Park and specifies his responsibility for U-boat communications.
+- slug: alan-turing
+  verifier: codex:gpt-6-sol
+  tag: NEW-alan-turing
+  claim: c-npl
+  work: hodges-2013-alan-turing-sep
+  locator: Section 1
+  key: b83aa63019be89545ee1b6660a2ec980
+  spans:
+  - start: 1470
+    end: 7720
+  verdict: supported
+  quote: His plans, commissioned by the National Physical Laboratory, London
+  note: The preceding sentence places his electronic-computer ambition at the end of the war in Europe.
+- slug: alan-turing
+  verifier: codex:gpt-6-sol
+  tag: NEW-alan-turing
+  claim: c-manchester
+  work: hodges-2013-alan-turing-sep
+  locator: Section 1
+  key: 2306ae7883197b03e4b2efa7693872ad
+  spans:
+  - start: 1470
+    end: 7720
+  verdict: supported
+  quote: In 1948 he moved to Manchester University, where he partly fulfilled the expectations placed upon him to plan software
+  note: The passage also says his 1950 paper was written there.
+- slug: alan-turing
+  verifier: codex:gpt-6-sol
+  tag: NEW-alan-turing
+  claim: c-reader
+  work: hodges-2013-alan-turing-sep
+  locator: Section 1
+  key: 967047d31cd73227100f938d7e21c5b5
+  spans:
+  - start: 1470
+    end: 7720
+  verdict: supported
+  quote: While remaining formally a Reader in the Theory of Computing
+  note: The passage states his title directly.
+- slug: alan-turing
+  verifier: codex:gpt-6-sol
+  tag: NEW-alan-turing
+  claim: c-morphogenesis
+  work: hodges-2013-alan-turing-sep
+  locator: Section 8
+  key: 327cf4b544cff982f14d8fd5df3baaee
+  spans:
+  - start: 55249
+    end: 61074
+  verdict: supported
+  quote: From 1950 Turing worked on a new mathematical theory of morphogenesis, based on showing the consequences of non-linear
+    equations for chemical reaction and diffusion
+  note: The claim follows the passage directly.
+- slug: alan-turing
+  verifier: codex:gpt-6-sol
+  tag: NEW-alan-turing
+  claim: c-frs
+  work: hodges-2013-alan-turing-sep
+  locator: Section 1
+  key: 61e85d169222b845f7a8d9ba9a0e5746
+  spans:
+  - start: 1470
+    end: 7720
+  verdict: supported
+  quote: In 1951 he was elected a Fellow of the Royal Society for his 1936 achievement
+  note: The passage states the year, fellowship, and reason directly.
