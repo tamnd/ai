@@ -1,0 +1,31 @@
+# The sources of spec 13.2: each one with its owner, its licence and the date it was checked, its class of 19.2,
+# how the adapter reads it, its rate limit and schedule, and the credit line that the site shows (13.10).
+# A person approves the class of each source. aik harvest adds the row of its source when the row is missing,
+# and never changes a row that is here.
+- id: epoch-ai
+  name: Epoch AI, Data on AI Models and Data on Machine Learning Hardware
+  url: https://epoch.ai/data/ai-models
+  owner: Epoch AI
+  licence: CC-BY-4.0
+  checked: "2026-11-14"
+  class: C
+  access: 'CSV downloads: all_ai_models.csv and ml_hardware.csv'
+  rate: 1 request per 2 s
+  schedule: weekly
+  standing: secondary-reference
+  facts: secondary for parameters, training compute, dates and hardware specifications
+  credit: Data from Epoch AI, Data on AI Models (CC BY 4.0), https://epoch.ai/data/ai-models
+- id: epoch-benchmarks
+  name: Epoch AI, Benchmarking Hub
+  url: https://epoch.ai/benchmarks
+  owner: Epoch AI
+  licence: CC-BY-4.0
+  checked: "2026-11-14"
+  class: C
+  access: 'benchmark_data.zip, one request: a CSV for each benchmark, benchmark_metadata.csv and model_metadata.csv'
+  rate: 1 request per 2 s
+  schedule: weekly
+  standing: secondary-reference
+  facts: 'results: Epoch AI''s own runs, with the date, the standard error and the log; and the scores it copies from other leaderboards, with their source'
+  credit: Epoch AI, 'Capabilities & benchmarking' (CC BY 4.0), https://epoch.ai/benchmarks
+  note: Only the benchmarks that benchmark_metadata.csv maps to a file and a score column are read; the score keeps the hub's number and its scale (fraction or percent).

@@ -1,0 +1,1 @@
+{"tag":"D43Q14","kind":"metric","slug":"accuracy","name":"Accuracy","aliases":["accuracy rate"],"summary":"The share of the items of a test that a system answers correctly, from 0 to 1; on a multiple-choice test, random guessing sets its floor."}
