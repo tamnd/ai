@@ -102,10 +102,12 @@ The full derivation, with each step and its reason, is in [derivations/stochasti
 
 The derivation shows the shape, not the convergence.
 Watkins and Dayan (1992) prove convergence.
-In their notation $x$ is the state and $Q_n$ is the table after the $n$-th episode, and $n^i(x, a)$ is the index of the $i$-th time that action $a$ is tried in state $x$.
+In their notation, $x$ is the state and $Q_n$ is the table after the $n$-th episode.
+The index $n^i(x, a)$ marks the $i$-th time that action $a$ is tried in state $x$.
 Their theorem: given bounded rewards $\lvert r_n \rvert \le R$, learning rates $0 \le \alpha_n < 1$, and, for all $x$ and $a$, $\sum_i \alpha_{n^i(x,a)} = \infty$ and $\sum_i \alpha_{n^i(x,a)}^2 < \infty$, $Q_n(x, a) \to q_*(x, a)$ as $n \to \infty$ for all $x$ and $a$, with probability 1. {#c-wd-theorem}
 The setting is a discounted process with $\gamma < 1$.
-The description assumes a look-up table, and Watkins (1989) shows that Q-learning may not converge correctly for other representations; the most important implicit condition is an infinite number of episodes for each starting state and action. {#c-wd-conditions}
+Their description assumes a look-up table, and they cite Watkins (1989) for the fact that Q-learning may not converge correctly with other representations.
+The most important implicit condition is an infinite number of episodes for each starting state and action. {#c-wd-conditions}
 The step sizes $\alpha_n = 1/n$ meet both sums, and a constant step size does not meet the second one: the estimates then keep varying in response to the latest rewards. {#c-step-sizes}
 Watkins and Dayan sketch two extensions where the result holds: the undiscounted case with absorbing goal states, and updates of many entries in each iteration. {#c-wd-extensions}
 
@@ -164,15 +166,16 @@ The number of transitions needed to converge is the real cost: every pair must b
 ## Evidence
 
 Watkins and Dayan (1992) report that Q-learning converges to the optimum action-values with probability 1 so long as all actions are repeatedly sampled in all states and the action-values are represented discretely. {#c-wd-abstract}
-On the cliff walking task with $\varepsilon = 0.1$, Q-learning learns values for the optimal path along the edge of the cliff and occasionally falls off, Sarsa learns the longer but safer path, and the online performance of Q-learning is worse than that of Sarsa (Sutton and Barto, 2018). {#c-cliff}
-Mnih et al. (2015) report that a deep Q-network that sees only pixels and the game score reached a level comparable to that of a professional human games tester across 49 Atari games, with one algorithm, network architecture and set of hyperparameters. {#c-dqn-atari}
+On cliff walking with $\varepsilon = 0.1$, Q-learning learns the optimal path along the edge and occasionally falls off, while Sarsa learns a safer path and does better online (Sutton and Barto, 2018). {#c-cliff}
+Mnih et al. (2015) report that a deep Q-network, seeing only pixels and the score, reached a level comparable to a professional human games tester across 49 Atari games. {#c-dqn-atari}
 
 ## Limitations and failure modes
 
 **Overestimation.**
 Q-learning uses a maximum over estimated values as an estimate of the maximum value, which can lead to a significant positive bias (Sutton and Barto, 2018). {#c-max-bias}
 With many actions whose true values are equal, noise alone pushes the maximum of the estimates too high.
-van Hasselt, Guez and Silver (2016) report that DQN suffers from substantial overestimations in some Atari games, and that their adaptation of Double Q-learning to DQN reduces them and leads to much better performance on several games. {#c-double-dqn}
+van Hasselt, Guez and Silver (2016) report substantial overestimations by DQN in some Atari games.
+They report that their Double Q-learning form of DQN reduces them and does much better on several games. {#c-double-dqn}
 
 **Online return.**
 Q-learning learns the values of the greedy policy, not of the exploring policy that it follows.
@@ -191,8 +194,8 @@ The guarantee needs every pair to be tried infinitely often; an $\varepsilon$-gr
 ## Variants
 
 - **Sarsa** uses the next action taken, eq-sarsa, and learns the values of the exploring policy.
-- **Expected Sarsa** uses the expected value of the next state under a target policy; when that policy is greedy and the behaviour explores more, Expected Sarsa is exactly Q-learning (Sutton and Barto, 2018). {#c-expected-sarsa}
-- **Double Q-learning** keeps two tables, uses one to pick the maximizing action and the other to value it, and updates one of them at each step; this doubles the memory but not the computation per step (Sutton and Barto, 2018). {#c-double-learning}
+- **Expected Sarsa** uses the expected value of the next state under a target policy. When that policy is greedy and the behaviour explores more, it is exactly Q-learning (Sutton and Barto, 2018). {#c-expected-sarsa}
+- **Double Q-learning** keeps two tables, and uses one to pick the maximizing action and the other to value it. Each step updates one table, so the memory doubles but the computation per step does not (Sutton and Barto, 2018). {#c-double-learning}
 - **Watkins's Q($\lambda$)** adds eligibility traces and cuts them to zero after the first non-greedy action (Sutton and Barto, 2018). {#c-q-lambda} The theorem of Watkins and Dayan does not extend trivially to updates that use rewards from more than one step. {#c-wd-no-lambda}
 - **Deep Q-network (DQN)** represents $Q$ with a convolutional network. Mnih et al. (2015) add experience replay, which randomizes over the data, and targets that are only periodically updated. {#c-dqn-ideas}
 - **Double DQN** brings the idea of Double Q-learning to DQN (van Hasselt, Guez and Silver, 2016).
@@ -225,7 +228,8 @@ For large state spaces, Q-learning needs function approximation, and then the co
 
 ## History
 
-Sutton and Barto write that Q-learning was introduced by Watkins (1989), whose outline of a convergence proof was made rigorous by Watkins and Dayan (1992), and that more general convergence results were proved by Jaakkola, Jordan and Singh (1994) and Tsitsiklis (1994). {#c-history-watkins}
+Sutton and Barto write that Q-learning was introduced by Watkins (1989), and that Watkins and Dayan (1992) made his outline of a convergence proof rigorous. {#c-history-watkins}
+They add that Jaakkola, Jordan and Singh (1994) and Tsitsiklis (1994) proved more general convergence results.
 Watkins's thesis, *Learning from Delayed Rewards*, was written at the University of Cambridge.
 They also credit the term action value to Watkins (1989), who may have been the first to use $\varepsilon$-greedy methods. {#c-history-action-value}
 Mnih et al. (2015) combined Q-learning with a deep convolutional network, experience replay and a periodically updated target, and trained it on Atari 2600 games from pixels.
