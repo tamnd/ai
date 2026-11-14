@@ -1,5 +1,22 @@
 benchmarks:
   GPQA diamond: gpqa@diamond
+  LMArena text: lmarena@text
+  LMArena text_style_control: lmarena@text-style-control
+  LMArena text_factuality: lmarena@text-factuality
+  LMArena vision: lmarena@vision
+  LMArena vision_style_control: lmarena@vision-style-control
+  LMArena search: lmarena@search
+  LMArena search_style_control: lmarena@search-style-control
+  LMArena search_factuality: lmarena@search-factuality
+  LMArena document: lmarena@document
+  LMArena document_style_control: lmarena@document-style-control
+  LMArena webdev: lmarena@webdev
+  LMArena text_to_image: lmarena@text-to-image
+  LMArena image_edit: lmarena@image-edit
+  LMArena text_to_video: lmarena@text-to-video
+  LMArena image_to_video: lmarena@image-to-video
+  LMArena video_edit: lmarena@video-edit
 metrics:
   "GPQA diamond: Best score (across scorers)": accuracy
-models: {}
+models:
+  "Mistral Large (2411)": mistral-large-2-1
