@@ -185,13 +185,14 @@ Multi-query attention shares the keys and values across all heads, which shrinks
 
 The original model was trained on WMT 2014 English to German, about 4.5 million sentence pairs with a shared byte-pair vocabulary of about 37,000 tokens, and on WMT 2014 English to French, 36 million sentences with a vocabulary of 32,000 word pieces (Section 5.1). {#c-wmt-data}
 Byte-pair encoding splits rare words into frequent pieces (Sennrich et al. 2016).
-The loss is the cross-entropy of the next token, with label smoothing $\epsilon_{\text{ls}} = 0.1$ (Szegedy et al. 2016), which made the perplexity worse but improved accuracy and BLEU (Section 5.4). {#c-label-smoothing}
-The optimizer was Adam with $\beta_1 = 0.9$, $\beta_2 = 0.98$ and $\epsilon = 10^{-9}$, and the learning rate rose linearly for 4,000 warmup steps and then fell as the inverse square root of the step (Section 5.3):
+The loss is the [[al:cross-entropy-loss|cross-entropy]] of the next token, with [[al:label-smoothing|label smoothing]] $\epsilon_{\text{ls}} = 0.1$ (Szegedy et al. 2016), which made the perplexity worse but improved accuracy and BLEU (Section 5.4). {#c-label-smoothing}
+The optimizer was Adam with $\beta_1 = 0.9$, $\beta_2 = 0.98$ and $\epsilon = 10^{-9}$, and the learning rate followed a [[al:learning-rate-schedule|schedule]] that rose linearly for 4,000 warmup steps and then fell as the inverse square root of the step (Section 5.3):
 
 $$ \eta_t = d_{\text{model}}^{-1/2} \cdot \min\!\left(t^{-1/2},\; t \cdot t_{\text{warmup}}^{-3/2}\right). $$ {#eq-schedule}
 
 Dropout with $p = 0.1$ was applied to the output of each sublayer before the residual addition, and to the sums of the embeddings and the positional encodings (Section 5.4). {#c-residual-dropout}
 On 8 NVIDIA P100 GPUs, the base model trained for 100,000 steps in 12 hours, and the big model for 300,000 steps in 3.5 days (Section 5.2). {#c-training-time}
+To translate, the models decode with [[al:beam-search|beam search]], with a beam of 4 and a length penalty of $\alpha = 0.6$, and stop at the input length plus 50 tokens or earlier (Section 6.1).
 
 **Where the normalization goes.**
 The original model normalizes after the residual addition, which is called post-LN.
