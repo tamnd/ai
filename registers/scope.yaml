@@ -70,6 +70,7 @@
   outcome: card
   rule: Each AI-specific act, regulation, executive order, guidance and treaty of the OECD.AI database and of the official journals in registers/watch.yaml is a policy card. Each article or section that a node or a card cites is a provision card. A policy in force in the EU, the US federal government, a US state with an AI law, China, the UK, Japan, Korea, Canada, India or Brazil is a node. An international instrument, such as the Council of Europe convention, the OECD principles or the G7 Hiroshima code, is a node.
   source: oecd-ai
+  thresholds: {instrument: 1}
 - id: S-L2
   kind: standard
   outcome: card
