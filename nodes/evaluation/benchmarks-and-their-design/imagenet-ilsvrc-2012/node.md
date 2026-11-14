@@ -37,7 +37,7 @@ Russakovsky et al. describe the challenge as a benchmark in object category clas
 
 The benchmark does not measure how well a model names everything in an image.
 Many real images hold several objects of interest, but each ImageNet image has a single label, which can badly underrepresent its content. {#c-single-label}
-It also does not by itself show how a model does on fresh images from the same source: on a test set built again with the same process, the accuracy of models drops by 11% to 14% (see Known issues). {#c-drop}
+It also does not by itself tell how a model does on fresh images from the same source: on a test set built again with the same process, the accuracy of models drops by 11% to 14% (see Known issues). {#c-drop}
 
 ## Data
 
