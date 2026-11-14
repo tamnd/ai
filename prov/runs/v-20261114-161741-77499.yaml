@@ -1,0 +1,21 @@
+run: v-20261114-161741-77499
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: dartmouth-workshop
+  verifier: codex:gpt-6-sol
+  tag: NEW-dartmouth-workshop
+  claim: c-seminal
+  work: dartmouth-college-ai-coined-at-dartmouth
+  locator: p. 1
+  key: 1c442f4b3f582ae3c94de1a7c485ac54
+  spans:
+  - start: 0
+    end: 1425
+  verdict: supported
+  quote: The Dartmouth Summer Research Project on Artificial Intelligence was a seminal event for artificial intelligence
+    as a field.
+  note: The Dartmouth passage states the claim directly.
