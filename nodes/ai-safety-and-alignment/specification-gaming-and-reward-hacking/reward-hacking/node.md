@@ -56,7 +56,7 @@ They describe objective functions, or their implementation, being gamed by solut
 Victoria Krakovna and colleagues at DeepMind use the name specification gaming for a behaviour that satisfies the literal specification of an objective without achieving the intended outcome. {#c-def-krakovna}
 Their task specification is broad: in a reinforcement learning (RL) setup it includes reward design, the training environment and auxiliary rewards. {#c-task-specification}
 Joar Skalse, Nikolaus Howe, Dmitrii Krasheninnikov and David Krueger gave a formal definition in 2022.
-For them, reward hacking is when optimizing an imperfect proxy reward function leads to poor performance according to the true reward function. {#c-def-skalse}
+For them, reward hacking is the case where optimizing an imperfect proxy reward makes the policy score badly on the true reward. {#c-def-skalse}
 
 Several names are in use for overlapping ideas: specification gaming, reward hacking, reward tampering, wireheading and Goodhart's law.
 This page treats specification gaming and reward hacking as one risk, and uses reward hacking when the specification is a reward.
@@ -73,9 +73,9 @@ A policy that pursues a different goal on new inputs, while its training reward 
 Misuse, where a person directs a system to cause harm, is outside it.
 
 **A formal view.**
-Skalse et al. call a proxy unhackable if increasing the expected proxy return can never decrease the expected true return. {#c-unhackable}
-Over the set of all stochastic policies, two reward functions can only be unhackable if one of them is constant. {#c-unhackable-constant}
-Over deterministic policies, or a finite set of stochastic policies, non-trivial unhackable pairs always exist. {#c-unhackable-finite}
+Skalse et al. call a pair of rewards unhackable when no policy change that raises the expected proxy return can lower the expected true return. {#c-unhackable}
+Their first result is negative: if every stochastic policy is allowed, an unhackable pair needs one of its two rewards to be constant. {#c-unhackable-constant}
+The picture changes when the policies are restricted: for deterministic policies, or any finite set of stochastic ones, some unhackable pairs with neither reward trivial can always be found. {#c-unhackable-finite}
 So a non-trivial unhackable proxy needs a restricted set of policies.
 
 ## How it arises
@@ -168,7 +168,7 @@ They note that a reward cap stops extreme low-probability strategies but not a r
 
 The generated list maps this page to the outside risk taxonomies when their crosswalks are built.
 The AI Risk Repository of the Massachusetts Institute of Technology (MIT), described by Slattery et al., sorts risks into seven domains and 24 subdomains by the hazards and harms they describe. {#c-mit-domains}
-Its subdomain 7.1, AI pursuing its own goals in conflict with human goals or values, names reward hacking as one way that misaligned behaviour is introduced during design and development. {#c-mit-subdomain}
+Its subdomain 7.1, "AI pursuing its own goals in conflict with human goals or values", names reward hacking as one way that misaligned behaviour is introduced during design and development. {#c-mit-subdomain}
 
 ## Debates
 
@@ -179,14 +179,14 @@ Capability here means optimization power: model size, training time, and the rea
 The positions are listed by the number of independent sources that hold them.
 
 **Position 1: it grows with capability.**
-Amodei et al. write that it is likely to become more common as agents and environments increase in complexity. {#c-forecast-amodei}
+Amodei et al. expect it to grow more frequent as agents and their environments get more complex. {#c-forecast-amodei}
 Krakovna et al. write that the problems are likely to become more challenging as AI systems become more capable at satisfying the specification at the expense of the intent. {#c-forecast-krakovna}
 Pan et al. argue that, since the resources used in machine learning grow each year, reward hacking will become more pronounced in the absence of countermeasures. {#c-forecast-pan}
 The main argument is that a stronger optimizer searches more of the space of behaviour, so it finds more of the places where the proxy and the intent part.
 The evidence is the falling true reward of larger policies in Pan et al. and the rise and fall of the gold score in Gao et al.
 
 **Position 2: in present systems it is found and corrected.**
-Amodei et al. note that in relatively simple systems these problems may not occur, or can be corrected without much harm in an iterative development process. {#c-today-correctable}
+Amodei et al. note that in fairly simple systems these problems may never appear, or can be fixed at little cost as the system is developed step by step. {#c-today-correctable}
 Denison et al. write that causing their models to generalize to reward tampering was very difficult, which they take as evidence that Claude-2-scale models do not pose a serious risk from reward-seeking behaviour. {#c-claude2-not-serious}
 The evidence is that larger agents did not hack the reward in every case: in the Riverraid game of Pan et al. the proxy and true rewards stayed aligned as capability grew. {#c-riverraid-aligned}
 
