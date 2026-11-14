@@ -1,0 +1,37 @@
+{
+  "task": "four-by-twelve cliff walking",
+  "episodes": 150,
+  "return_window": 50,
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "arms": {
+    "0.0": {
+      "online_return_mean": -13.0,
+      "online_return_sd": 0.0,
+      "greedy_reaches_goal_fraction": 1.0,
+      "greedy_edge_path_fraction": 1.0
+    },
+    "0.1": {
+      "online_return_mean": -51.786,
+      "online_return_sd": 9.67515512364875,
+      "greedy_reaches_goal_fraction": 1.0,
+      "greedy_edge_path_fraction": 1.0
+    },
+    "0.3": {
+      "online_return_mean": -197.97,
+      "online_return_sd": 22.056511762087656,
+      "greedy_reaches_goal_fraction": 1.0,
+      "greedy_edge_path_fraction": 1.0
+    }
+  }
+}

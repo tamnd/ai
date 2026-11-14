@@ -1,0 +1,11 @@
+claim: c-cliff-path-check
+primary:
+  metric: greedy_edge_path_fraction
+  at: final
+  compare: {treatment: q_learning, control: sarsa}
+  direction: higher
+  test: bootstrap-diff
+  expected: "Q-learning more often follows the row beside the cliff; Sarsa more often selects a safer route during continued epsilon-greedy behavior."
+secondary:
+  - {metric: online_return, compare: {treatment: sarsa, control: q_learning}, direction: higher, test: bootstrap-diff}
+report: {ci: 0.95}

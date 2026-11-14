@@ -1,0 +1,70 @@
+- id: cliff.seeds
+  value: 30
+  unit: items
+  sources:
+    - {src: "exp/cliff-walking/results.json", value: 30, kind: primary, loc: "seeds"}
+- id: cliff.window
+  value: 50
+  unit: items
+  sources:
+    - {src: "exp/cliff-walking/experiment.yaml", value: 50, kind: primary, loc: "base_config.online_return_window"}
+- id: cliff.episodes
+  value: 150
+  unit: items
+  sources:
+    - {src: "exp/cliff-walking/experiment.yaml", value: 150, kind: primary, loc: "base_config.episodes"}
+- id: cliff.q_mean
+  value: -51.05
+  unit: items
+  sources:
+    - {src: "exp/cliff-walking/results.json", value: -51.05, kind: primary, loc: "arms.q_learning.online_return.mean"}
+- id: cliff.q_sd
+  value: 9.76
+  unit: items
+  sources:
+    - {src: "exp/cliff-walking/results.json", value: 9.76, kind: primary, loc: "arms.q_learning.online_return.sd"}
+- id: cliff.sarsa_mean
+  value: -35.75
+  unit: items
+  sources:
+    - {src: "exp/cliff-walking/results.json", value: -35.75, kind: primary, loc: "arms.sarsa.online_return.mean"}
+- id: cliff.sarsa_sd
+  value: 21.01
+  unit: items
+  sources:
+    - {src: "exp/cliff-walking/results.json", value: 21.01, kind: primary, loc: "arms.sarsa.online_return.sd"}
+- id: cliff.ci_low
+  value: 4.253
+  unit: items
+  sources:
+    - {src: "exp/cliff-walking/results.json", value: 4.253, kind: primary, loc: "secondary.ci95[0]"}
+- id: cliff.ci_high
+  value: 21.43
+  unit: items
+  sources:
+    - {src: "exp/cliff-walking/results.json", value: 21.43, kind: primary, loc: "secondary.ci95[1]"}
+- id: cliff.q_edge
+  value: 1
+  unit: items
+  sources:
+    - {src: "exp/cliff-walking/results.json", value: 1, kind: primary, loc: "arms.q_learning.greedy_edge_path_fraction.mean"}
+- id: cliff.sarsa_edge
+  value: 0
+  unit: items
+  sources:
+    - {src: "exp/cliff-walking/results.json", value: 0, kind: primary, loc: "arms.sarsa.greedy_edge_path_fraction.mean"}
+- id: cliff.q_goal
+  value: 30
+  unit: items
+  sources:
+    - {src: "exp/cliff-walking/results.json", value: 30, kind: primary, loc: "arms.q_learning.greedy_reaches_goal_fraction.per_seed"}
+- id: cliff.sarsa_goal
+  value: 25
+  unit: items
+  sources:
+    - {src: "exp/cliff-walking/results.json", value: 25, kind: primary, loc: "arms.sarsa.greedy_reaches_goal_fraction.per_seed"}
+- id: cliff.sarsa_no_goal
+  value: 5
+  unit: items
+  sources:
+    - {src: "exp/cliff-walking/results.json", value: 5, kind: primary, loc: "arms.sarsa.greedy_reaches_goal_fraction.per_seed"}

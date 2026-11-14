@@ -1,0 +1,23 @@
+id: cliff-walking
+claims: [c-cliff-scope, c-cliff-path-check, c-cliff-measured, c-cliff-goal, c-cliff-settings, c-local-settings, c-cliff-discount]
+question: "On this tabular cliff task, do Q-learning and Sarsa differ in online return and in whether their learned greedy paths traverse the row beside the cliff?"
+scale_note:
+  here: "Tabular Q-learning and Sarsa on a four-by-twelve cliff grid, trained for 150 episodes per seed and evaluated by following the greedy policy from the start."
+  source: "Sutton and Barto's Example 6.6 describes a related cliff-walking comparison; this run uses a discounted setting and its own episode and seed configuration."
+replicates: null
+arms:
+  - {id: q_learning, config: {alpha: 0.5, epsilon: 0.1, gamma: 0.9}}
+  - {id: sarsa, config: {alpha: 0.5, epsilon: 0.1, gamma: 0.9}}
+base_config:
+  task: four-by-twelve cliff walking
+  episodes: 150
+  max_steps_per_episode: 1000
+  online_return_window: last 50 episodes
+  seed_note: "Thirty fixed seeds, 0 to 29, as enumerated by run.py"
+  policy_check: "greedy argmax policy from START; record goal reach and visits to each cell along the row above the cliff"
+seeds: {n: 30, base: 0}
+data: []
+budget: cpu-small
+framework: numpy
+uses_impl: ../../impl/numpy/q_learning.py
+metrics: [online_return, greedy_reaches_goal_fraction, greedy_edge_path_fraction]
