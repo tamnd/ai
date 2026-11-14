@@ -1,0 +1,516 @@
+# The claims of the llama page (spec 07). The build computes the labels.
+- id: c-llama-collection
+  type: attributive
+  text: "Touvron et al. introduce LLaMA, a collection of foundation language models ranging from 7B to 65B parameters, trained using publicly available datasets exclusively."
+  evidence:
+    - {work: "touvron-2023-llama", role: original, locator: "the abstract", stance: for}
+
+- id: c-llama-gpt3
+  type: attributive
+  text: "Touvron et al. report that LLaMA-13B outperforms GPT-3 (175B) on most benchmarks."
+  evidence:
+    - {work: "touvron-2023-llama", role: original, locator: "the abstract", stance: for}
+
+- id: c-llama-noncommercial
+  type: historical
+  text: "Meta released LLaMA under a noncommercial license focused on research use cases, and access to the model was granted on a case-by-case basis to academic researchers, to those affiliated with organizations in government, civil society and academia, and to industry research laboratories."
+  evidence:
+    - {work: "meta-2023-introducing-llama", role: original, locator: "p. 1", stance: for}
+
+- id: c-llama2-free
+  type: historical
+  text: "Meta announced Llama 2 as free for research and commercial use."
+  evidence:
+    - {work: "meta-2023-llama-2-announcement", role: original, locator: "p. 1", stance: for}
+
+- id: c-llama4-moe
+  type: attributive
+  text: "Meta describes the Llama 4 models as its first models that use a mixture of experts (MoE) architecture."
+  evidence:
+    - {work: "meta-2025-llama-4-herd", role: original, locator: "p. 1", stance: for}
+
+- id: c-arch-llama
+  type: historical
+  text: "LLaMA is based on the transformer architecture, with three main differences from the original architecture: pre-normalization, the SwiGLU activation function and rotary embeddings."
+  evidence:
+    - {work: "touvron-2023-llama", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-arch-sources
+  type: historical
+  text: "LLaMA normalizes the input of each transformer sub-layer with the RMSNorm normalizing function, after GPT3; replaces the ReLU non-linearity by the SwiGLU activation function, after PaLM; and removes the absolute positional embeddings and adds rotary positional embeddings (RoPE) at each layer, after GPTNeo."
+  evidence:
+    - {work: "touvron-2023-llama", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-arch-llama2
+  type: historical
+  text: "Llama 2 adopts most of the model architecture of Llama 1, and the primary architectural differences from Llama 1 are an increased context length and grouped-query attention (GQA)."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-llama2-gqa
+  type: historical
+  text: "In the Llama 2 family, the bigger models, 34B and 70B, use Grouped-Query Attention (GQA)."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "Table 1", stance: for}
+
+- id: c-context-2048-4096
+  type: historical
+  text: "Meta expanded the context window from 2048 tokens for Llama 1 to 4096 tokens for Llama 2."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "p. 47", stance: for}
+
+- id: c-arch-llama3
+  type: historical
+  text: "Meta opted for a relatively standard decoder-only transformer architecture in Llama 3, with a tokenizer with a vocabulary of 128K tokens and grouped query attention (GQA) across both the 8B and 70B sizes."
+  evidence:
+    - {work: "meta-2024-introducing-llama-3", role: original, locator: "p. 1", stance: for}
+
+- id: c-arch-llama3-same
+  type: attributive
+  text: "Grattafiori et al. write that Llama 3 uses a standard, dense Transformer architecture that does not deviate significantly from Llama and Llama 2 in terms of model architecture."
+  evidence:
+    - {work: "grattafiori-2024-llama-3-herd", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-arch-dense
+  type: attributive
+  text: "Grattafiori et al. opt for a standard dense Transformer model architecture with minor adaptations, rather than for a mixture-of-experts model, to maximize training stability."
+  evidence:
+    - {work: "grattafiori-2024-llama-3-herd", role: original, locator: "p. 2", stance: for}
+
+- id: c-arch-llama3-gqa8
+  type: historical
+  text: "Llama 3 uses grouped query attention (GQA) with 8 key-value heads, and an attention mask that prevents self-attention between different documents within the same sequence."
+  evidence:
+    - {work: "grattafiori-2024-llama-3-herd", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-arch-rope-base
+  type: historical
+  text: "Llama 3 increases the RoPE base frequency hyperparameter to 500,000 to better support longer contexts."
+  evidence:
+    - {work: "grattafiori-2024-llama-3-herd", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-arch-32-vision
+  type: attributive
+  text: "Meta writes that the Llama 3.2 11B and 90B models, as the first Llama models to support vision tasks, required an entirely new model architecture that supports image reasoning."
+  evidence:
+    - {work: "meta-2024-llama-3-2", role: original, locator: "p. 1", stance: for}
+
+- id: c-arch-llama4-fusion
+  type: historical
+  text: "Llama 4 models are designed with native multimodality, incorporating early fusion to integrate text and vision tokens into a unified model backbone."
+  evidence:
+    - {work: "meta-2025-llama-4-herd", role: original, locator: "p. 1", stance: for}
+
+- id: c-arch-llama4-moe
+  type: historical
+  text: "Llama 4 Maverick uses alternating dense and mixture-of-experts (MoE) layers; the MoE layers use 128 routed experts and a shared expert, and each token is sent to the shared expert and also to one of the 128 routed experts."
+  evidence:
+    - {work: "meta-2025-llama-4-herd", role: original, locator: "p. 1", stance: for}
+
+- id: c-arch-irope
+  type: attributive
+  text: "Meta calls the Llama 4 architecture iRoPE, where the i stands for interleaved attention layers without positional embeddings, and RoPE refers to the rotary position embeddings employed in most layers."
+  evidence:
+    - {work: "meta-2025-llama-4-herd", role: original, locator: "p. 1", stance: for}
+
+- id: c-data-llama-mix
+  type: historical
+  text: "The pre-training data mixture of LLaMA samples English CommonCrawl at 67.0%, C4 at 15.0%, GitHub, Wikipedia and Books at 4.5% each, ArXiv at 2.5% and StackExchange at 2.0%."
+  evidence:
+    - {work: "touvron-2023-llama", role: original, locator: "Table 1", stance: for}
+
+- id: c-tokens-llama
+  type: historical
+  text: "LLaMA 7B and 13B are trained on 1.0T tokens, and LLaMA 33B and 65B on 1.4T tokens."
+  evidence:
+    - {work: "touvron-2023-llama", role: original, locator: "Table 2", stance: for}
+
+- id: c-data-llama2
+  type: historical
+  text: "The pretraining corpus of Llama 2 includes a mix of data from publicly available sources, which does not include data from Meta's products or services, and Meta made an effort to remove data from certain sites known to contain a high volume of personal information about private individuals."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "Section 2.1", stance: for}
+
+- id: c-tokens-llama2
+  type: historical
+  text: "Llama 2 was trained on 2 trillion tokens of data."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "Section 2.1", stance: for}
+
+- id: c-data-llama3
+  type: attributive
+  text: "Meta writes that Llama 3 is pretrained on over 15T tokens that were all collected from publicly available sources, a training dataset seven times larger than that used for Llama 2, with four times more code."
+  evidence:
+    - {work: "meta-2024-introducing-llama-3", role: original, locator: "p. 1", stance: for}
+
+- id: c-data-llama3-cutoff
+  type: historical
+  text: "The pre-training dataset of Llama 3 is created from a variety of data sources containing knowledge until the end of 2023."
+  evidence:
+    - {work: "grattafiori-2024-llama-3-herd", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-tokens-405b
+  type: historical
+  text: "The flagship Llama 3 model, with 405B trainable parameters, was pre-trained on 15.6T text tokens."
+  evidence:
+    - {work: "grattafiori-2024-llama-3-herd", role: original, locator: "p. 1", stance: for}
+
+- id: c-data-llama4
+  type: attributive
+  text: "The Llama 4 model card says that the models were pretrained on a mix of publicly available, licensed data and information from Meta's products and services, including publicly shared posts from Instagram and Facebook and people's interactions with Meta AI."
+  evidence:
+    - {work: "meta-llama-4-model-card", role: original, locator: "p. 1", stance: for}
+
+- id: c-tokens-llama4-card
+  type: attributive
+  text: "The Llama 4 model card says that Llama 4 Scout was pretrained on about 40 trillion tokens and Llama 4 Maverick on about 22 trillion tokens of multimodal data."
+  evidence:
+    - {work: "meta-llama-4-model-card", role: original, locator: "p. 1", stance: for}
+
+- id: c-tokens-llama4-blog
+  type: attributive
+  text: "Meta writes that the overall data mixture for training Llama 4 consisted of more than 30 trillion tokens and includes diverse text, image, and video datasets."
+  evidence:
+    - {work: "meta-2025-llama-4-herd", role: original, locator: "p. 1", stance: for}
+
+- id: c-train-llama-gpus
+  type: attributive
+  text: "Touvron et al. report that, when training a 65B-parameter model, their code processes around 380 tokens/sec/GPU on 2048 A100 GPU with 80GB of RAM, so training over their dataset of 1.4T tokens takes approximately 21 days."
+  evidence:
+    - {work: "touvron-2023-llama", role: original, locator: "p. 4", stance: for}
+
+- id: c-llama2-chat
+  type: definitional
+  text: "Llama 2-Chat is a fine-tuned version of Llama 2 that is optimized for dialogue use cases."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "p. 4", stance: for}
+
+- id: c-train-llama2-rlhf
+  type: historical
+  text: "The Llama 2 authors explored RLHF fine-tuning with two main algorithms, Proximal Policy Optimization (PPO) and Rejection Sampling fine-tuning."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "p. 13", stance: for}
+
+- id: c-train-compute
+  type: attributive
+  text: "Grattafiori et al. report that their flagship language model was pre-trained using almost 50× more than the largest version of Llama 2."
+  evidence:
+    - {work: "grattafiori-2024-llama-3-herd", role: original, locator: "p. 1", stance: for}
+
+- id: c-train-405b-gpus
+  type: historical
+  text: "Llama 3 405B is trained on up to 16K H100 GPUs."
+  evidence:
+    - {work: "grattafiori-2024-llama-3-herd", role: original, locator: "p. 9", stance: for}
+
+- id: c-train-llama3-post
+  type: attributive
+  text: "Grattafiori et al. adopt a post-training procedure based on supervised finetuning (SFT), rejection sampling (RS), and direct preference optimization (DPO), as opposed to more complex reinforcement learning algorithms."
+  evidence:
+    - {work: "grattafiori-2024-llama-3-herd", role: original, locator: "p. 2", stance: for}
+
+- id: c-train-codistill
+  type: attributive
+  text: "Meta writes that it codistilled the Llama 4 Maverick model from Llama 4 Behemoth as a teacher model."
+  evidence:
+    - {work: "meta-2025-llama-4-herd", role: original, locator: "p. 1", stance: for}
+
+- id: c-llama2-sizes
+  type: historical
+  text: "Meta released variants of Llama 2 with 7B, 13B, and 70B parameters, and also trained 34B variants, which the paper reports on but which were not released."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "p. 4", stance: for}
+
+- id: c-llama3-sizes
+  type: historical
+  text: "The release of Meta Llama 3 features pretrained and instruction-fine-tuned language models with 8B and 70B parameters."
+  evidence:
+    - {work: "meta-2024-introducing-llama-3", role: original, locator: "p. 1", stance: for}
+
+- id: c-llama3-400b
+  type: attributive
+  text: "At the release of Llama 3, Meta wrote that its largest models were over 400B parameters and were still training."
+  evidence:
+    - {work: "meta-2024-introducing-llama-3", role: original, locator: "p. 1", stance: for}
+
+- id: c-llama31
+  type: historical
+  text: "The Llama 3.1 models expand context length to 128K, add support across eight languages, and include Llama 3.1 405B."
+  evidence:
+    - {work: "meta-2024-introducing-llama-3-1", role: original, locator: "p. 1", stance: for}
+
+- id: c-llama32
+  type: historical
+  text: "Llama 3.2 includes small and medium-sized vision LLMs (11B and 90B), and lightweight, text-only models (1B and 3B) that fit onto edge and mobile devices."
+  evidence:
+    - {work: "meta-2024-llama-3-2", role: original, locator: "p. 1", stance: for}
+
+- id: c-llama33
+  type: historical
+  text: "Llama 3.3 is a 70B text model with a context length of 128k, released as 70B Instruct on December 6, 2024."
+  evidence:
+    - {work: "meta-llama-3-3-model-card", role: original, locator: "p. 1", stance: for}
+
+- id: c-llama4-models
+  type: historical
+  text: "Llama 4 Scout is a 17 billion active parameter model with 16 experts, and Llama 4 Maverick is a 17 billion active parameter model with 128 experts."
+  evidence:
+    - {work: "meta-2025-llama-4-herd", role: original, locator: "p. 1", stance: for}
+
+- id: c-llama4-total
+  type: historical
+  text: "The Llama 4 model card gives 109B total parameters for Llama 4 Scout and 400B total parameters for Llama 4 Maverick."
+  evidence:
+    - {work: "meta-llama-4-model-card", role: original, locator: "p. 1", stance: for}
+
+- id: c-behemoth
+  type: historical
+  text: "Meta did not release Llama 4 Behemoth, a mixture-of-experts model, because it was still training."
+  evidence:
+    - {work: "meta-2025-llama-4-herd", role: original, locator: "p. 1", stance: for}
+
+- id: c-mmlu-llama
+  type: attributive
+  text: "Touvron et al. report a five-shot MMLU average accuracy of 35.1 for LLaMA 7B and 63.4 for LLaMA 65B."
+  evidence:
+    - {work: "touvron-2023-llama", role: original, locator: "Table 9", stance: for}
+
+- id: c-mmlu-llama2
+  type: attributive
+  text: "Touvron et al. report MMLU (5 shot) results of 45.3 for Llama 2 7B, 68.9 for Llama 2 70B, and 63.4 for Llama 1 65B."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "Table 3", stance: for}
+
+- id: c-mmlu-herd
+  type: attributive
+  text: "Grattafiori et al. report, in their table of pre-trained model performance on general language tasks, MMLU results of 66.7 for Llama 3 8B, 79.3 for Llama 3 70B and 85.2 for Llama 3 405B."
+  evidence:
+    - {work: "grattafiori-2024-llama-3-herd", role: original, locator: "p. 31", stance: for}
+
+- id: c-mmlu-l4card
+  type: attributive
+  text: "The Llama 4 model card reports, for pre-trained models, MMLU with 5 shots (macro_avg/acc_char) of 79.3 for Llama 3.1 70B, 85.2 for Llama 3.1 405B, 79.6 for Llama 4 Scout and 85.5 for Llama 4 Maverick."
+  evidence:
+    - {work: "meta-llama-4-model-card", role: original, locator: "p. 1", stance: for}
+
+- id: c-aup
+  type: historical
+  text: "With Llama 2, Meta put in place an Acceptable Use Policy that prohibits certain use cases."
+  evidence:
+    - {work: "meta-2023-llama-2-announcement", role: original, locator: "p. 1", stance: for}
+
+- id: c-llama4-download
+  type: attributive
+  text: "Meta writes that, in keeping with its commitment to open source, it made Llama 4 Maverick and Llama 4 Scout available to download on llama.com and Hugging Face."
+  evidence:
+    - {work: "meta-2025-llama-4-herd", role: original, locator: "p. 1", stance: for}
+
+- id: c-lic-llama
+  type: historical
+  text: "The LLaMA model card gives the License as a Non-commercial bespoke license."
+  evidence:
+    - {work: "meta-llama-1-model-card", role: original, locator: "p. 1", stance: for}
+
+- id: c-lic-llama2-mau
+  type: historical
+  text: "Under the Llama 2 Community License Agreement, if on the Llama 2 version release date the products or services of a licensee had more than 700 million monthly active users in the preceding calendar month, the licensee must request a license from Meta, which Meta may grant in its sole discretion."
+  evidence:
+    - {work: "meta-llama-2-community-license", role: original, locator: "p. 1", stance: for}
+
+- id: c-lic-llama2-improve
+  type: historical
+  text: "The Llama 2 Community License Agreement says that the licensee will not use the Llama Materials or any output or results of the Llama Materials to improve any other large language model, excluding Llama 2 or derivative works thereof."
+  evidence:
+    - {work: "meta-llama-2-community-license", role: original, locator: "p. 1", stance: for}
+
+- id: c-lic-llama3
+  type: historical
+  text: "The Meta Llama 3 Community License Agreement keeps the clause on more than 700 million monthly active users and the clause against using the Llama Materials to improve any other large language model, and requires redistributors to prominently display Built with Meta Llama 3."
+  evidence:
+    - {work: "meta-llama-3-community-license", role: original, locator: "p. 1", stance: for}
+
+- id: c-lic-31-outputs
+  type: attributive
+  text: "Meta writes that with Llama 3.1 it made changes to its license, allowing developers to use the outputs from Llama models to improve other models."
+  evidence:
+    - {work: "meta-2024-introducing-llama-3-1", role: original, locator: "p. 1", stance: for}
+
+- id: c-lic-31-built
+  type: historical
+  text: "The Llama 3.1 Community License Agreement requires redistributors to prominently display Built with Llama, and keeps the clause on more than 700 million monthly active users."
+  evidence:
+    - {work: "meta-llama-3-1-community-license", role: original, locator: "p. 1", stance: for}
+
+- id: c-lic-32
+  type: historical
+  text: "The Llama 3.2 Community License Agreement has the version release date September 25, 2024, and keeps the clause on more than 700 million monthly active users."
+  evidence:
+    - {work: "meta-llama-3-2-community-license", role: original, locator: "p. 1", stance: for}
+
+- id: c-lic-33
+  type: historical
+  text: "The Llama 3.3 Community License Agreement has the version release date December 6, 2024, and keeps the clause on more than 700 million monthly active users."
+  evidence:
+    - {work: "meta-llama-3-3-community-license", role: original, locator: "p. 1", stance: for}
+
+- id: c-lic-4
+  type: historical
+  text: "The Llama 4 Community License Agreement has the version effective date April 5, 2025, and keeps the clause on more than 700 million monthly active users."
+  evidence:
+    - {work: "meta-llama-4-community-license", role: original, locator: "p. 1", stance: for}
+
+- id: c-meta-open-release
+  type: attributive
+  text: "The Llama 2 authors write that they believe the open release of LLMs, when done safely, will be a net benefit to society."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "p. 4", stance: for}
+
+- id: c-zuck-open-source
+  type: attributive
+  text: "Mark Zuckerberg writes that Meta is committed to open source AI, and argues that open source AI is good for developers, good for Meta and good for the world."
+  evidence:
+    - {work: "zuckerberg-2024-open-source-ai-path-forward", role: original, locator: "p. 1", stance: for}
+
+- id: c-zuck-safety
+  type: attributive
+  text: "Zuckerberg argues that open source AI will be safer than the alternatives, since the systems are more transparent and can be widely scrutinized."
+  evidence:
+    - {work: "zuckerberg-2024-open-source-ai-path-forward", role: original, locator: "p. 1", stance: for}
+
+- id: c-osi-not-os
+  type: attributive
+  text: "The Open Source Initiative (OSI) states that Meta's LLaMa license is not Open Source."
+  evidence:
+    - {work: "osi-2023-llama-license-not-open-source", role: original, locator: "p. 1", stance: for}
+
+- id: c-osi-osd
+  type: attributive
+  text: "OSI argues that an Open Source license may not discriminate against persons or groups or fields of endeavor (OSD points 5 and 6), and that Meta's license puts restrictions on commercial use for some users and restricts the use of the model for certain purposes through the Acceptable Use Policy."
+  evidence:
+    - {work: "osi-2023-llama-license-not-open-source", role: original, locator: "p. 1", stance: for}
+
+- id: c-osaid
+  type: definitional
+  text: "The Open Source AI Definition 1.0 says that an Open Source AI is an AI system made available under terms that grant the freedoms to use the system for any purpose and without having to ask for permission, to study how it works, to modify it and to share it."
+  evidence:
+    - {work: "osi-2024-open-source-ai-definition", role: original, locator: "p. 1", stance: for}
+
+- id: c-osaid-data
+  type: definitional
+  text: "The Open Source AI Definition 1.0 says that the preferred form to make modifications to a machine-learning system includes data information sufficiently detailed that a skilled person can build a substantially equivalent system, the code, and the parameters."
+  evidence:
+    - {work: "osi-2024-open-source-ai-definition", role: original, locator: "p. 1", stance: for}
+
+- id: c-llama2-safety
+  type: attributive
+  text: "The Llama 2 authors provide a detailed description of their approach to fine-tuning and safety improvements of Llama 2-Chat, to enable the community to build on their work."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "the abstract", stance: for}
+
+- id: c-llamaguard3
+  type: historical
+  text: "Meta publicly released Llama 3 together with its Llama Guard 3 model for input and output safety."
+  evidence:
+    - {work: "grattafiori-2024-llama-3-herd", role: original, locator: "p. 1", stance: for}
+
+- id: c-33-risks
+  type: attributive
+  text: "The Llama 3.3 model card says that Meta focused its mitigation efforts on the critical risk areas of CBRNE helpfulness, child safety and cyber attack enablement."
+  evidence:
+    - {work: "meta-llama-3-3-model-card", role: original, locator: "p. 1", stance: for}
+
+- id: c-33-redteam
+  type: attributive
+  text: "The Llama 3.3 model card says that Meta conducted recurring red teaming exercises and partnered with subject-matter experts in critical risk areas."
+  evidence:
+    - {work: "meta-llama-3-3-model-card", role: original, locator: "p. 1", stance: for}
+
+- id: c-requests
+  type: attributive
+  text: "Meta reports more than 100,000 requests for access to Llama 1 from researchers."
+  evidence:
+    - {work: "meta-2023-llama-2-announcement", role: original, locator: "p. 1", stance: for}
+
+- id: c-microsoft
+  type: historical
+  text: "Meta named Microsoft as its preferred partner for Llama 2."
+  evidence:
+    - {work: "meta-2023-llama-2-announcement", role: original, locator: "p. 1", stance: for}
+
+- id: c-downloads
+  type: attributive
+  text: "At the release of Llama 3.1, Meta reported more than 300 million total downloads of all Llama versions."
+  evidence:
+    - {work: "meta-2024-introducing-llama-3-1", role: original, locator: "p. 1", stance: for}
+
+- id: c-ecosystem
+  type: attributive
+  text: "Zuckerberg writes that Amazon, Databricks, and NVIDIA are launching full suites of services to support developers fine-tuning and distilling their own models."
+  evidence:
+    - {work: "zuckerberg-2024-open-source-ai-path-forward", role: original, locator: "p. 1", stance: for}
+
+- id: c-tokens-llama2-18
+  type: historical
+  text: "Grattafiori et al. compare a corpus of about 15T multilingual tokens for Llama 3 with 1.8T tokens for Llama 2."
+  evidence:
+    - {work: "grattafiori-2024-llama-3-herd", role: original, locator: "p. 1", stance: for}
+
+- id: c-33-limits
+  type: attributive
+  text: "The Llama 3.3 model card says that the potential outputs of Llama 3.3 cannot be predicted in advance, and that the model may in some instances produce inaccurate, biased or other objectionable responses."
+  evidence:
+    - {work: "meta-llama-3-3-model-card", role: original, locator: "p. 1", stance: for}
+
+- id: c-lineage-l2
+  type: attributive
+  text: "The Llama 2 authors describe Llama 2 as an updated version of Llama 1, trained on a new mix of publicly available data."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "p. 4", stance: for}
+
+- id: c-data-llama-public
+  type: historical
+  text: "LLaMA is trained using publicly available datasets exclusively."
+  evidence:
+    - {work: "touvron-2023-llama", role: original, locator: "the abstract", stance: for}
+
+- id: c-data-llama2-pii
+  type: historical
+  text: "For Llama 2, Meta made an effort to remove data from certain sites known to contain a high volume of personal information about private individuals."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "Section 2.1", stance: for}
+
+- id: c-llama-access
+  type: historical
+  text: "Meta released LLaMA under a noncommercial license focused on research use cases, with access granted on a case-by-case basis."
+  evidence:
+    - {work: "meta-2023-introducing-llama", role: original, locator: "p. 1", stance: for}
+
+- id: c-llama4-open-source
+  type: attributive
+  text: "Meta presents the download release of Llama 4 Maverick and Llama 4 Scout as in keeping with its commitment to open source."
+  evidence:
+    - {work: "meta-2025-llama-4-herd", role: original, locator: "p. 1", stance: for}
+
+- id: c-lineage-l1
+  type: historical
+  text: "LLaMA is based on the transformer architecture (Vaswani et al., 2017), and uses RMSNorm pre-normalization, the SwiGLU activation function and rotary embeddings (RoPE)."
+  evidence:
+    - {work: "touvron-2023-llama", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-lineage-l3
+  type: historical
+  text: "Llama 3 uses grouped query attention (GQA) across both the 8B and 70B sizes and a tokenizer with a vocabulary of 128K tokens."
+  evidence:
+    - {work: "meta-2024-introducing-llama-3", role: original, locator: "p. 1", stance: for}
+
+- id: c-lineage-l4
+  type: historical
+  text: "Llama 4 models are the first Llama models that use a mixture of experts (MoE) architecture, they incorporate early fusion of text and vision tokens, and Llama 4 Maverick was codistilled from Llama 4 Behemoth as a teacher model."
+  evidence:
+    - {work: "meta-2025-llama-4-herd", role: original, locator: "p. 1", stance: for}
+
+- id: c-tokens-llama2-known
+  type: attributive
+  text: "Touvron et al. report that Llama 2 was trained on 2 trillion tokens of data."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "Section 2.1", stance: for}
