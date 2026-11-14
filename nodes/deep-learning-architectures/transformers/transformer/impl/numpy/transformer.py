@@ -51,21 +51,13 @@ def init(rng, cfg):
         W_2, b_2 = _linear(rng, F, M)
         return {"W_1": W_1, "b_1": b_1, "W_2": W_2, "b_2": b_2}
 
-    enc = [
-        {"attn": _attn_params(rng, M), "ffn": ffn(), "norm1": _norm_params(M), "norm2": _norm_params(M)}
-        for _ in range(cfg["n_layers"])
-    ]
-    dec = [
-        {
-            "attn": _attn_params(rng, M),
-            "cross": _attn_params(rng, M),
-            "ffn": ffn(),
-            "norm1": _norm_params(M),
-            "norm2": _norm_params(M),
-            "norm3": _norm_params(M),
-        }
-        for _ in range(cfg["n_layers"])
-    ]
+    def layer(attns, n_norms):  # the attentions in order, then the feedforward network, then the norms
+        p = {name: _attn_params(rng, M) for name in attns}
+        p["ffn"] = ffn()
+        return p | {f"norm{i}": _norm_params(M) for i in range(1, n_norms + 1)}
+
+    enc = [layer(("attn",), 2) for _ in range(cfg["n_layers"])]
+    dec = [layer(("attn", "cross"), 3) for _ in range(cfg["n_layers"])]
     return {"embed": rng.normal(0.0, M**-0.5, (cfg["vocab"], M)), "enc": enc, "dec": dec}  # embed: (V, M)
 
 
