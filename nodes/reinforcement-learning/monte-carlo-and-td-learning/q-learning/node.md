@@ -196,7 +196,7 @@ The guarantee needs every pair to be tried infinitely often; an $\varepsilon$-gr
 - **Sarsa** uses the next action taken, eq-sarsa, and learns the values of the exploring policy.
 - **Expected Sarsa** uses the expected value of the next state under a target policy. When that policy is greedy and the behaviour explores more, it is exactly Q-learning (Sutton and Barto, 2018). {#c-expected-sarsa}
 - **Double Q-learning** keeps two tables, and uses one to pick the maximizing action and the other to value it. Each step updates one table, so the memory doubles but the computation per step does not (Sutton and Barto, 2018). {#c-double-learning}
-- **Watkins's Q($\lambda$)** adds eligibility traces and cuts them to zero after the first non-greedy action (Sutton and Barto, 2018). {#c-q-lambda} The theorem of Watkins and Dayan does not extend trivially to updates that use rewards from more than one step. {#c-wd-no-lambda}
+- **Watkins's Q($\lambda$)** ([[al:watkins-q-lambda]]) adds eligibility traces and cuts them to zero after the first non-greedy action (Sutton and Barto, 2018). {#c-q-lambda} The theorem of Watkins and Dayan does not extend trivially to updates that use rewards from more than one step. {#c-wd-no-lambda}
 - **Deep Q-network (DQN)** represents $Q$ with a convolutional network. Mnih et al. (2015) add experience replay, which randomizes over the data, and targets that are only periodically updated. {#c-dqn-ideas}
 - **Double DQN** brings the idea of Double Q-learning to DQN (van Hasselt, Guez and Silver, 2016).
 
