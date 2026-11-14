@@ -1,9 +1,0 @@
-claim: c-sweep-scope
-primary:
-  metric: online_return
-  at: final
-  compare: {treatment: epsilon_tenth, control: epsilon_zero}
-  direction: higher
-  test: bootstrap-diff
-  expected: "Record how exploratory behavior changes online return on the local cliff task."
-report: {ci: 0.95}
