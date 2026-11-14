@@ -1,0 +1,23 @@
+{
+  "source": "epoch-benchmarks",
+  "date": "2026-11-14",
+  "adapter": "aik/0.1.30 harvest/epoch-benchmarks",
+  "licence": "CC-BY-4.0",
+  "licence_class": "C",
+  "partial": false,
+  "snapshots": [
+    "b3:7abfc19e0776f5ea460f6004777ea76930821773a55d07ac1a8f7a6db7dd4f62"
+  ],
+  "requests": 2,
+  "rows": 5546,
+  "new": 5546,
+  "changed": 0,
+  "removed": 0,
+  "unchanged": 0,
+  "skipped": 86,
+  "notes": [
+    "30 skipped: files that benchmark_metadata.csv does not map to a benchmark",
+    "48 skipped: rows whose model version has no model in model_metadata.csv",
+    "8 skipped: rows with no score"
+  ]
+}

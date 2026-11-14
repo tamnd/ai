@@ -1,0 +1,5 @@
+benchmarks:
+  GPQA diamond: gpqa@diamond
+metrics:
+  "GPQA diamond: Best score (across scorers)": accuracy
+models: {}
