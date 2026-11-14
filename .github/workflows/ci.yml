@@ -19,7 +19,7 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
-  AIK_VERSION: v0.1.10
+  AIK_VERSION: v0.1.26
   GO_VERSION: "1.27.x"
 
 jobs:
@@ -82,6 +82,13 @@ jobs:
           LANG_ID: ${{ matrix.lang }}
         # Each test runs in a container of the image that manifests/images.yaml pins, with no network (spec 08.7).
         run: aik test -sandbox docker -lang "$LANG_ID" -cache build/test-cache -out build/results
+      # The mutation score is part of I2 and X3 (spec 08.8). A score under the threshold lowers the rung and is not a
+      # failure of the build, so the step may fail; the cache keeps the runs that reach the threshold.
+      - name: Run the mutation tests
+        continue-on-error: true
+        env:
+          LANG_ID: ${{ matrix.lang }}
+        run: aik test -kind mutate -sandbox docker -lang "$LANG_ID" -cache build/test-cache -out build/results
       - uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         if: github.event_name != 'pull_request'
         with:

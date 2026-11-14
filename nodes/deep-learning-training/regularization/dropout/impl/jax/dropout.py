@@ -6,7 +6,6 @@ The forward pass is eq-inverted of the page. jax.grad gives the backward pass, a
 """
 
 import jax
-import jax.numpy as jnp
 
 
 def config(p=0.5):
