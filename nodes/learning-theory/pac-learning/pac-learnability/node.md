@@ -150,9 +150,10 @@ A bound quoted without saying which case it is in can be off by a factor of $1/\
 ## History
 
 Leslie Valiant introduced the model in "A Theory of the Learnable", in 1984. {#c-valiant-1984}
+Valiant was named the winner of the 2010 Turing Award for the introduction of the PAC model. {#c-turing-award}
 He asked for an algorithm that, for every target of the class and every distribution, deduces with probability at least $1 - h^{-1}$ a program that errs rarely, in time polynomial in $h$ and the size of the target, and he showed that bounded CNF expressions are learnable in this sense.
 The statistical side has an older root in the uniform convergence results of Vapnik and Chervonenkis (1971).
 Blumer, Ehrenfeucht, Haussler and Warmuth tied the two in 1989, by showing that a class is learnable from a number of examples independent of the distribution exactly when its VC dimension is finite.
-David Haussler extended the model in 1992 to the agnostic setting and to general losses, which is the form that covers regression and neural networks.
+David Haussler formalized agnostic PAC learning in 1992, and its most general form, with any loss function, follows the setting of Vapnik and Chervonenkis. {#c-haussler-agnostic}
 The two uses of the term survive: in computational learning theory, after Valiant, PAC learnable often includes polynomial time.
 Shalev-Shwartz and Ben-David (2014) instead treat the number of examples and the computation as two separate resources, and study the first before they turn to the second. {#c-two-uses}

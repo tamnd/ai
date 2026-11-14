@@ -98,6 +98,18 @@
   evidence:
     - {work: "valiant-1984-theory-of-the-learnable", role: original, locator: "the abstract", stance: for}
 
+- id: c-turing-award
+  type: historical
+  text: "Valiant was named the winner of the 2010 Turing Award for the introduction of the PAC model."
+  evidence:
+    - {work: "shalev-shwartz-ben-david-2014-understanding-machine-learning", role: review, locator: "p. 50", stance: for}
+
+- id: c-haussler-agnostic
+  type: historical
+  text: "The formalization of agnostic PAC learning is due to Haussler (1992), and the most general definition of agnostic PAC learning, with general loss functions, follows the works of Vapnik and Chervonenkis."
+  evidence:
+    - {work: "shalev-shwartz-ben-david-2014-understanding-machine-learning", role: review, locator: "p. 50", stance: for}
+
 - id: c-two-uses
   type: attributive
   text: "The book refers to the samples and the computation a learner needs as two types of resources, the sample complexity and the computational complexity, and studies the statistical perspective of learning before it turns to the computational complexity."
