@@ -170,10 +170,11 @@ This keeps the parameters and raises the cost of ResNet-50 from 3.86 to 4.09 bil
 The derivation `flop-count` proves both counts and the invariance; the reference implementation supports both placements through `stride_on`.
 
 Memory in training is dominated by the activations kept for the backward pass, which grow with the batch, the image area and the depth; the shortcut adds no stored activation beyond the block input that the first convolution already keeps.
+[[al:gradient-checkpointing|Gradient checkpointing]] keeps only some of these activations and recomputes the others during the backward pass, which trades compute for memory.
 
 ## Training
 
-The ImageNet networks of He et al. put batch normalization after each convolution and before the activation, are initialized with the [[al:he-initialization|He initialization]], and are trained from scratch with SGD, a mini-batch of 256, a learning rate of 0.1 divided by 10 when the error plateaus, a weight decay of 0.0001, a momentum of 0.9, and no dropout. {#c-training-recipe} Training runs for up to 600,000 iterations.
+The ImageNet networks of He et al. put batch normalization after each convolution and before the activation, are initialized with the [[al:he-initialization|He initialization]], and are trained from scratch with [[m2:stochastic-gradient-descent|SGD]], a mini-batch of 256, a learning rate of 0.1 divided by 10 when the error plateaus, a weight decay of 0.0001, a momentum of 0.9, and no dropout. {#c-training-recipe} Training runs for up to 600,000 iterations.
 That initialization draws each weight from a zero-mean Gaussian with standard deviation $\sqrt{2 / n_l}$, where $n_l = k^2 c$ is the number of input connections of a response, and sets the biases to zero. {#c-he-init}
 The 110-layer CIFAR-10 network needs a warm-up: its learning rate is 0.01 until the training error is below 80%, then 0.1.
 
@@ -246,7 +247,7 @@ The two experiments of this page reproduce both effects on MNIST in a few minute
 - Depth stops paying at some point. The 1202-layer CIFAR-10 network trains to near-zero error but generalizes worse than the 110-layer one.
 - The original block applies a ReLU after the addition, so the shortcut path is not a pure identity; at 1001 layers this costs accuracy, which the pre-activation unit recovers.
 - The analysis of [[resnet#eq-residual-grad|the gradient equation]] fails at the blocks with projection shortcuts, two in the CIFAR-10 networks and three in the ImageNet ones; the gradient passes through their projections.
-- Batch normalization ties the examples of a mini-batch together, so very small batches or batch-size changes between training and inference change the function. Fixup and similar initializations remove the normalization.
+- Batch normalization ties the examples of a mini-batch together, so very small batches or batch-size changes between training and inference change the function. Fixup and similar initializations remove the normalization. [[al:layer-normalization|Layer normalization]] avoids the dependence by normalizing over the features of each example; Transformers use it, while ResNets keep batch normalization.
 - Each 1x1 convolution with stride 2 in the original downsampling blocks reads only one position in four of its input.
 - The published accuracy of a ResNet depends heavily on the training recipe: the same ResNet-50 is reported at 75.3%, 76.1%, 79.3% and 80.4% top-1 by different procedures.
 
@@ -256,7 +257,7 @@ Moving batch normalization and the ReLU before the weight layers makes the short
 Wide residual networks decrease the depth and increase the width; a 16-layer wide network outperforms all earlier deep residual networks, including thousand-layer ones, in accuracy and efficiency. {#c-wide}
 ResNeXt splits each block into a set of transformations of the same topology and calls the size of the set the cardinality; at equal complexity, more cardinality improves accuracy, and it is more effective than going deeper or wider. {#c-resnext}
 Stochastic depth drops a random subset of the blocks for each mini-batch and bypasses them with the identity, which shortens training and lets residual networks grow beyond 1200 layers with better test error, 4.91% on CIFAR-10. {#c-stochastic-depth}
-Fixup rescales a standard initialization of the residual branches, which solves the exploding and vanishing gradient problem at the start of training, so that networks without normalization train as stably as with it, even at 10,000 layers. {#c-fixup}
+Fixup rescales a standard initialization of the residual branches, which solves the [[al:exploding-gradient-problem|exploding]] and [[al:vanishing-gradient-problem|vanishing gradient problem]] at the start of training, so that networks without normalization train as stably as with it, even at 10,000 layers. {#c-fixup}
 DenseNet replaces the addition with a concatenation: each layer takes the feature maps of all the layers before it, so a block of $L$ layers has $L(L + 1)/2$ direct connections. {#c-densenet}
 ResNet-B of He et al. (2019) moves the stride to the 3x3 convolution, and ResNet-D adds an average pooling before the projection of the downsampling shortcut.
 ConvNeXt modernizes a standard ResNet step by step toward the design of a vision Transformer, and the final family reaches 87.8% ImageNet top-1. {#c-convnext} The modern training recipe alone takes ResNet-50 from 76.1% to 78.8% top-1. {#c-convnext-recipe}
