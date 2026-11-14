@@ -1,0 +1,47 @@
+run: v-20261114-161904-79634
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-lic-llama2-mau
+  work: meta-llama-2-community-license
+  locator: p. 1
+  key: db16e74810d6c7b7fa48c8b0b0ac9440
+  spans:
+  - start: 0
+    end: 6802
+  verdict: supported
+  quote: you must request a license from Meta, which Meta may grant to you in its sole discretion
+  note: The passage applies this requirement when the stated monthly active user threshold is exceeded.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-osi-osd
+  work: osi-2023-llama-license-not-open-source
+  locator: p. 1
+  key: 4689f42fd5eaf72a6cf8dd1d13beaf7c
+  spans:
+  - start: 0
+    end: 5315
+  verdict: supported
+  quote: it may not discriminate against persons or groups or fields of endeavor (OSD points 5 and 6).
+  note: OSI states this requirement explicitly.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-osi-restrict
+  work: osi-2023-llama-license-not-open-source
+  locator: p. 1
+  key: ebf1296ae677251edc1409bbeee0f2f4
+  spans:
+  - start: 0
+    end: 5315
+  verdict: supported
+  quote: restrictions on commercial use for some users (paragraph 2) and also restricts the use of the model and software
+    for certain purposes
+  note: OSI states both restrictions and identifies the Acceptable Use Policy as the source of the purpose restrictions.
