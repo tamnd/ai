@@ -1,0 +1,60 @@
+# The claims of the page on the PAC bound for a finite hypothesis class (spec 07). The build computes the labels.
+- id: c-realizable-bound
+  type: mathematical
+  text: "If a finite class $\\mathcal{H}$ has a hypothesis of zero true error and $m \\ge \\log(|\\mathcal{H}|/\\delta)/\\epsilon$, then with probability at least $1 - \\delta$ over an i.i.d. sample of size $m$, every ERM hypothesis has true error at most $\\epsilon$."
+  assumes: ["H is finite", "some hypothesis of H has true error 0", "the sample is i.i.d. from the distribution of the test", "the labeling function and the hypotheses are measurable", "epsilon > 0 and delta > 0"]
+  derivation: "derivations/proof.md"
+  lean: AI.LearningTheory.PacBoundFiniteHypothesisClass.pac_bound_realizable
+  evidence:
+    - {work: "shalev-shwartz-ben-david-2014-understanding-machine-learning", role: original, locator: "pp. 40 to 41", stance: for}
+
+- id: c-sample-complexity-realizable
+  type: mathematical
+  text: "Every finite hypothesis class is PAC learnable with sample complexity $m_{\\mathcal{H}}(\\epsilon, \\delta) \\le \\lceil \\log(|\\mathcal{H}|/\\delta)/\\epsilon \\rceil$."
+  assumes: ["H is finite", "the realizability assumption holds", "0 < epsilon and 0 < delta < 1"]
+  derivation: "derivations/proof.md"
+  evidence:
+    - {work: "shalev-shwartz-ben-david-2014-understanding-machine-learning", role: original, locator: "p. 44", stance: for}
+
+- id: c-union-bound-step
+  type: mathematical
+  text: "By the union bound, the probability of a sample on which some bad hypothesis has zero empirical risk is at most $|\\mathcal{H}| e^{-\\epsilon m}$."
+  assumes: ["H is finite", "the sample is i.i.d.", "epsilon >= 0"]
+  derivation: "derivations/proof.md"
+  evidence:
+    - {work: "shalev-shwartz-ben-david-2014-understanding-machine-learning", role: original, locator: "pp. 39 to 40", stance: for}
+
+- id: c-uniform-convergence
+  type: mathematical
+  text: "If $\\mathcal{H}$ is finite, the loss is in $[0, 1]$ and $m \\ge \\log(2|\\mathcal{H}|/\\delta)/(2\\epsilon^2)$, then with probability at least $1 - \\delta$ every $h \\in \\mathcal{H}$ has $|L_S(h) - L_{\\mathcal{D}}(h)| \\le \\epsilon$, which is the uniform convergence property."
+  assumes: ["H is finite", "the loss takes values in [0, 1]", "the sample is i.i.d.", "epsilon > 0 and delta > 0"]
+  derivation: "derivations/agnostic.md"
+  evidence:
+    - {work: "shalev-shwartz-ben-david-2014-understanding-machine-learning", role: original, locator: "pp. 55 to 57", stance: for}
+
+- id: c-agnostic-bound
+  type: mathematical
+  text: "For a loss function into $[0, 1]$, a finite class is agnostic PAC learnable by ERM with sample complexity at most $\\lceil 2 \\log(2|H|/\\delta)/\\epsilon^2 \\rceil$."
+  assumes: ["H is finite", "the loss takes values in [0, 1]", "the sample is i.i.d.", "epsilon > 0 and delta > 0"]
+  derivation: "derivations/agnostic.md"
+  evidence:
+    - {work: "shalev-shwartz-ben-david-2014-understanding-machine-learning", role: original, locator: "p. 57", stance: for}
+
+- id: c-lower-bound
+  type: mathematical
+  text: "For binary classification with the 0-1 loss and a class of VC dimension $d$, the sample complexity of PAC learning is at least $C_1 (d + \\log(1/\\delta))/\\epsilon$ for an absolute constant $C_1$."
+  assumes: ["the VC dimension d of H is finite", "binary classification with the 0-1 loss"]
+  evidence:
+    - {work: "shalev-shwartz-ben-david-2014-understanding-machine-learning", role: original, locator: "pp. 72 to 73", stance: for}
+
+- id: c-valiant-definition
+  type: historical
+  text: "Valiant defined a class of programs as learnable when an algorithm runs in time polynomial in an adjustable parameter h, the size of the program and the number of variables, and for all programs of the class and all distributions over the vectors on which the program outputs 1, deduces with probability at least 1 - 1/h a program of the class that never outputs one when it should not and misses at most a 1/h share of the positive examples, which he calls one-sided error learning."
+  evidence:
+    - {work: "valiant-1984-theory-of-the-learnable", role: original, locator: "Section 3", stance: for}
+
+- id: c-valiant-cnf
+  type: historical
+  text: "Valiant proved that for any fixed integer $k$ the class of $k$-CNF expressions is learnable with calls of EXAMPLES and no calls of ORACLE."
+  evidence:
+    - {work: "valiant-1984-theory-of-the-learnable", role: original, locator: "Section 5", stance: for}

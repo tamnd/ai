@@ -1,0 +1,117 @@
+# The claims of the PAC learnability page (spec 07). The build computes the labels.
+- id: c-pac-definition
+  type: definitional
+  text: "A hypothesis class $\\mathcal{H}$ is PAC learnable when there exist a function $m_{\\mathcal{H}} : (0, 1)^2 \\to \\mathbb{N}$ and a learning algorithm such that, for every $\\epsilon, \\delta \\in (0, 1)$, every distribution $\\mathcal{D}$ and every labeling function $f$ for which the realizable assumption holds, on $m \\ge m_{\\mathcal{H}}(\\epsilon, \\delta)$ i.i.d. examples the algorithm returns a hypothesis $h$ with $L_{(\\mathcal{D}, f)}(h) \\le \\epsilon$ with probability at least $1 - \\delta$."
+  evidence:
+    - {work: "shalev-shwartz-ben-david-2014-understanding-machine-learning", role: original, locator: "p. 43", stance: for}
+
+- id: c-sample-complexity
+  type: definitional
+  text: "The sample complexity of learning $\\mathcal{H}$ is the minimal function $m_{\\mathcal{H}}$: for any $\\epsilon, \\delta$, $m_{\\mathcal{H}}(\\epsilon, \\delta)$ is the minimal integer that satisfies the requirements of PAC learning."
+  evidence:
+    - {work: "shalev-shwartz-ben-david-2014-understanding-machine-learning", role: original, locator: "p. 44", stance: for}
+
+- id: c-agnostic-definition
+  type: definitional
+  text: "A hypothesis class H is agnostic PAC learnable when, for every distribution D over X x Y, on m >= m_H(epsilon, delta) i.i.d. examples the algorithm returns a hypothesis whose true error is at most the minimum over H plus epsilon, with probability at least 1 - delta."
+  evidence:
+    - {work: "shalev-shwartz-ben-david-2014-understanding-machine-learning", role: original, locator: "p. 46", stance: for}
+
+- id: c-thresholds
+  type: mathematical
+  text: "The class of threshold functions is PAC learnable by the ERM rule with sample complexity $m_{\\mathcal{H}}(\\epsilon, \\delta) \\le \\lceil \\log(2/\\delta)/\\epsilon \\rceil$."
+  assumes: ["the hypotheses are the threshold functions on the real line", "the realizability assumption holds", "0 < epsilon, delta < 1"]
+  evidence:
+    - {work: "shalev-shwartz-ben-david-2014-understanding-machine-learning", role: original, locator: "p. 68", stance: for}
+
+- id: c-fundamental-theorem
+  type: mathematical
+  text: "A class of functions to {0, 1} with the 0-1 loss is PAC learnable if and only if its VC dimension is finite."
+  assumes: ["binary classification", "the 0-1 loss"]
+  evidence:
+    - {work: "shalev-shwartz-ben-david-2014-understanding-machine-learning", role: original, locator: "p. 72", stance: for}
+
+- id: c-all-functions-not-learnable
+  type: mathematical
+  text: "If X is an infinite domain set, the set of all functions from X to {0, 1} is not PAC learnable."
+  assumes: ["X is infinite", "binary classification with the 0-1 loss"]
+  evidence:
+    - {work: "shalev-shwartz-ben-david-2014-understanding-machine-learning", role: original, locator: "p. 63", stance: for}
+
+- id: c-no-free-lunch
+  type: mathematical
+  text: "For any learning algorithm and any training set size m smaller than |X|/2, there is a distribution with a function of zero error on which, with probability at least 1/7, the algorithm returns a hypothesis with error at least 1/8."
+  assumes: ["binary classification with the 0-1 loss", "m < |X|/2"]
+  evidence:
+    - {work: "shalev-shwartz-ben-david-2014-understanding-machine-learning", role: original, locator: "p. 61", stance: for}
+
+- id: c-uc-implies-pac
+  type: mathematical
+  text: "If a class has the uniform convergence property with a function m^UC_H, then it is agnostically PAC learnable by the ERM rule with sample complexity m_H(epsilon, delta) <= m^UC_H(epsilon/2, delta)."
+  assumes: ["the class has the uniform convergence property"]
+  evidence:
+    - {work: "shalev-shwartz-ben-david-2014-understanding-machine-learning", role: original, locator: "p. 55", stance: for}
+
+- id: c-runtime-difference
+  type: attributive
+  text: "Valiant's definition of learnable requires an algorithm that runs in polynomial time."
+  evidence:
+    - {work: "valiant-1984-theory-of-the-learnable", role: original, locator: "Section 3", stance: for}
+
+- id: c-3dnf-hard
+  type: mathematical
+  text: "The class of 3-term DNF formulae over n variables has at most 3^(3n) members, so its ERM sample complexity is small, but unless RP = NP no polynomial time algorithm properly learns it."
+  assumes: ["RP is not NP", "proper learning: the output must be a 3-term DNF formula"]
+  evidence:
+    - {work: "shalev-shwartz-ben-david-2014-understanding-machine-learning", role: original, locator: "p. 107", stance: for}
+
+- id: c-3dnf-improper
+  type: mathematical
+  text: "3-term DNF is learnable in time polynomial in n by rewriting each formula as a conjunction over (2n)^3 variables and solving ERM over conjunctions, which gives a hypothesis that may lie outside the original class."
+  assumes: ["the data are realizable by a 3-term DNF formula"]
+  evidence:
+    - {work: "shalev-shwartz-ben-david-2014-understanding-machine-learning", role: original, locator: "p. 108", stance: for}
+
+- id: c-proper-improper
+  type: definitional
+  text: "Allowing the algorithm to output a hypothesis from a larger set than H is called representation independent learning, sometimes improper learning, and proper learning occurs when the algorithm must output a hypothesis from H."
+  evidence:
+    - {work: "shalev-shwartz-ben-david-2014-understanding-machine-learning", role: original, locator: "p. 49", stance: for}
+
+- id: c-both-needed
+  type: mathematical
+  text: "The accuracy and the confidence parameters are both needed: the training set is random, so it may be noninformative, for example one domain point sampled over and over again, and even a lucky sample may miss some points."
+  assumes: ["the examples are drawn at random from the distribution"]
+  evidence:
+    - {work: "shalev-shwartz-ben-david-2014-understanding-machine-learning", role: original, locator: "pp. 43 to 44", stance: for}
+
+- id: c-rates
+  type: mathematical
+  text: "For a class of VC dimension $d$, the PAC sample complexity is between $C_1 (d + \\log(1/\\delta))/\\epsilon$ and $C_2 (d \\log(1/\\epsilon) + \\log(1/\\delta))/\\epsilon$, and the agnostic PAC sample complexity is between $C_1 (d + \\log(1/\\delta))/\\epsilon^2$ and $C_2 (d + \\log(1/\\delta))/\\epsilon^2$."
+  assumes: ["binary classification with the 0-1 loss", "the VC dimension d is finite", "C1 and C2 are absolute constants"]
+  evidence:
+    - {work: "shalev-shwartz-ben-david-2014-understanding-machine-learning", role: original, locator: "pp. 72 to 73", stance: for}
+
+- id: c-valiant-1984
+  type: historical
+  text: "Valiant gave a methodology for studying learning from a computational viewpoint, choosing a learning protocol and exploring the classes of concepts that can be learned with it in a polynomial number of steps."
+  evidence:
+    - {work: "valiant-1984-theory-of-the-learnable", role: original, locator: "the abstract", stance: for}
+
+- id: c-turing-award
+  type: historical
+  text: "Valiant was named the winner of the 2010 Turing Award for the introduction of the PAC model."
+  evidence:
+    - {work: "shalev-shwartz-ben-david-2014-understanding-machine-learning", role: review, locator: "p. 50", stance: for}
+
+- id: c-haussler-agnostic
+  type: historical
+  text: "The formalization of agnostic PAC learning is due to Haussler (1992), and the most general definition of agnostic PAC learning, with general loss functions, follows the works of Vapnik and Chervonenkis."
+  evidence:
+    - {work: "shalev-shwartz-ben-david-2014-understanding-machine-learning", role: review, locator: "p. 50", stance: for}
+
+- id: c-two-uses
+  type: attributive
+  text: "The book refers to the samples and the computation a learner needs as two types of resources, the sample complexity and the computational complexity, and studies the statistical perspective of learning before it turns to the computational complexity."
+  evidence:
+    - {work: "shalev-shwartz-ben-david-2014-understanding-machine-learning", role: original, locator: "p. 100", stance: for}

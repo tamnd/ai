@@ -1,0 +1,112 @@
+run: v-20261114-032911-67518
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: pac-bound-finite-hypothesis-class
+  verifier: codex:gpt-6-sol
+  tag: XSZ95D
+  claim: c-realizable-bound
+  work: shalev-shwartz-ben-david-2014-understanding-machine-learning
+  locator: pp. 40 to 41
+  key: cbc2982129eb027318ee024ce5fc1c0f
+  spans:
+  - start: 67277
+    end: 71342
+  verdict: supported
+  quote: we have that for every ERM hypothesis, hS , it holds that
+  note: Corollary 2.3 gives the stated sample threshold and error guarantee under realizability.
+- slug: pac-bound-finite-hypothesis-class
+  verifier: codex:gpt-6-sol
+  tag: XSZ95D
+  claim: c-sample-complexity-realizable
+  work: shalev-shwartz-ben-david-2014-understanding-machine-learning
+  locator: p. 44
+  key: 65f5d31bf13caf034ae40400f93a0f64
+  spans:
+  - start: 75288
+    end: 77490
+  verdict: supported
+  quote: Every finite hypothesis class is PAC learnable with sample
+  note: Corollary 3.2 gives the stated ceiling bound.
+- slug: pac-bound-finite-hypothesis-class
+  verifier: codex:gpt-6-sol
+  tag: XSZ95D
+  claim: c-union-bound-step
+  work: shalev-shwartz-ben-david-2014-understanding-machine-learning
+  locator: pp. 39 to 40
+  key: 0bc3fcbab708e5f9ab3a2e759edd6363
+  spans:
+  - start: 65280
+    end: 69129
+  verdict: supported
+  quote: it is bounded by |HB | times the maximum size of a colored oval.
+  note: "The passage bounds each bad hypothesis’s zero-risk event by e−\x0Fm, so the union bound gives the claimed result."
+- slug: pac-bound-finite-hypothesis-class
+  verifier: codex:gpt-6-sol
+  tag: XSZ95D
+  claim: c-uniform-convergence
+  work: shalev-shwartz-ben-david-2014-understanding-machine-learning
+  locator: pp. 55 to 57
+  key: bd1773fae73b5aa39aedf834c3c9aa5f
+  spans:
+  - start: 101528
+    end: 108775
+  verdict: supported
+  quote: "Dm ({S : ∃h ∈ H, |LS (h) − LD (h)| > \x0F}) ≤ δ."
+  note: The passage gives this bound at the stated sample size for loss in [0, 1].
+- slug: pac-bound-finite-hypothesis-class
+  verifier: codex:gpt-6-sol
+  tag: XSZ95D
+  claim: c-agnostic-bound
+  work: shalev-shwartz-ben-david-2014-understanding-machine-learning
+  locator: p. 57
+  key: 5bb35a1a68aa4a8b0ea2a56de265a5c1
+  spans:
+  - start: 106577
+    end: 108775
+  verdict: unsupported
+  quote: '` : H × Z → [0, 1] be a loss function.'
+  note: The claimed bound requires the passage’s condition that the loss take values in [0, 1].
+- slug: pac-bound-finite-hypothesis-class
+  verifier: codex:gpt-6-sol
+  tag: XSZ95D
+  claim: c-lower-bound
+  work: shalev-shwartz-ben-david-2014-understanding-machine-learning
+  locator: pp. 72 to 73
+  key: 91eb6f8e8b8634e548416e7a640cfdcb
+  spans:
+  - start: 139759
+    end: 144440
+  verdict: unsupported
+  quote: and let the loss function be the 0 − 1 loss.
+  note: The lower bound is stated for binary classification with 0–1 loss, which the claim does not specify.
+- slug: pac-bound-finite-hypothesis-class
+  verifier: codex:gpt-6-sol
+  tag: XSZ95D
+  claim: c-valiant-definition
+  work: valiant-1984-theory-of-the-learnable
+  locator: Section 3
+  key: e0edd1cd716a4217092d2c7d77169873
+  spans:
+  - start: 3540
+    end: 18712
+  verdict: unsupported
+  quote: in the n u m b e r of variables t.
+  note: Valiant’s runtime condition also includes polynomial dependence on the number of variables t.
+- slug: pac-bound-finite-hypothesis-class
+  verifier: codex:gpt-6-sol
+  tag: XSZ95D
+  claim: c-valiant-cnf
+  work: valiant-1984-theory-of-the-learnable
+  locator: Section 5
+  key: 6bc3f0c9ed257a09be65b1f45f1c7b49
+  spans:
+  - start: 23242
+    end: 29164
+  verdict: supported
+  quote: for any fixed integer k the class of k-CNF expressions is learnable. In fact it is learnable easily in the sense
+    that calls of EXAMPLES suffice and no calls Of ORACLE are required.
+  note: The passage explicitly states the claimed result.

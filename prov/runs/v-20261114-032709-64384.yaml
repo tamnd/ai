@@ -1,0 +1,243 @@
+run: v-20261114-032709-64384
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: pac-learnability
+  verifier: codex:gpt-6-sol
+  tag: 2NT5ZY
+  claim: c-pac-definition
+  work: shalev-shwartz-ben-david-2014-understanding-machine-learning
+  locator: p. 43
+  key: c5a8510c667938713cea0b578a212dd5
+  spans:
+  - start: 72882
+    end: 75288
+  verdict: supported
+  quote: 'if there exist a function mH : (0, 1)2 → N and a learning algorithm with the
+
+    following property'
+  note: The definition gives the claimed quantifiers, sample threshold, error bound, and probability.
+- slug: pac-learnability
+  verifier: codex:gpt-6-sol
+  tag: 2NT5ZY
+  claim: c-sample-complexity
+  work: shalev-shwartz-ben-david-2014-understanding-machine-learning
+  locator: p. 44
+  key: 135119a1312157f0f242283165799709
+  spans:
+  - start: 75288
+    end: 77490
+  verdict: supported
+  quote: 'the minimal integer that satisfies the
+
+    requirements of PAC learning with accuracy'
+  note: The passage explicitly defines sample complexity as the minimal qualifying function.
+- slug: pac-learnability
+  verifier: codex:gpt-6-sol
+  tag: 2NT5ZY
+  claim: c-agnostic-definition
+  work: shalev-shwartz-ben-david-2014-understanding-machine-learning
+  locator: p. 46
+  key: f4346b58f13f39510bccaaf00ee7fb4a
+  spans:
+  - start: 80339
+    end: 82658
+  verdict: supported
+  quote: 'A hypothesis class H is agnostic
+
+    PAC learnable if there exist a function mH : (0, 1)2 → N and a learning algorithm'
+  note: The definition then gives the claimed distribution, sample, probability, and error guarantee.
+- slug: pac-learnability
+  verifier: codex:gpt-6-sol
+  tag: 2NT5ZY
+  claim: c-thresholds
+  work: shalev-shwartz-ben-david-2014-understanding-machine-learning
+  locator: p. 68
+  key: c0380cbde4a9c06f2d5c089450e1f015
+  spans:
+  - start: 130762
+    end: 132889
+  verdict: supported
+  quote: 'Then, H is
+
+    PAC learnable, using the ERM rule, with sample complexity of mH'
+  note: Lemma 6.1 states the threshold result and the claimed ceiling bound.
+- slug: pac-learnability
+  verifier: codex:gpt-6-sol
+  tag: 2NT5ZY
+  claim: c-fundamental-theorem
+  work: shalev-shwartz-ben-david-2014-understanding-machine-learning
+  locator: p. 72
+  key: 51c0a3fd6d5566e9ff61ade106dbadc5
+  spans:
+  - start: 139759
+    end: 142159
+  verdict: supported
+  quote: 'Then, the following are equivalent:'
+  note: The equivalent conditions listed include PAC learnability and finite VC dimension for binary functions with 0–1 loss.
+- slug: pac-learnability
+  verifier: codex:gpt-6-sol
+  tag: 2NT5ZY
+  claim: c-all-functions-not-learnable
+  work: shalev-shwartz-ben-david-2014-understanding-machine-learning
+  locator: p. 63
+  key: 2e4a9c4339f0630af49a3a35e99b7f31
+  spans:
+  - start: 118909
+    end: 120616
+  verdict: supported
+  quote: 'infinite domain set and let H be the set of all
+
+    functions from X to {0, 1}. Then, H is not PAC learnable.'
+  note: Corollary 5.2 states the claim directly.
+- slug: pac-learnability
+  verifier: codex:gpt-6-sol
+  tag: 2NT5ZY
+  claim: c-no-free-lunch
+  work: shalev-shwartz-ben-david-2014-understanding-machine-learning
+  locator: p. 61
+  key: 1b86026bb4c27b886a79b92b2b3b1c0c
+  spans:
+  - start: 114288
+    end: 116946
+  verdict: supported
+  quote: 'With probability of at least 1/7 over the choice of S ∼ Dm we have that
+
+    LD (A(S)) ≥ 1/8.'
+  note: The theorem also specifies every algorithm, m < |X|/2, and a distribution admitting a zero-error function.
+- slug: pac-learnability
+  verifier: codex:gpt-6-sol
+  tag: 2NT5ZY
+  claim: c-uc-implies-pac
+  work: shalev-shwartz-ben-david-2014-understanding-machine-learning
+  locator: p. 55
+  key: 4ac5ca96c83ae02fc5b1a9b34a41f2e5
+  spans:
+  - start: 101528
+    end: 104083
+  verdict: supported
+  quote: the class is agnostically PAC learnable with the sample complexity
+  note: Corollary 4.4 gives the claimed bound using ε/2 and identifies ERM as the learner.
+- slug: pac-learnability
+  verifier: codex:gpt-6-sol
+  tag: 2NT5ZY
+  claim: c-runtime-difference
+  work: valiant-1984-theory-of-the-learnable
+  locator: Section 3
+  key: 7bb66461e05bb102d329e19b431f5b4f
+  spans:
+  - start: 3540
+    end: 18712
+  verdict: supported
+  quote: The algorithm runs in time polynomial in an adjustable parameter h
+  note: Polynomial runtime is an explicit condition in Valiant’s definition of learnable.
+- slug: pac-learnability
+  verifier: codex:gpt-6-sol
+  tag: 2NT5ZY
+  claim: c-3dnf-hard
+  work: shalev-shwartz-ben-david-2014-understanding-machine-learning
+  locator: p. 107
+  key: ccfc2ca523311360ada61eeefaed1e74
+  spans:
+  - start: 225761
+    end: 228506
+  verdict: supported
+  quote: 'unless
+
+    RP = NP, there is no polynomial time algorithm that properly learns a sequence
+
+    of 3-term DNF learning problems'
+  note: The passage also gives the class-size bound and a corresponding ERM sample bound.
+- slug: pac-learnability
+  verifier: codex:gpt-6-sol
+  tag: 2NT5ZY
+  claim: c-3dnf-improper
+  work: shalev-shwartz-ben-david-2014-understanding-machine-learning
+  locator: p. 108
+  key: e0180703e41257c03e8a87d330f2a7a2
+  spans:
+  - start: 228506
+    end: 230546
+  verdict: unsupported
+  quote: algorithm might return a hypothesis that does not belong to the original hypothesis class
+  note: The passage supports the rewriting and polynomial runtime, but says the resulting hypothesis might, rather than must,
+    lie outside the original class.
+- slug: pac-learnability
+  verifier: codex:gpt-6-sol
+  tag: 2NT5ZY
+  claim: c-proper-improper
+  work: shalev-shwartz-ben-david-2014-understanding-machine-learning
+  locator: p. 49
+  key: e0386a4a75f66ea18747a90f02bfd8fe
+  spans:
+  - start: 87828
+    end: 90359
+  verdict: supported
+  quote: 'while proper
+
+    learning occurs when the algorithm must output a hypothesis from H.'
+  note: The same remark names output from the larger set representation independent learning and sometimes improper learning.
+- slug: pac-learnability
+  verifier: codex:gpt-6-sol
+  tag: 2NT5ZY
+  claim: c-both-needed
+  work: shalev-shwartz-ben-david-2014-understanding-machine-learning
+  locator: pp. 43 to 44
+  key: 1f615faf3155e56f7fe3f195a510a635
+  spans:
+  - start: 72882
+    end: 77490
+  verdict: supported
+  quote: 'Since the training set is randomly generated, there
+
+    may always be a small chance that it will happen to be noninformative'
+  note: The passage gives repeated sampling of one point and says even a representative finite sample can miss details of
+    the distribution.
+- slug: pac-learnability
+  verifier: codex:gpt-6-sol
+  tag: 2NT5ZY
+  claim: c-rates
+  work: shalev-shwartz-ben-david-2014-understanding-machine-learning
+  locator: pp. 72 to 73
+  key: 597a269d2920d1ed874a3b60b135e689
+  spans:
+  - start: 139759
+    end: 144440
+  verdict: supported
+  quote: 'Then, there are absolute constants C1 , C2 such that:'
+  note: The theorem’s agnostic and PAC sample-complexity bounds match the claim.
+- slug: pac-learnability
+  verifier: codex:gpt-6-sol
+  tag: 2NT5ZY
+  claim: c-valiant-1984
+  work: valiant-1984-theory-of-the-learnable
+  locator: the abstract
+  key: 96b8218103ea975f5b690c144cc7536c
+  spans:
+  - start: 134
+    end: 917
+  verdict: supported
+  quote: 'It consists of choosing an appropriate information gathering
+
+    mechanism, the learning protocol, and exploring the class of
+
+    concepts that can be learned'
+  note: The abstract presents this methodology from a computational viewpoint and specifies a polynomial number of steps.
+- slug: pac-learnability
+  verifier: codex:gpt-6-sol
+  tag: 2NT5ZY
+  claim: c-two-uses
+  work: shalev-shwartz-ben-david-2014-understanding-machine-learning
+  locator: p. 100
+  key: 6d475eaeab11be53828c61c069a30a9f
+  spans:
+  - start: 205685
+    end: 208605
+  verdict: supported
+  quote: 'We refer to these two types of resources as the
+
+    sample complexity and the computational complexity.'
+  note: The passage says the book studied sample needs first and now turns to computational complexity.

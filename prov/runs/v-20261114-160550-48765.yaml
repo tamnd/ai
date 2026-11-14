@@ -1,0 +1,34 @@
+run: v-20261114-160550-48765
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: pac-learnability
+  verifier: codex:gpt-6-sol
+  tag: 2NT5ZY
+  claim: c-turing-award
+  work: shalev-shwartz-ben-david-2014-understanding-machine-learning
+  locator: p. 50
+  key: 20484151dde3c1051175e217023cc3ae
+  spans:
+  - start: 90359
+    end: 93160
+  verdict: supported
+  quote: Valiant was named the winner of the 2010 Turing Award for the introduction of the PAC model.
+  note: The passage states the claim directly.
+- slug: pac-learnability
+  verifier: codex:gpt-6-sol
+  tag: 2NT5ZY
+  claim: c-haussler-agnostic
+  work: shalev-shwartz-ben-david-2014-understanding-machine-learning
+  locator: p. 50
+  key: cb9567331c9a84324cfdae20eb671ff9
+  spans:
+  - start: 90359
+    end: 93160
+  verdict: supported
+  quote: Finally, the formalization of agnostic PAC learning is due to Haussler (1992).
+  note: The passage attributes the formalization to Haussler and says the authors’ most general definition follows the works
+    of Vapnik and Chervonenkis.
