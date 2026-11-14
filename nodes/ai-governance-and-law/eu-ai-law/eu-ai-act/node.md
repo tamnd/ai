@@ -80,7 +80,8 @@ A deep fake is AI-generated or manipulated image, audio or video content that re
 
 ## Main provisions
 
-The generated list of provision cards will go here when the cards exist; the groups below follow the chapters of the Act.
+The table lists the provision cards of the Act, in the order of the articles.
+The notes below group its main provisions by the chapters of the Act.
 
 **Prohibited practices (Article 5).**
 Article 5 bans AI that uses subliminal, manipulative or deceptive techniques, or exploits vulnerabilities due to age, disability or a social or economic situation, to materially distort behaviour in a way that causes or is reasonably likely to cause significant harm. {#c-prohibit-manipulation}
