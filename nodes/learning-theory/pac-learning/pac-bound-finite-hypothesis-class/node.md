@@ -64,7 +64,7 @@ With twice the accuracy, every ERM hypothesis then satisfies $L_{\mathcal{D}}(h_
 
 $$ m \ge \frac{2 \log(2 |\mathcal{H}| / \delta)}{\epsilon^2} . $$ {#eq-agnostic-m}
 
-So, for a loss with values in $[0, 1]$, a finite class is agnostic PAC learnable, with sample complexity at most $\lceil 2 \log(2|\mathcal{H}|/\delta) / \epsilon^2 \rceil$. {#c-agnostic-bound}
+So, for a loss with values in $[0, 1]$, a finite class is [[al:agnostic-pac-learning|agnostic PAC learnable]], with sample complexity at most $\lceil 2 \log(2|\mathcal{H}|/\delta) / \epsilon^2 \rceil$. {#c-agnostic-bound}
 
 Here $\log$ is the natural logarithm.
 
@@ -117,7 +117,7 @@ In the agnostic case the same theorem gives $\Theta((d + \log(1/\delta))/\epsilo
 
 ## Consequences
 
-The bound gives Occam's razor in the form of Blumer et al. (1987): a hypothesis that can be written in $b$ bits comes from a class of at most $2^b$ hypotheses, so $(b \log 2 + \log(1/\delta))/\epsilon$ examples are enough for a consistent learner that outputs it.
+The bound gives [[al:occams-razor|Occam's razor]] in the form of Blumer et al. (1987): a hypothesis that can be written in $b$ bits comes from a class of at most $2^b$ hypotheses, so $(b \log 2 + \log(1/\delta))/\epsilon$ examples are enough for a consistent learner that outputs it.
 It also turns into a bound on the error for a fixed sample: in the realizable case, with probability at least $1 - \delta$, every consistent $h \in \mathcal{H}$ has error at most $(\log |\mathcal{H}| + \log(1/\delta))/m$.
 Over an infinite class indexed by $n$ real numbers stored in 64-bit floats, the class has at most $2^{64 n}$ members, which gives a crude bound that grows linearly in $n$ (Shalev-Shwartz and Ben-David 2014, Remark 4.1).
 

@@ -103,7 +103,7 @@ The thresholds have VC dimension 1, and the fundamental theorem of statistical l
 **A non-example: all functions on an infinite domain.**
 Let $\mathcal{X}$ be infinite and $\mathcal{H}$ the set of all functions from $\mathcal{X}$ to $\{0, 1\}$.
 Then $\mathcal{H}$ is not PAC learnable. {#c-all-functions-not-learnable}
-The reason is the no-free-lunch theorem: for any learner and any $m < |\mathcal{X}|/2$, some distribution with a target of zero error makes the learner's error at least $1/8$ with probability at least $1/7$. {#c-no-free-lunch}
+The reason is the [[al:no-free-lunch-theorem-learning|no-free-lunch theorem]]: for any learner and any $m < |\mathcal{X}|/2$, some distribution with a target of zero error makes the learner's error at least $1/8$ with probability at least $1/7$. {#c-no-free-lunch}
 On an infinite domain every $m$ is below $|\mathcal{X}|/2$, so no sample size meets $\epsilon < 1/8$ and $\delta < 1/7$.
 
 **A borderline case: all functions on a finite domain.**
