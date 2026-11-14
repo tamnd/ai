@@ -1,0 +1,123 @@
+# The claims of the dartmouth-workshop page (spec 07). The build computes the labels.
+# The proposal and McCarthy's note are HTML pages and resolve as one page, "p. 1".
+# Grace Solomonoff (2016) is cited by its printed page numbers.
+- id: c-held
+  type: historical
+  text: "A summer research project on artificial intelligence was held at Dartmouth College in Hanover, New Hampshire, in 1956."
+  evidence:
+    - {work: "bringsjord-2018-artificial-intelligence-sep", role: review, locator: "Section 1", stance: for}
+    - {work: "solomonoff-2016-dartmouth-summer-research-project", role: review, locator: "p. 8", stance: for}
+
+- id: c-proposal-date
+  type: historical
+  text: "J. McCarthy, M. L. Minsky, N. Rochester and C. E. Shannon wrote the proposal for the Dartmouth Summer Research Project on Artificial Intelligence, dated August 31, 1955."
+  evidence:
+    - {work: "mccarthy-1955-dartmouth-proposal", role: primary-document, locator: "p. 1", stance: for}
+
+- id: c-first-use
+  type: attributive
+  text: "McCarthy writes that the proposal for the Dartmouth Summer Research Project on Artificial Intelligence was, so far as he knows, the first use of the phrase Artificial Intelligence."
+  evidence:
+    - {work: "mccarthy-2001-dartmouth-proposal-note", role: statement, locator: "p. 1", stance: for}
+
+- id: c-two-month
+  type: historical
+  text: "The proposal proposed a 2 month, 10 man study of artificial intelligence during the summer of 1956 at Dartmouth College."
+  evidence:
+    - {work: "mccarthy-1955-dartmouth-proposal", role: primary-document, locator: "p. 1", stance: for}
+
+- id: c-conjecture
+  type: attributive
+  text: "The proposal states that the study is to proceed on the basis of the conjecture that every aspect of learning or any other feature of intelligence can in principle be so precisely described that a machine can be made to simulate it."
+  evidence:
+    - {work: "mccarthy-1955-dartmouth-proposal", role: primary-document, locator: "p. 1", stance: for}
+
+- id: c-topics
+  type: historical
+  text: "The topics of the proposal include automatic computers, how a computer can be programmed to use a language, neuron nets, self-improvement, abstractions, and randomness and creativity."
+  evidence:
+    - {work: "mccarthy-1955-dartmouth-proposal", role: primary-document, locator: "p. 1", stance: for}
+
+- id: c-budget
+  type: historical
+  text: "The proposal asks the Rockefeller Foundation to provide financial support, and its estimated expenses total $13,500."
+  evidence:
+    - {work: "mccarthy-1955-dartmouth-proposal", role: primary-document, locator: "p. 1", stance: for}
+
+- id: c-sent
+  type: attributive
+  text: "Grace Solomonoff writes that on September 2, 1955, the four sent a proposal to the Rockefeller Foundation."
+  evidence:
+    - {work: "solomonoff-2016-dartmouth-summer-research-project", role: original, locator: "p. 6", stance: for}
+
+- id: c-half
+  type: attributive
+  text: "Grace Solomonoff writes that the Rockefeller Foundation gave about half the requested funding."
+  evidence:
+    - {work: "solomonoff-2016-dartmouth-summer-research-project", role: original, locator: "p. 19", stance: for}
+
+- id: c-short-times
+  type: attributive
+  text: "Grace Solomonoff writes that the actual participants came at different times, mostly for much shorter times."
+  evidence:
+    - {work: "solomonoff-2016-dartmouth-summer-research-project", role: original, locator: "p. 8", stance: for}
+
+- id: c-duration
+  type: attributive
+  text: "Grace Solomonoff writes that the Dartmouth Workshop is often said to have run for six weeks in the summer of 1956, but that Ray's notes say it ran for roughly eight weeks, from about June 18 to August 17."
+  evidence:
+    - {work: "solomonoff-2016-dartmouth-summer-research-project", role: original, locator: "p. 9", stance: for}
+
+- id: c-lists-differ
+  type: attributive
+  text: "Grace Solomonoff writes that so many people came for such short times, or had to cancel their planned attendance, that there has been considerable confusion about who attended."
+  evidence:
+    - {work: "solomonoff-2016-dartmouth-summer-research-project", role: original, locator: "p. 9", stance: for}
+
+- id: c-sep-ten
+  type: attributive
+  text: "Bringsjord and Govindarajulu write that ten thinkers attended, including John McCarthy, Claude Shannon, Marvin Minsky, Arthur Samuel, Ray Solomonoff, Oliver Selfridge, Allen Newell, and Herbert Simon."
+  evidence:
+    - {work: "bringsjord-2018-artificial-intelligence-sep", role: original, locator: "Section 1", stance: for}
+
+- id: c-ray-list
+  type: attributive
+  text: "Grace Solomonoff gives Ray Solomonoff's list of 20 attendees."
+  evidence:
+    - {work: "solomonoff-2016-dartmouth-summer-research-project", role: original, locator: "p. 10", stance: for}
+
+- id: c-full-eight
+  type: attributive
+  text: "Grace Solomonoff writes that Ray, Marvin and John McCarthy were the only three who stayed for the full eight weeks."
+  evidence:
+    - {work: "solomonoff-2016-dartmouth-summer-research-project", role: original, locator: "p. 10", stance: for}
+
+- id: c-no-report
+  type: historical
+  text: "In a 1996 note to the proposal McCarthy writes that there was no report of the Dartmouth Summer Project."
+  evidence:
+    - {work: "mccarthy-1955-dartmouth-proposal", role: statement, locator: "p. 1", stance: for}
+
+- id: c-started
+  type: attributive
+  text: "Bringsjord and Govindarajulu write that the field of artificial intelligence officially started in 1956, launched by a summer conference at Dartmouth College."
+  evidence:
+    - {work: "bringsjord-2018-artificial-intelligence-sep", role: original, locator: "Section 1", stance: for}
+
+- id: c-coined-lt
+  type: attributive
+  text: "Bringsjord and Govindarajulu write that the term artificial intelligence was coined at the Dartmouth conference, and that Newell and Simon revealed a program there, Logic Theorist."
+  evidence:
+    - {work: "bringsjord-2018-artificial-intelligence-sep", role: original, locator: "Section 1", stance: for}
+
+- id: c-ai50
+  type: attributive
+  text: "Bringsjord and Govindarajulu write that the 50-year celebration of the Dartmouth conference, AI@50, was held in July 2006 at Dartmouth."
+  evidence:
+    - {work: "bringsjord-2018-artificial-intelligence-sep", role: original, locator: "Section 1", stance: for}
+
+- id: c-ai50-five
+  type: attributive
+  text: "Grace Solomonoff names the five attendees at the AI@50 conference in 2006 who were part of the Dartmouth Summer of 1956: Trenchard More, John McCarthy, Marvin Minsky, Oliver Selfridge and Ray Solomonoff."
+  evidence:
+    - {work: "solomonoff-2016-dartmouth-summer-research-project", role: original, locator: "p. 25", stance: for}
