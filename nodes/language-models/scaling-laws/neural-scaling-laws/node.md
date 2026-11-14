@@ -159,7 +159,7 @@ The implications below are those that the sources draw.
 Kaplan et al. concluded that compute-efficient training uses very large models on a relatively modest amount of data and stops well before convergence. {#c-kaplan-allocation}
 Hoffmann et al. reached a different conclusion about data: that the large language models of the time were significantly undertrained, because models had grown while the training data stayed the same. {#c-undertrained}
 They tested this with Chinchilla, a 70-billion-parameter model trained on 1.4 trillion tokens with the compute budget of Gopher, which outperforms Gopher (280B), GPT-3 (175B), Jurassic-1 (178B) and Megatron-Turing NLG (530B) on a large range of tasks, by their own report. {#c-chinchilla}
-Chinchilla reached 67.5% average accuracy on MMLU, more than 7% above Gopher. {#c-mmlu}
+Hoffmann et al. report that Chinchilla reached 67.5% average accuracy on MMLU, more than 7% above Gopher. {#c-mmlu}
 Hestness et al. wrote that predictable curves help to debug models, to set accuracy targets, to decide how much data to collect and to design computing systems. {#c-hestness-uses}
 
 ## History
