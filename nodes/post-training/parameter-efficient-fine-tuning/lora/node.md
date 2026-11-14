@@ -147,6 +147,7 @@ The scale $\alpha$ interacts with the rank.
 With $s = \alpha / r$ and a fixed $\alpha$, the update shrinks as $r$ grows; for a rank-256 adapter on Magicoder, $\alpha = 512$ does much better than 256 or 32 at every learning rate, and $\alpha = 2r$ is crucial at high rank. {#c-alpha-2r}
 
 The learning rate should be higher than for full fine-tuning: for instruction fine-tuning LoRA is more sensitive to it, and its preferred values are about ten times higher, often between $5 \times 10^{-5}$ and $5 \times 10^{-4}$. {#c-lr-higher}
+Hu et al. train the adapters with [[al:adamw|AdamW]], whose two moment estimates per parameter then exist only for $A$ and $B$; that is much of the memory saving below.
 
 ## Cost
 
@@ -181,6 +182,7 @@ Full fine-tuning on these domains learns perturbations of rank 10 to 100 times t
 Hu et al. make the same point as a caution: a small $r$ need not work for every task, for example if the downstream task is in another language than pretraining.
 
 LoRA and full fine-tuning can reach similar accuracy with different weights.
+The difference shows in the [[m2:singular-value-decomposition|singular value decomposition]] of the fine-tuned matrices.
 LoRA weights have new high-ranking singular vectors, intruder dimensions, that full fine-tuning does not create; scaling them down improves the model of the pretraining distribution with a small loss on the task. {#c-intruder}
 
 Merging conflicts with batching: once $BA$ is folded into $W$, one forward pass cannot serve inputs of different tasks, so multi-task serving keeps the adapters apart and pays the extra products.
@@ -203,6 +205,7 @@ Use LoRA when memory for training or storage per task is the limit: many tasks o
 Use it when the model should keep its general abilities, since it forgets less.
 Prefer full fine-tuning, or a high rank on all modules, when the target domain is far from pretraining and accuracy there matters most, as with continued pretraining on code.
 Combine it with 4-bit quantization of the base model when even the frozen weights do not fit in memory.
+Do not use it to make a model cheaper to run: [[al:neural-network-pruning|pruning]] and [[al:knowledge-distillation|knowledge distillation]] give a smaller model for inference, while LoRA keeps the whole base model and only makes the trained update small.
 
 ## Pitfalls
 
