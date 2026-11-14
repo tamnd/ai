@@ -313,7 +313,7 @@
 
 - id: c-lic-llama2-mau
   type: historical
-  text: "Under the Llama 2 Community License Agreement, if on the Llama 2 version release date the products or services of a licensee had more than 700 million monthly active users in the preceding calendar month, the licensee must request a license from Meta, which Meta may grant in its sole discretion."
+  text: "Under the Llama 2 Community License Agreement, a licensee whose products or services had more than 700 million monthly active users in the preceding calendar month on the Llama 2 version release date must request a license from Meta, which Meta may grant in its sole discretion."
   evidence:
     - {work: "meta-llama-2-community-license", role: original, locator: "p. 1", stance: for}
 
@@ -385,7 +385,7 @@
 
 - id: c-osi-osd
   type: attributive
-  text: "OSI argues that an Open Source license may not discriminate against persons or groups or fields of endeavor (OSD points 5 and 6), and that Meta's license puts restrictions on commercial use for some users and restricts the use of the model for certain purposes through the Acceptable Use Policy."
+  text: "OSI argues that an Open Source license may not discriminate against persons or groups or fields of endeavor (OSD points 5 and 6)."
   evidence:
     - {work: "osi-2023-llama-license-not-open-source", role: original, locator: "p. 1", stance: for}
 
@@ -514,3 +514,9 @@
   text: "Touvron et al. report that Llama 2 was trained on 2 trillion tokens of data."
   evidence:
     - {work: "touvron-2023-llama-2", role: original, locator: "Section 2.1", stance: for}
+
+- id: c-osi-restrict
+  type: attributive
+  text: "OSI writes that Meta's license puts restrictions on commercial use for some users and also restricts the use of the model and software for certain purposes through the Acceptable Use Policy."
+  evidence:
+    - {work: "osi-2023-llama-license-not-open-source", role: original, locator: "p. 1", stance: for}

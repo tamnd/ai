@@ -59,7 +59,7 @@ Meta writes that the 11B and 90B models of Llama 3.2, the first Llama models to 
 
 Llama 4 changes the design more.
 The models are natively multimodal, with early fusion of text and vision tokens into one model backbone. {#c-arch-llama4-fusion}
-Llama 4 Maverick alternates dense and MoE layers; each MoE layer has 128 routed experts and a shared expert, and each token goes to the shared expert and one routed expert. {#c-arch-llama4-moe}
+Llama 4 Maverick alternates dense and MoE layers, and each token goes to a shared expert and to one of 128 routed experts. {#c-arch-llama4-moe}
 Meta calls the design iRoPE: some attention layers have no positional embeddings, and most layers use RoPE. {#c-arch-irope}
 
 ## Training data
@@ -83,7 +83,7 @@ The sources do not list the share of each source for any generation after LLaMA.
 
 ## Training
 
-The LLaMA authors report that their code processes about 380 tokens per second per GPU on {fact:llama/training.gpus.llama_65b} A100 GPUs, so the 65B model trains on 1.4T tokens in about 21 days. {#c-train-llama-gpus}
+The LLaMA authors report about 380 tokens per second per GPU on {fact:llama/training.gpus.llama_65b} A100 GPUs, so training the 65B model on 1.4T tokens takes about 21 days. {#c-train-llama-gpus}
 
 Llama 2-Chat is the dialogue version of Llama 2. {#c-llama2-chat}
 Its authors explored two main algorithms for fine-tuning it with reinforcement learning from human feedback (RLHF): Proximal Policy Optimization (PPO) and rejection sampling fine-tuning. {#c-train-llama2-rlhf}
@@ -106,7 +106,6 @@ Meta reports that it codistilled Llama 4 Maverick from Llama 4 Behemoth as a tea
 | Llama 3.3 | {fact:llama/released.llama_3_3} | 70B | {fact:llama/licence.llama_3_3} |
 | Llama 4 | {fact:llama/released.llama_4} | Scout, Maverick | {fact:llama/licence.llama_4} |
 
-The sizes are the names Meta gives the models; the parameter counts are in the facts of this page and in releases.yaml.
 Meta released Llama 2 at 7B, 13B and 70B, and also trained 34B models that the paper reports on but that were not released. {#c-llama2-sizes}
 Meta Llama 3 came with pretrained and instruction-fine-tuned models of 8B and 70B parameters. {#c-llama3-sizes}
 In April 2024, Meta wrote that models of over 400B parameters were still training. {#c-llama3-400b}
@@ -119,8 +118,8 @@ Meta did not release Llama 4 Behemoth, a larger MoE model that was still trainin
 
 ## Results
 
-The table gives the five-shot accuracy on Massive Multitask Language Understanding (MMLU) of pretrained base models, as their developer reports it.
-Each paper uses its own evaluation pipeline, so the rows are not one controlled comparison.
+The table gives the five-shot accuracy of pretrained base models on Massive Multitask Language Understanding (MMLU), as Meta reports it.
+Each source uses its own evaluation setup, so the rows are not one controlled comparison.
 
 | Model | MMLU accuracy | Shots | Source |
 |---|---|---|---|
@@ -137,7 +136,6 @@ The LLaMA paper reports five-shot MMLU accuracy of 35.1 for LLaMA 7B and 63.4 fo
 The Llama 2 paper reports MMLU (5 shot) of 45.3 for Llama 2 7B and 68.9 for Llama 2 70B, and gives 63.4 again for Llama 1 65B. {#c-mmlu-llama2}
 Grattafiori et al. report MMLU scores of 66.7, 79.3 and 85.2 for the pre-trained Llama 3 8B, 70B and 405B models. {#c-mmlu-herd}
 The Llama 4 model card reports 5-shot MMLU of 79.3 for Llama 3.1 70B, 85.2 for Llama 3.1 405B, 79.6 for Llama 4 Scout and 85.5 for Llama 4 Maverick. {#c-mmlu-l4card}
-All these numbers are self-reported by Meta.
 
 ## Access and licence
 
@@ -148,7 +146,7 @@ For Llama 4, Meta made Scout and Maverick available for download on llama.com an
 ### Licence history
 
 - {fact:llama/released.llama}: LLaMA, under a "Non-commercial bespoke license". {#c-lic-llama}
-- {fact:llama/released.llama_2}: the "Llama 2 Community License Agreement". A licensee whose products had more than 700 million monthly active users in the preceding calendar month must request a license from Meta, which Meta may grant in its sole discretion. {#c-lic-llama2-mau}
+- {fact:llama/released.llama_2}: the "Llama 2 Community License Agreement". A licensee with more than 700 million monthly active users must request a license from Meta, which Meta may grant in its sole discretion. {#c-lic-llama2-mau}
   The licence also forbids using Llama 2 or its outputs to improve any other large language model, apart from Llama 2 and its derivative works. {#c-lic-llama2-improve}
 - {fact:llama/released.llama_3}: the "Meta Llama 3 Community License Agreement". It keeps the 700 million users clause and the bar on improving other models, and asks for "Built with Meta Llama 3" to be displayed. {#c-lic-llama3}
 - {fact:llama/released.llama_3_1}: the "Llama 3.1 Community License Agreement". Meta writes that it changed the licence to let developers use the outputs of Llama models to improve other models. {#c-lic-31-outputs}
@@ -159,10 +157,9 @@ For Llama 4, Meta made Scout and Maverick available for download on llama.com an
 
 ### Open weights and open source
 
-The question is whether Llama is open source, or a model with open weights under restrictive terms.
+The question is whether Llama is open source, or open weights under restrictive terms.
 Open weights means here that anyone who accepts the licence can download the trained parameters.
 Open source has a formal meaning for software, the Open Source Definition (OSD) of the Open Source Initiative (OSI), and since 2024 one for AI systems.
-The positions are listed in the order of the date of their first source.
 
 **Meta.**
 The Llama 2 authors write that they believe the open release of LLMs, when done safely, will be a net benefit to society. {#c-meta-open-release}
@@ -172,7 +169,8 @@ Meta announced Llama 4 as part of its commitment to open source. {#c-llama4-open
 
 **The Open Source Initiative.**
 OSI states that Meta's license for the LLaMa models and code is not Open Source. {#c-osi-not-os}
-It argues that an Open Source license may not discriminate against persons, groups or fields of endeavor, and that the Llama terms restrict commercial use for some users and restrict some uses through the Acceptable Use Policy. {#c-osi-osd}
+It argues that an Open Source license may not discriminate against persons, groups or fields of endeavor. {#c-osi-osd}
+In its view, the Llama terms restrict commercial use for some users, and the Acceptable Use Policy restricts some uses. {#c-osi-restrict}
 The Open Source AI Definition 1.0 asks for the freedoms to use a system for any purpose without asking for permission, and to study, modify and share it. {#c-osaid}
 It also asks for data information detailed enough that a skilled person can build a substantially equivalent system, together with the code and the parameters. {#c-osaid-data}
 
@@ -204,7 +202,6 @@ The fact on this page shows both values.
 
 ## Lineage
 
-Each generation builds on the one before.
 LLaMA starts from the transformer of Vaswani et al. (2017), with RMSNorm, SwiGLU and RoPE. {#c-lineage-l1}
 The Llama 2 authors call it an updated version of Llama 1, trained on a different mix of publicly available data. {#c-lineage-l2}
 Llama 3 uses GQA in both its 8B and 70B sizes and a tokenizer of 128K tokens. {#c-lineage-l3}
