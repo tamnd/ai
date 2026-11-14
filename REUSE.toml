@@ -1,7 +1,7 @@
 version = 1
 
 [[annotations]]
-path = ["nodes/**/node.md", "nodes/**/derivations/**", "README.md", "CONTRIBUTING.md", "LICENSES/README.md", ".github/**.md"]
+path = ["nodes/**/node.md", "nodes/**/derivations/**", "checklists/**", "README.md", "CONTRIBUTING.md", "LICENSES/README.md", ".github/**.md"]
 SPDX-FileCopyrightText = "The ai contributors <https://ai.tamnd.com/about/>"
 SPDX-License-Identifier = "CC-BY-SA-4.0 AND CC0-1.0"
 
