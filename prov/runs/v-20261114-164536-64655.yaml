@@ -1,0 +1,38 @@
+run: v-20261114-164536-64655
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: q-learning
+  verifier: codex:gpt-6-sol
+  tag: KDH97E
+  claim: c-wd-theorem
+  work: watkins-dayan-1992-q-learning
+  locator: Section 2
+  key: 69beb1f7b2ad7e144363ea1d7764aecb
+  spans:
+  - start: 2875
+    end: 7722
+  verdict: supported
+  quote: then l~,,,(x, a) ~ ~. *(X , a) as n ~ oo, Vx, a, with probability 1.
+  note: Despite degraded symbols, the theorem states the claimed bounds, learning-rate sums, and almost-sure convergence.
+- slug: q-learning
+  verifier: codex:gpt-6-sol
+  tag: KDH97E
+  claim: c-cliff
+  work: sutton-barto-2018-reinforcement-learning
+  locator: p. 132
+  key: d807cedf448f98caa79711468b7575b4
+  spans:
+  - start: 407285
+    end: 409901
+  verdict: supported
+  quote: 'its online performance
+
+    is worse than that of Sarsa, which
+
+    learns the roundabout policy.'
+  note: The example also states that Q-learning follows the cliff edge and occasionally falls, while Sarsa learns the longer,
+    safer path.
