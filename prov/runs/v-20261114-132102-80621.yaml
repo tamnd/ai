@@ -1,0 +1,36 @@
+run: v-20261114-132102-80621
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: pac-bound-finite-hypothesis-class
+  verifier: codex:gpt-6-sol
+  tag: XSZ95D
+  claim: c-valiant-definition
+  work: valiant-1984-theory-of-the-learnable
+  locator: Section 3
+  key: d3380ab180054d463ed329b6f79d815d
+  spans:
+  - start: 15595
+    end: 18712
+  verdict: supported
+  quote: 'the sum of D(v) over all v such that
+
+    f(v) = 1, but g(v) ~ 1 is at most h-1.'
+  note: The passage states the polynomial-time requirement, the probability bound, the prohibition on false positives, and
+    the bound on missed positive examples, and calls this one-sided error learning.
+- slug: pac-learnability
+  verifier: codex:gpt-6-sol
+  tag: 2NT5ZY
+  claim: c-runtime-difference
+  work: valiant-1984-theory-of-the-learnable
+  locator: Section 3
+  key: 72ef31325370f8d182b8d8c3de1880f2
+  spans:
+  - start: 15595
+    end: 18712
+  verdict: supported
+  quote: The algorithm runs in time polynomial in an adjustable parameter h
+  note: Polynomial running time is an explicit requirement in the passage’s definition of learnability.
