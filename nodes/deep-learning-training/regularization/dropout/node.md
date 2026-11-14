@@ -60,6 +60,7 @@ While the network trains, switch off a random part of its units at each step.
 The network cannot count on any one unit, so it learns features that work even when some are missing.
 At test time all units are on, scaled so that the total signal is the same as in training.
 The effect is close to averaging many smaller networks that share their weights.
+That makes it a cheap form of [[al:ensemble-learning|ensemble learning]], with one difference from [[al:bagging|bagging]]: bagging trains separate models on bootstrap samples of the data, while the thinned networks of dropout share one set of weights and each one trains for a step at most.
 
 ## Setting
 
