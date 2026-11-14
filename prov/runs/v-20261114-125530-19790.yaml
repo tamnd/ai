@@ -1,0 +1,33 @@
+run: v-20261114-125530-19790
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-scope-open-source
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 2(12)
+  key: 26acb3a08c1d143b06346cc90cdb425d
+  spans:
+  - start: 234063
+    end: 234294
+  verdict: supported
+  quote: This Regulation does not apply to AI systems released under free and open-source licences
+  note: The passage states the claimed exclusion and its exceptions.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-fines-gpai
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 101(1)
+  key: ca8328757beefadb649119e1e294f026
+  spans:
+  - start: 506544
+    end: 507680
+  verdict: supported
+  quote: 3 % of their annual total worldwide turnover in the preceding financial year or EUR 15 000 000, whichever is higher.
+  note: The passage states the fine ceiling and lists the intentional or negligent conduct described in the claim.

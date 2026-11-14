@@ -1,0 +1,675 @@
+# The claims of the eu-ai-act page (spec 07). The build computes the labels.
+- id: c-title
+  type: historical
+  text: "Regulation (EU) 2024/1689 of the European Parliament and of the Council of 13 June 2024 lays down harmonised rules on artificial intelligence and is the Artificial Intelligence Act."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: primary-document, locator: "the title page", stance: for}
+
+- id: c-published
+  type: historical
+  text: "Regulation (EU) 2024/1689 is in the L series of the Official Journal of the European Union of 12.7.2024."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: primary-document, locator: "the title page", stance: for}
+
+- id: c-in-force
+  type: historical
+  text: "Regulation (EU) 2024/1689 entered into force on 1 August 2024."
+  evidence:
+    - {work: "eu-2026-regulation-2026-1744-digital-omnibus-ai", role: primary-document, locator: "Recital 1", stance: for}
+    - {work: "ec-ai-act-policy-page", role: statement, locator: "p. 1", stance: for}
+
+- id: c-amended
+  type: historical
+  text: "Regulation (EU) 2026/1744 of 8 July 2026, the Digital Omnibus on AI, amends Regulation (EU) 2024/1689 as regards the simplification of the implementation of harmonised rules on artificial intelligence."
+  evidence:
+    - {work: "eu-2026-regulation-2026-1744-digital-omnibus-ai", role: primary-document, locator: "the title page", stance: for}
+
+- id: c-purpose
+  type: normative-reported
+  text: "The purpose of the Regulation is to improve the functioning of the internal market and promote the uptake of human-centric and trustworthy AI, while ensuring a high level of protection of health, safety and fundamental rights against the harmful effects of AI systems and supporting innovation."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 1(1)", stance: for}
+
+- id: c-subject-matter
+  type: normative-reported
+  text: "The Regulation lays down harmonised rules for the placing on the market, the putting into service and the use of AI systems, prohibitions of certain AI practices, requirements for high-risk AI systems, harmonised transparency rules for certain AI systems, rules for general-purpose AI models, rules on market surveillance, governance and enforcement, and measures to support innovation."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 1(2)", stance: for}
+
+- id: c-four-levels
+  type: normative-reported
+  text: "According to the European Commission, the AI Act defines 4 levels of risk for AI systems: unacceptable risk, high risk, transparency risk, and minimal or no risk."
+  evidence:
+    - {work: "ec-ai-act-policy-page", role: official-guidance, locator: "p. 1", stance: for}
+
+- id: c-minimal
+  type: normative-reported
+  text: "The Commission states that the AI Act does not introduce rules for AI deemed minimal or no risk, such as AI-enabled video games or spam filters."
+  evidence:
+    - {work: "ec-ai-act-policy-page", role: official-guidance, locator: "p. 1", stance: for}
+
+- id: c-direct
+  type: normative-reported
+  text: "The Regulation is binding in its entirety and directly applicable in all Member States."
+  evidence:
+    - {work: "eu-2026-ai-act-consolidated-text-2026-07-27", role: official-text, locator: "Article 113", stance: for}
+
+- id: c-scope-providers
+  type: normative-reported
+  text: "The Regulation applies to providers placing on the market or putting into service AI systems or placing on the market general-purpose AI models in the Union, irrespective of whether they are established in the Union or in a third country, and to deployers of AI systems established or located within the Union."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 2(1)", stance: for}
+
+- id: c-scope-third-country
+  type: normative-reported
+  text: "The Regulation also applies to providers and deployers of AI systems that are established or located in a third country, where the output produced by the AI system is used in the Union; to importers and distributors of AI systems; to product manufacturers placing on the market or putting into service an AI system together with their product and under their own name or trademark; to authorised representatives of providers not established in the Union; and to affected persons located in the Union."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 2(1)", stance: for}
+
+- id: c-scope-military
+  type: normative-reported
+  text: "The Regulation does not apply to AI systems placed on the market, put into service or used exclusively for military, defence or national security purposes."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 2(3)", stance: for}
+
+- id: c-scope-research
+  type: normative-reported
+  text: "The Regulation does not apply to AI systems or AI models specifically developed and put into service for the sole purpose of scientific research and development."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 2(6)", stance: for}
+
+- id: c-scope-open-source
+  type: normative-reported
+  text: "The Regulation does not apply to AI systems released under free and open-source licences, unless they are placed on the market or put into service as high-risk AI systems or as an AI system that falls under Article 5 or 50."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 2(12)", stance: for}
+
+- id: c-def-ai-system
+  type: definitional
+  text: "An AI system is a machine-based system designed to operate with varying levels of autonomy, that may exhibit adaptiveness after deployment, and that infers from the input it receives how to generate outputs such as predictions, content, recommendations or decisions that can influence physical or virtual environments."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 3(1)", stance: for}
+
+- id: c-def-provider
+  type: definitional
+  text: "A provider is a person or body that develops an AI system or a general-purpose AI model, or has one developed, and places it on the market or puts the AI system into service under its own name or trademark, whether for payment or free of charge."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 3(3)", stance: for}
+
+- id: c-def-deployer
+  type: definitional
+  text: "A deployer is a person or body using an AI system under its authority, except where the AI system is used in the course of a personal non-professional activity."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 3(4)", stance: for}
+
+- id: c-def-gpai
+  type: definitional
+  text: "A general-purpose AI model is an AI model that displays significant generality, is capable of competently performing a wide range of distinct tasks and can be integrated into a variety of downstream systems or applications, except AI models used for research, development or prototyping before they are placed on the market."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 3(63)", stance: for}
+
+- id: c-def-systemic-risk
+  type: definitional
+  text: "A systemic risk is a risk specific to the high-impact capabilities of general-purpose AI models, having a significant impact on the Union market due to their reach or to actual or reasonably foreseeable negative effects on public health, safety, public security, fundamental rights or society as a whole, that can be propagated at scale across the value chain."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 3(65)", stance: for}
+
+- id: c-def-deep-fake
+  type: definitional
+  text: "A deep fake is AI-generated or manipulated image, audio or video content that resembles existing persons, objects, places, entities or events and would falsely appear to a person to be authentic or truthful."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 3(60)", stance: for}
+
+- id: c-prohibit-manipulation
+  type: normative-reported
+  text: "The Regulation prohibits AI systems that deploy subliminal techniques beyond a person's consciousness or purposefully manipulative or deceptive techniques, with the objective or the effect of materially distorting behaviour by appreciably impairing the ability to make an informed decision, thereby causing a decision that would not otherwise have been taken, and AI systems that exploit vulnerabilities due to age, disability or a specific social or economic situation, with the objective or the effect of materially distorting behaviour, in each case in a manner that causes or is reasonably likely to cause significant harm."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 5(1)", stance: for}
+
+- id: c-prohibit-scoring
+  type: normative-reported
+  text: "The Regulation prohibits social scoring that leads to detrimental or unfavourable treatment in social contexts unrelated to those in which the data was generated or collected, or treatment that is unjustified or disproportionate to the social behaviour or its gravity, and risk assessments that predict the risk of a natural person committing a criminal offence based solely on profiling or on assessing personality traits and characteristics, except AI systems used to support the human assessment of the involvement of a person in a criminal activity that is already based on objective and verifiable facts directly linked to a criminal activity."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 5(1)", stance: for}
+
+- id: c-prohibit-scraping-emotion
+  type: normative-reported
+  text: "The Regulation prohibits AI systems that create or expand facial recognition databases through the untargeted scraping of facial images from the internet or CCTV footage, and AI systems that infer emotions in the workplace and education institutions, except for medical or safety reasons."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 5(1)", stance: for}
+
+- id: c-prohibit-categorisation
+  type: normative-reported
+  text: "The Regulation prohibits biometric categorisation systems that categorise individually natural persons based on their biometric data to deduce or infer their race, political opinions, trade union membership, religious or philosophical beliefs, sex life or sexual orientation; the prohibition does not cover the labelling or filtering of lawfully acquired biometric datasets or the categorising of biometric data in the area of law enforcement."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 5(1)", stance: for}
+
+- id: c-prohibit-rbi
+  type: normative-reported
+  text: "The Regulation prohibits the use of real-time remote biometric identification systems in publicly accessible spaces for law enforcement, unless strictly necessary for listed objectives such as the targeted search for victims of abduction, the prevention of an imminent threat to life, or the localisation or identification of suspects of serious criminal offences."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 5(1)", stance: for}
+
+- id: c-prohibit-intimate
+  type: normative-reported
+  text: "As amended, the prohibited practices include, subject to the conditions and limits in paragraphs 1a and 1b, AI systems that generate or manipulate realistic images, videos, audio or similar material of an identifiable natural person's intimate parts or of an identifiable natural person engaged in sexually explicit activities without that person's freely-given, specific, informed, unambiguous and explicit consent, and AI systems that generate or manipulate material or performance within the meaning of Directive 2011/93/EU, except where a 'without right' defence applies under national law."
+  evidence:
+    - {work: "eu-2026-ai-act-consolidated-text-2026-07-27", role: official-text, locator: "Article 5(1)", stance: for}
+
+- id: c-commission-nine
+  type: normative-reported
+  text: "The Commission states that the AI Act prohibits nine practices, and that the prohibition of AI systems that generate non-consensual sexually explicit and intimate content or child sexual abuse material was introduced as part of the AI Omnibus."
+  evidence:
+    - {work: "ec-ai-act-policy-page", role: official-guidance, locator: "p. 1", stance: for}
+
+- id: c-high-risk-annex-i
+  type: normative-reported
+  text: "An AI system is high-risk where it is intended to be used as a safety component of a product, or is itself a product, covered by the Union harmonisation legislation listed in Annex I, and that product is required to undergo a third-party conformity assessment."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 6(1)", stance: for}
+
+- id: c-high-risk-annex-iii
+  type: normative-reported
+  text: "In addition, AI systems referred to in Annex III are considered to be high-risk, subject to the derogation in paragraph 3."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 6(2), Article 6(3)", stance: for}
+
+- id: c-annex-iii-areas
+  type: normative-reported
+  text: "The Commission lists high-risk use cases including critical infrastructures, education, employment, access to essential private and public services, remote biometric identification, law enforcement, migration, asylum and border control management, and the administration of justice and democratic processes."
+  evidence:
+    - {work: "ec-ai-act-policy-page", role: official-guidance, locator: "p. 1", stance: for}
+
+- id: c-high-risk-derogation
+  type: normative-reported
+  text: "An AI system referred to in Annex III is not considered high-risk where it does not pose a significant risk of harm to health, safety or fundamental rights, for example where it is intended to perform a narrow procedural task, but it is always high-risk where it performs profiling of natural persons."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 6(3)", stance: for}
+
+- id: c-risk-management
+  type: normative-reported
+  text: "A risk management system shall be established, implemented, documented and maintained in relation to high-risk AI systems."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 9(1)", stance: for}
+
+- id: c-human-oversight
+  type: normative-reported
+  text: "High-risk AI systems shall be designed and developed so that they can be effectively overseen by natural persons during the period in which they are in use."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 14(1)", stance: for}
+
+- id: c-requirements
+  type: normative-reported
+  text: "The Commission lists the obligations for high-risk AI systems as adequate risk assessment and mitigation, high-quality datasets, logging of activity, detailed documentation, clear and adequate information to the deployer, appropriate human oversight, and a high level of robustness, cybersecurity and accuracy."
+  evidence:
+    - {work: "ec-ai-act-policy-page", role: official-guidance, locator: "p. 1", stance: for}
+
+- id: c-transp-interact
+  type: normative-reported
+  text: "Providers shall ensure that AI systems intended to interact directly with natural persons are designed and developed so that the natural persons concerned are informed that they are interacting with an AI system, unless this is obvious from the point of view of a reasonably well-informed, observant and circumspect natural person; the obligation does not apply, subject to the safeguards and conditions set out in the paragraph, to AI systems authorised by law to detect, prevent, investigate or prosecute criminal offences."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 50(1)", stance: for}
+
+- id: c-transp-marking
+  type: normative-reported
+  text: "Providers of AI systems generating synthetic audio, image, video or text content shall ensure that the outputs are marked in a machine-readable format and detectable as artificially generated or manipulated, except where the systems perform an assistive function for standard editing or do not substantially alter the input data provided by the deployer or its semantics, or where authorised by law to detect, prevent, investigate or prosecute criminal offences."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 50(2)", stance: for}
+
+- id: c-transp-emotion
+  type: normative-reported
+  text: "Deployers of an emotion recognition system or a biometric categorisation system shall inform the natural persons exposed to it of the operation of the system; the obligation does not apply, subject to the safeguards and conditions set out in the paragraph, to such systems permitted by law to detect, prevent or investigate criminal offences."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 50(3)", stance: for}
+
+- id: c-transp-deep-fake
+  type: normative-reported
+  text: "Deployers of an AI system that generates or manipulates image, audio or video content constituting a deep fake shall disclose that the content has been artificially generated or manipulated, except where the use is authorised by law to detect, prevent, investigate or prosecute criminal offences; for an evidently artistic, creative, satirical, fictional or analogous work or programme, the obligation is limited to disclosing the existence of such content in a manner that does not hamper the display or enjoyment of the work."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 50(4)", stance: for}
+
+- id: c-transp-text
+  type: normative-reported
+  text: "Deployers of an AI system that generates text published to inform the public on matters of public interest shall disclose that the text is artificially generated, except where the use is authorised by law to detect, prevent, investigate or prosecute criminal offences or the text has undergone human review or editorial control and a person holds editorial responsibility for the publication."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 50(4)", stance: for}
+
+- id: c-gpai-obligations
+  type: normative-reported
+  text: "Providers of general-purpose AI models shall draw up technical documentation of the model for the AI Office and national competent authorities, make information available to providers of AI systems that integrate the model, put in place a policy to comply with Union copyright law, and make publicly available a summary of the content used for training; the first two obligations do not apply to certain providers of open-source models."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 53(1), Article 53(2)", stance: for}
+
+- id: c-gpai-open-source
+  type: normative-reported
+  text: "The technical documentation and downstream information obligations do not apply to providers of models released under a free and open-source licence that allows the access, usage, modification and distribution of the model, and whose parameters, including the weights, the information on the model architecture and the information on model usage, are made publicly available, except for general-purpose AI models with systemic risk."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 53(2)", stance: for}
+
+- id: c-systemic-classification
+  type: normative-reported
+  text: "A general-purpose AI model is classified as having systemic risk if it has high impact capabilities, or if a decision of the Commission finds that it has capabilities or an impact equivalent to those."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 51(1)", stance: for}
+
+- id: c-flop-threshold
+  type: normative-reported
+  text: "The AI Act lays down a threshold of 10^25 floating-point operations (FLOP) used for training a general-purpose AI model, in Article 51(1)(a) and (2), to capture the most advanced models."
+  evidence:
+    - {work: "ec-gpai-models-questions-and-answers", role: official-guidance, locator: "p. 1", stance: for}
+
+- id: c-flop-presumption
+  type: normative-reported
+  text: "A general-purpose AI model is presumed to have high impact capabilities pursuant to paragraph 1, point (a), when the cumulative amount of computation used for its training measured in floating point operations is greater than the amount that the paragraph states."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 51(2)", stance: for}
+
+- id: c-notify
+  type: normative-reported
+  text: "Where a general-purpose AI model meets the high impact capabilities condition, the provider shall notify the Commission without delay and in any event within two weeks."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 52(1)", stance: for}
+
+- id: c-systemic-obligations
+  type: normative-reported
+  text: "Providers of general-purpose AI models with systemic risk shall perform model evaluation with standardised protocols and tools, including adversarial testing, assess and mitigate possible systemic risks at Union level, report serious incidents to the AI Office, and ensure an adequate level of cybersecurity protection."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 55(1)", stance: for}
+
+- id: c-codes
+  type: normative-reported
+  text: "The AI Office shall encourage and facilitate the drawing up of codes of practice at Union level."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 56(1)", stance: for}
+
+- id: c-provider-duties
+  type: normative-reported
+  text: "Providers of high-risk AI systems shall ensure compliance with the requirements, have a quality management system, keep the documentation and, when under their control, the logs, ensure the conformity assessment procedure before the system is placed on the market, draw up an EU declaration of conformity, affix the CE marking, and comply with the registration obligations."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 16", stance: for}
+
+- id: c-registration
+  type: normative-reported
+  text: "Before placing on the market or putting into service a high-risk AI system listed in Annex III, other than those in point 2 of Annex III, the provider or, where applicable, the authorised representative shall register themselves and their system in the EU database."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 49(1)", stance: for}
+
+- id: c-post-market
+  type: normative-reported
+  text: "Providers shall establish and document a post-market monitoring system proportionate to the risks of the high-risk AI system."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 72(1)", stance: for}
+
+- id: c-incidents
+  type: normative-reported
+  text: "Providers of high-risk AI systems placed on the Union market shall report any serious incident to the market surveillance authorities of the Member States where that incident occurred."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 73(1)", stance: for}
+
+- id: c-authorised-rep
+  type: normative-reported
+  text: "Providers established in third countries shall, by written mandate, appoint an authorised representative established in the Union before making their high-risk AI systems available on the Union market."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 22(1)", stance: for}
+
+- id: c-importers
+  type: normative-reported
+  text: "Before placing a high-risk AI system on the market, importers shall verify that the conformity assessment procedure has been carried out, the technical documentation has been drawn up, the system bears the CE marking, and an authorised representative has been appointed."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 23(1)", stance: for}
+
+- id: c-distributors
+  type: normative-reported
+  text: "Before making a high-risk AI system available on the market, distributors shall verify that it bears the CE marking and is accompanied by the EU declaration of conformity and instructions for use."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 24(1)", stance: for}
+
+- id: c-deployers
+  type: normative-reported
+  text: "Deployers of high-risk AI systems shall take appropriate technical and organisational measures to use such systems in accordance with the instructions for use."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 26(1)", stance: for}
+
+- id: c-fria
+  type: normative-reported
+  text: "Before deploying a high-risk AI system referred to in Article 6(2), other than those intended for the area in point 2 of Annex III, deployers that are bodies governed by public law or private entities providing public services, and deployers of the high-risk systems in points 5(b) and (c) of Annex III, shall assess the impact on fundamental rights."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 27(1)", stance: for}
+
+- id: c-literacy-original
+  type: normative-reported
+  text: "As adopted, providers and deployers of AI systems shall take measures to ensure, to their best extent, a sufficient level of AI literacy of their staff."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 4", stance: for}
+
+- id: c-literacy-amended
+  type: normative-reported
+  text: "As amended, providers and deployers of AI systems shall take measures to support the development of AI literacy of their staff and other persons dealing with the operation and use of AI systems on their behalf."
+  evidence:
+    - {work: "eu-2026-ai-act-consolidated-text-2026-07-27", role: official-text, locator: "Article 4", stance: for}
+
+- id: c-bias-data
+  type: normative-reported
+  text: "Providers of high-risk AI systems may exceptionally process special categories of personal data, subject to appropriate safeguards, to the extent strictly necessary to ensure bias detection and correction."
+  evidence:
+    - {work: "eu-2026-ai-act-consolidated-text-2026-07-27", role: official-text, locator: "Article 4a", stance: for}
+
+- id: c-proposal
+  type: historical
+  text: "The European Commission published its proposal for the Artificial Intelligence Act, COM(2021) 206 final, procedure 2021/0106(COD), on 21 April 2021."
+  evidence:
+    - {work: "ec-2021-com-2021-206-ai-act-proposal", role: primary-document, locator: "the title page", stance: for}
+    - {work: "ep-oeil-2021-0106-cod-artificial-intelligence-act", role: primary-document, locator: "p. 1", stance: for}
+
+- id: c-ep-2023
+  type: historical
+  text: "On 14 June 2023 the European Parliament took a decision at first reading and referred the matter back to the committee responsible for interinstitutional negotiations."
+  evidence:
+    - {work: "ep-oeil-2021-0106-cod-artificial-intelligence-act", role: primary-document, locator: "p. 1", stance: for}
+
+- id: c-ep-2024
+  type: historical
+  text: "The Legislative Observatory records the decision by Parliament at 1st reading on the Artificial Intelligence Act on 13/03/2024 (T9-0138/2024)."
+  evidence:
+    - {work: "ep-oeil-2021-0106-cod-artificial-intelligence-act", role: primary-document, locator: "p. 1", stance: for}
+
+- id: c-signed
+  type: historical
+  text: "Regulation (EU) 2024/1689 is the regulation of the European Parliament and of the Council of 13 June 2024."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: primary-document, locator: "the title page", stance: for}
+
+- id: c-in-force-rule
+  type: normative-reported
+  text: "The Regulation enters into force on the twentieth day following that of its publication in the Official Journal of the European Union."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 113", stance: for}
+
+- id: c-apply-2025
+  type: normative-reported
+  text: "Chapters I and II of the Regulation apply from 2 February 2025."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 113", stance: for}
+
+- id: c-ec-2025-feb
+  type: normative-reported
+  text: "The Commission states that the prohibited AI practices and the AI literacy obligations entered into application from 2 February 2025."
+  evidence:
+    - {work: "ec-ai-act-policy-page", role: official-guidance, locator: "p. 1", stance: for}
+
+- id: c-apply-2025-gpai
+  type: normative-reported
+  text: "Chapter III Section 4, Chapter V, Chapter VII, Chapter XII and Article 78 apply from 2 August 2025, with the exception of Article 101."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 113", stance: for}
+
+- id: c-ec-2025-aug
+  type: normative-reported
+  text: "The Commission states that the governance rules and the obligations for general-purpose AI models became applicable on 2 August 2025."
+  evidence:
+    - {work: "ec-ai-act-policy-page", role: official-guidance, locator: "p. 1", stance: for}
+
+- id: c-cop-published
+  type: historical
+  text: "The Commission states that the General-Purpose AI Code of Practice was published on 10 July 2025."
+  evidence:
+    - {work: "ec-gpai-code-of-practice-page", role: statement, locator: "p. 1", stance: for}
+
+- id: c-omni-proposal
+  type: historical
+  text: "The European Commission proposed the Digital Omnibus on AI, COM(2025) 836 final, procedure 2025/0359(COD), on 19 November 2025."
+  evidence:
+    - {work: "ec-2025-com-2025-836-digital-omnibus-ai-proposal", role: primary-document, locator: "the title page", stance: for}
+    - {work: "ep-oeil-2025-0359-cod-digital-omnibus-ai", role: primary-document, locator: "p. 1", stance: for}
+
+- id: c-omni-adopted
+  type: historical
+  text: "In procedure 2025/0359(COD) the European Parliament took its decision at first reading on 16 June 2026, and the Council adopted the act on 29 June 2026."
+  evidence:
+    - {work: "ep-oeil-2025-0359-cod-digital-omnibus-ai", role: primary-document, locator: "p. 1", stance: for}
+
+- id: c-omni-published
+  type: historical
+  text: "Regulation (EU) 2026/1744 of the European Parliament and of the Council of 8 July 2026 is in the L series of the Official Journal of the European Union of 24.7.2026."
+  evidence:
+    - {work: "eu-2026-regulation-2026-1744-digital-omnibus-ai", role: primary-document, locator: "the title page", stance: for}
+
+- id: c-omni-in-force
+  type: historical
+  text: "The Commission states that the AI Omnibus entered into force on 27 July 2026."
+  evidence:
+    - {work: "ec-ai-act-policy-page", role: statement, locator: "p. 1", stance: for}
+
+- id: c-apply-general
+  type: normative-reported
+  text: "The Regulation shall apply from 2 August 2026, with exceptions for some chapters and articles."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 113", stance: for}
+
+- id: c-prohibit-intimate-date
+  type: normative-reported
+  text: "As amended, points (ba) and (bb) of the first subparagraph of Article 5(1), and Article 5(1a) and (1b), apply from 2 December 2026."
+  evidence:
+    - {work: "eu-2026-ai-act-consolidated-text-2026-07-27", role: official-text, locator: "Article 113", stance: for}
+
+- id: c-synthetic-legacy
+  type: normative-reported
+  text: "Providers of AI systems generating synthetic audio, image, video or text content that were placed on the market before 2 August 2026 shall take the necessary steps to comply with the marking obligation by 2 December 2026."
+  evidence:
+    - {work: "eu-2026-ai-act-consolidated-text-2026-07-27", role: official-text, locator: "Article 111(4)", stance: for}
+
+- id: c-high-risk-dates
+  type: normative-reported
+  text: "As amended, Chapter III Sections 1, 2 and 3, with the exception of Article 6(5), apply from 2 December 2027 as regards AI systems classified as high-risk pursuant to Annex III, and from 2 August 2028 as regards AI systems classified as high-risk pursuant to Annex I."
+  evidence:
+    - {work: "eu-2026-ai-act-consolidated-text-2026-07-27", role: official-text, locator: "Article 113", stance: for}
+
+- id: c-public-2030
+  type: normative-reported
+  text: "Providers and deployers of high-risk AI systems intended to be used by public authorities shall take the necessary steps to comply with the requirements and obligations of the Regulation by 2 August 2030."
+  evidence:
+    - {work: "eu-2026-ai-act-consolidated-text-2026-07-27", role: official-text, locator: "Article 111(2)", stance: for}
+
+- id: c-original-2027
+  type: historical
+  text: "The entry into application of the provisions of Regulation (EU) 2024/1689 was staggered, with all rules entering into application by 2 August 2027."
+  evidence:
+    - {work: "eu-2026-regulation-2026-1744-digital-omnibus-ai", role: primary-document, locator: "Recital 1", stance: for}
+
+- id: c-ai-office
+  type: normative-reported
+  text: "The Commission shall develop Union expertise and capabilities in the field of AI through the AI Office."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 64(1)", stance: for}
+
+- id: c-board
+  type: normative-reported
+  text: "The Board is composed of one representative per Member State; the European Data Protection Supervisor participates as observer, and the AI Office attends the Board's meetings without taking part in the votes."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 65(2)", stance: for}
+
+- id: c-panel
+  type: normative-reported
+  text: "The Commission shall, by means of an implementing act, make provisions on the establishment of a scientific panel of independent experts intended to support the enforcement activities under the Regulation."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 68(1)", stance: for}
+
+- id: c-national
+  type: normative-reported
+  text: "Each Member State shall establish or designate at least one notifying authority and at least one market surveillance authority as national competent authorities."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 70(1)", stance: for}
+
+- id: c-complaint
+  type: normative-reported
+  text: "Any natural or legal person having grounds to consider that there has been an infringement of the Regulation may submit complaints to the relevant market surveillance authority."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 85", stance: for}
+
+- id: c-ai-office-competence
+  type: normative-reported
+  text: "As amended, the AI Office is exclusively competent for the supervision and enforcement of the Regulation for AI systems based on general-purpose AI models where the model and the system are developed by the same provider, with exceptions, and for AI systems that constitute or are integrated into a very large online platform or very large online search engine."
+  evidence:
+    - {work: "eu-2026-ai-act-consolidated-text-2026-07-27", role: official-text, locator: "Article 75(1)", stance: for}
+
+- id: c-dsa
+  type: normative-reported
+  text: "The AI Office's exclusive competence covers AI systems that constitute or are integrated into a very large online platform or very large online search engine designated in accordance with Regulation (EU) 2022/2065."
+  evidence:
+    - {work: "eu-2026-ai-act-consolidated-text-2026-07-27", role: official-text, locator: "Article 75(1)", stance: for}
+
+- id: c-ec-enforcement
+  type: normative-reported
+  text: "The Commission states that from 2 August 2026 the AI Office and the authorities of the Member States are responsible for implementing, supervising and enforcing the AI Act, and that the AI Office can request technical documentation, evaluate models, require corrective measures and issue fines for general-purpose AI models."
+  evidence:
+    - {work: "ec-ai-act-policy-page", role: official-guidance, locator: "p. 1", stance: for}
+
+- id: c-penalties-national
+  type: normative-reported
+  text: "Member States shall lay down the rules on penalties and other enforcement measures applicable to infringements by operators, and the penalties shall be effective, proportionate and dissuasive."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 99(1)", stance: for}
+
+- id: c-fines-prohibited
+  type: normative-reported
+  text: "Non-compliance with the prohibition of the AI practices referred to in Article 5 is subject to administrative fines of up to EUR 35 000 000 or, if the offender is an undertaking, up to 7 % of its total worldwide annual turnover for the preceding financial year, whichever is higher."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 99(3)", stance: for}
+
+- id: c-fines-operators
+  type: normative-reported
+  text: "Non-compliance with the listed provisions related to operators or notified bodies, namely the obligations of providers, authorised representatives, importers, distributors and deployers under Articles 16, 22, 23, 24 and 26, the requirements and obligations of notified bodies under Article 31, Article 33(1), (3) and (4) or Article 34, and the transparency obligations under Article 50, is subject to administrative fines of up to EUR 15 000 000 or, if the offender is an undertaking, up to 3 % of its total worldwide annual turnover for the preceding financial year, whichever is higher, with lower limits for SMEs set elsewhere in the Article."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 99(4)", stance: for}
+
+- id: c-fines-info
+  type: normative-reported
+  text: "The supply of incorrect, incomplete or misleading information to notified bodies or national competent authorities in reply to a request is subject to administrative fines of up to EUR 7 500 000 or, if the offender is an undertaking, up to 1 % of its total worldwide annual turnover for the preceding financial year, whichever is higher, with lower limits for SMEs set elsewhere in the Article."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 99(5)", stance: for}
+
+- id: c-fines-sme
+  type: normative-reported
+  text: "For SMEs, including start-ups, each fine is up to the percentage or amount referred to in paragraphs 3, 4 and 5, whichever is lower."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 99(6)", stance: for}
+
+- id: c-fines-smc
+  type: normative-reported
+  text: "As amended, for SMCs each fine referred to in paragraphs 4 and 5 is up to the percentage or amount, whichever is lower."
+  evidence:
+    - {work: "eu-2026-ai-act-consolidated-text-2026-07-27", role: official-text, locator: "Article 99(6a)", stance: for}
+
+- id: c-fines-gpai
+  type: normative-reported
+  text: "The Commission may impose on providers of general-purpose AI models fines not exceeding 3 % of their annual total worldwide turnover in the preceding financial year or EUR 15 000 000, whichever is higher, when it finds that the provider intentionally or negligently infringed the relevant provisions, failed to comply with a request for information or a requested measure, or failed to give the Commission access to the model for an evaluation."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 101(1)", stance: for}
+
+- id: c-omni-proposal-reasons
+  type: attributive
+  text: "The Commission's proposal states that consultations revealed implementation challenges, including delays in designating national competent authorities and conformity assessment bodies and a lack of harmonised standards, guidance and compliance tools for the high-risk requirements."
+  evidence:
+    - {work: "ec-2025-com-2025-836-digital-omnibus-ai-proposal", role: primary-document, locator: "p. 2", stance: for}
+
+- id: c-omni-proposal-mechanism
+  type: attributive
+  text: "The Commission proposed that Chapter III Sections 1, 2 and 3 apply 6 months (Annex III) or 12 months (Annex I) after a Commission decision confirming that adequate measures in support of compliance are available, and in any case on 2 December 2027 and 2 August 2028 respectively."
+  evidence:
+    - {work: "ec-2025-com-2025-836-digital-omnibus-ai-proposal", role: primary-document, locator: "p. 30", stance: for}
+
+- id: c-omni-proposal-synthetic
+  type: attributive
+  text: "The Commission proposed that providers of AI systems generating synthetic content placed on the market before 2 August 2026 comply with the marking obligation by 2 February 2027."
+  evidence:
+    - {work: "ec-2025-com-2025-836-digital-omnibus-ai-proposal", role: primary-document, locator: "p. 30", stance: for}
+
+- id: c-high-risk-fixed
+  type: normative-reported
+  text: "As amended, Chapter III Sections 1, 2 and 3, with the exception of Article 6(5), apply from fixed dates: 2 December 2027 for AI systems classified as high-risk pursuant to Annex III and 2 August 2028 for those pursuant to Annex I."
+  evidence:
+    - {work: "eu-2026-ai-act-consolidated-text-2026-07-27", role: official-text, locator: "Article 113", stance: for}
+
+- id: c-synthetic-adopted
+  type: normative-reported
+  text: "As amended, providers of AI systems generating synthetic content that were placed on the market before 2 August 2026 shall comply with the marking obligation by 2 December 2026."
+  evidence:
+    - {work: "eu-2026-ai-act-consolidated-text-2026-07-27", role: official-text, locator: "Article 111(4)", stance: for}
+
+- id: c-omni-reasons
+  type: attributive
+  text: "Regulation (EU) 2026/1744 states that the delayed preparation of standards and the delayed establishment of the governance and conformity assessment frameworks at national level resulted in a compliance burden heavier than expected."
+  evidence:
+    - {work: "eu-2026-regulation-2026-1744-digital-omnibus-ai", role: official-text, locator: "Recital 2", stance: for}
+
+- id: c-ec-omnibus-changes
+  type: normative-reported
+  text: "The Commission lists among the amendments a prohibition of AI systems that generate non-consensual sexually explicit and intimate content or child sexual abuse material, reinforced AI Office powers over AI systems built on general-purpose AI models, simplifications extended to small mid-cap companies, wider access to regulatory sandboxes including an EU-level sandbox, and a clarified interplay with EU product safety laws such as the Machinery Regulation."
+  evidence:
+    - {work: "ec-ai-act-policy-page", role: official-guidance, locator: "p. 1", stance: for}
+
+- id: c-sandbox-original
+  type: normative-reported
+  text: "As adopted, Member States shall ensure that their competent authorities establish at least one AI regulatory sandbox at national level, operational by 2 August 2026."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 57(1)", stance: for}
+
+- id: c-sandbox-amended
+  type: normative-reported
+  text: "As amended, the national AI regulatory sandbox shall be operational by 2 August 2027."
+  evidence:
+    - {work: "eu-2026-ai-act-consolidated-text-2026-07-27", role: official-text, locator: "Article 57(1)", stance: for}
+
+- id: c-guidelines-prohibited
+  type: normative-reported
+  text: "The Commission published guidelines on prohibited AI practices and guidelines on the AI system definition of the AI Act."
+  evidence:
+    - {work: "ec-ai-act-policy-page", role: official-guidance, locator: "p. 1", stance: for}
+
+- id: c-gpai-guidance
+  type: normative-reported
+  text: "In July 2025 the Commission published guidelines on the scope of the obligations for providers of general-purpose AI models, the General-Purpose AI Code of Practice, and a template for the public summary of training content."
+  evidence:
+    - {work: "ec-ai-act-policy-page", role: official-guidance, locator: "p. 1", stance: for}
+
+- id: c-cop-voluntary
+  type: normative-reported
+  text: "The General-Purpose AI Code of Practice is a voluntary tool prepared by independent experts in a multi-stakeholder process to help providers comply with the AI Act's obligations for general-purpose AI models."
+  evidence:
+    - {work: "ec-gpai-code-of-practice-page", role: official-guidance, locator: "p. 1", stance: for}
+
+- id: c-cop-chapters
+  type: normative-reported
+  text: "The chapters of the Code on Transparency and Copyright offer all providers of general-purpose AI models a way to demonstrate compliance with Article 53, and the Safety and Security chapter is relevant to providers of models with systemic risk under Article 55."
+  evidence:
+    - {work: "ec-gpai-code-of-practice-page", role: official-guidance, locator: "p. 1", stance: for}
+
+- id: c-cop-adequate
+  type: normative-reported
+  text: "The Commission and the AI Board have confirmed that the Code is an adequate voluntary tool for providers of general-purpose AI models to demonstrate compliance with the AI Act."
+  evidence:
+    - {work: "ec-gpai-code-of-practice-page", role: official-guidance, locator: "p. 1", stance: for}
+
+- id: c-transparency-guidance
+  type: normative-reported
+  text: "For the transparency rules the Commission has developed a Code of Practice on Marking and Labelling of AI-generated Content and guidelines on transparency obligations for providers and deployers of certain AI systems."
+  evidence:
+    - {work: "ec-ai-act-policy-page", role: official-guidance, locator: "p. 1", stance: for}
+
+- id: c-gdpr
+  type: normative-reported
+  text: "Union law on the protection of personal data applies to personal data processed in connection with the rights and obligations of the Regulation, and the Regulation does not affect Regulation (EU) 2016/679, without prejudice to Article 10(5) and Article 59 of the Regulation."
+  evidence:
+    - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 2(7)", stance: for}
+
+- id: c-annex-i-examples
+  type: normative-reported
+  text: "The Commission gives lifts and toys as examples of products into which high-risk AI systems can be integrated, for which the rules apply from 2 August 2028."
+  evidence:
+    - {work: "ec-ai-act-policy-page", role: official-guidance, locator: "p. 1", stance: for}
+
+- id: c-consolidated-no-effect
+  type: historical
+  text: "The consolidated text of Regulation (EU) 2024/1689 is meant purely as a documentation tool and has no legal effect; the authentic versions are those published in the Official Journal."
+  evidence:
+    - {work: "eu-2026-ai-act-consolidated-text-2026-07-27", role: primary-document, locator: "the title page", stance: for}
