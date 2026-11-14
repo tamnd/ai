@@ -91,7 +91,7 @@ Unlike AlphaGo Zero, it keeps the handcrafted features and the rollouts of Alpha
 
 In April 2017 DeepMind announced the Future of Go Summit in Wuzhen, China, for 23 to 27 May, with a match of three games between AlphaGo and Ke Jie. {#c-summit-plan}
 In a post at the summit, DeepMind wrote that the Future of Go Summit was its final match event with AlphaGo. {#c-final-event}
-DeepMind also published a set of 50 games that AlphaGo played against itself at full length time controls. {#c-50-games}
+DeepMind also began to release a set of 50 games that AlphaGo played against itself at full length time controls, ten a day. {#c-50-games}
 
 ## Results and milestones
 
@@ -106,7 +106,8 @@ Over 5 to 9 October 2015 he played a formal match of five games against distribu
 Five informal games were also played, and AlphaGo won them 3 to 2. {#c-informal}
 Silver et al. (2016) report that this was the first time a computer Go program had defeated a human professional player without handicap in the full game of Go. {#c-first}
 
-**Lee Sedol, March 2016.** AlphaGo Lee defeated Lee Sedol, the winner of 18 international titles, by 4 games to 1 in March 2016. {#c-lee}
+**Lee Sedol, March 2016.** AlphaGo Lee defeated Lee Sedol by 4 games to 1 in March 2016. {#c-lee}
+Silver et al. (2017) describe Lee Sedol as the winner of 18 international titles. {#c-lee-titles}
 DeepMind states that the 4 to 1 win took place in Seoul, South Korea, and was watched by over 200 million people. {#c-lee-seoul}
 
 **Online games, January 2017.** AlphaGo Master defeated top human professional players 60 to 0 in online games in January 2017. {#c-master-60}

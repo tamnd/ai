@@ -115,7 +115,6 @@
   type: definitional
   text: "The value network of AlphaGo has an architecture similar to the policy network but outputs a single prediction: the winner of games played by the RL policy network against itself from a position."
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "p. 1", stance: for}
     - {work: "silver-2016-mastering-go", role: original, locator: "p. 3", stance: for}
 
 - id: c-value-data
@@ -244,7 +243,7 @@
 
 - id: c-50-games
   type: historical
-  text: "DeepMind also published a set of 50 games that AlphaGo played against itself at full length time controls."
+  text: "DeepMind also began to release a set of 50 games that AlphaGo played against itself at full length time controls, ten a day."
   evidence:
     - {work: "hassabis-2017-alphagos-next-move", role: statement, locator: "p. 1", stance: for}
 
@@ -321,11 +320,15 @@
 
 - id: c-lee
   type: historical
-  text: "AlphaGo Lee defeated Lee Sedol, the winner of 18 international titles, by 4 games to 1 in March 2016."
+  text: "AlphaGo Lee defeated Lee Sedol by 4 games to 1 in March 2016."
+  evidence:
+    - {work: "silver-2017-mastering-go-without-human-knowledge", role: original, locator: "p. 21", stance: for}
+
+- id: c-lee-titles
+  type: attributive
+  text: "Silver et al. describe Lee Sedol as the winner of 18 international titles."
   evidence:
     - {work: "silver-2017-mastering-go-without-human-knowledge", role: original, locator: "p. 2", stance: for}
-    - {work: "silver-2017-mastering-go-without-human-knowledge", role: original, locator: "p. 21", stance: for}
-    - {work: "deepmind-alphago-page", role: statement, locator: "p. 1", stance: for}
 
 - id: c-lee-seoul
   type: attributive

@@ -1,0 +1,988 @@
+run: v-20261114-161408-68466
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-paper
+  work: silver-2016-mastering-go
+  locator: p. 1
+  key: 317b744a4a83dd14e50ea55ad3193661
+  spans:
+  - start: 0
+    end: 6455
+  verdict: supported
+  quote: David Silver1*, Aja Huang1*
+  note: The author list, affiliations, and reference to “our program AlphaGo” support the claim.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-go-hard
+  work: silver-2016-mastering-go
+  locator: p. 1
+  key: 0788c11163bf9a728a577ce8fc4e8e6d
+  spans:
+  - start: 0
+    end: 6455
+  verdict: supported
+  quote: The game of Go has long been viewed as the most challenging of classic games for artificial intelligence
+  note: The passage gives the stated reasons immediately afterward.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-breadth-depth
+  work: silver-2016-mastering-go
+  locator: p. 1
+  key: 93bb9367c4b3fa6bbee6f587756b0b11
+  spans:
+  - start: 0
+    end: 6455
+  verdict: supported
+  quote: chess (b ≈ 35, d ≈ 80)1 and especially Go (b ≈ 250, d ≈ 150)1
+  note: The passage defines b as breadth and d as depth and gives those approximations.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-versions
+  work: silver-2017-mastering-go-without-human-knowledge
+  locator: p. 2
+  key: 125e9ef1cfa6b1cec2f5a3e380b0e20c
+  spans:
+  - start: 2334
+    end: 4628
+  verdict: supported
+  quote: which we refer to as AlphaGo Fan
+  note: The passage also names the subsequent version that defeated Lee Sedol AlphaGo Lee.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-master-name
+  work: silver-2017-mastering-go-without-human-knowledge
+  locator: p. 12
+  key: a7e64d870da3e864ab9cc49fd64dd549
+  spans:
+  - start: 20386
+    end: 22400
+  verdict: supported
+  quote: AlphaGo Master – a program
+  note: The passage identifies Master and says it defeated the strongest human professional players 60–0 online in January
+    2017.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-ke-jie-master
+  work: silver-2017-alphago-zero-starting-from-scratch
+  locator: p. 1
+  key: 14cc3d47bd88551a3eb3803de9d268f3
+  spans:
+  - start: 0
+    end: 5809
+  verdict: supported
+  quote: the version of AlphaGo known as “Master”, which has defeated the world's best players and world number one Ke Jie
+  note: The passage states the claim directly.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-infeasible
+  work: silver-2016-mastering-go
+  locator: p. 1
+  key: 5c8e235a425ab76c1f5d79c4d31c33e2
+  spans:
+  - start: 0
+    end: 6455
+  verdict: supported
+  quote: In large games, such as chess (b ≈ 35, d ≈ 80)1 and especially Go (b ≈ 250, d ≈ 150)1, exhaustive search is infeasible
+  note: The passage states the claim directly.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-two-principles
+  work: silver-2016-mastering-go
+  locator: p. 1
+  key: fd1630324aae82b4135df3d8ea8881e3
+  spans:
+  - start: 0
+    end: 6455
+  verdict: supported
+  quote: the depth of the search may be reduced by position evaluation
+  note: The passage also says sampling actions from a policy may reduce breadth.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-board-image
+  work: silver-2016-mastering-go
+  locator: p. 1
+  key: 2dd51295c6475247279cde35281fe373
+  spans:
+  - start: 0
+    end: 6455
+  verdict: supported
+  quote: We pass in the board position as a 19 × 19 image and use convolutional layers to construct a representation of the
+    position.
+  note: The passage states the claim directly.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-sl-train
+  work: silver-2016-mastering-go
+  locator: p. 2
+  key: f331e20395dab83bd471ae3b88ee13db
+  spans:
+  - start: 6455
+    end: 12224
+  verdict: supported
+  quote: We trained a 13-layer policy network, which we call the SL policy network, from 30 million positions from the KGS
+    Go Server.
+  note: The surrounding text says it was trained to predict expert moves.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-sl-policy
+  work: silver-2016-mastering-go
+  locator: p. 2
+  key: 3eb4a444679ec681a481b51a697f4930
+  spans:
+  - start: 6455
+    end: 12224
+  verdict: supported
+  quote: The network predicted expert moves on a held out test set with an accuracy of 57.0% using all input features
+  note: The result matches the claimed network, setting, and accuracy.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-rollout
+  work: silver-2016-mastering-go
+  locator: p. 2
+  key: de051eb9cfe22ebd37c40c9632e6345f
+  spans:
+  - start: 6455
+    end: 12224
+  verdict: supported
+  quote: a faster but less accurate rollout policy pπ(a|s), using a linear softmax of small pattern features
+  note: The passage states the claimed policy design.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-rollout-speed
+  work: silver-2016-mastering-go
+  locator: p. 2
+  key: 56b2912da12be93a52165c26442b5ff3
+  spans:
+  - start: 6455
+    end: 12224
+  verdict: supported
+  quote: this achieved an accuracy of 24.2%, using just 2 μs to select an action, rather than 3 ms for the policy network
+  note: The passage gives all three claimed measurements.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-rl-policy
+  work: silver-2016-mastering-go
+  locator: p. 2
+  key: db4b031ce2ce2182e3729c480d7bd064
+  spans:
+  - start: 6455
+    end: 12224
+  verdict: supported
+  quote: The RL policy network pρ is identical in structure to the SL policy network
+  note: The passage also says its weights start from the SL weights and policy gradient improves it.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-rl-opponents
+  work: silver-2016-mastering-go
+  locator: p. 2
+  key: 5d820b56c9ed25252d95287485b5a6b6
+  spans:
+  - start: 6455
+    end: 12224
+  verdict: supported
+  quote: We play games between the current policy network pρ and a randomly selected previous iteration of the policy network.
+  note: The passage gives terminal outcomes of +1 for winning and −1 for losing.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-rl-results
+  work: silver-2016-mastering-go
+  locator: p. 2
+  key: 5c2c049acfb980d826bd9f98865ed4a3
+  spans:
+  - start: 6455
+    end: 12224
+  verdict: supported
+  quote: the RL policy network won more than 80% of games against the SL policy network
+  note: The passage describes direct move sampling and also reports an 85% win rate against Pachi without search.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-value
+  work: silver-2016-mastering-go
+  locator: p. 1
+  key: 8059ec5df3efca539c6284fbbe0e16a0
+  spans:
+  - start: 0
+    end: 6455
+  verdict: unsupported
+  quote: we train a value network vθ that predicts the winner of games played by the RL policy network against itself
+  note: Page 1 supports the prediction target but does not specify a similar architecture or single output; the cited page
+    3 passage does.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-value
+  work: silver-2016-mastering-go
+  locator: p. 3
+  key: abb3003dd61ac0373d81288b71463684
+  spans:
+  - start: 12224
+    end: 17812
+  verdict: supported
+  quote: This neural network has a similar architecture to the policy network, but outputs a single prediction instead of
+    a probability distribution.
+  note: The passage also identifies the target as outcomes from self-play by the RL policy network.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-value-data
+  work: silver-2016-mastering-go
+  locator: p. 3
+  key: c0f500c41716bc14ebce6eabefb851a1
+  spans:
+  - start: 12224
+    end: 17812
+  verdict: supported
+  quote: the value network memorized the game outcomes rather than generalizing to new positions
+  note: The passage then describes 30 million distinct self-play positions, each from a separate game.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-mcts
+  work: silver-2016-mastering-go
+  locator: p. 3
+  key: 93818ac21b7dfddeac7a872ecab0ce4e
+  spans:
+  - start: 12224
+    end: 17812
+  verdict: supported
+  quote: AlphaGo combines the policy and value networks in an MCTS algorithm
+  note: The passage states the claim directly.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-selection
+  work: silver-2016-mastering-go
+  locator: p. 3
+  key: 6f4ef1a521049cac922d706d4aab1ee6
+  spans:
+  - start: 12224
+    end: 17812
+  verdict: supported
+  quote: that is proportional to the prior probability but decays with repeated visits to encourage exploration
+  note: The passage says each step maximizes action value plus that bonus.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-priors
+  work: silver-2016-mastering-go
+  locator: p. 3
+  key: e9a0012f68c3342453e690b34f19319f
+  spans:
+  - start: 12224
+    end: 17812
+  verdict: supported
+  quote: The leaf position sL is processed just once by the SL policy network pσ.
+  note: The next sentence says its output probabilities are stored as priors.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-leaf-eval
+  work: silver-2016-mastering-go
+  locator: p. 3
+  key: 94c18b54b71da64ff09cb41eda57418a
+  spans:
+  - start: 12224
+    end: 17812
+  verdict: supported
+  quote: these evaluations are combined, using a mixing parameter λ, into a leaf evaluation V(sL)
+  note: The preceding sentence identifies value-network and rollout outcomes as the two evaluations.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-most-visited
+  work: silver-2016-mastering-go
+  locator: p. 3
+  key: 10525ee60d9b81037bbe01ae55c66528
+  spans:
+  - start: 12224
+    end: 17812
+  verdict: supported
+  quote: Once the search is complete, the algorithm chooses the most visited move from the root position.
+  note: The passage states the claim directly.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-sl-better
+  work: silver-2016-mastering-go
+  locator: p. 3
+  key: 73ddccaa4a69fb675fd80046f871ffb1
+  spans:
+  - start: 12224
+    end: 17812
+  verdict: supported
+  quote: the SL policy network pσ performed better in AlphaGo than the stronger RL policy network pρ
+  note: The passage presents the diverse beam of human moves as a presumed explanation.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-rl-value-better
+  work: silver-2016-mastering-go
+  locator: pp. 3 to 4
+  key: 2e4a5e79836e0f97d337607f64c02f7b
+  spans:
+  - start: 12224
+    end: 21896
+  verdict: supported
+  quote: derived from the stronger RL policy network performed better in AlphaGo than a value function
+  note: The sentence continues by identifying the comparison as a value function derived from the SL policy network.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-async
+  work: silver-2016-mastering-go
+  locator: p. 4
+  key: 0c9a19b60f8c438ce01e6a147d05a552
+  spans:
+  - start: 17812
+    end: 21896
+  verdict: supported
+  quote: an asynchronous multi-threaded search that executes simulations on CPUs, and computes policy and value networks in
+    parallel on GPUs
+  note: The passage states the claim directly.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-hardware
+  work: silver-2016-mastering-go
+  locator: p. 4
+  key: 90ee7026bf85c6f948fd113d5ae88e47
+  spans:
+  - start: 17812
+    end: 21896
+  verdict: supported
+  quote: The final version of AlphaGo used 40 search threads, 48 CPUs, and 8 GPUs.
+  note: The following sentence gives 40 search threads, 1,202 CPUs, and 176 GPUs for the distributed version.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-fan-hui-dates
+  work: silver-2016-mastering-go
+  locator: p. 6
+  key: da94e560d9ba6887f92cdfeb9c048e19
+  spans:
+  - start: 29207
+    end: 37574
+  verdict: supported
+  quote: Received 11 November 2015; accepted 5 January 2016.
+  note: The passage gives both dates directly.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-lee-unpublished
+  work: silver-2017-mastering-go-without-human-knowledge
+  locator: p. 21
+  key: 9ebf37723aed1da09eef676eac85eea9
+  spans:
+  - start: 34883
+    end: 37171
+  verdict: supported
+  quote: It was previously unpublished but is similar in most regards to AlphaGo Fan
+  note: The passage identifies AlphaGo Lee as Lee Sedol’s March 2016 opponent and lists key differences.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-lee-value
+  work: silver-2017-mastering-go-without-human-knowledge
+  locator: p. 21
+  key: 2494d96473c40a1513e1e93d20cc4edc
+  spans:
+  - start: 34883
+    end: 37171
+  verdict: supported
+  quote: the value network was trained from the outcomes of fast games of self-play by AlphaGo, rather than games of self-play
+    by the policy network
+  note: The passage says this procedure was iterated several times.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-lee-larger
+  work: silver-2017-mastering-go-without-human-knowledge
+  locator: p. 21
+  key: 875a545bc468902196d173ba7b49b5e1
+  spans:
+  - start: 34883
+    end: 37171
+  verdict: supported
+  quote: using 12 convolutional layers of 256 planes respectively – and were trained for more iterations
+  note: The passage says both networks were larger than those described in the original paper.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-lee-tpu
+  work: silver-2017-mastering-go-without-human-knowledge
+  locator: p. 21
+  key: c59d583fe15c2f2f3fb24ceb44013073
+  spans:
+  - start: 34883
+    end: 37171
+  verdict: supported
+  quote: This player was also distributed over many machines using 48 TPUs, rather than GPUs
+  note: “This player” refers to AlphaGo Lee.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-master-arch
+  work: silver-2017-mastering-go-without-human-knowledge
+  locator: p. 22
+  key: 9c60aa1d19f2ccae9087bf9e3b7e96b8
+  spans:
+  - start: 37171
+    end: 39303
+  verdict: supported
+  quote: uses the same neural network architecture, reinforcement learning algorithm, and MCTS algorithm as described in this
+    paper
+  note: The passage identifies AlphaGo Master as the subject and AlphaGo Zero as the program described in the paper.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-master-human
+  work: silver-2017-mastering-go-without-human-knowledge
+  locator: p. 22
+  key: c4de52ac994260e59e5a0b8476762a15
+  spans:
+  - start: 37171
+    end: 39303
+  verdict: supported
+  quote: it uses the same handcrafted features and rollouts as AlphaGo Lee 12 and training was initialised by supervised learning
+    from human data
+  note: The passage states the claim directly.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-summit-plan
+  work: hassabis-2017-exploring-mysteries-of-go
+  locator: p. 1
+  key: e505e4bd17d3fa3b207a5230d7507e56
+  spans:
+  - start: 0
+    end: 4458
+  verdict: supported
+  quote: From May 23-27, we’ll collaborate
+  note: The April 10 post locates the summit in Wuzhen and announces a three-game Ke Jie versus AlphaGo match.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-final-event
+  work: hassabis-2017-alphagos-next-move
+  locator: p. 1
+  key: 9dc95ee0eaa842c9ef2798d51c009c37
+  spans:
+  - start: 0
+    end: 5734
+  verdict: supported
+  quote: the Future of Go Summit is our final match event with AlphaGo
+  note: The passage states the attribution directly.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-50-games
+  work: hassabis-2017-alphagos-next-move
+  locator: p. 1
+  key: 328c051febcd18ee78614c95b77955f1
+  spans:
+  - start: 0
+    end: 5734
+  verdict: unsupported
+  quote: The first ten games are now available here, and we’ll publish another ten each day until all 50 have been released.
+  note: The passage says the 50-game set was being released, with only the first ten available then.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-tournament
+  work: silver-2016-mastering-go
+  locator: p. 5
+  key: 425d048497fb75db7f166877d2500b00
+  spans:
+  - start: 21896
+    end: 29207
+  verdict: supported
+  quote: winning 494 out of 495 games (99.8%) against other Go programs
+  note: The passage identifies single-machine AlphaGo and gives five seconds of computation per move.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-distributed-wins
+  work: silver-2016-mastering-go
+  locator: p. 5
+  key: 0de7008b21698b4a6e7c03f2049f3841
+  spans:
+  - start: 21896
+    end: 29207
+  verdict: supported
+  quote: winning 77% of games against single-machine AlphaGo and 100% of its games against other programs
+  note: The passage attributes both results to distributed AlphaGo in the tournament.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-elo-2016
+  work: silver-2016-mastering-go
+  locator: p. 15
+  key: d66087d358da12dc6eb8ec902086f4ea
+  spans:
+  - start: 68937
+    end: 69958
+  verdict: supported
+  quote: Distributed AlphaGo AlphaGo
+  note: The table gives the claimed CPU, GPU, and Elo values for those two rows.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-elo-anchor
+  work: silver-2016-mastering-go
+  locator: pp. 8 to 9
+  key: dd3246021fd536cf429b92456374fc0f
+  spans:
+  - start: 48320
+    end: 65036
+  verdict: supported
+  quote: The scale was anchored to the BayesElo rating of professional
+  note: The sentence continues across the page break with Fan Hui and his rating of 2,908 at submission.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-elo-gap
+  work: silver-2016-mastering-go
+  locator: p. 4
+  key: db4e4430a2342c241a78fb70f3ea4b49
+  spans:
+  - start: 17812
+    end: 21896
+  verdict: supported
+  quote: a 230 point gap corresponds to a 79% probability of winning
+  note: The figure caption states the claimed Elo interpretation.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-fan-hui
+  work: silver-2016-mastering-go
+  locator: p. 5
+  key: 2b9e92eafc2b7a2ffae4403b7ce5e97f
+  spans:
+  - start: 21896
+    end: 29207
+  verdict: supported
+  quote: Fan Hui, a professional 2 dan, and the winner of the 2013, 2014 and 2015 European Go championships
+  note: The passage states the claim directly.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-fan-hui-match
+  work: silver-2016-mastering-go
+  locator: p. 5
+  key: 71bd061311c35eb937c787cf9a3e6a4e
+  spans:
+  - start: 21896
+    end: 29207
+  verdict: supported
+  quote: Over 5–9 October 2015 AlphaGo and Fan Hui competed in a formal five-game match. AlphaGo won the match 5 games to
+    0
+  note: The preceding sentence identifies the evaluated program as distributed AlphaGo.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-informal
+  work: silver-2016-mastering-go
+  locator: p. 9
+  key: 1b67ab2915ec5f04490f875ab17ac878
+  spans:
+  - start: 59544
+    end: 65036
+  verdict: supported
+  quote: Five formal games and five informal games were played
+  note: The passage then gives AlphaGo’s results as 5–0 and 3–2 respectively.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-first
+  work: silver-2016-mastering-go
+  locator: p. 5
+  key: 05673a57a9d60018aee3f7eaadac2ebe
+  spans:
+  - start: 21896
+    end: 29207
+  verdict: supported
+  quote: the first time that a computer Go program has defeated a human professional player, without handicap, in the full
+    game of Go
+  note: The passage states the attributed claim directly.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-lee
+  work: deepmind-alphago-page
+  locator: p. 1
+  key: 5389b28b079601b23ac8934f32ef5ecf
+  spans:
+  - start: 0
+    end: 4191
+  verdict: unsupported
+  quote: AlphaGo then competed against legendary Go player Lee Sedol — winner of 18 world titles
+  note: The passage gives the 4–1 March 2016 result but does not name that version AlphaGo Lee; the cited 2017 Silver manuscript
+    does.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-lee-seoul
+  work: deepmind-alphago-page
+  locator: p. 1
+  key: cf6eab7024ffc7a76202aed0e540e487
+  spans:
+  - start: 0
+    end: 4191
+  verdict: supported
+  quote: AlphaGo's 4-1 victory in Seoul, South Korea, in March 2016 was watched by over 200 million people worldwide.
+  note: The passage states the attributed claim directly.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-master-60
+  work: silver-2017-mastering-go-without-human-knowledge
+  locator: p. 12
+  key: e48ca2e309b88490afe0c1a54ae613f2
+  spans:
+  - start: 20386
+    end: 22400
+  verdict: supported
+  quote: which defeated the strongest human professional players 60–0 in online games 34 in January 2017
+  note: The passage identifies AlphaGo Master as the program.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-magister
+  work: hassabis-2017-alphagos-next-move
+  locator: p. 1
+  key: 36e61baba60e88383a9061329a8d338b
+  spans:
+  - start: 0
+    end: 5734
+  verdict: supported
+  quote: the unofficial online games it played under the moniker Magister (Master)
+  note: The passage states the attributed description directly.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-ke-jie
+  work: xinhua-2017-alphago-sweeps-ke-jie
+  locator: p. 1
+  key: b63ae24697a8f78bf09bdc7455964c72
+  spans:
+  - start: 0
+    end: 3846
+  verdict: supported
+  quote: defeated world's top-ranked player Ke Jie for the third consecutive game between them in Wuzhen
+  note: The report is dated 27 May 2017 and its headline gives the 3–0 result.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-agz-tournament
+  work: silver-2017-mastering-go-without-human-knowledge
+  locator: p. 12
+  key: 37f0b0c3c5e1eebaf41c1aa0b1dca777
+  spans:
+  - start: 20386
+    end: 22400
+  verdict: supported
+  quote: In our evaluation, all programs were allowed 5 seconds of thinking time per move
+  note: The passage describes an internal tournament among the named AlphaGo versions.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-agz-hardware
+  work: silver-2017-mastering-go-without-human-knowledge
+  locator: p. 12
+  key: 30607f41b5ed52edfd543a7ee37f7332
+  spans:
+  - start: 20386
+    end: 22400
+  verdict: supported
+  quote: AlphaGo Zero and AlphaGo Master each played on a single machine with 4 TPUs; AlphaGo Fan and AlphaGo Lee were distributed
+    over 176 GPUs and 48 TPUs respectively.
+  note: The passage states all claimed hardware assignments.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-agz-elo
+  work: silver-2017-mastering-go-without-human-knowledge
+  locator: p. 12
+  key: 08c771996d73cb41af670989d7ad3947
+  spans:
+  - start: 20386
+    end: 22400
+  verdict: supported
+  quote: AlphaGo Zero achieved a rating of 5,185, compared to 4,858 for AlphaGo Master, 3,739 for AlphaGo Lee and 3,144 for
+    AlphaGo Fan.
+  note: The passage gives the four ratings in the stated tournament setting.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-self-play-bias
+  work: silver-2017-mastering-go-without-human-knowledge
+  locator: p. 30
+  key: 58fdd318c01686cb280e10a840f13144
+  spans:
+  - start: 53222
+    end: 55364
+  verdict: supported
+  quote: included to ground the scale to human references, as otherwise the Elo ratings of AlphaGo are unrealistically high
+    due to self-play bias
+  note: The preceding words identify the Fan Hui and Lee Sedol matches.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-deep-blue
+  work: silver-2016-mastering-go
+  locator: p. 6
+  key: 4d6673f5ae656268749c1e9155a87c06
+  spans:
+  - start: 29207
+    end: 37574
+  verdict: supported
+  quote: AlphaGo evaluated thousands of times fewer positions than Deep Blue did in its chess match against Kasparov
+  note: The passage places this comparison during the Fan Hui match.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-handcrafted
+  work: silver-2016-mastering-go
+  locator: p. 6
+  key: 71b75634ec8790c61c7ddf712330f1f8
+  spans:
+  - start: 29207
+    end: 37574
+  verdict: supported
+  quote: Deep Blue relied on a handcrafted evaluation function, the neural networks of AlphaGo are trained directly from gameplay
+  note: The passage specifies general-purpose supervised and reinforcement learning as the training methods.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-move-37
+  work: deepmind-alphago-page
+  locator: p. 1
+  key: 7f3148be7ffe726727c6c569a5153aaf
+  spans:
+  - start: 0
+    end: 4191
+  verdict: supported
+  quote: In game two, it played Move 37 — a move that had a 1 in 10,000 chance of being used.
+  note: The next sentence says the move helped AlphaGo win.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-move-78
+  work: deepmind-alphago-page
+  locator: p. 1
+  key: db2d9bfa3eae3de80f44e09172e891ad
+  spans:
+  - start: 0
+    end: 4191
+  verdict: supported
+  quote: in game four, Lee Sedol played a Move 78, which had a 1 in 10,000 chance of being played
+  note: The passage also calls it “God’s Touch” and says it helped Sedol win.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-influence
+  work: hassabis-2017-alphagos-next-move
+  locator: p. 1
+  key: 39d277aa2c4bb03326d885c2ee8bb174
+  spans:
+  - start: 0
+    end: 5734
+  verdict: supported
+  quote: have influenced many of Go’s leading professionals - including the genius Ke Jie himself
+  note: The subject is the unofficial online games played as Magister (Master).
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-losses
+  work: silver-2016-mastering-go
+  locator: p. 9
+  key: 07db7ece52366d008cd6ca58d86f5cc5
+  spans:
+  - start: 59544
+    end: 65036
+  verdict: supported
+  quote: AlphaGo won these games 5–0 and 3–2 respectively
+  note: The second score applies to five informal games, leaving two wins for Fan Hui.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-loss-lee
+  work: deepmind-alphago-page
+  locator: p. 1
+  key: 3018e984b40c7bf42cc26fc5371410a2
+  spans:
+  - start: 0
+    end: 4191
+  verdict: supported
+  quote: in game four, Lee Sedol played a Move 78
+  note: The passage says that move helped Sedol win the game.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-komi
+  work: silver-2016-mastering-go
+  locator: p. 9
+  key: e8581f080f64c163426541d914d0e3f4
+  spans:
+  - start: 59544
+    end: 65036
+  verdict: supported
+  quote: We used these handicap rules because AlphaGo’s value network was trained specifically to use a komi of 7.5.
+  note: The preceding sentences define those rules as retaining komi and giving black additional stones.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-fan-elo-approx
+  work: silver-2016-mastering-go
+  locator: p. 9
+  key: b8f85be50284c5d643df071c502731c6
+  spans:
+  - start: 59544
+    end: 65036
+  verdict: supported
+  quote: we appended the results of all ten games to our internal tournament results, ignoring differences in time controls
+  note: The passage gives approximate assessment of Fan Hui’s relative rating as the reason.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-human-data
+  work: silver-2017-mastering-go-without-human-knowledge
+  locator: p. 1
+  key: 433af0675c4692e779e699bec0f36a2a
+  spans:
+  - start: 0
+    end: 2334
+  verdict: supported
+  quote: expert data is often expensive, unreliable, or simply unavailable
+  note: The next sentence says even reliable data may impose a performance ceiling.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-agz-diff
+  work: silver-2017-mastering-go-without-human-knowledge
+  locator: p. 2
+  key: 5e351411cd58ae10751675db31e198f1
+  spans:
+  - start: 2334
+    end: 4628
+  verdict: supported
+  quote: it is trained solely by self-play reinforcement learning, starting from random play
+  note: The passage also says it uses only black and white board stones as input features.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-agz-diff2
+  work: silver-2017-mastering-go-without-human-knowledge
+  locator: p. 2
+  key: d0b80436545eb28afe183fe8c03723a7
+  spans:
+  - start: 2334
+    end: 4628
+  verdict: supported
+  quote: it uses a single neural network, rather than separate policy and value networks
+  note: The passage also describes a simpler tree search without Monte Carlo rollouts.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-agz-100
+  work: silver-2017-mastering-go-without-human-knowledge
+  locator: p. 8
+  key: 035bb02daf27996e6bb3bdd5c6840c36
+  spans:
+  - start: 13460
+    end: 15926
+  verdict: supported
+  quote: AlphaGo Zero defeated AlphaGo Lee by 100 games to 0
+  note: The passage gives 72 hours of training, Seoul match time controls, and the claimed hardware for each program.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-agz-89
+  work: silver-2017-mastering-go-without-human-knowledge
+  locator: p. 12
+  key: 3950f4e0b90936cca89706f1a55d2de1
+  spans:
+  - start: 20386
+    end: 22400
+  verdict: supported
+  quote: AlphaGo Zero won by 89 games to 11
+  note: The passage and its section specify a larger network trained for approximately 40 days and a 100-game match with two-hour
+    time controls.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-az
+  work: silver-2018-general-reinforcement-learning-algorithm
+  locator: p. 2
+  key: c5039889da7bf09c54b9ed96fb8d047c
+  spans:
+  - start: 2279
+    end: 5863
+  verdict: supported
+  quote: We apply AlphaZero to the games of chess and shogi as well as Go, using the same algorithm and network architecture
+    for all three games.
+  note: The passage also calls AlphaZero a more generic version of AlphaGo Zero’s algorithm.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-az-training
+  work: silver-2018-general-reinforcement-learning-algorithm
+  locator: p. 4
+  key: 2ffb95ca6949ce199730a2e180e8f061
+  spans:
+  - start: 9265
+    end: 11924
+  verdict: supported
+  quote: 5,000 first-generation tensor processing units (TPUs) (19) were used to generate self-play games, and 16 second-generation
+    TPUs were used to train
+  note: The passage says Go training lasted approximately 13 days.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-az-go
+  work: silver-2018-general-reinforcement-learning-algorithm
+  locator: p. 5
+  key: ecbaf6b476738ed487d32ae31068a110
+  spans:
+  - start: 11924
+    end: 15355
+  verdict: supported
+  quote: In Go, AlphaZero defeated AlphaGo Zero (9), winning 61% of games.
+  note: The passage says the opponent was also trained for 700,000 steps; the preceding page gives the single-machine hardware
+    setting.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-successors
+  work: deepmind-alphago-page
+  locator: p. 1
+  key: ab58ce0aeb30ffe24b67a30315ba7812
+  spans:
+  - start: 0
+    end: 4191
+  verdict: supported
+  quote: its successors — AlphaZero, MuZero, and AlphaDev
+  note: The passage names all three as AlphaGo’s successors.
