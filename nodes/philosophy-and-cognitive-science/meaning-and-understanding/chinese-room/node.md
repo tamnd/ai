@@ -79,13 +79,13 @@ He imagines himself locked in a room with batches of Chinese writing and a set o
 The people outside call the rules "the program", and after a while his answers in Chinese are indistinguishable from those of native Chinese speakers.
 He then argues in two steps.
 
-1. He does not understand a word of the Chinese stories, although his inputs and outputs are those of a native speaker. {#c-no-understanding}
+1. He does not "understand a word of the Chinese stories", although his inputs and outputs are those of a native speaker. {#c-no-understanding}
 2. So the computer and its program do not give sufficient conditions of understanding, because they run and there is no understanding. {#c-not-sufficient}
 
-The abstract of the paper states the general thesis that instantiating a computer program is never by itself a sufficient condition of intentionality. {#c-never-sufficient}
-It adds that any mechanism capable of producing intentionality must have causal powers equal to those of the brain. {#c-causal-powers}
+The abstract of the paper states the general thesis that "instantiating a computer program is never by itself a sufficient condition of intentionality". {#c-never-sufficient}
+It adds that "any mechanism capable of producing intentionality must have causal powers equal to those of the brain". {#c-causal-powers}
 Searle does not argue that no machine can think.
-To the question "Could a machine think?" he answers that only a machine could think, namely brains and machines with internal causal powers equivalent to those of brains. {#c-machines-can-think}
+To the question "Could a machine think?" he answers that only a machine could think, "namely brains and machines with internal causal powers equivalent to those of brains". {#c-machines-can-think}
 His target is the thesis that a program is enough.
 In his terms, the formal symbol manipulations of a program "have only a syntax but no semantics". {#c-syntax-no-semantics}
 He also separates simulation from duplication: no one supposes that a computer simulation of a fire will burn the neighborhood down. {#c-simulation}
@@ -106,10 +106,10 @@ Cole (2024, Section 3) reads the narrow argument as a reductio ad absurdum again
 The argument addresses one question: can running a program, by itself, give a computer understanding or other mental states?
 Searle (1980) separates two claims about artificial intelligence (AI). {#c-strong-weak}
 On weak AI, the computer is a tool for the study of the mind, and Searle states that he has no objection to it, at least as far as the article is concerned.
-On strong AI, the appropriately programmed computer really is a mind and can be said to understand.
+On strong AI, "the appropriately programmed computer really is a mind" and can be said to understand.
 The programs of Schank and others answered questions about stories in a way that some took as evidence of understanding, and Searle took them as his test case.
-The journal printed the article with comments and criticisms by 27 cognitive science researchers, followed by replies from Searle. {#c-bbs-commentary}
-Cole (2024, Section 4.1) reports that Searle discussed replies that he had come across in giving the argument in talks at various places. {#c-labels}
+The journal printed the article with commentaries by 27 researchers in cognitive science, and then Searle's replies to them. {#c-bbs-commentary}
+Cole (2024, Section 4.1) reports that the replies Searle discussed were ones he had met when he gave the argument as a talk in several places. {#c-labels}
 In the article, the replies carry the names of places, such as Berkeley, Stanford and Yale. {#c-place-labels}
 Cole (2024, Section 2) traces arguments of the same shape to Leibniz' mill, Turing's paper machine and the Chinese nation. {#c-antecedents}
 
@@ -122,7 +122,7 @@ Each reply has the same parts: its form and its proponents, Searle's answer, and
 ### The systems reply
 
 **The reply.** The person in the room does not understand, but the person is part of a whole system of rules, scratch paper and data banks, and the system understands. {#c-systems-reply}
-Cole (2024) names Ned Block as one of the first to press it, with Jack Copeland, Daniel Dennett, Douglas Hofstadter, Jerry Fodor, John Haugeland, Ray Kurzweil and Georges Rey. {#c-systems-proponents}
+Cole (2024) names Ned Block as one of the first to press it, with Jack Copeland, Daniel Dennett, Jerry Fodor, John Haugeland, Douglas Hofstadter, Ray Kurzweil and Georges Rey. {#c-systems-proponents}
 **Searle's answer.** Let the person memorize the rules and the data and do the work in their head, outdoors; the person still understands nothing of the Chinese, and so neither does the system. {#c-systems-answer}
 **Counter-reply.** Marvin Minsky and Aaron Sloman and Monica Croucher suggested a virtual mind reply when the argument first appeared: running the program may create a mind distinct from the person who runs it. {#c-virtual-mind}
 Cole (2024, Section 4.1.1) credits Tim Maudlin with pointing out the reply and reports that Don Perlis, David Chalmers and Block have apparently endorsed versions of it, while Roger Penrose is a critic and Stevan Harnad dismisses it. {#c-virtual-mind-views}
@@ -133,7 +133,7 @@ Cole (2024, Section 4.1.1) credits Tim Maudlin with pointing out the reply and r
 Cole (2024) lists Margaret Boden, Tim Crane, Dennett, Fodor, Harnad, Hans Moravec and Rey among those who endorse versions of it. {#c-robot-proponents}
 **Searle's answer.** The reply concedes that cognition is not only formal symbol manipulation; and if Searle runs the robot's program from inside, he is the robot's homunculus and still understands nothing. {#c-robot-answer}
 **Counter-reply.** Fodor (1980) grants that the same program as the brain's is not by itself enough for propositional attitudes, but finds Searle's treatment of the robot reply unconvincing, given the right kinds of causal linkages to the world. {#c-fodor-robot}
-Tim Crane, as Cole (2024, Section 4.2) reports, argues that if the man in the room also started acting in the world of Chinese people, it is plausible that he would before long come to realize what the symbols mean. {#c-crane}
+Tim Crane, as Cole (2024, Section 4.2) reports, argues that if the man in the room also began to act among Chinese people, he would plausibly soon come to see what the symbols mean. {#c-crane}
 
 ### The brain simulator reply
 
@@ -145,7 +145,7 @@ Zenon Pylyshyn (1980) asks what Searle's view implies if the cells of a brain ar
 ### The combination reply
 
 **The reply.** Join the three previous replies: a robot with a brain-shaped computer that simulates all the synapses of a human brain, with behaviour indistinguishable from human behaviour, is a system to which we would have to ascribe intentionality. {#c-combination}
-Cole (2024, Section 4.3) names Georges Rey among those who argue that it is reasonable to attribute intentionality to such a system as a whole. {#c-combination-rey}
+Cole (2024, Section 4.3) names Georges Rey among those who hold that intentionality can reasonably be ascribed to the whole of such a system. {#c-combination-rey}
 **Searle's answer.** He agrees that it would be rational and even irresistible to accept that such a robot had intentionality, as long as we knew nothing more about it. {#c-combination-answer}
 But if we knew that its behaviour was the result of a formal program, and that the causal properties of its physical substance were irrelevant, we would abandon that assumption. {#c-combination-withdraw}
 **Counter-reply.** Cole (2024, Section 4.3) remarks that on this answer one would presumably cease to attribute intentionality even to a spouse who was revealed to hide a silicon secret. {#c-spouse}
@@ -154,7 +154,7 @@ But if we knew that its behaviour was the result of a formal program, and that t
 
 **The reply.** We know that other people understand Chinese only by their behaviour, so if a computer passes the same behavioural tests, we must attribute understanding to it too. {#c-other-minds}
 **Searle's answer.** The question is not how we know that others have mental states, but what it is that we attribute when we attribute them. {#c-other-minds-answer}
-**Counter-reply.** Critics that Cole (2024, Section 4.4) reports argue that if the evidence that humans understand is the same as the evidence that a robot understands, the presuppositions we make for our own species are not relevant, since presuppositions are sometimes false. {#c-other-minds-counter}
+**Counter-reply.** Critics that Cole (2024, Section 4.4) reports argue that if we have the same evidence of understanding for a robot as for a person, the presuppositions we make for our own species do not count, since a presupposition can be false. {#c-other-minds-counter}
 
 ### The many mansions reply
 
@@ -164,21 +164,21 @@ But if we knew that its behaviour was the result of a formal program, and that t
 
 ### The intuition reply
 
-**The reply.** Block (1980) argues that the argument depends for its force on intuitions that certain entities do not think, and that such intuitions can be overruled by evidence, as with the motion of the earth. {#c-block-intuitions}
+**The reply.** Block (1980) argues that the force of the argument comes from intuitions that some entities do not think, and that evidence can overrule such intuitions, as it did for the motion of the earth. {#c-block-intuitions}
 Dennett (1980) calls the room an intuition pump, a device that provokes intuitions by variations on a thought experiment, and argues that the intuitions it gives are not to be trusted. {#c-dennett-pump}
-**Searle's answer.** Searle (1980) concedes that there are degrees of understanding, but holds that there are clear cases of no understanding, and that the computer's understanding is not partial or incomplete but zero. {#c-searle-zero}
-**Counter-reply.** Some critics, as Cole (2024, Section 4.5) reports, argue that Searle has pushed the reliance on intuition back into the room: perhaps he is mistaken, and he does understand, albeit unconsciously. {#c-intuition-back}
+**Searle's answer.** Searle (1980) grants that understanding comes in degrees, but holds that some cases plainly have none, and that the computer's understanding is zero, not partial or incomplete. {#c-searle-zero}
+**Counter-reply.** Some critics, as Cole (2024, Section 4.5) reports, argue that Searle has only moved the appeal to intuition inside the room: perhaps he is mistaken, and he does understand, albeit unconsciously. {#c-intuition-back}
 
 ### The reply to axiom 3
 
-**The reply.** Paul and Patricia Churchland (1990) agree that the man in the room does not understand Chinese. {#c-churchland-agree}
+**The reply.** Paul and Patricia Churchland (1990) agree that the man in the room understands no Chinese. {#c-churchland-agree}
 They argue that classical AI is unlikely to yield conscious machines, and that systems that mimic the brain might. {#c-churchland-brains}
 They argue that axiom 3 is false, and that it begs the question for all its intuitive plausibility. {#c-luminous-room}
 They compare it to an argument that light is not electromagnetic because a man who pumps a bar magnet in a dark room makes no visible light. {#c-luminous-magnet}
 **Searle's answer.** Searle (1990) answers that the analogy with the luminous room fails, because formal symbols, unlike magnets, have no physical causal powers. {#c-searle-luminous-answer}
 He takes the claim that uninterpreted formal symbols are not identical to mental contents as a logical truth, and he puts the Churchlands' analogy between syntax and electromagnetism to a dilemma. {#c-searle-logical-truth}
 He also answers parallel, connectionist systems with the Chinese gym, a hall of monolingual English speakers who carry out the same operations and understand no Chinese. {#c-searle-gym}
-**Counter-reply.** Critics that Cole (2024, Section 5.1) names, among them Boden, Dennett and Chalmers, argue that a computer running a program is not the same as syntax alone, but a complex causal system. {#c-not-syntax-alone}
+**Counter-reply.** Critics that Cole (2024, Section 5.1) names, among them Boden, Dennett and Chalmers, argue that a computer that runs a program is a complex causal system, not syntax alone. {#c-not-syntax-alone}
 
 ## Influence
 
