@@ -165,14 +165,14 @@ The number of transitions needed to converge is the real cost: every pair must b
 
 ## Evidence
 
-Watkins and Dayan (1992) report that Q-learning converges to the optimum action-values with probability 1 so long as all actions are repeatedly sampled in all states and the action-values are represented discretely. {#c-wd-abstract}
+Watkins and Dayan (1992) report that Q-learning converges to the optimal action values with probability 1, provided that every action is tried again and again in every state and the values are kept in a table. {#c-wd-abstract}
 On cliff walking with $\varepsilon = 0.1$, Q-learning learns the optimal path along the edge and occasionally falls off, while Sarsa learns a safer path and does better online (Sutton and Barto, 2018). {#c-cliff}
 Mnih et al. (2015) report that a deep Q-network, seeing only pixels and the score, reached a level comparable to a professional human games tester across 49 Atari games. {#c-dqn-atari}
 
 ## Limitations and failure modes
 
 **Overestimation.**
-Q-learning uses a maximum over estimated values as an estimate of the maximum value, which can lead to a significant positive bias (Sutton and Barto, 2018). {#c-max-bias}
+Q-learning takes the largest of its estimates as its estimate of the largest true value, and this biases it upward, sometimes by a lot (Sutton and Barto, 2018). {#c-max-bias}
 With many actions whose true values are equal, noise alone pushes the maximum of the estimates too high.
 van Hasselt, Guez and Silver (2016) report substantial overestimations by DQN in some Atari games.
 They report that their Double Q-learning form of DQN reduces them and does much better on several games. {#c-double-dqn}
@@ -186,7 +186,7 @@ If $\varepsilon$ were gradually reduced, both methods would converge to the opti
 The convergence theorem is for a table.
 Sutton and Barto name the combination of function approximation, bootstrapping and off-policy training the deadly triad, where the danger of instability and divergence arises. {#c-deadly-triad}
 Q-learning with a function approximator has all three.
-Mnih et al. (2015) write that reinforcement learning is known to be unstable or even to diverge when a nonlinear function approximator such as a neural network represents the action-value function. {#c-dqn-unstable}
+Mnih et al. (2015) note that reinforcement learning tends to be unstable, and can diverge, when a nonlinear approximator such as a neural network stands for the action-value function. {#c-dqn-unstable}
 
 **Exploration.**
 The guarantee needs every pair to be tried infinitely often; an $\varepsilon$-greedy policy in a large state space may take a very long time to reach rare pairs.
