@@ -104,7 +104,7 @@ The derivation shows the shape, not the convergence.
 Watkins and Dayan (1992) prove convergence.
 In their notation, $x$ is the state and $Q_n$ is the table after the $n$-th episode.
 The index $n^i(x, a)$ marks the $i$-th time that action $a$ is tried in state $x$.
-Their theorem: given bounded rewards $\lvert r_n \rvert \le R$, learning rates $0 \le \alpha_n < 1$, and, for all $x$ and $a$, $\sum_i \alpha_{n^i(x,a)} = \infty$ and $\sum_i \alpha_{n^i(x,a)}^2 < \infty$, $Q_n(x, a) \to q_*(x, a)$ as $n \to \infty$ for all $x$ and $a$, with probability 1. {#c-wd-theorem}
+Their theorem: given bounded rewards $\lvert r_n \rvert \le R$, learning rates $0 < \alpha_n < 1$, and, for all $x$ and $a$, $\sum_i \alpha_{n^i(x,a)} = \infty$ and $\sum_i \alpha_{n^i(x,a)}^2 < \infty$, $Q_n(x, a) \to q_*(x, a)$ as $n \to \infty$ for all $x$ and $a$, with probability 1. {#c-wd-theorem}
 The setting is a discounted process with $\gamma < 1$.
 Their description assumes a look-up table, and they cite Watkins (1989) for the fact that Q-learning may not converge correctly with other representations.
 The most important implicit condition is an infinite number of episodes for each starting state and action. {#c-wd-conditions}

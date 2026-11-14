@@ -37,7 +37,7 @@
 
 - id: c-wd-theorem
   type: mathematical
-  text: "Watkins and Dayan state the theorem: given bounded rewards |r_n| <= R, learning rates 0 <= alpha_n < 1, and, for all x and a, a sum over i of alpha_{n^i(x,a)} that is infinite and a sum over i of alpha_{n^i(x,a)}^2 that is finite, Q_n(x, a) -> Q*(x, a) as n -> infinity for all x and a, with probability 1."
+  text: "Watkins and Dayan state the theorem: given bounded rewards |r_n| <= R, learning rates 0 < alpha_n < 1, and, for all x and a, a sum over i of alpha_{n^i(x,a)} that is infinite and a sum over i of alpha_{n^i(x,a)}^2 that is finite, Q_n(x, a) -> Q*(x, a) as n -> infinity for all x and a, with probability 1."
   assumes: ["a look-up table representation", "discounted rewards"]
   evidence:
     - {work: "watkins-dayan-1992-q-learning", role: original, locator: "Section 2", stance: for}
@@ -82,9 +82,9 @@
   type: empirical
   text: "On the cliff walking task with epsilon-greedy action selection and epsilon = 0.1, Q-learning learns values for the optimal policy, which travels right along the edge of the cliff, and occasionally falls off the cliff; Sarsa learns the longer but safer path; and the online performance of Q-learning is worse than that of Sarsa."
   scope:
-    models: "tabular Q-learning and Sarsa"
+    models: "Sarsa and Q-learning"
     data: []
-    scale: "a 4 by 12 gridworld"
+    scale: "the cliff walking gridworld of Example 6.6"
     setting: "undiscounted, episodic, reward -1 per step and -100 for a step into the cliff, epsilon-greedy with epsilon = 0.1"
   evidence:
     - {work: "sutton-barto-2018-reinforcement-learning", role: review, locator: "p. 132", stance: for}
