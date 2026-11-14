@@ -1,0 +1,174 @@
+run: v-20261114-131606-69812
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-power-law
+  work: kaplan-2020-scaling-laws
+  locator: the abstract, p. 7
+  key: c46e771db8e3e6378a864d04e2d2deb7
+  spans:
+  - start: 513
+    end: 2148
+  - start: 16828
+    end: 20102
+  verdict: supported
+  quote: 'with model size, dataset size, and the amount of compute
+
+    used for training, with some trends spanning more than seven orders of magnitude.'
+  note: The abstract states the claimed power-law relationship and its reported span.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-shape
+  work: kaplan-2020-scaling-laws
+  locator: the abstract
+  key: 828e764aaf4435fd984ebdfcc5bd74d6
+  spans:
+  - start: 513
+    end: 2148
+  verdict: supported
+  quote: 'architectural details such as network width or depth have minimal effects within a wide
+
+    range.'
+  note: The passage states the claim directly.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-henighan
+  work: henighan-2020-scaling-laws-autoregressive-generative
+  locator: the abstract
+  key: 9c96e1611767138e8c2aa662a3214354
+  spans:
+  - start: 382
+    end: 4969
+  verdict: supported
+  quote: 'In all cases autoregressive Transformers smoothly improve in performance as
+
+    model size and compute budgets increase, following a power-law plus constant scaling
+
+    law.'
+  note: The passage identifies the four claimed domains and states this trend for all of them.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-henighan-optimal-size
+  work: henighan-2020-scaling-laws-autoregressive-generative
+  locator: the abstract
+  key: b3559c765bdea9e152764888073b4b4b
+  spans:
+  - start: 382
+    end: 4969
+  verdict: supported
+  quote: 'The optimal model size also depends on the compute budget through a power-law,
+
+    with exponents that are nearly universal across all data domains.'
+  note: The passage states the claim directly.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-zhai
+  work: zhai-2022-scaling-vision-transformers
+  locator: the abstract
+  key: 3ef7b4ba17793092278a5318205eb76f
+  spans:
+  - start: 137
+    end: 2909
+  verdict: supported
+  quote: scale ViT models and data, both up and down, and characterize the relationships between error rate, data, and compute.
+  note: The abstract describes the claimed scaling study and reports a two-billion-parameter ViT model.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-vit-g
+  work: zhai-2022-scaling-vision-transformers
+  locator: the abstract
+  key: 26aaaaf198d0b48c80099d25faa80f56
+  spans:
+  - start: 137
+    end: 2909
+  verdict: supported
+  quote: 'ViT model with two billion parameters, which attains a new
+
+    state-of-the-art on ImageNet of 90.45% top-1 accuracy.'
+  note: The passage gives the claimed parameter count and ImageNet top-1 accuracy.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-three-approaches
+  work: hoffmann-2022-training-compute-optimal
+  locator: p. 8
+  key: fabe0b13eb97ac77a731e7d305874770
+  spans:
+  - start: 23982
+    end: 26972
+  verdict: supported
+  quote: '0.50 (0.488, 0.502)
+
+    0.49 (0.462, 0.534)
+
+    0.46 (0.454, 0.455)'
+  note: Table 2 assigns these three values to coefficient a in approach order and lists 0.73 for Kaplan et al.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-repeat
+  work: muennighoff-2023-scaling-data-constrained
+  locator: the abstract
+  key: f368a5fe40ac87f9756ed1cb7e5fc369
+  spans:
+  - start: 261
+    end: 2770
+  verdict: supported
+  quote: 'training with up to 4 epochs of repeated data yields negligible changes to
+
+    loss compared to having unique data.'
+  note: The abstract also says that with more repetition, the value of adding compute eventually decays to zero.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-emergent-def
+  work: wei-2022-emergent-abilities
+  locator: the abstract
+  key: 97e40219ba8457f166adaae083cad238
+  spans:
+  - start: 856
+    end: 1499
+  verdict: supported
+  quote: 'We consider an
+
+    ability to be emergent if it is not present in smaller models but is present in larger models.'
+  note: The following sentence also states the claimed limit on extrapolating from smaller models.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-manifold
+  work: sharma-2020-neural-scaling-law-data-manifold
+  locator: the abstract
+  key: b4c2a63cbe2677111d7cdc55e24fb17b
+  spans:
+  - start: 226
+    end: 2345
+  verdict: supported
+  quote: This simple theory predicts that the scaling exponents α ≈ 4/d for cross-entropy and mean-squared error losses.
+  note: The abstract links the theory to regression on a data manifold and names all three claimed test settings.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-kaplan-allocation
+  work: kaplan-2020-scaling-laws
+  locator: the abstract
+  key: 6df2a0bdc4f36cc60de25760234aa9c2
+  spans:
+  - start: 513
+    end: 2148
+  verdict: supported
+  quote: 'optimally compute-efficient training involves training very large models
+
+    on a relatively modest amount of data and stopping significantly before convergence.'
+  note: Kaplan et al. state this conclusion directly in the abstract.
