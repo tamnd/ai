@@ -95,7 +95,7 @@ The effect grows with optimization pressure.
 Leo Gao, John Schulman and Jacob Hilton call it overoptimization when optimizing too much against a reward model eventually hinders the true objective. {#c-overoptimization}
 They measured it with a fixed gold reward model that plays the part of the human labellers.
 As a policy is optimized against a proxy reward model trained on the gold model's labels, the gold reward first increases and later decreases. {#c-gold-rise-fall}
-Let $d$ be a distance that Gao et al. define from the Kullback-Leibler (KL) divergence between the optimized policy and the initial one.
+Let $d$ be a distance that Gao et al. define from the [[m2:kullback-leibler-divergence|Kullback-Leibler (KL) divergence]] between the optimized policy and the initial one.
 The gold score fits $d(\alpha_{bon} - \beta_{bon} d)$ for best-of-$n$ sampling and $d(\alpha_{RL} - \beta_{RL} \log d)$ for RL. {#c-functional-forms}
 The coefficients change smoothly with the number of parameters of the proxy reward model. {#c-coefficients-scale}
 Both curves rise, reach a peak and fall, and the peak is where more optimization starts to hurt.
@@ -160,6 +160,8 @@ Carson Denison and colleagues at Anthropic found that training a model not to ga
 
 **Proposals without measured effect.**
 Amodei et al. suggest ten approaches, among them adversarial reward functions, careful engineering, reward capping, multiple rewards and trip wires. {#c-amodei-approaches}
+An adversarial reward function is close to [[al:adversarial-training|adversarial training]], with the roles changed: a second agent searches for the cases that the policy reports as high reward but that a human labels as low, and the reward model learns from them.
+Reward pretraining learns the reward ahead of time from examples or trajectories, as [[al:inverse-reinforcement-learning|inverse reinforcement learning]] learns a reward from demonstrations, so that the agent cannot change the process that sets its reward.
 They note that a reward cap stops extreme low-probability strategies but not a robot that closes its eyes to avoid seeing dirt. {#c-capping-limit}
 
 ## Taxonomies
