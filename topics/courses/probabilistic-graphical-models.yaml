@@ -1,0 +1,152 @@
+# A course of spec 5.7: an ordered list of items with section headings. Names and orders only (19.3).
+# An item names its node by slug when the node exists; before that it is a name and a kind, which aik harvest courses
+# reads into the inventory, so that the catalog step can place it and the course can count its coverage (18).
+id: probabilistic-graphical-models
+title: Probabilistic graphical models
+basis: >-
+  the chapter order of Koller and Friedman, Probabilistic Graphical Models: Principles and Techniques (2009), parts 1
+  to 4 (representation, inference, learning, actions and decisions), cross-checked with public PGM syllabi
+sections:
+  - heading: Foundations
+    items:
+      - {name: Probabilistic graphical model, kind: area}
+      - {name: Joint probability distribution, kind: definition}
+      - {name: Conditional independence, kind: definition}
+      - {name: Chain rule of probability, kind: theorem}
+      - {name: Directed acyclic graph, kind: definition}
+  - heading: Bayesian networks
+    items:
+      - {name: Bayesian network, kind: concept}
+      - {name: Conditional probability table, kind: definition}
+      - {name: Local Markov property, kind: definition}
+      - {name: D-separation, kind: definition}
+      - {name: I-map and perfect map, kind: definition}
+      - {name: Explaining away, kind: concept}
+      - {name: Naive Bayes model, kind: method}
+  - heading: Undirected models
+    items:
+      - {name: Markov random field, kind: concept}
+      - {name: Factor and potential function, kind: definition}
+      - {name: Gibbs distribution, kind: definition}
+      - {name: Partition function, kind: definition}
+      - {name: Hammersley-Clifford theorem, kind: theorem}
+      - {name: Factor graph, kind: concept}
+      - {name: Ising model, kind: concept}
+      - {name: Conditional random field, kind: method}
+      - {name: Moralization, kind: method}
+  - heading: Local models
+    items:
+      - {name: Deterministic and context-specific dependencies, kind: concept}
+      - {name: Noisy-OR model, kind: method}
+      - {name: Generalized linear CPD, kind: method}
+  - heading: Template models
+    items:
+      - {name: Plate notation, kind: concept}
+      - {name: Dynamic Bayesian network, kind: concept}
+      - {name: Hidden Markov model, kind: concept}
+      - {name: Linear dynamical system, kind: concept}
+      - {name: Relational probabilistic model, kind: concept}
+  - heading: Gaussian and exponential family models
+    items:
+      - {name: Gaussian Bayesian network, kind: concept}
+      - {name: Gaussian Markov random field, kind: concept}
+      - {name: Precision matrix, kind: definition}
+      - {name: Exponential family, kind: definition}
+      - {name: Sufficient statistic, kind: definition}
+  - heading: Exact inference
+    items:
+      - {name: Probabilistic inference, kind: task}
+      - {name: Variable elimination, kind: method}
+      - {name: Elimination ordering, kind: concept}
+      - {name: Treewidth, kind: definition}
+      - {name: Clique tree, kind: concept}
+      - {name: Junction tree algorithm, kind: method}
+      - {name: Belief propagation, kind: method}
+      - {name: Sum-product algorithm, kind: method}
+      - {name: Forward-backward algorithm, kind: method}
+      - {name: Hardness of exact inference, kind: theorem}
+  - heading: Variational inference
+    items:
+      - {name: Inference as optimization, kind: concept}
+      - {name: Loopy belief propagation, kind: method}
+      - {name: Bethe free energy, kind: definition}
+      - {name: Variational inference, kind: method}
+      - {name: Evidence lower bound, kind: definition}
+      - {name: Mean-field approximation, kind: method}
+      - {name: Expectation propagation, kind: method}
+  - heading: Sampling-based inference
+    items:
+      - {name: Forward sampling, kind: method}
+      - {name: Rejection sampling, kind: method}
+      - {name: Importance sampling, kind: method}
+      - {name: Likelihood weighting, kind: method}
+      - {name: Markov chain Monte Carlo, kind: method}
+      - {name: Gibbs sampling, kind: method}
+      - {name: Metropolis-Hastings algorithm, kind: method}
+      - {name: Mixing time, kind: definition}
+      - {name: Hamiltonian Monte Carlo, kind: method}
+      - {name: Particle filter, kind: method}
+  - heading: MAP inference
+    items:
+      - {name: MAP inference, kind: task}
+      - {name: Max-product algorithm, kind: method}
+      - {name: Viterbi algorithm, kind: method}
+      - {name: Graph cuts, kind: method}
+      - {name: Linear programming relaxation, kind: method}
+  - heading: Inference over time and in hybrid models
+    items:
+      - {name: Filtering, smoothing and prediction, kind: task}
+      - {name: Kalman filter, kind: method}
+      - {name: Extended Kalman filter, kind: method}
+      - {name: Switching linear dynamical system, kind: concept}
+  - heading: Parameter learning
+    items:
+      - {name: Maximum likelihood estimation, kind: method}
+      - {name: Bayesian parameter estimation, kind: method}
+      - {name: Dirichlet prior, kind: definition}
+      - {name: Parameter sharing, kind: concept}
+  - heading: Structure learning
+    items:
+      - {name: Structure learning, kind: task}
+      - {name: Constraint-based structure learning, kind: method}
+      - {name: PC algorithm, kind: method}
+      - {name: Score-based structure learning, kind: method}
+      - {name: Bayesian information criterion, kind: metric}
+      - {name: BDe score, kind: metric}
+      - {name: Chow-Liu algorithm, kind: method}
+      - {name: Markov equivalence class, kind: definition}
+  - heading: Learning with hidden variables
+    items:
+      - {name: Latent variable model, kind: concept}
+      - {name: Missing at random, kind: definition}
+      - {name: Expectation-maximization algorithm, kind: method}
+      - {name: Baum-Welch algorithm, kind: method}
+      - {name: Latent Dirichlet allocation, kind: method}
+  - heading: Learning undirected models
+    items:
+      - {name: Log-linear model, kind: concept}
+      - {name: Maximum entropy principle, kind: concept}
+      - {name: Pseudolikelihood, kind: method}
+      - {name: Contrastive divergence, kind: method}
+      - {name: Restricted Boltzmann machine, kind: architecture}
+      - {name: Graphical lasso, kind: method}
+  - heading: Causality
+    items:
+      - {name: Causal Bayesian network, kind: concept}
+      - {name: Intervention and the do-operator, kind: definition}
+      - {name: Back-door criterion, kind: theorem}
+      - {name: Confounding, kind: concept}
+      - {name: Counterfactual, kind: concept}
+      - {name: Structural causal model, kind: concept}
+  - heading: Decisions
+    items:
+      - {name: Utility theory, kind: concept}
+      - {name: Expected utility, kind: definition}
+      - {name: Influence diagram, kind: concept}
+      - {name: Value of information, kind: concept}
+  - heading: Software and applications
+    items:
+      - {name: Probabilistic programming, kind: concept}
+      - {name: Stan, kind: software}
+      - {name: Pyro, kind: software}
+      - {name: QMR-DT, kind: system}
