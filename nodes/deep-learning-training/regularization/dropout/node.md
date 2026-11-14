@@ -146,7 +146,7 @@ Srivastava et al. (2014, Section 11) report two to three times the training time
 
 Srivastava et al. (2014) report lower test error with dropout than without it on each of their benchmarks. {#c-reduces-error}
 The benchmarks are MNIST, SVHN, CIFAR-10, CIFAR-100, ImageNet, TIMIT and Reuters, with networks of the size of that time.
-The same study shows that the weight scaling rule at test time gives about the same error as the average over many sampled masks (Section 7.5). {#c-weight-scaling-close}
+The same study reports that the weight scaling rule at test time gives about the same error as the average over many sampled masks (Section 7.5). {#c-weight-scaling-close}
 Baldi and Sadowski (2013) show that for one layer with a logistic output, the scaled network computes the normalized weighted geometric mean of the sub-networks. {#c-geometric-mean}
 
 ## Limitations and failure modes
@@ -196,4 +196,4 @@ In recurrent networks, apply it between layers, or use the same mask at each tim
 Geoffrey Hinton, Nitish Srivastava, Alex Krizhevsky, Ilya Sutskever and Ruslan Salakhutdinov first described dropout in 2012, in the preprint arXiv 1207.0580. {#c-first-2012}
 Krizhevsky, Sutskever and Hinton (2012) used it in the first two fully connected layers of AlexNet, the winning entry of the ImageNet challenge of 2012. {#c-alexnet}
 The full study, with the experiments, the theory for linear models and the practical guide, is Srivastava et al. (2014) in the Journal of Machine Learning Research. {#c-canonical-2014}
-The idea is related to older work on training with noise: Bishop (1995) showed that training with small input noise is close to Tikhonov regularization.
+The idea is related to older work on training with noise: Bishop (1995) derived that training with small input noise is close to Tikhonov regularization.
