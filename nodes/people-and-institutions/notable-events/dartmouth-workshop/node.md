@@ -18,6 +18,8 @@ same_as:
 sources:
   - {url: "http://www-formal.stanford.edu/jmc/history/dartmouth/dartmouth.html", title: "McCarthy, Minsky, Rochester and Shannon, A Proposal for the Dartmouth Summer Research Project on Artificial Intelligence", locator: "p. 1", note: "the proposal of 31 August 1955, with McCarthy's notes of 1996"}
   - {url: "https://raysolomonoff.com/dartmouth/dartray.pdf", title: "Grace Solomonoff, Ray Solomonoff and the Dartmouth Summer Research Project in Artificial Intelligence, 1956", locator: "pp. 6, 8 to 10, 19 and 25", note: "the funding, the dates and the attendees"}
+  - {url: "http://www-formal.stanford.edu/jmc/history/dartmouth.html", title: "McCarthy, Proposal for Dartmouth Summer Research Project on Artificial Intelligence (note of 31 January 2001)", locator: "p. 1", note: "the first use of the phrase"}
+  - {url: "https://home.dartmouth.edu/about/artificial-intelligence-ai-coined-dartmouth", title: "Dartmouth College, Artificial Intelligence (AI) Coined at Dartmouth", locator: "p. 1"}
   - {url: "https://plato.stanford.edu/archives/fall2025/entries/artificial-intelligence/", title: "Bringsjord and Govindarajulu, Artificial Intelligence, Stanford Encyclopedia of Philosophy", locator: "Section 1", note: "the attendees and the significance"}
 ---
 
@@ -42,12 +44,12 @@ Grace Solomonoff writes that so many people came for short times, or cancelled, 
 Bringsjord and Govindarajulu write that ten thinkers attended, among them McCarthy, Shannon, Minsky, Arthur Samuel, Ray Solomonoff, Oliver Selfridge, Allen Newell and Herbert Simon. {#c-sep-ten}
 Grace Solomonoff gives a list of 20 attendees from Ray Solomonoff's notes. {#c-ray-list}
 She writes that Ray Solomonoff, Minsky and McCarthy were the only three who stayed for the full eight weeks. {#c-full-eight}
-McCarthy noted in 1996 that the project produced no report. {#c-no-report}
 
 ## Outcomes and significance
 
 Bringsjord and Govindarajulu write that the field of artificial intelligence officially started in 1956, launched by the summer conference at Dartmouth. {#c-started}
 They write that the term "artificial intelligence" was coined there, and that Newell and Simon revealed a program, the Logic Theorist. {#c-coined-lt}
+Dartmouth College describes the project as a seminal event for artificial intelligence as a field. {#c-seminal}
 
 Bringsjord and Govindarajulu write that the 50-year celebration of the conference, AI@50, was held at Dartmouth in July 2006. {#c-ai50}
 Grace Solomonoff names the five participants of 1956 who attended it: Trenchard More, John McCarthy, Marvin Minsky, Oliver Selfridge and Ray Solomonoff. {#c-ai50-five}

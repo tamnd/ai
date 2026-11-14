@@ -92,12 +92,6 @@
   evidence:
     - {work: "solomonoff-2016-dartmouth-summer-research-project", role: original, locator: "p. 10", stance: for}
 
-- id: c-no-report
-  type: historical
-  text: "In a 1996 note to the proposal McCarthy writes that there was no report of the Dartmouth Summer Project."
-  evidence:
-    - {work: "mccarthy-1955-dartmouth-proposal", role: statement, locator: "p. 1", stance: for}
-
 - id: c-started
   type: attributive
   text: "Bringsjord and Govindarajulu write that the field of artificial intelligence officially started in 1956, launched by a summer conference at Dartmouth College."
@@ -121,3 +115,9 @@
   text: "Grace Solomonoff names the five attendees at the AI@50 conference in 2006 who were part of the Dartmouth Summer of 1956: Trenchard More, John McCarthy, Marvin Minsky, Oliver Selfridge and Ray Solomonoff."
   evidence:
     - {work: "solomonoff-2016-dartmouth-summer-research-project", role: original, locator: "p. 25", stance: for}
+
+- id: c-seminal
+  type: attributive
+  text: "Dartmouth College describes the Dartmouth Summer Research Project on Artificial Intelligence as a seminal event for artificial intelligence as a field."
+  evidence:
+    - {work: "dartmouth-college-ai-coined-at-dartmouth", role: statement, locator: "p. 1", stance: for}

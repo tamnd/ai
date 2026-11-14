@@ -94,7 +94,7 @@
   type: attributive
   text: "Jumper and colleagues, of DeepMind in London, describe AlphaFold as the first computational method that can regularly predict protein structures with atomic accuracy even in cases in which no similar structure is known."
   evidence:
-    - {work: "jumper-2021-alphafold", role: original, locator: "p. 1", stance: for}
+    - {work: "jumper-2021-alphafold", role: original, locator: "the abstract", stance: for}
 
 - id: c-casp14
   type: attributive
