@@ -129,7 +129,7 @@ The data and the training were otherwise the same as for the original models.
 The README reports 92.8/86.7 SQuAD 1.1 F1/EM and 87.07 MultiNLI accuracy for the uncased Whole Word Masking model, against 91.0/84.3 and 86.05 for the original uncased BERT-Large. {#c-rel-wwm-scores}
 
 On March 11th, 2020, Google released 24 smaller BERT models, English only and uncased, from the paper of Turc et al. {#c-rel-small}
-Turc et al. show that pre-training still matters for small architectures. {#c-turc}
+Turc et al. find that pre-training still matters for small architectures. {#c-turc}
 Google writes that the small models are meant for environments with restricted computational resources, and work best for knowledge distillation from a larger teacher. {#c-rel-small-use}
 On GLUE, the README gives scores of 64.2 for BERT-Tiny, 65.8 for BERT-Mini, 71.2 for BERT-Small and 73.5 for BERT-Medium. {#c-rel-small-glue}
 
@@ -193,7 +193,7 @@ BERT became an object of study in its own right.
 Rogers et al. survey over 150 studies of BERT, and call it a must-have baseline. {#c-rogers}
 Tenney et al. find that BERT's layers represent the steps of the traditional NLP pipeline in order: part-of-speech tagging, parsing, named entities, semantic roles, then coreference. {#c-tenney}
 Clark et al. find attention heads that attend to delimiter tokens or to fixed offsets, and others that find direct objects, determiners, objects of prepositions and coreferent mentions with high accuracy. {#c-clark-heads}
-Pires et al. show that Multilingual BERT, pre-trained on 104 languages with no parallel data, transfers zero-shot across languages surprisingly well, best between languages of similar type. {#c-pires}
+Pires et al. find that Multilingual BERT, pre-trained on 104 languages with no parallel data, transfers zero-shot across languages surprisingly well, best between languages of similar type. {#c-pires}
 
 Many later models change one part of BERT's recipe.
 RoBERTa's authors find that BERT was significantly undertrained, and that with better training it matches or beats every model published after it. {#c-roberta}
@@ -207,7 +207,7 @@ In December 2024 the authors of ModernBERT wrote that encoder pipelines still of
 ## Known issues
 
 **Shortcuts in benchmarks.** McCoy et al. find that models trained on MNLI, BERT among them, do very poorly on the HANS evaluation set, which suggests that they rely on fallible syntactic heuristics. {#c-mccoy}
-Niven and Kao show that BERT's peak of 77% on the Argument Reasoning Comprehension Task comes entirely from spurious statistical cues in the dataset, and that all models reach only random accuracy on an adversarial version. {#c-niven}
+Niven and Kao report that BERT's peak of 77% on the Argument Reasoning Comprehension Task comes entirely from spurious statistical cues in the dataset, and that all models reach only random accuracy on an adversarial version. {#c-niven}
 
 **Negation.** Ettinger finds that BERT struggles with hard inferences and role-based event prediction, and is clearly insensitive to the effect of negation in context. {#c-ettinger}
 
