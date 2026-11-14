@@ -1,0 +1,1146 @@
+run: v-20261114-161711-76311
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-llama-collection
+  work: touvron-2023-llama
+  locator: the abstract
+  key: 6e17e5ae829e9522f366b6c00da64a3f
+  spans:
+  - start: 342
+    end: 868
+  verdict: supported
+  quote: We introduce LLaMA, a collection of foundation language models ranging from 7B to 65B parameters.
+  note: The abstract identifies the models and says they can be trained using publicly available datasets exclusively.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-llama-gpt3
+  work: touvron-2023-llama
+  locator: the abstract
+  key: d81f7547ea2f5c4697dd1d13a18801b8
+  spans:
+  - start: 342
+    end: 868
+  verdict: supported
+  quote: LLaMA-13B outperforms GPT-3 (175B) on most benchmarks
+  note: The passage states the reported comparison.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-llama-noncommercial
+  work: meta-2023-introducing-llama
+  locator: p. 1
+  key: 27652b0040a24d051f11b0c1863521bd
+  spans:
+  - start: 0
+    end: 5009
+  verdict: supported
+  quote: we are releasing our model under a noncommercial license focused on research use cases.
+  note: The passage also specifies case-by-case access and the listed eligible groups.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-llama2-free
+  work: meta-2023-llama-2-announcement
+  locator: p. 1
+  key: 0fab1e4bea81e67006d3aa8b1b819ceb
+  spans:
+  - start: 0
+    end: 9466
+  verdict: supported
+  quote: Llama 2 is free for research and commercial use.
+  note: Meta states this in its announcement.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-llama4-moe
+  work: meta-2025-llama-4-herd
+  locator: p. 1
+  key: 9c35fa43d2a95b3f28f48169d2fc5a10
+  spans:
+  - start: 0
+    end: 23279
+  verdict: supported
+  quote: Our new Llama 4 models are our first models that use a mixture of experts (MoE) architecture.
+  note: Meta explicitly describes them as its first MoE models.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-arch-llama
+  work: touvron-2023-llama
+  locator: Section 2.2
+  key: 4e7a79ee34745346a59b63e39d79d185
+  spans:
+  - start: 8852
+    end: 9957
+  verdict: supported
+  quote: our network is based on the transformer architecture (Vaswani et al., 2017).
+  note: The architecture section lists pre-normalization, SwiGLU, and rotary embeddings as the main differences.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-arch-sources
+  work: touvron-2023-llama
+  locator: Section 2.2
+  key: 7fe3f9e1f6dfbe9daae828e533a53678
+  spans:
+  - start: 8852
+    end: 9957
+  verdict: supported
+  quote: 'Here are the main difference with the original architecture, and where we were found the inspiration for this change
+    (in bracket):'
+  note: The following entries give all three methods and their stated inspirations.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-arch-llama2
+  work: touvron-2023-llama-2
+  locator: Section 2.2
+  key: 5d49d167daff5f41656e8d49df09d708
+  spans:
+  - start: 12575
+    end: 17820
+  verdict: supported
+  quote: The primary architectural differences from Llama 1 include increased context length and grouped-query attention (GQA).
+  note: The passage also says Llama 2 adopts most of Llama 1’s architecture.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-llama2-gqa
+  work: touvron-2023-llama-2
+  locator: Table 1
+  key: 71496fd4d5d47f31e955c28ffc21b8ef
+  spans:
+  - start: 13564
+    end: 15796
+  verdict: supported
+  quote: Bigger models — 34B and 70B — use Grouped-Query Attention (GQA) for improved inference scalability.
+  note: The table caption directly identifies the two models.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-context-2048-4096
+  work: touvron-2023-llama-2
+  locator: p. 47
+  key: 00ff1b79829c87ca66adf4445757de79
+  spans:
+  - start: 167490
+    end: 171385
+  verdict: supported
+  quote: We expand the context window for Llama 2 from 2048 tokens to 4096 tokens.
+  note: The passage gives both context lengths.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-arch-llama3
+  work: meta-2024-introducing-llama-3
+  locator: p. 1
+  key: 425d9bcf438faee2667b77059c31e03b
+  spans:
+  - start: 0
+    end: 18930
+  verdict: supported
+  quote: we opted for a relatively standard decoder-only transformer architecture in Llama 3.
+  note: The same architecture section specifies the 128K-token vocabulary and GQA for both sizes.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-arch-llama3-same
+  work: grattafiori-2024-llama-3-herd
+  locator: Section 3.2
+  key: 01c5cdc4d19cf4710d0732318f4397c0
+  spans:
+  - start: 22515
+    end: 29898
+  verdict: supported
+  quote: Llama 3 uses a standard, dense Transformer architecture (Vaswani et al., 2017). It does not deviate significantly
+  note: The sentence continues with the comparison to Llama and Llama 2.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-arch-dense
+  work: grattafiori-2024-llama-3-herd
+  locator: p. 2
+  key: 72d6fd500d9d6d84ccec64269ab46971
+  spans:
+  - start: 3408
+    end: 7245
+  verdict: supported
+  quote: we opt for a standard dense Transformer model architecture (Vaswani et al., 2017) with minor adaptations, rather
+    than for a mixture-of-experts model
+  note: The passage gives maximizing training stability as the reason.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-arch-llama3-gqa8
+  work: grattafiori-2024-llama-3-herd
+  locator: Section 3.2
+  key: f3d3109cbead35414a284f37f15de0e6
+  spans:
+  - start: 22515
+    end: 29898
+  verdict: supported
+  quote: We use grouped query attention (GQA; Ainslie et al. (2023)) with 8 key-value heads
+  note: The next bullet describes the claimed attention mask.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-arch-rope-base
+  work: grattafiori-2024-llama-3-herd
+  locator: Section 3.2
+  key: a18510f198fcb5a850b611ad5dba8e40
+  spans:
+  - start: 22515
+    end: 29898
+  verdict: supported
+  quote: We increase the RoPE base frequency hyperparameter to 500,000. This enables us to better support longer contexts
+  note: The passage states the value and purpose.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-arch-32-vision
+  work: meta-2024-llama-3-2
+  locator: p. 1
+  key: 4fcc0700b2b457766c7aa9ba244e9c55
+  spans:
+  - start: 0
+    end: 16979
+  verdict: supported
+  quote: As the first Llama models to support vision tasks, the 11B and 90B models required an entirely new model architecture
+    that supports image reasoning.
+  note: The passage states the claim directly.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-arch-llama4-fusion
+  work: meta-2025-llama-4-herd
+  locator: p. 1
+  key: 845628b3db3fd33acb3fd59bc13773f9
+  spans:
+  - start: 0
+    end: 23279
+  verdict: supported
+  quote: Llama 4 models are designed with native multimodality, incorporating early fusion to seamlessly integrate text and
+    vision tokens into a unified model backbone.
+  note: The passage states the claim directly.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-arch-llama4-moe
+  work: meta-2025-llama-4-herd
+  locator: p. 1
+  key: ceb6c2c86fa1dec42e7cea150c7442af
+  spans:
+  - start: 0
+    end: 23279
+  verdict: supported
+  quote: We use alternating dense and mixture-of-experts (MoE) layers for inference efficiency. MoE layers use 128 routed
+    experts and a shared expert.
+  note: The next sentence says each token goes to the shared expert and one routed expert.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-arch-irope
+  work: meta-2025-llama-4-herd
+  locator: p. 1
+  key: c98537dabb2bc535c3c068cbd673afc5
+  spans:
+  - start: 0
+    end: 23279
+  verdict: supported
+  quote: We call this the iRoPE architecture, where “i” stands for “interleaved” attention layers
+  note: The surrounding sentences describe layers without positional embeddings and RoPE in most layers.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-data-llama-mix
+  work: touvron-2023-llama
+  locator: Table 1
+  key: e0e7d06cc8f42152f2ac94d7575269e2
+  spans:
+  - start: 4076
+    end: 8371
+  verdict: supported
+  quote: CommonCrawl C4 Github Wikipedia Books ArXiv StackExchange
+  note: Table 1 lists those sources with sampling proportions of 67.0%, 15.0%, 4.5%, 4.5%, 4.5%, 2.5%, and 2.0%.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-tokens-llama
+  work: touvron-2023-llama
+  locator: Table 2
+  key: 48005647506b14f1d236ecc8e2b8196f
+  spans:
+  - start: 8371
+    end: 11881
+  verdict: supported
+  quote: LLaMA-33B and LLaMA65B were trained on 1.4T tokens. The smaller models were trained on 1.0T tokens.
+  note: The figure caption identifies the larger pair and the token count for the smaller pair.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-data-llama2
+  work: touvron-2023-llama-2
+  locator: Section 2.1
+  key: 5cf37ca0bcd7ad2961e6208d08855ec0
+  spans:
+  - start: 11892
+    end: 12575
+  verdict: supported
+  quote: Our training corpus includes a new mix of data from publicly available sources, which does not include data from
+    Meta’s products or services.
+  note: The next sentence states the effort to remove data from specified sites.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-tokens-llama2
+  work: touvron-2023-llama-2
+  locator: Section 2.1
+  key: aee73d0125d24d412676afca3dcb8703
+  spans:
+  - start: 11892
+    end: 12575
+  verdict: supported
+  quote: We trained on 2 trillion tokens of data
+  note: The passage gives the claimed training quantity.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-data-llama3
+  work: meta-2024-introducing-llama-3
+  locator: p. 1
+  key: 1a72873d3a361e5f4a7f3902242e5542
+  spans:
+  - start: 0
+    end: 18930
+  verdict: supported
+  quote: Llama 3 is pretrained on over 15T tokens that were all collected from publicly available sources.
+  note: The next sentence gives the sevenfold dataset size and fourfold code comparison.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-data-llama3-cutoff
+  work: grattafiori-2024-llama-3-herd
+  locator: Section 3.1
+  key: 8e0bbee892005305754433a1eca46af8
+  spans:
+  - start: 13872
+    end: 22515
+  verdict: supported
+  quote: We create our dataset for language model pre-training from a variety of data sources containing knowledge until the
+    end of 2023.
+  note: The passage states the claim directly.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-tokens-405b
+  work: grattafiori-2024-llama-3-herd
+  locator: p. 1
+  key: 8c484a42a6b3259d03f12352eeafae14
+  spans:
+  - start: 0
+    end: 3408
+  verdict: supported
+  quote: we pre-trained a flagship model with 405B trainable parameters on 15.6T text tokens.
+  note: The passage states both quantities.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-data-llama4
+  work: meta-llama-4-model-card
+  locator: p. 1
+  key: 5501d41e9eb8efd7f45cd02e1e7b0f5d
+  spans:
+  - start: 0
+    end: 20584
+  verdict: supported
+  quote: multimodal data from a mix of publicly available, licensed data and information from Meta’s products and services.
+  note: The following sentence names public Instagram and Facebook posts and interactions with Meta AI.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-tokens-llama4-card
+  work: meta-llama-4-model-card
+  locator: p. 1
+  key: 971d254f5c02f88690a12601ef9af323
+  spans:
+  - start: 0
+    end: 20584
+  verdict: supported
+  quote: Llama 4 Scout was pretrained on \~40 trillion tokens and Llama 4 Maverick was pretrained on \~22 trillion tokens
+    of multimodal data
+  note: The model card gives both approximate token counts and calls the data multimodal.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-tokens-llama4-blog
+  work: meta-2025-llama-4-herd
+  locator: p. 1
+  key: e2b6b44f98d07fe344821ea45cc45c55
+  spans:
+  - start: 0
+    end: 23279
+  verdict: supported
+  quote: The overall data mixture for training consisted of more than 30 trillion tokens
+  note: The sentence also says the mixture includes text, image, and video datasets.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-train-llama-gpus
+  work: touvron-2023-llama
+  locator: p. 4
+  key: f40a36680d44684733b03016a1e123eb
+  spans:
+  - start: 11881
+    end: 15156
+  verdict: supported
+  quote: our code processes around 380 tokens/sec/GPU on 2048 A100 GPU with 80GB of RAM.
+  note: The adjacent sentences specify the 65B model, 1.4T-token dataset, and approximately 21 days.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-llama2-chat
+  work: touvron-2023-llama-2
+  locator: p. 4
+  key: eca09b6b0d379ac48269ee9d17e4bcf2
+  spans:
+  - start: 8179
+    end: 10721
+  verdict: supported
+  quote: Llama 2-Chat, a fine-tuned version of Llama 2 that is optimized for dialogue use cases.
+  note: The passage defines Llama 2-Chat in those terms.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-train-llama2-rlhf
+  work: touvron-2023-llama-2
+  locator: p. 13
+  key: b7e80f932833171c8b454e1bdfb3faa5
+  spans:
+  - start: 40106
+    end: 43807
+  verdict: supported
+  quote: 'We explored RLHF fine-tuning with two main algorithms:'
+  note: The two bullets name PPO and Rejection Sampling fine-tuning.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-train-compute
+  work: grattafiori-2024-llama-3-herd
+  locator: p. 1
+  key: fe1c7c3e7fbf9f64159b70fbc95e8e59
+  spans:
+  - start: 0
+    end: 3408
+  verdict: supported
+  quote: our flagship language model was pre-trained using 3.8 × 1025 FLOPs, almost 50× more than the largest version of Llama
+    2.
+  note: The passage specifies that the comparison concerns training FLOPs.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-train-405b-gpus
+  work: grattafiori-2024-llama-3-herd
+  locator: p. 9
+  key: b651309f415b623ad00f25d6107f6933
+  spans:
+  - start: 30374
+    end: 34313
+  verdict: supported
+  quote: Llama 3 405B is trained on up to 16K H100 GPUs
+  note: The compute paragraph states the claimed GPU limit.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-train-llama3-post
+  work: grattafiori-2024-llama-3-herd
+  locator: p. 2
+  key: 984c25cb66f12f54bfd719030fde927a
+  spans:
+  - start: 3408
+    end: 7245
+  verdict: supported
+  quote: we adopt a relatively simple post-training procedure based on supervised finetuning (SFT), rejection sampling (RS),
+    and direct preference optimization (DPO;
+  note: The sentence contrasts that procedure with more complex reinforcement learning algorithms.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-train-codistill
+  work: meta-2025-llama-4-herd
+  locator: p. 1
+  key: 7dda05af5b667196ab06279e6a5839a7
+  spans:
+  - start: 0
+    end: 23279
+  verdict: supported
+  quote: We codistilled the Llama 4 Maverick model from Llama 4 Behemoth as a teacher model
+  note: Meta states the claimed teacher-student relationship.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-llama2-sizes
+  work: touvron-2023-llama-2
+  locator: p. 4
+  key: 016c54adfdedb4312e01772be7b542be
+  spans:
+  - start: 8179
+    end: 10721
+  verdict: supported
+  quote: We are releasing variants of Llama 2 with 7B, 13B, and 70B parameters. We have also trained 34B variants
+  note: The sentence continues that the paper reports the 34B variants but does not release them.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-llama3-sizes
+  work: meta-2024-introducing-llama-3
+  locator: p. 1
+  key: 0bfff2712483c514582900c2a9304210
+  spans:
+  - start: 0
+    end: 18930
+  verdict: supported
+  quote: This release features pretrained and instruction-fine-tuned language models with 8B and 70B parameters
+  note: The announcement states the release’s model types and sizes.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-llama3-400b
+  work: meta-2024-introducing-llama-3
+  locator: p. 1
+  key: 7c527d08985bde000a4485135423e90f
+  spans:
+  - start: 0
+    end: 18930
+  verdict: supported
+  quote: Our largest models are over 400B parameters and, while these models are still training
+  note: The announcement describes their status at that time.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-llama31
+  work: meta-2024-introducing-llama-3-1
+  locator: p. 1
+  key: cad150825e823b7cc2660e1175b2fb2c
+  spans:
+  - start: 0
+    end: 15128
+  verdict: supported
+  quote: our latest models expand context length to 128K, add support across eight languages, and include Llama 3.1 405B
+  note: The passage states all three features.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-llama32
+  work: meta-2024-llama-3-2
+  locator: p. 1
+  key: 12fbeacf26a4060d8ee7a435d2037533
+  spans:
+  - start: 0
+    end: 16979
+  verdict: supported
+  quote: small and medium-sized vision LLMs (11B and 90B), and lightweight, text-only models (1B and 3B) that fit onto edge
+    and mobile devices
+  note: The announcement lists those sizes, modalities, and device suitability.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-llama33
+  work: meta-llama-3-3-model-card
+  locator: p. 1
+  key: e2af05b217659286027c44c7d143b008
+  spans:
+  - start: 0
+    end: 17233
+  verdict: supported
+  quote: Llama 3.3 (text only) | A new mix of publicly available online data. | 70B | Multilingual Text
+  note: The same model card gives a 128k context length and the 70B Instruct release date of December 6, 2024.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-llama4-models
+  work: meta-2025-llama-4-herd
+  locator: p. 1
+  key: 454090c59b4eea1c1e770692685a55bc
+  spans:
+  - start: 0
+    end: 23279
+  verdict: supported
+  quote: Llama 4 Scout, a 17 billion active parameter model with 16 experts
+  note: The following sentence describes Maverick as having 17 billion active parameters and 128 experts.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-llama4-total
+  work: meta-llama-4-model-card
+  locator: p. 1
+  key: ac2e250c5ab4bddeb8026a95e0244837
+  spans:
+  - start: 0
+    end: 20584
+  verdict: supported
+  quote: 17B (Activated) 109B (Total) Multilingual text and image Multilingual text and code 10M ~40T August 2024
+  note: The model card assigns 109B total parameters to Scout and 400B to Maverick.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-behemoth
+  work: meta-2025-llama-4-herd
+  locator: p. 1
+  key: 2eccc563149283c53a25f7a92d5f2011
+  spans:
+  - start: 0
+    end: 23279
+  verdict: supported
+  quote: While we’re not yet releasing Llama 4 Behemoth as it is still training
+  note: The passage also calls Behemoth a multimodal mixture-of-experts model.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-mmlu-llama
+  work: touvron-2023-llama
+  locator: Table 9
+  key: 8634894e92e4d054c46990d0d21a195d
+  spans:
+  - start: 22904
+    end: 26064
+  verdict: supported
+  quote: 35.1 46.9 57.8 63.4
+  note: In the LLaMA rows of Table 9, these are the five-shot MMLU averages for 7B through 65B.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-mmlu-llama2
+  work: touvron-2023-llama-2
+  locator: Table 3
+  key: 58c32e5861a74cb3bfe863044103eeb5
+  spans:
+  - start: 19698
+    end: 22962
+  verdict: supported
+  quote: 45.3 54.8 62.6 68.9
+  note: The MMLU column gives 45.3 and 68.9 for Llama 2 7B and 70B, while the Llama 1 65B row gives 63.4.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-mmlu-herd
+  work: grattafiori-2024-llama-3-herd
+  locator: p. 31
+  key: 595fc1bc4b8ea6bdf4fd84d6c3869800
+  spans:
+  - start: 112435
+    end: 114478
+  verdict: supported
+  quote: 66.7 37.1 47.8 ±1.9 64.2 ±1.2
+  note: Table 13 places 66.7, 79.3, and 85.2 in the MMLU column for the three stated Llama 3 sizes.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-mmlu-l4card
+  work: meta-llama-4-model-card
+  locator: p. 1
+  key: 1133068f3fff47e34da14a7ff0cc518a
+  spans:
+  - start: 0
+    end: 20584
+  verdict: supported
+  quote: Reasoning & Knowledge MMLU 5 macro_avg/acc_char 79.3 85.2 79.6 85.5
+  note: The pre-trained-model table gives the metric, shot count, model order, and claimed values.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-aup
+  work: meta-2023-llama-2-announcement
+  locator: p. 1
+  key: 4ad29f78d26eecc279c9085ab8da2ceb
+  spans:
+  - start: 0
+    end: 9466
+  verdict: supported
+  quote: 'Acceptable Use Policy: We put a policy in place that prohibits certain use cases'
+  note: Meta describes that policy in its Llama 2 announcement.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-llama4-download
+  work: meta-2025-llama-4-herd
+  locator: p. 1
+  key: 51b100306477fffe56308a5f1845c35e
+  spans:
+  - start: 0
+    end: 23279
+  verdict: supported
+  quote: In keeping with our commitment to open source, we’re making Llama 4 Maverick and Llama 4 Scout available to download
+    on llama.com and Hugging Face
+  note: The passage states the claimed framing and download locations.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-lic-llama
+  work: meta-llama-1-model-card
+  locator: p. 1
+  key: d2e1a64c917e8ba0f0f45115c1c400bf
+  spans:
+  - start: 0
+    end: 6609
+  verdict: supported
+  quote: '**License** Non-commercial bespoke license'
+  note: The model card gives that license description.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-lic-llama2-mau
+  work: meta-llama-2-community-license
+  locator: p. 1
+  key: 33bc1dc47c78f73bde8fdb6307b31e45
+  spans:
+  - start: 0
+    end: 6802
+  verdict: supported
+  quote: greater than 700 million monthly active users in the preceding calendar month, you must request a license from Meta
+  note: The additional commercial terms set that threshold at the release date and leave the grant to Meta’s discretion.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-lic-llama2-improve
+  work: meta-llama-2-community-license
+  locator: p. 1
+  key: 0f74e4815510c65a3c06c5976f404045
+  spans:
+  - start: 0
+    end: 6802
+  verdict: supported
+  quote: You will not use the Llama Materials or any output or results of the Llama Materials to improve any other large language
+    model
+  note: The clause immediately excludes Llama 2 and its derivative works.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-lic-llama3
+  work: meta-llama-3-community-license
+  locator: p. 1
+  key: 0f2710ead332d86c30124d3cc2311f17
+  spans:
+  - start: 0
+    end: 12208
+  verdict: supported
+  quote: prominently display “Built with Meta Llama 3” on a related website, user interface, blogpost, about page, or product
+    documentation.
+  note: The agreement also contains the stated 700-million-user threshold and restriction on improving other LLMs.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-lic-31-outputs
+  work: meta-2024-introducing-llama-3-1
+  locator: p. 1
+  key: 550d7fc2ee9c85a2cfe83a52782b5775
+  spans:
+  - start: 0
+    end: 15128
+  verdict: supported
+  quote: We’ve also made changes to our license, allowing developers to use the outputs from Llama models—including the 405B—to
+    improve other models.
+  note: Meta states the license change directly.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-lic-31-built
+  work: meta-llama-3-1-community-license
+  locator: p. 1
+  key: 20fc092542b7ae8999534ce6e200886f
+  spans:
+  - start: 0
+    end: 7571
+  verdict: supported
+  quote: prominently display “Built with Llama” on a related website, user interface, blogpost, about page, or product documentation.
+  note: Section 2 also retains the more-than-700-million monthly active users clause.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-lic-32
+  work: meta-llama-3-2-community-license
+  locator: p. 1
+  key: e252e98a8186bbbee211f936fe5b3d3f
+  spans:
+  - start: 0
+    end: 7571
+  verdict: supported
+  quote: 'Llama 3.2 Version Release Date: September 25, 2024'
+  note: Section 2 contains the more-than-700-million monthly active users clause.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-lic-33
+  work: meta-llama-3-3-community-license
+  locator: p. 1
+  key: 92f42d2c4cceaad8cb263aff3a810ded
+  spans:
+  - start: 0
+    end: 7856
+  verdict: supported
+  quote: 'Llama 3.3 Version Release Date: December 6, 2024'
+  note: Section 2 contains the more-than-700-million monthly active users clause.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-lic-4
+  work: meta-llama-4-community-license
+  locator: p. 1
+  key: 49f3ef47d9fbbe1064e85cee0ee3996d
+  spans:
+  - start: 0
+    end: 7548
+  verdict: supported
+  quote: 'Llama 4 Version Effective Date: April 5, 2025'
+  note: Section 2 contains the more-than-700-million monthly active users clause.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-meta-open-release
+  work: touvron-2023-llama-2
+  locator: p. 4
+  key: 9341245461368d486cbdbe1c403844d8
+  spans:
+  - start: 8179
+    end: 10721
+  verdict: supported
+  quote: We believe that the open release of LLMs, when done safely, will be a net benefit to society.
+  note: The authors state this as their belief.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-zuck-open-source
+  work: zuckerberg-2024-open-source-ai-path-forward
+  locator: p. 1
+  key: da81a15676ee4753e93649b863c2f556
+  spans:
+  - start: 0
+    end: 20615
+  verdict: supported
+  quote: Meta is committed to open source AI.
+  note: Zuckerberg’s passage argues separately that open source benefits developers, Meta, and the world.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-zuck-safety
+  work: zuckerberg-2024-open-source-ai-path-forward
+  locator: p. 1
+  key: d7957b7af363dbeb2ec21285a27ddb24
+  spans:
+  - start: 0
+    end: 20615
+  verdict: supported
+  quote: my view is that open source AI will be safer than the alternatives.
+  note: Zuckerberg links transparency and broad scrutiny to his safety argument.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-osi-not-os
+  work: osi-2023-llama-license-not-open-source
+  locator: p. 1
+  key: 8a79a605c2347e540876eacb849bdd78
+  spans:
+  - start: 0
+    end: 5315
+  verdict: supported
+  quote: Meta’s LLaMa license is not Open Source
+  note: The OSI article states that judgment in its title and body.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-osi-osd
+  work: osi-2023-llama-license-not-open-source
+  locator: p. 1
+  key: 99557699d8c4db27d90d57778d1467c7
+  spans:
+  - start: 0
+    end: 5315
+  verdict: supported
+  quote: it may not discriminate against persons or groups or fields of endeavor (OSD points 5 and 6).
+  note: The next sentence identifies Meta’s commercial-use and Acceptable Use Policy restrictions.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-osaid
+  work: osi-2024-open-source-ai-definition
+  locator: p. 1
+  key: 61638c23cc7d000b0875101ca2990ab4
+  spans:
+  - start: 0
+    end: 7864
+  verdict: supported
+  quote: Use the system for any purpose and without having to ask for permission.
+  note: The definition’s following lines also list the freedoms to study, modify, and share.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-osaid-data
+  work: osi-2024-open-source-ai-definition
+  locator: p. 1
+  key: e2f70f832e82453e4f3820469d9f6041
+  spans:
+  - start: 0
+    end: 7864
+  verdict: supported
+  quote: 'The preferred form of making modifications to a machine-learning system must include all the elements below:'
+  note: The three listed elements are sufficiently detailed data information, code, and parameters.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-llama2-safety
+  work: touvron-2023-llama-2
+  locator: the abstract
+  key: e9e2ea49bdac73bb641b85fc3ad3e897
+  spans:
+  - start: 1079
+    end: 1922
+  verdict: supported
+  quote: We provide a detailed description of our approach to fine-tuning and safety improvements of Llama 2-Chat
+  note: The abstract says the purpose is to enable the community to build on the work.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-llamaguard3
+  work: grattafiori-2024-llama-3-herd
+  locator: p. 1
+  key: c983cfd8ca66a0460b4fb0094a3e3b8b
+  spans:
+  - start: 0
+    end: 3408
+  verdict: supported
+  quote: We publicly release Llama 3, including pre-trained and post-trained versions of the 405B parameter language model
+    and our Llama Guard 3 model
+  note: The sentence identifies Llama Guard 3 as a model for input and output safety.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-33-risks
+  work: meta-llama-3-3-model-card
+  locator: p. 1
+  key: 7fc96e31143d0030cd50b5f04dd0c8cb
+  spans:
+  - start: 0
+    end: 17233
+  verdict: supported
+  quote: 'We specifically focused our efforts on mitigating the following critical risk areas:'
+  note: The following headings list CBRNE helpfulness, child safety, and cyber attack enablement.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-33-redteam
+  work: meta-llama-3-3-model-card
+  locator: p. 1
+  key: 55c0faa288ce21f7a8a7470a08f97a02
+  spans:
+  - start: 0
+    end: 17233
+  verdict: supported
+  quote: we conducted recurring red teaming exercises with the goal of discovering risks via adversarial prompting
+  note: The next sentence says Meta partnered with subject-matter experts in critical risk areas.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-requests
+  work: meta-2023-llama-2-announcement
+  locator: p. 1
+  key: 5e46584482d195c9a231a5d0eae5852d
+  spans:
+  - start: 0
+    end: 9466
+  verdict: supported
+  quote: more than 100,000 requests for access to the large language model
+  note: The surrounding sentence identifies the requests as coming from researchers for Llama 1.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-microsoft
+  work: meta-2023-llama-2-announcement
+  locator: p. 1
+  key: ca92e95870010f1de6d44e9827639a0b
+  spans:
+  - start: 0
+    end: 9466
+  verdict: supported
+  quote: Microsoft as the preferred partner for Llama 2.
+  note: Meta names Microsoft as its preferred partner.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-downloads
+  work: meta-2024-introducing-llama-3-1
+  locator: p. 1
+  key: bf4d3c8f4eeab4fdc8e725bcd732baee
+  spans:
+  - start: 0
+    end: 15128
+  verdict: supported
+  quote: With more than 300 million total downloads of all Llama versions to date
+  note: The figure appears in Meta’s Llama 3.1 release announcement.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-ecosystem
+  work: zuckerberg-2024-open-source-ai-path-forward
+  locator: p. 1
+  key: eca3a820f6a858ec398af49d0998d5d6
+  spans:
+  - start: 0
+    end: 20615
+  verdict: supported
+  quote: Amazon, Databricks, and NVIDIA are launching full suites of services to support developers fine-tuning and distilling
+    their own models.
+  note: Zuckerberg states the claim directly.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-tokens-llama2-18
+  work: grattafiori-2024-llama-3-herd
+  locator: p. 1
+  key: 3a498e9223b108102f234469061dfd37
+  spans:
+  - start: 0
+    end: 3408
+  verdict: supported
+  quote: We pre-train Llama 3 on a corpus of about 15T multilingual tokens, compared to 1.8T tokens for Llama 2.
+  note: The passage makes the stated comparison.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-33-limits
+  work: meta-llama-3-3-model-card
+  locator: p. 1
+  key: 2ba5de45889864bd6e175329b8e26d81
+  spans:
+  - start: 0
+    end: 17233
+  verdict: supported
+  quote: Llama 3.3’s potential outputs cannot be predicted in advance, and the model may in some instances produce inaccurate,
+    biased or other objectionable responses
+  note: The model card states both limitations.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-lineage-l2
+  work: touvron-2023-llama-2
+  locator: p. 4
+  key: 651a9de0614e3c7ca8ab8f7ef39dfbcf
+  spans:
+  - start: 8179
+    end: 10721
+  verdict: supported
+  quote: Llama 2, an updated version of Llama 1, trained on a new mix of publicly available data.
+  note: The authors describe Llama 2 in those terms.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-data-llama-public
+  work: touvron-2023-llama
+  locator: the abstract
+  key: cb15c8ec4874bf1f5578aab0f1adaf43
+  spans:
+  - start: 342
+    end: 868
+  verdict: supported
+  quote: using publicly available datasets exclusively, without resorting to proprietary and inaccessible datasets.
+  note: The abstract presents exclusive use of public datasets as the demonstrated training approach.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-data-llama2-pii
+  work: touvron-2023-llama-2
+  locator: Section 2.1
+  key: 7841de3427bb1356c1c5c68a20013550
+  spans:
+  - start: 11892
+    end: 12575
+  verdict: supported
+  quote: We made an effort to remove data from certain sites known to contain a high volume of personal information about
+    private individuals.
+  note: The passage states the qualified removal effort directly.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-llama-access
+  work: meta-2023-introducing-llama
+  locator: p. 1
+  key: 55d1d61c0c7a593efe66b350425b2b10
+  spans:
+  - start: 0
+    end: 5009
+  verdict: supported
+  quote: we are releasing our model under a noncommercial license focused on research use cases. Access to the model will
+    be granted on a case-by-case basis
+  note: The passage states the license and access policy.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-llama4-open-source
+  work: meta-2025-llama-4-herd
+  locator: p. 1
+  key: d9f2f3d4679be0b3e82ecad5040ea30a
+  spans:
+  - start: 0
+    end: 23279
+  verdict: supported
+  quote: In keeping with our commitment to open source, we’re making Llama 4 Maverick and Llama 4 Scout available to download
+  note: Meta explicitly frames the download release that way.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-lineage-l1
+  work: touvron-2023-llama
+  locator: Section 2.2
+  key: ab7b34bb978f7348614ef16c19e04ff3
+  spans:
+  - start: 8852
+    end: 9957
+  verdict: supported
+  quote: our network is based on the transformer architecture (Vaswani et al., 2017).
+  note: The section then specifies RMSNorm pre-normalization, SwiGLU, and RoPE.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-lineage-l3
+  work: meta-2024-introducing-llama-3
+  locator: p. 1
+  key: 30f07fef59c821ca2d2b10c2f13d34b8
+  spans:
+  - start: 0
+    end: 18930
+  verdict: supported
+  quote: we’ve adopted grouped query attention (GQA) across both the 8B and 70B sizes.
+  note: The preceding sentence gives the tokenizer vocabulary as 128K tokens.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-lineage-l4
+  work: meta-2025-llama-4-herd
+  locator: p. 1
+  key: e4849e1eef8f85ebba1da317993d088e
+  spans:
+  - start: 0
+    end: 23279
+  verdict: supported
+  quote: We codistilled the Llama 4 Maverick model from Llama 4 Behemoth as a teacher model
+  note: The passage also explicitly says these are the first Llama models using MoE and that they use early fusion of text
+    and vision tokens.
+- slug: llama
+  verifier: codex:gpt-6-sol
+  tag: NEW-llama
+  claim: c-tokens-llama2-known
+  work: touvron-2023-llama-2
+  locator: Section 2.1
+  key: 0846713ab682a22d2155d935c1ea5d7a
+  spans:
+  - start: 11892
+    end: 12575
+  verdict: supported
+  quote: We trained on 2 trillion tokens of data
+  note: The authors directly report the claimed training data quantity.

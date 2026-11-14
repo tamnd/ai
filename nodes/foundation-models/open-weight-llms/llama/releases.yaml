@@ -1,0 +1,56 @@
+# The releases of the Llama family (spec 04.4). Each release gives its date, its sizes and its licence, with sources. Sizes are the names that Meta uses.
+- id: llama
+  name: LLaMA
+  date: {v: "2023-02-24", src: "meta-2023-introducing-llama", loc: "p. 1"}
+  paper: {src: "touvron-2023-llama", note: "arXiv 2302.13971"}
+  sizes: {v: ["7B", "13B", "33B", "65B"], src: "touvron-2023-llama", loc: "Table 2"}
+  tokens: {v: "1.0T (7B, 13B); 1.4T (33B, 65B)", src: "touvron-2023-llama", loc: "Table 2"}
+  context_length: {v: 2048, unit: tokens, src: "touvron-2023-llama-2", loc: "p. 47"}
+  licence: {v: "Non-commercial bespoke license", src: "meta-llama-1-model-card", loc: "p. 1"}
+  access: "weights on request, granted case by case to researchers (meta-2023-introducing-llama)"
+- id: llama-2
+  name: Llama 2
+  date: {v: "2023-07-18", src: "meta-2023-llama-2-announcement", loc: "p. 1"}
+  paper: {src: "touvron-2023-llama-2", note: "arXiv 2307.09288"}
+  sizes: {v: ["7B", "13B", "70B"], src: "touvron-2023-llama-2", loc: "p. 4", note: "a 34B model was trained and reported, but not released"}
+  variants: "pretrained models and Llama 2-Chat, fine-tuned for dialogue"
+  tokens: {v: "2.0T", src: "touvron-2023-llama-2", loc: "Table 1"}
+  context_length: {v: 4096, unit: tokens, src: "touvron-2023-llama-2", loc: "p. 47"}
+  licence: {v: "Llama 2 Community License Agreement", src: "meta-llama-2-community-license", loc: "p. 1"}
+- id: llama-3
+  name: Meta Llama 3
+  date: {v: "2024-04-18", src: "meta-2024-introducing-llama-3", loc: "p. 1"}
+  sizes: {v: ["8B", "70B"], src: "meta-2024-introducing-llama-3", loc: "p. 1"}
+  variants: "pretrained and instruction-fine-tuned models"
+  tokens: {v: "over 15T", src: "meta-2024-introducing-llama-3", loc: "p. 1"}
+  context_length: {v: 8192, unit: tokens, src: "meta-2024-introducing-llama-3", loc: "p. 1"}
+  licence: {v: "Meta Llama 3 Community License Agreement", src: "meta-llama-3-community-license", loc: "p. 1"}
+- id: llama-3-1
+  name: Llama 3.1
+  date: {v: "2024-07-23", src: "meta-2024-introducing-llama-3-1", loc: "p. 1"}
+  paper: {src: "grattafiori-2024-llama-3-herd", note: "arXiv 2407.21783; the paper calls these models Llama 3"}
+  sizes: {v: ["8B", "70B", "405B"], src: "grattafiori-2024-llama-3-herd", loc: "Table 3"}
+  tokens: {v: "15.6T (405B)", src: "grattafiori-2024-llama-3-herd", loc: "p. 1"}
+  compute: {v: 3.8e25, unit: FLOP, src: "grattafiori-2024-llama-3-herd", loc: "p. 1", note: "the 405B model"}
+  context_length: {v: 128000, unit: tokens, src: "grattafiori-2024-llama-3-herd", loc: "p. 1", note: "written 128K"}
+  licence: {v: "Llama 3.1 Community License Agreement", src: "meta-llama-3-1-community-license", loc: "p. 1"}
+- id: llama-3-2
+  name: Llama 3.2
+  date: {v: "2024-09-25", src: "meta-2024-llama-3-2", loc: "p. 1"}
+  sizes: {v: ["1B", "3B", "11B", "90B"], src: "meta-2024-llama-3-2", loc: "p. 1", note: "1B and 3B are text only; 11B and 90B take images"}
+  licence: {v: "Llama 3.2 Community License Agreement", src: "meta-llama-3-2-community-license", loc: "p. 1"}
+- id: llama-3-3
+  name: Llama 3.3
+  date: {v: "2024-12-06", src: "meta-llama-3-3-model-card", loc: "p. 1"}
+  sizes: {v: ["70B"], src: "meta-llama-3-3-model-card", loc: "p. 1", note: "an instruction-tuned text model"}
+  tokens: {v: "15T+", src: "meta-llama-3-3-model-card", loc: "p. 1"}
+  context_length: {v: 128000, unit: tokens, src: "meta-llama-3-3-model-card", loc: "p. 1", note: "written 128k"}
+  licence: {v: "Llama 3.3 Community License Agreement", src: "meta-llama-3-3-community-license", loc: "p. 1"}
+- id: llama-4
+  name: Llama 4
+  date: {v: "2025-04-05", src: "meta-llama-4-model-card", loc: "p. 1"}
+  sizes: {v: ["Scout: 17B active, 109B total, 16 experts", "Maverick: 17B active, 400B total, 128 experts"], src: "meta-llama-4-model-card", loc: "p. 1"}
+  tokens: {v: "~40T (Scout); ~22T (Maverick)", src: "meta-llama-4-model-card", loc: "p. 1"}
+  context_length: {v: "10M (Scout); 1M (Maverick)", src: "meta-llama-4-model-card", loc: "p. 1"}
+  licence: {v: "Llama 4 Community License Agreement", src: "meta-llama-4-community-license", loc: "p. 1"}
+  not_released: "Llama 4 Behemoth, still training at the announcement (meta-2025-llama-4-herd)"
