@@ -11,6 +11,9 @@ summary: >-
 history:
   year: 2018
   note: "Google announced the open-source release of BERT on 2 November 2018 (Devlin and Chang, 2018); the paper appeared at NAACL 2019 (Devlin et al., 2019)."
+same_as:
+  wikipedia: BERT_(language_model)
+  arxiv: ["1810.04805"]
 sources:
   - {paper: "Devlin et al. (2019)", title: "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding", locator: "the abstract, pp. 1 to 9, Appendix A on pp. 13 and 14", note: "the architecture, the pre-training tasks, the data, the training and the results"}
   - {paper: "Google Research (2018 to 2020)", title: "the README, LICENSE and multilingual.md of the google-research/bert repository", locator: "p. 1 of each", note: "the releases, their dates and sizes, the licence and the multilingual data"}
