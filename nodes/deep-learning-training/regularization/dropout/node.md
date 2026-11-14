@@ -29,10 +29,10 @@ sources:
   - {paper: "Srivastava, Hinton, Krizhevsky, Sutskever and Salakhutdinov (2014)", title: "Dropout: A Simple Way to Prevent Neural Networks from Overfitting", locator: "JMLR 15(56), 1929 to 1958", note: "the full study and the canonical reference"}
   - {paper: "Hinton, Srivastava, Krizhevsky, Sutskever and Salakhutdinov (2012)", title: "Improving neural networks by preventing co-adaptation of feature detectors", locator: "arXiv 1207.0580", note: "the first publication"}
   - {book: "Goodfellow, Bengio and Courville (2016), Deep Learning", locator: "Section 7.12", note: "the textbook treatment, with the ensemble view"}
-  - {paper: "Wager, Wang and Liang (2013)", title: "Dropout Training as Adaptive Regularization", locator: "NeurIPS 26, the sections on generalized linear models"}
-  - {paper: "Baldi and Sadowski (2013)", title: "Understanding Dropout", locator: "NeurIPS 26, the sections on the normalized weighted geometric mean"}
+  - {paper: "Wager, Wang and Liang (2013)", title: "Dropout Training as Adaptive Regularization", locator: "NeurIPS 26, Sections 2 and 4"}
+  - {paper: "Baldi and Sadowski (2013)", title: "Understanding Dropout", locator: "NeurIPS 26, Section 3.1"}
   - {paper: "Gal and Ghahramani (2016)", title: "Dropout as a Bayesian Approximation: Representing Model Uncertainty in Deep Learning", locator: "ICML 2016, PMLR 48, Sections 3 and 4"}
-  - {paper: "Li, Chen, Hu and Yang (2019)", title: "Understanding the Disharmony between Dropout and Batch Normalization by Variance Shift", locator: "CVPR 2019, the sections on variance shift"}
+  - {paper: "Li, Chen, Hu and Yang (2019)", title: "Understanding the Disharmony between Dropout and Batch Normalization by Variance Shift", locator: "CVPR 2019, Sections 3 and 4"}
   - {paper: "Zaremba, Sutskever and Vinyals (2014)", title: "Recurrent Neural Network Regularization", locator: "arXiv 1409.2329, Section 3"}
   - {paper: "Wan, Zeiler, Zhang, LeCun and Fergus (2013)", title: "Regularization of Neural Networks using DropConnect", locator: "ICML 2013, PMLR 28(3), the model description"}
   - {paper: "Tompson, Goroshin, Jain, LeCun and Bregler (2015)", title: "Efficient Object Localization Using Convolutional Networks", locator: "CVPR 2015, Section 3.2"}

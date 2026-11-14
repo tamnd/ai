@@ -26,14 +26,14 @@
   text: "For generalized linear models, dropout is close, to second order, to an L2 penalty scaled by an estimate of the diagonal of the Fisher information."
   assumes: ["the model is a generalized linear model", "a second-order expansion of the loss in the noise"]
   evidence:
-    - {work: "wager-2013-dropout-adaptive-regularization", role: original, locator: "NeurIPS 26, the sections on generalized linear models", stance: for}
+    - {work: "wager-2013-dropout-adaptive-regularization", role: original, locator: "Sections 2 and 4", stance: for}
 
 - id: c-geometric-mean
   type: mathematical
   text: "For one logistic unit, the network with scaled weights gives the normalized weighted geometric mean of the outputs of all its dropout sub-networks."
   assumes: ["one layer with a logistic output", "independent dropout on the inputs of the unit"]
   evidence:
-    - {work: "baldi-2013-understanding-dropout", role: original, locator: "NeurIPS 26, the sections on the normalized weighted geometric mean", stance: for}
+    - {work: "baldi-2013-understanding-dropout", role: original, locator: "Section 3.1", stance: for}
 
 - id: c-reduces-error
   type: empirical
@@ -83,7 +83,7 @@
     scale: "unknown"
     setting: "image classification"
   evidence:
-    - {work: "li-2019-disharmony-dropout-batch-normalization", role: original, locator: "CVPR 2019, the sections on variance shift", stance: for}
+    - {work: "li-2019-disharmony-dropout-batch-normalization", role: original, locator: "Sections 3 and 4", stance: for}
 
 - id: c-typical-rates
   type: attributive
@@ -95,19 +95,19 @@
   type: attributive
   text: "Zaremba et al. apply dropout only to the non-recurrent connections of an LSTM."
   evidence:
-    - {work: "zaremba-2014-recurrent-neural-network-regularization", role: original, locator: "arXiv 1409.2329, Section 3", stance: for}
+    - {work: "zaremba-2014-recurrent-neural-network-regularization", role: original, locator: "Section 3", stance: for}
 
 - id: c-llm-no-dropout
   type: historical
   text: "PaLM was trained without dropout."
   evidence:
-    - {work: "chowdhery-2022-palm", role: original, locator: "arXiv 2204.02311, Section 5", stance: for}
+    - {work: "chowdhery-2022-palm", role: original, locator: "Section 5", stance: for}
 
 - id: c-mc-dropout
   type: definitional
   text: "Monte Carlo dropout keeps dropout on at inference and averages several forward passes, and reads the spread of the passes as the uncertainty of the prediction."
   evidence:
-    - {work: "gal-2016-dropout-bayesian-approximation", role: original, locator: "ICML 2016, PMLR 48, Sections 3 and 4", stance: for}
+    - {work: "gal-2016-dropout-bayesian-approximation", role: original, locator: "Sections 3 and 4", stance: for}
 
 - id: c-first-2012
   type: historical
@@ -125,4 +125,4 @@
   type: historical
   text: "AlexNet used dropout in its first two fully connected layers and was the winning entry of ILSVRC-2012."
   evidence:
-    - {work: "krizhevsky-2012-imagenet-classification", role: original, locator: "NeurIPS 25, Section 4.2 and the abstract", stance: for}
+    - {work: "krizhevsky-2012-imagenet-classification", role: original, locator: "Section 4.2", stance: for}
