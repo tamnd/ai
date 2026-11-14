@@ -66,13 +66,13 @@ With these bypasses, networks of a hundred layers or more train well, and depth 
 
 ## Overview
 
-He et al. observed that as the depth of a plain network increases, accuracy saturates and then degrades, and that adding more layers to a suitably deep model leads to a higher training error, so the cause is not overfitting. {#c-degradation}
-A deeper model should not do worse in principle: there is a solution by construction in which the added layers are identity mappings and the other layers are copied from the learned shallower model, so the deeper model should have no higher training error. The degradation suggests that solvers have difficulty approximating identity mappings by several nonlinear layers. {#c-construction-argument}
+He et al. observed that when a plain network gets deeper, its accuracy first stops improving and then falls, and that stacking more layers on a network that is already deep enough raises the training error itself, so overfitting cannot be the cause. {#c-degradation}
+In principle the deeper model should not do worse: take the trained shallow network, keep its layers, and let every extra layer compute the identity; this deeper network has the same training error. That the solver does not find such a solution suggests that a stack of nonlinear layers has a hard time learning the identity. {#c-construction-argument}
 
 Their answer is residual learning.
 Let $H(x)$ be the mapping that a few stacked layers should fit.
 Instead, the layers fit the residual $F(x) := H(x) - x$, and a shortcut connection that performs the identity adds $x$ back, so the block outputs $F(x) + x$. {#c-resnet}
-The hypothesis is that the residual is easier to optimize: if an identity mapping were optimal, it would be easier to push the residual to zero than to fit an identity with a stack of nonlinear layers. {#c-hypothesis}
+The bet is that the residual is the easier target: in the extreme case where the identity is the best mapping, the layers only need to drive $F$ to zero, which is simpler than building the identity out of nonlinear layers. {#c-hypothesis}
 
 The identity shortcut adds no parameter and no multiply-add, only an element-wise addition, so a residual network can be compared with a plain network that has exactly the same layers. {#c-no-extra-parameters}
 On ImageNet, the 34-layer plain network has a higher training error than the 18-layer one; with shortcuts the 34-layer network has a considerably lower training error than its plain counterpart and a top-1 error 3.5% lower. {#c-shortcuts-fix-degradation}
