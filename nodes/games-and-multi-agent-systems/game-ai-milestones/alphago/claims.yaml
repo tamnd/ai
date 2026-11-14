@@ -4,19 +4,19 @@
   type: historical
   text: "David Silver, Aja Huang and coauthors at Google DeepMind and Google introduced the Go program AlphaGo."
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "p. 1", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 484", stance: for}
 
 - id: c-go-hard
   type: attributive
   text: "Silver et al. describe Go as long viewed as the most challenging of classic games for artificial intelligence, owing to its enormous search space and the difficulty of evaluating board positions and moves."
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "p. 1", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 484", stance: for}
 
 - id: c-breadth-depth
   type: attributive
   text: "Silver et al. give approximate breadth and depth of the game tree as about 250 and 150 for Go, against about 35 and 80 for chess."
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "p. 1", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 484", stance: for}
 
 - id: c-versions
   type: definitional
@@ -40,25 +40,25 @@
   type: definitional
   text: "In large games such as chess and especially Go, exhaustive search of the game tree is infeasible."
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "p. 1", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 484", stance: for}
 
 - id: c-two-principles
   type: definitional
   text: "Silver et al. reduce the search space in two ways: position evaluation with a value function reduces the depth of the search, and sampling actions from a policy reduces its breadth."
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "p. 1", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 484", stance: for}
 
 - id: c-board-image
   type: definitional
   text: "AlphaGo passes in the board position as a 19 × 19 image and uses convolutional layers to construct a representation of the position."
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "p. 1", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 484", stance: for}
 
 - id: c-sl-train
   type: historical
   text: "The SL policy network of AlphaGo is a 13-layer policy network trained from 30 million positions from the KGS Go Server to predict expert moves."
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "p. 2", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 485", stance: for}
 
 - id: c-sl-policy
   type: empirical
@@ -69,13 +69,13 @@
     scale: "30 million KGS positions"
     setting: "move prediction accuracy on a held-out test set"
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "p. 2", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 485", stance: for}
 
 - id: c-rollout
   type: definitional
   text: "The rollout policy of AlphaGo is a faster linear softmax policy based on small pattern features."
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "p. 2", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 485", stance: for}
 
 - id: c-rollout-speed
   type: empirical
@@ -86,19 +86,19 @@
     scale: "unknown"
     setting: "move prediction accuracy and time per action"
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "p. 2", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 485", stance: for}
 
 - id: c-rl-policy
   type: definitional
   text: "The RL policy network of AlphaGo has the same structure as the SL policy network, starts from its weights, and is improved by policy gradient reinforcement learning."
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "p. 2", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 485", stance: for}
 
 - id: c-rl-opponents
   type: definitional
   text: "The RL policy network of AlphaGo plays games against a randomly selected previous iteration of itself, with a reward of +1 for winning and −1 for losing."
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "p. 2", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 485", stance: for}
 
 - id: c-rl-results
   type: empirical
@@ -109,13 +109,13 @@
     scale: "unknown"
     setting: "games without search against the SL policy network and Pachi"
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "p. 2", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 485", stance: for}
 
 - id: c-value
   type: definitional
   text: "The value network of AlphaGo has an architecture similar to the policy network but outputs a single prediction: the winner of games played by the RL policy network against itself from a position."
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "p. 3", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 486", stance: for}
 
 - id: c-value-data
   type: empirical
@@ -126,43 +126,43 @@
     scale: "complete KGS games, then 30 million self-play positions"
     setting: "mean squared error of outcome prediction on training and test sets"
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "p. 3", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 486", stance: for}
 
 - id: c-mcts
   type: definitional
   text: "AlphaGo combines the networks in a Monte Carlo tree search (MCTS)."
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "p. 3", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 486", stance: for}
 
 - id: c-selection
   type: definitional
   text: "In the tree search of AlphaGo, each step selects the action that maximizes the action value plus a bonus proportional to the prior probability that decays with repeated visits."
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "p. 3", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 486", stance: for}
 
 - id: c-priors
   type: definitional
   text: "In the tree search of AlphaGo, a new leaf node is processed once by the SL policy network, whose output probabilities are stored as prior probabilities."
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "p. 3", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 486", stance: for}
 
 - id: c-leaf-eval
   type: definitional
   text: "In the tree search of AlphaGo, a leaf is evaluated by the value network and by the outcome of a rollout, and the two evaluations are combined with a mixing parameter λ."
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "p. 3", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 486", stance: for}
 
 - id: c-most-visited
   type: definitional
   text: "Once the search is complete, AlphaGo chooses the most visited move from the root position."
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "p. 3", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 486", stance: for}
 
 - id: c-sl-better
   type: attributive
   text: "Silver et al. report that the SL policy network performed better in AlphaGo than the stronger RL policy network, presumably because humans select a diverse beam of promising moves."
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "p. 3", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 486", stance: for}
 
 - id: c-rl-value-better
   type: empirical
@@ -173,25 +173,25 @@
     scale: "unknown"
     setting: "playing strength within the search"
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "pp. 3 to 4", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "pp. 486 to 487", stance: for}
 
 - id: c-async
   type: definitional
   text: "AlphaGo runs an asynchronous multi-threaded search that executes simulations on CPUs and computes the policy and value networks in parallel on GPUs."
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "p. 4", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 487", stance: for}
 
 - id: c-hardware
   type: historical
   text: "The final single-machine version of AlphaGo used 40 search threads, 48 CPUs and 8 GPUs, and a distributed version used multiple machines, 40 search threads, 1,202 CPUs and 176 GPUs."
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "p. 4", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 487", stance: for}
 
 - id: c-fan-hui-dates
   type: historical
   text: "Nature received the paper of Silver et al. on 11 November 2015 and accepted it on 5 January 2016."
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "p. 6", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 489", stance: for}
 
 - id: c-lee-unpublished
   type: historical
@@ -256,7 +256,7 @@
     scale: "495 games"
     setting: "internal tournament, 5 s per move"
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "p. 5", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 488", stance: for}
     - {work: "silver-2016-mastering-go", role: original, locator: "p. 9", stance: for}
 
 - id: c-distributed-wins
@@ -268,7 +268,7 @@
     scale: "unknown"
     setting: "internal tournament"
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "p. 5", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 488", stance: for}
 
 - id: c-elo-2016
   type: empirical
@@ -279,7 +279,7 @@
     scale: "unknown"
     setting: "internal tournament with 5 s per move, Elo anchored to Fan Hui"
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "p. 15", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "Extended Data Table 6", stance: for}
 
 - id: c-elo-anchor
   type: definitional
@@ -291,19 +291,19 @@
   type: definitional
   text: "On the Elo scale of Silver et al., a difference of 230 points corresponds to a 79% probability of winning."
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "p. 4", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 487", stance: for}
 
 - id: c-fan-hui
   type: historical
   text: "Fan Hui was a professional 2 dan and the winner of the European Go championships of 2013, 2014 and 2015."
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "p. 5", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 488", stance: for}
 
 - id: c-fan-hui-match
   type: historical
   text: "Over 5 to 9 October 2015 he played a formal match of five games against distributed AlphaGo, and AlphaGo won 5 to 0."
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "p. 5", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 488", stance: for}
     - {work: "deepmind-alphago-page", role: statement, locator: "p. 1", stance: for}
 
 - id: c-informal
@@ -316,7 +316,7 @@
   type: attributive
   text: "Silver et al. report that this was the first time a computer Go program had defeated a human professional player without handicap in the full game of Go."
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "p. 5", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 488", stance: for}
 
 - id: c-lee
   type: historical
@@ -387,13 +387,13 @@
   type: attributive
   text: "Silver et al. write that during the match against Fan Hui, AlphaGo evaluated thousands of times fewer positions than Deep Blue did in its chess match against Kasparov."
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "p. 6", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 489", stance: for}
 
 - id: c-handcrafted
   type: attributive
   text: "Silver et al. contrast the handcrafted evaluation function of Deep Blue with the neural networks of AlphaGo, trained directly from gameplay through general-purpose supervised and reinforcement learning."
   evidence:
-    - {work: "silver-2016-mastering-go", role: original, locator: "p. 6", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 489", stance: for}
 
 - id: c-move-37
   type: attributive

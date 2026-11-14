@@ -2,7 +2,7 @@
 - id: developer
   value: "Google DeepMind"
   sources:
-    - {src: "silver-2016-mastering-go", loc: "p. 1", value: "Google DeepMind", kind: primary}
+    - {src: "silver-2016-mastering-go", loc: "p. 484", value: "Google DeepMind", kind: primary}
     - {src: "deepmind-alphago-page", loc: "p. 1", value: "Google DeepMind", kind: primary}
 - id: years
   value: "2015 to 2017"
@@ -12,7 +12,7 @@
 - id: domain
   value: "the board game Go"
   sources:
-    - {src: "silver-2016-mastering-go", loc: "p. 1", value: "the board game Go", kind: primary}
+    - {src: "silver-2016-mastering-go", loc: "p. 484", value: "the board game Go", kind: primary}
 - id: status
   value: retired
   as_of: 2017-05-27

@@ -14,7 +14,7 @@ history:
 same_as:
   wikipedia: AlphaGo
 sources:
-  - {paper: "Silver et al. (2016)", title: "Mastering the game of Go with deep neural networks and tree search", locator: "pp. 1 to 6, 9 and 15", note: "the parts, the training pipeline, the hardware, the tournament and the Fan Hui match; pages of the PDF file, whose pp. 1 to 6 are pp. 484 to 489 of Nature 529"}
+  - {paper: "Silver et al. (2016)", title: "Mastering the game of Go with deep neural networks and tree search", locator: "pp. 484 to 489, pp. 8 to 9 and Extended Data Table 6", note: "the parts, the training pipeline, the hardware, the tournament and the Fan Hui match; pp. 484 to 489 are the printed pages of Nature 529, and pp. 8 to 9 are pages of the Methods in the PDF file, which print no number"}
   - {paper: "Silver et al. (2017)", title: "Mastering the game of Go without human knowledge", locator: "pp. 2, 8, 12, 21, 22 and 30", note: "the names and differences of the versions Fan, Lee, Master and Zero, their hardware and Elo ratings; the accepted manuscript"}
   - {paper: "Silver et al. (2018)", title: "A general reinforcement learning algorithm that masters chess, shogi, and Go through self-play", locator: "pp. 2, 4 and 5", note: "AlphaZero; the accepted manuscript"}
   - {url: "https://deepmind.google/research/alphago/", title: "Google DeepMind, AlphaGo", locator: "p. 1", note: "the developer's account of the Lee Sedol match and of moves 37 and 78"}
