@@ -1,6 +1,6 @@
 # The canon of spec 5.10 and 13.3. An item is core when at least two canon works name it (the canon match step of spec 14.3).
 # A work here is also a secondary source with locators. Its id is the src id that facts, claims and the notation register cite.
-# The toc and index fields hold the names of the chapters, the sections and the index terms, with their locators. They hold names only, never text (spec 19.3). The harvest step fills them from the public tables of contents and by hand, so they are empty in M0.
+# The toc and index fields hold the names of the chapters, the sections and the index terms, with their locators. They hold names only, never text (spec 19.3). They are filled from the public tables of contents of the works, by hand or with a script, and toc_source names the page that a toc was read from, the date it was read and how it was read. A work with no toc yet is matched as a whole.
 # A change to the canon is a pull request with a reason.
 # Each ISBN was checked against Open Library on 2026-11-13. A work with no ISBN gives a DOI or the URL of its free online version.
 version: c-2026.11
@@ -15,6 +15,706 @@ works:
     covers: the whole field, symbolic and statistical
     areas: [ai-foundations, search-and-evolutionary-computation, constraints-and-satisfiability, planning-and-scheduling, knowledge-representation, automated-reasoning, probabilistic-reasoning, games-and-multi-agent-systems, supervised-learning, reinforcement-learning, natural-language-processing, computer-vision, robotics-and-embodied-ai, philosophy-and-cognitive-science, ai-safety-and-alignment]
     index: [toc, index]
+    toc_source: {url: "https://aima.cs.berkeley.edu/contents.html", read: 2026-11-15, note: "the full table of contents of the US edition, with its page numbers; entries that the page gives no number take the number of their section, with note unnumbered"}
+    toc:
+      - {locator: "1", title: "Introduction", page: 1}
+      - {locator: "1.1", title: "What Is AI?", page: 1}
+      - {locator: "1.1.1", title: "Acting humanly: The Turing test approach", page: 2}
+      - {locator: "1.1.2", title: "Thinking humanly: The cognitive modeling approach", page: 2}
+      - {locator: "1.1.3", title: "Thinking rationally: The “laws of thought” approach", page: 3}
+      - {locator: "1.1.4", title: "Acting rationally: The rational agent approach", page: 3}
+      - {locator: "1.1.5", title: "Beneficial machines", page: 4}
+      - {locator: "1.2", title: "The Foundations of Artificial Intelligence", page: 5}
+      - {locator: "1.2.1", title: "Philosophy", page: 6}
+      - {locator: "1.2.2", title: "Mathematics", page: 8}
+      - {locator: "1.2.3", title: "Economics", page: 9}
+      - {locator: "1.2.4", title: "Neuroscience", page: 11}
+      - {locator: "1.2.5", title: "Psychology", page: 12}
+      - {locator: "1.2.6", title: "Computer engineering", page: 14}
+      - {locator: "1.2.7", title: "Control theory and cybernetics", page: 15}
+      - {locator: "1.2.8", title: "Linguistics", page: 16}
+      - {locator: "1.3", title: "The History of Artificial Intelligence", page: 17}
+      - {locator: "1.3.1", title: "The inception of artificial intelligence (1943–1956)", page: 17}
+      - {locator: "1.3.2", title: "Early enthusiasm, great expectations (1952–1969)", page: 18}
+      - {locator: "1.3.3", title: "A dose of reality (1966–1973)", page: 21}
+      - {locator: "1.3.4", title: "Expert systems (1969–1986)", page: 22}
+      - {locator: "1.3.5", title: "The return of neural networks (1986–present)", page: 24}
+      - {locator: "1.3.6", title: "Probabilistic reasoning and machine learning (1987–present)", page: 24}
+      - {locator: "1.3.7", title: "Big data (2001–present)", page: 26}
+      - {locator: "1.3.8", title: "Deep learning (2011–present)", page: 26}
+      - {locator: "1.4", title: "The State of the Art", page: 27}
+      - {locator: "1.5", title: "Risks and Benefits of AI", page: 31}
+      - {locator: "2", title: "Intelligent Agents", page: 36}
+      - {locator: "2.1", title: "Agents and Environments", page: 36}
+      - {locator: "2.2", title: "Good Behavior: The Concept of Rationality", page: 39}
+      - {locator: "2.2.1", title: "Performance measures", page: 39}
+      - {locator: "2.2.2", title: "Rationality", page: 40}
+      - {locator: "2.2.3", title: "Omniscience, learning, and autonomy", page: 40}
+      - {locator: "2.3", title: "The Nature of Environments", page: 42}
+      - {locator: "2.3.1", title: "Specifying the task environment", page: 42}
+      - {locator: "2.3.2", title: "Properties of task environments", page: 43}
+      - {locator: "2.4", title: "The Structure of Agents", page: 47}
+      - {locator: "2.4.1", title: "Agent programs", page: 48}
+      - {locator: "2.4.2", title: "Simple reflex agents", page: 49}
+      - {locator: "2.4.3", title: "Model-based reflex agents", page: 51}
+      - {locator: "2.4.4", title: "Goal-based agents", page: 53}
+      - {locator: "2.4.5", title: "Utility-based agents", page: 54}
+      - {locator: "2.4.6", title: "Learning agents", page: 56}
+      - {locator: "2.4.7", title: "How the components of agent programs work", page: 58}
+      - {locator: "3", title: "Solving Problems by Searching", page: 63}
+      - {locator: "3.1", title: "Problem-Solving Agents", page: 63}
+      - {locator: "3.1.1", title: "Search problems and solutions", page: 65}
+      - {locator: "3.1.2", title: "Formulating problems", page: 66}
+      - {locator: "3.2", title: "Example Problems", page: 66}
+      - {locator: "3.2.1", title: "Standardized problems", page: 66}
+      - {locator: "3.2.2", title: "Real-world problems", page: 69}
+      - {locator: "3.3", title: "Search Algorithms", page: 71}
+      - {locator: "3.3.1", title: "Best-first search", page: 73}
+      - {locator: "3.3.2", title: "Search data structures", page: 73}
+      - {locator: "3.3.3", title: "Redundant paths", page: 74}
+      - {locator: "3.3.4", title: "Measuring problem-solving performance", page: 75}
+      - {locator: "3.4", title: "Uninformed Search Strategies", page: 76}
+      - {locator: "3.4.1", title: "Breadth-first search", page: 76}
+      - {locator: "3.4.2", title: "Dijkstra's algorithm or uniform-cost search", page: 77}
+      - {locator: "3.4.3", title: "Depth-first search and the problem of memory", page: 78}
+      - {locator: "3.4.4", title: "Depth-limited and iterative deepening search", page: 80}
+      - {locator: "3.4.5", title: "Bidirectional search", page: 82}
+      - {locator: "3.4.6", title: "Comparing uninformed search algorithms", page: 84}
+      - {locator: "3.5", title: "Informed (Heuristic) Search Strategies", page: 84}
+      - {locator: "3.5.1", title: "Greedy best-first search", page: 85}
+      - {locator: "3.5.2", title: "A* search", page: 85}
+      - {locator: "3.5.3", title: "Search contours", page: 89}
+      - {locator: "3.5.4", title: "Satisficing search: Inadmissible heuristics and weighted A*", page: 90}
+      - {locator: "3.5.5", title: "Memory-bounded search", page: 92}
+      - {locator: "3.5.6", title: "Bidirectional heuristic search", page: 96}
+      - {locator: "3.6", title: "Heuristic Functions", page: 97}
+      - {locator: "3.6.1", title: "The effect of heuristic accuracy on performance", page: 98}
+      - {locator: "3.6.2", title: "Generating heuristics from relaxed problems", page: 99}
+      - {locator: "3.6.3", title: "Generating heuristics from subproblems: Pattern databases", page: 100}
+      - {locator: "3.6.4", title: "Generating heuristics with landmarks", page: 102}
+      - {locator: "3.6.5", title: "Learning to search better", page: 103}
+      - {locator: "3.6.6", title: "Learning heuristics from experience", page: 104}
+      - {locator: "4", title: "Search in Complex Environments", page: 110}
+      - {locator: "4.1", title: "Local Search and Optimization Problems", page: 110}
+      - {locator: "4.1.1", title: "Hill-climbing search", page: 111}
+      - {locator: "4.1.2", title: "Simulated annealing", page: 114}
+      - {locator: "4.1.3", title: "Local beam search", page: 115}
+      - {locator: "4.1.4", title: "Evolutionary algorithms", page: 115}
+      - {locator: "4.2", title: "Local Search in Continuous Spaces", page: 119}
+      - {locator: "4.3", title: "Search with Nondeterministic Actions", page: 122}
+      - {locator: "4.3.1", title: "The erratic vacuum world", page: 122}
+      - {locator: "4.3.2", title: "AND—OR search trees", page: 123}
+      - {locator: "4.3.3", title: "Try, try again", page: 125}
+      - {locator: "4.4", title: "Search in Partially Observable Environments", page: 126}
+      - {locator: "4.4.1", title: "Searching with no observation", page: 126}
+      - {locator: "4.4.2", title: "Searching in partially observable environments", page: 130}
+      - {locator: "4.4.3", title: "Solving partially observable problems", page: 132}
+      - {locator: "4.4.4", title: "An agent for partially observable environments", page: 132}
+      - {locator: "4.5", title: "Online Search Agents and Unknown Environments", page: 134}
+      - {locator: "4.5.1", title: "Online search problems", page: 135}
+      - {locator: "4.5.2", title: "Online search agents", page: 137}
+      - {locator: "4.5.3", title: "Online local search", page: 138}
+      - {locator: "4.5.4", title: "Learning in online search", page: 140}
+      - {locator: "5", title: "Adversarial Search and Games", page: 146}
+      - {locator: "5.1", title: "Game Theory", page: 146}
+      - {locator: "5.1.1", title: "Two-player zero-sum games", page: 147}
+      - {locator: "5.2", title: "Optimal Decisions in Games", page: 148}
+      - {locator: "5.2.1", title: "The minimax search algorithm", page: 149}
+      - {locator: "5.2.2", title: "Optimal decisions in multiplayer games", page: 151}
+      - {locator: "5.2.3", title: "Alpha–Beta Pruning", page: 152}
+      - {locator: "5.2.4", title: "Move ordering", page: 153}
+      - {locator: "5.3", title: "Heuristic Alpha–Beta Tree Search", page: 156}
+      - {locator: "5.3.1", title: "Evaluation functions", page: 156}
+      - {locator: "5.3.2", title: "Cutting off search", page: 158}
+      - {locator: "5.3.3", title: "Forward pruning", page: 159}
+      - {locator: "5.3.4", title: "Search versus lookup", page: 160}
+      - {locator: "5.4", title: "Monte Carlo Tree Search", page: 161}
+      - {locator: "5.5", title: "Stochastic Games", page: 164}
+      - {locator: "5.5.1", title: "Evaluation functions for games of chance", page: 166}
+      - {locator: "5.6", title: "Partially Observable Games", page: 168}
+      - {locator: "5.6.1", title: "Kriegspiel: Partially observable chess", page: 168}
+      - {locator: "5.6.2", title: "Card games", page: 171}
+      - {locator: "5.7", title: "Limitations of Game Search Algorithms", page: 173}
+      - {locator: "6", title: "Constraint Satisfaction Problems", page: 180}
+      - {locator: "6.1", title: "Defining Constraint Satisfaction Problems", page: 180}
+      - {locator: "6.1.1", title: "Example problem: Map coloring", page: 181}
+      - {locator: "6.1.2", title: "Example problem: Job-shop scheduling", page: 182}
+      - {locator: "6.1.3", title: "Variations on the CSP formalism", page: 183}
+      - {locator: "6.2", title: "Constraint Propagation: Inference in CSPs", page: 185}
+      - {locator: "6.2.1", title: "Node consistency", page: 186}
+      - {locator: "6.2.2", title: "Arc consistency", page: 186}
+      - {locator: "6.2.3", title: "Path consistency", page: 187}
+      - {locator: "6.2.4", title: "Kconsistency", page: 188}
+      - {locator: "6.2.5", title: "Global constraints", page: 188}
+      - {locator: "6.2.6", title: "Sudoku", page: 189}
+      - {locator: "6.3", title: "Backtracking Search for CSPs", page: 191}
+      - {locator: "6.3.1", title: "Variable and value ordering", page: 193}
+      - {locator: "6.3.2", title: "Interleaving search and inference", page: 194}
+      - {locator: "6.3.3", title: "Intelligent backtracking: Looking backward", page: 195}
+      - {locator: "6.3.4", title: "Constraint learning", page: 196}
+      - {locator: "6.4", title: "Local Search for CSPs", page: 197}
+      - {locator: "6.5", title: "The Structure of Problems", page: 199}
+      - {locator: "6.5.1", title: "Cutset conditioning", page: 200}
+      - {locator: "6.5.2", title: "Tree decomposition", page: 201}
+      - {locator: "6.5.3", title: "Value symmetry", page: 203}
+      - {locator: "7", title: "Logical Agents", page: 208}
+      - {locator: "7.1", title: "Knowledge-Based Agents", page: 209}
+      - {locator: "7.2", title: "The Wumpus World", page: 210}
+      - {locator: "7.3", title: "Logic", page: 214}
+      - {locator: "7.4", title: "Propositional Logic: A Very Simple Logic", page: 217}
+      - {locator: "7.4.1", title: "Syntax", page: 217}
+      - {locator: "7.4.2", title: "Semantics", page: 218}
+      - {locator: "7.4.3", title: "A simple knowledge base", page: 220}
+      - {locator: "7.4.4", title: "A simple inference procedure", page: 220}
+      - {locator: "7.5", title: "Propositional Theorem Proving", page: 222}
+      - {locator: "7.5.1", title: "Inference and proofs", page: 223}
+      - {locator: "7.5.2", title: "Proof by resolution", page: 225}
+      - {locator: "7.5", title: "Conjunctive normal form", page: 226, note: unnumbered}
+      - {locator: "7.5", title: "A resolution algorithm", page: 227, note: unnumbered}
+      - {locator: "7.5", title: "Completeness of resolution", page: 228, note: unnumbered}
+      - {locator: "7.5.3", title: "Horn clauses and definite clauses", page: 229}
+      - {locator: "7.5.4", title: "Forward and backward chaining", page: 230}
+      - {locator: "7.6", title: "Effective Propositional Model Checking", page: 232}
+      - {locator: "7.6.1", title: "A complete backtracking algorithm", page: 233}
+      - {locator: "7.6.2", title: "Local search algorithms", page: 235}
+      - {locator: "7.6.3", title: "The landscape of random SAT problems", page: 236}
+      - {locator: "7.7", title: "Agents Based on Propositional Logic", page: 237}
+      - {locator: "7.7.1", title: "The current state of the world", page: 237}
+      - {locator: "7.7.2", title: "A hybrid agent", page: 241}
+      - {locator: "7.7.3", title: "Logical state estimation", page: 241}
+      - {locator: "7.7.4", title: "Making plans by propositional inference", page: 244}
+      - {locator: "8", title: "First-Order Logic", page: 251}
+      - {locator: "8.1", title: "Representation Revisited", page: 251}
+      - {locator: "8.1.1", title: "The language of thought", page: 252}
+      - {locator: "8.1.2", title: "Combining the best of formal and natural languages", page: 254}
+      - {locator: "8.2", title: "Syntax and Semantics of First-Order Logic", page: 256}
+      - {locator: "8.2.1", title: "Models for first-order logic", page: 256}
+      - {locator: "8.2.2", title: "Symbols and interpretations", page: 257}
+      - {locator: "8.2.3", title: "Terms", page: 259}
+      - {locator: "8.2.4", title: "Atomic sentences", page: 260}
+      - {locator: "8.2.5", title: "Complex sentences", page: 260}
+      - {locator: "8.2.6", title: "Quantifiers", page: 260}
+      - {locator: "8.2", title: "Universal quantification (∀)", page: 260, note: unnumbered}
+      - {locator: "8.2", title: "Existential quantification (∃)", page: 262, note: unnumbered}
+      - {locator: "8.2", title: "Nested quantifiers", page: 263, note: unnumbered}
+      - {locator: "8.2", title: "Connections between ∀ and ∃", page: 263, note: unnumbered}
+      - {locator: "8.2.7", title: "Equality", page: 264}
+      - {locator: "8.2.8", title: "Database semantics", page: 264}
+      - {locator: "8.3", title: "Using First-Order Logic", page: 265}
+      - {locator: "8.3.1", title: "Assertions and queries in first-order logic", page: 265}
+      - {locator: "8.3.2", title: "The kinship domain", page: 266}
+      - {locator: "8.3.3", title: "Numbers, sets, and lists", page: 268}
+      - {locator: "8.3.4", title: "The wumpus world", page: 270}
+      - {locator: "8.4", title: "Knowledge Engineering in First-Order Logic", page: 271}
+      - {locator: "8.4.1", title: "The knowledge engineering process", page: 272}
+      - {locator: "8.4.2", title: "The electronic circuits domain", page: 273}
+      - {locator: "8.4", title: "Identify the questions", page: 273, note: unnumbered}
+      - {locator: "8.4", title: "Assemble the relevant knowledge", page: 274, note: unnumbered}
+      - {locator: "8.4", title: "Decide on a vocabulary", page: 274, note: unnumbered}
+      - {locator: "8.4", title: "Encode general knowledge of the domain", page: 275, note: unnumbered}
+      - {locator: "8.4", title: "Encode the specific problem instance", page: 276, note: unnumbered}
+      - {locator: "8.4", title: "Pose queries to the inference procedure", page: 276, note: unnumbered}
+      - {locator: "8.4", title: "Debug the knowledge base", page: 277, note: unnumbered}
+      - {locator: "9", title: "Inference in First-Order Logic", page: 280}
+      - {locator: "9.1", title: "Propositional vs. First-Order Inference", page: 280}
+      - {locator: "9.1.1", title: "Reduction to propositional inference", page: 281}
+      - {locator: "9.2", title: "Unification and First-Order Inference", page: 282}
+      - {locator: "9.2.1", title: "Unification", page: 283}
+      - {locator: "9.2.2", title: "Storage and retrieval", page: 284}
+      - {locator: "9.3", title: "Forward Chaining", page: 286}
+      - {locator: "9.3.1", title: "First-order definite clauses", page: 286}
+      - {locator: "9.3.2", title: "A simple forward-chaining algorithm", page: 287}
+      - {locator: "9.3.3", title: "Efficient forward chaining", page: 289}
+      - {locator: "9.3", title: "Matching rules against known facts", page: 289, note: unnumbered}
+      - {locator: "9.3", title: "Incremental forward chaining", page: 291, note: unnumbered}
+      - {locator: "9.3", title: "Irrelevant facts", page: 292, note: unnumbered}
+      - {locator: "9.4", title: "Backward Chaining", page: 293}
+      - {locator: "9.4.1", title: "A backward-chaining algorithm", page: 293}
+      - {locator: "9.4.2", title: "Logic programming", page: 294}
+      - {locator: "9.4.3", title: "Redundant inference and infinite loops", page: 295}
+      - {locator: "9.4.4", title: "Database semantics of Prolog", page: 297}
+      - {locator: "9.4.5", title: "Constraint logic programming", page: 298}
+      - {locator: "9.5", title: "Resolution", page: 298}
+      - {locator: "9.5.1", title: "Conjunctive normal form for first-order logic", page: 299}
+      - {locator: "9.5.2", title: "The resolution inference rule", page: 300}
+      - {locator: "9.5.3", title: "Example proofs", page: 301}
+      - {locator: "9.5.4", title: "Completeness of resolution", page: 303}
+      - {locator: "9.5.5", title: "Equality", page: 306}
+      - {locator: "9.5.6", title: "Resolution strategies", page: 308}
+      - {locator: "9.5", title: "Practical uses of resolution theorem provers", page: 309, note: unnumbered}
+      - {locator: "10", title: "Knowledge Representation", page: 314}
+      - {locator: "10.1", title: "Ontological Engineering", page: 314}
+      - {locator: "10.2", title: "Categories and Objects", page: 317}
+      - {locator: "10.2.1", title: "Physical composition", page: 318}
+      - {locator: "10.2.2", title: "Measurements", page: 319}
+      - {locator: "10.2.3", title: "Objects: Things and stuff", page: 321}
+      - {locator: "10.3", title: "Events", page: 322}
+      - {locator: "10.3.1", title: "Time", page: 324}
+      - {locator: "10.3.2", title: "Fluents and objects", page: 325}
+      - {locator: "10.4", title: "Mental Objects and Modal Logic", page: 326}
+      - {locator: "10.4.1", title: "Other modal logics", page: 328}
+      - {locator: "10.5", title: "Reasoning Systems for Categories", page: 329}
+      - {locator: "10.5.1", title: "Semantic networks", page: 329}
+      - {locator: "10.5.2", title: "Description logics", page: 331}
+      - {locator: "10.6", title: "Reasoning with Default Information", page: 333}
+      - {locator: "10.6.1", title: "Circumscription and default logic", page: 333}
+      - {locator: "10.6.2", title: "Truth maintenance systems", page: 335}
+      - {locator: "11", title: "Automated Planning", page: 344}
+      - {locator: "11.1", title: "Definition of Classical Planning", page: 344}
+      - {locator: "11.1.1", title: "Example domain: Air cargo transport", page: 345}
+      - {locator: "11.1.2", title: "Example domain: The spare tire problem", page: 346}
+      - {locator: "11.1.3", title: "Example domain: The blocks world", page: 346}
+      - {locator: "11.2", title: "Algorithms for Classical Planning", page: 348}
+      - {locator: "11.2.1", title: "Forward state-space search for planning", page: 348}
+      - {locator: "11.2.2", title: "Backward search for planning", page: 350}
+      - {locator: "11.2.3", title: "Planning as Boolean satisfiability", page: 351}
+      - {locator: "11.2.4", title: "Other classical planning approaches", page: 352}
+      - {locator: "11.3", title: "Heuristics for Planning", page: 353}
+      - {locator: "11.3.1", title: "Domain-independent pruning", page: 354}
+      - {locator: "11.3.2", title: "State abstraction in planning", page: 355}
+      - {locator: "11.4", title: "Hierarchical Planning", page: 356}
+      - {locator: "11.4.1", title: "High-level actions", page: 357}
+      - {locator: "11.4.2", title: "Searching for primitive solutions", page: 358}
+      - {locator: "11.4.3", title: "Searching for abstract solutions", page: 360}
+      - {locator: "11.5", title: "Planning and Acting in Nondeterministic Domains", page: 365}
+      - {locator: "11.5.1", title: "Sensorless planning", page: 367}
+      - {locator: "11.5.2", title: "Contingent planning", page: 370}
+      - {locator: "11.5.3", title: "Online planning", page: 371}
+      - {locator: "11.6", title: "Time, Schedules, and Resources", page: 374}
+      - {locator: "11.6.1", title: "Representing temporal and resource constraints", page: 375}
+      - {locator: "11.6.2", title: "Solving scheduling problems", page: 376}
+      - {locator: "11.7", title: "Analysis of Planning Approaches", page: 378}
+      - {locator: "12", title: "Quantifying Uncertainty", page: 385}
+      - {locator: "12.1", title: "Acting under Uncertainty", page: 385}
+      - {locator: "12.1.1", title: "Summarizing uncertainty", page: 386}
+      - {locator: "12.1.2", title: "Uncertainty and rational decisions", page: 387}
+      - {locator: "12.2", title: "Basic Probability Notation", page: 388}
+      - {locator: "12.2.1", title: "What probabilities are about", page: 388}
+      - {locator: "12.2.2", title: "The language of propositions in probability assertions", page: 390}
+      - {locator: "12.2.3", title: "Probability axioms and their reasonableness", page: 393}
+      - {locator: "12.3", title: "Inference Using Full Joint Distributions", page: 395}
+      - {locator: "12.4", title: "Independence", page: 397}
+      - {locator: "12.5", title: "Bayes' Rule and Its Use", page: 399}
+      - {locator: "12.5.1", title: "Applying Bayes' rule: The simple case", page: 399}
+      - {locator: "12.5.2", title: "Using Bayes' rule: Combining evidence", page: 400}
+      - {locator: "12.6", title: "Naive Bayes Models", page: 402}
+      - {locator: "12.6.1", title: "Text classification with naive Bayes", page: 403}
+      - {locator: "12.7", title: "The Wumpus World Revisited", page: 404}
+      - {locator: "13", title: "Probabilistic Reasoning", page: 412}
+      - {locator: "13.1", title: "Representing Knowledge in an Uncertain Domain", page: 412}
+      - {locator: "13.2", title: "The Semantics of Bayesian Networks", page: 414}
+      - {locator: "13.2", title: "A method for constructing Bayesian networks", page: 415, note: unnumbered}
+      - {locator: "13.2", title: "Compactness and node ordering", page: 417, note: unnumbered}
+      - {locator: "13.2.1", title: "Conditional independence relations in Bayesian networks", page: 418}
+      - {locator: "13.2.2", title: "Efficient Representation of Conditional Distributions", page: 420}
+      - {locator: "13.2.3", title: "Bayesian nets with continuous variables", page: 422}
+      - {locator: "13.2.4", title: "Case study: Car insurance", page: 424}
+      - {locator: "13.3", title: "Exact Inference in Bayesian Networks", page: 427}
+      - {locator: "13.3.1", title: "Inference by enumeration", page: 427}
+      - {locator: "13.3.2", title: "The variable elimination algorithm", page: 430}
+      - {locator: "13.3", title: "Operations on factors", page: 431, note: unnumbered}
+      - {locator: "13.3", title: "Variable ordering and variable relevance", page: 432, note: unnumbered}
+      - {locator: "13.3.3", title: "The complexity of exact inference", page: 433}
+      - {locator: "13.3.4", title: "Clustering algorithms", page: 434}
+      - {locator: "13.4", title: "Approximate Inference for Bayesian Networks", page: 435}
+      - {locator: "13.4.1", title: "Direct sampling methods", page: 436}
+      - {locator: "13.4", title: "Rejection sampling in Bayesian networks", page: 437, note: unnumbered}
+      - {locator: "13.4", title: "Importance sampling", page: 439, note: unnumbered}
+      - {locator: "13.4.2", title: "Inference by Markov chain simulation", page: 441}
+      - {locator: "13.4", title: "Gibbs sampling in Bayesian networks", page: 442, note: unnumbered}
+      - {locator: "13.4", title: "Analysis of Markov chains", page: 443, note: unnumbered}
+      - {locator: "13.4", title: "Why Gibbs sampling works", page: 445, note: unnumbered}
+      - {locator: "13.4", title: "Complexity of Gibbs sampling", page: 446, note: unnumbered}
+      - {locator: "13.4", title: "Metropolis–Hastings sampling", page: 447, note: unnumbered}
+      - {locator: "13.4.3", title: "Compiling approximate inference", page: 448}
+      - {locator: "13.5", title: "Causal Networks", page: 449}
+      - {locator: "13.5.1", title: "Representing actions: do-operator", page: 451}
+      - {locator: "13.5.2", title: "The back-door criterion", page: 453}
+      - {locator: "14", title: "Probabilistic Reasoning over Time", page: 461}
+      - {locator: "14.1", title: "Time and Uncertainty", page: 461}
+      - {locator: "14.1.1", title: "States and observations", page: 462}
+      - {locator: "14.1.2", title: "Transition and sensor models", page: 463}
+      - {locator: "14.2", title: "Inference in Temporal Models", page: 465}
+      - {locator: "14.2.1", title: "Filtering and prediction", page: 466}
+      - {locator: "14.2.2", title: "Smoothing", page: 468}
+      - {locator: "14.2.3", title: "Finding the most likely sequence", page: 471}
+      - {locator: "14.3", title: "Hidden Markov Models", page: 473}
+      - {locator: "14.3.1", title: "Simplified matrix algorithms", page: 474}
+      - {locator: "14.3.2", title: "Hidden Markov model example: Localization", page: 476}
+      - {locator: "14.4", title: "Kalman Filters", page: 479}
+      - {locator: "14.4.1", title: "Updating Gaussian distributions", page: 479}
+      - {locator: "14.4.2", title: "A simple one-dimensional example", page: 480}
+      - {locator: "14.4.3", title: "The general case", page: 482}
+      - {locator: "14.4.4", title: "Applicability of Kalman filtering", page: 483}
+      - {locator: "14.5", title: "Dynamic Bayesian Networks", page: 485}
+      - {locator: "14.5.1", title: "Constructing DBNs", page: 486}
+      - {locator: "14.5.2", title: "Exact inference in DBNs", page: 489}
+      - {locator: "14.5.3", title: "Approximate inference in DBNs", page: 491}
+      - {locator: "15", title: "Probabilistic Programming", page: 500}
+      - {locator: "15.1", title: "Relational Probability Models", page: 501}
+      - {locator: "15.1.1", title: "Syntax and semantics", page: 502}
+      - {locator: "15.1.2", title: "Example: Rating player skill levels", page: 505}
+      - {locator: "15.1.3", title: "Inference in relational probability models", page: 506}
+      - {locator: "15.2", title: "Open-Universe Probability Models", page: 507}
+      - {locator: "15.2.1", title: "Syntax and semantics", page: 508}
+      - {locator: "15.2.2", title: "Inference in open-universe probability models", page: 510}
+      - {locator: "15.2.3", title: "Examples", page: 511}
+      - {locator: "15.2", title: "Citation matching", page: 511, note: unnumbered}
+      - {locator: "15.2", title: "Nuclear treaty monitoring", page: 512, note: unnumbered}
+      - {locator: "15.3", title: "Keeping Track of a Complex World", page: 514}
+      - {locator: "15.3.1", title: "Example: Multitarget tracking", page: 515}
+      - {locator: "15.3.2", title: "Example: Traffic monitoring", page: 518}
+      - {locator: "15.4", title: "Programs as Probability Models", page: 519}
+      - {locator: "15.4.1", title: "Example: Reading text", page: 519}
+      - {locator: "15.4.2", title: "Syntax and semantics", page: 520}
+      - {locator: "15.4.3", title: "Inference results", page: 522}
+      - {locator: "15.4.4", title: "Improving the generative program to incorporate a Markov model", page: 522}
+      - {locator: "15.4.5", title: "Inference in generative programs", page: 522}
+      - {locator: "16", title: "Making Simple Decisions", page: 528}
+      - {locator: "16.1", title: "Combining Beliefs and Desires under Uncertainty", page: 528}
+      - {locator: "16.2", title: "The Basis of Utility Theory", page: 529}
+      - {locator: "16.2.1", title: "Constraints on rational preferences", page: 530}
+      - {locator: "16.2.2", title: "Rational preferences lead to utility", page: 531}
+      - {locator: "16.3", title: "Utility Functions", page: 532}
+      - {locator: "16.3.1", title: "Utility assessment and utility scales", page: 533}
+      - {locator: "16.3.2", title: "The utility of money", page: 534}
+      - {locator: "16.3.3", title: "Expected utility and post-decision disappointment", page: 536}
+      - {locator: "16.3.4", title: "Human judgment and irrationality", page: 538}
+      - {locator: "16.4", title: "Multiattribute Utility Functions", page: 540}
+      - {locator: "16.4.1", title: "Dominance", page: 540}
+      - {locator: "16.4.2", title: "Preference structure and multiattribute utility", page: 543}
+      - {locator: "16.4", title: "Preferences without uncertainty", page: 543, note: unnumbered}
+      - {locator: "16.4", title: "Preferences with uncertainty", page: 544, note: unnumbered}
+      - {locator: "16.5", title: "Decision Networks", page: 544}
+      - {locator: "16.5.1", title: "Representing a decision problem with a decision network", page: 545}
+      - {locator: "16.5.2", title: "Evaluating decision networks", page: 546}
+      - {locator: "16.6", title: "The Value of Information", page: 547}
+      - {locator: "16.6.1", title: "A simple example", page: 547}
+      - {locator: "16.6.2", title: "A general formula for perfect information", page: 548}
+      - {locator: "16.6.3", title: "Properties of the value of information", page: 549}
+      - {locator: "16.6.4", title: "Implementation of an information-gathering agent", page: 550}
+      - {locator: "16.6.5", title: "Nonmyopic information gathering", page: 551}
+      - {locator: "16.6.6", title: "Sensitivity analysis and robust decisions", page: 552}
+      - {locator: "16.7", title: "Unknown Preferences", page: 553}
+      - {locator: "16.7.1", title: "Uncertainty about one's own preferences", page: 553}
+      - {locator: "16.7.2", title: "Deference to humans", page: 554}
+      - {locator: "17", title: "Making Complex Decisions", page: 562}
+      - {locator: "17.1", title: "Sequential Decision Problems", page: 562}
+      - {locator: "17.1.1", title: "Utilities over time", page: 564}
+      - {locator: "17.1.2", title: "Optimal policies and the utilities of states", page: 567}
+      - {locator: "17.1.3", title: "Reward scales", page: 569}
+      - {locator: "17.1.4", title: "Representing MDPs", page: 570}
+      - {locator: "17.2", title: "Algorithms for MDPs", page: 572}
+      - {locator: "17.2.1", title: "Value Iteration", page: 572}
+      - {locator: "17.2", title: "Convergence of value iteration", page: 574, note: unnumbered}
+      - {locator: "17.2.2", title: "Policy iteration", page: 576}
+      - {locator: "17.2.3", title: "Linear programming", page: 578}
+      - {locator: "17.2.4", title: "Online algorithms for MDPs", page: 578}
+      - {locator: "17.3", title: "Bandit Problems", page: 581}
+      - {locator: "17.3.1", title: "Calculating the Gittins index", page: 583}
+      - {locator: "17.3.2", title: "The Bernoulli bandit", page: 584}
+      - {locator: "17.3.3", title: "Approximately optimal bandit policies", page: 585}
+      - {locator: "17.3.4", title: "Non-indexable variants", page: 586}
+      - {locator: "17.4", title: "Partially Observable MDPs", page: 588}
+      - {locator: "17.4.1", title: "Definition of POMDPs", page: 588}
+      - {locator: "17.5", title: "Algorithms for Solving POMDPs", page: 590}
+      - {locator: "17.5.1", title: "Value iteration for POMDPs", page: 590}
+      - {locator: "17.5.2", title: "Online algorithms for POMDPs", page: 593}
+      - {locator: "18", title: "Multiagent Decision Making", page: 599}
+      - {locator: "18.1", title: "Properties of Multiagent Environments", page: 599}
+      - {locator: "18.1.1", title: "One decision maker", page: 599}
+      - {locator: "18.1.2", title: "Multiple decision makers", page: 600}
+      - {locator: "18.1.3", title: "Multiagent planning", page: 601}
+      - {locator: "18.1.4", title: "Planning with multiple agents: Cooperation and coordination", page: 604}
+      - {locator: "18.2", title: "Non-Cooperative Game Theory", page: 605}
+      - {locator: "18.2.1", title: "Games with a single move: Normal form games", page: 605}
+      - {locator: "18.2.2", title: "Social welfare", page: 609}
+      - {locator: "18.2", title: "Computing equilibria", page: 610, note: unnumbered}
+      - {locator: "18.2.3", title: "Repeated games", page: 614}
+      - {locator: "18.2.4", title: "Sequential games: The extensive form", page: 617}
+      - {locator: "18.2", title: "Chance and simultaneous moves", page: 619, note: unnumbered}
+      - {locator: "18.2", title: "Capturing imperfect information", page: 619, note: unnumbered}
+      - {locator: "18.2.5", title: "Uncertain payoffs and assistance games", page: 623}
+      - {locator: "18.3", title: "Cooperative Game Theory", page: 626}
+      - {locator: "18.3.1", title: "Coalition structures and outcomes", page: 626}
+      - {locator: "18.3.2", title: "Strategy in cooperative games", page: 627}
+      - {locator: "18.3.3", title: "Computation in cooperative games", page: 630}
+      - {locator: "18.3", title: "Marginal contribution nets", page: 630, note: unnumbered}
+      - {locator: "18.3", title: "Coalition structures for maximum social welfare", page: 631, note: unnumbered}
+      - {locator: "18.4", title: "Making Collective Decisions", page: 632}
+      - {locator: "18.4.1", title: "Allocating tasks with the contract net", page: 632}
+      - {locator: "18.4.2", title: "Allocating scarce resources with auctions", page: 634}
+      - {locator: "18.4", title: "Common goods", page: 637, note: unnumbered}
+      - {locator: "18.4.3", title: "Voting", page: 638}
+      - {locator: "18.4", title: "Strategic manipulation", page: 641, note: unnumbered}
+      - {locator: "18.4.4", title: "Bargaining", page: 641}
+      - {locator: "18.4", title: "Bargaining with the alternating offers protocol", page: 641, note: unnumbered}
+      - {locator: "18.4", title: "Impatient agents", page: 642, note: unnumbered}
+      - {locator: "18.4", title: "Negotiation in task-oriented domains", page: 643, note: unnumbered}
+      - {locator: "18.4", title: "The monotonic concession protocol", page: 644, note: unnumbered}
+      - {locator: "18.4", title: "The Zeuthen strategy", page: 644, note: unnumbered}
+      - {locator: "19", title: "Learning from Examples", page: 651}
+      - {locator: "19.1", title: "Forms of Learning", page: 651}
+      - {locator: "19.2", title: "Supervised Learning", page: 653}
+      - {locator: "19.2.1", title: "Example problem: Restaurant waiting", page: 656}
+      - {locator: "19.3", title: "Learning Decision Trees", page: 657}
+      - {locator: "19.3.1", title: "Expressiveness of decision trees", page: 657}
+      - {locator: "19.3.2", title: "Learning decision trees from examples", page: 658}
+      - {locator: "19.3.3", title: "Choosing attribute tests", page: 661}
+      - {locator: "19.3.4", title: "Generalization and overfitting", page: 663}
+      - {locator: "19.3.5", title: "Broadening the applicability of decision trees", page: 664}
+      - {locator: "19.4", title: "Model Selection and Optimization", page: 665}
+      - {locator: "19.4.1", title: "Model selection", page: 667}
+      - {locator: "19.4.2", title: "From error rates to loss", page: 669}
+      - {locator: "19.4.3", title: "Regularization", page: 671}
+      - {locator: "19.4.4", title: "Hyperparameter tuning", page: 671}
+      - {locator: "19.5", title: "The Theory of Learning", page: 672}
+      - {locator: "19.5.1", title: "PAC learning example: Learning decision lists", page: 674}
+      - {locator: "19.6", title: "Linear Regression and Classification", page: 676}
+      - {locator: "19.6.1", title: "Univariate linear regression", page: 676}
+      - {locator: "19.6.2", title: "Gradient descent", page: 677}
+      - {locator: "19.6.3", title: "Multivariable linear regression", page: 679}
+      - {locator: "19.6.4", title: "Linear classifiers with a hard threshold", page: 682}
+      - {locator: "19.6.5", title: "Linear classification with logistic regression", page: 684}
+      - {locator: "19.7", title: "Nonparametric Models", page: 686}
+      - {locator: "19.7.1", title: "Nearest-neighbor models", page: 687}
+      - {locator: "19.7.2", title: "Finding nearest neighbors with k-d trees", page: 688}
+      - {locator: "19.7.3", title: "Locality-sensitive hashing", page: 689}
+      - {locator: "19.7.4", title: "Nonparametric regression", page: 691}
+      - {locator: "19.7.5", title: "Support vector machines", page: 692}
+      - {locator: "19.7.6", title: "The kernel trick", page: 695}
+      - {locator: "19.8", title: "Ensemble Learning", page: 696}
+      - {locator: "19.8.1", title: "Bagging", page: 697}
+      - {locator: "19.8.2", title: "Random forests", page: 697}
+      - {locator: "19.8.3", title: "Stacking", page: 699}
+      - {locator: "19.8.4", title: "Boosting", page: 699}
+      - {locator: "19.8.5", title: "Gradient boosting", page: 701}
+      - {locator: "19.8.6", title: "Online learning", page: 702}
+      - {locator: "19.9", title: "Developing Machine Learning Systems", page: 704}
+      - {locator: "19.9.1", title: "Problem formulation", page: 704}
+      - {locator: "19.9.2", title: "Data collection, assessment, and management", page: 705}
+      - {locator: "19.9", title: "Feature engineering", page: 707, note: unnumbered}
+      - {locator: "19.9", title: "Exploratory data analysis and visualization", page: 708, note: unnumbered}
+      - {locator: "19.9.3", title: "Model selection and training", page: 709}
+      - {locator: "19.9.4", title: "Trust, interpretability, and explainability", page: 710}
+      - {locator: "19.9.5", title: "Operation, monitoring, and maintenance", page: 712}
+      - {locator: "20", title: "Learning Probabilistic Models", page: 721}
+      - {locator: "20.1", title: "Statistical Learning", page: 721}
+      - {locator: "20.2", title: "Learning with Complete Data", page: 724}
+      - {locator: "20.2.1", title: "Maximum-likelihood parameter learning: Discrete models", page: 725}
+      - {locator: "20.2.2", title: "Naive Bayes models", page: 727}
+      - {locator: "20.2.3", title: "Generative and discriminative models", page: 727}
+      - {locator: "20.2.4", title: "Maximum-likelihood parameter learning: Continuous models", page: 728}
+      - {locator: "20.2.5", title: "Bayesian parameter learning", page: 730}
+      - {locator: "20.2.6", title: "Bayesian linear regression", page: 732}
+      - {locator: "20.2.7", title: "Learning Bayes net structures", page: 734}
+      - {locator: "20.2.8", title: "Density estimation with nonparametric models", page: 736}
+      - {locator: "20.3", title: "Learning with Hidden Variables: The EM Algorithm", page: 737}
+      - {locator: "20.3.1", title: "Unsupervised clustering: Learning mixtures of Gaussians", page: 738}
+      - {locator: "20.3.2", title: "Learning Bayes net parameter values for hidden variables", page: 741}
+      - {locator: "20.3.3", title: "Learning hidden Markov models", page: 744}
+      - {locator: "20.3.4", title: "The general form of the EM algorithm", page: 744}
+      - {locator: "20.3.5", title: "Learning Bayes net structures with hidden variables", page: 745}
+      - {locator: "21", title: "Deep Learning", page: 750}
+      - {locator: "21.1", title: "Simple Feedforward Networks", page: 751}
+      - {locator: "21.1.1", title: "Networks as complex functions", page: 751}
+      - {locator: "21.1.2", title: "Gradients and learning", page: 754}
+      - {locator: "21.2", title: "Computation Graphs for Deep Learning", page: 756}
+      - {locator: "21.2.1", title: "Input encoding", page: 756}
+      - {locator: "21.2.2", title: "Output layers and loss functions", page: 757}
+      - {locator: "21.2.3", title: "Hidden layers", page: 759}
+      - {locator: "21.3", title: "Convolutional Networks", page: 760}
+      - {locator: "21.3.1", title: "Pooling and downsampling", page: 762}
+      - {locator: "21.3.2", title: "Tensor operations in CNNs", page: 763}
+      - {locator: "21.3.3", title: "Residual networks", page: 764}
+      - {locator: "21.4", title: "Learning Algorithms", page: 765}
+      - {locator: "21.4.1", title: "Computing gradients in computation graphs", page: 766}
+      - {locator: "21.4.2", title: "Batch normalization", page: 768}
+      - {locator: "21.5", title: "Generalization", page: 768}
+      - {locator: "21.5.1", title: "Choosing a network architecture", page: 768}
+      - {locator: "21.5.2", title: "Neural architecture search", page: 770}
+      - {locator: "21.5.3", title: "Weight decay", page: 771}
+      - {locator: "21.5.4", title: "Dropout", page: 772}
+      - {locator: "21.6", title: "Recurrent Neural Networks", page: 772}
+      - {locator: "21.6.1", title: "Training a basic RNN", page: 773}
+      - {locator: "21.6.2", title: "Long short-term memory RNNs", page: 775}
+      - {locator: "21.7", title: "Unsupervised Learning and Transfer Learning", page: 775}
+      - {locator: "21.7.1", title: "Unsupervised learning", page: 776}
+      - {locator: "21.7", title: "Probabilistic PCA: A simple generative model", page: 776, note: unnumbered}
+      - {locator: "21.7", title: "Autoencoders", page: 778, note: unnumbered}
+      - {locator: "21.7", title: "Deep autoregressive models", page: 779, note: unnumbered}
+      - {locator: "21.7", title: "Generative adversarial networks", page: 780, note: unnumbered}
+      - {locator: "21.7", title: "Unsupervised translation", page: 780, note: unnumbered}
+      - {locator: "21.7.2", title: "Transfer learning and multitask learning", page: 781}
+      - {locator: "21.8", title: "Applications", page: 782}
+      - {locator: "21.8.1", title: "Vision", page: 782}
+      - {locator: "21.8.2", title: "Natural language processing", page: 783}
+      - {locator: "21.8.3", title: "Reinforcement learning", page: 783}
+      - {locator: "22", title: "Reinforcement Learning", page: 789}
+      - {locator: "22.1", title: "Learning from Rewards", page: 789}
+      - {locator: "22.2", title: "Passive Reinforcement Learning", page: 791}
+      - {locator: "22.2.1", title: "Direct utility estimation", page: 792}
+      - {locator: "22.2.2", title: "Adaptive dynamic programming", page: 793}
+      - {locator: "22.2.3", title: "Temporal-difference learning", page: 793}
+      - {locator: "22.3", title: "Active Reinforcement Learning", page: 797}
+      - {locator: "22.3.1", title: "Exploration", page: 797}
+      - {locator: "22.3.2", title: "Safe exploration", page: 799}
+      - {locator: "22.3.3", title: "Temporal-difference Q-learning", page: 801}
+      - {locator: "22.4", title: "Generalization in Reinforcement Learning", page: 803}
+      - {locator: "22.4.1", title: "Approximating direct utility estimation", page: 804}
+      - {locator: "22.4.2", title: "Approximating temporal-difference learning", page: 805}
+      - {locator: "22.4.3", title: "Deep reinforcement learning", page: 806}
+      - {locator: "22.4.4", title: "Reward shaping", page: 807}
+      - {locator: "22.4.5", title: "Hierarchical reinforcement learning", page: 807}
+      - {locator: "22.5", title: "Policy Search", page: 810}
+      - {locator: "22.6", title: "Apprenticeship and Inverse Reinforcement Learning", page: 812}
+      - {locator: "22.7", title: "Applications of Reinforcement Learning", page: 815}
+      - {locator: "22.7.1", title: "Applications in game playing", page: 815}
+      - {locator: "22.7.2", title: "Application to robot control", page: 816}
+      - {locator: "23", title: "Natural Language Processing", page: 823}
+      - {locator: "23.1", title: "Language Models", page: 823}
+      - {locator: "23.1.1", title: "The bag-of-words model", page: 824}
+      - {locator: "23.1.2", title: "N-gram word models", page: 826}
+      - {locator: "23.1.3", title: "Other n-gram models", page: 826}
+      - {locator: "23.1.4", title: "Smoothing n-gram models", page: 827}
+      - {locator: "23.1.5", title: "Word representations", page: 828}
+      - {locator: "23.1.6", title: "Part-of-speech (POS) tagging", page: 829}
+      - {locator: "23.1.7", title: "Comparing language models", page: 832}
+      - {locator: "23.2", title: "Grammar", page: 833}
+      - {locator: "23.2.1", title: "The lexicon of E0", page: 835}
+      - {locator: "23.3", title: "Parsing", page: 835}
+      - {locator: "23.3.1", title: "Dependency parsing", page: 838}
+      - {locator: "23.3.2", title: "Learning a parser from examples", page: 839}
+      - {locator: "23.4", title: "Augmented Grammars", page: 841}
+      - {locator: "23.4.1", title: "Semantic interpretation", page: 843}
+      - {locator: "23.4.2", title: "Learning semantic grammars", page: 845}
+      - {locator: "23.5", title: "Complications of Real Natural Language", page: 845}
+      - {locator: "23.6", title: "Natural Language Tasks", page: 849}
+      - {locator: "24", title: "Deep Learning for Natural Language Processing", page: 856}
+      - {locator: "24.1", title: "Word Embeddings", page: 856}
+      - {locator: "24.2", title: "Recurrent Neural Networks for NLP", page: 860}
+      - {locator: "24.2.1", title: "Language models with recurrent neural networks", page: 860}
+      - {locator: "24.2.2", title: "Classification with recurrent neural networks", page: 862}
+      - {locator: "24.2.3", title: "LSTMs for NLP tasks", page: 863}
+      - {locator: "24.3", title: "Sequence-to-Sequence Models", page: 864}
+      - {locator: "24.3.1", title: "Attention", page: 865}
+      - {locator: "24.3.2", title: "Decoding", page: 867}
+      - {locator: "24.4", title: "The Transformer Architecture", page: 868}
+      - {locator: "24.4.1", title: "Self-attention", page: 868}
+      - {locator: "24.4.2", title: "From self-attention to transformer", page: 869}
+      - {locator: "24.5", title: "Pretraining and Transfer Learning", page: 871}
+      - {locator: "24.5.1", title: "Pretrained word embeddings", page: 871}
+      - {locator: "24.5.2", title: "Pretrained contextual representations", page: 873}
+      - {locator: "24.5.3", title: "Masked language models", page: 873}
+      - {locator: "24.6", title: "State of the art", page: 875}
+      - {locator: "25", title: "Computer Vision", page: 881}
+      - {locator: "25.1", title: "Introduction", page: 881}
+      - {locator: "25.2", title: "Image Formation", page: 882}
+      - {locator: "25.2.1", title: "Images without lenses: The pinhole camera", page: 882}
+      - {locator: "25.2.2", title: "Lens systems", page: 884}
+      - {locator: "25.2.3", title: "Scaled orthographic projection", page: 885}
+      - {locator: "25.2.4", title: "Light and shading", page: 886}
+      - {locator: "25.2.5", title: "Color", page: 888}
+      - {locator: "25.3", title: "Simple Image Features", page: 888}
+      - {locator: "25.3.1", title: "Edges", page: 889}
+      - {locator: "25.3.2", title: "Texture", page: 892}
+      - {locator: "25.3.3", title: "Optical flow", page: 893}
+      - {locator: "25.3.4", title: "Segmentation of natural images", page: 894}
+      - {locator: "25.4", title: "Classifying Images", page: 895}
+      - {locator: "25.4.1", title: "Image classification with convolutional neural networks", page: 896}
+      - {locator: "25.4.2", title: "Why convolutional neural networks classify images well", page: 897}
+      - {locator: "25.5", title: "Detecting Objects", page: 899}
+      - {locator: "25.6", title: "The 3D World", page: 901}
+      - {locator: "25.6.1", title: "3D cues from multiple views", page: 901}
+      - {locator: "25.6.2", title: "Binocular stereopsis", page: 902}
+      - {locator: "25.6.3", title: "3D cues from a moving camera", page: 904}
+      - {locator: "25.6.4", title: "3D cues from one view", page: 905}
+      - {locator: "25.7", title: "Using Computer Vision", page: 906}
+      - {locator: "25.7.1", title: "Understanding what people are doing", page: 906}
+      - {locator: "25.7.2", title: "Linking pictures and words", page: 909}
+      - {locator: "25.7.3", title: "Reconstruction from many views", page: 911}
+      - {locator: "25.7.4", title: "Geometry from a single view", page: 911}
+      - {locator: "25.7.5", title: "Making pictures", page: 913}
+      - {locator: "25.7.6", title: "Controlling movement with vision", page: 917}
+      - {locator: "26", title: "Robotics", page: 925}
+      - {locator: "26.1", title: "Robots", page: 925}
+      - {locator: "26.2", title: "Robot Hardware", page: 926}
+      - {locator: "26.2.1", title: "Types of robots from the hardware perspective", page: 926}
+      - {locator: "26.2.2", title: "Sensing the world", page: 927}
+      - {locator: "26.2.3", title: "Producing motion", page: 929}
+      - {locator: "26.3", title: "What kind of problem is robotics solving?", page: 930}
+      - {locator: "26.4", title: "Robotic Perception", page: 931}
+      - {locator: "26.4.1", title: "Localization and mapping", page: 932}
+      - {locator: "26.4.2", title: "Other types of perception", page: 935}
+      - {locator: "26.4.3", title: "Supervised and unsupervised learning in robot perception", page: 937}
+      - {locator: "26.5", title: "Planning and Control", page: 938}
+      - {locator: "26.5.1", title: "Configuration space", page: 939}
+      - {locator: "26.5.2", title: "Motion planning", page: 942}
+      - {locator: "26.5", title: "Visibility graphs", page: 943, note: unnumbered}
+      - {locator: "26.5", title: "Voronoi diagrams", page: 943, note: unnumbered}
+      - {locator: "26.5", title: "Cell decomposition", page: 945, note: unnumbered}
+      - {locator: "26.5", title: "Randomized motion planning", page: 946, note: unnumbered}
+      - {locator: "26.5", title: "Rapidly-exploring random trees", page: 947, note: unnumbered}
+      - {locator: "26.5", title: "Trajectory optimization for kinematic planning", page: 948, note: unnumbered}
+      - {locator: "26.5.3", title: "Trajectory tracking control", page: 950}
+      - {locator: "26.5", title: "Plans versus policies", page: 954, note: unnumbered}
+      - {locator: "26.5.4", title: "Optimal control", page: 954}
+      - {locator: "26.6", title: "Planning Uncertain Movements", page: 956}
+      - {locator: "26.7", title: "Reinforcement Learning in Robotics", page: 958}
+      - {locator: "26.7.1", title: "Exploiting models", page: 959}
+      - {locator: "26.7.2", title: "Exploiting other information", page: 960}
+      - {locator: "26.8", title: "Humans and Robots", page: 961}
+      - {locator: "26.8.1", title: "Coordination", page: 961}
+      - {locator: "26.8", title: "Humans as approximately rational agents", page: 961, note: unnumbered}
+      - {locator: "26.8", title: "Predicting human action", page: 962, note: unnumbered}
+      - {locator: "26.8", title: "Human predictions about the robot", page: 964, note: unnumbered}
+      - {locator: "26.8", title: "Humans as black box agents", page: 965, note: unnumbered}
+      - {locator: "26.8.2", title: "Learning to do what humans want", page: 965}
+      - {locator: "26.8", title: "Preference learning: Learning cost functions", page: 965, note: unnumbered}
+      - {locator: "26.8", title: "Learning policies directly via imitation", page: 966, note: unnumbered}
+      - {locator: "26.9", title: "Alternative Robotic Frameworks", page: 968}
+      - {locator: "26.9.1", title: "Reactive controllers", page: 968}
+      - {locator: "26.9.2", title: "Subsumption architectures", page: 969}
+      - {locator: "26.10", title: "Application Domains", page: 971}
+      - {locator: "27", title: "Philosophy, Ethics, and Safety of AI", page: 981}
+      - {locator: "27.1", title: "The Limits of AI", page: 981}
+      - {locator: "27.1.1", title: "The argument from informality", page: 981}
+      - {locator: "27.1.2", title: "The argument from disability", page: 982}
+      - {locator: "27.1.3", title: "The mathematical objection", page: 983}
+      - {locator: "27.1.4", title: "Measuring AI", page: 984}
+      - {locator: "27.2", title: "Can Machines Really Think?", page: 984}
+      - {locator: "27.2.1", title: "The Chinese room", page: 985}
+      - {locator: "27.2.2", title: "Consciousness and qualia", page: 985}
+      - {locator: "27.3", title: "The Ethics of AI", page: 986}
+      - {locator: "27.3.1", title: "Lethal autonomous weapons", page: 987}
+      - {locator: "27.3.2", title: "Surveillance, security, and privacy", page: 990}
+      - {locator: "27.3.3", title: "Fairness and bias", page: 992}
+      - {locator: "27.3.4", title: "Trust and transparency", page: 996}
+      - {locator: "27.3.5", title: "The future of work", page: 998}
+      - {locator: "27.3.6", title: "Robot rights", page: 1000}
+      - {locator: "27.3.7", title: "AI Safety", page: 1001}
+      - {locator: "28", title: "The Future of AI", page: 1012}
+      - {locator: "28.1", title: "AI Components", page: 1012}
+      - {locator: "28.1", title: "Sensors and actuators", page: 1012, note: unnumbered}
+      - {locator: "28.1", title: "Representing the state of the world", page: 1013, note: unnumbered}
+      - {locator: "28.1", title: "Selecting actions", page: 1014, note: unnumbered}
+      - {locator: "28.1", title: "Deciding what we want", page: 1014, note: unnumbered}
+      - {locator: "28.1", title: "Learning", page: 1015, note: unnumbered}
+      - {locator: "28.1", title: "Resources", page: 1017, note: unnumbered}
+      - {locator: "28.2", title: "AI Architectures", page: 1018}
+      - {locator: "28.2", title: "General AI", page: 1020, note: unnumbered}
+      - {locator: "28.2", title: "AI engineering", page: 1021, note: unnumbered}
+      - {locator: "28.2", title: "The future", page: 1022, note: unnumbered}
+      - {locator: "A", title: "Mathematical Background", page: 1023}
+      - {locator: "A.1", title: "Complexity Analysis and O() Notation", page: 1023}
+      - {locator: "A.1.1", title: "Asymptotic analysis", page: 1023}
+      - {locator: "A.1.2", title: "NP and inherently hard problems", page: 1024}
+      - {locator: "A.2", title: "Vectors, Matrices, and Linear Algebra", page: 1025}
+      - {locator: "A.3", title: "Probability Distributions", page: 1027}
+      - {locator: "B", title: "Notes on Languages and Algorithms", page: 1030}
+      - {locator: "B.1", title: "Defining Languages with Backus–Naur Form (BNF)", page: 1030}
+      - {locator: "B.2", title: "Describing Algorithms with Pseudocode", page: 1031}
+      - {locator: "B.3", title: "Online Supplemental Material", page: 1032}
   - id: goodfellow-2016-deep-learning
     title: Deep Learning
     authors: [Ian Goodfellow, Yoshua Bengio, Aaron Courville]
@@ -62,6 +762,177 @@ works:
     covers: reinforcement learning
     areas: [reinforcement-learning]
     index: [toc, index]
+    toc_source: {url: "http://incompleteideas.net/book/RLbook2020.pdf", read: 2026-11-15, note: "the contents pages vii to xii of the 2020 PDF of the second edition; λ and γ, which the PDF text layer drops, are restored from the section titles; note starred marks the sections that the book stars as optional"}
+    toc:
+      - {locator: "1", title: "Introduction", page: 1}
+      - {locator: "1.1", title: "Reinforcement Learning", page: 1}
+      - {locator: "1.2", title: "Examples", page: 4}
+      - {locator: "1.3", title: "Elements of Reinforcement Learning", page: 6}
+      - {locator: "1.4", title: "Limitations and Scope", page: 7}
+      - {locator: "1.5", title: "An Extended Example: Tic-Tac-Toe", page: 8}
+      - {locator: "1.7", title: "Early History of Reinforcement Learning", page: 13}
+      - {locator: "2", title: "Multi-armed Bandits", page: 25}
+      - {locator: "2.1", title: "A k-armed Bandit Problem", page: 25}
+      - {locator: "2.2", title: "Action-value Methods", page: 27}
+      - {locator: "2.3", title: "The 10-armed Testbed", page: 28}
+      - {locator: "2.4", title: "Incremental Implementation", page: 30}
+      - {locator: "2.5", title: "Tracking a Nonstationary Problem", page: 32}
+      - {locator: "2.6", title: "Optimistic Initial Values", page: 34}
+      - {locator: "2.7", title: "Upper-Confidence-Bound Action Selection", page: 35}
+      - {locator: "2.8", title: "Gradient Bandit Algorithms", page: 37}
+      - {locator: "2.9", title: "Associative Search (Contextual Bandits)", page: 41}
+      - {locator: "3", title: "Finite Markov Decision Processes", page: 47}
+      - {locator: "3.1", title: "The Agent–Environment Interface", page: 47}
+      - {locator: "3.2", title: "Goals and Rewards", page: 53}
+      - {locator: "3.3", title: "Returns and Episodes", page: 54}
+      - {locator: "3.4", title: "Unified Notation for Episodic and Continuing Tasks", page: 57}
+      - {locator: "3.5", title: "Policies and Value Functions", page: 58}
+      - {locator: "3.6", title: "Optimal Policies and Optimal Value Functions", page: 62}
+      - {locator: "3.7", title: "Optimality and Approximation", page: 67}
+      - {locator: "4", title: "Dynamic Programming", page: 73}
+      - {locator: "4.1", title: "Policy Evaluation (Prediction)", page: 74}
+      - {locator: "4.2", title: "Policy Improvement", page: 76}
+      - {locator: "4.3", title: "Policy Iteration", page: 80}
+      - {locator: "4.4", title: "Value Iteration", page: 82}
+      - {locator: "4.5", title: "Asynchronous Dynamic Programming", page: 85}
+      - {locator: "4.6", title: "Generalized Policy Iteration", page: 86}
+      - {locator: "4.7", title: "Efficiency of Dynamic Programming", page: 87}
+      - {locator: "5", title: "Monte Carlo Methods", page: 91}
+      - {locator: "5.1", title: "Monte Carlo Prediction", page: 92}
+      - {locator: "5.2", title: "Monte Carlo Estimation of Action Values", page: 96}
+      - {locator: "5.3", title: "Monte Carlo Control", page: 97}
+      - {locator: "5.4", title: "Monte Carlo Control without Exploring Starts", page: 100}
+      - {locator: "5.5", title: "Off-policy Prediction via Importance Sampling", page: 103}
+      - {locator: "5.6", title: "Incremental Implementation", page: 109}
+      - {locator: "5.7", title: "Off-policy Monte Carlo Control", page: 110}
+      - {locator: "5.8", title: "Discounting-aware Importance Sampling", page: 112, note: starred}
+      - {locator: "5.9", title: "Per-decision Importance Sampling", page: 114, note: starred}
+      - {locator: "6", title: "Temporal-Difference Learning", page: 119}
+      - {locator: "6.1", title: "TD Prediction", page: 119}
+      - {locator: "6.2", title: "Advantages of TD Prediction Methods", page: 124}
+      - {locator: "6.3", title: "Optimality of TD(0)", page: 126}
+      - {locator: "6.4", title: "Sarsa: On-policy TD Control", page: 129}
+      - {locator: "6.5", title: "Q-learning: Off-policy TD Control", page: 131}
+      - {locator: "6.6", title: "Expected Sarsa", page: 133}
+      - {locator: "6.7", title: "Maximization Bias and Double Learning", page: 134}
+      - {locator: "6.8", title: "Games, Afterstates, and Other Special Cases", page: 136}
+      - {locator: "7", title: "n-step Bootstrapping", page: 141}
+      - {locator: "7.1", title: "n-step TD Prediction", page: 142}
+      - {locator: "7.2", title: "n-step Sarsa", page: 145}
+      - {locator: "7.3", title: "n-step Off-policy Learning", page: 148}
+      - {locator: "7.4", title: "Per-decision Methods with Control Variates", page: 150, note: starred}
+      - {locator: "7.5", title: "Off-policy Learning Without Importance Sampling: The n-step Tree Backup Algorithm", page: 152}
+      - {locator: "7.6", title: "A Unifying Algorithm: n-step Q(λ)", page: 154, note: starred}
+      - {locator: "8", title: "Planning and Learning with Tabular Methods", page: 159}
+      - {locator: "8.1", title: "Models and Planning", page: 159}
+      - {locator: "8.2", title: "Dyna: Integrated Planning, Acting, and Learning", page: 161}
+      - {locator: "8.3", title: "When the Model Is Wrong", page: 166}
+      - {locator: "8.4", title: "Prioritized Sweeping", page: 168}
+      - {locator: "8.5", title: "Expected vs. Sample Updates", page: 172}
+      - {locator: "8.6", title: "Trajectory Sampling", page: 174}
+      - {locator: "8.7", title: "Real-time Dynamic Programming", page: 177}
+      - {locator: "8.8", title: "Planning at Decision Time", page: 180}
+      - {locator: "8.9", title: "Heuristic Search", page: 181}
+      - {locator: "8.10", title: "Rollout Algorithms", page: 183}
+      - {locator: "8.11", title: "Monte Carlo Tree Search", page: 185}
+      - {locator: "8.13", title: "Summary of Part I: Dimensions", page: 189}
+      - {locator: "9", title: "On-policy Prediction with Approximation", page: 197}
+      - {locator: "9.1", title: "Value-function Approximation", page: 198}
+      - {locator: "9.2", title: "The Prediction Objective (VE)", page: 199}
+      - {locator: "9.3", title: "Stochastic-gradient and Semi-gradient Methods", page: 200}
+      - {locator: "9.4", title: "Linear Methods", page: 204}
+      - {locator: "9.5", title: "Feature Construction for Linear Methods", page: 210}
+      - {locator: "9.5.1", title: "Polynomials", page: 210}
+      - {locator: "9.5.2", title: "Fourier Basis", page: 211}
+      - {locator: "9.5.3", title: "Coarse Coding", page: 215}
+      - {locator: "9.5.4", title: "Tile Coding", page: 217}
+      - {locator: "9.5.5", title: "Radial Basis Functions", page: 221}
+      - {locator: "9.6", title: "Selecting Step-Size Parameters Manually", page: 222}
+      - {locator: "9.7", title: "Nonlinear Function Approximation: Artificial Neural Networks", page: 223}
+      - {locator: "9.8", title: "Least-Squares TD", page: 228}
+      - {locator: "9.9", title: "Memory-based Function Approximation", page: 230}
+      - {locator: "9.10", title: "Kernel-based Function Approximation", page: 232}
+      - {locator: "9.11", title: "Looking Deeper at On-policy Learning: Interest and Emphasis", page: 234}
+      - {locator: "10", title: "On-policy Control with Approximation", page: 243}
+      - {locator: "10.1", title: "Episodic Semi-gradient Control", page: 243}
+      - {locator: "10.2", title: "Semi-gradient n-step Sarsa", page: 247}
+      - {locator: "10.3", title: "Average Reward: A New Problem Setting for Continuing Tasks", page: 249}
+      - {locator: "10.4", title: "Deprecating the Discounted Setting", page: 253}
+      - {locator: "10.5", title: "Differential Semi-gradient n-step Sarsa", page: 255}
+      - {locator: "11", title: "Off-policy Methods with Approximation", page: 257, note: starred}
+      - {locator: "11.1", title: "Semi-gradient Methods", page: 258}
+      - {locator: "11.2", title: "Examples of Off-policy Divergence", page: 260}
+      - {locator: "11.3", title: "The Deadly Triad", page: 264}
+      - {locator: "11.4", title: "Linear Value-function Geometry", page: 266}
+      - {locator: "11.5", title: "Gradient Descent in the Bellman Error", page: 269}
+      - {locator: "11.6", title: "The Bellman Error is Not Learnable", page: 274}
+      - {locator: "11.7", title: "Gradient-TD Methods", page: 278}
+      - {locator: "11.8", title: "Emphatic-TD Methods", page: 281}
+      - {locator: "11.9", title: "Reducing Variance", page: 283}
+      - {locator: "12", title: "Eligibility Traces", page: 287}
+      - {locator: "12.1", title: "The λ-return", page: 288}
+      - {locator: "12.2", title: "TD(λ)", page: 292}
+      - {locator: "12.3", title: "n-step Truncated λ-return Methods", page: 295}
+      - {locator: "12.4", title: "Redoing Updates: Online λ-return Algorithm", page: 297}
+      - {locator: "12.5", title: "True Online TD(λ)", page: 299}
+      - {locator: "12.6", title: "Dutch Traces in Monte Carlo Learning", page: 301, note: starred}
+      - {locator: "12.7", title: "Sarsa(λ)", page: 303}
+      - {locator: "12.8", title: "Variable λ and γ", page: 307}
+      - {locator: "12.9", title: "Off-policy Traces with Control Variates", page: 309}
+      - {locator: "12.10", title: "Watkins’s Q(λ) to Tree-Backup(λ)", page: 312}
+      - {locator: "12.11", title: "Stable Off-policy Methods with Traces", page: 314}
+      - {locator: "12.12", title: "Implementation Issues", page: 316}
+      - {locator: "12.13", title: "Conclusions", page: 317}
+      - {locator: "13", title: "Policy Gradient Methods", page: 321}
+      - {locator: "13.1", title: "Policy Approximation and its Advantages", page: 322}
+      - {locator: "13.2", title: "The Policy Gradient Theorem", page: 324}
+      - {locator: "13.3", title: "REINFORCE: Monte Carlo Policy Gradient", page: 326}
+      - {locator: "13.4", title: "REINFORCE with Baseline", page: 329}
+      - {locator: "13.5", title: "Actor–Critic Methods", page: 331}
+      - {locator: "13.6", title: "Policy Gradient for Continuing Problems", page: 333}
+      - {locator: "13.7", title: "Policy Parameterization for Continuous Actions", page: 335}
+      - {locator: "14", title: "Psychology", page: 341}
+      - {locator: "14.1", title: "Prediction and Control", page: 342}
+      - {locator: "14.2", title: "Classical Conditioning", page: 343}
+      - {locator: "14.2.1", title: "Blocking and Higher-order Conditioning", page: 345}
+      - {locator: "14.2.2", title: "The Rescorla–Wagner Model", page: 346}
+      - {locator: "14.2.3", title: "The TD Model", page: 349}
+      - {locator: "14.2.4", title: "TD Model Simulations", page: 350}
+      - {locator: "14.3", title: "Instrumental Conditioning", page: 357}
+      - {locator: "14.4", title: "Delayed Reinforcement", page: 361}
+      - {locator: "14.5", title: "Cognitive Maps", page: 363}
+      - {locator: "14.6", title: "Habitual and Goal-directed Behavior", page: 364}
+      - {locator: "15", title: "Neuroscience", page: 377}
+      - {locator: "15.1", title: "Neuroscience Basics", page: 378}
+      - {locator: "15.2", title: "Reward Signals, Reinforcement Signals, Values, and Prediction Errors", page: 380}
+      - {locator: "15.3", title: "The Reward Prediction Error Hypothesis", page: 381}
+      - {locator: "15.4", title: "Dopamine", page: 383}
+      - {locator: "15.5", title: "Experimental Support for the Reward Prediction Error Hypothesis", page: 387}
+      - {locator: "15.6", title: "TD Error/Dopamine Correspondence", page: 390}
+      - {locator: "15.7", title: "Neural Actor–Critic", page: 395}
+      - {locator: "15.8", title: "Actor and Critic Learning Rules", page: 398}
+      - {locator: "15.9", title: "Hedonistic Neurons", page: 402}
+      - {locator: "15.10", title: "Collective Reinforcement Learning", page: 404}
+      - {locator: "15.11", title: "Model-based Methods in the Brain", page: 407}
+      - {locator: "15.12", title: "Addiction", page: 409}
+      - {locator: "16", title: "Applications and Case Studies", page: 421}
+      - {locator: "16.1", title: "TD-Gammon", page: 421}
+      - {locator: "16.2", title: "Samuel’s Checkers Player", page: 426}
+      - {locator: "16.3", title: "Watson’s Daily-Double Wagering", page: 429}
+      - {locator: "16.4", title: "Optimizing Memory Control", page: 432}
+      - {locator: "16.5", title: "Human-level Video Game Play", page: 436}
+      - {locator: "16.6", title: "Mastering the Game of Go", page: 441}
+      - {locator: "16.6.1", title: "AlphaGo", page: 444}
+      - {locator: "16.6.2", title: "AlphaGo Zero", page: 447}
+      - {locator: "16.7", title: "Personalized Web Services", page: 450}
+      - {locator: "16.8", title: "Thermal Soaring", page: 453}
+      - {locator: "17", title: "Frontiers", page: 459}
+      - {locator: "17.1", title: "General Value Functions and Auxiliary Tasks", page: 459}
+      - {locator: "17.2", title: "Temporal Abstraction via Options", page: 461}
+      - {locator: "17.3", title: "Observations and State", page: 464}
+      - {locator: "17.4", title: "Designing Reward Signals", page: 469}
+      - {locator: "17.5", title: "Remaining Issues", page: 472}
+      - {locator: "17.6", title: "Reinforcement Learning and the Future of Artificial Intelligence", page: 475}
   - id: hastie-tibshirani-friedman-2009-esl
     title: "The Elements of Statistical Learning"
     authors: [Trevor Hastie, Robert Tibshirani, Jerome Friedman]
@@ -109,6 +980,195 @@ works:
     covers: deep learning with code
     areas: [deep-learning-foundations, deep-learning-training, deep-learning-architectures, natural-language-processing, computer-vision, optimization-for-learning]
     index: [toc]
+    toc_source: {url: "https://d2l.ai/index.html", read: 2026-11-15, note: "the chapters and sections of the online book, version 1.0.3, which holds more than the print edition"}
+    toc:
+      - {locator: "1", title: "Introduction"}
+      - {locator: "2", title: "Preliminaries"}
+      - {locator: "2.1", title: "Data Manipulation"}
+      - {locator: "2.2", title: "Data Preprocessing"}
+      - {locator: "2.3", title: "Linear Algebra"}
+      - {locator: "2.4", title: "Calculus"}
+      - {locator: "2.5", title: "Automatic Differentiation"}
+      - {locator: "2.6", title: "Probability and Statistics"}
+      - {locator: "2.7", title: "Documentation"}
+      - {locator: "3", title: "Linear Neural Networks for Regression"}
+      - {locator: "3.1", title: "Linear Regression"}
+      - {locator: "3.2", title: "Object-Oriented Design for Implementation"}
+      - {locator: "3.3", title: "Synthetic Regression Data"}
+      - {locator: "3.4", title: "Linear Regression Implementation from Scratch"}
+      - {locator: "3.5", title: "Concise Implementation of Linear Regression"}
+      - {locator: "3.6", title: "Generalization"}
+      - {locator: "3.7", title: "Weight Decay"}
+      - {locator: "4", title: "Linear Neural Networks for Classification"}
+      - {locator: "4.1", title: "Softmax Regression"}
+      - {locator: "4.2", title: "The Image Classification Dataset"}
+      - {locator: "4.3", title: "The Base Classification Model"}
+      - {locator: "4.4", title: "Softmax Regression Implementation from Scratch"}
+      - {locator: "4.5", title: "Concise Implementation of Softmax Regression"}
+      - {locator: "4.6", title: "Generalization in Classification"}
+      - {locator: "4.7", title: "Environment and Distribution Shift"}
+      - {locator: "5", title: "Multilayer Perceptrons"}
+      - {locator: "5.1", title: "Multilayer Perceptrons"}
+      - {locator: "5.2", title: "Implementation of Multilayer Perceptrons"}
+      - {locator: "5.3", title: "Forward Propagation, Backward Propagation, and Computational Graphs"}
+      - {locator: "5.4", title: "Numerical Stability and Initialization"}
+      - {locator: "5.5", title: "Generalization in Deep Learning"}
+      - {locator: "5.6", title: "Dropout"}
+      - {locator: "5.7", title: "Predicting House Prices on Kaggle"}
+      - {locator: "6", title: "Builders’ Guide"}
+      - {locator: "6.1", title: "Layers and Modules"}
+      - {locator: "6.2", title: "Parameter Management"}
+      - {locator: "6.3", title: "Parameter Initialization"}
+      - {locator: "6.4", title: "Lazy Initialization"}
+      - {locator: "6.5", title: "Custom Layers"}
+      - {locator: "6.6", title: "File I/O"}
+      - {locator: "6.7", title: "GPUs"}
+      - {locator: "7", title: "Convolutional Neural Networks"}
+      - {locator: "7.1", title: "From Fully Connected Layers to Convolutions"}
+      - {locator: "7.2", title: "Convolutions for Images"}
+      - {locator: "7.3", title: "Padding and Stride"}
+      - {locator: "7.4", title: "Multiple Input and Multiple Output Channels"}
+      - {locator: "7.5", title: "Pooling"}
+      - {locator: "7.6", title: "Convolutional Neural Networks (LeNet)"}
+      - {locator: "8", title: "Modern Convolutional Neural Networks"}
+      - {locator: "8.1", title: "Deep Convolutional Neural Networks (AlexNet)"}
+      - {locator: "8.2", title: "Networks Using Blocks (VGG)"}
+      - {locator: "8.3", title: "Network in Network (NiN)"}
+      - {locator: "8.4", title: "Multi-Branch Networks (GoogLeNet)"}
+      - {locator: "8.5", title: "Batch Normalization"}
+      - {locator: "8.6", title: "Residual Networks (ResNet) and ResNeXt"}
+      - {locator: "8.7", title: "Densely Connected Networks (DenseNet)"}
+      - {locator: "8.8", title: "Designing Convolution Network Architectures"}
+      - {locator: "9", title: "Recurrent Neural Networks"}
+      - {locator: "9.1", title: "Working with Sequences"}
+      - {locator: "9.2", title: "Converting Raw Text into Sequence Data"}
+      - {locator: "9.3", title: "Language Models"}
+      - {locator: "9.4", title: "Recurrent Neural Networks"}
+      - {locator: "9.5", title: "Recurrent Neural Network Implementation from Scratch"}
+      - {locator: "9.6", title: "Concise Implementation of Recurrent Neural Networks"}
+      - {locator: "9.7", title: "Backpropagation Through Time"}
+      - {locator: "10", title: "Modern Recurrent Neural Networks"}
+      - {locator: "10.1", title: "Long Short-Term Memory (LSTM)"}
+      - {locator: "10.2", title: "Gated Recurrent Units (GRU)"}
+      - {locator: "10.3", title: "Deep Recurrent Neural Networks"}
+      - {locator: "10.4", title: "Bidirectional Recurrent Neural Networks"}
+      - {locator: "10.5", title: "Machine Translation and the Dataset"}
+      - {locator: "10.6", title: "The Encoder–Decoder Architecture"}
+      - {locator: "10.7", title: "Sequence-to-Sequence Learning for Machine Translation"}
+      - {locator: "10.8", title: "Beam Search"}
+      - {locator: "11", title: "Attention Mechanisms and Transformers"}
+      - {locator: "11.1", title: "Queries, Keys, and Values"}
+      - {locator: "11.2", title: "Attention Pooling by Similarity"}
+      - {locator: "11.3", title: "Attention Scoring Functions"}
+      - {locator: "11.4", title: "The Bahdanau Attention Mechanism"}
+      - {locator: "11.5", title: "Multi-Head Attention"}
+      - {locator: "11.6", title: "Self-Attention and Positional Encoding"}
+      - {locator: "11.7", title: "The Transformer Architecture"}
+      - {locator: "11.8", title: "Transformers for Vision"}
+      - {locator: "11.9", title: "Large-Scale Pretraining with Transformers"}
+      - {locator: "12", title: "Optimization Algorithms"}
+      - {locator: "12.1", title: "Optimization and Deep Learning"}
+      - {locator: "12.2", title: "Convexity"}
+      - {locator: "12.3", title: "Gradient Descent"}
+      - {locator: "12.4", title: "Stochastic Gradient Descent"}
+      - {locator: "12.5", title: "Minibatch Stochastic Gradient Descent"}
+      - {locator: "12.6", title: "Momentum"}
+      - {locator: "12.7", title: "Adagrad"}
+      - {locator: "12.8", title: "RMSProp"}
+      - {locator: "12.9", title: "Adadelta"}
+      - {locator: "12.10", title: "Adam"}
+      - {locator: "12.11", title: "Learning Rate Scheduling"}
+      - {locator: "13", title: "Computational Performance"}
+      - {locator: "13.1", title: "Compilers and Interpreters"}
+      - {locator: "13.2", title: "Asynchronous Computation"}
+      - {locator: "13.3", title: "Automatic Parallelism"}
+      - {locator: "13.4", title: "Hardware"}
+      - {locator: "13.5", title: "Training on Multiple GPUs"}
+      - {locator: "13.6", title: "Concise Implementation for Multiple GPUs"}
+      - {locator: "13.7", title: "Parameter Servers"}
+      - {locator: "14", title: "Computer Vision"}
+      - {locator: "14.1", title: "Image Augmentation"}
+      - {locator: "14.2", title: "Fine-Tuning"}
+      - {locator: "14.3", title: "Object Detection and Bounding Boxes"}
+      - {locator: "14.4", title: "Anchor Boxes"}
+      - {locator: "14.5", title: "Multiscale Object Detection"}
+      - {locator: "14.6", title: "The Object Detection Dataset"}
+      - {locator: "14.7", title: "Single Shot Multibox Detection"}
+      - {locator: "14.8", title: "Region-based CNNs (R-CNNs)"}
+      - {locator: "14.9", title: "Semantic Segmentation and the Dataset"}
+      - {locator: "14.10", title: "Transposed Convolution"}
+      - {locator: "14.11", title: "Fully Convolutional Networks"}
+      - {locator: "14.12", title: "Neural Style Transfer"}
+      - {locator: "14.13", title: "Image Classification (CIFAR-10) on Kaggle"}
+      - {locator: "14.14", title: "Dog Breed Identification (ImageNet Dogs) on Kaggle"}
+      - {locator: "15", title: "Natural Language Processing: Pretraining"}
+      - {locator: "15.1", title: "Word Embedding (word2vec)"}
+      - {locator: "15.2", title: "Approximate Training"}
+      - {locator: "15.3", title: "The Dataset for Pretraining Word Embeddings"}
+      - {locator: "15.4", title: "Pretraining word2vec"}
+      - {locator: "15.5", title: "Word Embedding with Global Vectors (GloVe)"}
+      - {locator: "15.6", title: "Subword Embedding"}
+      - {locator: "15.7", title: "Word Similarity and Analogy"}
+      - {locator: "15.8", title: "Bidirectional Encoder Representations from Transformers (BERT)"}
+      - {locator: "15.9", title: "The Dataset for Pretraining BERT"}
+      - {locator: "15.10", title: "Pretraining BERT"}
+      - {locator: "16", title: "Natural Language Processing: Applications"}
+      - {locator: "16.1", title: "Sentiment Analysis and the Dataset"}
+      - {locator: "16.2", title: "Sentiment Analysis: Using Recurrent Neural Networks"}
+      - {locator: "16.3", title: "Sentiment Analysis: Using Convolutional Neural Networks"}
+      - {locator: "16.4", title: "Natural Language Inference and the Dataset"}
+      - {locator: "16.5", title: "Natural Language Inference: Using Attention"}
+      - {locator: "16.6", title: "Fine-Tuning BERT for Sequence-Level and Token-Level Applications"}
+      - {locator: "16.7", title: "Natural Language Inference: Fine-Tuning BERT"}
+      - {locator: "17", title: "Reinforcement Learning"}
+      - {locator: "17.1", title: "Markov Decision Process (MDP)"}
+      - {locator: "17.2", title: "Value Iteration"}
+      - {locator: "17.3", title: "Q-Learning"}
+      - {locator: "18", title: "Gaussian Processes"}
+      - {locator: "18.1", title: "Introduction to Gaussian Processes"}
+      - {locator: "18.2", title: "Gaussian Process Priors"}
+      - {locator: "18.3", title: "Gaussian Process Inference"}
+      - {locator: "19", title: "Hyperparameter Optimization"}
+      - {locator: "19.1", title: "What Is Hyperparameter Optimization?"}
+      - {locator: "19.2", title: "Hyperparameter Optimization API"}
+      - {locator: "19.3", title: "Asynchronous Random Search"}
+      - {locator: "19.4", title: "Multi-Fidelity Hyperparameter Optimization"}
+      - {locator: "19.5", title: "Asynchronous Successive Halving"}
+      - {locator: "20", title: "Generative Adversarial Networks"}
+      - {locator: "20.1", title: "Generative Adversarial Networks"}
+      - {locator: "20.2", title: "Deep Convolutional Generative Adversarial Networks"}
+      - {locator: "21", title: "Recommender Systems"}
+      - {locator: "21.1", title: "Overview of Recommender Systems"}
+      - {locator: "21.2", title: "The MovieLens Dataset"}
+      - {locator: "21.3", title: "Matrix Factorization"}
+      - {locator: "21.4", title: "AutoRec: Rating Prediction with Autoencoders"}
+      - {locator: "21.5", title: "Personalized Ranking for Recommender Systems"}
+      - {locator: "21.6", title: "Neural Collaborative Filtering for Personalized Ranking"}
+      - {locator: "21.7", title: "Sequence-Aware Recommender Systems"}
+      - {locator: "21.8", title: "Feature-Rich Recommender Systems"}
+      - {locator: "21.9", title: "Factorization Machines"}
+      - {locator: "21.10", title: "Deep Factorization Machines"}
+      - {locator: "22", title: "Appendix: Mathematics for Deep Learning"}
+      - {locator: "22.1", title: "Geometry and Linear Algebraic Operations"}
+      - {locator: "22.2", title: "Eigendecompositions"}
+      - {locator: "22.3", title: "Single Variable Calculus"}
+      - {locator: "22.4", title: "Multivariable Calculus"}
+      - {locator: "22.5", title: "Integral Calculus"}
+      - {locator: "22.6", title: "Random Variables"}
+      - {locator: "22.7", title: "Maximum Likelihood"}
+      - {locator: "22.8", title: "Distributions"}
+      - {locator: "22.9", title: "Naive Bayes"}
+      - {locator: "22.10", title: "Statistics"}
+      - {locator: "22.11", title: "Information Theory"}
+      - {locator: "23", title: "Appendix: Tools for Deep Learning"}
+      - {locator: "23.1", title: "Using Jupyter Notebooks"}
+      - {locator: "23.2", title: "Using Amazon SageMaker"}
+      - {locator: "23.3", title: "Using AWS EC2 Instances"}
+      - {locator: "23.4", title: "Using Google Colab"}
+      - {locator: "23.5", title: "Selecting Servers and GPUs"}
+      - {locator: "23.6", title: "Contributing to This Book"}
+      - {locator: "23.7", title: "Utility Functions and Classes"}
+      - {locator: "23.8", title: "The d2l API Document"}
   - id: jurafsky-martin-slp3
     title: Speech and Language Processing
     authors: [Daniel Jurafsky, James H. Martin]
@@ -119,6 +1179,45 @@ works:
     covers: natural language processing and speech
     areas: [natural-language-processing, speech-and-audio, language-models]
     index: [toc]
+    toc_source: {url: "https://web.stanford.edu/~jurafsky/slp3/", read: 2026-11-15, note: "the chapter list of the August 19, 2026 release on the website of the book, chapters only; letters are the appendix chapters, which are only on the web"}
+    toc:
+      - {locator: "1", title: "Introduction"}
+      - {locator: "2", title: "Words and Tokens"}
+      - {locator: "3", title: "N-gram Language Models"}
+      - {locator: "4", title: "Logistic Regression and Text Classification"}
+      - {locator: "5", title: "Embeddings"}
+      - {locator: "6", title: "Neural Networks"}
+      - {locator: "7", title: "Transformers and Pretraining"}
+      - {locator: "8", title: "Post-training"}
+      - {locator: "9", title: "Masked Language Models"}
+      - {locator: "10", title: "Interpretability"}
+      - {locator: "11", title: "Information Retrieval and RAG"}
+      - {locator: "12", title: "Agents", note: not written yet}
+      - {locator: "13", title: "Machine Translation"}
+      - {locator: "14", title: "RNNs and LSTMs"}
+      - {locator: "15", title: "Phonetics and Speech Feature Extraction"}
+      - {locator: "16", title: "Automatic Speech Recognition"}
+      - {locator: "17", title: "Text-to-Speech"}
+      - {locator: "18", title: "Sequence Labeling for Parts of Speech and Named Entities"}
+      - {locator: "19", title: "Context-Free Grammars and Constituency Parsing"}
+      - {locator: "20", title: "Dependency Parsing"}
+      - {locator: "21", title: "Information Extraction: Relations, Events, and Time"}
+      - {locator: "22", title: "Semantic Role Labeling and Argument Structure"}
+      - {locator: "23", title: "Lexicons for Sentiment, Affect, and Connotation"}
+      - {locator: "24", title: "Coreference Resolution and Entity Linking"}
+      - {locator: "25", title: "Discourse Coherence"}
+      - {locator: "26", title: "Conversation and its Structure"}
+      - {locator: "A", title: "Hidden Markov Models"}
+      - {locator: "B", title: "Naive Bayes Classification"}
+      - {locator: "C", title: "Kneser-Ney Smoothing"}
+      - {locator: "D", title: "Spelling Correction and the Noisy Channel"}
+      - {locator: "E", title: "Statistical Constituency Parsing"}
+      - {locator: "F", title: "Context-Free Grammars"}
+      - {locator: "G", title: "Combinatory Categorial Grammar"}
+      - {locator: "H", title: "Logical Representations of Sentence Meaning"}
+      - {locator: "I", title: "Word Senses and WordNet"}
+      - {locator: "J", title: "PPMI"}
+      - {locator: "K", title: "Frame-based Dialogue Systems"}
   - id: szeliski-2022-computer-vision
     title: "Computer Vision: Algorithms and Applications"
     authors: [Richard Szeliski]
