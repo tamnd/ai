@@ -1,0 +1,22 @@
+# The facts of AlphaGo (spec 04.9). The build computes the status of each fact.
+- id: developer
+  value: "Google DeepMind"
+  sources:
+    - {src: "silver-2016-mastering-go", loc: "p. 1", value: "Google DeepMind", kind: primary}
+    - {src: "deepmind-alphago-page", loc: "p. 1", value: "Google DeepMind", kind: primary}
+- id: years
+  value: "2015 to 2017"
+  note: "From the program that played Fan Hui in October 2015 to AlphaGo Master, which played online in January 2017; the Future of Go Summit of May 2017 was the final match event."
+  sources:
+    - {src: "silver-2017-mastering-go-without-human-knowledge", loc: "pp. 21 to 22", value: "2015 to 2017", kind: primary}
+- id: domain
+  value: "the board game Go"
+  sources:
+    - {src: "silver-2016-mastering-go", loc: "p. 1", value: "the board game Go", kind: primary}
+- id: status
+  value: retired
+  as_of: 2017-05-27
+  note: "DeepMind wrote that the Future of Go Summit was its final match event with AlphaGo."
+  sources:
+    - {src: "hassabis-2017-alphagos-next-move", loc: "p. 1", value: retired, kind: primary, as_of: 2017-05-27}
+    - {src: "xinhua-2017-alphago-sweeps-ke-jie", loc: "p. 1", value: retired, kind: secondary, as_of: 2017-05-27}

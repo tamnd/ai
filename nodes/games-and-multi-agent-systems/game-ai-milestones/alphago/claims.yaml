@@ -1,0 +1,505 @@
+# The claims of the alphago page (spec 07). The build computes the labels.
+
+- id: c-paper
+  type: historical
+  text: "David Silver, Aja Huang and coauthors at Google DeepMind and Google introduced the Go program AlphaGo."
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 1", stance: for}
+
+- id: c-go-hard
+  type: attributive
+  text: "Silver et al. describe Go as long viewed as the most challenging of classic games for artificial intelligence, owing to its enormous search space and the difficulty of evaluating board positions and moves."
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 1", stance: for}
+
+- id: c-breadth-depth
+  type: attributive
+  text: "Silver et al. give approximate breadth and depth of the game tree as about 250 and 150 for Go, against about 35 and 80 for chess."
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 1", stance: for}
+
+- id: c-versions
+  type: definitional
+  text: "Silver et al. call the previously published program that played Fan Hui AlphaGo Fan, and the program that defeated Lee Sedol AlphaGo Lee."
+  evidence:
+    - {work: "silver-2017-mastering-go-without-human-knowledge", role: original, locator: "p. 2", stance: for}
+
+- id: c-master-name
+  type: definitional
+  text: "Silver et al. call AlphaGo Master the program that defeated the strongest human professional players 60 to 0 in online games in January 2017."
+  evidence:
+    - {work: "silver-2017-mastering-go-without-human-knowledge", role: original, locator: "p. 12", stance: for}
+
+- id: c-ke-jie-master
+  type: attributive
+  text: "DeepMind writes that the version known as Master defeated the world number one, Ke Jie."
+  evidence:
+    - {work: "silver-2017-alphago-zero-starting-from-scratch", role: statement, locator: "p. 1", stance: for}
+
+- id: c-infeasible
+  type: definitional
+  text: "In large games such as chess and especially Go, exhaustive search of the game tree is infeasible."
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 1", stance: for}
+
+- id: c-two-principles
+  type: definitional
+  text: "Silver et al. reduce the search space in two ways: position evaluation with a value function reduces the depth of the search, and sampling actions from a policy reduces its breadth."
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 1", stance: for}
+
+- id: c-board-image
+  type: definitional
+  text: "AlphaGo passes in the board position as a 19 × 19 image and uses convolutional layers to construct a representation of the position."
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 1", stance: for}
+
+- id: c-sl-train
+  type: historical
+  text: "The SL policy network of AlphaGo is a 13-layer policy network trained from 30 million positions from the KGS Go Server to predict expert moves."
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 2", stance: for}
+
+- id: c-sl-policy
+  type: empirical
+  text: "The SL policy network of AlphaGo predicted expert moves on a held out test set with an accuracy of 57.0% using all input features."
+  scope:
+    models: "the 13-layer SL policy network of AlphaGo Fan"
+    data: []
+    scale: "30 million KGS positions"
+    setting: "move prediction accuracy on a held-out test set"
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 2", stance: for}
+
+- id: c-rollout
+  type: definitional
+  text: "The rollout policy of AlphaGo is a faster linear softmax policy based on small pattern features."
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 2", stance: for}
+
+- id: c-rollout-speed
+  type: empirical
+  text: "The rollout policy of AlphaGo reached an accuracy of 24.2% and took 2 μs to select an action, against 3 ms for the policy network."
+  scope:
+    models: "the rollout policy of AlphaGo Fan"
+    data: []
+    scale: "unknown"
+    setting: "move prediction accuracy and time per action"
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 2", stance: for}
+
+- id: c-rl-policy
+  type: definitional
+  text: "The RL policy network of AlphaGo has the same structure as the SL policy network, starts from its weights, and is improved by policy gradient reinforcement learning."
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 2", stance: for}
+
+- id: c-rl-opponents
+  type: definitional
+  text: "The RL policy network of AlphaGo plays games against a randomly selected previous iteration of itself, with a reward of +1 for winning and −1 for losing."
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 2", stance: for}
+
+- id: c-rl-results
+  type: empirical
+  text: "Without any search, the RL policy network of AlphaGo won more than 80% of games against the SL policy network and 85% against Pachi."
+  scope:
+    models: "the RL policy network of AlphaGo Fan"
+    data: []
+    scale: "unknown"
+    setting: "games without search against the SL policy network and Pachi"
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 2", stance: for}
+
+- id: c-value
+  type: definitional
+  text: "The value network of AlphaGo has an architecture similar to the policy network but outputs a single prediction: the winner of games played by the RL policy network against itself from a position."
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 1", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 3", stance: for}
+
+- id: c-value-data
+  type: empirical
+  text: "A value network of AlphaGo trained on complete human games memorized the outcomes, so the authors generated a self-play data set of 30 million distinct positions, each sampled from a separate game."
+  scope:
+    models: "the value network of AlphaGo Fan"
+    data: []
+    scale: "complete KGS games, then 30 million self-play positions"
+    setting: "mean squared error of outcome prediction on training and test sets"
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 3", stance: for}
+
+- id: c-mcts
+  type: definitional
+  text: "AlphaGo combines the networks in a Monte Carlo tree search (MCTS)."
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 3", stance: for}
+
+- id: c-selection
+  type: definitional
+  text: "In the tree search of AlphaGo, each step selects the action that maximizes the action value plus a bonus proportional to the prior probability that decays with repeated visits."
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 3", stance: for}
+
+- id: c-priors
+  type: definitional
+  text: "In the tree search of AlphaGo, a new leaf node is processed once by the SL policy network, whose output probabilities are stored as prior probabilities."
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 3", stance: for}
+
+- id: c-leaf-eval
+  type: definitional
+  text: "In the tree search of AlphaGo, a leaf is evaluated by the value network and by the outcome of a rollout, and the two evaluations are combined with a mixing parameter λ."
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 3", stance: for}
+
+- id: c-most-visited
+  type: definitional
+  text: "Once the search is complete, AlphaGo chooses the most visited move from the root position."
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 3", stance: for}
+
+- id: c-sl-better
+  type: attributive
+  text: "Silver et al. report that the SL policy network performed better in AlphaGo than the stronger RL policy network, presumably because humans select a diverse beam of promising moves."
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 3", stance: for}
+
+- id: c-rl-value-better
+  type: empirical
+  text: "In AlphaGo, a value function derived from the stronger RL policy network performed better than one derived from the SL policy network."
+  scope:
+    models: "AlphaGo Fan with value networks derived from the SL and RL policy networks"
+    data: []
+    scale: "unknown"
+    setting: "playing strength within the search"
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "pp. 3 to 4", stance: for}
+
+- id: c-async
+  type: definitional
+  text: "AlphaGo runs an asynchronous multi-threaded search that executes simulations on CPUs and computes the policy and value networks in parallel on GPUs."
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 4", stance: for}
+
+- id: c-hardware
+  type: historical
+  text: "The final single-machine version of AlphaGo used 40 search threads, 48 CPUs and 8 GPUs, and a distributed version used multiple machines, 40 search threads, 1,202 CPUs and 176 GPUs."
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 4", stance: for}
+
+- id: c-fan-hui-dates
+  type: historical
+  text: "Nature received the paper of Silver et al. on 11 November 2015 and accepted it on 5 January 2016."
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 6", stance: for}
+
+- id: c-lee-unpublished
+  type: historical
+  text: "AlphaGo Lee, the program that defeated Lee Sedol in March 2016, was previously unpublished, and Silver et al. highlight its key differences from AlphaGo Fan."
+  evidence:
+    - {work: "silver-2017-mastering-go-without-human-knowledge", role: original, locator: "p. 21", stance: for}
+
+- id: c-lee-value
+  type: historical
+  text: "The value network of AlphaGo Lee was trained from the outcomes of fast games of self-play by AlphaGo rather than by the policy network, and this procedure was iterated several times."
+  evidence:
+    - {work: "silver-2017-mastering-go-without-human-knowledge", role: original, locator: "p. 21", stance: for}
+
+- id: c-lee-larger
+  type: historical
+  text: "The policy and value networks of AlphaGo Lee were larger than those of the original paper, with 12 convolutional layers of 256 planes, and were trained for more iterations."
+  evidence:
+    - {work: "silver-2017-mastering-go-without-human-knowledge", role: original, locator: "p. 21", stance: for}
+
+- id: c-lee-tpu
+  type: historical
+  text: "AlphaGo Lee was distributed over many machines using 48 TPUs rather than GPUs."
+  evidence:
+    - {work: "silver-2017-mastering-go-without-human-knowledge", role: original, locator: "p. 21", stance: for}
+
+- id: c-master-arch
+  type: historical
+  text: "AlphaGo Master uses the same neural network architecture, reinforcement learning algorithm and MCTS algorithm as AlphaGo Zero."
+  evidence:
+    - {work: "silver-2017-mastering-go-without-human-knowledge", role: original, locator: "p. 22", stance: for}
+
+- id: c-master-human
+  type: historical
+  text: "AlphaGo Master uses the same handcrafted features and rollouts as AlphaGo Lee, and its training was initialised by supervised learning from human data."
+  evidence:
+    - {work: "silver-2017-mastering-go-without-human-knowledge", role: original, locator: "p. 22", stance: for}
+
+- id: c-summit-plan
+  type: historical
+  text: "In April 2017 DeepMind announced the Future of Go Summit in Wuzhen, China, for 23 to 27 May, with a match of three games between AlphaGo and Ke Jie."
+  evidence:
+    - {work: "hassabis-2017-exploring-mysteries-of-go", role: statement, locator: "p. 1", stance: for}
+
+- id: c-final-event
+  type: attributive
+  text: "DeepMind wrote that the Future of Go Summit was its final match event with AlphaGo."
+  evidence:
+    - {work: "hassabis-2017-alphagos-next-move", role: statement, locator: "p. 1", stance: for}
+
+- id: c-50-games
+  type: historical
+  text: "DeepMind also published a set of 50 games that AlphaGo played against itself at full length time controls."
+  evidence:
+    - {work: "hassabis-2017-alphagos-next-move", role: statement, locator: "p. 1", stance: for}
+
+- id: c-tournament
+  type: empirical
+  text: "In an internal tournament with 5 s of computation per move, single-machine AlphaGo won 494 of 495 games (99.8%) against other Go programs."
+  scope:
+    models: "single-machine AlphaGo against Crazy Stone, Zen, Pachi, Fuego and GnuGo"
+    data: []
+    scale: "495 games"
+    setting: "internal tournament, 5 s per move"
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 5", stance: for}
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 9", stance: for}
+
+- id: c-distributed-wins
+  type: empirical
+  text: "In the tournament of Silver et al., distributed AlphaGo won 77% of games against single-machine AlphaGo and 100% against other programs."
+  scope:
+    models: "distributed AlphaGo against single-machine AlphaGo and other programs"
+    data: []
+    scale: "unknown"
+    setting: "internal tournament"
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 5", stance: for}
+
+- id: c-elo-2016
+  type: empirical
+  text: "In the tournament of Silver et al., distributed AlphaGo with 1202 CPUs and 176 GPUs had an Elo rating of 3140, and single-machine AlphaGo with 48 CPUs and 8 GPUs had 2890."
+  scope:
+    models: "distributed and single-machine AlphaGo"
+    data: []
+    scale: "unknown"
+    setting: "internal tournament with 5 s per move, Elo anchored to Fan Hui"
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 15", stance: for}
+
+- id: c-elo-anchor
+  type: definitional
+  text: "The Elo scale of Silver et al. was anchored to the BayesElo rating of Fan Hui, 2,908 at the date of submission."
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "pp. 8 to 9", stance: for}
+
+- id: c-elo-gap
+  type: definitional
+  text: "On the Elo scale of Silver et al., a difference of 230 points corresponds to a 79% probability of winning."
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 4", stance: for}
+
+- id: c-fan-hui
+  type: historical
+  text: "Fan Hui was a professional 2 dan and the winner of the European Go championships of 2013, 2014 and 2015."
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 5", stance: for}
+
+- id: c-fan-hui-match
+  type: historical
+  text: "Over 5 to 9 October 2015 he played a formal match of five games against distributed AlphaGo, and AlphaGo won 5 to 0."
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 5", stance: for}
+    - {work: "deepmind-alphago-page", role: statement, locator: "p. 1", stance: for}
+
+- id: c-informal
+  type: historical
+  text: "Five informal games were also played, and AlphaGo won them 3 to 2."
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 9", stance: for}
+
+- id: c-first
+  type: attributive
+  text: "Silver et al. report that this was the first time a computer Go program had defeated a human professional player without handicap in the full game of Go."
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 5", stance: for}
+
+- id: c-lee
+  type: historical
+  text: "AlphaGo Lee defeated Lee Sedol, the winner of 18 international titles, by 4 games to 1 in March 2016."
+  evidence:
+    - {work: "silver-2017-mastering-go-without-human-knowledge", role: original, locator: "p. 2", stance: for}
+    - {work: "silver-2017-mastering-go-without-human-knowledge", role: original, locator: "p. 21", stance: for}
+    - {work: "deepmind-alphago-page", role: statement, locator: "p. 1", stance: for}
+
+- id: c-lee-seoul
+  type: attributive
+  text: "DeepMind states that the 4 to 1 win took place in Seoul, South Korea, and was watched by over 200 million people."
+  evidence:
+    - {work: "deepmind-alphago-page", role: statement, locator: "p. 1", stance: for}
+
+- id: c-master-60
+  type: historical
+  text: "AlphaGo Master defeated top human professional players 60 to 0 in online games in January 2017."
+  evidence:
+    - {work: "silver-2017-mastering-go-without-human-knowledge", role: original, locator: "p. 12", stance: for}
+
+- id: c-magister
+  type: attributive
+  text: "DeepMind describes them as unofficial online games played under the moniker Magister (Master)."
+  evidence:
+    - {work: "hassabis-2017-alphagos-next-move", role: statement, locator: "p. 1", stance: for}
+
+- id: c-ke-jie
+  type: attributive
+  text: "Xinhua reported on 27 May 2017 that AlphaGo swept Ke Jie 3-0, defeating the world's top-ranked player for the third consecutive game between them in Wuzhen."
+  evidence:
+    - {work: "xinhua-2017-alphago-sweeps-ke-jie", role: statement, locator: "p. 1", stance: for}
+
+- id: c-agz-tournament
+  type: definitional
+  text: "Silver et al. evaluated the versions of AlphaGo in an internal tournament with 5 s of thinking time per move."
+  evidence:
+    - {work: "silver-2017-mastering-go-without-human-knowledge", role: original, locator: "p. 12", stance: for}
+
+- id: c-agz-hardware
+  type: historical
+  text: "In the tournament of Silver et al., AlphaGo Fan and AlphaGo Lee were distributed over 176 GPUs and 48 TPUs respectively, and AlphaGo Master and AlphaGo Zero each ran on a single machine with 4 TPUs."
+  evidence:
+    - {work: "silver-2017-mastering-go-without-human-knowledge", role: original, locator: "p. 12", stance: for}
+
+- id: c-agz-elo
+  type: empirical
+  text: "In the tournament of Silver et al., the Elo ratings were 3,144 for AlphaGo Fan, 3,739 for AlphaGo Lee, 4,858 for AlphaGo Master and 5,185 for AlphaGo Zero."
+  scope:
+    models: "AlphaGo Fan, Lee, Master and Zero"
+    data: []
+    scale: "unknown"
+    setting: "internal tournament with 5 s per move, Elo grounded by the Fan Hui and Lee Sedol matches"
+  evidence:
+    - {work: "silver-2017-mastering-go-without-human-knowledge", role: original, locator: "p. 12", stance: for}
+
+- id: c-self-play-bias
+  type: attributive
+  text: "Silver et al. ground the Elo scale with the matches against Fan Hui and Lee Sedol, because otherwise self-play bias makes the Elo ratings of AlphaGo unrealistically high."
+  evidence:
+    - {work: "silver-2017-mastering-go-without-human-knowledge", role: original, locator: "p. 30", stance: for}
+
+- id: c-deep-blue
+  type: attributive
+  text: "Silver et al. write that during the match against Fan Hui, AlphaGo evaluated thousands of times fewer positions than Deep Blue did in its chess match against Kasparov."
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 6", stance: for}
+
+- id: c-handcrafted
+  type: attributive
+  text: "Silver et al. contrast the handcrafted evaluation function of Deep Blue with the neural networks of AlphaGo, trained directly from gameplay through general-purpose supervised and reinforcement learning."
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 6", stance: for}
+
+- id: c-move-37
+  type: attributive
+  text: "DeepMind states that in game two AlphaGo played Move 37, a move with a 1 in 10,000 chance of being used, and that it helped AlphaGo win the game."
+  evidence:
+    - {work: "deepmind-alphago-page", role: statement, locator: "p. 1", stance: for}
+
+- id: c-move-78
+  type: attributive
+  text: "DeepMind also states that in game four Lee Sedol played Move 78, known as \"God's Touch\", which also had a 1 in 10,000 chance and helped him win."
+  evidence:
+    - {work: "deepmind-alphago-page", role: statement, locator: "p. 1", stance: for}
+
+- id: c-influence
+  type: attributive
+  text: "DeepMind writes that the online games as Master influenced many of the top professionals of Go, Ke Jie among them."
+  evidence:
+    - {work: "hassabis-2017-alphagos-next-move", role: statement, locator: "p. 1", stance: for}
+
+- id: c-losses
+  type: historical
+  text: "AlphaGo won the five informal games against Fan Hui 3 to 2, so Fan Hui won two of them."
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 9", stance: for}
+
+- id: c-loss-lee
+  type: attributive
+  text: "DeepMind states that in game four Lee Sedol played Move 78, which helped him win the game."
+  evidence:
+    - {work: "deepmind-alphago-page", role: statement, locator: "p. 1", stance: for}
+
+- id: c-komi
+  type: historical
+  text: "The value network of AlphaGo was trained specifically for a komi of 7.5, so in handicap games the authors kept the komi and gave black additional stones."
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 9", stance: for}
+
+- id: c-fan-elo-approx
+  type: attributive
+  text: "To approximately assess the rating of Fan Hui against Go programs, Silver et al. appended all ten games to the tournament, ignoring differences in time controls."
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 9", stance: for}
+
+- id: c-human-data
+  type: attributive
+  text: "Silver et al. note that expert data sets are often expensive, unreliable or simply unavailable, and may impose a ceiling on the performance of systems trained on them."
+  evidence:
+    - {work: "silver-2017-mastering-go-without-human-knowledge", role: original, locator: "p. 1", stance: for}
+
+- id: c-agz-diff
+  type: definitional
+  text: "AlphaGo Zero is trained solely by self-play reinforcement learning, starting from random play, and uses only the black and white stones from the board as input features."
+  evidence:
+    - {work: "silver-2017-mastering-go-without-human-knowledge", role: original, locator: "p. 2", stance: for}
+
+- id: c-agz-diff2
+  type: definitional
+  text: "AlphaGo Zero uses a single neural network rather than separate policy and value networks, and a simpler tree search that does not perform Monte Carlo rollouts."
+  evidence:
+    - {work: "silver-2017-mastering-go-without-human-knowledge", role: original, locator: "p. 2", stance: for}
+
+- id: c-agz-100
+  type: empirical
+  text: "After 72 hours of training, AlphaGo Zero on a single machine with 4 TPUs beat AlphaGo Lee, distributed over many machines with 48 TPUs, by 100 games to 0."
+  scope:
+    models: "AlphaGo Zero after 72 hours of training against AlphaGo Lee"
+    data: []
+    scale: "100 games"
+    setting: "2 hour time controls of the Seoul match"
+  evidence:
+    - {work: "silver-2017-mastering-go-without-human-knowledge", role: original, locator: "p. 8", stance: for}
+
+- id: c-agz-89
+  type: empirical
+  text: "A larger AlphaGo Zero, trained for about 40 days, beat AlphaGo Master by 89 games to 11 in a 100-game match with 2 hour time controls."
+  scope:
+    models: "the 40-block AlphaGo Zero against AlphaGo Master"
+    data: []
+    scale: "100 games"
+    setting: "2 hour time controls"
+  evidence:
+    - {work: "silver-2017-mastering-go-without-human-knowledge", role: original, locator: "p. 10", stance: for}
+    - {work: "silver-2017-mastering-go-without-human-knowledge", role: original, locator: "p. 12", stance: for}
+
+- id: c-az
+  type: definitional
+  text: "AlphaZero is a more generic version of the AlphaGo Zero algorithm that applies the same algorithm and network architecture to chess, shogi and Go."
+  evidence:
+    - {work: "silver-2018-general-reinforcement-learning-algorithm", role: original, locator: "p. 2", stance: for}
+
+- id: c-az-training
+  type: historical
+  text: "AlphaZero training used 5,000 first-generation TPUs to generate self-play games and 16 second-generation TPUs to train the networks, and lasted about 13 days for Go."
+  evidence:
+    - {work: "silver-2018-general-reinforcement-learning-algorithm", role: original, locator: "p. 4", stance: for}
+
+- id: c-az-go
+  type: empirical
+  text: "In Go, AlphaZero defeated the previously published AlphaGo Zero, also trained for 700,000 steps, winning 61% of games."
+  scope:
+    models: "AlphaZero and AlphaGo Zero, each trained for 700,000 steps"
+    data: []
+    scale: "unknown"
+    setting: "Go games on a single machine with four first-generation TPUs"
+  evidence:
+    - {work: "silver-2018-general-reinforcement-learning-algorithm", role: original, locator: "p. 5", stance: for}
+
+- id: c-successors
+  type: attributive
+  text: "DeepMind names AlphaZero, MuZero and AlphaDev as successors of AlphaGo."
+  evidence:
+    - {work: "deepmind-alphago-page", role: statement, locator: "p. 1", stance: for}
