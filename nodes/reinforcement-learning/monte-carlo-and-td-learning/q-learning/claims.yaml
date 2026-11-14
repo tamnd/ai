@@ -1,392 +1,179 @@
-- id: c-definition
+# The claims of the q-learning page (spec 07). The build computes the labels.
+- id: c-update
   type: definitional
-  text: "Q-learning estimates the action values of an optimal policy from sampled transitions, even when another policy selects the actions."
+  text: "Q-learning (Watkins, 1989) is an off-policy TD control algorithm defined by equation (6.8), in which the learned action-value function Q(S_t, A_t) is updated with R_{t+1} and the max over a of Q(S_{t+1}, a)."
   evidence:
-    - {work: sutton-barto-2018-reinforcement-learning, role: review, locator: "Section 6.5", stance: for}
-- id: c-purpose
+    - {work: "sutton-barto-2018-reinforcement-learning", role: review, locator: "p. 131", stance: for}
+
+- id: c-approximates-qstar
+  type: attributive
+  text: "Sutton and Barto write that the learned action-value function Q directly approximates q*, the optimal action-value function, independent of the policy being followed."
+  evidence:
+    - {work: "sutton-barto-2018-reinforcement-learning", role: original, locator: "p. 131", stance: for}
+
+- id: c-policy-role
+  type: attributive
+  text: "Sutton and Barto write that the policy still determines which state-action pairs are visited and updated, and that all that is required for correct convergence is that all pairs continue to be updated."
+  evidence:
+    - {work: "sutton-barto-2018-reinforcement-learning", role: original, locator: "p. 131", stance: for}
+
+- id: c-algorithm-box
   type: definitional
-  text: "Q-learning can learn a greedy policy that is optimal in the limit while the behavior policy continues to explore."
+  text: "In the Q-learning algorithm of Sutton and Barto, the parameters are a step size alpha in (0, 1] and a small epsilon > 0, Q(s, a) is initialized arbitrarily except that Q(terminal, .) = 0, and the action is chosen from a policy derived from Q, for example epsilon-greedy."
   evidence:
-    - {work: sutton-barto-2018-reinforcement-learning, role: review, locator: "Section 6.5", stance: for}
-- id: c-plain
-  type: definitional
-  text: "Q-learning updates an estimate toward the reward plus the best estimated next-state value, and its behavior action may differ from its target action rule."
-  evidence:
-    - {work: sutton-barto-2018-reinforcement-learning, role: review, locator: "Section 6.5", stance: for}
-- id: c-setting
-  type: definitional
-  text: "Q-learning is a control method for a finite Markov decision process with sampled states, actions, rewards, and next states."
-  evidence:
-    - {work: sutton-barto-2018-reinforcement-learning, role: review, locator: "Section 6.5", stance: for}
-- id: c-markov
-  type: definitional
-  text: "The Markov property means that the distribution of the next state and reward depends only on the current state and action, not on earlier history."
-  evidence:
-    - {work: sutton-barto-2018-reinforcement-learning, role: review, locator: "Section 3.1", stance: for}
-- id: c-optimal-value
-  type: definitional
-  text: "The optimal action value is the expected discounted return after taking an action in a state and then acting optimally."
-  evidence:
-    - {work: sutton-barto-2018-reinforcement-learning, role: review, locator: "Section 3.5", stance: for}
-- id: c-bellman-link
-  type: definitional
-  text: "The Bellman optimality equation defines optimal action values."
-  evidence:
-    - {work: sutton-barto-2018-reinforcement-learning, role: review, locator: "Section 3.6", stance: for}
-- id: c-off-policy
-  type: definitional
-  text: "The behavior policy may explore while the Q-learning target evaluates a greedy policy."
-  evidence:
-    - {work: sutton-barto-2018-reinforcement-learning, role: review, locator: "Section 6.5", stance: for}
-- id: c-terminal
-  type: mathematical
-  text: "For a terminal next state, the target is the reward and omits the future-value term."
-  assumes: ["the next state is terminal"]
-  derivation: "derivations/convergence.md"
-  evidence:
-    - {work: sutton-barto-2018-reinforcement-learning, role: review, locator: "Section 6.5", stance: for}
-- id: c-epsilon-greedy
-  type: definitional
-  text: "An epsilon-greedy policy selects a random behavior action with probability epsilon and a greedy action otherwise."
-  evidence:
-    - {work: sutton-barto-2018-reinforcement-learning, role: review, locator: "Section 2.2", stance: for}
-- id: c-target-distinction
-  type: definitional
-  text: "Q-learning takes a maximum over next actions, whereas Sarsa uses the sampled next action."
-  evidence:
-    - {work: sutton-barto-2018-reinforcement-learning, role: review, locator: "Sections 6.4 to 6.5", stance: for}
-- id: c-derivation-link
-  type: mathematical
-  text: "The derivation gives the Bellman equation, conditional mean of the sample target, and stochastic-approximation form of the update."
-  assumes: ["finite discounted Markov decision process"]
-  derivation: "derivations/convergence.md"
+    - {work: "sutton-barto-2018-reinforcement-learning", role: review, locator: "p. 131", stance: for}
 
 - id: c-contraction
   type: mathematical
-  text: "The Bellman optimality operator is a gamma-contraction in the sup norm when gamma is below one."
-  assumes: ["0 <= gamma < 1", "bounded action-value functions"]
-  derivation: "derivations/convergence.md"
+  text: "For a finite Markov decision process with 0 <= gamma < 1, the Bellman optimality operator is a contraction of modulus gamma in the max norm, so it has exactly one fixed point, q*."
+  assumes: ["finite state and action sets", "0 <= gamma < 1", "bounded rewards"]
+  derivation: "derivations/stochastic-approximation.md"
 
-- id: c-example
+- id: c-target-mean
   type: mathematical
-  text: "For the stated values, the target is 3 and the updated visited entry is 2.25."
-  assumes: ["Q(s,a)=2", "reward=1", "gamma=0.5", "next action values are 4 and 3", "alpha=0.25"]
-  derivation: "derivations/convergence.md"
+  text: "Given the history up to the choice of A_t, the mean of the Q-learning target R_{t+1} + gamma max_a Q_t(S_{t+1}, a) is the Bellman optimality operator applied to Q_t, at (S_t, A_t)."
+  assumes: ["the Markov property", "the table Q_t is fixed by the history"]
+  derivation: "derivations/stochastic-approximation.md"
 
-- id: c-one-entry
+- id: c-wd-theorem
   type: mathematical
-  text: "All other table entries retain their prior values in this update."
-  assumes: ["the update is applied only to the visited state-action entry"]
-  derivation: "derivations/convergence.md"
+  text: "Watkins and Dayan state the theorem: given bounded rewards |r_n| <= R, learning rates 0 <= alpha_n < 1, and, for all x and a, a sum over i of alpha_{n^i(x,a)} that is infinite and a sum over i of alpha_{n^i(x,a)}^2 that is finite, Q_n(x, a) -> Q*(x, a) as n -> infinity for all x and a, with probability 1."
+  assumes: ["a look-up table representation", "discounted rewards"]
+  evidence:
+    - {work: "watkins-dayan-1992-q-learning", role: original, locator: "Section 2", stance: for}
 
-- id: c-alpha
-  type: definitional
-  text: "The step size alpha controls how far an update moves toward its target."
+- id: c-wd-conditions
+  type: attributive
+  text: "Watkins and Dayan write that their description assumes a look-up table representation, that Watkins (1989) shows that Q-learning may not converge correctly for other representations, and that the most important condition implicit in the theorem is an infinite number of episodes for each starting state and action."
   evidence:
-    - {work: sutton-barto-2018-reinforcement-learning, role: review, locator: "Section 6.5", stance: for}
-- id: c-alpha-conditions
-  type: mathematical
-  text: "The cited theorem requires step sizes below one, with divergent per-pair sums and convergent squared sums."
-  assumes: ["finite MDP", "each state-action pair visited infinitely often"]
-  evidence:
-    - {work: watkins-dayan-1992-q-learning, role: original, locator: "p. 282", stance: for}
-- id: c-gamma
-  type: mathematical
-  text: "The discounted contraction argument requires gamma below one."
-  assumes: ["0 <= gamma < 1", "finite state-action space"]
-  derivation: "derivations/convergence.md"
+    - {work: "watkins-dayan-1992-q-learning", role: original, locator: "Section 2", stance: for}
 
-- id: c-epsilon
-  type: definitional
-  text: "The exploration rate epsilon controls random behavior actions under epsilon-greedy selection."
+- id: c-wd-abstract
+  type: attributive
+  text: "Watkins and Dayan report that Q-learning converges to the optimum action-values with probability 1 so long as all actions are repeatedly sampled in all states and the action-values are represented discretely."
   evidence:
-    - {work: sutton-barto-2018-reinforcement-learning, role: review, locator: "Section 2.2", stance: for}
-- id: c-storage
-  type: mathematical
-  text: "For |S| states and |A| actions, a full table stores |S||A| values."
-  assumes: ["one stored value per state-action pair"]
-  derivation: "derivations/convergence.md"
+    - {work: "watkins-dayan-1992-q-learning", role: original, locator: "the abstract", stance: for}
 
-- id: c-cost
-  type: mathematical
-  text: "A direct scan of the next state's |A| action values costs O(|A|) time, with constant additional update work."
-  assumes: ["direct scan over actions", "constant-time table access"]
-  derivation: "derivations/convergence.md"
+- id: c-wd-extensions
+  type: attributive
+  text: "Watkins and Dayan sketch two extensions for which the convergence result holds: the non-discounted case for a Markov process with absorbing goal states, and the case where many Q values are updated in each iteration."
+  evidence:
+    - {work: "watkins-dayan-1992-q-learning", role: original, locator: "Section 4", stance: for}
 
-- id: c-inference-cost
-  type: mathematical
-  text: "Greedy action selection scans the current state's |A| values."
-  assumes: ["direct scan over actions"]
-  derivation: "derivations/convergence.md"
+- id: c-wd-no-lambda
+  type: attributive
+  text: "Watkins and Dayan write that their theorem does not permit updates based on the rewards from more than one iteration, as in TD(lambda), and that it does not extend trivially to this case."
+  evidence:
+    - {work: "watkins-dayan-1992-q-learning", role: original, locator: "Section 4", stance: for}
 
-- id: c-convergence-evidence
-  type: mathematical
-  text: "Watkins and Dayan prove convergence for finite tabular problems under repeated sampling and step-size conditions."
-  assumes: ["finite MDP", "all state-action pairs visited infinitely often", "Robbins-Monro step sizes"]
+- id: c-step-sizes
+  type: attributive
+  text: "Sutton and Barto write that both convergence conditions (2.7) are met for the sample-average case, 1/n, but not for the case of a constant step-size parameter, where the second condition is not met, indicating that the estimates never completely converge but continue to vary in response to the most recently received rewards."
   evidence:
-    - {work: watkins-dayan-1992-q-learning, role: original, locator: "p. 282", stance: for}
-- id: c-convergence
-  type: mathematical
-  text: "For a finite discounted MDP with bounded rewards, infinitely many visits to every state-action pair, and per-pair step sizes with divergent sums and convergent sums of squares, Q-learning converges with probability one to q*."
-  assumes: ["finite discounted MDP", "bounded rewards", "every state-action pair visited infinitely often", "per-pair Robbins-Monro step sizes"]
-  evidence:
-    - {work: watkins-dayan-1992-q-learning, role: original, locator: "p. 282", stance: for}
-- id: c-table-limit
-  type: definitional
-  text: "A table needs a value for every state-action pair and is impractical when either set is large or continuous."
-  evidence:
-    - {work: sutton-barto-2018-reinforcement-learning, role: review, locator: "Section 6.5", stance: for}
-- id: c-deadly-triad
-  type: definitional
-  text: "Function approximation combined with bootstrapping and off-policy learning can cause divergence, a combination called the deadly triad."
-  evidence:
-    - {work: sutton-barto-2018-reinforcement-learning, role: review, locator: "Chapter 11, Section 11.3", stance: for}
-- id: c-max-bias
-  type: mathematical
-  text: "For the page's constructed example, two independent estimates of zero-valued actions are each +1 or -1 with equal probability, so their expected maximum is 1/2."
-  assumes: ["independent symmetric estimates"]
-  derivation: "derivations/convergence.md"
+    - {work: "sutton-barto-2018-reinforcement-learning", role: original, locator: "p. 33", stance: for}
 
-- id: c-coverage
-  type: mathematical
-  text: "The tabular convergence theorem requires every state-action pair to be visited infinitely often, and it does not apply without that coverage."
-  assumes: ["tabular Q-learning convergence theorem"]
+- id: c-optimistic
+  type: attributive
+  text: "Sutton and Barto describe optimistic initial values as a simple trick to encourage exploration that can be quite effective on stationary problems, but far from a generally useful approach to encouraging exploration."
   evidence:
-    - {work: watkins-dayan-1992-q-learning, role: original, locator: "p. 282", stance: for}
-- id: c-double
-  type: definitional
-  text: "Double Q-learning uses two estimates to reduce maximization bias."
-  evidence:
-    - {work: sutton-barto-2018-reinforcement-learning, role: review, locator: "Section 6.7", stance: for}
-- id: c-dqn
-  type: definitional
-  text: "Deep Q-networks use neural function approximation with Q-learning targets, experience replay, and a target network."
-  evidence:
-    - {work: mnih-2015-human-level-control, role: original, locator: "Nature 518, Abstract and Methods", stance: for}
-- id: c-when
-  type: definitional
-  text: "Tabular Q-learning fits small finite tasks where the agent can sample transitions and ensure adequate coverage."
-  evidence:
-    - {work: sutton-barto-2018-reinforcement-learning, role: review, locator: "Section 6.5", stance: for}
-- id: c-alternatives
-  type: definitional
-  text: "Sarsa is an on-policy alternative that evaluates actions selected by the behavior policy."
-  evidence:
-    - {work: sutton-barto-2018-reinforcement-learning, role: review, locator: "Section 6.4", stance: for}
-- id: c-cliff-difference
+    - {work: "sutton-barto-2018-reinforcement-learning", role: original, locator: "p. 34", stance: for}
+
+- id: c-cliff
   type: empirical
-  text: "Sarsa's sampled next action can account for exploratory risk in its updates, while Q-learning's greedy target does not, affecting online behavior in Sutton and Barto's cliff-walking example."
-  scope:
-    models: "tabular Sarsa and Q-learning"
-    data: [unknown]
-    scale: "small tabular task"
-    setting: "online control with exploratory behavior"
-  evidence:
-    - {work: sutton-barto-2018-reinforcement-learning, role: review, locator: "Example 6.6 and Figure 6.4", stance: for}
-- id: c-thesis
-  type: historical
-  text: "Watkins introduced Q-learning in his University of Cambridge doctoral thesis in 1989."
-  evidence:
-    - {work: watkins-1989-learning-from-delayed-rewards, role: primary-document, locator: "Title page", stance: for}
-- id: c-watkins-dayan
-  type: historical
-  text: "Watkins and Dayan published their convergence analysis in Machine Learning, volume 8, pages 279 to 292, in 1992."
-  evidence:
-    - {work: watkins-dayan-1992-q-learning, role: original, locator: "p. 279", stance: for}
-- id: c-dqn-history
-  type: historical
-  text: "Mnih et al. reported a deep Q-network system for Atari game control in Nature in 2015."
-  evidence:
-    - {work: mnih-2015-human-level-control, role: original, locator: "Nature 518, Abstract and Methods", stance: for}
-- id: c-cliff-result
-  type: empirical
-  text: "In Sutton and Barto's cliff-walking example, Q-learning learns the optimal path, while Sarsa learns a route farther from the cliff during continued exploration."
+  text: "On the cliff walking task with epsilon-greedy action selection and epsilon = 0.1, Q-learning learns values for the optimal policy, which travels right along the edge of the cliff, and occasionally falls off the cliff; Sarsa learns the longer but safer path; and the online performance of Q-learning is worse than that of Sarsa."
   scope:
     models: "tabular Q-learning and Sarsa"
-    data: [unknown]
-    scale: "cliff-walking grid task"
-    setting: "epsilon-greedy online learning"
+    data: []
+    scale: "a 4 by 12 gridworld"
+    setting: "undiscounted, episodic, reward -1 per step and -100 for a step into the cliff, epsilon-greedy with epsilon = 0.1"
   evidence:
-    - {work: sutton-barto-2018-reinforcement-learning, role: review, locator: "Example 6.6 and Figure 6.4", stance: for}
-- id: c-cliff-scope
-  type: empirical
-  text: "The local experiment compares online returns and greedy paths on a tabular cliff grid across its recorded seeds."
-  scope: {models: "tabular Q-learning and Sarsa", data: [unknown], scale: "cliff-walking grid", setting: "local experiment"}
+    - {work: "sutton-barto-2018-reinforcement-learning", role: review, locator: "p. 132", stance: for}
   exp: [cliff-walking]
-- id: c-exploration-failure
-  type: mathematical
-  text: "An exploration schedule that stops visiting an action can leave its value uncorrected."
-  assumes: ["tabular updates affect only visited entries"]
-  derivation: "derivations/convergence.md"
+  small_scale: "yes"
+  small_scale_note: "The task is a small gridworld; the whole comparison runs on a CPU in about a minute."
 
-- id: c-constant-alpha
-  type: mathematical
-  text: "A positive constant step size used indefinitely fails the theorem's squared-sum condition."
-  assumes: ["infinitely many visits to a state-action pair", "constant positive step size"]
-  derivation: "derivations/convergence.md"
+- id: c-cliff-decay
+  type: attributive
+  text: "Sutton and Barto write that if epsilon were gradually reduced, both Q-learning and Sarsa would asymptotically converge to the optimal policy on the cliff walking task."
+  evidence:
+    - {work: "sutton-barto-2018-reinforcement-learning", role: original, locator: "p. 132", stance: for}
+
+- id: c-max-bias
+  type: attributive
+  text: "Sutton and Barto write that in Q-learning a maximum over estimated values is used implicitly as an estimate of the maximum value, which can lead to a significant positive bias."
+  evidence:
+    - {work: "sutton-barto-2018-reinforcement-learning", role: original, locator: "p. 134", stance: for}
+
+- id: c-double-learning
+  type: attributive
+  text: "Sutton and Barto write that double learning learns two estimates, updates only one of them on each play, and doubles the memory requirements but does not increase the amount of computation per step."
+  evidence:
+    - {work: "sutton-barto-2018-reinforcement-learning", role: original, locator: "p. 135", stance: for}
 
 - id: c-expected-sarsa
-  type: definitional
-  text: "Expected Sarsa replaces the sampled next action with an expectation under a specified target policy."
+  type: attributive
+  text: "Sutton and Barto write that if the target policy of Expected Sarsa is the greedy policy while behavior is more exploratory, then Expected Sarsa is exactly Q-learning."
   evidence:
-    - {work: sutton-barto-2018-reinforcement-learning, role: review, locator: "Section 6.6", stance: for}
-- id: c-n-step
-  type: definitional
-  text: "Multi-step temporal-difference methods use rewards from several transitions before bootstrapping."
-  evidence:
-    - {work: sutton-barto-2018-reinforcement-learning, role: review, locator: "Chapter 7", stance: for}
+    - {work: "sutton-barto-2018-reinforcement-learning", role: original, locator: "p. 134", stance: for}
 
-- id: c-local-settings
-  type: empirical
-  text: "The page experiment uses its own settings and does not reproduce the book figure."
-  scope: {models: "tabular Q-learning and Sarsa", data: [unknown], scale: "small tabular task", setting: "local cliff-walking experiment"}
-  exp: [cliff-walking]
-- id: c-cliff-settings
-  type: empirical
-  text: "The local configuration uses a discount below one and records the episode window, step size, and exploration rate."
-  scope: {models: "tabular Q-learning and Sarsa", data: [unknown], scale: "cliff grid", setting: "local experiment configuration"}
-  exp: [cliff-walking]
-- id: c-cliff-path-check
-  type: empirical
-  text: "The run reports edge-path fractions of 1 for Q-learning and 0 for Sarsa."
-  scope: {models: "tabular Q-learning and Sarsa", data: [unknown], scale: "cliff grid", setting: "greedy policy after training"}
-  exp: [cliff-walking]
-- id: c-cliff-goal
-  type: empirical
-  text: "Greedy policies reached the goal in 30 of 30 Q-learning seeds and 25 of 30 Sarsa seeds."
-  scope: {models: "tabular Q-learning and Sarsa", data: [unknown], scale: "cliff grid", setting: "greedy policy after training"}
-  exp: [cliff-walking]
-- id: c-cliff-measured
-  type: empirical
-  text: "The run reports Q-learning mean online return -51.05 with standard deviation 9.76 and Sarsa mean -35.75 with standard deviation 21.01."
-  scope: {models: "tabular Q-learning and Sarsa", data: [unknown], scale: "cliff grid", setting: "last fifty episodes across thirty seeds"}
-  exp: [cliff-walking]
-- id: c-cliff-discount
-  type: empirical
-  text: "The local run uses a discounted configuration while the book example uses an undiscounted task."
-  scope: {models: "tabular Q-learning and Sarsa", data: [unknown], scale: "cliff grid", setting: "local experiment compared with book example"}
-  exp: [cliff-walking]
-  evidence:
-    - {work: sutton-barto-2018-reinforcement-learning, role: review, locator: "Example 6.6", stance: for}
-- id: c-initial-values
-  type: definitional
-  text: "If unsampled actions keep initial values above sampled actions, greedy selection favors the unsampled actions."
-  evidence:
-    - {work: sutton-barto-2018-reinforcement-learning, role: review, locator: "Section 2.6", stance: for}
-- id: c-stochastic-setting
-  type: definitional
-  text: "The tabular update can use sampled transitions from deterministic or stochastic tasks."
-  evidence:
-    - {work: watkins-dayan-1992-q-learning, role: original, locator: "p. 280", stance: for}
-- id: c-intuition
-  type: definitional
-  text: "The target uses the largest estimated next value even when an exploratory action produced the transition."
-  evidence:
-    - {work: sutton-barto-2018-reinforcement-learning, role: review, locator: "Section 6.5", stance: for}
-- id: c-intuition-revision
-  type: definitional
-  text: "Repeated visits let later observations revise each table entry."
-  evidence:
-    - {work: sutton-barto-2018-reinforcement-learning, role: review, locator: "Section 6.5", stance: for}
-- id: c-alpha-code
-  type: empirical
-  scope: {models: "NumPy tabular update", data: [unknown], scale: "one transition", setting: "local implementation test"}
-  text: "The NumPy update accepts alpha in (0,1], including full replacement of a visited estimate."
-- id: c-max-bias-source
-  type: definitional
-  text: "Sutton and Barto describe maximization bias in Q-learning targets."
-  evidence:
-    - {work: sutton-barto-2018-reinforcement-learning, role: review, locator: "Section 6.7", stance: for}
-- id: c-constant-alpha-track
-  type: definitional
-  text: "A constant step size can track changing rewards."
-  evidence:
-    - {work: sutton-barto-2018-reinforcement-learning, role: review, locator: "Section 2.5", stance: for}
 - id: c-q-lambda
-  type: definitional
-  text: "Watkins Q(lambda) extends Q-learning with eligibility traces and clears the trace after a non-greedy behavior action."
+  type: attributive
+  text: "Sutton and Barto write that Watkins's Q(lambda), the original extension of Q-learning to eligibility traces, decays its traces as long as a greedy action was taken and cuts the traces to zero after the first non-greedy action."
   evidence:
-    - {work: sutton-barto-2018-reinforcement-learning, role: review, locator: "Section 7.6", stance: for}
-- id: c-related-sarsa
-  type: definitional
-  text: "Sarsa uses the sampled next action in its target."
-  evidence:
-    - {work: sutton-barto-2018-reinforcement-learning, role: review, locator: "Section 6.4", stance: for}
-- id: c-related-expected
-  type: definitional
-  text: "Expected Sarsa averages over the next action under a chosen policy."
-  evidence:
-    - {work: sutton-barto-2018-reinforcement-learning, role: review, locator: "Section 6.6", stance: for}
-- id: c-initial-setting
-  type: definitional
-  text: "The starting Q values affect early greedy choices before all actions have been sampled."
-  evidence:
-    - {work: sutton-barto-2018-reinforcement-learning, role: review, locator: "Section 2.6", stance: for}
+    - {work: "sutton-barto-2018-reinforcement-learning", role: original, locator: "p. 312", stance: for}
 
-- id: c-one-entry-alg
-  type: mathematical
-  text: "Only the visited state-action entry changes at each transition."
-  assumes: ["tabular update assigns only Q(s,a)"]
-  derivation: "derivations/convergence.md"
-- id: c-alpha-schedule
-  type: mathematical
-  text: "A per-pair step size equal to the reciprocal visit count satisfies divergent sums and convergent squared sums under infinite visits."
-  assumes: ["each state-action pair is visited infinitely often"]
-  derivation: "derivations/convergence.md"
-- id: c-fixed-step
-  type: mathematical
-  text: "A fixed positive step size weights later samples but fails the theorem's squared-sum condition."
-  assumes: ["infinitely many updates"]
-  derivation: "derivations/convergence.md"
-- id: c-epsilon-schedule
-  type: mathematical
-  text: "Decaying epsilon reduces random action selection, but a schedule that stops visits loses the convergence theorem's coverage condition."
-  assumes: ["epsilon-greedy behavior", "finite state-action space"]
-  derivation: "derivations/convergence.md"
-- id: c-optimistic
-  type: definitional
-  text: "Optimistic initial values can encourage early visits to actions whose values have not yet been revised."
+- id: c-deadly-triad
+  type: attributive
+  text: "Sutton and Barto write that the danger of instability and divergence arises whenever function approximation, bootstrapping and off-policy training are combined, which they call the deadly triad."
   evidence:
-    - {work: sutton-barto-2018-reinforcement-learning, role: review, locator: "Section 2.6", stance: for}
-- id: c-dqn-bias
-  type: mathematical
-  text: "The DQN max target can inherit overestimation from noisy action estimates; the two-estimate idea of Double Q-learning addresses that mechanism in tabular settings."
-  assumes: ["noisy next-action value estimates"]
-  derivation: "derivations/convergence.md"
+    - {work: "sutton-barto-2018-reinforcement-learning", role: original, locator: "p. 264", stance: for}
+
+- id: c-dqn-unstable
+  type: attributive
+  text: "Mnih et al. write that reinforcement learning is known to be unstable or even to diverge when a nonlinear function approximator such as a neural network is used to represent the action-value function."
   evidence:
-    - {work: sutton-barto-2018-reinforcement-learning, role: review, locator: "Section 6.7", stance: for}
-- id: c-cliff-window
+    - {work: "mnih-2015-human-level-control", role: original, locator: "p. 1", stance: for}
+
+- id: c-dqn-ideas
+  type: attributive
+  text: "Mnih et al. address these instabilities with a variant of Q-learning with two key ideas: experience replay, which randomizes over the data, and an iterative update that adjusts the action-values towards target values that are only periodically updated."
+  evidence:
+    - {work: "mnih-2015-human-level-control", role: original, locator: "p. 1", stance: for}
+
+- id: c-dqn-atari
   type: empirical
-  text: "The local run averages online return over the last 50 of 150 episodes in each of 30 seeds."
-  scope: {models: "tabular Q-learning and Sarsa", data: [unknown], scale: "cliff grid", setting: "local experiment"}
-  exp: [cliff-walking]
-- id: c-cliff-q-return
+  text: "Mnih et al. report that the deep Q-network, receiving only the pixels and the game score as inputs, achieved a level comparable to that of a professional human games tester across a set of 49 games, using the same algorithm, network architecture and hyperparameters."
+  scope:
+    models: "the deep Q-network"
+    data: ["Atari 2600 games"]
+    scale: "49 games"
+    setting: "learning from pixels and the game score"
+  evidence:
+    - {work: "mnih-2015-human-level-control", role: original, locator: "p. 1", stance: for}
+  small_scale: "no"
+  small_scale_note: "The claim is about 49 Atari games with a convolutional network, beyond the cpu-small budget."
+
+- id: c-double-dqn
   type: empirical
-  text: "The local Q-learning run reports mean return -51.05 and across-seed standard deviation 9.76."
-  scope: {models: "tabular Q-learning", data: [unknown], scale: "cliff grid", setting: "last 50 of 150 episodes, 30 seeds"}
-  exp: [cliff-walking]
-- id: c-cliff-sarsa-return
-  type: empirical
-  text: "The local Sarsa run reports mean return -35.75 and across-seed standard deviation 21.01."
-  scope: {models: "tabular Sarsa", data: [unknown], scale: "cliff grid", setting: "last 50 of 150 episodes, 30 seeds"}
-  exp: [cliff-walking]
-- id: c-cliff-ci
-  type: empirical
-  text: "The bootstrap 95 percent confidence interval for Sarsa-minus-Q-learning online return is 4.253 to 21.43."
-  scope: {models: "tabular Q-learning and Sarsa", data: [unknown], scale: "cliff grid", setting: "last 50 of 150 episodes, 30 seeds"}
-  exp: [cliff-walking]
-- id: c-cliff-path-caveat
-  type: empirical
-  text: "Five Sarsa greedy policies did not reach the goal and count in the zero edge-path fraction."
-  scope: {models: "tabular Sarsa", data: [unknown], scale: "cliff grid", setting: "greedy path after training"}
-  exp: [cliff-walking]
-- id: c-sweep-scope
-  type: empirical
-  text: "A local epsilon sweep compares Q-learning on the cliff task at several exploration rates."
-  scope: {models: "tabular Q-learning", data: [unknown], scale: "cliff grid", setting: "local epsilon sweep"}
-  exp: [epsilon-sweep]
-- id: c-sweep-outcome
-  type: empirical
-  text: "Mean online return decreases as epsilon rises across the three arms of the local sweep."
-  scope: {models: "tabular Q-learning", data: [unknown], scale: "cliff grid", setting: "150 episodes, ten seeds per arm"}
-  exp: [epsilon-sweep]
+  text: "van Hasselt, Guez and Silver report that DQN suffers from substantial overestimations in some games of the Atari 2600 domain, and that their adaptation of Double Q-learning to DQN reduces the observed overestimations and leads to much better performance on several games."
+  scope:
+    models: "DQN and Double DQN"
+    data: ["Atari 2600 games"]
+    scale: "the Atari 2600 games of their study"
+    setting: "deep reinforcement learning from pixels"
+  evidence:
+    - {work: "van-hasselt-2016-double-dqn", role: original, locator: "the abstract", stance: for}
+  small_scale: "no"
+  small_scale_note: "The claim is about Atari games with a convolutional network, beyond the cpu-small budget."
+
+- id: c-history-watkins
+  type: attributive
+  text: "Sutton and Barto write that Q-learning was introduced by Watkins (1989), whose outline of a convergence proof was made rigorous by Watkins and Dayan (1992), and that more general convergence results were proved by Jaakkola, Jordan, and Singh (1994) and Tsitsiklis (1994)."
+  evidence:
+    - {work: "sutton-barto-2018-reinforcement-learning", role: original, locator: "p. 140", stance: for}
+
+- id: c-history-action-value
+  type: attributive
+  text: "Sutton and Barto write that the term action value is due to Watkins (1989), and that the first to use epsilon-greedy methods may also have been Watkins (1989, p. 187)."
+  evidence:
+    - {work: "sutton-barto-2018-reinforcement-learning", role: original, locator: "p. 44", stance: for}

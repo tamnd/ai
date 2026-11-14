@@ -3,216 +3,230 @@ tag: KDH97E
 kind: method
 slug: q-learning
 name: Q-learning
-aliases: [Watkins Q-learning, tabular Q-learning]
+aliases: [Watkins Q-learning, tabular Q-learning, one-step Q-learning]
 area: reinforcement-learning/monte-carlo-and-td-learning
 level: core
 summary: >-
-  An off-policy temporal-difference method that learns optimal action values from sampled transitions.
+  An off-policy temporal-difference control method that moves the value of each visited state-action pair toward the reward plus the discounted maximum value of the next state.
 purpose: control
-uses: []
-related_to: []
+uses: [markov-decision-process@al, bellman-optimality-equation@al, temporal-difference-learning@al, epsilon-greedy@al, stochastic-approximation@m2]
+related_to: [sarsa@al, expected-sarsa@al, double-q-learning@al, dqn@al, value-iteration@al, watkins-q-lambda@al, deadly-triad@al]
 hyperparameters:
-  - {name: alpha, meaning: "step size for each value update", typical: "0 < alpha <= 1 in the implementation; the convergence theorem has separate per-pair sum conditions"}
-  - {name: gamma, meaning: "discount on future rewards", typical: "0 <= gamma < 1 for the discounted contraction argument"}
-  - {name: epsilon, meaning: "probability of exploratory action under epsilon-greedy behavior", typical: "0 <= epsilon <= 1"}
+  - {name: alpha, meaning: "the step size: the fraction of the TD error added to the entry", typical: "in (0, 1] in the algorithm of Sutton and Barto; per-pair step sizes such as 1/n for the convergence theorem"}
+  - {name: gamma, meaning: "the discount rate of future rewards", typical: "0 <= gamma < 1 for the convergence theorem; 1 for episodic tasks such as cliff walking"}
+  - {name: epsilon, meaning: "the probability of a random action in the epsilon-greedy behaviour policy", typical: "a small epsilon > 0, for example 0.1"}
 cost:
-  train: "one scan of the next state's actions and one table update per transition; one value per state-action pair"
-  inference: "one scan of the current state's actions; one value per action"
+  train: "one max over the actions of the next state and one table entry written per transition; a table of |S| x |A| values"
+  inference: "one argmax over the actions of the current state"
 history:
-  note: "Watkins introduced Q-learning in his thesis; Watkins and Dayan published a convergence analysis."
-prereqs: []
+  year: 1989
+  people: [Chris Watkins, Peter Dayan]
+  note: "Watkins (1989), PhD thesis, University of Cambridge; the convergence proof is Watkins and Dayan (1992), Machine Learning 8."
+prereqs: [markov-decision-process@al, bellman-optimality-equation@al, temporal-difference-learning@al, epsilon-greedy@al, robbins-monro-algorithm@m2]
+same_as:
+  al: q-learning
 sources:
-  - {paper: "Watkins (1989), Learning from Delayed Rewards", title: "Learning from Delayed Rewards", locator: "Title page"}
-  - {paper: "Watkins and Dayan (1992), Q-learning", title: "Q-learning", locator: "p. 282"}
-  - {book: "Sutton and Barto (2018), Reinforcement Learning: An Introduction", locator: "Sections 2.2, 2.5, 2.6, 3.1, 3.3, 3.5, 3.6, 6.4 to 6.7, 7.6, 11.3"}
-  - {paper: "Mnih et al. (2015), Human-level control through deep reinforcement learning", title: "Human-level control through deep reinforcement learning", locator: "Nature 518, Abstract and Methods"}
+  - {book: "Sutton and Barto (2018), Reinforcement Learning: An Introduction, second edition", locator: "pp. 131 to 136, p. 140", note: "Sections 6.5 to 6.7: Q-learning, cliff walking, Expected Sarsa and Double Q-learning; the bibliographical remarks"}
+  - {paper: "Watkins and Dayan (1992)", title: "Q-learning", locator: "Machine Learning 8, 279 to 292; Sections 2 and 4", note: "the convergence theorem, its conditions and its extensions"}
+  - {paper: "Watkins (1989)", title: "Learning from Delayed Rewards", locator: "PhD thesis, University of Cambridge", note: "the thesis that introduced Q-learning"}
+  - {paper: "Mnih et al. (2015)", title: "Human-level control through deep reinforcement learning", locator: "Nature 518, 529 to 533", note: "the deep Q-network"}
+  - {paper: "van Hasselt, Guez and Silver (2016)", title: "Deep Reinforcement Learning with Double Q-learning", locator: "AAAI 2016; arXiv 1509.06461v3, the abstract", note: "overestimation in DQN and Double DQN"}
 ---
 
-Q-learning is an [[al:importance-sampling-off-policy|off-policy]] [[al:temporal-difference-learning|temporal-difference]] method that estimates the action values of an optimal policy from sampled transitions, even when another policy selects the actions. {#c-definition}
-It can learn a greedy policy that is optimal in the limit while the behavior policy continues to explore. {#c-purpose}
+Q-learning is a reinforcement learning method that learns the value of each action in each state from experience, with no model of the environment.
+After each step it moves one table entry toward the reward plus the discounted maximum value of the next state.
+The table then approaches the optimal action values whatever exploratory policy collected the data.
+It is the base of many deep reinforcement learning agents, such as the deep Q-network.
 
 ## In plain words
 
-After an action, compare its estimated value with the reward plus the best estimated value available next.
-Move the old estimate partway toward that target.
-The action that generated the data can differ from the action rule whose values are learned. {#c-plain}
+Keep a table with a score for every action in every state.
+Take an action, see the reward and where you land.
+Your new guess for that action is the reward plus the maximum score you now see in the next state.
+Move the old score part of the way toward that guess.
+Because the guess uses the maximum over the next actions, not the one you will try, you can explore freely and still learn the scores of optimal behaviour.
 
 ## Setting
 
-Q-learning is a control method for a finite [[al:markov-decision-process|Markov decision process]] (MDP) with sampled states, actions, rewards, and next states. {#c-setting}
-The Markov property means that the distribution of the next state and reward depends only on the current state and action, not on earlier history. {#c-markov}
-The goal is to estimate $q_*(s,a)$, the expected discounted return after taking action $a$ in state $s$ and then acting optimally. {#c-optimal-value}
-The method uses a [[al:bellman-optimality-equation|Bellman optimality equation]] to define those values. {#c-bellman-link}
-The [[al:epsilon-greedy|behavior policy]] may explore, while the target in the update evaluates a greedy policy.
-The tabular update can use samples from deterministic or stochastic tasks. {#c-stochastic-setting} {#c-off-policy}
+Q-learning solves the control problem of a Markov decision process: find a policy that maximizes the expected discounted return.
+The agent sees the state $S_t$, picks an action $A_t$, and gets a reward $R_{t+1}$ and a next state $S_{t+1}$.
+It does not know the dynamics $p(s', r \mid s, a)$; it only samples them.
+The tabular form needs finite sets of states $\mathcal{S}$ and actions $\mathcal{A}$ and one table entry per pair.
+The target is the optimal action value function $q_*$, the solution of the Bellman optimality equation
 
-### Intuition
+$$ q_*(s, a) = \mathbb{E}\big[ R_{t+1} + \gamma \max_{a'} q_*(S_{t+1}, a') \;\big|\; S_t = s, A_t = a \big]. $$ {#eq-bellman-optimality}
 
-The target uses the largest estimated next value, even when an exploratory action produced the transition. {#c-intuition}
-Repeated visits let later observations revise each table entry. {#c-intuition-revision}
+A greedy policy with respect to $q_*$ is optimal.
 
 ## The method
 
-Store an estimate $Q(s,a)$ for each state-action pair.
-After observing $(s_t,a_t,r_{t+1},s_{t+1})$, compute
+The update, as given by Sutton and Barto {eq:sutton-barto-2018-reinforcement-learning#6.8}, is
 
-$$Y_t = r_{t+1} + \gamma \max_{a'} Q(s_{t+1},a')$$ {#eq-target}
+$$ Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha \big[ R_{t+1} + \gamma \max_a Q(S_{t+1}, a) - Q(S_t, A_t) \big]. $$ {#eq-q-update}
 
-For a terminal next state, set $Y_t=r_{t+1}$ and omit the future-value term. {#c-terminal}
-Then update only the visited entry:
+Q-learning (Watkins, 1989) is an off-policy temporal-difference control algorithm defined by this update. {#c-update}
+The bracket is the TD error $\delta_t$.
+When $S_{t+1}$ is terminal, the max term is zero.
+Only the entry of the pair $(S_t, A_t)$ changes.
 
-$$Q(s_t,a_t) \leftarrow Q(s_t,a_t)+\alpha_t\left[Y_t-Q(s_t,a_t)\right].$$ {#eq-update}
+The procedure, for each episode:
 
-An [[al:epsilon-greedy|epsilon-greedy]] policy can select behavior actions by choosing a random action with probability $\epsilon$ and a greedy action otherwise. {#c-epsilon-greedy}
+1. Start in a state $S$.
+2. Choose $A$ from $S$ with a policy derived from $Q$, for example $\varepsilon$-greedy: a uniformly random action with probability $\varepsilon$, a greedy action otherwise.
+3. Take $A$, and observe $R$ and $S'$.
+4. Apply eq-q-update to $Q(S, A)$.
+5. Set $S \leftarrow S'$, and go back to step 2 until $S$ is terminal.
 
-For each episode, apply the following tabular loop:
+In the algorithm of Sutton and Barto, the parameters are a step size $\alpha \in (0, 1]$ and a small $\varepsilon > 0$, and $Q$ starts arbitrary except that $Q(\text{terminal}, \cdot) = 0$. {#c-algorithm-box}
 
-```text
-Initialize the action-value table Q.
-For each episode:
-    Observe the initial state s.
-    Until the task terminates:
-        Choose action a from the behavior policy based on Q(s, ·).
-        Execute a and observe reward r, next state s', and termination.
-        Set target to r if terminal; otherwise set it to r + gamma max_b Q(s', b).
-        Set Q(s, a) to Q(s, a) + alpha(s, a) [target - Q(s, a)].
-        Set s to s' if the task continues.
-Return Q and a greedy policy derived from Q.
-```
+Sutton and Barto write that $Q$ directly approximates $q_*$, independent of the policy being followed. {#c-approximates-qstar}
+That is what makes the method off-policy: the behaviour policy explores, and the target uses the greedy action.
+The policy still decides which pairs are visited and updated, and correct convergence needs all pairs to keep being updated. {#c-policy-role}
 
-Only the visited state-action entry changes at each transition. {#c-one-entry-alg}
-This target takes a maximum over next actions, rather than using the sampled next action as [[al:sarsa|state, action, reward, state, action (Sarsa)]] does. {#c-target-distinction}
+Sarsa, the on-policy method of the same family, uses the action that the behaviour policy actually takes next:
+
+$$ Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha \big[ R_{t+1} + \gamma Q(S_{t+1}, A_{t+1}) - Q(S_t, A_t) \big]. $$ {#eq-sarsa}
+
+The two differ only in the target, and the cliff walking experiment below shows what that changes.
 
 ## Derivation
 
-The [derivation](derivations/convergence.md) gives the Bellman equation, the conditional mean of the sample target, and the update's stochastic-approximation form. {#c-derivation-link}
-It derives that the Bellman optimality operator is a $\gamma$-contraction in the sup norm when $\gamma<1$. {#c-contraction}
-The [derivation](derivations/convergence.md) cites, but does not prove, the convergence theorem.
-For a finite discounted MDP with bounded rewards, infinitely many visits to every state-action pair, and per-pair step sizes with divergent sums and convergent sums of squares, Q-learning converges with probability one to $q_*$. {#c-convergence}
+The Bellman optimality operator $\mathcal{T}_*$ maps a table $Q$ to the right side of eq-bellman-optimality with $Q$ in place of $q_*$.
+For a finite process with $0 \le \gamma < 1$, $\mathcal{T}_*$ is a contraction of modulus $\gamma$ in the max norm, so its only fixed point is $q_*$. {#c-contraction}
+Given the history, the mean of the target $R_{t+1} + \gamma \max_a Q_t(S_{t+1}, a)$ is $(\mathcal{T}_* Q_t)(S_t, A_t)$. {#c-target-mean}
+So each update is a noisy step toward the fixed point of a contraction, a stochastic approximation scheme of the Robbins and Monro kind:
+
+$$ Q_{t+1}(S_t, A_t) = Q_t(S_t, A_t) + \alpha_t \big[ (\mathcal{T}_* Q_t)(S_t, A_t) - Q_t(S_t, A_t) + w_t \big], \qquad \mathbb{E}[w_t \mid \text{history}] = 0. $$ {#eq-sa-form}
+
+The full derivation, with each step and its reason, is in [derivations/stochastic-approximation.md](derivations/stochastic-approximation.md).
+
+The derivation shows the shape, not the convergence.
+Watkins and Dayan (1992) prove convergence.
+In their notation $x$ is the state and $Q_n$ is the table after the $n$-th episode, and $n^i(x, a)$ is the index of the $i$-th time that action $a$ is tried in state $x$.
+Their theorem: given bounded rewards $\lvert r_n \rvert \le R$, learning rates $0 \le \alpha_n < 1$, and, for all $x$ and $a$, $\sum_i \alpha_{n^i(x,a)} = \infty$ and $\sum_i \alpha_{n^i(x,a)}^2 < \infty$, $Q_n(x, a) \to q_*(x, a)$ as $n \to \infty$ for all $x$ and $a$, with probability 1. {#c-wd-theorem}
+The setting is a discounted process with $\gamma < 1$.
+The description assumes a look-up table, and Watkins (1989) shows that Q-learning may not converge correctly for other representations; the most important implicit condition is an infinite number of episodes for each starting state and action. {#c-wd-conditions}
+The step sizes $\alpha_n = 1/n$ meet both sums, and a constant step size does not meet the second one: the estimates then keep varying in response to the latest rewards. {#c-step-sizes}
+Watkins and Dayan sketch two extensions where the result holds: the undiscounted case with absorbing goal states, and updates of many entries in each iteration. {#c-wd-extensions}
 
 ## Worked example
 
-Let $Q(s,a)=2$, let the observed reward be $1$, let $\gamma=0.5$, and let the next state's action values be $4$ and $3$.
-With $\alpha=0.25$, the target is $1+0.5\max(4,3)=3$, and the updated entry is $2+0.25(3-2)=2.25$. {#c-example}
-All other table entries retain their prior values in this update. {#c-one-entry}
+Take two states, $s_0$ and $s_1$, two actions, $a_0$ and $a_1$, $\alpha = 0.5$ and $\gamma = 0.9$.
+The table starts as below, one row per state.
+
+| | $a_0$ | $a_1$ |
+|---|---|---|
+| $s_0$ | 1 | 2 |
+| $s_1$ | 4 | 3 |
+
+Three transitions follow, each from the table that the previous one left.
+
+| Step | Transition $(s, a, r, s')$ | Target | Old value | New value |
+|---|---|---|---|---|
+| 1 | $(s_0, a_0, 1, s_1)$ | $1 + 0.9 \cdot \max(4, 3) = 4.6$ | 1 | $1 + 0.5 \cdot (4.6 - 1) = 2.8$ |
+| 2 | $(s_1, a_1, 2, \text{terminal})$ | $2$ | 3 | $3 + 0.5 \cdot (2 - 3) = 2.5$ |
+| 3 | $(s_0, a_1, 0, s_1)$ | $0 + 0.9 \cdot \max(4, 2.5) = 3.6$ | 2 | $2 + 0.5 \cdot (3.6 - 2) = 2.8$ |
+
+The table ends as $s_0 = (2.8, 2.8)$ and $s_1 = (4, 2.5)$.
+In step 2 the next state is terminal, so the target is the reward alone.
+
+Sarsa on the transition of step 1, with the next action $a_1$ chosen by exploration, uses $Q(s_1, a_1) = 3$ instead of the max.
+Its target is $1 + 0.9 \cdot 3 = 3.7$, and the new value is $1 + 0.5 \cdot 2.7 = 2.35$.
+The test `test_worked_example` of the NumPy reference checks these numbers.
 
 ## Hyperparameters
 
-The step size $\alpha_t$ controls how far an update moves toward its target. {#c-alpha}
-The NumPy update accepts $0<\alpha\leq1$, including a full replacement of the visited estimate. {#c-alpha-code}
-The cited theorem separately requires $0<\alpha<1$ at each update, per-pair sums that diverge, and squared sums that converge. {#c-alpha-conditions}
-The discounted contraction argument on this page requires $0\leq\gamma<1$. {#c-gamma}
-The implementation also accepts $\gamma=1$ for episodic tasks with a terminal state; the contraction proof does not cover that case.
-The exploration rate $\epsilon$ controls random behavior actions under epsilon-greedy selection. {#c-epsilon}
-The starting $Q$ values affect early greedy choices before all actions have been sampled. {#c-initial-setting}
-A visit-count step size such as $\alpha_t(s,a)=1/N_t(s,a)$ decreases on each visit and satisfies the theorem's per-pair sum conditions when visits continue. {#c-alpha-schedule}
-A fixed positive step size gives more weight to later samples but does not satisfy the theorem's squared-sum condition. {#c-fixed-step}
-A decaying $\epsilon$ can reduce exploratory actions as learning proceeds, but a schedule that removes visits to some pairs loses the theorem's coverage condition. {#c-epsilon-schedule}
-Optimistic initial values can encourage early visits to actions whose values have not yet been revised. {#c-optimistic}
-This page experiment uses its own step size, exploration rate, and discount settings, and does not reproduce Sutton and Barto’s cliff-walking figure. {#c-local-settings}
-Its [configuration](exp/cliff-walking/experiment.yaml) uses a discount below one and records the episode window, step size, and exploration rate. {#c-cliff-settings}
-This is one discounted configuration, while the book example uses an undiscounted task. {#c-cliff-discount}
+The **step size** $\alpha$ sets how far one transition moves an entry.
+The algorithm of Sutton and Barto takes $\alpha \in (0, 1]$, while the convergence theorem needs a decreasing step size for each pair, such as $1/n$.
+A constant $\alpha$ tracks a changing problem, but the estimates do not settle.
+
+The **discount rate** $\gamma$ weighs future rewards.
+The contraction argument needs $\gamma < 1$; episodic tasks with sure termination may use $\gamma = 1$, as cliff walking does.
+
+The **exploration rate** $\varepsilon$ of an $\varepsilon$-greedy behaviour policy sets how often a random action is tried.
+Q-learning learns the greedy values whatever $\varepsilon$ is, but the return earned while learning drops as $\varepsilon$ grows.
+The cliff walking example of Sutton and Barto uses $\varepsilon = 0.1$.
+
+The **initial values** also matter.
+Sutton and Barto describe optimistic initial values as a simple trick to encourage exploration, quite effective on stationary problems but far from a generally useful approach. {#c-optimistic}
+
+No framework ships tabular Q-learning with defaults; libraries of deep Q-learning set their own.
 
 ## Cost
 
-For $|S|$ states and $|A|$ actions, a full table stores $|S||A|$ values. {#c-storage}
-If the next state's action values are scanned directly, each transition costs $O(|A|)$ time for the maximum and constant additional work for the update. {#c-cost}
-Greedy action selection scans the current state's $|A|$ values. {#c-inference-cost}
+Let $\lvert \mathcal{S} \rvert$ be the number of states and $\lvert \mathcal{A} \rvert$ the number of actions.
+The table holds $\lvert \mathcal{S} \rvert \cdot \lvert \mathcal{A} \rvert$ values.
+Each transition costs one max over the $\lvert \mathcal{A} \rvert$ values of the next state and one write.
+An $\varepsilon$-greedy choice costs one argmax over $\lvert \mathcal{A} \rvert$ values.
+The method keeps no model and no replay of old transitions.
+The number of transitions needed to converge is the real cost: every pair must be tried many times, and the table grows with the product of the state and action sets.
 
 ## Evidence
 
-Watkins and Dayan prove convergence for finite tabular problems under repeated sampling and step-size conditions. {#c-convergence-evidence}
-Sutton and Barto’s Example 6.6 reports that Q-learning follows the optimal path while Sarsa follows a safer route during continued exploration. {#c-cliff-result}
-Across {fact:q-learning/cliff.seeds} seeds, the online return is averaged over the last {fact:q-learning/cliff.window} of {fact:q-learning/cliff.episodes} episodes in each seed. {#c-cliff-window}
-The [run record](exp/cliff-walking/results.json) reports Q-learning mean return {fact:q-learning/cliff.q_mean} with across-seed standard deviation {fact:q-learning/cliff.q_sd}. {#c-cliff-q-return}
-Sarsa's mean is {fact:q-learning/cliff.sarsa_mean} with across-seed standard deviation {fact:q-learning/cliff.sarsa_sd}. {#c-cliff-sarsa-return}
-The estimated Sarsa-minus-Q-learning return difference has a bootstrap 95 percent confidence interval from {fact:q-learning/cliff.ci_low} to {fact:q-learning/cliff.ci_high}. {#c-cliff-ci}
-The run reports edge-path fractions of {fact:q-learning/cliff.q_edge} for Q-learning and {fact:q-learning/cliff.sarsa_edge} for Sarsa. {#c-cliff-path-check}
-Greedy policies reached the goal in {fact:q-learning/cliff.q_goal} Q-learning seeds and {fact:q-learning/cliff.sarsa_goal} Sarsa seeds. {#c-cliff-goal}
-The Sarsa edge-path fraction includes {fact:q-learning/cliff.sarsa_no_goal} greedy policies that did not reach the goal. {#c-cliff-path-caveat}
+Watkins and Dayan (1992) report that Q-learning converges to the optimum action-values with probability 1 so long as all actions are repeatedly sampled in all states and the action-values are represented discretely. {#c-wd-abstract}
+On the cliff walking task with $\varepsilon = 0.1$, Q-learning learns values for the optimal path along the edge of the cliff and occasionally falls off, Sarsa learns the longer but safer path, and the online performance of Q-learning is worse than that of Sarsa (Sutton and Barto, 2018). {#c-cliff}
+Mnih et al. (2015) report that a deep Q-network that sees only pixels and the game score reached a level comparable to that of a professional human games tester across 49 Atari games, with one algorithm, network architecture and set of hyperparameters. {#c-dqn-atari}
 
 ## Limitations and failure modes
 
-A table needs a separate value for every state-action pair, so it is impractical when either set is large or continuous. {#c-table-limit}
-With function approximation, [[al:temporal-difference-learning|bootstrapping]] and off-policy learning together can cause divergence; this combination is called the [[al:deadly-triad|deadly triad]]. {#c-deadly-triad}
-Sutton and Barto describe [[al:double-q-learning|maximization bias]] in Q-learning targets in Section 6.7. {#c-max-bias-source}
-For this page’s constructed example, two independent estimates of zero-valued actions are each $+1$ or $-1$ with equal probability, so their expected maximum is $1/2$. {#c-max-bias}
-The convergence theorem requires every state-action pair to be visited infinitely often; without coverage, the theorem does not apply. {#c-coverage}
-Sutton and Barto describe how a constant step size can track changing rewards. {#c-constant-alpha-track}
-A positive constant step size used indefinitely fails the theorem’s squared-sum condition. {#c-constant-alpha}
-An exploration schedule that stops visiting an action can leave its value uncorrected. {#c-exploration-failure}
+**Overestimation.**
+Q-learning uses a maximum over estimated values as an estimate of the maximum value, which can lead to a significant positive bias (Sutton and Barto, 2018). {#c-max-bias}
+With many actions whose true values are equal, noise alone pushes the maximum of the estimates too high.
+van Hasselt, Guez and Silver (2016) report that DQN suffers from substantial overestimations in some Atari games, and that their adaptation of Double Q-learning to DQN reduces them and leads to much better performance on several games. {#c-double-dqn}
+
+**Online return.**
+Q-learning learns the values of the greedy policy, not of the exploring policy that it follows.
+On cliff walking, this makes its return while learning worse than that of Sarsa, as the Evidence section shows.
+If $\varepsilon$ were gradually reduced, both methods would converge to the optimal policy. {#c-cliff-decay}
+
+**Function approximation.**
+The convergence theorem is for a table.
+Sutton and Barto name the combination of function approximation, bootstrapping and off-policy training the deadly triad, where the danger of instability and divergence arises. {#c-deadly-triad}
+Q-learning with a function approximator has all three.
+Mnih et al. (2015) write that reinforcement learning is known to be unstable or even to diverge when a nonlinear function approximator such as a neural network represents the action-value function. {#c-dqn-unstable}
+
+**Exploration.**
+The guarantee needs every pair to be tried infinitely often; an $\varepsilon$-greedy policy in a large state space may take a very long time to reach rare pairs.
 
 ## Variants
 
-[[al:watkins-q-lambda|Watkins Q(lambda)]] extends Q-learning with eligibility traces and clears the trace after a non-greedy behavior action. {#c-q-lambda}
-[[al:double-q-learning|Double Q-learning]] uses two estimates to reduce the maximization bias described above. {#c-double}
-[[al:expected-sarsa|Expected Sarsa]] replaces the sampled next action with an expectation under a specified target policy. {#c-expected-sarsa}
-[[al:n-step-td|Multi-step temporal-difference methods]] use rewards from several transitions before bootstrapping. {#c-n-step}
-[[al:dqn|Deep Q-networks]] (DQN) use neural function approximation with Q-learning targets, experience replay, and a target network. {#c-dqn}
-Their max target can inherit overestimation from noisy action estimates; the two-estimate idea in Double Q-learning addresses that mechanism in the tabular setting. {#c-dqn-bias}
-
-### Related methods
-
-[[al:sarsa|Sarsa]] uses the sampled next action in its target. {#c-related-sarsa}
-[[al:expected-sarsa|Expected Sarsa]] averages over the next action under a chosen policy. {#c-related-expected}
+- **Sarsa** uses the next action taken, eq-sarsa, and learns the values of the exploring policy.
+- **Expected Sarsa** uses the expected value of the next state under a target policy; when that policy is greedy and the behaviour explores more, Expected Sarsa is exactly Q-learning (Sutton and Barto, 2018). {#c-expected-sarsa}
+- **Double Q-learning** keeps two tables, uses one to pick the maximizing action and the other to value it, and updates one of them at each step; this doubles the memory but not the computation per step (Sutton and Barto, 2018). {#c-double-learning}
+- **Watkins's Q($\lambda$)** adds eligibility traces and cuts them to zero after the first non-greedy action (Sutton and Barto, 2018). {#c-q-lambda} The theorem of Watkins and Dayan does not extend trivially to updates that use rewards from more than one step. {#c-wd-no-lambda}
+- **Deep Q-network (DQN)** represents $Q$ with a convolutional network. Mnih et al. (2015) add experience replay, which randomizes over the data, and targets that are only periodically updated. {#c-dqn-ideas}
+- **Double DQN** brings the idea of Double Q-learning to DQN (van Hasselt, Guez and Silver, 2016).
 
 ## When to use it
 
-Tabular Q-learning fits small finite tasks where the agent can sample transitions and ensure adequate coverage. {#c-when}
-For on-policy control, compare it with [[al:sarsa|Sarsa]], which evaluates actions selected by the behavior policy. {#c-alternatives}
+Use tabular Q-learning when the states and actions are few enough for a table and there is no model of the environment.
+It learns the optimal values from any data that keeps visiting every pair, including data from an exploring or older policy.
+Use Sarsa or Expected Sarsa when the return earned while learning matters, as on cliff walking, where Sarsa learns a safer path.
+Use dynamic programming, such as value iteration, when the model $p(s', r \mid s, a)$ is known.
+Use Double Q-learning when the maximization bias matters, for example with many actions and noisy rewards.
+For large state spaces, Q-learning needs function approximation, and then the convergence theorem no longer applies.
 
 ## Pitfalls
 
 > [!pitfall]
-> **Do not bootstrap through a terminal state.**
-> Set the terminal target to the reward alone.
-> `test_terminal_ignores_nonzero_next_row` checks this case.
+> **Bootstrapping from a terminal state.** The value of a terminal state is zero, so the target is the reward alone. Code that reads a row of the table for the terminal state adds whatever that row holds. The test `test_terminal_has_no_bootstrap` puts large values in that row and checks that they are ignored.
 
 > [!pitfall]
-> **Keep time-limit truncation distinct from task termination.**
-> Pass `terminal=False` for a time-limit truncation so the update keeps its bootstrap term.
-> `test_time_limit_truncation_bootstraps` checks this behavior.
+> **A time limit treated as termination.** When an episode is cut by a step limit, the next state is not terminal, and the target must still bootstrap from it. The test `test_truncation_bootstraps` checks that the two cases give different targets.
 
 > [!pitfall]
-> **Take the maximum, not the sampled next action.**
-> Using the behavior action in the target changes the update to an on-policy Sarsa target.
-> `test_max_not_sampled_action` checks this case.
+> **The next action instead of the max.** A target that uses the value of the action actually taken next is Sarsa, not Q-learning, and it learns the values of the exploring policy. The test `test_max_not_next_action` checks both targets on a table where they differ.
 
 > [!pitfall]
-> **Update only the visited entry.**
-> `test_worked_example_and_one_entry` checks the updated value and every untouched entry.
+> **Ties always broken toward the first action.** With a table that starts at zero, `argmax` returns the first action, and the greedy part of the policy never tries the others. The test `test_ties_broken_at_random` checks that tied actions are picked about equally often.
 
 > [!pitfall]
-> **Provide exploration coverage.**
-> The convergence theorem needs repeated coverage, but this implementation does not test a general exploration policy.
-
-> [!pitfall]
-> **Choose initial values deliberately.**
-> If unsampled actions keep initial values above sampled actions, greedy selection favors the unsampled actions. {#c-initial-values}
-> `test_optimistic_initial_value_guides_greedy_choice` checks this case.
-
-> [!pitfall]
-> **Separate online return from the learned target.**
-> On the cliff-walking task, Sarsa's sampled next action can account for exploratory risk in its updates, while Q-learning's greedy target does not.
-> Sutton and Barto report that this distinction affects online behavior in their cliff-walking example. {#c-cliff-difference}
-
-## Implementations
-
-The [NumPy implementation](impl/numpy/q_learning.py) provides the tabular update and epsilon-greedy action selection.
-Its tests cover the worked update, terminal handling, greedy target, policy frequencies, parameter errors, and deterministic and stochastic value-iteration comparisons.
-
-## Experiments
-
-The [cliff-walking experiment](exp/cliff-walking/experiment.yaml) compares tabular Q-learning and Sarsa.
-The [local experiment](exp/cliff-walking/results.json) compares online returns and greedy paths on a tabular cliff grid across its recorded seeds. {#c-cliff-scope}
-The [epsilon sweep](exp/epsilon-sweep/sweep.json) checks the same cliff task at several exploration rates. {#c-sweep-scope}
-Mean online return decreases as $\epsilon$ rises across its recorded arms. {#c-sweep-outcome}
-Its [results](exp/cliff-walking/results.json) record online return, its spread, and greedy routes in a discounted setting.
+> **A constant step size in a stochastic task.** With a constant $\alpha$, the entries keep moving with the latest rewards and do not settle on $q_*$. The test `test_converges_to_oracle` uses the step sizes $1/n(s, a)$ and checks the result against an independent policy iteration oracle.
 
 ## History
 
-Watkins introduced Q-learning in his University of Cambridge doctoral thesis in 1989. {#c-thesis}
-Watkins and Dayan published their convergence analysis in *Machine Learning*, volume 8, pages 279 to 292, in 1992. {#c-watkins-dayan}
-Mnih et al. reported a deep Q-network system for Atari game control in *Nature* in 2015. {#c-dqn-history}
-
-## References
+Sutton and Barto write that Q-learning was introduced by Watkins (1989), whose outline of a convergence proof was made rigorous by Watkins and Dayan (1992), and that more general convergence results were proved by Jaakkola, Jordan and Singh (1994) and Tsitsiklis (1994). {#c-history-watkins}
+Watkins's thesis, *Learning from Delayed Rewards*, was written at the University of Cambridge.
+They also credit the term action value to Watkins (1989), who may have been the first to use $\varepsilon$-greedy methods. {#c-history-action-value}
+Mnih et al. (2015) combined Q-learning with a deep convolutional network, experience replay and a periodically updated target, and trained it on Atari 2600 games from pixels.
+van Hasselt, Guez and Silver (2016) adapted Double Q-learning to that agent.
