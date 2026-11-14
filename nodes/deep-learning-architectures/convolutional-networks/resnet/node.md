@@ -216,7 +216,7 @@ This makes the construction argument of He et al. concrete for residual networks
 The measured behaviour of trained networks agrees with the picture of small corrections.
 The responses of the 3x3 layers of ResNets on CIFAR-10, after batch normalization and before the ReLU, have smaller standard deviations than those of plain networks, and deeper ResNets have smaller ones, so each layer tends to change the signal less. {#c-small-responses}
 Veit et al. found that deleting a single block of a trained residual network at test time barely changes its error, except at the downsampling blocks, while deleting a layer of VGG drops it to chance. {#c-lesion} They read a residual network as a collection of many paths of differing length with ensemble-like behavior, and found that most of the gradient of a 110-layer residual network comes from paths only 10 to 34 layers deep. {#c-ensembles}
-Balduzzi et al. showed that the correlation between the gradients at nearby inputs decays exponentially with depth in feedforward networks, until the gradients look like white noise, while with skip connections it decays sublinearly. {#c-shattered}
+Balduzzi et al. found that the correlation between the gradients at nearby inputs decays exponentially with depth in feedforward networks, until the gradients look like white noise, while with skip connections it decays sublinearly. {#c-shattered}
 Li et al. found that the loss surface of CIFAR-10 networks without shortcuts goes from nearly convex at 20 layers to chaotic at 56 and 110, and that with shortcuts it does not: the 0.1-level contour is almost the same at 20 and 110 layers. {#c-loss-landscape}
 For linear networks, Hardt and Ma proved that arbitrarily deep residual networks have no spurious local optima, a property that is much more delicate to establish for linear networks in their standard parameterization. {#c-linear-no-spurious}
 
@@ -295,17 +295,17 @@ The training error is measured on the training subset with the running statistic
 `mnist-depth-22` uses width 32, 5,000 images and 300 steps. Over 10 seeds, the median training error is 0.8% for the plain network of 4 layers and 24.4% for that of 22 layers; with shortcuts, the 22-layer network has 2.8%. On the test images the plain 22-layer network has 26.3% error and the residual one 8.5%.
 `mnist-depth-32` uses width 64, 10,000 images and 400 steps. The plain network goes from 0.7% training error at 4 layers to 36.5% at 32 layers, and the residual 32-layer network has 2.5%; on the test images, 37.0% against 7.0%.
 Both experiments hold their expectations, with Mann-Whitney tests at $p = 0.0002$ after the Holm correction: the deeper plain network has the higher training error, and the shortcuts remove most of it.
-Two secondary results show the limits of the small scale. At 4 layers the shortcut makes little difference, as He et al. found at 18 layers. And at these budgets the deep residual networks still train to a slightly higher error than the shallow ones, 2.8% against 0.7% and 2.5% against 0.8%, so the experiments do not reproduce the gain from depth of the 34-layer ResNet over the 18-layer one; they show only that the shortcuts remove most of the degradation.
+Two secondary results show the limits of the small scale. At 4 layers the shortcut makes little difference, as He et al. found at 18 layers. And at these budgets the deep residual networks still train to a slightly higher error than the shallow ones, 2.8% against 0.7% and 2.5% against 0.8%, so the experiments do not reproduce the gain from depth of the 34-layer ResNet over the 18-layer one; they find only that the shortcuts remove most of the degradation.
 
 ## History
 
-Deeper networks had driven the progress of image classification: VGG nets showed in 2014 that 16 to 19 weight layers of small 3x3 filters gave a significant improvement over shallower designs. {#c-vgg}
+Deeper networks had driven the progress of image classification: the VGG paper reported in 2014 that 16 to 19 weight layers of small 3x3 filters gave a significant improvement over shallower designs. {#c-vgg}
 Batch normalization and the initialization of He et al. (2015) made networks of that depth trainable from scratch, but going further still failed.
 Srivastava, Greff and Schmidhuber, of the Swiss AI Lab IDSIA, posted highway networks, with gated shortcut connections, in 2015; version 2 of arXiv 1505.00387 is dated 3 Nov 2015. {#c-hist-highway}
 He, Zhang, Ren and Sun, at Microsoft Research, posted deep residual learning as arXiv 1512.03385 on 10 Dec 2015, {#c-hist-resnet} after winning the ILSVRC and COCO 2015 competitions with it, and published it at CVPR 2016.
 In 2016 they posted the pre-activation unit and the propagation analysis as Identity Mappings in Deep Residual Networks, arXiv 1603.05027, with version 3 dated 25 Jul 2016. {#c-hist-preact}
 Wide ResNets, stochastic depth, ResNeXt and DenseNet followed within two years, and residual connections became part of nearly every deep architecture, including the Transformer of 2017.
-From 2019, work such as Bag of Tricks, ResNet-RS, ResNet strikes back and ConvNeXt showed how much of ResNet's accuracy depends on the training procedure.
+From 2019, work such as Bag of Tricks, ResNet-RS, ResNet strikes back and ConvNeXt measured how much of ResNet's accuracy depends on the training procedure.
 
 ## References
 
