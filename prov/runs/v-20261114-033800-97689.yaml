@@ -1,0 +1,78 @@
+run: v-20261114-033800-97689
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-hidden
+  work: russakovsky-2015-imagenet-large-scale
+  locator: pp. 38 to 39
+  key: 6fc1319187ea56c174e705db1557fea5
+  spans:
+  - start: 166392
+    end: 180828
+  verdict: unsupported
+  quote: 'we release the new training/validation/test
+
+    images, training/validation annotations, and competition specification for the year.'
+  note: The passage does not mention an ILSVRC2010 exception or a reason for withholding test annotations; the claim should
+    be limited to the stated release practice.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-server
+  work: russakovsky-2015-imagenet-large-scale
+  locator: pp. 38 to 39
+  key: 14663b3998f1ca0fb6a7b0a437d5be7e
+  spans:
+  - start: 166392
+    end: 180828
+  verdict: unsupported
+  quote: 'Teams are asked to upload a
+
+    text file of their predicted annotations on test images
+
+    by this deadline to a provided server.'
+  note: The passage describes submissions during the competition and does not state a post-challenge server or a two-per-week
+    limit.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-comparable
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 22
+  key: eb57be671f261cd6fc750e74d74cd7d7
+  spans:
+  - start: 88004
+    end: 93119
+  verdict: supported
+  quote: 'scale of the dataset
+
+    has remained the same (Table 2), making the results
+
+    comparable across the years. The dataset has not changed
+
+    since 2012'
+  note: The passage explicitly attributes both statements to the authors.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-2010
+  work: russakovsky-2015-imagenet-large-scale
+  locator: pp. 17 to 18
+  key: 7c92aa395f28e4370ffb15a73825edc7
+  spans:
+  - start: 63227
+    end: 73211
+  verdict: supported
+  quote: 'The winning entry from
+
+    NEC team (Lin et al., 2011) used SIFT (Lowe, 2004)
+
+    and LBP (Ahonen et al., 2006) features'
+  note: The ILSVRC2010 paragraph says classification was the only task and, despite the interleaved extraction, identifies
+    NEC’s features and stochastic SVM.
