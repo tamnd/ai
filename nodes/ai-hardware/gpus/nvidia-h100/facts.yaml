@@ -1,0 +1,119 @@
+# The facts of the NVIDIA H100 (spec 04.9). The build computes the status of each fact.
+# The H100 comes in two board versions with different figures, SXM5 and PCIe, so each figure names its version in its id.
+# WP is NVIDIA's H100 architecture whitepaper V1.04, whose Table 1 and Table 3 hold the final figures of both versions.
+- id: vendor
+  value: NVIDIA
+  sources:
+    - {src: "nvidia-2022-hopper-announcement", loc: "p. 1", value: NVIDIA, kind: primary}
+    - {src: "nvidia-2023-h100-architecture-whitepaper", loc: "the title page", value: NVIDIA, kind: primary}
+- id: type
+  value: GPU
+  sources:
+    - {src: "nvidia-2023-h100-architecture-whitepaper", loc: "the title page", value: GPU, kind: primary}
+    - {src: "nvidia-2022-hopper-announcement", loc: "p. 1", value: GPU, kind: primary}
+- id: released
+  value: 2022-03-22
+  note: "The date NVIDIA announced the H100 at GTC 2022. The same announcement gives availability starting in the third quarter of 2022."
+  sources:
+    - {src: "nvidia-2022-hopper-announcement", loc: "p. 1", value: 2022-03-22, kind: primary}
+- id: process
+  value: "TSMC 4N"
+  note: "NVIDIA calls it TSMC's 4N process customized for NVIDIA."
+  sources:
+    - {src: "nvidia-2023-h100-architecture-whitepaper", loc: "p. 17", value: "TSMC 4N", kind: primary}
+    - {src: "nvidia-2024-h100-datasheet", loc: "p. 3", value: "TSMC 4N", kind: primary}
+- id: transistors
+  value: "80 billion"
+  note: "A count of transistors, kept as text because the unit list of 04.9 has no unit for it."
+  sources:
+    - {src: "nvidia-2023-h100-architecture-whitepaper", loc: "p. 17", value: "80 billion", kind: primary}
+    - {src: "nvidia-2022-hopper-announcement", loc: "p. 1", value: "80 billion", kind: primary}
+    - {src: "nvidia-2024-h100-datasheet", loc: "p. 3", value: "80 billion", kind: primary}
+- id: peak_flops.fp8_tensor.sxm5
+  value: 1.9789e15
+  unit: FLOP/s
+  note: "Peak FP8 Tensor Core rate of the H100 SXM5, dense (without the sparsity feature)."
+  sources:
+    - {src: "nvidia-2023-h100-architecture-whitepaper", loc: "Table 1", value: 1.9789e15, kind: primary}
+- id: peak_flops.fp8_tensor_sparse.sxm5
+  value: 3.9578e15
+  unit: FLOP/s
+  note: "Peak FP8 Tensor Core rate of the H100 SXM5 with the sparsity feature (effective FLOP/s)."
+  sources:
+    - {src: "nvidia-2023-h100-architecture-whitepaper", loc: "Table 1", value: 3.9578e15, kind: primary}
+    - {src: "nvidia-2024-h100-datasheet", loc: "p. 2", value: 3.958e15, kind: primary}
+- id: peak_flops.fp8_tensor.pcie
+  value: 1.513e15
+  unit: FLOP/s
+  note: "Peak FP8 Tensor Core rate of the H100 PCIe, dense (without the sparsity feature)."
+  sources:
+    - {src: "nvidia-2023-h100-architecture-whitepaper", loc: "Table 1", value: 1.513e15, kind: primary}
+- id: peak_flops.fp16_tensor.sxm5
+  value: 9.894e14
+  unit: FLOP/s
+  note: "Peak FP16 Tensor Core rate of the H100 SXM5, dense."
+  sources:
+    - {src: "nvidia-2023-h100-architecture-whitepaper", loc: "Table 1", value: 9.894e14, kind: primary}
+- id: peak_flops.fp16_tensor.pcie
+  value: 7.56e14
+  unit: FLOP/s
+  note: "Peak FP16 Tensor Core rate of the H100 PCIe, dense."
+  sources:
+    - {src: "nvidia-2023-h100-architecture-whitepaper", loc: "Table 1", value: 7.56e14, kind: primary}
+- id: memory.bytes.sxm5
+  value: 8.0e10
+  unit: bytes
+  note: "80 GB of HBM3."
+  sources:
+    - {src: "nvidia-2023-h100-architecture-whitepaper", loc: "Table 3", value: 8.0e10, kind: primary}
+    - {src: "nvidia-2024-h100-datasheet", loc: "p. 2", value: 8.0e10, kind: primary}
+- id: memory.bytes.pcie
+  value: 8.0e10
+  unit: bytes
+  note: "80 GB of HBM2e."
+  sources:
+    - {src: "nvidia-2023-h100-architecture-whitepaper", loc: "Table 3", value: 8.0e10, kind: primary}
+    - {src: "nvidia-2022-h100-pcie-product-brief", loc: "Table 2", value: 8.0e10, kind: primary}
+- id: memory.type.sxm5
+  value: HBM3
+  sources:
+    - {src: "nvidia-2023-h100-architecture-whitepaper", loc: "Table 3", value: HBM3, kind: primary}
+- id: memory.type.pcie
+  value: HBM2e
+  sources:
+    - {src: "nvidia-2023-h100-architecture-whitepaper", loc: "Table 3", value: HBM2e, kind: primary}
+    - {src: "nvidia-2022-h100-pcie-product-brief", loc: "Table 2", value: HBM2e, kind: primary}
+- id: memory.bandwidth.sxm5
+  value: 3.352e12
+  unit: bytes/s
+  sources:
+    - {src: "nvidia-2023-h100-architecture-whitepaper", loc: "Table 3", value: 3.352e12, kind: primary}
+    - {src: "nvidia-2024-h100-datasheet", loc: "p. 2", value: 3.35e12, kind: primary}
+- id: memory.bandwidth.pcie
+  value: 2.039e12
+  unit: bytes/s
+  note: "Two NVIDIA documents differ by about 2%: the whitepaper V1.04 gives 2039 GB/sec, and the PCIe product brief gives a peak memory bandwidth of 2,000 GB/s. Both give the same 1,593 MHz memory clock."
+  sources:
+    - {src: "nvidia-2023-h100-architecture-whitepaper", loc: "Table 3", value: 2.039e12, kind: primary}
+    - {src: "nvidia-2022-h100-pcie-product-brief", loc: "Table 2", value: 2.0e12, kind: primary}
+- id: power.sxm5
+  value: 700
+  unit: W
+  note: "Thermal design power. The 2024 datasheet gives up to 700 W, configurable."
+  sources:
+    - {src: "nvidia-2023-h100-architecture-whitepaper", loc: "Table 3", value: 700, kind: primary}
+    - {src: "nvidia-2024-h100-datasheet", loc: "p. 2", value: 700, kind: primary}
+- id: power.pcie
+  value: 350
+  unit: W
+  note: "Thermal design power; the product brief gives 350 W as the default and the maximum total board power in the 450 W or 600 W power mode."
+  sources:
+    - {src: "nvidia-2023-h100-architecture-whitepaper", loc: "Table 3", value: 350, kind: primary}
+    - {src: "nvidia-2022-h100-pcie-product-brief", loc: "Table 1", value: 350, kind: primary}
+- id: interconnect.nvlink.sxm5
+  value: 9.0e11
+  unit: bytes/s
+  note: "Total bandwidth of fourth-generation NVLink for multi-GPU IO."
+  sources:
+    - {src: "nvidia-2023-h100-architecture-whitepaper", loc: "p. 47", value: 9.0e11, kind: primary}
+    - {src: "nvidia-2024-h100-datasheet", loc: "p. 2", value: 9.0e11, kind: primary}

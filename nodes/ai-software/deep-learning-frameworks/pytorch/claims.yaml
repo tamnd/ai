@@ -102,7 +102,7 @@
     models: "180+ real-world models"
     data: [unknown]
     scale: "one NVIDIA A100 GPU"
-    setting: "geometric mean speedup of TorchInductor over eager PyTorch, for inference and for training"
+    setting: "geometric mean speedup of TorchInductor, for inference and for training"
   evidence:
     - {work: "ansel-2024-pytorch-2", role: original, locator: "the abstract", stance: for}
 
