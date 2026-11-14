@@ -215,6 +215,7 @@ The causal mask of a decoder adds one bias: each prediction depends only on the 
 
 On WMT 2014, the big model reached 28.4 BLEU on English to German and 41.8 on English to French, better than the earlier single models and ensembles that the paper compares, at a fraction of their training cost (Table 2). {#c-wmt-bleu}
 The base model reached 27.3 and 38.1. {#c-wmt-bleu-base}
+Section 6.1 of the paper gives 41.0 for the big model on English to French, against 41.8 in its abstract and Table 2. {#c-wmt-fr-41}
 The same architecture, with little task-specific tuning, gave 91.3 F1 on English constituency parsing trained on the Wall Street Journal part of the Penn Treebank only, and 92.7 in a semi-supervised setting (Section 6.3, Table 4). {#c-parsing}
 
 ## Limitations

@@ -185,7 +185,13 @@
     scale: "213 million parameters, 300,000 steps on 8 P100 GPUs"
     setting: "test set newstest2014, beam size 4, length penalty 0.6, averaged checkpoints"
   evidence:
-    - {work: "vaswani-2017-attention", role: original, locator: "the abstract, Table 2, Section 6.1, p. 8", stance: for}
+    - {work: "vaswani-2017-attention", role: original, locator: "the abstract, Table 2, Section 5.2", stance: for}
+
+- id: c-wmt-fr-41
+  type: attributive
+  text: "Section 6.1 of the paper gives a BLEU score of 41.0 for the big model on WMT 2014 English to French, where the abstract and Table 2 give 41.8."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 6.1, the abstract, Table 2", stance: for}
 
 - id: c-wmt-bleu-base
   type: empirical
@@ -196,7 +202,7 @@
     scale: "65 million parameters, 100,000 steps on 8 P100 GPUs"
     setting: "test set newstest2014, beam size 4, length penalty 0.6, averaged checkpoints"
   evidence:
-    - {work: "vaswani-2017-attention", role: original, locator: "Table 2, p. 8", stance: for}
+    - {work: "vaswani-2017-attention", role: original, locator: "Table 2, Section 5.2", stance: for}
 
 - id: c-parsing
   type: empirical
