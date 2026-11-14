@@ -1064,6 +1064,1740 @@ works:
     covers: machine learning, both volumes
     areas: [supervised-learning, unsupervised-learning, probabilistic-machine-learning, probabilistic-reasoning, generative-models, reinforcement-learning, causal-inference-and-discovery]
     index: [toc, index]
+    toc_source: {url: "https://probml.github.io/pml-book/toc1.pdf", read: 2026-11-15, note: "the contents PDFs that the author publishes for both volumes, toc1.pdf for the introduction and toc2-long-2023-01-19.pdf in the pml2-book repository for the advanced topics; a locator starts with its volume, as 1/2.3 or 2/36.4; the α and π that the PDF text layer garbles are restored, the Exercises and Further reading sections are skipped, and note starred marks the sections that the first volume stars"}
+    toc:
+      - {locator: "1/1", title: "Introduction", page: 1}
+      - {locator: "1/1.1", title: "What is machine learning?", page: 1}
+      - {locator: "1/1.2", title: "Supervised learning", page: 1}
+      - {locator: "1/1.2.1", title: "Classification", page: 2}
+      - {locator: "1/1.2.2", title: "Regression", page: 8}
+      - {locator: "1/1.2.3", title: "Overfitting and generalization", page: 12}
+      - {locator: "1/1.2.4", title: "No free lunch theorem", page: 13}
+      - {locator: "1/1.3", title: "Unsupervised learning", page: 14}
+      - {locator: "1/1.3.1", title: "Clustering", page: 14}
+      - {locator: "1/1.3.2", title: "Discovering latent “factors of variation”", page: 15}
+      - {locator: "1/1.3.3", title: "Self-supervised learning", page: 16}
+      - {locator: "1/1.3.4", title: "Evaluating unsupervised learning", page: 16}
+      - {locator: "1/1.4", title: "Reinforcement learning", page: 17}
+      - {locator: "1/1.5", title: "Data", page: 19}
+      - {locator: "1/1.5.1", title: "Some common image datasets", page: 19}
+      - {locator: "1/1.5.2", title: "Some common text datasets", page: 21}
+      - {locator: "1/1.5.3", title: "Preprocessing discrete input data", page: 23}
+      - {locator: "1/1.5.4", title: "Preprocessing text data", page: 24}
+      - {locator: "1/1.5.5", title: "Handling missing data", page: 26}
+      - {locator: "1/1.6", title: "Discussion", page: 27}
+      - {locator: "1/1.6.1", title: "The relationship between ML and other fields", page: 27}
+      - {locator: "1/1.6.2", title: "Structure of the book", page: 28}
+      - {locator: "1/1.6.3", title: "Caveats", page: 28}
+      - {locator: "1/2", title: "Probability: Univariate Models", page: 31}
+      - {locator: "1/2.1", title: "Introduction", page: 31}
+      - {locator: "1/2.1.1", title: "What is probability?", page: 31}
+      - {locator: "1/2.1.2", title: "Types of uncertainty", page: 31}
+      - {locator: "1/2.1.3", title: "Probability as an extension of logic", page: 32}
+      - {locator: "1/2.2", title: "Random variables", page: 33}
+      - {locator: "1/2.2.1", title: "Discrete random variables", page: 33}
+      - {locator: "1/2.2.2", title: "Continuous random variables", page: 34}
+      - {locator: "1/2.2.3", title: "Sets of related random variables", page: 36}
+      - {locator: "1/2.2.4", title: "Independence and conditional independence", page: 37}
+      - {locator: "1/2.2.5", title: "Moments of a distribution", page: 38}
+      - {locator: "1/2.2.6", title: "Limitations of summary statistics", page: 41, note: starred}
+      - {locator: "1/2.3", title: "Bayes’ rule", page: 43}
+      - {locator: "1/2.3.1", title: "Example: Testing for COVID-19", page: 44}
+      - {locator: "1/2.3.2", title: "Example: The Monty Hall problem", page: 45}
+      - {locator: "1/2.3.3", title: "Inverse problems", page: 47, note: starred}
+      - {locator: "1/2.4", title: "Bernoulli and binomial distributions", page: 47}
+      - {locator: "1/2.4.1", title: "Definition", page: 47}
+      - {locator: "1/2.4.2", title: "Sigmoid (logistic) function", page: 48}
+      - {locator: "1/2.4.3", title: "Binary logistic regression", page: 50}
+      - {locator: "1/2.5", title: "Categorical and multinomial distributions", page: 51}
+      - {locator: "1/2.5.1", title: "Definition", page: 51}
+      - {locator: "1/2.5.2", title: "Softmax function", page: 52}
+      - {locator: "1/2.5.3", title: "Multiclass logistic regression", page: 53}
+      - {locator: "1/2.5.4", title: "Log-sum-exp trick", page: 54}
+      - {locator: "1/2.6", title: "Univariate Gaussian (normal) distribution", page: 55}
+      - {locator: "1/2.6.1", title: "Cumulative distribution function", page: 55}
+      - {locator: "1/2.6.2", title: "Probability density function", page: 56}
+      - {locator: "1/2.6.3", title: "Regression", page: 57}
+      - {locator: "1/2.6.4", title: "Why is the Gaussian distribution so widely used?", page: 58}
+      - {locator: "1/2.6.5", title: "Dirac delta function as a limiting case", page: 58}
+      - {locator: "1/2.7", title: "Some other common univariate distributions", page: 59, note: starred}
+      - {locator: "1/2.7.1", title: "Student t distribution", page: 59}
+      - {locator: "1/2.7.2", title: "Cauchy distribution", page: 60}
+      - {locator: "1/2.7.3", title: "Laplace distribution", page: 61}
+      - {locator: "1/2.7.4", title: "Beta distribution", page: 61}
+      - {locator: "1/2.7.5", title: "Gamma distribution", page: 62}
+      - {locator: "1/2.7.6", title: "Empirical distribution", page: 63}
+      - {locator: "1/2.8", title: "Transformations of random variables", page: 64, note: starred}
+      - {locator: "1/2.8.1", title: "Discrete case", page: 64}
+      - {locator: "1/2.8.2", title: "Continuous case", page: 64}
+      - {locator: "1/2.8.3", title: "Invertible transformations (bijections)", page: 65}
+      - {locator: "1/2.8.4", title: "Moments of a linear transformation", page: 67}
+      - {locator: "1/2.8.5", title: "The convolution theorem", page: 68}
+      - {locator: "1/2.8.6", title: "Central limit theorem", page: 69}
+      - {locator: "1/2.8.7", title: "Monte Carlo approximation", page: 70}
+      - {locator: "1/3", title: "Probability: Multivariate Models", page: 75}
+      - {locator: "1/3.1", title: "Joint distributions for multiple random variables", page: 75}
+      - {locator: "1/3.1.1", title: "Covariance", page: 75}
+      - {locator: "1/3.1.2", title: "Correlation", page: 76}
+      - {locator: "1/3.1.3", title: "Uncorrelated does not imply independent", page: 77}
+      - {locator: "1/3.1.4", title: "Correlation does not imply causation", page: 77}
+      - {locator: "1/3.1.5", title: "Simpson’s paradox", page: 78}
+      - {locator: "1/3.2", title: "The multivariate Gaussian (normal) distribution", page: 79}
+      - {locator: "1/3.2.1", title: "Definition", page: 79}
+      - {locator: "1/3.2.2", title: "Mahalanobis distance", page: 81}
+      - {locator: "1/3.2.3", title: "Marginals and conditionals of an MVN", page: 82, note: starred}
+      - {locator: "1/3.2.4", title: "Example: conditioning a 2d Gaussian", page: 83}
+      - {locator: "1/3.2.5", title: "Example: Imputing missing values", page: 83, note: starred}
+      - {locator: "1/3.3", title: "Linear Gaussian systems", page: 84, note: starred}
+      - {locator: "1/3.3.1", title: "Bayes rule for Gaussians", page: 85}
+      - {locator: "1/3.3.2", title: "Derivation", page: 85, note: starred}
+      - {locator: "1/3.3.3", title: "Example: Inferring an unknown scalar", page: 86}
+      - {locator: "1/3.3.4", title: "Example: inferring an unknown vector", page: 88}
+      - {locator: "1/3.3.5", title: "Example: sensor fusion", page: 89}
+      - {locator: "1/3.4", title: "The exponential family", page: 90, note: starred}
+      - {locator: "1/3.4.1", title: "Definition", page: 90}
+      - {locator: "1/3.4.2", title: "Example", page: 91}
+      - {locator: "1/3.4.3", title: "Log partition function is cumulant generating function", page: 92}
+      - {locator: "1/3.4.4", title: "Maximum entropy derivation of the exponential family", page: 92}
+      - {locator: "1/3.5", title: "Mixture models", page: 93}
+      - {locator: "1/3.5.1", title: "Gaussian mixture models", page: 94}
+      - {locator: "1/3.5.2", title: "Bernoulli mixture models", page: 95}
+      - {locator: "1/3.6", title: "Probabilistic graphical models", page: 96, note: starred}
+      - {locator: "1/3.6.1", title: "Representation", page: 97}
+      - {locator: "1/3.6.2", title: "Inference", page: 99}
+      - {locator: "1/3.6.3", title: "Learning", page: 100}
+      - {locator: "1/4", title: "Statistics", page: 103}
+      - {locator: "1/4.1", title: "Introduction", page: 103}
+      - {locator: "1/4.2", title: "Maximum likelihood estimation (MLE)", page: 103}
+      - {locator: "1/4.2.1", title: "Definition", page: 103}
+      - {locator: "1/4.2.2", title: "Justification for MLE", page: 104}
+      - {locator: "1/4.2.3", title: "Example: MLE for the Bernoulli distribution", page: 106}
+      - {locator: "1/4.2.4", title: "Example: MLE for the categorical distribution", page: 107}
+      - {locator: "1/4.2.5", title: "Example: MLE for the univariate Gaussian", page: 107}
+      - {locator: "1/4.2.6", title: "Example: MLE for the multivariate Gaussian", page: 108}
+      - {locator: "1/4.2.7", title: "Example: MLE for linear regression", page: 110}
+      - {locator: "1/4.3", title: "Empirical risk minimization (ERM)", page: 111}
+      - {locator: "1/4.3.1", title: "Example: minimizing the misclassification rate", page: 111}
+      - {locator: "1/4.3.2", title: "Surrogate loss", page: 112}
+      - {locator: "1/4.4", title: "Other estimation methods", page: 112, note: starred}
+      - {locator: "1/4.4.1", title: "The method of moments", page: 112}
+      - {locator: "1/4.4.2", title: "Online (recursive) estimation", page: 114}
+      - {locator: "1/4.5", title: "Regularization", page: 116}
+      - {locator: "1/4.5.1", title: "Example: MAP estimation for the Bernoulli distribution", page: 117}
+      - {locator: "1/4.5.2", title: "Example: MAP estimation for the multivariate Gaussian", page: 118, note: starred}
+      - {locator: "1/4.5.3", title: "Example: weight decay", page: 119}
+      - {locator: "1/4.5.4", title: "Picking the regularizer using a validation set", page: 120}
+      - {locator: "1/4.5.5", title: "Cross-validation", page: 121}
+      - {locator: "1/4.5.6", title: "Early stopping", page: 123}
+      - {locator: "1/4.5.7", title: "Using more data", page: 123}
+      - {locator: "1/4.6", title: "Bayesian statistics", page: 124, note: starred}
+      - {locator: "1/4.6.1", title: "Conjugate priors", page: 125}
+      - {locator: "1/4.6.2", title: "The beta-binomial model", page: 125}
+      - {locator: "1/4.6.3", title: "The Dirichlet-multinomial model", page: 133}
+      - {locator: "1/4.6.4", title: "The Gaussian-Gaussian model", page: 137}
+      - {locator: "1/4.6.5", title: "Beyond conjugate priors", page: 140}
+      - {locator: "1/4.6.6", title: "Credible intervals", page: 141}
+      - {locator: "1/4.6.7", title: "Bayesian machine learning", page: 143}
+      - {locator: "1/4.6.8", title: "Computational issues", page: 147}
+      - {locator: "1/4.7", title: "Frequentist statistics", page: 150, note: starred}
+      - {locator: "1/4.7.1", title: "Sampling distributions", page: 150}
+      - {locator: "1/4.7.2", title: "Gaussian approximation of the sampling distribution of the MLE", page: 151}
+      - {locator: "1/4.7.3", title: "Bootstrap approximation of the sampling distribution of any estimator", page: 151}
+      - {locator: "1/4.7.4", title: "Confidence intervals", page: 153}
+      - {locator: "1/4.7.5", title: "Caution: Confidence intervals are not credible", page: 154}
+      - {locator: "1/4.7.6", title: "The bias-variance tradeoff", page: 155}
+      - {locator: "1/5", title: "Decision Theory", page: 163}
+      - {locator: "1/5.1", title: "Bayesian decision theory", page: 163}
+      - {locator: "1/5.1.1", title: "Basics", page: 163}
+      - {locator: "1/5.1.2", title: "Classification problems", page: 165}
+      - {locator: "1/5.1.3", title: "ROC curves", page: 167}
+      - {locator: "1/5.1.4", title: "Precision-recall curves", page: 170}
+      - {locator: "1/5.1.5", title: "Regression problems", page: 172}
+      - {locator: "1/5.1.6", title: "Probabilistic prediction problems", page: 173}
+      - {locator: "1/5.2", title: "Bayesian hypothesis testing", page: 175}
+      - {locator: "1/5.2.1", title: "Example: Testing if a coin is fair", page: 176}
+      - {locator: "1/5.2.2", title: "Bayesian model selection", page: 177}
+      - {locator: "1/5.2.3", title: "Occam’s razor", page: 178}
+      - {locator: "1/5.2.4", title: "Connection between cross validation and marginal likelihood", page: 179}
+      - {locator: "1/5.2.5", title: "Information criteria", page: 180}
+      - {locator: "1/5.3", title: "Frequentist decision theory", page: 182}
+      - {locator: "1/5.3.1", title: "Computing the risk of an estimator", page: 182}
+      - {locator: "1/5.3.2", title: "Consistent estimators", page: 185}
+      - {locator: "1/5.3.3", title: "Admissible estimators", page: 185}
+      - {locator: "1/5.4", title: "Empirical risk minimization", page: 186}
+      - {locator: "1/5.4.1", title: "Empirical risk", page: 186}
+      - {locator: "1/5.4.2", title: "Structural risk", page: 188}
+      - {locator: "1/5.4.3", title: "Cross-validation", page: 189}
+      - {locator: "1/5.4.4", title: "Statistical learning theory", page: 189, note: starred}
+      - {locator: "1/5.5", title: "Frequentist hypothesis testing", page: 191, note: starred}
+      - {locator: "1/5.5.1", title: "Likelihood ratio test", page: 191}
+      - {locator: "1/5.5.2", title: "Null hypothesis significance testing (NHST)", page: 192}
+      - {locator: "1/5.5.3", title: "p-values", page: 193}
+      - {locator: "1/5.5.4", title: "p-values considered harmful", page: 193}
+      - {locator: "1/5.5.5", title: "Why isn’t everyone a Bayesian?", page: 195}
+      - {locator: "1/6", title: "Information Theory", page: 199}
+      - {locator: "1/6.1", title: "Entropy", page: 199}
+      - {locator: "1/6.1.1", title: "Entropy for discrete random variables", page: 199}
+      - {locator: "1/6.1.2", title: "Cross entropy", page: 201}
+      - {locator: "1/6.1.3", title: "Joint entropy", page: 201}
+      - {locator: "1/6.1.4", title: "Conditional entropy", page: 202}
+      - {locator: "1/6.1.5", title: "Perplexity", page: 203}
+      - {locator: "1/6.1.6", title: "Differential entropy for continuous random variables", page: 204, note: starred}
+      - {locator: "1/6.2", title: "Relative entropy (KL divergence)", page: 205, note: starred}
+      - {locator: "1/6.2.1", title: "Definition", page: 205}
+      - {locator: "1/6.2.2", title: "Interpretation", page: 206}
+      - {locator: "1/6.2.3", title: "Example: KL divergence between two Gaussians", page: 206}
+      - {locator: "1/6.2.4", title: "Non-negativity of KL", page: 206}
+      - {locator: "1/6.2.5", title: "KL divergence and MLE", page: 207}
+      - {locator: "1/6.2.6", title: "Forward vs reverse KL", page: 208}
+      - {locator: "1/6.3", title: "Mutual information", page: 209, note: starred}
+      - {locator: "1/6.3.1", title: "Definition", page: 209}
+      - {locator: "1/6.3.2", title: "Interpretation", page: 210}
+      - {locator: "1/6.3.3", title: "Example", page: 210}
+      - {locator: "1/6.3.4", title: "Conditional mutual information", page: 211}
+      - {locator: "1/6.3.5", title: "MI as a “generalized correlation coefficient”", page: 212}
+      - {locator: "1/6.3.6", title: "Normalized mutual information", page: 213}
+      - {locator: "1/6.3.7", title: "Maximal information coefficient", page: 213}
+      - {locator: "1/6.3.8", title: "Data processing inequality", page: 215}
+      - {locator: "1/6.3.9", title: "Sufficient Statistics", page: 216}
+      - {locator: "1/6.3.10", title: "Fano’s inequality", page: 217, note: starred}
+      - {locator: "1/7", title: "Linear Algebra", page: 221}
+      - {locator: "1/7.1", title: "Introduction", page: 221}
+      - {locator: "1/7.1.1", title: "Notation", page: 221}
+      - {locator: "1/7.1.2", title: "Vector spaces", page: 224}
+      - {locator: "1/7.1.3", title: "Norms of a vector and matrix", page: 226}
+      - {locator: "1/7.1.4", title: "Properties of a matrix", page: 228}
+      - {locator: "1/7.1.5", title: "Special types of matrices", page: 231}
+      - {locator: "1/7.2", title: "Matrix multiplication", page: 234}
+      - {locator: "1/7.2.1", title: "Vector–vector products", page: 234}
+      - {locator: "1/7.2.2", title: "Matrix–vector products", page: 235}
+      - {locator: "1/7.2.3", title: "Matrix–matrix products", page: 235}
+      - {locator: "1/7.2.4", title: "Application: manipulating data matrices", page: 237}
+      - {locator: "1/7.2.5", title: "Kronecker products", page: 240, note: starred}
+      - {locator: "1/7.2.6", title: "Einstein summation", page: 240, note: starred}
+      - {locator: "1/7.3", title: "Matrix inversion", page: 241}
+      - {locator: "1/7.3.1", title: "The inverse of a square matrix", page: 241}
+      - {locator: "1/7.3.2", title: "Schur complements", page: 242, note: starred}
+      - {locator: "1/7.3.3", title: "The matrix inversion lemma", page: 243, note: starred}
+      - {locator: "1/7.3.4", title: "Matrix determinant lemma", page: 243, note: starred}
+      - {locator: "1/7.3.5", title: "Application: deriving the conditionals of an MVN", page: 244, note: starred}
+      - {locator: "1/7.4", title: "Eigenvalue decomposition (EVD)", page: 245}
+      - {locator: "1/7.4.1", title: "Basics", page: 245}
+      - {locator: "1/7.4.2", title: "Diagonalization", page: 246}
+      - {locator: "1/7.4.3", title: "Eigenvalues and eigenvectors of symmetric matrices", page: 247}
+      - {locator: "1/7.4.4", title: "Geometry of quadratic forms", page: 248}
+      - {locator: "1/7.4.5", title: "Standardizing and whitening data", page: 248}
+      - {locator: "1/7.4.6", title: "Power method", page: 250}
+      - {locator: "1/7.4.7", title: "Deflation", page: 251}
+      - {locator: "1/7.4.8", title: "Eigenvectors optimize quadratic forms", page: 251}
+      - {locator: "1/7.5", title: "Singular value decomposition (SVD)", page: 251}
+      - {locator: "1/7.5.1", title: "Basics", page: 251}
+      - {locator: "1/7.5.2", title: "Connection between SVD and EVD", page: 252}
+      - {locator: "1/7.5.3", title: "Pseudo inverse", page: 253}
+      - {locator: "1/7.5.4", title: "SVD and the range and null space of a matrix", page: 254, note: starred}
+      - {locator: "1/7.5.5", title: "Truncated SVD", page: 256}
+      - {locator: "1/7.6", title: "Other matrix decompositions", page: 256, note: starred}
+      - {locator: "1/7.6.1", title: "LU factorization", page: 256}
+      - {locator: "1/7.6.2", title: "QR decomposition", page: 257}
+      - {locator: "1/7.6.3", title: "Cholesky decomposition", page: 258}
+      - {locator: "1/7.7", title: "Solving systems of linear equations", page: 258, note: starred}
+      - {locator: "1/7.7.1", title: "Solving square systems", page: 259}
+      - {locator: "1/7.7.2", title: "Solving underconstrained systems (least norm estimation)", page: 259}
+      - {locator: "1/7.7.3", title: "Solving overconstrained systems (least squares estimation)", page: 261}
+      - {locator: "1/7.8", title: "Matrix calculus", page: 261}
+      - {locator: "1/7.8.1", title: "Derivatives", page: 262}
+      - {locator: "1/7.8.2", title: "Gradients", page: 262}
+      - {locator: "1/7.8.3", title: "Directional derivative", page: 263}
+      - {locator: "1/7.8.4", title: "Total derivative", page: 263, note: starred}
+      - {locator: "1/7.8.5", title: "Jacobian", page: 263}
+      - {locator: "1/7.8.6", title: "Hessian", page: 264}
+      - {locator: "1/7.8.7", title: "Gradients of commonly used functions", page: 265}
+      - {locator: "1/8", title: "Optimization", page: 269}
+      - {locator: "1/8.1", title: "Introduction", page: 269}
+      - {locator: "1/8.1.1", title: "Local vs global optimization", page: 269}
+      - {locator: "1/8.1.2", title: "Constrained vs unconstrained optimization", page: 271}
+      - {locator: "1/8.1.3", title: "Convex vs nonconvex optimization", page: 271}
+      - {locator: "1/8.1.4", title: "Smooth vs nonsmooth optimization", page: 275}
+      - {locator: "1/8.2", title: "First-order methods", page: 276}
+      - {locator: "1/8.2.1", title: "Descent direction", page: 278}
+      - {locator: "1/8.2.2", title: "Step size (learning rate)", page: 278}
+      - {locator: "1/8.2.3", title: "Convergence rates", page: 280}
+      - {locator: "1/8.2.4", title: "Momentum methods", page: 281}
+      - {locator: "1/8.3", title: "Second-order methods", page: 283}
+      - {locator: "1/8.3.1", title: "Newton’s method", page: 283}
+      - {locator: "1/8.3.2", title: "BFGS and other quasi-Newton methods", page: 284}
+      - {locator: "1/8.3.3", title: "Trust region methods", page: 285}
+      - {locator: "1/8.4", title: "Stochastic gradient descent", page: 286}
+      - {locator: "1/8.4.1", title: "Application to finite sum problems", page: 287}
+      - {locator: "1/8.4.2", title: "Example: SGD for fitting linear regression", page: 287}
+      - {locator: "1/8.4.3", title: "Choosing the step size (learning rate)", page: 288}
+      - {locator: "1/8.4.4", title: "Iterate averaging", page: 291}
+      - {locator: "1/8.4.5", title: "Variance reduction", page: 291, note: starred}
+      - {locator: "1/8.4.6", title: "Preconditioned SGD", page: 292}
+      - {locator: "1/8.5", title: "Constrained optimization", page: 295}
+      - {locator: "1/8.5.1", title: "Lagrange multipliers", page: 296}
+      - {locator: "1/8.5.2", title: "The KKT conditions", page: 297}
+      - {locator: "1/8.5.3", title: "Linear programming", page: 299}
+      - {locator: "1/8.5.4", title: "Quadratic programming", page: 300}
+      - {locator: "1/8.5.5", title: "Mixed integer linear programming", page: 301, note: starred}
+      - {locator: "1/8.6", title: "Proximal gradient method", page: 301, note: starred}
+      - {locator: "1/8.6.1", title: "Projected gradient descent", page: 302}
+      - {locator: "1/8.6.2", title: "Proximal operator for `1 -norm regularizer", page: 303}
+      - {locator: "1/8.6.3", title: "Proximal operator for quantization", page: 304}
+      - {locator: "1/8.6.4", title: "Incremental (online) proximal methods", page: 305}
+      - {locator: "1/8.7", title: "Bound optimization", page: 306, note: starred}
+      - {locator: "1/8.7.1", title: "The general algorithm", page: 306}
+      - {locator: "1/8.7.2", title: "The EM algorithm", page: 306}
+      - {locator: "1/8.7.3", title: "Example: EM for a GMM", page: 309}
+      - {locator: "1/8.8", title: "Blackbox and derivative free optimization", page: 313}
+      - {locator: "1/9", title: "Linear Discriminant Analysis", page: 317}
+      - {locator: "1/9.1", title: "Introduction", page: 317}
+      - {locator: "1/9.2", title: "Gaussian discriminant analysis", page: 317}
+      - {locator: "1/9.2.1", title: "Quadratic decision boundaries", page: 318}
+      - {locator: "1/9.2.2", title: "Linear decision boundaries", page: 319}
+      - {locator: "1/9.2.3", title: "The connection between LDA and logistic regression", page: 319}
+      - {locator: "1/9.2.4", title: "Model fitting", page: 320}
+      - {locator: "1/9.2.5", title: "Nearest centroid classifier", page: 322}
+      - {locator: "1/9.2.6", title: "Fisher’s linear discriminant analysis", page: 322, note: starred}
+      - {locator: "1/9.3", title: "Naive Bayes classifiers", page: 326}
+      - {locator: "1/9.3.1", title: "Example models", page: 326}
+      - {locator: "1/9.3.2", title: "Model fitting", page: 327}
+      - {locator: "1/9.3.3", title: "Bayesian naive Bayes", page: 328}
+      - {locator: "1/9.3.4", title: "The connection between naive Bayes and logistic regression", page: 329}
+      - {locator: "1/9.4", title: "Generative vs discriminative classifiers", page: 330}
+      - {locator: "1/9.4.1", title: "Advantages of discriminative classifiers", page: 330}
+      - {locator: "1/9.4.2", title: "Advantages of generative classifiers", page: 331}
+      - {locator: "1/9.4.3", title: "Handling missing features", page: 331}
+      - {locator: "1/10", title: "Logistic Regression", page: 333}
+      - {locator: "1/10.1", title: "Introduction", page: 333}
+      - {locator: "1/10.2", title: "Binary logistic regression", page: 333}
+      - {locator: "1/10.2.1", title: "Linear classifiers", page: 333}
+      - {locator: "1/10.2.2", title: "Nonlinear classifiers", page: 334}
+      - {locator: "1/10.2.3", title: "Maximum likelihood estimation", page: 336}
+      - {locator: "1/10.2.4", title: "Stochastic gradient descent", page: 339}
+      - {locator: "1/10.2.5", title: "Perceptron algorithm", page: 340}
+      - {locator: "1/10.2.6", title: "Iteratively reweighted least squares", page: 340}
+      - {locator: "1/10.2.7", title: "MAP estimation", page: 342}
+      - {locator: "1/10.2.8", title: "Standardization", page: 343}
+      - {locator: "1/10.3", title: "Multinomial logistic regression", page: 344}
+      - {locator: "1/10.3.1", title: "Linear and nonlinear classifiers", page: 345}
+      - {locator: "1/10.3.2", title: "Maximum likelihood estimation", page: 345}
+      - {locator: "1/10.3.3", title: "Gradient-based optimization", page: 347}
+      - {locator: "1/10.3.4", title: "Bound optimization", page: 347}
+      - {locator: "1/10.3.5", title: "MAP estimation", page: 349}
+      - {locator: "1/10.3.6", title: "Maximum entropy classifiers", page: 350}
+      - {locator: "1/10.3.7", title: "Hierarchical classification", page: 351}
+      - {locator: "1/10.3.8", title: "Handling large numbers of classes", page: 352}
+      - {locator: "1/10.4", title: "Robust logistic regression", page: 353, note: starred}
+      - {locator: "1/10.4.1", title: "Mixture model for the likelihood", page: 353}
+      - {locator: "1/10.4.2", title: "Bi-tempered loss", page: 354}
+      - {locator: "1/10.5", title: "Bayesian logistic regression", page: 357, note: starred}
+      - {locator: "1/10.5.1", title: "Laplace approximation", page: 357}
+      - {locator: "1/10.5.2", title: "Approximating the posterior predictive", page: 358}
+      - {locator: "1/11", title: "Linear Regression", page: 365}
+      - {locator: "1/11.1", title: "Introduction", page: 365}
+      - {locator: "1/11.2", title: "Least squares linear regression", page: 365}
+      - {locator: "1/11.2.1", title: "Terminology", page: 365}
+      - {locator: "1/11.2.2", title: "Least squares estimation", page: 366}
+      - {locator: "1/11.2.3", title: "Other approaches to computing the MLE", page: 370}
+      - {locator: "1/11.2.4", title: "Measuring goodness of fit", page: 374}
+      - {locator: "1/11.3", title: "Ridge regression", page: 375}
+      - {locator: "1/11.3.1", title: "Computing the MAP estimate", page: 376}
+      - {locator: "1/11.3.2", title: "Connection between ridge regression and PCA", page: 377}
+      - {locator: "1/11.3.3", title: "Choosing the strength of the regularizer", page: 378}
+      - {locator: "1/11.4", title: "Lasso regression", page: 379}
+      - {locator: "1/11.4.1", title: "MAP estimation with a Laplace prior (`1 regularization)", page: 379}
+      - {locator: "1/11.4.2", title: "Why does `1 regularization yield sparse solutions?", page: 380}
+      - {locator: "1/11.4.3", title: "Hard vs soft thresholding", page: 381}
+      - {locator: "1/11.4.4", title: "Regularization path", page: 383}
+      - {locator: "1/11.4.5", title: "Comparison of least squares, lasso, ridge and subset selection", page: 384}
+      - {locator: "1/11.4.6", title: "Variable selection consistency", page: 386}
+      - {locator: "1/11.4.7", title: "Group lasso", page: 387}
+      - {locator: "1/11.4.8", title: "Elastic net (ridge and lasso combined)", page: 390}
+      - {locator: "1/11.4.9", title: "Optimization algorithms", page: 391}
+      - {locator: "1/11.5", title: "Regression splines", page: 393, note: starred}
+      - {locator: "1/11.5.1", title: "B-spline basis functions", page: 393}
+      - {locator: "1/11.5.2", title: "Fitting a linear model using a spline basis", page: 395}
+      - {locator: "1/11.5.3", title: "Smoothing splines", page: 395}
+      - {locator: "1/11.5.4", title: "Generalized additive models", page: 395}
+      - {locator: "1/11.6", title: "Robust linear regression", page: 396, note: starred}
+      - {locator: "1/11.6.1", title: "Laplace likelihood", page: 396}
+      - {locator: "1/11.6.2", title: "Student-t likelihood", page: 398}
+      - {locator: "1/11.6.3", title: "Huber loss", page: 398}
+      - {locator: "1/11.6.4", title: "RANSAC", page: 398}
+      - {locator: "1/11.7", title: "Bayesian linear regression", page: 399, note: starred}
+      - {locator: "1/11.7.1", title: "Priors", page: 399}
+      - {locator: "1/11.7.2", title: "Posteriors", page: 399}
+      - {locator: "1/11.7.3", title: "Example", page: 400}
+      - {locator: "1/11.7.4", title: "Computing the posterior predictive", page: 400}
+      - {locator: "1/11.7.5", title: "The advantage of centering", page: 402}
+      - {locator: "1/11.7.6", title: "Dealing with multicollinearity", page: 403}
+      - {locator: "1/11.7.7", title: "Automatic relevancy determination (ARD)", page: 404, note: starred}
+      - {locator: "1/12", title: "Generalized Linear Models", page: 409, note: starred}
+      - {locator: "1/12.1", title: "Introduction", page: 409}
+      - {locator: "1/12.2", title: "Examples", page: 409}
+      - {locator: "1/12.2.1", title: "Linear regression", page: 410}
+      - {locator: "1/12.2.2", title: "Binomial regression", page: 410}
+      - {locator: "1/12.2.3", title: "Poisson regression", page: 411}
+      - {locator: "1/12.3", title: "GLMs with non-canonical link functions", page: 411}
+      - {locator: "1/12.4", title: "Maximum likelihood estimation", page: 412}
+      - {locator: "1/12.5", title: "Worked example: predicting insurance claims", page: 413}
+      - {locator: "1/13", title: "Neural Networks for Structured Data", page: 419}
+      - {locator: "1/13.1", title: "Introduction", page: 419}
+      - {locator: "1/13.2", title: "Multilayer perceptrons (MLPs)", page: 420}
+      - {locator: "1/13.2.1", title: "The XOR problem", page: 421}
+      - {locator: "1/13.2.2", title: "Differentiable MLPs", page: 422}
+      - {locator: "1/13.2.3", title: "Activation functions", page: 422}
+      - {locator: "1/13.2.4", title: "Example models", page: 423}
+      - {locator: "1/13.2.5", title: "The importance of depth", page: 428}
+      - {locator: "1/13.2.6", title: "The “deep learning revolution”", page: 429}
+      - {locator: "1/13.2.7", title: "Connections with biology", page: 429}
+      - {locator: "1/13.3", title: "Backpropagation", page: 432}
+      - {locator: "1/13.3.1", title: "Forward vs reverse mode differentiation", page: 432}
+      - {locator: "1/13.3.2", title: "Reverse mode differentiation for multilayer perceptrons", page: 434}
+      - {locator: "1/13.3.3", title: "Vector-Jacobian product for common layers", page: 436}
+      - {locator: "1/13.3.4", title: "Computation graphs", page: 438}
+      - {locator: "1/13.4", title: "Training neural networks", page: 440}
+      - {locator: "1/13.4.1", title: "Tuning the learning rate", page: 441}
+      - {locator: "1/13.4.2", title: "Vanishing and exploding gradients", page: 441}
+      - {locator: "1/13.4.3", title: "Non-saturating activation functions", page: 442}
+      - {locator: "1/13.4.4", title: "Residual connections", page: 445}
+      - {locator: "1/13.4.5", title: "Parameter initialization", page: 446}
+      - {locator: "1/13.4.6", title: "Parallel training", page: 447}
+      - {locator: "1/13.5", title: "Regularization", page: 448}
+      - {locator: "1/13.5.1", title: "Early stopping", page: 448}
+      - {locator: "1/13.5.2", title: "Weight decay", page: 449}
+      - {locator: "1/13.5.3", title: "Sparse DNNs", page: 449}
+      - {locator: "1/13.5.4", title: "Dropout", page: 449}
+      - {locator: "1/13.5.5", title: "Bayesian neural networks", page: 451}
+      - {locator: "1/13.5.6", title: "Regularization effects of (stochastic) gradient descent", page: 451, note: starred}
+      - {locator: "1/13.6", title: "Other kinds of feedforward networks", page: 453, note: starred}
+      - {locator: "1/13.6.1", title: "Radial basis function networks", page: 453}
+      - {locator: "1/13.6.2", title: "Mixtures of experts", page: 454}
+      - {locator: "1/14", title: "Neural Networks for Images", page: 461}
+      - {locator: "1/14.1", title: "Introduction", page: 461}
+      - {locator: "1/14.2", title: "Common layers", page: 462}
+      - {locator: "1/14.2.1", title: "Convolutional layers", page: 462}
+      - {locator: "1/14.2.2", title: "Pooling layers", page: 469}
+      - {locator: "1/14.2.3", title: "Putting it all together", page: 470}
+      - {locator: "1/14.2.4", title: "Normalization layers", page: 470}
+      - {locator: "1/14.3", title: "Common architectures for image classification", page: 473}
+      - {locator: "1/14.3.1", title: "LeNet", page: 473}
+      - {locator: "1/14.3.2", title: "AlexNet", page: 475}
+      - {locator: "1/14.3.3", title: "GoogLeNet (Inception)", page: 476}
+      - {locator: "1/14.3.4", title: "ResNet", page: 477}
+      - {locator: "1/14.3.5", title: "DenseNet", page: 478}
+      - {locator: "1/14.3.6", title: "Neural architecture search", page: 479}
+      - {locator: "1/14.4", title: "Other forms of convolution", page: 479, note: starred}
+      - {locator: "1/14.4.1", title: "Dilated convolution", page: 479}
+      - {locator: "1/14.4.2", title: "Transposed convolution", page: 481}
+      - {locator: "1/14.4.3", title: "Depthwise separable convolution", page: 482}
+      - {locator: "1/14.5", title: "Solving other discriminative vision tasks with CNNs", page: 482, note: starred}
+      - {locator: "1/14.5.1", title: "Image tagging", page: 483}
+      - {locator: "1/14.5.2", title: "Object detection", page: 483}
+      - {locator: "1/14.5.3", title: "Instance segmentation", page: 484}
+      - {locator: "1/14.5.4", title: "Semantic segmentation", page: 484}
+      - {locator: "1/14.5.5", title: "Human pose estimation", page: 486}
+      - {locator: "1/14.6", title: "Generating images by inverting CNNs", page: 487, note: starred}
+      - {locator: "1/14.6.1", title: "Converting a trained classifier into a generative model", page: 487}
+      - {locator: "1/14.6.2", title: "Image priors", page: 488}
+      - {locator: "1/14.6.3", title: "Visualizing the features learned by a CNN", page: 490}
+      - {locator: "1/14.6.4", title: "Deep Dream", page: 490}
+      - {locator: "1/14.6.5", title: "Neural style transfer", page: 491}
+      - {locator: "1/15", title: "Neural Networks for Sequences", page: 497}
+      - {locator: "1/15.1", title: "Introduction", page: 497}
+      - {locator: "1/15.2", title: "Recurrent neural networks (RNNs)", page: 497}
+      - {locator: "1/15.2.1", title: "Vec2Seq (sequence generation)", page: 497}
+      - {locator: "1/15.2.2", title: "Seq2Vec (sequence classification)", page: 500}
+      - {locator: "1/15.2.3", title: "Seq2Seq (sequence translation)", page: 501}
+      - {locator: "1/15.2.4", title: "Teacher forcing", page: 503}
+      - {locator: "1/15.2.5", title: "Backpropagation through time", page: 504}
+      - {locator: "1/15.2.6", title: "Vanishing and exploding gradients", page: 505}
+      - {locator: "1/15.2.7", title: "Gating and long term memory", page: 506}
+      - {locator: "1/15.2.8", title: "Beam search", page: 509}
+      - {locator: "1/15.3", title: "1d CNNs", page: 510}
+      - {locator: "1/15.3.1", title: "1d CNNs for sequence classification", page: 510}
+      - {locator: "1/15.3.2", title: "Causal 1d CNNs for sequence generation", page: 511}
+      - {locator: "1/15.4", title: "Attention", page: 512}
+      - {locator: "1/15.4.1", title: "Attention as soft dictionary lookup", page: 513}
+      - {locator: "1/15.4.2", title: "Kernel regression as non-parametric attention", page: 514}
+      - {locator: "1/15.4.3", title: "Parametric attention", page: 514}
+      - {locator: "1/15.4.4", title: "Seq2Seq with attention", page: 515}
+      - {locator: "1/15.4.5", title: "Seq2vec with attention (text classification)", page: 518}
+      - {locator: "1/15.4.6", title: "Seq+Seq2Vec with attention (text pair classification)", page: 518}
+      - {locator: "1/15.4.7", title: "Soft vs hard attention", page: 519}
+      - {locator: "1/15.5", title: "Transformers", page: 520}
+      - {locator: "1/15.5.1", title: "Self-attention", page: 520}
+      - {locator: "1/15.5.2", title: "Multi-headed attention", page: 521}
+      - {locator: "1/15.5.3", title: "Positional encoding", page: 522}
+      - {locator: "1/15.5.4", title: "Putting it all together", page: 523}
+      - {locator: "1/15.5.5", title: "Comparing transformers, CNNs and RNNs", page: 525}
+      - {locator: "1/15.5.6", title: "Transformers for images", page: 526, note: starred}
+      - {locator: "1/15.5.7", title: "Other transformer variants", page: 526, note: starred}
+      - {locator: "1/15.6", title: "Efficient transformers", page: 527, note: starred}
+      - {locator: "1/15.6.1", title: "Fixed non-learnable localized attention patterns", page: 527}
+      - {locator: "1/15.6.2", title: "Learnable sparse attention patterns", page: 528}
+      - {locator: "1/15.6.3", title: "Memory and recurrence methods", page: 529}
+      - {locator: "1/15.6.4", title: "Low-rank and kernel methods", page: 529}
+      - {locator: "1/15.7", title: "Language models and unsupervised representation learning", page: 531}
+      - {locator: "1/15.7.1", title: "ELMo", page: 531}
+      - {locator: "1/15.7.2", title: "BERT", page: 532}
+      - {locator: "1/15.7.3", title: "GPT", page: 536}
+      - {locator: "1/15.7.4", title: "T5", page: 536}
+      - {locator: "1/15.7.5", title: "Discussion", page: 537}
+      - {locator: "1/16", title: "Exemplar-based Methods", page: 541}
+      - {locator: "1/16.1", title: "K nearest neighbor (KNN) classification", page: 541}
+      - {locator: "1/16.1.1", title: "Example", page: 542}
+      - {locator: "1/16.1.2", title: "The curse of dimensionality", page: 542}
+      - {locator: "1/16.1.3", title: "Reducing the speed and memory requirements", page: 544}
+      - {locator: "1/16.1.4", title: "Open set recognition", page: 544}
+      - {locator: "1/16.2", title: "Learning distance metrics", page: 545}
+      - {locator: "1/16.2.1", title: "Linear and convex methods", page: 546}
+      - {locator: "1/16.2.2", title: "Deep metric learning", page: 548}
+      - {locator: "1/16.2.3", title: "Classification losses", page: 548}
+      - {locator: "1/16.2.4", title: "Ranking losses", page: 549}
+      - {locator: "1/16.2.5", title: "Speeding up ranking loss optimization", page: 550}
+      - {locator: "1/16.2.6", title: "Other training tricks for DML", page: 553}
+      - {locator: "1/16.3", title: "Kernel density estimation (KDE)", page: 554}
+      - {locator: "1/16.3.1", title: "Density kernels", page: 554}
+      - {locator: "1/16.3.2", title: "Parzen window density estimator", page: 555}
+      - {locator: "1/16.3.3", title: "How to choose the bandwidth parameter", page: 556}
+      - {locator: "1/16.3.4", title: "From KDE to KNN classification", page: 557}
+      - {locator: "1/16.3.5", title: "Kernel regression", page: 557}
+      - {locator: "1/17", title: "Kernel Methods", page: 561, note: starred}
+      - {locator: "1/17.1", title: "Mercer kernels", page: 561}
+      - {locator: "1/17.1.1", title: "Mercer’s theorem", page: 562}
+      - {locator: "1/17.1.2", title: "Some popular Mercer kernels", page: 563}
+      - {locator: "1/17.2", title: "Gaussian processes", page: 568}
+      - {locator: "1/17.2.1", title: "Noise-free observations", page: 568}
+      - {locator: "1/17.2.2", title: "Noisy observations", page: 569}
+      - {locator: "1/17.2.3", title: "Comparison to kernel regression", page: 570}
+      - {locator: "1/17.2.4", title: "Weight space vs function space", page: 571}
+      - {locator: "1/17.2.5", title: "Numerical issues", page: 571}
+      - {locator: "1/17.2.6", title: "Estimating the kernel", page: 572}
+      - {locator: "1/17.2.7", title: "GPs for classification", page: 575}
+      - {locator: "1/17.2.8", title: "Connections with deep learning", page: 576}
+      - {locator: "1/17.2.9", title: "Scaling GPs to large datasets", page: 577}
+      - {locator: "1/17.3", title: "Support vector machines (SVMs)", page: 579}
+      - {locator: "1/17.3.1", title: "Large margin classifiers", page: 579}
+      - {locator: "1/17.3.2", title: "The dual problem", page: 581}
+      - {locator: "1/17.3.3", title: "Soft margin classifiers", page: 583}
+      - {locator: "1/17.3.4", title: "The kernel trick", page: 584}
+      - {locator: "1/17.3.5", title: "Converting SVM outputs into probabilities", page: 585}
+      - {locator: "1/17.3.6", title: "Connection with logistic regression", page: 585}
+      - {locator: "1/17.3.7", title: "Multi-class classification with SVMs", page: 586}
+      - {locator: "1/17.3.8", title: "How to choose the regularizer C", page: 587}
+      - {locator: "1/17.3.9", title: "Kernel ridge regression", page: 588}
+      - {locator: "1/17.3.10", title: "SVMs for regression", page: 589}
+      - {locator: "1/17.4", title: "Sparse vector machines", page: 591}
+      - {locator: "1/17.4.1", title: "Relevance vector machines (RVMs)", page: 592}
+      - {locator: "1/17.4.2", title: "Comparison of sparse and dense kernel methods", page: 592}
+      - {locator: "1/18", title: "Trees, Forests, Bagging, and Boosting", page: 597}
+      - {locator: "1/18.1", title: "Classification and regression trees (CART)", page: 597}
+      - {locator: "1/18.1.1", title: "Model definition", page: 597}
+      - {locator: "1/18.1.2", title: "Model fitting", page: 599}
+      - {locator: "1/18.1.3", title: "Regularization", page: 600}
+      - {locator: "1/18.1.4", title: "Handling missing input features", page: 600}
+      - {locator: "1/18.1.5", title: "Pros and cons", page: 600}
+      - {locator: "1/18.2", title: "Ensemble learning", page: 602}
+      - {locator: "1/18.2.1", title: "Stacking", page: 602}
+      - {locator: "1/18.2.2", title: "Ensembling is not Bayes model averaging", page: 603}
+      - {locator: "1/18.3", title: "Bagging", page: 603}
+      - {locator: "1/18.4", title: "Random forests", page: 604}
+      - {locator: "1/18.5", title: "Boosting", page: 605}
+      - {locator: "1/18.5.1", title: "Forward stagewise additive modeling", page: 606}
+      - {locator: "1/18.5.2", title: "Quadratic loss and least squares boosting", page: 606}
+      - {locator: "1/18.5.3", title: "Exponential loss and AdaBoost", page: 607}
+      - {locator: "1/18.5.4", title: "LogitBoost", page: 610}
+      - {locator: "1/18.5.5", title: "Gradient boosting", page: 610}
+      - {locator: "1/18.6", title: "Interpreting tree ensembles", page: 614}
+      - {locator: "1/18.6.1", title: "Feature importance", page: 615}
+      - {locator: "1/18.6.2", title: "Partial dependency plots", page: 617}
+      - {locator: "1/19", title: "Learning with Fewer Labeled Examples", page: 621}
+      - {locator: "1/19.1", title: "Data augmentation", page: 621}
+      - {locator: "1/19.1.1", title: "Examples", page: 621}
+      - {locator: "1/19.1.2", title: "Theoretical justification", page: 622}
+      - {locator: "1/19.2", title: "Transfer learning", page: 622}
+      - {locator: "1/19.2.1", title: "Fine-tuning", page: 623}
+      - {locator: "1/19.2.2", title: "Adapters", page: 624}
+      - {locator: "1/19.2.3", title: "Supervised pre-training", page: 625}
+      - {locator: "1/19.2.4", title: "Unsupervised pre-training (self-supervised learning)", page: 626}
+      - {locator: "1/19.2.5", title: "Domain adaptation", page: 631}
+      - {locator: "1/19.3", title: "Semi-supervised learning", page: 632}
+      - {locator: "1/19.3.1", title: "Self-training and pseudo-labeling", page: 632}
+      - {locator: "1/19.3.2", title: "Entropy minimization", page: 633}
+      - {locator: "1/19.3.3", title: "Co-training", page: 636}
+      - {locator: "1/19.3.4", title: "Label propagation on graphs", page: 637}
+      - {locator: "1/19.3.5", title: "Consistency regularization", page: 638}
+      - {locator: "1/19.3.6", title: "Deep generative models", page: 640, note: starred}
+      - {locator: "1/19.3.7", title: "Combining self-supervised and semi-supervised learning", page: 643}
+      - {locator: "1/19.4", title: "Active learning", page: 644}
+      - {locator: "1/19.4.1", title: "Decision-theoretic approach", page: 644}
+      - {locator: "1/19.4.2", title: "Information-theoretic approach", page: 644}
+      - {locator: "1/19.4.3", title: "Batch active learning", page: 645}
+      - {locator: "1/19.5", title: "Meta-learning", page: 645}
+      - {locator: "1/19.5.1", title: "Model-agnostic meta-learning (MAML)", page: 646}
+      - {locator: "1/19.6", title: "Few-shot learning", page: 647}
+      - {locator: "1/19.6.1", title: "Matching networks", page: 648}
+      - {locator: "1/19.7", title: "Weakly supervised learning", page: 649}
+      - {locator: "1/20", title: "Dimensionality Reduction", page: 651}
+      - {locator: "1/20.1", title: "Principal components analysis (PCA)", page: 651}
+      - {locator: "1/20.1.1", title: "Examples", page: 651}
+      - {locator: "1/20.1.2", title: "Derivation of the algorithm", page: 653}
+      - {locator: "1/20.1.3", title: "Computational issues", page: 656}
+      - {locator: "1/20.1.4", title: "Choosing the number of latent dimensions", page: 658}
+      - {locator: "1/20.2", title: "Factor analysis", page: 660, note: starred}
+      - {locator: "1/20.2.1", title: "Generative model", page: 661}
+      - {locator: "1/20.2.2", title: "Probabilistic PCA", page: 662}
+      - {locator: "1/20.2.3", title: "EM algorithm for FA/PPCA", page: 663}
+      - {locator: "1/20.2.4", title: "Unidentifiability of the parameters", page: 665}
+      - {locator: "1/20.2.5", title: "Nonlinear factor analysis", page: 667}
+      - {locator: "1/20.2.6", title: "Mixtures of factor analysers", page: 668}
+      - {locator: "1/20.2.7", title: "Exponential family factor analysis", page: 669}
+      - {locator: "1/20.2.8", title: "Factor analysis models for paired data", page: 670}
+      - {locator: "1/20.3", title: "Autoencoders", page: 673}
+      - {locator: "1/20.3.1", title: "Bottleneck autoencoders", page: 674}
+      - {locator: "1/20.3.2", title: "Denoising autoencoders", page: 676}
+      - {locator: "1/20.3.3", title: "Contractive autoencoders", page: 676}
+      - {locator: "1/20.3.4", title: "Sparse autoencoders", page: 677}
+      - {locator: "1/20.3.5", title: "Variational autoencoders", page: 677}
+      - {locator: "1/20.4", title: "Manifold learning", page: 682, note: starred}
+      - {locator: "1/20.4.1", title: "What are manifolds?", page: 683}
+      - {locator: "1/20.4.2", title: "The manifold hypothesis", page: 683}
+      - {locator: "1/20.4.3", title: "Approaches to manifold learning", page: 684}
+      - {locator: "1/20.4.4", title: "Multi-dimensional scaling (MDS)", page: 685}
+      - {locator: "1/20.4.5", title: "Isomap", page: 688}
+      - {locator: "1/20.4.6", title: "Kernel PCA", page: 689}
+      - {locator: "1/20.4.7", title: "Maximum variance unfolding (MVU)", page: 691}
+      - {locator: "1/20.4.8", title: "Local linear embedding (LLE)", page: 691}
+      - {locator: "1/20.4.9", title: "Laplacian eigenmaps", page: 692}
+      - {locator: "1/20.4.10", title: "t-SNE", page: 695}
+      - {locator: "1/20.5", title: "Word embeddings", page: 699}
+      - {locator: "1/20.5.1", title: "Latent semantic analysis / indexing", page: 699}
+      - {locator: "1/20.5.2", title: "Word2vec", page: 701}
+      - {locator: "1/20.5.3", title: "GloVE", page: 703}
+      - {locator: "1/20.5.4", title: "Word analogies", page: 704}
+      - {locator: "1/20.5.5", title: "RAND-WALK model of word embeddings", page: 705}
+      - {locator: "1/20.5.6", title: "Contextual word embeddings", page: 705}
+      - {locator: "1/21", title: "Clustering", page: 709}
+      - {locator: "1/21.1", title: "Introduction", page: 709}
+      - {locator: "1/21.1.1", title: "Evaluating the output of clustering methods", page: 709}
+      - {locator: "1/21.2", title: "Hierarchical agglomerative clustering", page: 711}
+      - {locator: "1/21.2.1", title: "The algorithm", page: 712}
+      - {locator: "1/21.2.2", title: "Example", page: 714}
+      - {locator: "1/21.2.3", title: "Extensions", page: 715}
+      - {locator: "1/21.3", title: "K means clustering", page: 716}
+      - {locator: "1/21.3.1", title: "The algorithm", page: 716}
+      - {locator: "1/21.3.2", title: "Examples", page: 716}
+      - {locator: "1/21.3.3", title: "Vector quantization", page: 718}
+      - {locator: "1/21.3.4", title: "The K-means++ algorithm", page: 719}
+      - {locator: "1/21.3.5", title: "The K-medoids algorithm", page: 719}
+      - {locator: "1/21.3.6", title: "Speedup tricks", page: 720}
+      - {locator: "1/21.3.7", title: "Choosing the number of clusters K", page: 720}
+      - {locator: "1/21.4", title: "Clustering using mixture models", page: 723}
+      - {locator: "1/21.4.1", title: "Mixtures of Gaussians", page: 724}
+      - {locator: "1/21.4.2", title: "Mixtures of Bernoullis", page: 727}
+      - {locator: "1/21.5", title: "Spectral clustering", page: 728, note: starred}
+      - {locator: "1/21.5.1", title: "Normalized cuts", page: 728}
+      - {locator: "1/21.5.2", title: "Eigenvectors of the graph Laplacian encode the clustering", page: 729}
+      - {locator: "1/21.5.3", title: "Example", page: 730}
+      - {locator: "1/21.5.4", title: "Connection with other methods", page: 731}
+      - {locator: "1/21.6", title: "Biclustering", page: 731, note: starred}
+      - {locator: "1/21.6.1", title: "Basic biclustering", page: 732}
+      - {locator: "1/21.6.2", title: "Nested partition models (Crosscat)", page: 732}
+      - {locator: "1/22", title: "Recommender Systems", page: 735}
+      - {locator: "1/22.1", title: "Explicit feedback", page: 735}
+      - {locator: "1/22.1.1", title: "Datasets", page: 735}
+      - {locator: "1/22.1.2", title: "Collaborative filtering", page: 736}
+      - {locator: "1/22.1.3", title: "Matrix factorization", page: 737}
+      - {locator: "1/22.1.4", title: "Autoencoders", page: 739}
+      - {locator: "1/22.2", title: "Implicit feedback", page: 741}
+      - {locator: "1/22.2.1", title: "Bayesian personalized ranking", page: 741}
+      - {locator: "1/22.2.2", title: "Factorization machines", page: 742}
+      - {locator: "1/22.2.3", title: "Neural matrix factorization", page: 743}
+      - {locator: "1/22.3", title: "Leveraging side information", page: 743}
+      - {locator: "1/22.4", title: "Exploration-exploitation tradeoff", page: 744}
+      - {locator: "1/23", title: "Graph Embeddings", page: 747, note: starred}
+      - {locator: "1/23.1", title: "Introduction", page: 747}
+      - {locator: "1/23.2", title: "Graph Embedding as an Encoder/Decoder Problem", page: 748}
+      - {locator: "1/23.3", title: "Shallow graph embeddings", page: 750}
+      - {locator: "1/23.3.1", title: "Unsupervised embeddings", page: 751}
+      - {locator: "1/23.3.2", title: "Distance-based: Euclidean methods", page: 751}
+      - {locator: "1/23.3.3", title: "Distance-based: non-Euclidean methods", page: 752}
+      - {locator: "1/23.3.4", title: "Outer product-based: Matrix factorization methods", page: 752}
+      - {locator: "1/23.3.5", title: "Outer product-based: Skip-gram methods", page: 753}
+      - {locator: "1/23.3.6", title: "Supervised embeddings", page: 755}
+      - {locator: "1/23.4", title: "Graph Neural Networks", page: 756}
+      - {locator: "1/23.4.1", title: "Message passing GNNs", page: 756}
+      - {locator: "1/23.4.2", title: "Spectral Graph Convolutions", page: 757}
+      - {locator: "1/23.4.3", title: "Spatial Graph Convolutions", page: 757}
+      - {locator: "1/23.4.4", title: "Non-Euclidean Graph Convolutions", page: 759}
+      - {locator: "1/23.5", title: "Deep graph embeddings", page: 759}
+      - {locator: "1/23.5.1", title: "Unsupervised embeddings", page: 760}
+      - {locator: "1/23.5.2", title: "Semi-supervised embeddings", page: 762}
+      - {locator: "1/23.6", title: "Applications", page: 763}
+      - {locator: "1/23.6.1", title: "Unsupervised applications", page: 763}
+      - {locator: "1/23.6.2", title: "Supervised applications", page: 765}
+      - {locator: "1/A", title: "Notation", page: 767}
+      - {locator: "1/A.1", title: "Introduction", page: 767}
+      - {locator: "1/A.2", title: "Common mathematical symbols", page: 767}
+      - {locator: "1/A.3", title: "Functions", page: 768}
+      - {locator: "1/A.3.1", title: "Common functions of one argument", page: 768}
+      - {locator: "1/A.3.2", title: "Common functions of two arguments", page: 768}
+      - {locator: "1/A.3.3", title: "Common functions of > 2 arguments", page: 768}
+      - {locator: "1/A.4", title: "Linear algebra", page: 769}
+      - {locator: "1/A.4.1", title: "General notation", page: 769}
+      - {locator: "1/A.4.2", title: "Vectors", page: 769}
+      - {locator: "1/A.4.3", title: "Matrices", page: 769}
+      - {locator: "1/A.4.4", title: "Matrix calculus", page: 770}
+      - {locator: "1/A.5", title: "Optimization", page: 770}
+      - {locator: "1/A.6", title: "Probability", page: 771}
+      - {locator: "1/A.7", title: "Information theory", page: 771}
+      - {locator: "1/A.8", title: "Statistics and machine learning", page: 772}
+      - {locator: "1/A.8.1", title: "Supervised learning", page: 772}
+      - {locator: "1/A.8.2", title: "Unsupervised learning and generative models", page: 772}
+      - {locator: "1/A.8.3", title: "Bayesian inference", page: 772}
+      - {locator: "1/A.9", title: "Abbreviations", page: 773}
+      - {locator: "2/1", title: "Introduction", page: 1}
+      - {locator: "2/2", title: "Probability", page: 5}
+      - {locator: "2/2.1", title: "Introduction", page: 5}
+      - {locator: "2/2.1.1", title: "Basic rules of probability", page: 5}
+      - {locator: "2/2.1.2", title: "Exchangeability and de Finetti’s theorem", page: 8}
+      - {locator: "2/2.2", title: "Some common probability distributions", page: 9}
+      - {locator: "2/2.2.1", title: "Discrete distributions", page: 9}
+      - {locator: "2/2.2.2", title: "Continuous distributions on R", page: 11}
+      - {locator: "2/2.2.3", title: "Continuous distributions on R+", page: 13}
+      - {locator: "2/2.2.4", title: "Continuous distributions on [0, 1]", page: 17}
+      - {locator: "2/2.2.5", title: "Multivariate continuous distributions", page: 17}
+      - {locator: "2/2.3", title: "Gaussian joint distributions", page: 22}
+      - {locator: "2/2.3.1", title: "The multivariate normal", page: 22}
+      - {locator: "2/2.3.2", title: "Linear Gaussian systems", page: 29}
+      - {locator: "2/2.3.3", title: "A general calculus for linear Gaussian systems", page: 31}
+      - {locator: "2/2.4", title: "The exponential family", page: 34}
+      - {locator: "2/2.4.1", title: "Definition", page: 34}
+      - {locator: "2/2.4.2", title: "Examples", page: 35}
+      - {locator: "2/2.4.3", title: "Log partition function is cumulant generating function", page: 40}
+      - {locator: "2/2.4.4", title: "Canonical (natural) vs mean (moment) parameters", page: 41}
+      - {locator: "2/2.4.5", title: "MLE for the exponential family", page: 42}
+      - {locator: "2/2.4.6", title: "Exponential dispersion family", page: 43}
+      - {locator: "2/2.4.7", title: "Maximum entropy derivation of the exponential family", page: 43}
+      - {locator: "2/2.5", title: "Transformations of random variables", page: 44}
+      - {locator: "2/2.5.1", title: "Invertible transformations (bijections)", page: 44}
+      - {locator: "2/2.5.2", title: "Monte Carlo approximation", page: 45}
+      - {locator: "2/2.5.3", title: "Probability integral transform", page: 45}
+      - {locator: "2/2.6", title: "Markov chains", page: 46}
+      - {locator: "2/2.6.1", title: "Parameterization", page: 47}
+      - {locator: "2/2.6.2", title: "Application: language modeling", page: 49}
+      - {locator: "2/2.6.3", title: "Parameter estimation", page: 50}
+      - {locator: "2/2.6.4", title: "Stationary distribution of a Markov chain", page: 52}
+      - {locator: "2/2.7", title: "Divergence measures between probability distributions", page: 55}
+      - {locator: "2/2.7.1", title: "f -divergence", page: 56}
+      - {locator: "2/2.7.2", title: "Integral probability metrics", page: 58}
+      - {locator: "2/2.7.3", title: "Maximum mean discrepancy (MMD)", page: 59}
+      - {locator: "2/2.7.4", title: "Total variation distance", page: 61}
+      - {locator: "2/2.7.5", title: "Density ratio estimation using binary classifiers", page: 61}
+      - {locator: "2/3", title: "Statistics", page: 65}
+      - {locator: "2/3.1", title: "Introduction", page: 65}
+      - {locator: "2/3.2", title: "Bayesian statistics", page: 65}
+      - {locator: "2/3.2.1", title: "Tossing coins", page: 66}
+      - {locator: "2/3.2.2", title: "Modeling more complex data", page: 72}
+      - {locator: "2/3.2.3", title: "Selecting the prior", page: 73}
+      - {locator: "2/3.2.4", title: "Computational issues", page: 73}
+      - {locator: "2/3.3", title: "Frequentist statistics", page: 73}
+      - {locator: "2/3.3.1", title: "Sampling distributions", page: 74}
+      - {locator: "2/3.3.2", title: "Bootstrap approximation of the sampling distribution", page: 74}
+      - {locator: "2/3.3.3", title: "Asymptotic normality of the sampling distribution of the MLE", page: 76}
+      - {locator: "2/3.3.4", title: "Fisher information matrix", page: 76}
+      - {locator: "2/3.3.5", title: "Counterintuitive properties of frequentist statistics", page: 81}
+      - {locator: "2/3.3.6", title: "Why isn’t everyone a Bayesian?", page: 83}
+      - {locator: "2/3.4", title: "Conjugate priors", page: 84}
+      - {locator: "2/3.4.1", title: "The binomial model", page: 85}
+      - {locator: "2/3.4.2", title: "The multinomial model", page: 85}
+      - {locator: "2/3.4.3", title: "The univariate Gaussian model", page: 86}
+      - {locator: "2/3.4.4", title: "The multivariate Gaussian model", page: 91}
+      - {locator: "2/3.4.5", title: "The exponential family model", page: 97}
+      - {locator: "2/3.4.6", title: "Beyond conjugate priors", page: 100}
+      - {locator: "2/3.5", title: "Noninformative priors", page: 103}
+      - {locator: "2/3.5.1", title: "Maximum entropy priors", page: 103}
+      - {locator: "2/3.5.2", title: "Jeffreys priors", page: 104}
+      - {locator: "2/3.5.3", title: "Invariant priors", page: 107}
+      - {locator: "2/3.5.4", title: "Reference priors", page: 108}
+      - {locator: "2/3.6", title: "Hierarchical priors", page: 109}
+      - {locator: "2/3.6.1", title: "A hierarchical binomial model", page: 109}
+      - {locator: "2/3.6.2", title: "A hierarchical Gaussian model", page: 112}
+      - {locator: "2/3.6.3", title: "Hierarchical conditional models", page: 115}
+      - {locator: "2/3.7", title: "Empirical Bayes", page: 115}
+      - {locator: "2/3.7.1", title: "EB for the hierarchical binomial model", page: 116}
+      - {locator: "2/3.7.2", title: "EB for the hierarchical Gaussian model", page: 117}
+      - {locator: "2/3.7.3", title: "EB for Markov models (n-gram smoothing)", page: 117}
+      - {locator: "2/3.7.4", title: "EB for non-conjugate models", page: 119}
+      - {locator: "2/3.8", title: "Model selection", page: 119}
+      - {locator: "2/3.8.1", title: "Bayesian model selection", page: 120}
+      - {locator: "2/3.8.2", title: "Bayes model averaging", page: 122}
+      - {locator: "2/3.8.3", title: "Estimating the marginal likelihood", page: 122}
+      - {locator: "2/3.8.4", title: "Connection between cross validation and marginal likelihood", page: 123}
+      - {locator: "2/3.8.5", title: "Conditional marginal likelihood", page: 124}
+      - {locator: "2/3.8.6", title: "Bayesian leave-one-out (LOO) estimate", page: 125}
+      - {locator: "2/3.8.7", title: "Information criteria", page: 126}
+      - {locator: "2/3.9", title: "Model checking", page: 128}
+      - {locator: "2/3.9.1", title: "Posterior predictive checks", page: 129}
+      - {locator: "2/3.9.2", title: "Bayesian p-values", page: 131}
+      - {locator: "2/3.10", title: "Hypothesis testing", page: 132}
+      - {locator: "2/3.10.1", title: "Frequentist approach", page: 132}
+      - {locator: "2/3.10.2", title: "Bayesian approach", page: 132}
+      - {locator: "2/3.10.3", title: "Common statistical tests correspond to inference in linear models", page: 137}
+      - {locator: "2/3.11", title: "Missing data", page: 142}
+      - {locator: "2/4", title: "Graphical models", page: 145}
+      - {locator: "2/4.1", title: "Introduction", page: 145}
+      - {locator: "2/4.2", title: "Directed graphical models (Bayes nets)", page: 145}
+      - {locator: "2/4.2.1", title: "Representing the joint distribution", page: 145}
+      - {locator: "2/4.2.2", title: "Examples", page: 146}
+      - {locator: "2/4.2.3", title: "Gaussian Bayes nets", page: 150}
+      - {locator: "2/4.2.4", title: "Conditional independence properties", page: 151}
+      - {locator: "2/4.2.5", title: "Generation (sampling)", page: 156}
+      - {locator: "2/4.2.6", title: "Inference", page: 157}
+      - {locator: "2/4.2.7", title: "Learning", page: 157}
+      - {locator: "2/4.2.8", title: "Plate notation", page: 163}
+      - {locator: "2/4.3", title: "Undirected graphical models (Markov random fields)", page: 166}
+      - {locator: "2/4.3.1", title: "Representing the joint distribution", page: 167}
+      - {locator: "2/4.3.2", title: "Fully visible MRFs (Ising, Potts, Hopfield, etc.)", page: 168}
+      - {locator: "2/4.3.3", title: "MRFs with latent variables (Boltzmann machines, etc.)", page: 174}
+      - {locator: "2/4.3.4", title: "Maximum entropy models", page: 176}
+      - {locator: "2/4.3.5", title: "Gaussian MRFs", page: 179}
+      - {locator: "2/4.3.6", title: "Conditional independence properties", page: 181}
+      - {locator: "2/4.3.7", title: "Generation (sampling)", page: 183}
+      - {locator: "2/4.3.8", title: "Inference", page: 183}
+      - {locator: "2/4.3.9", title: "Learning", page: 184}
+      - {locator: "2/4.4", title: "Conditional random fields (CRFs)", page: 187}
+      - {locator: "2/4.4.1", title: "1d CRFs", page: 188}
+      - {locator: "2/4.4.2", title: "2d CRFs", page: 191}
+      - {locator: "2/4.4.3", title: "Parameter estimation", page: 194}
+      - {locator: "2/4.4.4", title: "Other approaches to structured prediction", page: 195}
+      - {locator: "2/4.5", title: "Comparing directed and undirected PGMs", page: 195}
+      - {locator: "2/4.5.1", title: "CI properties", page: 195}
+      - {locator: "2/4.5.2", title: "Converting between a directed and undirected model", page: 197}
+      - {locator: "2/4.5.3", title: "Conditional directed vs undirected PGMs and the label bias problem", page: 198}
+      - {locator: "2/4.5.4", title: "Combining directed and undirected graphs", page: 199}
+      - {locator: "2/4.5.5", title: "Comparing directed and undirected Gaussian PGMs", page: 201}
+      - {locator: "2/4.6", title: "PGM extensions", page: 203}
+      - {locator: "2/4.6.1", title: "Factor graphs", page: 203}
+      - {locator: "2/4.6.2", title: "Probabilistic circuits", page: 206}
+      - {locator: "2/4.6.3", title: "Directed relational PGMs", page: 207}
+      - {locator: "2/4.6.4", title: "Undirected relational PGMs", page: 209}
+      - {locator: "2/4.6.5", title: "Open-universe probability models", page: 212}
+      - {locator: "2/4.6.6", title: "Programs as probability models", page: 212}
+      - {locator: "2/4.7", title: "Structural causal models", page: 213}
+      - {locator: "2/4.7.1", title: "Example: causal impact of education on wealth", page: 214}
+      - {locator: "2/4.7.2", title: "Structural equation models", page: 215}
+      - {locator: "2/4.7.3", title: "Do operator and augmented DAGs", page: 215}
+      - {locator: "2/4.7.4", title: "Counterfactuals", page: 216}
+      - {locator: "2/5", title: "Information theory", page: 219}
+      - {locator: "2/5.1", title: "KL divergence", page: 219}
+      - {locator: "2/5.1.1", title: "Desiderata", page: 220}
+      - {locator: "2/5.1.2", title: "The KL divergence uniquely satisfies the desiderata", page: 221}
+      - {locator: "2/5.1.3", title: "Thinking about KL", page: 224}
+      - {locator: "2/5.1.4", title: "Minimizing KL", page: 225}
+      - {locator: "2/5.1.5", title: "Properties of KL", page: 228}
+      - {locator: "2/5.1.6", title: "KL divergence and MLE", page: 230}
+      - {locator: "2/5.1.7", title: "KL divergence and Bayesian inference", page: 231}
+      - {locator: "2/5.1.8", title: "KL divergence and exponential families", page: 232}
+      - {locator: "2/5.1.9", title: "Approximating KL divergence using the Fisher information matrix", page: 233}
+      - {locator: "2/5.1.10", title: "Bregman divergence", page: 233}
+      - {locator: "2/5.2", title: "Entropy", page: 234}
+      - {locator: "2/5.2.1", title: "Definition", page: 235}
+      - {locator: "2/5.2.2", title: "Differential entropy for continuous random variables", page: 235}
+      - {locator: "2/5.2.3", title: "Typical sets", page: 236}
+      - {locator: "2/5.2.4", title: "Cross entropy and perplexity", page: 237}
+      - {locator: "2/5.3", title: "Mutual information", page: 238}
+      - {locator: "2/5.3.1", title: "Definition", page: 238}
+      - {locator: "2/5.3.2", title: "Interpretation", page: 239}
+      - {locator: "2/5.3.3", title: "Data processing inequality", page: 239}
+      - {locator: "2/5.3.4", title: "Sufficient statistics", page: 240}
+      - {locator: "2/5.3.5", title: "Multivariate mutual information", page: 241}
+      - {locator: "2/5.3.6", title: "Variational bounds on mutual information", page: 244}
+      - {locator: "2/5.3.7", title: "Relevance networks", page: 246}
+      - {locator: "2/5.4", title: "Data compression (source coding)", page: 247}
+      - {locator: "2/5.4.1", title: "Lossless compression", page: 247}
+      - {locator: "2/5.4.2", title: "Lossy compression and the rate-distortion tradeoff", page: 248}
+      - {locator: "2/5.4.3", title: "Bits back coding", page: 250}
+      - {locator: "2/5.5", title: "Error-correcting codes (channel coding)", page: 251}
+      - {locator: "2/5.6", title: "The information bottleneck", page: 252}
+      - {locator: "2/5.6.1", title: "Vanilla IB", page: 252}
+      - {locator: "2/5.6.2", title: "Variational IB", page: 253}
+      - {locator: "2/5.6.3", title: "Conditional entropy bottleneck", page: 254}
+      - {locator: "2/6", title: "Optimization", page: 257}
+      - {locator: "2/6.1", title: "Introduction", page: 257}
+      - {locator: "2/6.2", title: "Automatic differentiation", page: 257}
+      - {locator: "2/6.2.1", title: "Differentiation in functional form", page: 257}
+      - {locator: "2/6.2.2", title: "Differentiating chains, circuits, and programs", page: 262}
+      - {locator: "2/6.3", title: "Stochastic optimization", page: 267}
+      - {locator: "2/6.3.1", title: "Stochastic gradient descent", page: 267}
+      - {locator: "2/6.3.2", title: "SGD for optimizing a finite-sum objective", page: 269}
+      - {locator: "2/6.3.3", title: "SGD for optimizing the parameters of a distribution", page: 269}
+      - {locator: "2/6.3.4", title: "Score function estimator (likelihood ratio trick)", page: 270}
+      - {locator: "2/6.3.5", title: "Reparameterization trick", page: 271}
+      - {locator: "2/6.3.6", title: "Gumbel softmax trick", page: 273}
+      - {locator: "2/6.3.7", title: "Stochastic computation graphs", page: 274}
+      - {locator: "2/6.3.8", title: "Straight-through estimator", page: 275}
+      - {locator: "2/6.4", title: "Natural gradient descent", page: 275}
+      - {locator: "2/6.4.1", title: "Defining the natural gradient", page: 276}
+      - {locator: "2/6.4.2", title: "Interpretations of NGD", page: 277}
+      - {locator: "2/6.4.3", title: "Benefits of NGD", page: 278}
+      - {locator: "2/6.4.4", title: "Approximating the natural gradient", page: 278}
+      - {locator: "2/6.4.5", title: "Natural gradients for the exponential family", page: 280}
+      - {locator: "2/6.5", title: "Bound optimization (MM) algorithms", page: 283}
+      - {locator: "2/6.5.1", title: "The general algorithm", page: 283}
+      - {locator: "2/6.5.2", title: "Example: logistic regression", page: 284}
+      - {locator: "2/6.5.3", title: "The EM algorithm", page: 285}
+      - {locator: "2/6.5.4", title: "Example: EM for an MVN with missing data", page: 287}
+      - {locator: "2/6.5.5", title: "Example: robust linear regression using Student likelihood", page: 289}
+      - {locator: "2/6.5.6", title: "Extensions to EM", page: 291}
+      - {locator: "2/6.6", title: "Bayesian optimization", page: 293}
+      - {locator: "2/6.6.1", title: "Sequential model-based optimization", page: 294}
+      - {locator: "2/6.6.2", title: "Surrogate functions", page: 294}
+      - {locator: "2/6.6.3", title: "Acquisition functions", page: 296}
+      - {locator: "2/6.6.4", title: "Other issues", page: 299}
+      - {locator: "2/6.7", title: "Derivative-free optimization", page: 300}
+      - {locator: "2/6.7.1", title: "Local search", page: 300}
+      - {locator: "2/6.7.2", title: "Simulated annealing", page: 303}
+      - {locator: "2/6.7.3", title: "Evolutionary algorithms", page: 303}
+      - {locator: "2/6.7.4", title: "Estimation of distribution (EDA) algorithms", page: 306}
+      - {locator: "2/6.7.5", title: "Cross-entropy method", page: 307}
+      - {locator: "2/6.7.6", title: "Evolutionary strategies", page: 308}
+      - {locator: "2/6.8", title: "Optimal transport", page: 309}
+      - {locator: "2/6.8.1", title: "Warm-up: matching optimally two families of points", page: 309}
+      - {locator: "2/6.8.2", title: "From optimal matchings to Kantorovich and Monge formulations", page: 310}
+      - {locator: "2/6.8.3", title: "Solving optimal transport", page: 313}
+      - {locator: "2/6.9", title: "Submodular optimization", page: 317}
+      - {locator: "2/6.9.1", title: "Intuition, examples, and background", page: 318}
+      - {locator: "2/6.9.2", title: "Submodular basic definitions", page: 320}
+      - {locator: "2/6.9.3", title: "Example submodular functions", page: 322}
+      - {locator: "2/6.9.4", title: "Submodular optimization", page: 324}
+      - {locator: "2/6.9.5", title: "Applications of submodularity in machine learning and AI", page: 328}
+      - {locator: "2/6.9.6", title: "Sketching, coresets, distillation, and data subset and feature Selection", page: 329}
+      - {locator: "2/6.9.7", title: "Combinatorial information functions", page: 332}
+      - {locator: "2/6.9.8", title: "Clustering, data partitioning, and parallel machine learning", page: 334}
+      - {locator: "2/6.9.9", title: "Active and semi-supervised learning", page: 334}
+      - {locator: "2/6.9.10", title: "Probabilistic modeling", page: 335}
+      - {locator: "2/6.9.11", title: "Structured norms and loss functions", page: 336}
+      - {locator: "2/6.9.12", title: "Conclusions", page: 337}
+      - {locator: "2/7", title: "Inference algorithms: an overview", page: 341}
+      - {locator: "2/7.1", title: "Introduction", page: 341}
+      - {locator: "2/7.2", title: "Common inference patterns", page: 341}
+      - {locator: "2/7.2.1", title: "Global latents", page: 342}
+      - {locator: "2/7.2.2", title: "Local latents", page: 342}
+      - {locator: "2/7.2.3", title: "Global and local latents", page: 343}
+      - {locator: "2/7.3", title: "Exact inference algorithms", page: 343}
+      - {locator: "2/7.4", title: "Approximate inference algorithms", page: 344}
+      - {locator: "2/7.4.1", title: "The MAP approximation and its problems", page: 344}
+      - {locator: "2/7.4.2", title: "Grid approximation", page: 346}
+      - {locator: "2/7.4.3", title: "Laplace (quadratic) approximation", page: 347}
+      - {locator: "2/7.4.4", title: "Variational inference", page: 348}
+      - {locator: "2/7.4.5", title: "Markov chain Monte Carlo (MCMC)", page: 349}
+      - {locator: "2/7.4.6", title: "Sequential Monte Carlo", page: 351}
+      - {locator: "2/7.4.7", title: "Challenging posteriors", page: 351}
+      - {locator: "2/7.5", title: "Evaluating approximate inference algorithms", page: 352}
+      - {locator: "2/8", title: "Gaussian filtering and smoothing", page: 353}
+      - {locator: "2/8.1", title: "Introduction", page: 353}
+      - {locator: "2/8.1.1", title: "Inferential goals", page: 353}
+      - {locator: "2/8.1.2", title: "Bayesian filtering equations", page: 355}
+      - {locator: "2/8.1.3", title: "Bayesian smoothing equations", page: 356}
+      - {locator: "2/8.1.4", title: "The Gaussian ansatz", page: 357}
+      - {locator: "2/8.2", title: "Inference for linear-Gaussian SSMs", page: 357}
+      - {locator: "2/8.2.1", title: "Examples", page: 358}
+      - {locator: "2/8.2.2", title: "The Kalman filter", page: 359}
+      - {locator: "2/8.2.3", title: "The Kalman (RTS) smoother", page: 363}
+      - {locator: "2/8.2.4", title: "Information form filtering and smoothing", page: 366}
+      - {locator: "2/8.3", title: "Inference based on local linearization", page: 369}
+      - {locator: "2/8.3.1", title: "Taylor series expansion", page: 369}
+      - {locator: "2/8.3.2", title: "The extended Kalman filter (EKF)", page: 370}
+      - {locator: "2/8.3.3", title: "The extended Kalman smoother (EKS)", page: 373}
+      - {locator: "2/8.4", title: "Inference based on the unscented transform", page: 373}
+      - {locator: "2/8.4.1", title: "The unscented transform", page: 373}
+      - {locator: "2/8.4.2", title: "The unscented Kalman filter (UKF)", page: 376}
+      - {locator: "2/8.4.3", title: "The unscented Kalman smoother (UKS)", page: 376}
+      - {locator: "2/8.5", title: "Other variants of the Kalman filter", page: 376}
+      - {locator: "2/8.5.1", title: "General Gaussian filtering", page: 376}
+      - {locator: "2/8.5.2", title: "Conditional moment Gaussian filtering", page: 379}
+      - {locator: "2/8.5.3", title: "Iterated filters and smoothers", page: 380}
+      - {locator: "2/8.5.4", title: "Ensemble Kalman filter", page: 382}
+      - {locator: "2/8.5.5", title: "Robust Kalman filters", page: 383}
+      - {locator: "2/8.5.6", title: "Dual EKF", page: 383}
+      - {locator: "2/8.6", title: "Assumed density filtering", page: 383}
+      - {locator: "2/8.6.1", title: "Connection with Gaussian filtering", page: 385}
+      - {locator: "2/8.6.2", title: "ADF for SLDS (Gaussian sum filter)", page: 386}
+      - {locator: "2/8.6.3", title: "ADF for online logistic regression", page: 387}
+      - {locator: "2/8.6.4", title: "ADF for online DNNs", page: 390}
+      - {locator: "2/8.7", title: "Other inference methods for SSMs", page: 390}
+      - {locator: "2/8.7.1", title: "Grid-based approximations", page: 390}
+      - {locator: "2/8.7.2", title: "Expectation propagation", page: 391}
+      - {locator: "2/8.7.3", title: "Variational inference", page: 392}
+      - {locator: "2/8.7.4", title: "MCMC", page: 392}
+      - {locator: "2/8.7.5", title: "Particle filtering", page: 392}
+      - {locator: "2/9", title: "Message passing algorithms", page: 395}
+      - {locator: "2/9.1", title: "Introduction", page: 395}
+      - {locator: "2/9.2", title: "Belief propagation on chains", page: 395}
+      - {locator: "2/9.2.1", title: "Hidden Markov Models", page: 396}
+      - {locator: "2/9.2.2", title: "The forwards algorithm", page: 397}
+      - {locator: "2/9.2.3", title: "The forwards-backwards algorithm", page: 398}
+      - {locator: "2/9.2.4", title: "Forwards filtering backwards smoothing", page: 401}
+      - {locator: "2/9.2.5", title: "Time and space complexity", page: 402}
+      - {locator: "2/9.2.6", title: "The Viterbi algorithm", page: 403}
+      - {locator: "2/9.2.7", title: "Forwards filtering backwards sampling", page: 406}
+      - {locator: "2/9.3", title: "Belief propagation on trees", page: 406}
+      - {locator: "2/9.3.1", title: "Directed vs undirected trees", page: 406}
+      - {locator: "2/9.3.2", title: "Sum-product algorithm", page: 408}
+      - {locator: "2/9.3.3", title: "Max-product algorithm", page: 409}
+      - {locator: "2/9.4", title: "Loopy belief propagation", page: 411}
+      - {locator: "2/9.4.1", title: "Loopy BP for pairwise undirected graphs", page: 412}
+      - {locator: "2/9.4.2", title: "Loopy BP for factor graphs", page: 412}
+      - {locator: "2/9.4.3", title: "Gaussian belief propagation", page: 413}
+      - {locator: "2/9.4.4", title: "Convergence", page: 415}
+      - {locator: "2/9.4.5", title: "Accuracy", page: 417}
+      - {locator: "2/9.4.6", title: "Generalized belief propagation", page: 418}
+      - {locator: "2/9.4.7", title: "Convex BP", page: 418}
+      - {locator: "2/9.4.8", title: "Application: error correcting codes", page: 418}
+      - {locator: "2/9.4.9", title: "Application: affinity propagation", page: 420}
+      - {locator: "2/9.4.10", title: "Emulating BP with graph neural nets", page: 421}
+      - {locator: "2/9.5", title: "The variable elimination (VE) algorithm", page: 422}
+      - {locator: "2/9.5.1", title: "Derivation of the algorithm", page: 422}
+      - {locator: "2/9.5.2", title: "Computational complexity of VE", page: 424}
+      - {locator: "2/9.5.3", title: "Picking a good elimination order", page: 426}
+      - {locator: "2/9.5.4", title: "Computational complexity of exact inference", page: 426}
+      - {locator: "2/9.5.5", title: "Drawbacks of VE", page: 427}
+      - {locator: "2/9.6", title: "The junction tree algorithm (JTA)", page: 428}
+      - {locator: "2/9.7", title: "Inference as optimization", page: 429}
+      - {locator: "2/9.7.1", title: "Inference as backpropagation", page: 429}
+      - {locator: "2/9.7.2", title: "Perturb and MAP", page: 430}
+      - {locator: "2/10", title: "Variational inference", page: 433}
+      - {locator: "2/10.1", title: "Introduction", page: 433}
+      - {locator: "2/10.1.1", title: "The variational objective", page: 433}
+      - {locator: "2/10.1.2", title: "Form of the variational posterior", page: 435}
+      - {locator: "2/10.1.3", title: "Parameter estimation using variational EM", page: 436}
+      - {locator: "2/10.1.4", title: "Stochastic VI", page: 438}
+      - {locator: "2/10.1.5", title: "Amortized VI", page: 438}
+      - {locator: "2/10.1.6", title: "Semi-amortized inference", page: 439}
+      - {locator: "2/10.2", title: "Gradient-based VI", page: 439}
+      - {locator: "2/10.2.1", title: "Reparameterized VI", page: 440}
+      - {locator: "2/10.2.2", title: "Automatic differentiation VI", page: 446}
+      - {locator: "2/10.2.3", title: "Blackbox variational inference", page: 448}
+      - {locator: "2/10.3", title: "Coordinate ascent VI", page: 449}
+      - {locator: "2/10.3.1", title: "Derivation of CAVI algorithm", page: 450}
+      - {locator: "2/10.3.2", title: "Example: CAVI for the Ising model", page: 452}
+      - {locator: "2/10.3.3", title: "Variational Bayes", page: 453}
+      - {locator: "2/10.3.4", title: "Example: VB for a univariate Gaussian", page: 454}
+      - {locator: "2/10.3.5", title: "Variational Bayes EM", page: 457}
+      - {locator: "2/10.3.6", title: "Example: VBEM for a GMM", page: 458}
+      - {locator: "2/10.3.7", title: "Variational message passing (VMP)", page: 464}
+      - {locator: "2/10.3.8", title: "Autoconj", page: 465}
+      - {locator: "2/10.4", title: "More accurate variational posteriors", page: 465}
+      - {locator: "2/10.4.1", title: "Structured mean field", page: 465}
+      - {locator: "2/10.4.2", title: "Hierarchical (auxiliary variable) posteriors", page: 465}
+      - {locator: "2/10.4.3", title: "Normalizing flow posteriors", page: 466}
+      - {locator: "2/10.4.4", title: "Implicit posteriors", page: 466}
+      - {locator: "2/10.4.5", title: "Combining VI with MCMC inference", page: 466}
+      - {locator: "2/10.5", title: "Tighter bounds", page: 467}
+      - {locator: "2/10.5.1", title: "Multi-sample ELBO (IWAE bound)", page: 467}
+      - {locator: "2/10.5.2", title: "The thermodynamic variational objective (TVO)", page: 468}
+      - {locator: "2/10.5.3", title: "Minimizing the evidence upper bound", page: 468}
+      - {locator: "2/10.6", title: "Wake-sleep algorithm", page: 469}
+      - {locator: "2/10.6.1", title: "Wake phase", page: 469}
+      - {locator: "2/10.6.2", title: "Sleep phase", page: 470}
+      - {locator: "2/10.6.3", title: "Daydream phase", page: 471}
+      - {locator: "2/10.6.4", title: "Summary of algorithm", page: 471}
+      - {locator: "2/10.7", title: "Expectation propagation (EP)", page: 472}
+      - {locator: "2/10.7.1", title: "Algorithm", page: 472}
+      - {locator: "2/10.7.2", title: "Example", page: 474}
+      - {locator: "2/10.7.3", title: "EP as generalized ADF", page: 474}
+      - {locator: "2/10.7.4", title: "Optimization issues", page: 475}
+      - {locator: "2/10.7.5", title: "Power EP and α-divergence", page: 475}
+      - {locator: "2/10.7.6", title: "Stochastic EP", page: 475}
+      - {locator: "2/11", title: "Monte Carlo methods", page: 477}
+      - {locator: "2/11.1", title: "Introduction", page: 477}
+      - {locator: "2/11.2", title: "Monte Carlo integration", page: 477}
+      - {locator: "2/11.2.1", title: "Example: estimating π by Monte Carlo integration", page: 478}
+      - {locator: "2/11.2.2", title: "Accuracy of Monte Carlo integration", page: 478}
+      - {locator: "2/11.3", title: "Generating random samples from simple distributions", page: 480}
+      - {locator: "2/11.3.1", title: "Sampling using the inverse cdf", page: 480}
+      - {locator: "2/11.3.2", title: "Sampling from a Gaussian (Box-Muller method)", page: 481}
+      - {locator: "2/11.4", title: "Rejection sampling", page: 481}
+      - {locator: "2/11.4.1", title: "Basic idea", page: 482}
+      - {locator: "2/11.4.2", title: "Example", page: 483}
+      - {locator: "2/11.4.3", title: "Adaptive rejection sampling", page: 483}
+      - {locator: "2/11.4.4", title: "Rejection sampling in high dimensions", page: 484}
+      - {locator: "2/11.5", title: "Importance sampling", page: 484}
+      - {locator: "2/11.5.1", title: "Direct importance sampling", page: 485}
+      - {locator: "2/11.5.2", title: "Self-normalized importance sampling", page: 485}
+      - {locator: "2/11.5.3", title: "Choosing the proposal", page: 486}
+      - {locator: "2/11.5.4", title: "Annealed importance sampling (AIS)", page: 486}
+      - {locator: "2/11.6", title: "Controlling Monte Carlo variance", page: 488}
+      - {locator: "2/11.6.1", title: "Common random numbers", page: 488}
+      - {locator: "2/11.6.2", title: "Rao-Blackwellization", page: 488}
+      - {locator: "2/11.6.3", title: "Control variates", page: 489}
+      - {locator: "2/11.6.4", title: "Antithetic sampling", page: 490}
+      - {locator: "2/11.6.5", title: "Quasi-Monte Carlo (QMC)", page: 491}
+      - {locator: "2/12", title: "Markov chain Monte Carlo", page: 493}
+      - {locator: "2/12.1", title: "Introduction", page: 493}
+      - {locator: "2/12.2", title: "Metropolis-Hastings algorithm", page: 494}
+      - {locator: "2/12.2.1", title: "Basic idea", page: 494}
+      - {locator: "2/12.2.2", title: "Why MH works", page: 495}
+      - {locator: "2/12.2.3", title: "Proposal distributions", page: 496}
+      - {locator: "2/12.2.4", title: "Initialization", page: 498}
+      - {locator: "2/12.3", title: "Gibbs sampling", page: 499}
+      - {locator: "2/12.3.1", title: "Basic idea", page: 499}
+      - {locator: "2/12.3.2", title: "Gibbs sampling is a special case of MH", page: 499}
+      - {locator: "2/12.3.3", title: "Example: Gibbs sampling for Ising models", page: 500}
+      - {locator: "2/12.3.4", title: "Example: Gibbs sampling for Potts models", page: 502}
+      - {locator: "2/12.3.5", title: "Example: Gibbs sampling for GMMs", page: 502}
+      - {locator: "2/12.3.6", title: "Metropolis within Gibbs", page: 504}
+      - {locator: "2/12.3.7", title: "Blocked Gibbs sampling", page: 504}
+      - {locator: "2/12.3.8", title: "Collapsed Gibbs sampling", page: 505}
+      - {locator: "2/12.4", title: "Auxiliary variable MCMC", page: 507}
+      - {locator: "2/12.4.1", title: "Slice sampling", page: 507}
+      - {locator: "2/12.4.2", title: "Swendsen-Wang", page: 509}
+      - {locator: "2/12.5", title: "Hamiltonian Monte Carlo (HMC)", page: 510}
+      - {locator: "2/12.5.1", title: "Hamiltonian mechanics", page: 511}
+      - {locator: "2/12.5.2", title: "Integrating Hamilton’s equations", page: 511}
+      - {locator: "2/12.5.3", title: "The HMC algorithm", page: 513}
+      - {locator: "2/12.5.4", title: "Tuning HMC", page: 514}
+      - {locator: "2/12.5.5", title: "Riemann manifold HMC", page: 515}
+      - {locator: "2/12.5.6", title: "Langevin Monte Carlo (MALA)", page: 515}
+      - {locator: "2/12.5.7", title: "Connection between SGD and Langevin sampling", page: 516}
+      - {locator: "2/12.5.8", title: "Applying HMC to constrained parameters", page: 517}
+      - {locator: "2/12.5.9", title: "Speeding up HMC", page: 518}
+      - {locator: "2/12.6", title: "MCMC convergence", page: 518}
+      - {locator: "2/12.6.1", title: "Mixing rates of Markov chains", page: 519}
+      - {locator: "2/12.6.2", title: "Practical convergence diagnostics", page: 520}
+      - {locator: "2/12.6.3", title: "Effective sample size", page: 523}
+      - {locator: "2/12.6.4", title: "Improving speed of convergence", page: 525}
+      - {locator: "2/12.6.5", title: "Non-centered parameterizations and Neal’s funnel", page: 525}
+      - {locator: "2/12.7", title: "Stochastic gradient MCMC", page: 526}
+      - {locator: "2/12.7.1", title: "Stochastic gradient Langevin dynamics (SGLD)", page: 527}
+      - {locator: "2/12.7.2", title: "Preconditionining", page: 527}
+      - {locator: "2/12.7.3", title: "Reducing the variance of the gradient estimate", page: 528}
+      - {locator: "2/12.7.4", title: "SG-HMC", page: 529}
+      - {locator: "2/12.7.5", title: "Underdamped Langevin dynamics", page: 529}
+      - {locator: "2/12.8", title: "Reversible jump (transdimensional) MCMC", page: 530}
+      - {locator: "2/12.8.1", title: "Basic idea", page: 531}
+      - {locator: "2/12.8.2", title: "Example", page: 531}
+      - {locator: "2/12.8.3", title: "Discussion", page: 533}
+      - {locator: "2/12.9", title: "Annealing methods", page: 533}
+      - {locator: "2/12.9.1", title: "Simulated annealing", page: 533}
+      - {locator: "2/12.9.2", title: "Parallel tempering", page: 536}
+      - {locator: "2/13", title: "Sequential Monte Carlo", page: 537}
+      - {locator: "2/13.1", title: "Introduction", page: 537}
+      - {locator: "2/13.1.1", title: "Problem statement", page: 537}
+      - {locator: "2/13.1.2", title: "Particle filtering for state-space models", page: 537}
+      - {locator: "2/13.1.3", title: "SMC samplers for static parameter estimation", page: 539}
+      - {locator: "2/13.2", title: "Particle filtering", page: 539}
+      - {locator: "2/13.2.1", title: "Importance sampling", page: 539}
+      - {locator: "2/13.2.2", title: "Sequential importance sampling", page: 541}
+      - {locator: "2/13.2.3", title: "Sequential importance sampling with resampling", page: 542}
+      - {locator: "2/13.2.4", title: "Resampling methods", page: 545}
+      - {locator: "2/13.2.5", title: "Adaptive resampling", page: 547}
+      - {locator: "2/13.3", title: "Proposal distributions", page: 547}
+      - {locator: "2/13.3.1", title: "Locally optimal proposal", page: 548}
+      - {locator: "2/13.3.2", title: "Proposals based on the extended and unscented Kalman filter", page: 549}
+      - {locator: "2/13.3.3", title: "Proposals based on the Laplace approximation", page: 549}
+      - {locator: "2/13.3.4", title: "Proposals based on SMC (nested SMC)", page: 551}
+      - {locator: "2/13.4", title: "Rao-Blackwellized particle filtering (RBPF)", page: 551}
+      - {locator: "2/13.4.1", title: "Mixture of Kalman filters", page: 551}
+      - {locator: "2/13.4.2", title: "Example: tracking a maneuvering object", page: 553}
+      - {locator: "2/13.4.3", title: "Example: FastSLAM", page: 554}
+      - {locator: "2/13.5", title: "Extensions of the particle filter", page: 557}
+      - {locator: "2/13.6", title: "SMC samplers", page: 557}
+      - {locator: "2/13.6.1", title: "Ingredients of an SMC sampler", page: 558}
+      - {locator: "2/13.6.2", title: "Likelihood tempering (geometric path)", page: 559}
+      - {locator: "2/13.6.3", title: "Data tempering", page: 561}
+      - {locator: "2/13.6.4", title: "Sampling rare events and extrema", page: 562}
+      - {locator: "2/13.6.5", title: "SMC-ABC and likelihood-free inference", page: 563}
+      - {locator: "2/13.6.6", title: "SMC2", page: 563}
+      - {locator: "2/13.6.7", title: "Variational filtering SMC", page: 563}
+      - {locator: "2/13.6.8", title: "Variational smoothing SMC", page: 564}
+      - {locator: "2/14", title: "Predictive models: an overview", page: 569}
+      - {locator: "2/14.1", title: "Introduction", page: 569}
+      - {locator: "2/14.1.1", title: "Types of model", page: 569}
+      - {locator: "2/14.1.2", title: "Model fitting using ERM, MLE, and MAP", page: 570}
+      - {locator: "2/14.1.3", title: "Model fitting using Bayes, VI, and generalized Bayes", page: 571}
+      - {locator: "2/14.2", title: "Evaluating predictive models", page: 572}
+      - {locator: "2/14.2.1", title: "Proper scoring rules", page: 572}
+      - {locator: "2/14.2.2", title: "Calibration", page: 572}
+      - {locator: "2/14.2.3", title: "Beyond evaluating marginal probabilities", page: 576}
+      - {locator: "2/14.3", title: "Conformal prediction", page: 579}
+      - {locator: "2/14.3.1", title: "Conformalizing classification", page: 581}
+      - {locator: "2/14.3.2", title: "Conformalizing regression", page: 581}
+      - {locator: "2/15", title: "Generalized linear models", page: 583}
+      - {locator: "2/15.1", title: "Introduction", page: 583}
+      - {locator: "2/15.1.1", title: "Some popular GLMs", page: 583}
+      - {locator: "2/15.1.2", title: "GLMs with noncanonical link functions", page: 586}
+      - {locator: "2/15.1.3", title: "Maximum likelihood estimation", page: 587}
+      - {locator: "2/15.1.4", title: "Bayesian inference", page: 587}
+      - {locator: "2/15.2", title: "Linear regression", page: 588}
+      - {locator: "2/15.2.1", title: "Ordinary least squares", page: 588}
+      - {locator: "2/15.2.2", title: "Conjugate priors", page: 589}
+      - {locator: "2/15.2.3", title: "Uninformative priors", page: 591}
+      - {locator: "2/15.2.4", title: "Informative priors", page: 593}
+      - {locator: "2/15.2.5", title: "Spike and slab prior", page: 595}
+      - {locator: "2/15.2.6", title: "Laplace prior (Bayesian lasso)", page: 596}
+      - {locator: "2/15.2.7", title: "Horseshoe prior", page: 597}
+      - {locator: "2/15.2.8", title: "Automatic relevancy determination", page: 598}
+      - {locator: "2/15.2.9", title: "Multivariate linear regression", page: 600}
+      - {locator: "2/15.3", title: "Logistic regression", page: 602}
+      - {locator: "2/15.3.1", title: "Binary logistic regression", page: 602}
+      - {locator: "2/15.3.2", title: "Multinomial logistic regression", page: 603}
+      - {locator: "2/15.3.3", title: "Dealing with class imbalance and the long tail", page: 604}
+      - {locator: "2/15.3.4", title: "Parameter priors", page: 604}
+      - {locator: "2/15.3.5", title: "Laplace approximation to the posterior", page: 605}
+      - {locator: "2/15.3.6", title: "Approximating the posterior predictive distribution", page: 607}
+      - {locator: "2/15.3.7", title: "MCMC inference", page: 609}
+      - {locator: "2/15.3.8", title: "Other approximate inference methods", page: 610}
+      - {locator: "2/15.3.9", title: "Case study: is Berkeley admissions biased against women?", page: 611}
+      - {locator: "2/15.4", title: "Probit regression", page: 613}
+      - {locator: "2/15.4.1", title: "Latent variable interpretation", page: 613}
+      - {locator: "2/15.4.2", title: "Maximum likelihood estimation", page: 614}
+      - {locator: "2/15.4.3", title: "Bayesian inference", page: 616}
+      - {locator: "2/15.4.4", title: "Ordinal probit regression", page: 616}
+      - {locator: "2/15.4.5", title: "Multinomial probit models", page: 617}
+      - {locator: "2/15.5", title: "Multilevel (hierarchical) GLMs", page: 617}
+      - {locator: "2/15.5.1", title: "Generalized linear mixed models (GLMMs)", page: 618}
+      - {locator: "2/15.5.2", title: "Example: radon regression", page: 618}
+      - {locator: "2/16", title: "Deep neural networks", page: 623}
+      - {locator: "2/16.1", title: "Introduction", page: 623}
+      - {locator: "2/16.2", title: "Building blocks of differentiable circuits", page: 623}
+      - {locator: "2/16.2.1", title: "Linear layers", page: 624}
+      - {locator: "2/16.2.2", title: "Nonlinearities", page: 624}
+      - {locator: "2/16.2.3", title: "Convolutional layers", page: 625}
+      - {locator: "2/16.2.4", title: "Residual (skip) connections", page: 626}
+      - {locator: "2/16.2.5", title: "Normalization layers", page: 627}
+      - {locator: "2/16.2.6", title: "Dropout layers", page: 627}
+      - {locator: "2/16.2.7", title: "Attention layers", page: 628}
+      - {locator: "2/16.2.8", title: "Recurrent layers", page: 630}
+      - {locator: "2/16.2.9", title: "Multiplicative layers", page: 631}
+      - {locator: "2/16.2.10", title: "Implicit layers", page: 632}
+      - {locator: "2/16.3", title: "Canonical examples of neural networks", page: 632}
+      - {locator: "2/16.3.1", title: "Multilayer perceptrons (MLPs)", page: 632}
+      - {locator: "2/16.3.2", title: "Convolutional neural networks (CNNs)", page: 633}
+      - {locator: "2/16.3.3", title: "Autoencoders", page: 634}
+      - {locator: "2/16.3.4", title: "Recurrent neural networks (RNNs)", page: 636}
+      - {locator: "2/16.3.5", title: "Transformers", page: 636}
+      - {locator: "2/16.3.6", title: "Graph neural networks (GNNs)", page: 637}
+      - {locator: "2/17", title: "Bayesian neural networks", page: 639}
+      - {locator: "2/17.1", title: "Introduction", page: 639}
+      - {locator: "2/17.2", title: "Priors for BNNs", page: 639}
+      - {locator: "2/17.2.1", title: "Gaussian priors", page: 640}
+      - {locator: "2/17.2.2", title: "Sparsity-promoting priors", page: 642}
+      - {locator: "2/17.2.3", title: "Learning the prior", page: 642}
+      - {locator: "2/17.2.4", title: "Priors in function space", page: 642}
+      - {locator: "2/17.2.5", title: "Architectural priors", page: 643}
+      - {locator: "2/17.3", title: "Posteriors for BNNs", page: 643}
+      - {locator: "2/17.3.1", title: "Monte Carlo dropout", page: 643}
+      - {locator: "2/17.3.2", title: "Laplace approximation", page: 644}
+      - {locator: "2/17.3.3", title: "Variational inference", page: 645}
+      - {locator: "2/17.3.4", title: "Expectation propagation", page: 646}
+      - {locator: "2/17.3.5", title: "Last layer methods", page: 646}
+      - {locator: "2/17.3.6", title: "SNGP", page: 647}
+      - {locator: "2/17.3.7", title: "MCMC methods", page: 647}
+      - {locator: "2/17.3.8", title: "Methods based on the SGD trajectory", page: 648}
+      - {locator: "2/17.3.9", title: "Deep ensembles", page: 649}
+      - {locator: "2/17.3.10", title: "Approximating the posterior predictive distribution", page: 653}
+      - {locator: "2/17.3.11", title: "Tempered and cold posteriors", page: 656}
+      - {locator: "2/17.4", title: "Generalization in Bayesian deep learning", page: 657}
+      - {locator: "2/17.4.1", title: "Sharp vs flat minima", page: 657}
+      - {locator: "2/17.4.2", title: "Mode connectivity and the loss landscape", page: 658}
+      - {locator: "2/17.4.3", title: "Effective dimensionality of a model", page: 658}
+      - {locator: "2/17.4.4", title: "The hypothesis space of DNNs", page: 660}
+      - {locator: "2/17.4.5", title: "PAC-Bayes", page: 660}
+      - {locator: "2/17.4.6", title: "Out-of-distribution generalization for BNNs", page: 661}
+      - {locator: "2/17.4.7", title: "Model selection for BNNs", page: 663}
+      - {locator: "2/17.5", title: "Online inference", page: 663}
+      - {locator: "2/17.5.1", title: "Sequential Laplace for DNNs", page: 664}
+      - {locator: "2/17.5.2", title: "Extended Kalman filtering for DNNs", page: 665}
+      - {locator: "2/17.5.3", title: "Assumed density filtering for DNNs", page: 667}
+      - {locator: "2/17.5.4", title: "Online variational inference for DNNs", page: 668}
+      - {locator: "2/17.6", title: "Hierarchical Bayesian neural networks", page: 669}
+      - {locator: "2/17.6.1", title: "Example: multimoons classification", page: 670}
+      - {locator: "2/18", title: "Gaussian processes", page: 673}
+      - {locator: "2/18.1", title: "Introduction", page: 673}
+      - {locator: "2/18.1.1", title: "GPs: what and why?", page: 673}
+      - {locator: "2/18.2", title: "Mercer kernels", page: 675}
+      - {locator: "2/18.2.1", title: "Stationary kernels", page: 676}
+      - {locator: "2/18.2.2", title: "Nonstationary kernels", page: 681}
+      - {locator: "2/18.2.3", title: "Kernels for nonvectorial (structured) inputs", page: 682}
+      - {locator: "2/18.2.4", title: "Making new kernels from old", page: 682}
+      - {locator: "2/18.2.5", title: "Mercer’s theorem", page: 683}
+      - {locator: "2/18.2.6", title: "Approximating kernels with random features", page: 684}
+      - {locator: "2/18.3", title: "GPs with Gaussian likelihoods", page: 685}
+      - {locator: "2/18.3.1", title: "Predictions using noise-free observations", page: 685}
+      - {locator: "2/18.3.2", title: "Predictions using noisy observations", page: 686}
+      - {locator: "2/18.3.3", title: "Weight space vs function space", page: 687}
+      - {locator: "2/18.3.4", title: "Semiparametric GPs", page: 688}
+      - {locator: "2/18.3.5", title: "Marginal likelihood", page: 689}
+      - {locator: "2/18.3.6", title: "Computational and numerical issues", page: 689}
+      - {locator: "2/18.3.7", title: "Kernel ridge regression", page: 690}
+      - {locator: "2/18.4", title: "GPs with non-Gaussian likelihoods", page: 693}
+      - {locator: "2/18.4.1", title: "Binary classification", page: 694}
+      - {locator: "2/18.4.2", title: "Multiclass classification", page: 695}
+      - {locator: "2/18.4.3", title: "GPs for Poisson regression (Cox process)", page: 696}
+      - {locator: "2/18.4.4", title: "Other likelihoods", page: 696}
+      - {locator: "2/18.5", title: "Scaling GP inference to large datasets", page: 697}
+      - {locator: "2/18.5.1", title: "Subset of data", page: 697}
+      - {locator: "2/18.5.2", title: "Nyström approximation", page: 698}
+      - {locator: "2/18.5.3", title: "Inducing point methods", page: 699}
+      - {locator: "2/18.5.4", title: "Sparse variational methods", page: 702}
+      - {locator: "2/18.5.5", title: "Exploiting parallelization and structure via kernel matrix multiplies", page: 706}
+      - {locator: "2/18.5.6", title: "Converting a GP to an SSM", page: 708}
+      - {locator: "2/18.6", title: "Learning the kernel", page: 709}
+      - {locator: "2/18.6.1", title: "Empirical Bayes for the kernel parameters", page: 709}
+      - {locator: "2/18.6.2", title: "Bayesian inference for the kernel parameters", page: 712}
+      - {locator: "2/18.6.3", title: "Multiple kernel learning for additive kernels", page: 713}
+      - {locator: "2/18.6.4", title: "Automatic search for compositional kernels", page: 714}
+      - {locator: "2/18.6.5", title: "Spectral mixture kernel learning", page: 717}
+      - {locator: "2/18.6.6", title: "Deep kernel learning", page: 718}
+      - {locator: "2/18.7", title: "GPs and DNNs", page: 720}
+      - {locator: "2/18.7.1", title: "Kernels derived from infinitely wide DNNs (NN-GP)", page: 721}
+      - {locator: "2/18.7.2", title: "Neural tangent kernel (NTK)", page: 723}
+      - {locator: "2/18.7.3", title: "Deep GPs", page: 723}
+      - {locator: "2/18.8", title: "Gaussian processes for time series forecasting", page: 724}
+      - {locator: "2/18.8.1", title: "Example: Mauna Loa", page: 724}
+      - {locator: "2/19", title: "Beyond the iid assumption", page: 727}
+      - {locator: "2/19.1", title: "Introduction", page: 727}
+      - {locator: "2/19.2", title: "Distribution shift", page: 727}
+      - {locator: "2/19.2.1", title: "Motivating examples", page: 727}
+      - {locator: "2/19.2.2", title: "A causal view of distribution shift", page: 729}
+      - {locator: "2/19.2.3", title: "The four main types of distribution shift", page: 730}
+      - {locator: "2/19.2.4", title: "Selection bias", page: 732}
+      - {locator: "2/19.3", title: "Detecting distribution shifts", page: 732}
+      - {locator: "2/19.3.1", title: "Detecting shifts using two-sample testing", page: 733}
+      - {locator: "2/19.3.2", title: "Detecting single out-of-distribution (OOD) inputs", page: 733}
+      - {locator: "2/19.3.3", title: "Selective prediction", page: 736}
+      - {locator: "2/19.3.4", title: "Open set and open world recognition", page: 737}
+      - {locator: "2/19.4", title: "Robustness to distribution shifts", page: 737}
+      - {locator: "2/19.4.1", title: "Data augmentation", page: 738}
+      - {locator: "2/19.4.2", title: "Distributionally robust optimization", page: 738}
+      - {locator: "2/19.5", title: "Adapting to distribution shifts", page: 738}
+      - {locator: "2/19.5.1", title: "Supervised adaptation using transfer learning", page: 738}
+      - {locator: "2/19.5.2", title: "Weighted ERM for covariate shift", page: 740}
+      - {locator: "2/19.5.3", title: "Unsupervised domain adaptation for covariate shift", page: 741}
+      - {locator: "2/19.5.4", title: "Unsupervised techniques for label shift", page: 742}
+      - {locator: "2/19.5.5", title: "Test-time adaptation", page: 742}
+      - {locator: "2/19.6", title: "Learning from multiple distributions", page: 743}
+      - {locator: "2/19.6.1", title: "Multitask learning", page: 743}
+      - {locator: "2/19.6.2", title: "Domain generalization", page: 744}
+      - {locator: "2/19.6.3", title: "Invariant risk minimization", page: 746}
+      - {locator: "2/19.6.4", title: "Meta learning", page: 747}
+      - {locator: "2/19.7", title: "Continual learning", page: 750}
+      - {locator: "2/19.7.1", title: "Domain drift", page: 750}
+      - {locator: "2/19.7.2", title: "Concept drift", page: 751}
+      - {locator: "2/19.7.3", title: "Task incremental learning", page: 752}
+      - {locator: "2/19.7.4", title: "Catastrophic forgetting", page: 753}
+      - {locator: "2/19.7.5", title: "Online learning", page: 755}
+      - {locator: "2/19.8", title: "Adversarial examples", page: 756}
+      - {locator: "2/19.8.1", title: "Whitebox (gradient-based) attacks", page: 758}
+      - {locator: "2/19.8.2", title: "Blackbox (gradient-free) attacks", page: 759}
+      - {locator: "2/19.8.3", title: "Real world adversarial attacks", page: 760}
+      - {locator: "2/19.8.4", title: "Defenses based on robust optimization", page: 760}
+      - {locator: "2/19.8.5", title: "Why models have adversarial examples", page: 761}
+      - {locator: "2/20", title: "Generative models: an overview", page: 765}
+      - {locator: "2/20.1", title: "Introduction", page: 765}
+      - {locator: "2/20.2", title: "Types of generative model", page: 765}
+      - {locator: "2/20.3", title: "Goals of generative modeling", page: 767}
+      - {locator: "2/20.3.1", title: "Generating data", page: 767}
+      - {locator: "2/20.3.2", title: "Density estimation", page: 769}
+      - {locator: "2/20.3.3", title: "Imputation", page: 770}
+      - {locator: "2/20.3.4", title: "Structure discovery", page: 771}
+      - {locator: "2/20.3.5", title: "Latent space interpolation", page: 771}
+      - {locator: "2/20.3.6", title: "Latent space arithmetic", page: 773}
+      - {locator: "2/20.3.7", title: "Generative design", page: 774}
+      - {locator: "2/20.3.8", title: "Model-based reinforcement learning", page: 774}
+      - {locator: "2/20.3.9", title: "Representation learning", page: 774}
+      - {locator: "2/20.3.10", title: "Data compression", page: 774}
+      - {locator: "2/20.4", title: "Evaluating generative models", page: 774}
+      - {locator: "2/20.4.1", title: "Likelihood-based evaluation", page: 775}
+      - {locator: "2/20.4.2", title: "Distances and divergences in feature space", page: 776}
+      - {locator: "2/20.4.3", title: "Precision and recall metrics", page: 777}
+      - {locator: "2/20.4.4", title: "Statistical tests", page: 778}
+      - {locator: "2/20.4.5", title: "Challenges with using pretrained classifiers", page: 779}
+      - {locator: "2/20.4.6", title: "Using model samples to train classifiers", page: 779}
+      - {locator: "2/20.4.7", title: "Assessing overfitting", page: 779}
+      - {locator: "2/20.4.8", title: "Human evaluation", page: 780}
+      - {locator: "2/21", title: "Variational autoencoders", page: 781}
+      - {locator: "2/21.1", title: "Introduction", page: 781}
+      - {locator: "2/21.2", title: "VAE basics", page: 781}
+      - {locator: "2/21.2.1", title: "Modeling assumptions", page: 782}
+      - {locator: "2/21.2.2", title: "Model fitting", page: 783}
+      - {locator: "2/21.2.3", title: "Comparison of VAEs and autoencoders", page: 783}
+      - {locator: "2/21.2.4", title: "VAEs optimize in an augmented space", page: 784}
+      - {locator: "2/21.3", title: "VAE generalizations", page: 786}
+      - {locator: "2/21.3.1", title: "-VAE", page: 787}
+      - {locator: "2/21.3.2", title: "InfoVAE", page: 789}
+      - {locator: "2/21.3.3", title: "Multimodal VAEs", page: 790}
+      - {locator: "2/21.3.4", title: "Semisupervised VAEs", page: 793}
+      - {locator: "2/21.3.5", title: "VAEs with sequential encoders/decoders", page: 794}
+      - {locator: "2/21.4", title: "Avoiding posterior collapse", page: 796}
+      - {locator: "2/21.4.1", title: "KL annealing", page: 797}
+      - {locator: "2/21.4.2", title: "Lower bounding the rate", page: 798}
+      - {locator: "2/21.4.3", title: "Free bits", page: 798}
+      - {locator: "2/21.4.4", title: "Adding skip connections", page: 798}
+      - {locator: "2/21.4.5", title: "Improved variational inference", page: 798}
+      - {locator: "2/21.4.6", title: "Alternative objectives", page: 799}
+      - {locator: "2/21.5", title: "VAEs with hierarchical structure", page: 799}
+      - {locator: "2/21.5.1", title: "Bottom-up vs top-down inference", page: 800}
+      - {locator: "2/21.5.2", title: "Example: very deep VAE", page: 801}
+      - {locator: "2/21.5.3", title: "Connection with autoregressive models", page: 802}
+      - {locator: "2/21.5.4", title: "Variational pruning", page: 804}
+      - {locator: "2/21.5.5", title: "Other optimization difficulties", page: 804}
+      - {locator: "2/21.6", title: "Vector quantization VAE", page: 805}
+      - {locator: "2/21.6.1", title: "Autoencoder with binary code", page: 805}
+      - {locator: "2/21.6.2", title: "VQ-VAE model", page: 805}
+      - {locator: "2/21.6.3", title: "Learning the prior", page: 807}
+      - {locator: "2/21.6.4", title: "Hierarchical extension (VQ-VAE-2)", page: 807}
+      - {locator: "2/21.6.5", title: "Discrete VAE", page: 808}
+      - {locator: "2/21.6.6", title: "VQ-GAN", page: 809}
+      - {locator: "2/22", title: "Autoregressive models", page: 811}
+      - {locator: "2/22.1", title: "Introduction", page: 811}
+      - {locator: "2/22.2", title: "Neural autoregressive density estimators (NADE)", page: 812}
+      - {locator: "2/22.3", title: "Causal CNNs", page: 812}
+      - {locator: "2/22.3.1", title: "1d causal CNN (convolutional Markov models)", page: 813}
+      - {locator: "2/22.3.2", title: "2d causal CNN (PixelCNN)", page: 813}
+      - {locator: "2/22.4", title: "Transformers", page: 814}
+      - {locator: "2/22.4.1", title: "Text generation (GPT, etc.)", page: 815}
+      - {locator: "2/22.4.2", title: "Image generation (DALL-E, etc.)", page: 816}
+      - {locator: "2/22.4.3", title: "Other applications", page: 817}
+      - {locator: "2/23", title: "Normalizing flows", page: 819}
+      - {locator: "2/23.1", title: "Introduction", page: 819}
+      - {locator: "2/23.1.1", title: "Preliminaries", page: 819}
+      - {locator: "2/23.1.2", title: "How to train a flow model", page: 821}
+      - {locator: "2/23.2", title: "Constructing flows", page: 822}
+      - {locator: "2/23.2.1", title: "Affine flows", page: 822}
+      - {locator: "2/23.2.2", title: "Elementwise flows", page: 822}
+      - {locator: "2/23.2.3", title: "Coupling flows", page: 825}
+      - {locator: "2/23.2.4", title: "Autoregressive flows", page: 826}
+      - {locator: "2/23.2.5", title: "Residual flows", page: 832}
+      - {locator: "2/23.2.6", title: "Continuous-time flows", page: 834}
+      - {locator: "2/23.3", title: "Applications", page: 836}
+      - {locator: "2/23.3.1", title: "Density estimation", page: 836}
+      - {locator: "2/23.3.2", title: "Generative modeling", page: 836}
+      - {locator: "2/23.3.3", title: "Inference", page: 837}
+      - {locator: "2/24", title: "Energy-based models", page: 839}
+      - {locator: "2/24.1", title: "Introduction", page: 839}
+      - {locator: "2/24.1.1", title: "Example: products of experts (PoE)", page: 840}
+      - {locator: "2/24.1.2", title: "Computational difficulties", page: 840}
+      - {locator: "2/24.2", title: "Maximum likelihood training", page: 841}
+      - {locator: "2/24.2.1", title: "Gradient-based MCMC methods", page: 842}
+      - {locator: "2/24.2.2", title: "Contrastive divergence", page: 842}
+      - {locator: "2/24.3", title: "Score matching (SM)", page: 846}
+      - {locator: "2/24.3.1", title: "Basic score matching", page: 846}
+      - {locator: "2/24.3.2", title: "Denoising score matching (DSM)", page: 847}
+      - {locator: "2/24.3.3", title: "Sliced score matching (SSM)", page: 848}
+      - {locator: "2/24.3.4", title: "Connection to contrastive divergence", page: 849}
+      - {locator: "2/24.3.5", title: "Score-based generative models", page: 850}
+      - {locator: "2/24.4", title: "Noise contrastive estimation", page: 850}
+      - {locator: "2/24.4.1", title: "Connection to score matching", page: 852}
+      - {locator: "2/24.5", title: "Other methods", page: 852}
+      - {locator: "2/24.5.1", title: "Minimizing Differences/Derivatives of KL Divergences", page: 853}
+      - {locator: "2/24.5.2", title: "Minimizing the Stein discrepancy", page: 853}
+      - {locator: "2/24.5.3", title: "Adversarial training", page: 854}
+      - {locator: "2/25", title: "Diffusion models", page: 857}
+      - {locator: "2/25.1", title: "Introduction", page: 857}
+      - {locator: "2/25.2", title: "Denoising diffusion probabilistic models (DDPMs)", page: 857}
+      - {locator: "2/25.2.1", title: "Encoder (forwards diffusion)", page: 858}
+      - {locator: "2/25.2.2", title: "Decoder (reverse diffusion)", page: 859}
+      - {locator: "2/25.2.3", title: "Model fitting", page: 860}
+      - {locator: "2/25.2.4", title: "Learning the noise schedule", page: 861}
+      - {locator: "2/25.2.5", title: "Example: image generation", page: 863}
+      - {locator: "2/25.3", title: "Score-based generative models (SGMs)", page: 864}
+      - {locator: "2/25.3.1", title: "Example", page: 864}
+      - {locator: "2/25.3.2", title: "Adding noise at multiple scales", page: 864}
+      - {locator: "2/25.3.3", title: "Equivalence to DDPM", page: 866}
+      - {locator: "2/25.4", title: "Continuous time models using differential equations", page: 867}
+      - {locator: "2/25.4.1", title: "Forwards diffusion SDE", page: 867}
+      - {locator: "2/25.4.2", title: "Forwards diffusion ODE", page: 868}
+      - {locator: "2/25.4.3", title: "Reverse diffusion SDE", page: 869}
+      - {locator: "2/25.4.4", title: "Reverse diffusion ODE", page: 870}
+      - {locator: "2/25.4.5", title: "Comparison of the SDE and ODE approach", page: 871}
+      - {locator: "2/25.4.6", title: "Example", page: 871}
+      - {locator: "2/25.5", title: "Speeding up diffusion models", page: 871}
+      - {locator: "2/25.5.1", title: "DDIM sampler", page: 872}
+      - {locator: "2/25.5.2", title: "Non-Gaussian decoder networks", page: 872}
+      - {locator: "2/25.5.3", title: "Distillation", page: 873}
+      - {locator: "2/25.5.4", title: "Latent space diffusion", page: 874}
+      - {locator: "2/25.6", title: "Conditional generation", page: 875}
+      - {locator: "2/25.6.1", title: "Conditional diffusion model", page: 875}
+      - {locator: "2/25.6.2", title: "Classifier guidance", page: 875}
+      - {locator: "2/25.6.3", title: "Classifier-free guidance", page: 876}
+      - {locator: "2/25.6.4", title: "Generating high resolution images", page: 876}
+      - {locator: "2/25.7", title: "Diffusion for discrete state spaces", page: 877}
+      - {locator: "2/25.7.1", title: "Discrete Denoising Diffusion Probabilistic Models", page: 877}
+      - {locator: "2/25.7.2", title: "Choice of Markov transition matrices for the forward processes", page: 878}
+      - {locator: "2/25.7.3", title: "Parameterization of the reverse process", page: 879}
+      - {locator: "2/25.7.4", title: "Noise schedules", page: 880}
+      - {locator: "2/25.7.5", title: "Connections to other probabilistic models for discrete sequences", page: 880}
+      - {locator: "2/26", title: "Generative adversarial networks", page: 883}
+      - {locator: "2/26.1", title: "Introduction", page: 883}
+      - {locator: "2/26.2", title: "Learning by comparison", page: 884}
+      - {locator: "2/26.2.1", title: "Guiding principles", page: 885}
+      - {locator: "2/26.2.2", title: "Density ratio estimation using binary classifiers", page: 886}
+      - {locator: "2/26.2.3", title: "Bounds on f -divergences", page: 888}
+      - {locator: "2/26.2.4", title: "Integral probability metrics", page: 890}
+      - {locator: "2/26.2.5", title: "Moment matching", page: 892}
+      - {locator: "2/26.2.6", title: "On density ratios and differences", page: 892}
+      - {locator: "2/26.3", title: "Generative adversarial networks", page: 894}
+      - {locator: "2/26.3.1", title: "From learning principles to loss functions", page: 894}
+      - {locator: "2/26.3.2", title: "Gradient descent", page: 895}
+      - {locator: "2/26.3.3", title: "Challenges with GAN training", page: 897}
+      - {locator: "2/26.3.4", title: "Improving GAN optimization", page: 898}
+      - {locator: "2/26.3.5", title: "Convergence of GAN training", page: 898}
+      - {locator: "2/26.4", title: "Conditional GANs", page: 902}
+      - {locator: "2/26.5", title: "Inference with GANs", page: 903}
+      - {locator: "2/26.6", title: "Neural architectures in GANs", page: 904}
+      - {locator: "2/26.6.1", title: "The importance of discriminator architectures", page: 904}
+      - {locator: "2/26.6.2", title: "Architectural inductive biases", page: 905}
+      - {locator: "2/26.6.3", title: "Attention in GANs", page: 905}
+      - {locator: "2/26.6.4", title: "Progressive generation", page: 906}
+      - {locator: "2/26.6.5", title: "Regularization", page: 907}
+      - {locator: "2/26.6.6", title: "Scaling up GAN models", page: 908}
+      - {locator: "2/26.7", title: "Applications", page: 908}
+      - {locator: "2/26.7.1", title: "GANs for image generation", page: 908}
+      - {locator: "2/26.7.2", title: "Video generation", page: 911}
+      - {locator: "2/26.7.3", title: "Audio generation", page: 912}
+      - {locator: "2/26.7.4", title: "Text generation", page: 912}
+      - {locator: "2/26.7.5", title: "Imitation learning", page: 913}
+      - {locator: "2/26.7.6", title: "Domain adaptation", page: 914}
+      - {locator: "2/26.7.7", title: "Design, art and creativity", page: 914}
+      - {locator: "2/27", title: "Discovery methods: an overview", page: 917}
+      - {locator: "2/27.1", title: "Introduction", page: 917}
+      - {locator: "2/27.2", title: "Overview of Part V", page: 918}
+      - {locator: "2/28", title: "Latent factor models", page: 919}
+      - {locator: "2/28.1", title: "Introduction", page: 919}
+      - {locator: "2/28.2", title: "Mixture models", page: 919}
+      - {locator: "2/28.2.1", title: "Gaussian mixture models (GMMs)", page: 920}
+      - {locator: "2/28.2.2", title: "Bernoulli mixture models", page: 922}
+      - {locator: "2/28.2.3", title: "Gaussian scale mixtures (GSMs)", page: 922}
+      - {locator: "2/28.2.4", title: "Using GMMs as a prior for inverse imaging problems", page: 924}
+      - {locator: "2/28.2.5", title: "Using mixture models for classification problems", page: 927}
+      - {locator: "2/28.3", title: "Factor analysis", page: 929}
+      - {locator: "2/28.3.1", title: "Factor analysis: the basics", page: 929}
+      - {locator: "2/28.3.2", title: "Probabilistic PCA", page: 934}
+      - {locator: "2/28.3.3", title: "Mixture of factor analyzers", page: 936}
+      - {locator: "2/28.3.4", title: "Factor analysis models for paired data", page: 943}
+      - {locator: "2/28.3.5", title: "Factor analysis with exponential family likelihoods", page: 945}
+      - {locator: "2/28.3.6", title: "Factor analysis with DNN likelihoods (VAEs)", page: 948}
+      - {locator: "2/28.3.7", title: "Factor analysis with GP likelihoods (GP-LVM)", page: 948}
+      - {locator: "2/28.4", title: "LFMs with non-Gaussian priors", page: 949}
+      - {locator: "2/28.4.1", title: "Non-negative matrix factorization (NMF)", page: 949}
+      - {locator: "2/28.4.2", title: "Multinomial PCA", page: 950}
+      - {locator: "2/28.5", title: "Topic models", page: 953}
+      - {locator: "2/28.5.1", title: "Latent Dirichlet allocation (LDA)", page: 953}
+      - {locator: "2/28.5.2", title: "Correlated topic model", page: 957}
+      - {locator: "2/28.5.3", title: "Dynamic topic model", page: 957}
+      - {locator: "2/28.5.4", title: "LDA-HMM", page: 958}
+      - {locator: "2/28.6", title: "Independent components analysis (ICA)", page: 962}
+      - {locator: "2/28.6.1", title: "Noiseless ICA model", page: 962}
+      - {locator: "2/28.6.2", title: "The need for non-Gaussian priors", page: 963}
+      - {locator: "2/28.6.3", title: "Maximum likelihood estimation", page: 964}
+      - {locator: "2/28.6.4", title: "Alternatives to MLE", page: 965}
+      - {locator: "2/28.6.5", title: "Sparse coding", page: 966}
+      - {locator: "2/28.6.6", title: "Nonlinear ICA", page: 967}
+      - {locator: "2/29", title: "State-space models", page: 969}
+      - {locator: "2/29.1", title: "Introduction", page: 969}
+      - {locator: "2/29.2", title: "Hidden Markov models (HMMs)", page: 970}
+      - {locator: "2/29.2.1", title: "Conditional independence properties", page: 970}
+      - {locator: "2/29.2.2", title: "State transition model", page: 970}
+      - {locator: "2/29.2.3", title: "Discrete likelihoods", page: 971}
+      - {locator: "2/29.2.4", title: "Gaussian likelihoods", page: 972}
+      - {locator: "2/29.2.5", title: "Autoregressive likelihoods", page: 972}
+      - {locator: "2/29.2.6", title: "Neural network likelihoods", page: 973}
+      - {locator: "2/29.3", title: "HMMs: applications", page: 974}
+      - {locator: "2/29.3.1", title: "Time series segmentation", page: 974}
+      - {locator: "2/29.3.2", title: "Protein sequence alignment", page: 976}
+      - {locator: "2/29.3.3", title: "Spelling correction", page: 978}
+      - {locator: "2/29.4", title: "HMMs: parameter learning", page: 980}
+      - {locator: "2/29.4.1", title: "The Baum-Welch (EM) algorithm", page: 980}
+      - {locator: "2/29.4.2", title: "Parameter estimation using SGD", page: 983}
+      - {locator: "2/29.4.3", title: "Parameter estimation using spectral methods", page: 984}
+      - {locator: "2/29.4.4", title: "Bayesian HMMs", page: 985}
+      - {locator: "2/29.5", title: "HMMs: generalizations", page: 987}
+      - {locator: "2/29.5.1", title: "Hidden semi-Markov model (HSMM)", page: 987}
+      - {locator: "2/29.5.2", title: "Hierarchical HMMs", page: 989}
+      - {locator: "2/29.5.3", title: "Factorial HMMs", page: 991}
+      - {locator: "2/29.5.4", title: "Coupled HMMs", page: 992}
+      - {locator: "2/29.5.5", title: "Dynamic Bayes nets (DBN)", page: 992}
+      - {locator: "2/29.5.6", title: "Changepoint detection", page: 993}
+      - {locator: "2/29.6", title: "Linear dynamical systems (LDSs)", page: 996}
+      - {locator: "2/29.6.1", title: "Conditional independence properties", page: 996}
+      - {locator: "2/29.6.2", title: "Parameterization", page: 996}
+      - {locator: "2/29.7", title: "LDS: applications", page: 997}
+      - {locator: "2/29.7.1", title: "Object tracking and state estimation", page: 997}
+      - {locator: "2/29.7.2", title: "Online Bayesian linear regression (recursive least squares)", page: 998}
+      - {locator: "2/29.7.3", title: "Adaptive filtering", page: 1000}
+      - {locator: "2/29.7.4", title: "Time series forecasting", page: 1000}
+      - {locator: "2/29.8", title: "LDS: parameter learning", page: 1001}
+      - {locator: "2/29.8.1", title: "EM for LDS", page: 1001}
+      - {locator: "2/29.8.2", title: "Subspace identification methods", page: 1003}
+      - {locator: "2/29.8.3", title: "Ensuring stability of the dynamical system", page: 1003}
+      - {locator: "2/29.8.4", title: "Bayesian LDS", page: 1004}
+      - {locator: "2/29.9", title: "Switching linear dynamical systems (SLDSs)", page: 1005}
+      - {locator: "2/29.9.1", title: "Parameterization", page: 1005}
+      - {locator: "2/29.9.2", title: "Posterior inference", page: 1006}
+      - {locator: "2/29.9.3", title: "Application: Multitarget tracking", page: 1006}
+      - {locator: "2/29.10", title: "Nonlinear SSMs", page: 1009}
+      - {locator: "2/29.10.1", title: "Example: object tracking and state estimation", page: 1010}
+      - {locator: "2/29.10.2", title: "Posterior inference", page: 1010}
+      - {locator: "2/29.11", title: "Non-Gaussian SSMs", page: 1010}
+      - {locator: "2/29.11.1", title: "Example: spike train modeling", page: 1011}
+      - {locator: "2/29.11.2", title: "Example: stochastic volatility models", page: 1012}
+      - {locator: "2/29.11.3", title: "Posterior inference", page: 1012}
+      - {locator: "2/29.12", title: "Structural time series models", page: 1012}
+      - {locator: "2/29.12.1", title: "Introduction", page: 1013}
+      - {locator: "2/29.12.2", title: "Structural building blocks", page: 1013}
+      - {locator: "2/29.12.3", title: "Model fitting", page: 1016}
+      - {locator: "2/29.12.4", title: "Forecasting", page: 1016}
+      - {locator: "2/29.12.5", title: "Examples", page: 1016}
+      - {locator: "2/29.12.6", title: "Causal impact of a time series intervention", page: 1020}
+      - {locator: "2/29.12.7", title: "Prophet", page: 1024}
+      - {locator: "2/29.12.8", title: "Neural forecasting methods", page: 1024}
+      - {locator: "2/29.13", title: "Deep SSMs", page: 1025}
+      - {locator: "2/29.13.1", title: "Deep Markov models", page: 1026}
+      - {locator: "2/29.13.2", title: "Recurrent SSM", page: 1027}
+      - {locator: "2/29.13.3", title: "Improving multistep predictions", page: 1027}
+      - {locator: "2/29.13.4", title: "Variational RNNs", page: 1028}
+      - {locator: "2/30", title: "Graph learning", page: 1031}
+      - {locator: "2/30.1", title: "Introduction", page: 1031}
+      - {locator: "2/30.2", title: "Latent variable models for graphs", page: 1031}
+      - {locator: "2/30.3", title: "Graphical model structure learning", page: 1031}
+      - {locator: "2/31", title: "Nonparametric Bayesian models", page: 1035}
+      - {locator: "2/31.1", title: "Introduction", page: 1035}
+      - {locator: "2/32", title: "Representation learning", page: 1037}
+      - {locator: "2/32.1", title: "Introduction", page: 1037}
+      - {locator: "2/32.2", title: "Evaluating and comparing learned representations", page: 1037}
+      - {locator: "2/32.2.1", title: "Downstream performance", page: 1038}
+      - {locator: "2/32.2.2", title: "Representational similarity", page: 1040}
+      - {locator: "2/32.3", title: "Approaches for learning representations", page: 1044}
+      - {locator: "2/32.3.1", title: "Supervised representation learning and transfer", page: 1045}
+      - {locator: "2/32.3.2", title: "Generative representation learning", page: 1047}
+      - {locator: "2/32.3.3", title: "Self-supervised representation learning", page: 1049}
+      - {locator: "2/32.3.4", title: "Multiview representation learning", page: 1052}
+      - {locator: "2/32.4", title: "Theory of representation learning", page: 1057}
+      - {locator: "2/32.4.1", title: "Identifiability", page: 1057}
+      - {locator: "2/32.4.2", title: "Information maximization", page: 1058}
+      - {locator: "2/33", title: "Interpretability", page: 1061}
+      - {locator: "2/33.1", title: "Introduction", page: 1061}
+      - {locator: "2/33.1.1", title: "The role of interpretability: unknowns and under-specifications", page: 1062}
+      - {locator: "2/33.1.2", title: "Terminology and framework", page: 1063}
+      - {locator: "2/33.2", title: "Methods for interpretable machine learning", page: 1066}
+      - {locator: "2/33.2.1", title: "Inherently interpretable models: the model is its explanation", page: 1067}
+      - {locator: "2/33.2.2", title: "Semi-inherently interpretable models: example-based methods", page: 1069}
+      - {locator: "2/33.2.3", title: "Post-hoc or joint training: the explanation gives a partial view of the model", page: 1069}
+      - {locator: "2/33.2.4", title: "Transparency and visualization", page: 1073}
+      - {locator: "2/33.3", title: "Properties: the abstraction between context and method", page: 1074}
+      - {locator: "2/33.3.1", title: "Properties of explanations from interpretable machine learning", page: 1074}
+      - {locator: "2/33.3.2", title: "Properties of explanations from cognitive science", page: 1076}
+      - {locator: "2/33.4", title: "Evaluation of interpretable machine learning models", page: 1077}
+      - {locator: "2/33.4.1", title: "Computational evaluation: does the method have desired properties?", page: 1078}
+      - {locator: "2/33.4.2", title: "User study-based evaluation: does the method help a user perform a target task?", page: 1082}
+      - {locator: "2/33.5", title: "Discussion: how to think about interpretable machine learning", page: 1086}
+      - {locator: "2/34", title: "Decision making under uncertainty", page: 1093}
+      - {locator: "2/34.1", title: "Statistical decision theory", page: 1093}
+      - {locator: "2/34.1.1", title: "Basics", page: 1093}
+      - {locator: "2/34.1.2", title: "Frequentist decision theory", page: 1093}
+      - {locator: "2/34.1.3", title: "Bayesian decision theory", page: 1094}
+      - {locator: "2/34.1.4", title: "Frequentist optimality of the Bayesian approach", page: 1095}
+      - {locator: "2/34.1.5", title: "Examples of one-shot decision making problems", page: 1095}
+      - {locator: "2/34.2", title: "Decision (influence) diagrams", page: 1099}
+      - {locator: "2/34.2.1", title: "Example: oil wildcatter", page: 1100}
+      - {locator: "2/34.2.2", title: "Information arcs", page: 1101}
+      - {locator: "2/34.2.3", title: "Value of information", page: 1101}
+      - {locator: "2/34.2.4", title: "Computing the optimal policy", page: 1102}
+      - {locator: "2/34.3", title: "A/B testing", page: 1103}
+      - {locator: "2/34.3.1", title: "A Bayesian approach", page: 1103}
+      - {locator: "2/34.3.2", title: "Example", page: 1106}
+      - {locator: "2/34.4", title: "Contextual bandits", page: 1107}
+      - {locator: "2/34.4.1", title: "Types of bandit", page: 1108}
+      - {locator: "2/34.4.2", title: "Applications", page: 1109}
+      - {locator: "2/34.4.3", title: "Exploration-exploitation tradeoff", page: 1109}
+      - {locator: "2/34.4.4", title: "The optimal solution", page: 1110}
+      - {locator: "2/34.4.5", title: "Upper confidence bounds (UCBs)", page: 1111}
+      - {locator: "2/34.4.6", title: "Thompson sampling", page: 1113}
+      - {locator: "2/34.4.7", title: "Regret", page: 1114}
+      - {locator: "2/34.5", title: "Markov decision problems", page: 1116}
+      - {locator: "2/34.5.1", title: "Basics", page: 1116}
+      - {locator: "2/34.5.2", title: "Partially observed MDPs", page: 1117}
+      - {locator: "2/34.5.3", title: "Episodes and returns", page: 1117}
+      - {locator: "2/34.5.4", title: "Value functions", page: 1119}
+      - {locator: "2/34.5.5", title: "Optimal value functions and policies", page: 1119}
+      - {locator: "2/34.6", title: "Planning in an MDP", page: 1120}
+      - {locator: "2/34.6.1", title: "Value iteration", page: 1121}
+      - {locator: "2/34.6.2", title: "Policy iteration", page: 1122}
+      - {locator: "2/34.6.3", title: "Linear programming", page: 1123}
+      - {locator: "2/34.7", title: "Active learning", page: 1124}
+      - {locator: "2/34.7.1", title: "Active learning scenarios", page: 1124}
+      - {locator: "2/34.7.2", title: "Relationship to other forms of sequential decision making", page: 1125}
+      - {locator: "2/34.7.3", title: "Acquisition strategies", page: 1126}
+      - {locator: "2/34.7.4", title: "Batch active learning", page: 1128}
+      - {locator: "2/35", title: "Reinforcement learning", page: 1133}
+      - {locator: "2/35.1", title: "Introduction", page: 1133}
+      - {locator: "2/35.1.1", title: "Overview of methods", page: 1133}
+      - {locator: "2/35.1.2", title: "Value-based methods", page: 1135}
+      - {locator: "2/35.1.3", title: "Policy search methods", page: 1135}
+      - {locator: "2/35.1.4", title: "Model-based RL", page: 1135}
+      - {locator: "2/35.1.5", title: "Exploration-exploitation tradeoff", page: 1136}
+      - {locator: "2/35.2", title: "Value-based RL", page: 1138}
+      - {locator: "2/35.2.1", title: "Monte Carlo RL", page: 1138}
+      - {locator: "2/35.2.2", title: "Temporal difference (TD) learning", page: 1138}
+      - {locator: "2/35.2.3", title: "TD learning with eligibility traces", page: 1139}
+      - {locator: "2/35.2.4", title: "SARSA: on-policy TD control", page: 1140}
+      - {locator: "2/35.2.5", title: "Q-learning: off-policy TD control", page: 1141}
+      - {locator: "2/35.2.6", title: "Deep Q-network (DQN)", page: 1142}
+      - {locator: "2/35.3", title: "Policy-based RL", page: 1144}
+      - {locator: "2/35.3.1", title: "The policy gradient theorem", page: 1145}
+      - {locator: "2/35.3.2", title: "REINFORCE", page: 1146}
+      - {locator: "2/35.3.3", title: "Actor-critic methods", page: 1146}
+      - {locator: "2/35.3.4", title: "Bound optimization methods", page: 1148}
+      - {locator: "2/35.3.5", title: "Deterministic policy gradient methods", page: 1150}
+      - {locator: "2/35.3.6", title: "Gradient-free methods", page: 1151}
+      - {locator: "2/35.4", title: "Model-based RL", page: 1151}
+      - {locator: "2/35.4.1", title: "Model predictive control (MPC)", page: 1151}
+      - {locator: "2/35.4.2", title: "Combining model-based and model-free", page: 1153}
+      - {locator: "2/35.4.3", title: "MBRL using Gaussian processes", page: 1154}
+      - {locator: "2/35.4.4", title: "MBRL using DNNs", page: 1155}
+      - {locator: "2/35.4.5", title: "MBRL using latent-variable models", page: 1156}
+      - {locator: "2/35.4.6", title: "Robustness to model errors", page: 1158}
+      - {locator: "2/35.5", title: "Off-policy learning", page: 1158}
+      - {locator: "2/35.5.1", title: "Basic techniques", page: 1159}
+      - {locator: "2/35.5.2", title: "The curse of horizon", page: 1162}
+      - {locator: "2/35.5.3", title: "The deadly triad", page: 1163}
+      - {locator: "2/35.6", title: "Control as inference", page: 1165}
+      - {locator: "2/35.6.1", title: "Maximum entropy reinforcement learning", page: 1165}
+      - {locator: "2/35.6.2", title: "Other approaches", page: 1167}
+      - {locator: "2/35.6.3", title: "Imitation learning", page: 1168}
+      - {locator: "2/36", title: "Causality", page: 1171}
+      - {locator: "2/36.1", title: "Introduction", page: 1171}
+      - {locator: "2/36.2", title: "Causal formalism", page: 1173}
+      - {locator: "2/36.2.1", title: "Structural causal models", page: 1173}
+      - {locator: "2/36.2.2", title: "Causal DAGs", page: 1174}
+      - {locator: "2/36.2.3", title: "Identification", page: 1176}
+      - {locator: "2/36.2.4", title: "Counterfactuals and the causal hierarchy", page: 1178}
+      - {locator: "2/36.3", title: "Randomized control trials", page: 1180}
+      - {locator: "2/36.4", title: "Confounder adjustment", page: 1181}
+      - {locator: "2/36.4.1", title: "Causal estimand, statistical estimand, and identification", page: 1181}
+      - {locator: "2/36.4.2", title: "ATE estimation with observed confounders", page: 1184}
+      - {locator: "2/36.4.3", title: "Uncertainty quantification", page: 1189}
+      - {locator: "2/36.4.4", title: "Matching", page: 1189}
+      - {locator: "2/36.4.5", title: "Practical considerations and procedures", page: 1190}
+      - {locator: "2/36.4.6", title: "Summary and practical advice", page: 1193}
+      - {locator: "2/36.5", title: "Instrumental variable strategies", page: 1195}
+      - {locator: "2/36.5.1", title: "Additive unobserved confounding", page: 1196}
+      - {locator: "2/36.5.2", title: "Instrument monotonicity and local average treatment effect", page: 1198}
+      - {locator: "2/36.5.3", title: "Two stage least squares", page: 1201}
+      - {locator: "2/36.6", title: "Difference in differences", page: 1202}
+      - {locator: "2/36.6.1", title: "Estimation", page: 1205}
+      - {locator: "2/36.7", title: "Credibility checks", page: 1206}
+      - {locator: "2/36.7.1", title: "Placebo checks", page: 1206}
+      - {locator: "2/36.7.2", title: "Sensitivity analysis to unobserved confounding", page: 1207}
+      - {locator: "2/36.8", title: "The do-calculus", page: 1215}
+      - {locator: "2/36.8.1", title: "The three rules", page: 1215}
+      - {locator: "2/36.8.2", title: "Revisiting backdoor adjustment", page: 1216}
+      - {locator: "2/36.8.3", title: "Frontdoor adjustment", page: 1217}
   - id: sutton-barto-2018-reinforcement-learning
     title: "Reinforcement Learning: An Introduction"
     authors: [Richard S. Sutton, Andrew G. Barto]
