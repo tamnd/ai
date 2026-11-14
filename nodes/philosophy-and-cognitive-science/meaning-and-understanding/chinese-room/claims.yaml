@@ -151,7 +151,7 @@
 
 - id: c-virtual-mind-views
   type: attributive
-  text: "Cole lists Maudlin, Perlis, Chalmers and Block among those who endorse versions of the virtual mind reply, and Penrose and Harnad among its critics."
+  text: "Cole reports that Maudlin points out a virtual mind reply, that Perlis, Chalmers and Block have apparently endorsed versions of it, and that Penrose is a critic of it and Harnad dismisses it."
   evidence:
     - {work: "cole-2024-chinese-room-sep", role: original, locator: "Section 4.1.1", stance: for}
 
@@ -181,13 +181,13 @@
 
 - id: c-crane
   type: attributive
-  text: "Cole reports that Crane argues that a person who also began to act in the world of Chinese people would learn what the symbols mean."
+  text: "Cole reports that Crane argues that if Searle in the room also started acting in the world of Chinese people, it is plausible that he would before long come to realize what the symbols mean."
   evidence:
     - {work: "cole-2024-chinese-room-sep", role: original, locator: "Section 4.2", stance: for}
 
 - id: c-brain-sim-reply
   type: attributive
-  text: "The brain simulator reply, as Searle states it, holds that a program that simulates the actual sequence of neuron firings at the synapses of the brain of a native Chinese speaker would understand the stories."
+  text: "The brain simulator reply, as Searle states it, holds that of a machine whose program simulates the actual sequence of neuron firings at the synapses of the brain of a native Chinese speaker we would have to say that it understood the stories, or else deny that native Chinese speakers understand them."
   evidence:
     - {work: "searle-1980-minds-brains-programs-bbs", role: original, locator: "p. 420", stance: for}
 
@@ -235,7 +235,7 @@
 
 - id: c-spouse
   type: attributive
-  text: "Cole remarks that on Searle's answer one would cease to attribute understanding even to a spouse who was revealed to have a silicon secret."
+  text: "Cole remarks that on Searle's answer one would presumably cease to attribute intentionality even to a spouse who was revealed to hide a silicon secret."
   evidence:
     - {work: "cole-2024-chinese-room-sep", role: original, locator: "Section 4.3", stance: for}
 
@@ -349,15 +349,17 @@
 
 - id: c-minds-i
   type: historical
-  text: "Hofstadter and Dennett reprinted Searle's article in their collection The Mind's I in 1981, followed by a reflection."
+  text: "Hofstadter's Reflections on Searle is at pages 373 to 382 of The Mind's I, the 1981 Basic Books volume of Hofstadter and Dennett."
   evidence:
     - {work: "hofstadter-1981-minds-i", role: original, locator: "Chapter 22", stance: for}
+    - {work: "cole-2024-chinese-room-sep", role: review, locator: "the bibliography", stance: for}
 
 - id: c-preston-bishop
   type: historical
   text: "Preston and Bishop edited Views into the Chinese Room, a volume of new essays on Searle and artificial intelligence, published in 2002."
   evidence:
     - {work: "preston-2002-views-chinese-room", role: original, locator: "the title page", stance: for}
+    - {work: "cole-2024-chinese-room-sep", role: review, locator: "the bibliography", stance: for}
 
 - id: c-harnad-grounding
   type: attributive

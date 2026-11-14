@@ -125,7 +125,7 @@ Each reply has the same parts: its form and its proponents, Searle's answer, and
 Cole (2024) names Ned Block as one of the first to press it, with Jack Copeland, Daniel Dennett, Douglas Hofstadter, Jerry Fodor, John Haugeland, Ray Kurzweil and Georges Rey. {#c-systems-proponents}
 **Searle's answer.** Let the person memorize the rules and the data and do the work in their head, outdoors; the person still understands nothing of the Chinese, and so neither does the system. {#c-systems-answer}
 **Counter-reply.** Marvin Minsky and Aaron Sloman and Monica Croucher suggested a virtual mind reply when the argument first appeared: running the program may create a mind distinct from the person who runs it. {#c-virtual-mind}
-Cole (2024, Section 4.1.1) lists Tim Maudlin, Don Perlis, David Chalmers and Block among those who endorse versions of it, and Roger Penrose and Stevan Harnad among its critics. {#c-virtual-mind-views}
+Cole (2024, Section 4.1.1) credits Tim Maudlin with pointing out the reply and reports that Don Perlis, David Chalmers and Block have apparently endorsed versions of it, while Roger Penrose is a critic and Stevan Harnad dismisses it. {#c-virtual-mind-views}
 
 ### The robot reply
 
@@ -133,11 +133,11 @@ Cole (2024, Section 4.1.1) lists Tim Maudlin, Don Perlis, David Chalmers and Blo
 Cole (2024) lists Margaret Boden, Tim Crane, Dennett, Fodor, Harnad, Hans Moravec and Rey among those who endorse versions of it. {#c-robot-proponents}
 **Searle's answer.** The reply concedes that cognition is not only formal symbol manipulation; and if Searle runs the robot's program from inside, he is the robot's homunculus and still understands nothing. {#c-robot-answer}
 **Counter-reply.** Fodor (1980) grants that the same program as the brain's is not by itself enough for propositional attitudes, but finds Searle's treatment of the robot reply unconvincing, given the right kinds of causal linkages to the world. {#c-fodor-robot}
-Tim Crane, as Cole (2024, Section 4.2) reports, argues that a person who also started acting in the world of Chinese people would come to learn what the symbols mean. {#c-crane}
+Tim Crane, as Cole (2024, Section 4.2) reports, argues that if the man in the room also started acting in the world of Chinese people, it is plausible that he would before long come to realize what the symbols mean. {#c-crane}
 
 ### The brain simulator reply
 
-**The reply.** A program that simulates the actual sequence of neuron firings at the synapses of a native Chinese speaker's brain would understand. {#c-brain-sim-reply}
+**The reply.** Of a machine whose program simulates the actual sequence of neuron firings at the synapses of a native Chinese speaker's brain, we would have to say that it understood the stories; to refuse would be to deny that native speakers understand them too. {#c-brain-sim-reply}
 **Searle's answer.** Let the man operate water pipes and valves, one connection for each synapse; neither the man nor the pipes understand Chinese, because the simulation copies only the formal structure of the firings. {#c-brain-sim-answer}
 **Counter-reply.** Hofstadter (1980) answers that, once we accept that a tangle of cells gives rise to an "I", a water-pipe "I" should seem no more weird. {#c-hofstadter}
 Zenon Pylyshyn (1980) asks what Searle's view implies if the cells of a brain are replaced one by one with chips that keep the same input-output function. {#c-pylyshyn}
@@ -148,7 +148,7 @@ Zenon Pylyshyn (1980) asks what Searle's view implies if the cells of a brain ar
 Cole (2024, Section 4.3) names Georges Rey among those who argue that it is reasonable to attribute intentionality to such a system as a whole. {#c-combination-rey}
 **Searle's answer.** He agrees that it would be rational and even irresistible to accept that such a robot had intentionality, as long as we knew nothing more about it. {#c-combination-answer}
 But if we knew that its behaviour was the result of a formal program, and that the causal properties of its physical substance were irrelevant, we would abandon that assumption. {#c-combination-withdraw}
-**Counter-reply.** Cole (2024, Section 4.3) remarks that on this answer one would cease to attribute understanding even to a spouse who was revealed to hide a silicon secret. {#c-spouse}
+**Counter-reply.** Cole (2024, Section 4.3) remarks that on this answer one would presumably cease to attribute intentionality even to a spouse who was revealed to hide a silicon secret. {#c-spouse}
 
 ### The other minds reply
 
@@ -183,7 +183,7 @@ He also answers parallel, connectionist systems with the Chinese gym, a hall of 
 ## Influence
 
 Cole (2024) calls the argument probably the most widely discussed philosophical argument in cognitive science since the Turing test. {#c-most-discussed}
-Douglas Hofstadter and Daniel Dennett reprinted Searle's article as a chapter of their collection The Mind's I in 1981, followed by a reflection. {#c-minds-i}
+Douglas Hofstadter answered the argument in Reflections on Searle, at pages 373 to 382 of The Mind's I, the volume he edited with Daniel Dennett for Basic Books in 1981. {#c-minds-i}
 John Preston and Mark Bishop edited a volume of new essays on Searle and artificial intelligence, Views into the Chinese Room, in 2002. {#c-preston-bishop}
 Harnad (1990) used the room to state the symbol grounding problem: the meaning of the symbols of a formal system is parasitic on the meaning they have for us, not intrinsic to the system. {#c-harnad-grounding}
 He proposed grounding symbols bottom-up in iconic and categorical representations that come from sensory input. {#c-harnad-hybrid}
