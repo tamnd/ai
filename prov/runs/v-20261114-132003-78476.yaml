@@ -1,0 +1,255 @@
+run: v-20261114-132003-78476
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: does-scaling-lead-to-general-intelligence
+  verifier: codex:gpt-6-sol
+  tag: NEW-does-scaling-lead-to-general-intelligence
+  claim: c-gwern-hypothesis
+  work: gwern-2020-scaling-hypothesis
+  locator: p. 1
+  key: d8ce8eeb93b421d86757e57ab31a92c8
+  spans:
+  - start: 0
+    end: 106963
+  verdict: supported
+  quote: intelligence is ‘just’ simple neural units & learning algorithms applied to diverse experiences at a (currently)
+    unreachable scale.
+  note: The passage states this as the scaling hypothesis.
+- slug: does-scaling-lead-to-general-intelligence
+  verifier: codex:gpt-6-sol
+  tag: NEW-does-scaling-lead-to-general-intelligence
+  claim: c-gwern-more
+  work: gwern-2020-scaling-hypothesis
+  locator: p. 1
+  key: 7b972bdb22645f28fe0bb5d2c98c1f01
+  spans:
+  - start: 0
+    end: 106963
+  verdict: supported
+  quote: As increasing computational resources permit running such algorithms at the necessary scale, the neural networks
+    will get ever more intelligent.
+  note: The claim repeats the passage’s prediction.
+- slug: does-scaling-lead-to-general-intelligence
+  verifier: codex:gpt-6-sol
+  tag: NEW-does-scaling-lead-to-general-intelligence
+  claim: c-gwern-blessings
+  work: gwern-2020-scaling-hypothesis
+  locator: p. 1
+  key: 6d2cf5986f40eb362a5d063223a1676f
+  spans:
+  - start: 0
+    end: 106963
+  verdict: supported
+  quote: 'The meta-learning has a longer-term implication: it is a demonstration of the blessings of scale'
+  note: The passage also specifies the claimed gains from larger models, datasets, and compute.
+- slug: does-scaling-lead-to-general-intelligence
+  verifier: codex:gpt-6-sol
+  tag: NEW-does-scaling-lead-to-general-intelligence
+  claim: c-snell-motivation
+  work: snell-2024-scaling-test-time-compute
+  locator: the abstract
+  key: 7b865b842f787d41bca4ec8a590ccec0
+  spans:
+  - start: 641
+    end: 2464
+  verdict: supported
+  quote: Enabling LLMs to improve their outputs by using more test-time computation is a critical step towards building generally
+    self-improving agents
+  note: The abstract states the claim directly.
+- slug: does-scaling-lead-to-general-intelligence
+  verifier: codex:gpt-6-sol
+  tag: NEW-does-scaling-lead-to-general-intelligence
+  claim: c-snell-4x
+  work: snell-2024-scaling-test-time-compute
+  locator: the abstract, Section 4
+  key: 3e0d37e2feda4c0217aeb3dd7fcb703a
+  spans:
+  - start: 641
+    end: 2464
+  - start: 22107
+    end: 23225
+  verdict: supported
+  quote: we can improve the efficiency of test-time compute scaling by more than 4 × \times compared to a best-of-N baseline.
+  note: The abstract gives the result, and Section 4 identifies the model and MATH benchmark.
+- slug: does-scaling-lead-to-general-intelligence
+  verifier: codex:gpt-6-sol
+  tag: NEW-does-scaling-lead-to-general-intelligence
+  claim: c-snell-14x
+  work: snell-2024-scaling-test-time-compute
+  locator: the abstract, Section 4
+  key: b2812ddab0c4100ca093ade77cdc544e
+  spans:
+  - start: 641
+    end: 2464
+  - start: 22107
+    end: 23225
+  verdict: supported
+  quote: on problems where a smaller base model attains somewhat non-trivial success rates, test-time compute can be used
+    to outperform a 14 × \times larger model.
+  note: The abstract specifies a FLOPs-matched evaluation, and Section 4 identifies the base model and benchmark.
+- slug: does-scaling-lead-to-general-intelligence
+  verifier: codex:gpt-6-sol
+  tag: NEW-does-scaling-lead-to-general-intelligence
+  claim: c-snell-hard
+  work: snell-2024-scaling-test-time-compute
+  locator: Section 7
+  key: b659e0d0ab7205ff746f3d5b302de3af
+  spans:
+  - start: 47230
+    end: 53658
+  verdict: supported
+  quote: Test-time and pretraining compute are not 1-to-1 “exchangeable”.
+  note: The takeaways also identify challenging questions and higher inference requirements as cases favoring pretraining.
+- slug: does-scaling-lead-to-general-intelligence
+  verifier: codex:gpt-6-sol
+  tag: NEW-does-scaling-lead-to-general-intelligence
+  claim: c-arc-2024-score
+  work: chollet-2024-arc-prize-2024-report
+  locator: the abstract
+  key: 9e4a2d04085f11aa0e11072ace37dcdf
+  spans:
+  - start: 362
+    end: 1274
+  verdict: supported
+  quote: increased from 33% to 55.5%, propelled by several frontier AGI reasoning techniques including deep learning-guided
+    program synthesis and test-time training.
+  note: The abstract gives both scores and the named techniques.
+- slug: does-scaling-lead-to-general-intelligence
+  verifier: codex:gpt-6-sol
+  tag: NEW-does-scaling-lead-to-general-intelligence
+  claim: c-arc-greenblatt
+  work: chollet-2024-arc-prize-2024-report
+  locator: Section 3
+  key: f43455cdca3e5ac8e64e12bed5e20e7a
+  spans:
+  - start: 11465
+    end: 24552
+  verdict: supported
+  quote: Ryan Greenblatt, who reached 42% on the ARC-AGI-Pub leaderboard
+  note: The passage also says his GPT-4o approach searched thousands of Python programs per task.
+- slug: does-scaling-lead-to-general-intelligence
+  verifier: codex:gpt-6-sol
+  tag: NEW-does-scaling-lead-to-general-intelligence
+  claim: c-arc-ttt
+  work: chollet-2024-arc-prize-2024-report
+  locator: Section 3
+  key: 8b2ddda30ccdb32f32ad27794e01fa2d
+  spans:
+  - start: 11465
+    end: 24552
+  verdict: supported
+  quote: fine-tuning a pretrained LLM on the demonstration pairs of each task instance seen at test time
+  note: Section 3 describes adapting the model to each task through test-time fine-tuning.
+- slug: does-scaling-lead-to-general-intelligence
+  verifier: codex:gpt-6-sol
+  tag: NEW-does-scaling-lead-to-general-intelligence
+  claim: c-arc2-scores
+  work: chollet-2025-arc-agi-2
+  locator: Section 6
+  key: 5269ca73d1697bd1fd1a296e129c20f4
+  spans:
+  - start: 20124
+    end: 21034
+  verdict: supported
+  quote: o3 (Medium) 53.0% 3.0%
+  note: The table is dated May 14, 2025, and every listed ARC-AGI-2 score is at most 3.0%.
+- slug: does-scaling-lead-to-general-intelligence
+  verifier: codex:gpt-6-sol
+  tag: NEW-does-scaling-lead-to-general-intelligence
+  claim: c-arc2-noise
+  work: chollet-2025-arc-agi-2
+  locator: Section 6
+  key: 7be063e0eabe7ff42d493ffb5c625a21
+  spans:
+  - start: 20124
+    end: 21034
+  verdict: supported
+  quote: ARC-AGI-2 accuracies below 5% are generally not treated as meaningful, as they likely result from noise-level heuristics
+    or incidental pattern fits.
+  note: The claim repeats the authors’ qualification.
+- slug: does-scaling-lead-to-general-intelligence
+  verifier: codex:gpt-6-sol
+  tag: NEW-does-scaling-lead-to-general-intelligence
+  claim: c-arc-scaling-era
+  work: chollet-2024-arc-prize-2024-report
+  locator: Section 1.2
+  key: e3afd8ebdcb2af46609eb950fa3dd577
+  spans:
+  - start: 4869
+    end: 6549
+  verdict: supported
+  quote: which increased task-specific skills but did not improve the ability to tackle tasks without available training data
+    at training time
+  note: The passage attributes this assessment to scaling from 2020 to early 2024.
+- slug: does-scaling-lead-to-general-intelligence
+  verifier: codex:gpt-6-sol
+  tag: NEW-does-scaling-lead-to-general-intelligence
+  claim: c-arc-new-ideas
+  work: chollet-2024-arc-prize-2024-report
+  locator: Section 5
+  key: 0d75f162cd400b248b14b86cce3880a4
+  spans:
+  - start: 27944
+    end: 28911
+  verdict: supported
+  quote: ARC-AGI remains undefeated – still by a considerable margin
+  note: The conclusion also says new ideas are still needed to build AGI.
+- slug: does-scaling-lead-to-general-intelligence
+  verifier: codex:gpt-6-sol
+  tag: NEW-does-scaling-lead-to-general-intelligence
+  claim: c-arc2-humans
+  work: chollet-2025-arc-agi-2
+  locator: Section 4.3, Section 4.1
+  key: 918e69c562cb7e2c77894a60f95e14af
+  spans:
+  - start: 13890
+    end: 14553
+  - start: 14839
+    end: 15711
+  verdict: supported
+  quote: 407 unique participants in 515 sessions attempting 1,848 unique task test pairs
+  note: The results then give 13,405 attempts and 8,277 successful solutions, rounded to 62%.
+- slug: does-scaling-lead-to-general-intelligence
+  verifier: codex:gpt-6-sol
+  tag: NEW-does-scaling-lead-to-general-intelligence
+  claim: c-arc2-selection
+  work: chollet-2025-arc-agi-2
+  locator: Section 5
+  key: 0d2000e54e3d59d5c8559ed036b179ce
+  spans:
+  - start: 16766
+    end: 20124
+  verdict: supported
+  quote: A task advanced from human testing only if at least two independent participants solved one or more sub-pairs within
+    their first two attempts.
+  note: The claim restates the task-selection rule.
+- slug: does-scaling-lead-to-general-intelligence
+  verifier: codex:gpt-6-sol
+  tag: NEW-does-scaling-lead-to-general-intelligence
+  claim: c-hist-chollet
+  work: chollet-2024-arc-prize-2024-report
+  locator: Section 1
+  key: 7f1aa09fa966df7bd022aacd7a1da3a2
+  spans:
+  - start: 1274
+    end: 6549
+  verdict: supported
+  quote: François Chollet first wrote about the limitations of deep learning in 2017
+  note: The passage then dates his AGI definition and the accompanying ARC benchmark to 2019.
+- slug: does-scaling-lead-to-general-intelligence
+  verifier: codex:gpt-6-sol
+  tag: NEW-does-scaling-lead-to-general-intelligence
+  claim: c-hist-arc-2024
+  work: chollet-2024-arc-prize-2024-report
+  locator: the abstract
+  key: b6c43b094a2fc1deccb1b1accc0dba19
+  spans:
+  - start: 362
+    end: 1274
+  verdict: supported
+  quote: As of December 5, 2024, the ARC-AGI benchmark is five years old and remains unbeaten.
+  note: The abstract also says ARC Prize launched that year with a target score of 85%.

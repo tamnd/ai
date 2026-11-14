@@ -1,0 +1,21 @@
+run: v-20261114-035936-61779
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: does-scaling-lead-to-general-intelligence
+  verifier: codex:gpt-6-sol
+  tag: NEW-does-scaling-lead-to-general-intelligence
+  claim: c-mitchell-fallacy
+  work: mitchell-2021-why-ai-harder
+  locator: pp. 3 to 4
+  key: 1bdec77448a3b96e79f0098becd4cacb
+  spans:
+  - start: 8060
+    end: 17431
+  verdict: supported
+  quote: Advances on a specific AI task are often described as “a first step” towards more general AI.
+  note: The passage labels the continuum assumption “Fallacy 1” and describes task advances as a first step toward general
+    AI.
