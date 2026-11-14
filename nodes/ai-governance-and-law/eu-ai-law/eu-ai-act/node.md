@@ -68,7 +68,7 @@ The Act applies to providers that place AI systems or general-purpose AI models 
 It also applies to providers and deployers in third countries whose AI output is used in the EU, and to importers, distributors, product manufacturers, authorised representatives and affected persons in the EU. {#c-scope-third-country}
 It does not apply to AI systems used exclusively for military, defence or national security purposes. {#c-scope-military}
 It does not apply to AI systems or models developed and put into service for the sole purpose of scientific research and development. {#c-scope-research}
-It does not apply to AI systems released under free and open-source licences, unless they are placed on the market or put into service as high-risk systems or fall under the prohibitions or the transparency rules. {#c-scope-open-source}
+It does not apply to AI systems released under free and open-source licences, unless they are placed on the market or put into service as high-risk systems or fall under the prohibitions of Article 5 or the transparency rules of Article 50. {#c-scope-open-source}
 
 The Act defines its terms in Article 3.
 An AI system is a machine-based system that operates with varying levels of autonomy, may adapt after deployment, and infers from its input how to generate outputs such as predictions, content, recommendations or decisions that can influence physical or virtual environments. {#c-def-ai-system}
@@ -177,7 +177,7 @@ Breaking the duties of operators and notified bodies listed in Article 99(4), in
 Supplying incorrect, incomplete or misleading information to authorities in reply to a request can be fined up to EUR 7.5 million or, for an undertaking, 1% if higher. {#c-fines-info}
 For small and medium-sized enterprises (SMEs), including start-ups, each fine is capped at the lower of the two amounts. {#c-fines-sme}
 The 2026 amendment gives small mid-cap enterprises (SMCs) the lower cap for the two smaller tiers. {#c-fines-smc}
-The Commission itself may fine providers of general-purpose AI models up to 3% of their worldwide turnover or EUR 15 million, whichever is higher. {#c-fines-gpai}
+The Commission itself may fine providers of general-purpose AI models up to 3% of their worldwide turnover or EUR 15 million, whichever is higher, when it finds that they intentionally or negligently broke the rules, ignored a request or a measure, or refused access for an evaluation. {#c-fines-gpai}
 
 ## Amendments and implementing acts
 

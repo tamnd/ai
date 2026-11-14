@@ -7,10 +7,9 @@
 
 - id: c-published
   type: historical
-  text: "Regulation (EU) 2024/1689 was published in the L series of the Official Journal of the European Union dated 12.7.2024."
+  text: "Regulation (EU) 2024/1689 is in the L series of the Official Journal of the European Union of 12.7.2024."
   evidence:
     - {work: "eu-2024-regulation-2024-1689-ai-act", role: primary-document, locator: "the title page", stance: for}
-    - {work: "ep-oeil-2021-0106-cod-artificial-intelligence-act", role: primary-document, locator: "p. 1", stance: for}
 
 - id: c-in-force
   type: historical
@@ -81,7 +80,7 @@
 
 - id: c-scope-open-source
   type: normative-reported
-  text: "The Regulation does not apply to AI systems released under free and open-source licences, unless they are placed on the market or put into service as high-risk AI systems or fall under the prohibited practices or the transparency obligations."
+  text: "The Regulation does not apply to AI systems released under free and open-source licences, unless they are placed on the market or put into service as high-risk AI systems or as an AI system that falls under Article 5 or 50."
   evidence:
     - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 2(12)", stance: for}
 
@@ -376,7 +375,7 @@
 
 - id: c-signed
   type: historical
-  text: "Regulation (EU) 2024/1689 of the European Parliament and of the Council is dated 13 June 2024."
+  text: "Regulation (EU) 2024/1689 is the regulation of the European Parliament and of the Council of 13 June 2024."
   evidence:
     - {work: "eu-2024-regulation-2024-1689-ai-act", role: primary-document, locator: "the title page", stance: for}
 
@@ -431,10 +430,9 @@
 
 - id: c-omni-published
   type: historical
-  text: "Regulation (EU) 2026/1744 of the European Parliament and of the Council of 8 July 2026 was published in the L series of the Official Journal of the European Union dated 24.7.2026."
+  text: "Regulation (EU) 2026/1744 of the European Parliament and of the Council of 8 July 2026 is in the L series of the Official Journal of the European Union of 24.7.2026."
   evidence:
     - {work: "eu-2026-regulation-2026-1744-digital-omnibus-ai", role: primary-document, locator: "the title page", stance: for}
-    - {work: "ep-oeil-2025-0359-cod-digital-omnibus-ai", role: primary-document, locator: "p. 1", stance: for}
 
 - id: c-omni-in-force
   type: historical
@@ -444,7 +442,7 @@
 
 - id: c-apply-general
   type: normative-reported
-  text: "The Regulation applies from 2 August 2026, subject to listed exceptions."
+  text: "The Regulation shall apply from 2 August 2026, with exceptions for some chapters and articles."
   evidence:
     - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 113", stance: for}
 
@@ -564,7 +562,7 @@
 
 - id: c-fines-gpai
   type: normative-reported
-  text: "The Commission may impose on providers of general-purpose AI models fines not exceeding 3 % of their annual total worldwide turnover or EUR 15 000 000, whichever is higher."
+  text: "The Commission may impose on providers of general-purpose AI models fines not exceeding 3 % of their annual total worldwide turnover in the preceding financial year or EUR 15 000 000, whichever is higher, when it finds that the provider intentionally or negligently infringed the relevant provisions, failed to comply with a request for information or a requested measure, or failed to give the Commission access to the model for an evaluation."
   evidence:
     - {work: "eu-2024-regulation-2024-1689-ai-act", role: official-text, locator: "Article 101(1)", stance: for}
 
