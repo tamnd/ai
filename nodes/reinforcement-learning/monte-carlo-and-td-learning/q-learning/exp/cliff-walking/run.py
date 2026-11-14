@@ -1,123 +1,88 @@
 # SPDX-License-Identifier: MIT
 # Part of https://ai.tamnd.com/q-learning/ (ai://KDH97E).
-"""Compare online cliff-walking returns across independent random seeds.
+"""Cliff walking (Sutton and Barto 2018, Example 6.6): Q-learning against Sarsa, one arm and one seed per run.
 
-Run from this directory: python3 run.py
+aik exp run gives the arm, the seed and the configuration in job.json (spec 9.1), and this writes metrics.json.
 """
 
-import json
 import argparse
+import json
 import os
 import sys
-from pathlib import Path
 
 import numpy as np
 
-IMPL = Path(__file__).resolve().parents[2] / "impl" / "numpy"
-sys.path.insert(0, str(IMPL))
-from q_learning import epsilon_greedy, update  # noqa: E402
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(HERE, "..", "..", "impl", "numpy"))
+from q_learning import epsilon_greedy, greedy, q_learning_update, sarsa_update
+
+MOVES = ((-1, 0), (0, 1), (1, 0), (0, -1))  # up, right, down, left
 
 
-HEIGHT, WIDTH = 4, 12
-START = (HEIGHT - 1) * WIDTH
-GOAL = START + WIDTH - 1
-MOVES = ((-1, 0), (0, 1), (1, 0), (0, -1))
+def make_step(rows, cols, step_reward, cliff_reward):
+    """Return the step function of the grid. The start is the bottom left cell and the goal the bottom right one."""
+    start, goal = (rows - 1) * cols, rows * cols - 1
+
+    def step(s, a):
+        """Return (next state, reward, terminal, fell). A step into the cliff costs cliff_reward and goes to start."""
+        r, c = divmod(s, cols)
+        r = min(max(r + MOVES[a][0], 0), rows - 1)
+        c = min(max(c + MOVES[a][1], 0), cols - 1)
+        if r == rows - 1 and 0 < c < cols - 1:
+            return start, cliff_reward, False, True
+        s_next = r * cols + c
+        return s_next, step_reward, s_next == goal, False
+
+    return step, start, goal
 
 
-def step(state, action):
-    row, col = divmod(state, WIDTH)
-    dr, dc = MOVES[action]
-    row = min(max(row + dr, 0), HEIGHT - 1)
-    col = min(max(col + dc, 0), WIDTH - 1)
-    next_state = row * WIDTH + col
-    if row == HEIGHT - 1 and 1 <= col < WIDTH - 1:
-        return START, -100.0, False
-    return next_state, -1.0, next_state == GOAL
-
-
-def run_seed(seed, method, episodes=150, max_steps=1000, alpha=0.5, gamma=0.9, epsilon=0.1):
+def run(cfg, seed):
+    """Train one agent and return its metrics."""
     rng = np.random.default_rng(seed)
-    Q = np.zeros((HEIGHT * WIDTH, len(MOVES)))
-    returns = []
-    for _ in range(episodes):
-        state = START
-        action = epsilon_greedy(Q, state, epsilon, rng)
-        total = 0.0
-        for _ in range(max_steps):
-            next_state, reward, terminal = step(state, action)
-            total += reward
-            if method == "q_learning":
-                update(Q, state, action, reward, next_state, alpha, gamma, terminal)
+    rows, cols = cfg["grid"]["rows"], cfg["grid"]["cols"]
+    step, start, goal = make_step(rows, cols, cfg["rewards"]["step"], cfg["rewards"]["cliff"])
+    alpha, gamma, eps = cfg["alpha"], cfg["gamma"], cfg["epsilon"]
+    q = np.full((rows * cols, len(MOVES)), float(cfg["q_init"]))
+    returns, falls = [], []
+    for _ in range(cfg["episodes"]):
+        s, total, fell, done = start, 0.0, 0, False
+        a = epsilon_greedy(q, s, eps, rng)
+        while not done:
+            s_next, r, done, f = step(s, a)
+            total, fell = total + r, fell + f
+            a_next = epsilon_greedy(q, s_next, eps, rng)
+            if cfg["method"] == "sarsa":
+                q, _ = sarsa_update(q, s, a, r, s_next, a_next, alpha, gamma, terminal=done)
             else:
-                next_action = None if terminal else epsilon_greedy(Q, next_state, epsilon, rng)
-                target = reward if terminal else reward + gamma * Q[next_state, next_action]
-                Q[state, action] += alpha * (target - Q[state, action])
-            if terminal:
-                break
-            state = next_state
-            action = next_action if method == "sarsa" else epsilon_greedy(Q, state, epsilon, rng)
+                q, _ = q_learning_update(q, s, a, r, s_next, alpha, gamma, terminal=done)
+            s, a = s_next, a_next
         returns.append(total)
-    state = START
-    visited = []
-    for _ in range(max_steps):
-        visited.append(state)
-        if state == GOAL:
-            break
-        state = step(state, int(np.argmax(Q[state])))[0]
-    traverses_edge = all((HEIGHT - 2) * WIDTH + col in visited for col in range(1, WIDTH - 1))
-    reaches_goal = bool(visited and visited[-1] == GOAL)
-    return float(np.mean(returns[-50:])), reaches_goal, traverses_edge
-
-
-def run_job(job_path, output_dir):
-    with open(job_path) as f:
-        job = json.load(f)
-    config = job["config"]
-    seed = int(job["seed"])
-    method = job["arm"]
-    online_return, reaches_goal, edge_path = run_seed(
-        seed, method, episodes=config["episodes"], max_steps=config["max_steps_per_episode"],
-        alpha=config["alpha"], gamma=config["gamma"], epsilon=config["epsilon"])
-    os.makedirs(output_dir, exist_ok=True)
-    with open(Path(output_dir) / "metrics.json", "w") as f:
-        json.dump({"final": {"online_return": online_return,
-                              "greedy_reaches_goal_fraction": float(reaches_goal),
-                              "greedy_edge_path_fraction": float(edge_path)}, "device": "cpu"}, f)
+        falls.append(fell)
+    path, s = [start], start
+    while s != goal and len(path) <= 4 * rows * cols:
+        s = step(s, greedy(q, s, rng))[0]
+        path.append(s)
+    edge = {(rows - 2) * cols + c for c in range(cols)}
+    skip = cfg["skip_episodes"]
+    return {
+        "online_return": float(np.mean(returns[skip:])),
+        "greedy_path_length": float(len(path) - 1),
+        "greedy_edge_path": float(s == goal and edge <= set(path)),
+        "falls_per_episode": float(np.mean(falls[skip:])),
+    }
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--job")
-    parser.add_argument("--out")
-    args = parser.parse_args()
-    if args.job:
-        run_job(args.job, args.out)
-        return
-    seeds = range(30)
-    result = {
-        "task": "four-by-twelve cliff walking",
-        "episodes_per_seed": 150,
-        "last_episodes_averaged": 50,
-        "seeds": list(seeds),
-        "gamma": 0.9,
-        "alpha": 0.5,
-        "epsilon": 0.1,
-        "metric": "online return; higher is better",
-        "greedy_path": "after training, start at START and follow argmax(Q); edge_path means visiting every cell directly above the cliff",
-        "scope": "tabular Q-learning and Sarsa, this grid and these settings only; not a reproduction of Sutton and Barto Figure 6.4",
-    }
-    for method in ("q_learning", "sarsa"):
-        outcomes = [run_seed(seed, method) for seed in seeds]
-        values = [outcome[0] for outcome in outcomes]
-        result[method] = {
-            "mean": float(np.mean(values)),
-            "standard_error": float(np.std(values, ddof=1) / np.sqrt(len(values))),
-            "greedy_reaches_goal_fraction": float(np.mean([outcome[1] for outcome in outcomes])),
-            "greedy_edge_path_fraction": float(np.mean([outcome[2] for outcome in outcomes])),
-        }
-    output = Path(__file__).with_name("results.json")
-    output.write_text(json.dumps(result, indent=2) + "\n")
-    print(json.dumps(result, indent=2))
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--job", required=True)
+    ap.add_argument("--out", required=True)
+    args = ap.parse_args()
+    with open(args.job) as f:
+        job = json.load(f)
+    metrics = run(job["config"], int(job["seed"]))
+    os.makedirs(args.out, exist_ok=True)
+    with open(os.path.join(args.out, "metrics.json"), "w") as f:
+        json.dump({"final": metrics, "device": "cpu"}, f, indent=2)
 
 
 if __name__ == "__main__":

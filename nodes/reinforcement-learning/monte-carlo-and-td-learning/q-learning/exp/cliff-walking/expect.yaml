@@ -1,11 +1,13 @@
-claim: c-cliff-path-check
+claim: c-cliff
 primary:
-  metric: greedy_edge_path_fraction
+  metric: online_return
   at: final
-  compare: {treatment: q_learning, control: sarsa}
+  compare: {treatment: sarsa, control: q-learning}
   direction: higher
-  test: bootstrap-diff
-  expected: "Q-learning more often follows the row beside the cliff; Sarsa more often selects a safer route during continued epsilon-greedy behavior."
+  test: welch-t
+  alpha: 0.01
+  min_effect: {kind: relative, value: 0.1}
 secondary:
-  - {metric: online_return, compare: {treatment: sarsa, control: q_learning}, direction: higher, test: bootstrap-diff}
-report: {ci: 0.95}
+  - {metric: greedy_path_length, compare: {treatment: q-learning, control: sarsa}, direction: lower, test: bootstrap-diff, note: "the greedy path of Q-learning runs along the edge of the cliff, the shortest path of 13 steps"}
+  - {metric: falls_per_episode, compare: {treatment: q-learning, control: sarsa}, direction: higher, test: bootstrap-diff, note: "Q-learning falls off the cliff more often during learning, because of the epsilon-greedy action selection"}
+report: {ci: 0.95, bootstrap: {resamples: 10000, method: bca}}
