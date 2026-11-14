@@ -8,6 +8,7 @@ area: computer-vision/image-recognition
 level: core
 summary: >-
   The task of assigning an image one class, or a ranked list of classes, from a fixed set of categories, scored by whether the true class is among the top predictions.
+prereqs: [multiclass-classification@al, empirical-risk-minimization@al]
 related_to: [imagenet-ilsvrc-2012, imagenet]
 history:
   year: 2010
