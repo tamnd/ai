@@ -1,0 +1,136 @@
+# The claims of the alan-turing page (spec 07). The build computes the labels.
+# Turing (1936) is cited by the printed pages of the Proceedings; its sections 6 and 8 have no heading in the scan.
+- id: c-years
+  type: historical
+  text: "Alan Mathison Turing was born in London in 1912 and died in 1954."
+  evidence:
+    - {work: "hodges-2013-alan-turing-sep", role: review, locator: "Section 1", stance: for}
+
+- id: c-1936-founding
+  type: attributive
+  text: "Hodges writes that the paper On Computable Numbers gave a definition of computation and an absolute limitation on what computation could achieve."
+  evidence:
+    - {work: "hodges-2013-alan-turing-sep", role: original, locator: "Section 1", stance: for}
+
+- id: c-founded-ai
+  type: attributive
+  text: "Hodges writes that Turing's contention was that the computer, when properly programmed, could rival the brain, and that it founded the Artificial Intelligence program of coming decades."
+  evidence:
+    - {work: "hodges-2013-alan-turing-sep", role: original, locator: "Section 1", stance: for}
+
+- id: c-computable
+  type: definitional
+  text: "The computable numbers may be described briefly as the real numbers whose expressions as a decimal are calculable by finite means."
+  evidence:
+    - {work: "turing-1936-computable-numbers", role: original, locator: "p. 230", stance: for}
+
+- id: c-universal
+  type: attributive
+  text: "Turing describes the universal machine U, which, given the description of a machine M, will compute the same sequence as M."
+  evidence:
+    - {work: "turing-1936-computable-numbers", role: original, locator: "p. 242", stance: for}
+
+- id: c-entscheidungsproblem
+  type: mathematical
+  text: "Turing applies his results to show that the Hilbert Entscheidungsproblem can have no solution."
+  assumes: ["a general process is one that a computing machine of the paper can carry out", "the formulas are those of the functional calculus of Hilbert and Ackermann"]
+  evidence:
+    - {work: "turing-1936-computable-numbers", role: original, locator: "Section 11", stance: for}
+
+- id: c-imitation-game
+  type: attributive
+  text: "Turing proposes to replace the question Can machines think? by the imitation game, played with three people, a man, a woman and an interrogator."
+  evidence:
+    - {work: "turing-1950-computing-machinery-intelligence", role: original, locator: "Section 1", stance: for}
+
+- id: c-machine-takes-part
+  type: attributive
+  text: "Turing asks what will happen when a machine takes the part of A in this game, and whether the interrogator will decide wrongly as often."
+  evidence:
+    - {work: "turing-1950-computing-machinery-intelligence", role: original, locator: "Section 1", stance: for}
+
+- id: c-forecast
+  type: forecast
+  # Mind 59(236) is the issue of October 1950; the day is the first of the month.
+  as_of: "1950-10-01"
+  text: "Turing believes that in about fifty years' time computers will play the imitation game so well that an average interrogator will not have more than 70 per cent chance of making the right identification after five minutes of questioning."
+  evidence:
+    - {work: "turing-1950-computing-machinery-intelligence", role: original, locator: "Section 6", stance: for}
+
+- id: c-objections
+  type: attributive
+  text: "Turing considers contrary views on the main question, beginning with the Theological Objection, the Heads in the Sand Objection and the Mathematical Objection."
+  evidence:
+    - {work: "turing-1950-computing-machinery-intelligence", role: original, locator: "Section 6", stance: for}
+
+- id: c-lovelace
+  type: attributive
+  text: "Lady Lovelace's Objection is her statement that the Analytical Engine has no pretensions to originate anything."
+  evidence:
+    - {work: "turing-1950-computing-machinery-intelligence", role: original, locator: "Section 6", stance: for}
+
+- id: c-child-machine
+  type: attributive
+  text: "Instead of trying to produce a programme to simulate the adult mind, Turing proposes one which simulates the child's, subjected to an appropriate course of education."
+  evidence:
+    - {work: "turing-1950-computing-machinery-intelligence", role: original, locator: "Section 7", stance: for}
+
+- id: c-unorganised
+  type: historical
+  text: "In 1948 Turing suggested systems which could modify their own programs, including nets of logical components, unorganised machines, whose properties could be trained into a desired function."
+  evidence:
+    - {work: "hodges-2013-alan-turing-sep", role: review, locator: "Section 6", stance: for}
+
+- id: c-genetic
+  type: attributive
+  text: "Hodges writes that by the expression genetical or evolutionary search Turing anticipated the genetic algorithms."
+  evidence:
+    - {work: "hodges-2013-alan-turing-sep", role: original, locator: "Section 6", stance: for}
+
+- id: c-kings
+  type: historical
+  text: "Turing studied mathematics at King's College, Cambridge University, and was elected a Fellow of the college in 1935."
+  evidence:
+    - {work: "hodges-2013-alan-turing-sep", role: review, locator: "Section 1", stance: for}
+
+- id: c-princeton
+  type: historical
+  text: "The paper led Turing to Princeton for more advanced work in logic, and he chose to return to Britain in 1938."
+  evidence:
+    - {work: "hodges-2013-alan-turing-sep", role: review, locator: "Section 1", stance: for}
+
+- id: c-bletchley
+  type: historical
+  text: "From 1939 to 1945 Turing worked on the German enciphering machine Enigma at Bletchley Park, with a particular responsibility for reading the U-boat communications."
+  evidence:
+    - {work: "hodges-2013-alan-turing-sep", role: review, locator: "Section 1", stance: for}
+
+- id: c-npl
+  type: historical
+  text: "At the end of the war in Europe his plans for an electronic computer were commissioned by the National Physical Laboratory."
+  evidence:
+    - {work: "hodges-2013-alan-turing-sep", role: review, locator: "Section 1", stance: for}
+
+- id: c-manchester
+  type: historical
+  text: "In 1948 Turing moved to Manchester University to plan software for the pioneer computer there, and his 1950 paper was written there."
+  evidence:
+    - {work: "hodges-2013-alan-turing-sep", role: review, locator: "Section 1", stance: for}
+
+- id: c-reader
+  type: historical
+  text: "Turing was a Reader in the Theory of Computing."
+  evidence:
+    - {work: "hodges-2013-alan-turing-sep", role: review, locator: "Section 1", stance: for}
+
+- id: c-morphogenesis
+  type: historical
+  text: "From 1950 Turing worked on a mathematical theory of morphogenesis, based on the consequences of non-linear equations for chemical reaction and diffusion."
+  evidence:
+    - {work: "hodges-2013-alan-turing-sep", role: review, locator: "Section 8", stance: for}
+
+- id: c-frs
+  type: historical
+  text: "In 1951 Turing was elected a Fellow of the Royal Society for his 1936 achievement."
+  evidence:
+    - {work: "hodges-2013-alan-turing-sep", role: review, locator: "Section 1", stance: for}
