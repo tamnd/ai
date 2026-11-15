@@ -1,0 +1,561 @@
+# The claims of the layer normalization page (spec 07). The build computes the labels.
+
+# Setting and method
+
+- id: c-bn-limits
+  type: attributive
+  text: "Ba, Kiros and Hinton note that batch normalization cannot be applied to online learning tasks or to extremely large distributed models where the minibatches have to be small, and that for recurrent neural networks it appears to require different statistics for different time-steps."
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "Section 1", stance: for}
+
+- id: c-ln-idea
+  type: definitional
+  text: "Layer normalization computes the mean and variance used for normalization from all of the summed inputs to the neurons in a layer on a single training case."
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "the abstract", stance: for}
+
+- id: c-ln-definition
+  type: definitional
+  text: "Layer normalization computes the mean and the standard deviation over all the H hidden units in a layer; all the hidden units in a layer share the same normalization terms mu and sigma, but different training cases have different normalization terms."
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "Section 3", stance: for}
+
+- id: c-gain-bias
+  type: definitional
+  text: "Each neuron is given its own adaptive bias and gain which are applied after the normalization but before the non-linearity."
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "the abstract", stance: for}
+
+- id: c-init
+  type: attributive
+  text: "In the experiments of Ba, Kiros and Hinton, the adaptive gains are initialized to 1 and the biases to 0."
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "Section 6", stance: for}
+
+- id: c-batch-size-one
+  type: attributive
+  text: "Layer normalization does not impose any constraint on the size of a mini-batch and it can be used in the pure online regime with batch size 1."
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "Section 3", stance: for}
+
+- id: c-train-test
+  type: definitional
+  text: "Layer normalization performs exactly the same computation at training and test times."
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "the abstract", stance: for}
+
+- id: c-no-dependencies
+  type: attributive
+  text: "Layer normalization does not introduce any new dependencies between training cases."
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "Section 1", stance: for}
+
+- id: c-batch-independent
+  type: mathematical
+  text: "The output of layer normalization for one example depends only on that example, so its derivative with respect to any other example of the batch is zero, and with no stored state the function at test time is the function in training."
+  assumes: ["the statistics are over all the features of one example and over nothing else"]
+  derivation: reductions
+
+# Recurrent networks
+
+- id: c-rnn-per-step
+  type: definitional
+  text: "Layer normalization is applied to recurrent neural networks by computing the normalization statistics separately at each time step."
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "the abstract", stance: for}
+
+- id: c-rnn-shared
+  type: definitional
+  text: "In a layer normalized recurrent network, the normalization terms depend only on the summed inputs to a layer at the current time-step, and there is only one set of gain and bias parameters shared over all time-steps."
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-bn-rnn-long
+  type: attributive
+  text: "Applying batch normalization to recurrent networks with separate statistics for each time step is problematic if a test sequence is longer than any of the training sequences."
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-rnn-explode
+  type: attributive
+  text: "In a standard RNN, there is a tendency for the average magnitude of the summed inputs to the recurrent units to either grow or shrink at every time-step, leading to exploding or vanishing gradients."
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-rnn-stable
+  type: attributive
+  text: "In a layer normalized RNN, the normalization terms make it invariant to re-scaling all of the summed inputs to a layer, which results in much more stable hidden-to-hidden dynamics."
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-lstm
+  type: definitional
+  text: "In the layer normalized LSTM, layer normalization is applied separately to W_h h_{t-1} and to W_x x_t, and to the cell state c_t before the tanh."
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "p. 13", stance: for}
+
+# Transformers
+
+- id: c-vaswani-post-ln
+  type: definitional
+  text: "The Transformer employs a residual connection around each of the two sub-layers, followed by layer normalization; that is, the output of each sub-layer is LayerNorm(x + Sublayer(x))."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-xiong-post-ln
+  type: definitional
+  text: "In the Post-LN Transformer, the order is self-attention (FFN) sub-layer, then residual connection, then layer normalization."
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-pre-ln
+  type: definitional
+  text: "The Pre-LN Transformer puts the layer normalization inside the residual connection and places it before all other non-linear transformations, with a final layer normalization right before the prediction."
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "Section 3.3", stance: for}
+
+- id: c-llama
+  type: attributive
+  text: "To improve the training stability, LLaMA normalizes the input of each transformer sub-layer, instead of normalizing the output, and uses the RMSNorm normalizing function introduced by Zhang and Sennrich (2019)."
+  evidence:
+    - {work: "touvron-2023-llama", role: original, locator: "Section 2.2", stance: for}
+
+# Derivation: the backward pass
+
+- id: c-ln-backward
+  type: mathematical
+  text: "With delta the gradient of the loss with respect to the output, u = g times delta, s the square root of the variance plus epsilon and a-hat the normalized vector, the gradient for the gain is delta times a-hat, the gradient for the bias is delta, and the gradient for the summed inputs is 1/(H s) times (H u minus the sum of u times the ones vector minus a-hat times the dot product of a-hat and u)."
+  assumes: ["the mean and the variance are computed from the same vector as the output", "the gradient flows through the mean and the variance", "H >= 2 and the variance plus epsilon is positive"]
+  derivation: ln-backward
+
+- id: c-ln-grad-sum-orthogonal
+  type: mathematical
+  text: "The input gradient of layer normalization sums to zero over the units for every epsilon, and when epsilon is 0 it is also orthogonal to the normalized vector a-hat."
+  assumes: ["the gradient flows through the mean and the variance", "the variance plus epsilon is positive"]
+  derivation: ln-backward
+
+- id: c-ln-jacobian-norm
+  type: mathematical
+  text: "For H >= 3, the spectral norm of the Jacobian of layer normalization is 1/sqrt(v + epsilon); when epsilon is 0 it is sqrt(H) divided by the norm of a minus its mean, and the Jacobian is 1/sigma times the orthogonal projection onto the complement of the span of the ones vector and a-hat."
+  assumes: ["H >= 3", "the variance plus epsilon is positive"]
+  derivation: ln-backward
+
+- id: c-ln-sphere
+  type: mathematical
+  text: "When epsilon is 0, the normalized vector a-hat has mean zero and Euclidean norm sqrt(H), so before the gain and bias every output lies on a sphere of radius sqrt(H)."
+  assumes: ["epsilon is 0", "the variance is positive"]
+  derivation: ln-backward
+
+- id: c-xiong-lemma3
+  type: attributive
+  text: "Xiong et al. state in Lemma 3 that for x in R^d, ||J_LN(x)||_2 = O(√d/||x||_2), in which J_LN(x) = ∂LN(x)/∂x, and that the scale of the hidden states highly relates to the scale of the gradient in the architectures using layer normalization."
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "Section 3.3", stance: for}
+
+# Derivation: invariances
+
+- id: c-matrix-invariance
+  type: mathematical
+  text: "With epsilon 0 and no bias before the normalization, replacing the weight matrix W by delta W + 1 gamma^T for delta > 0 and any vector gamma does not change the output of layer normalization."
+  assumes: ["epsilon is 0", "the summed inputs are a = W x, with no bias added before the normalization", "delta > 0"]
+  derivation: invariances
+
+- id: c-case-invariance
+  type: mathematical
+  text: "With epsilon 0 and no bias before the normalization, scaling a single training case x by its own delta > 0 does not change the output of layer normalization."
+  assumes: ["epsilon is 0", "the summed inputs are a = W x, with no bias added before the normalization", "delta > 0"]
+  derivation: invariances
+
+- id: c-not-vector-invariant
+  type: mathematical
+  text: "Layer normalization is not invariant to scaling a single weight vector: with W the 3 by 3 identity and x = (1, 2, 3), doubling the first row changes the output from (-1.2247, 0, 1.2247) to (-0.7071, -0.7071, 1.4142)."
+  assumes: ["epsilon is 0", "gain 1 and bias 0"]
+  derivation: invariances
+
+- id: c-not-data-recentering
+  type: mathematical
+  text: "Layer normalization is not invariant to re-centering the dataset: with W the identity, the shift c = (1, 0, 0) moves x = (1, 2, 3) to (2, 2, 3) and changes the output."
+  assumes: ["epsilon is 0", "gain 1 and bias 0"]
+  derivation: invariances
+
+- id: c-ba-table1
+  type: attributive
+  text: "Ba, Kiros and Hinton list layer normalization as invariant to weight matrix re-scaling, weight matrix re-centering, dataset re-scaling and single training case re-scaling, but not to weight vector re-scaling or dataset re-centering."
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "Table 1", stance: for}
+
+- id: c-input-only
+  type: attributive
+  text: "If normalization is only applied to the input before the weights, the model will not be invariant to re-scaling and re-centering of the weights."
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "Section 5.1", stance: for}
+
+- id: c-weight-gradient
+  type: mathematical
+  text: "The gradient with respect to delta W + 1 gamma^T is 1/delta times the gradient with respect to W, the columns of the weight gradient sum to zero, and with epsilon 0 the weight gradient is orthogonal to W, so a step of plain gradient descent keeps the column sums of W and grows its squared Frobenius norm by eta^2 times the squared norm of the gradient."
+  assumes: ["epsilon is 0", "the summed inputs are a = W x, with no bias added before the normalization", "delta > 0"]
+  derivation: invariances
+
+- id: c-implicit-lr
+  type: attributive
+  text: "Ba, Kiros and Hinton note that the normalization scalar sigma can implicitly reduce learning rate and makes learning more stable."
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "Section 5.2", stance: for}
+
+- id: c-weight-norm-lr
+  type: attributive
+  text: "Ba, Kiros and Hinton argue that the norm of the weight vector effectively controls the learning rate, so that it is harder to change the orientation of the weight vector with large norm."
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "Section 5.2.2", stance: for}
+
+- id: c-gain-robust
+  type: attributive
+  text: "Ba, Kiros and Hinton find that learning the magnitude of the incoming weights, the gain, depends only on the magnitude of the prediction error, and is more robust to the scaling of the input."
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "Section 5.2.2", stance: for}
+
+# Derivation: RMSNorm
+
+- id: c-rms-definition
+  type: definitional
+  text: "RMSNorm regularizes the summed inputs according to the root mean square, a_i over RMS(a) times g_i with RMS(a) the square root of the mean of a_i squared, on the hypothesis that the re-centering invariance in LayerNorm is dispensable."
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "Section 4", stance: for}
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "the abstract", stance: for}
+
+- id: c-zhang-equal
+  type: attributive
+  text: "Zhang and Sennrich note that when the mean of summed inputs is zero, RMSNorm is exactly equal to LayerNorm."
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "Section 4", stance: for}
+
+- id: c-rms-equals-ln
+  type: mathematical
+  text: "With the same epsilon and no bias, layer normalization of a is RMSNorm of a minus its mean times the ones vector."
+  assumes: ["the root mean square is computed from the same vector as the output"]
+  derivation: rmsnorm
+
+- id: c-rms-invariance
+  type: mathematical
+  text: "With epsilon 0, RMSNorm is invariant to scaling the weight matrix and to scaling the input by any delta > 0."
+  assumes: ["epsilon is 0 for the invariances and the sphere", "delta > 0"]
+  derivation: rmsnorm
+
+- id: c-rms-not-recentering
+  type: mathematical
+  text: "RMSNorm is not invariant to re-centering: (1, -1) normalizes to (1, -1) but (2, 0) normalizes to (sqrt(2), 0), while layer normalization gives (1, -1) for both."
+  assumes: ["epsilon is 0", "gain 1"]
+  derivation: rmsnorm
+
+- id: c-zhang-not-recentering
+  type: attributive
+  text: "Zhang and Sennrich note that RMSNorm is invariant to both weight matrix and input re-scaling, but not invariant to all re-centering operations."
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-rms-backward
+  type: mathematical
+  text: "With r the square root of the mean square plus epsilon and a-hat = a/r, the input gradient of RMSNorm is 1/r times (u minus a-hat times the dot product of a-hat and u over n), the spectral norm of its Jacobian is 1/r for n >= 2, and with epsilon 0 the Jacobian is the matrix R of Eq. 9 of Zhang and Sennrich, divided by delta when W is scaled by delta."
+  assumes: ["the root mean square is computed from the same vector as the output", "n >= 2"]
+  derivation: rmsnorm
+
+- id: c-rms-sphere
+  type: mathematical
+  text: "With epsilon 0, the RMSNorm output before the gain has Euclidean norm sqrt(n), so it lies on a sphere of radius sqrt(n) that need not have mean zero."
+  assumes: ["epsilon is 0 for the invariances and the sphere"]
+  derivation: rmsnorm
+
+# Derivation: group normalization
+
+- id: c-gn-g1
+  type: mathematical
+  text: "Group normalization with one group is layer normalization over (C, H, W), with the per-element gain and bias of layer normalization set to the per-channel gain and bias of group normalization."
+  assumes: ["the statistics are over all the features of one example", "the gain and bias of layer normalization are constant over the spatial positions of each channel"]
+  derivation: reductions
+
+- id: c-wu-ln
+  type: definitional
+  text: "Wu and He describe layer normalization as computing mu and sigma along the (C, H, W) axes for each sample."
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "Section 3", stance: for}
+
+- id: c-wu-g1
+  type: attributive
+  text: "Wu and He note that GN becomes LN if the group number is G = 1, and that LN assumes all channels in a layer make similar contributions, which is less valid with the presence of convolutions."
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "Section 4.1", stance: for}
+
+# Cost
+
+- id: c-zhang-speed
+  type: empirical
+  text: "RMSNorm achieves comparable performance against LayerNorm but reduces the running time by 7% to 64% on different models."
+  scope: &zhang
+    models: "RNNSearch, Transformer and other models with LayerNorm, against the same models with RMSNorm"
+    data: [wmt14-en-de]
+    scale: "the model sizes of the paper"
+    setting: "translation and other tasks, in TensorFlow, Theano and PyTorch"
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "the abstract", stance: for}
+
+- id: c-zhang-overhead
+  type: empirical
+  text: "When the Baseline training loss arrives at 7.0, the loss of LayerNorm reaches 5.4 after the same number of training steps, but only 5.9 after the same training time."
+  scope: &rnnsearch
+    models: "GRU-based RNNSearch with and without LayerNorm"
+    data: [wmt14-en-de]
+    scale: "one model size"
+    setting: "English-German translation, training loss against steps and against time"
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "Figure 1", stance: for}
+
+# Evidence
+
+- id: c-oe-speedup
+  type: empirical
+  text: "On the order-embedding model with layer normalization applied to the GRU, layer normalization offers a per-iteration speedup across all metrics and converges to its best validation model in 60% of the time it takes the baseline model to do so."
+  scope: &oe
+    models: "order-embedding model with a GRU sentence encoder and VGG image features, with and without layer normalization"
+    data: [mscoco]
+    scale: "the protocol of Vendrov et al. (2016), 5 test sets of 1000 images and 5000 captions"
+    setting: "image and caption retrieval, Recall@K, trained with Adam"
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "Section 6.1", stance: for}
+
+- id: c-oe-table
+  type: empirical
+  text: "On the test sets, caption retrieval R@1 goes from 46.6 for the order-embedding model to 48.5 with layer normalization, and image retrieval R@1 from 37.8 to 38.9."
+  scope: *oe
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "Table 2", stance: for}
+
+- id: c-reader
+  type: empirical
+  text: "On a unidirectional attentive reader on the CNN corpus, with layer normalization only within the LSTM, layer normalization not only trains faster but converges to a better validation result over both the baseline and BN variants."
+  scope: &reader
+    models: "unidirectional attentive reader with an LSTM, against recurrent batch normalization"
+    data: [cnn-question-answering]
+    scale: "passages limited to 4 sentences, the protocol of Cooijmans et al. (2016)"
+    setting: "question answering by filling in a blank, validation error rate"
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "Section 6.2", stance: for}
+
+- id: c-reader-init
+  type: empirical
+  text: "With layer normalization at 1.0 and 0.1 scale initialization, the former model performed significantly better, so layer normalization is not sensitive to the initial scale in the same way that recurrent BN is."
+  scope: *reader
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "Section 6.2", stance: for}
+
+- id: c-mnist
+  type: empirical
+  text: "On permutation invariant MNIST, with layer normalization on the fully-connected hidden layers but not the last softmax layer, layer normalization is robust to the batch-sizes and exhibits a faster training convergence comparing to batch normalization that is applied to all layers."
+  scope:
+    models: "feed-forward networks with layer normalization or batch normalization"
+    data: [mnist]
+    scale: "55000 training data points"
+    setting: "permutation invariant classification, trained with Adam"
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "Section 6.6", stance: for}
+
+- id: c-conv
+  type: empirical
+  text: "In preliminary experiments with convolutional neural networks, layer normalization offers a speedup over the baseline model without normalization, but batch normalization outperforms the other methods."
+  scope:
+    models: "convolutional neural networks with no normalization, layer normalization or batch normalization"
+    data: [unspecified]
+    scale: "preliminary experiments, not detailed in the paper"
+    setting: "image classification"
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "Section 6.7", stance: for}
+
+- id: c-wu-table
+  type: empirical
+  text: "With ResNet-50 on ImageNet at 32 images per GPU, the validation error is 23.6 with BN, 25.3 with LN and 24.1 with GN."
+  scope:
+    models: "ResNet-50 with BN, LN, IN or GN"
+    data: [imagenet]
+    scale: "32 images per GPU"
+    setting: "ImageNet classification, validation error"
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "Table 1", stance: for}
+
+- id: c-warmup-numbers
+  type: empirical
+  text: "Without the warm-up stage, the BLEU score of the Post-LN Transformer trained with Adam can only achieve 8.45, against around 34 with the warm-up stage."
+  scope: &iwslt
+    models: "Post-LN Transformer"
+    data: [iwslt14-de-en]
+    scale: "the IWSLT14 setting of the paper"
+    setting: "German-to-English machine translation, BLEU"
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-warmup-500
+  type: empirical
+  text: "With Twarmup = 500, the Post-LN Transformer reaches BLEU scores of 31.16 and 2.77 for lrmax 5e-4 and 1e-3."
+  scope: *iwslt
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-theorem1
+  type: attributive
+  text: "Xiong et al. prove in Theorem 1 that at initialization the gradient of the last FFN layer of the Post-LN Transformer is of order O(d sqrt(ln d)), independent of L, and that of the Pre-LN Transformer of order O(d sqrt(ln d / L))."
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "Section 3.3", stance: for}
+
+- id: c-lemma2
+  type: attributive
+  text: "By Lemma 2 of Xiong et al., the scale of the hidden states in the Post-LN Transformer keeps to be the same in expectation while the scale of the hidden states in the Pre-LN Transformer grows linearly along with the depth."
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "Section 3.3", stance: for}
+
+- id: c-grad-norm
+  type: empirical
+  text: "When the number of layers grows, the gradient norm of W2 in the final FFN sub-layer remains in the Post-LN Transformer, around 1.6, and decreases in the Pre-LN Transformer."
+  scope:
+    models: "Post-LN and Pre-LN Transformers at initialization"
+    data: [iwslt14-de-en]
+    scale: "several numbers of layers"
+    setting: "gradient norms at initialization"
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "Section 3.4", stance: for}
+
+- id: c-preln-no-warmup
+  type: empirical
+  text: "Pre-LN Transformers without the warm-up stage can reach comparable results with baselines while requiring significantly less training time and hyper-parameter tuning."
+  scope: &xiong
+    models: "Pre-LN Transformer without warm-up, against Post-LN Transformer with warm-up"
+    data: [iwslt14-de-en, wmt14-en-de]
+    scale: "the translation and BERT models of the paper"
+    setting: "machine translation and BERT pre-training"
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "the abstract", stance: for}
+
+- id: c-preln-checkpoints
+  type: empirical
+  text: "On the IWSLT14 De-En task, the 9-th checkpoint of the Pre-LN Transformer achieves nearly the same performance as the 15-th checkpoint of the Post-LN Transformer."
+  scope: *xiong
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-bert
+  type: empirical
+  text: "In BERT pre-training, the Pre-LN model reaches a similar validation loss to the Post-LN model, which suggests there is a 40% speed-up rate."
+  scope: *xiong
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-liu-settings
+  type: empirical
+  text: "Pre-LN converges in all 15 settings, and Post-LN diverges in 7 out of 15 settings; when Post-LN converges, it outperforms Pre-LN in 7 out of 8 settings."
+  scope:
+    models: "Post-LN and Pre-LN Transformers of several depths"
+    data: [wmt14-en-de, wmt14-en-fr, iwslt14-de-en]
+    scale: "15 settings of depth and data"
+    setting: "machine translation"
+  evidence:
+    - {work: "liu-2020-difficulty-training-transformers", role: original, locator: "p. 3", stance: for}
+
+- id: c-zhang-steps
+  type: empirical
+  text: "Both LayerNorm and RMSNorm outperform the Baseline by accelerating model convergence: they reduce the number of training steps until convergence by about 50%."
+  scope: *rnnsearch
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "Section 6.1", stance: for}
+
+- id: c-zhang-tf
+  type: empirical
+  text: "RNN with LayerNorm in Tensorflow is slower than the Baseline by about 67%, and RMSNorm improves upon LayerNorm by about 25%."
+  scope: *rnnsearch
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "Section 6.1", stance: for}
+
+- id: c-zhang-transformer
+  type: empirical
+  text: "Normalization is important for the Transformer, without which training fails; RMSNorm achieves BLEU scores comparable to LayerNorm, and yields a speedup of 7% to 9%."
+  scope:
+    models: "Transformer with no normalization, LayerNorm or RMSNorm"
+    data: [wmt14-en-de]
+    scale: "one model size"
+    setting: "English-German translation, BLEU and training time"
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "Section 6.1", stance: for}
+
+# Limitations
+
+- id: c-conv-boundary
+  type: attributive
+  text: "In convolutional networks, the hidden units whose receptive fields lie near the boundary of the image are rarely turned on and thus have very different statistics from the rest of the hidden units, and further research is needed to make layer normalization work well in ConvNets."
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "Section 6.7", stance: for}
+
+- id: c-postln-large-grad
+  type: attributive
+  text: "For the Post-LN Transformer, the expected gradients of the parameters near the output layer are large, so using a large learning rate on those gradients makes the training unstable."
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "the abstract", stance: for}
+
+- id: c-warmup-crucial
+  type: attributive
+  text: "Xiong et al. state that the learning rate warm-up stage is crucial to the final performance but will slow down the optimization and bring more hyper-parameter tunings."
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "the abstract", stance: for}
+
+- id: c-liu-root
+  type: attributive
+  text: "Liu et al. find that unbalanced gradients are not the root cause of the instability, and that a heavy dependency on its residual branch makes training unstable, since it amplifies small parameter perturbations."
+  evidence:
+    - {work: "liu-2020-difficulty-training-transformers", role: original, locator: "p. 1", stance: for}
+
+- id: c-liu-dependency
+  type: attributive
+  text: "A Post-LN layer has a heavier dependency on its residual branch than a Pre-LN layer."
+  evidence:
+    - {work: "liu-2020-difficulty-training-transformers", role: original, locator: "p. 2", stance: for}
+
+- id: c-liu-light
+  type: attributive
+  text: "A light dependency on the residual branch limits the model potential and leads to inferior trained models."
+  evidence:
+    - {work: "liu-2020-difficulty-training-transformers", role: original, locator: "p. 1", stance: for}
+
+- id: c-no-softmax
+  type: attributive
+  text: "Input re-scaling invariance is unnecessary for the logit outputs where the prediction confidence is determined by the scale of the logits, so layer normalization is not applied to the last softmax layer."
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "Section 6.6", stance: for}
+
+# Variants
+
+- id: c-rmsnorm-variant
+  type: attributive
+  text: "RMSNorm, introduced by Zhang and Sennrich (2019), is the normalizing function used in LLaMA."
+  evidence:
+    - {work: "touvron-2023-llama", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-prms
+  type: definitional
+  text: "Partial RMSNorm, or pRMSNorm, estimates the RMS from p% of the summed inputs, and p is set to 6.25% for all the following experiments."
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "Section 6.1", stance: for}
+
+# History
+
+- id: c-hist-ba
+  type: historical
+  text: "Jimmy Lei Ba, Jamie Ryan Kiros and Geoffrey E. Hinton posted Layer Normalization as arXiv 1607.06450v1 on 21 Jul 2016."
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-zhang
+  type: historical
+  text: "Biao Zhang and Rico Sennrich posted Root Mean Square Layer Normalization as arXiv 1910.07467v1 on 16 Oct 2019."
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-xiong
+  type: historical
+  text: "Xiong et al. posted On Layer Normalization in the Transformer Architecture as arXiv 2002.04745v2 on 29 Jun 2020."
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "the title page", stance: for}
