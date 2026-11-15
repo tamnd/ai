@@ -34,12 +34,12 @@ The English models come in two sizes, BERT-Base with {fact:bert/params.total.ber
 
 BERT stands for Bidirectional Encoder Representations from Transformers. {#c-name}
 Devlin et al. designed it to pre-train deep bidirectional representations from unlabeled text, by conditioning on both the left and the right context in all layers.
-They write that the pre-trained model can be fine-tuned with just one additional output layer to give models for a wide range of tasks, such as question answering and language inference, without substantial task-specific changes to the architecture. {#c-finetune}
+They write that adding a single output layer and fine-tuning is enough to turn the pre-trained model into a model for many tasks, question answering and language inference among them, and that the architecture hardly needs to change from task to task. {#c-finetune}
 
 Using BERT has two steps. {#c-two-steps}
-In pre-training, the model learns from unlabeled data on two pre-training tasks.
-In fine-tuning, the model starts from the pre-trained parameters, and all of the parameters are trained on labeled data from one downstream task.
-Each task gets its own fine-tuned model, even though all start from the same pre-trained parameters.
+Pre-training uses text with no labels and two training objectives.
+Fine-tuning copies those weights as its starting point and then updates every one of them on the labeled examples of a single downstream task.
+So there is one fine-tuned model per task, and the models differ only in where fine-tuning took them.
 
 Google open sourced BERT in November 2018, with source code built on TensorFlow and a number of pre-trained models. {#c-open-sourced}
 It wrote that with this release anyone could train their own question answering system in about 30 minutes on a single Cloud TPU, or in a few hours on a single GPU. {#c-30-minutes}
@@ -82,16 +82,16 @@ The multilingual models share one WordPiece vocabulary of 110k tokens and do not
 
 ## Training
 
-**Masked language modelling.** A standard language model can only be trained left to right or right to left, since with context on both sides each word could see itself through the layers.
+**Masked language modelling.** An ordinary language model reads in one direction, left to right or right to left; if every layer saw the context on both sides, each word could see itself indirectly.
 BERT instead masks 15% of the WordPiece tokens of each sequence at random and predicts only the masked tokens, a procedure also known as a Cloze task. {#c-mlm}
-The [MASK] token never appears in fine-tuning, so this creates a mismatch between pre-training and fine-tuning. {#c-mismatch}
+The [MASK] token never appears in fine-tuning, so pre-training and fine-tuning see different inputs. {#c-mismatch}
 To reduce it, a chosen token becomes [MASK] 80% of the time, a random token 10% of the time, and stays unchanged 10% of the time. {#c-80-10-10}
 The model then predicts the original token from its final hidden vector, with a cross-entropy loss.
 
 **Next sentence prediction.** For each pre-training pair, sentence B is the sentence that actually follows A half of the time (IsNext) and a random sentence from the corpus the other half (NotNext). {#c-nsp}
 The model predicts the label from the final hidden vector of [CLS], and the final model reaches 97% to 98% accuracy on this task. {#c-nsp-acc}
-The authors add that this vector is not a meaningful sentence representation without fine-tuning, because it was trained for next sentence prediction. {#c-cls-meaning}
-The training loss is the sum of the mean masked LM likelihood and the mean next sentence prediction likelihood. {#c-loss}
+The authors add that, before fine-tuning, this vector does not mean much as a summary of the sentence, since its training target was next sentence prediction. {#c-cls-meaning}
+The pre-training loss is the sum of two means: that of the masked LM likelihood and that of the next sentence prediction likelihood. {#c-loss}
 
 **Pre-training.** BERT was trained with batches of 256 sequences of 512 tokens, given in the paper as {fact:bert/training.tokens_per_batch} per batch, for {fact:bert/training.steps} steps, about 40 epochs over the 3.3 billion words of the corpus. {#c-batch}
 The optimizer was Adam, with a learning rate of 1e-4, β1 = 0.9, β2 = 0.999, an L2 weight decay of 0.01, warmup over the first 10,000 steps and then linear decay. {#c-optim}
@@ -179,7 +179,7 @@ The training data were not released with the models: the README describes Wikipe
 
 The paper has no section on safety, and Google's release notes do not report any safety evaluation.
 Later work tested BERT for bias.
-May et al. extend the Word Embedding Association Test from words to sentences, test sentence encoders such as ELMo and BERT for social biases, and find mixed results, with patterns that suggest the test's assumptions may not hold in general. {#c-may}
+May et al. extend the Word Embedding Association Test from words to sentences, test sentence encoders such as ELMo and BERT for social biases, and find mixed results, with patterns that cast doubt on whether the assumptions of the test hold in general. {#c-may}
 
 The pre-training data have their own problems.
 Bandy and Vincent find evidence that the BookCorpus likely violates copyright restrictions for many books, contains thousands of duplicated books and is skewed in genre. {#c-bandy}
@@ -220,7 +220,7 @@ Niven and Kao report that BERT's peak of 77% on the Argument Reasoning Comprehen
 ## Lineage
 
 Before BERT, Devlin et al. saw two ways to use pre-trained language representations: as features in a task-specific model, as in ELMo, or by fine-tuning all the parameters, as in OpenAI GPT. {#c-strategies}
-ELMo's word vectors are learned functions of the internal states of a deep bidirectional language model pre-trained on a large corpus. {#c-elmo}
+In ELMo, the vector of a word is a learned combination of the hidden states of a deep bidirectional language model, which was first pre-trained on a large corpus. {#c-elmo}
 BERT differs from GPT, which pre-trains a left-to-right language model, and from ELMo, which concatenates separately trained left-to-right and right-to-left models. {#c-contrast}
 BERT fine-tunes like GPT, and it is bidirectional in every layer, which ELMo is only at its output.
 Its main benchmark, GLUE, is a collection of tools for evaluating models across a diverse set of existing language understanding tasks. {#c-glue}
