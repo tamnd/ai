@@ -30,20 +30,20 @@ McCarthy wrote in 2001 that the proposal was, so far as he knew, the first use o
 ## What happened
 
 The proposal asked for "a 2 month, 10 man study of artificial intelligence" during the summer of 1956 at Dartmouth College. {#c-two-month}
-The study was to proceed on the conjecture that every aspect of learning or any other feature of intelligence can in principle be so precisely described that a machine can be made to simulate it. {#c-conjecture}
+The study was to proceed "on the basis of the conjecture that every aspect of learning or any other feature of intelligence can in principle be so precisely described that a machine can be made to simulate it". {#c-conjecture}
 Its topics included automatic computers, how a computer can be programmed to use a language, neuron nets, self-improvement, abstractions, and randomness and creativity. {#c-topics}
 
 The proposal asked the Rockefeller Foundation for financial support and estimated the expenses at $13,500. {#c-budget}
 Grace Solomonoff writes that the four organizers sent the proposal to the Foundation on 2 September 1955. {#c-sent}
 She reports that the Foundation gave about half the requested funding. {#c-half}
 
-Grace Solomonoff reports that the participants came at different times, mostly for much shorter times. {#c-short-times}
-She writes that the workshop is often said to have run for six weeks, but that Ray Solomonoff's notes give roughly eight weeks, from about 18 June to 17 August. {#c-duration}
+Grace Solomonoff reports that the participants did not arrive together, and that most of them stayed far less than the whole summer. {#c-short-times}
+She writes that six weeks is the length usually given, but that Ray Solomonoff's notes give roughly eight weeks, from about 18 June to 17 August. {#c-duration}
 
 Grace Solomonoff writes that so many people came for short times, or cancelled, that there has been considerable confusion about who attended. {#c-lists-differ}
 Bringsjord and Govindarajulu write that ten thinkers attended, among them McCarthy, Shannon, Minsky, Arthur Samuel, Ray Solomonoff, Oliver Selfridge, Allen Newell and Herbert Simon. {#c-sep-ten}
 Grace Solomonoff gives a list of 20 attendees from Ray Solomonoff's notes. {#c-ray-list}
-She writes that Ray Solomonoff, Minsky and McCarthy were the only three who stayed for the full eight weeks. {#c-full-eight}
+She writes that Ray Solomonoff, Minsky and McCarthy were the only three present for all eight weeks. {#c-full-eight}
 
 ## Outcomes and significance
 

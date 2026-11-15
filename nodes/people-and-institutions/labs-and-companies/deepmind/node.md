@@ -53,10 +53,10 @@ The edges to the works are generated; the note below gives four landmark works i
 Mnih and colleagues (2015), at Google DeepMind in London, report a deep Q-network that receives only the pixels and the game score as inputs. {#c-dqn}
 They report a level comparable to a professional human games tester across 49 Atari games, with the same algorithm, network architecture and hyperparameters. {#c-dqn-49}
 
-Silver and colleagues (2016) describe AlphaGo, which combines Monte Carlo simulation with value and policy networks. {#c-alphago}
-They report that AlphaGo won 99.8% of games against other Go programs and defeated the human European Go champion by 5 games to 0. {#c-alphago-results}
+Silver and colleagues (2016) describe AlphaGo, a Go program in which a policy network and a value network guide Monte Carlo tree search. {#c-alphago}
+They report a 99.8% win rate against other Go programs, and a 5 to 0 win over the European Go champion. {#c-alphago-results}
 
-Jumper and colleagues (2021), at DeepMind in London, describe AlphaFold as the first computational method that can regularly predict protein structures with atomic accuracy even when no similar structure is known. {#c-alphafold}
+Jumper and colleagues (2021), at DeepMind in London, describe AlphaFold as "the first computational method that can regularly predict protein structures with atomic accuracy even in cases in which no similar structure is known". {#c-alphafold}
 They validated it in the 14th Critical Assessment of protein Structure Prediction (CASP14). {#c-casp14}
 
 The Gemini report of December 2023, by the Gemini Team at Google, introduces a family of multimodal models across image, audio, video and text, in Ultra, Pro and Nano sizes. {#c-gemini}
