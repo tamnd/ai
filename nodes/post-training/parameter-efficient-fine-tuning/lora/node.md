@@ -136,7 +136,7 @@ Had $B$ been zero, as at initialization, the gradient for $A$ would be zero.
 ## Hyperparameters
 
 The rank $r$ sets the size and the reach of the update.
-On GPT-3 175B, a rank as small as one suffices for adapting both $W_q$ and $W_v$ on WikiSQL and MultiNLI, while adapting $W_q$ alone needs a larger $r$. {#c-rank-one}
+On GPT-3 175B, when the adapters go on both $W_q$ and $W_v$, rank 1 is already enough on WikiSQL and MultiNLI, while adapting $W_q$ alone needs a larger $r$. {#c-rank-one}
 Large shifts need more: Biderman et al. (2024) recommend rank 256 on all modules for code when memory allows.
 
 Which matrices to adapt matters as much as the rank.
