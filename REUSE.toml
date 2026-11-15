@@ -16,7 +16,7 @@ SPDX-FileCopyrightText = "The ai contributors"
 SPDX-License-Identifier = "Apache-2.0"
 
 [[annotations]]
-path = ["nodes/**/claims.yaml", "nodes/**/facts.yaml", "nodes/**/shapes.yaml", "nodes/**/contract.yaml", "nodes/**/releases.yaml", "nodes/**/vectors/**", "cards/**", "registers/**", "topics/**", "manifests/**", "prov/**", "reviews/**", "CITATION.cff", "REUSE.toml", ".gitignore", ".github/**", "**/.gitkeep"]
+path = ["nodes/**/claims.yaml", "nodes/**/facts.yaml", "nodes/**/shapes.yaml", "nodes/**/contract.yaml", "nodes/**/releases.yaml", "nodes/**/vectors/**", "cards/**", "registers/**", "topics/**", "crosswalk/**", "manifests/**", "prov/**", "reviews/**", "CITATION.cff", "REUSE.toml", ".gitignore", ".github/**", "**/.gitkeep"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "The ai contributors"
 SPDX-License-Identifier = "CC0-1.0"
