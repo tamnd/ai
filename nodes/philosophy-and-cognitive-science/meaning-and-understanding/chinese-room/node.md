@@ -11,6 +11,7 @@ summary: >-
 history:
   year: 1980
   note: "Searle (1980), Behavioral and Brain Sciences 3(3), 417 to 457, with open peer commentary; restated as axioms in Searle (1990), Scientific American 262(1)."
+prereqs: [turing-test]
 same_as:
   wikidata: Q304726
   wikipedia: Chinese_room
