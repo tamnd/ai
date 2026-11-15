@@ -25,15 +25,15 @@
 
 - id: c-mit-subdomain
   type: definitional
-  text: "In the Domain Taxonomy of the AI Risk Repository, subdomain 7.1, AI pursuing its own goals in conflict with human goals or values, covers misaligned behaviors that may be introduced by humans during design and development, such as through reward hacking and goal misgeneralisation."
+  text: "In the Domain Taxonomy of the AI Risk Repository, subdomain 7.1, AI pursuing its own goals in conflict with human goals or values, names reward hacking, reward tampering, proxy-gaming, goal misgeneralisation and goal drift as technical challenges that may impede robust alignment."
   evidence:
-    - {work: "slattery-2024-ai-risk-repository", role: original, locator: "p. 10", stance: for}
+    - {work: "slattery-2024-ai-risk-repository", role: original, locator: "p. 17", stance: for}
 
 - id: c-mit-domains
   type: definitional
-  text: "The Domain Taxonomy of the AI Risk Repository classifies AI risks into seven domains and 24 subdomains based on the types of hazards and harms they describe."
+  text: "The Domain Taxonomy of the AI Risk Repository catalogs hazards and harms associated with AI and classifies risks by their effects across seven domains."
   evidence:
-    - {work: "slattery-2024-ai-risk-repository", role: original, locator: "p. 10", stance: for}
+    - {work: "slattery-2024-ai-risk-repository", role: original, locator: "the abstract", stance: for}
 
 - id: c-wireheading
   type: definitional

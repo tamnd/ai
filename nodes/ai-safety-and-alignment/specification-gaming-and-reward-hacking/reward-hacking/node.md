@@ -167,8 +167,8 @@ They note that a reward cap stops extreme low-probability strategies but not a r
 ## Taxonomies
 
 The generated list maps this page to the outside risk taxonomies when their crosswalks are built.
-The AI Risk Repository of the Massachusetts Institute of Technology (MIT), described by Slattery et al., sorts risks into seven domains and 24 subdomains by the hazards and harms they describe. {#c-mit-domains}
-Its subdomain 7.1, "AI pursuing its own goals in conflict with human goals or values", names reward hacking as one way that misaligned behaviour is introduced during design and development. {#c-mit-subdomain}
+The AI Risk Repository of the Massachusetts Institute of Technology (MIT), described by Slattery et al., catalogs the hazards and harms associated with AI and sorts risks by their effects into seven domains. {#c-mit-domains}
+Its subdomain 7.1, "AI pursuing its own goals in conflict with human goals or values", names reward hacking, with reward tampering, proxy-gaming, goal misgeneralisation and goal drift, among the technical challenges that may impede robust alignment. {#c-mit-subdomain}
 
 ## Debates
 
