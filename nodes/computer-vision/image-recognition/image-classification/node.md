@@ -72,7 +72,7 @@ Dosovitskiy et al. report that, pre-trained on large amounts of data and transfe
 
 ## Difficulties
 
-**Fine distinctions.** Some errors are milder than others: confusing two breeds of dog is not as harmful as confusing a dog for a container ship, which is why the challenge also computed a hierarchical error. {#c-fine}
+**Fine distinctions.** Some errors are milder than others: mistaking one breed of dog for another does less harm than calling a dog a container ship, which is why the challenge also computed a hierarchical error. {#c-fine}
 **One label for many things.** Real images often contain several objects of interest, yet ImageNet gives each image a single label. {#c-multi}
 **Label errors.** Northcutt et al. (2021) find 2916 errors, 6% of the images, in the ImageNet validation set. {#c-errors}
 **Shift to fresh data.** On a test set rebuilt with the original process of ImageNet, the accuracy of a wide range of models drops by 11% to 14%. {#c-shift}
@@ -81,7 +81,7 @@ Dosovitskiy et al. report that, pre-trained on large amounts of data and transfe
 
 The ImageNet Large Scale Visual Recognition Challenge ran each year from 2010 and drew entries from more than fifty institutions. {#c-ilsvrc}
 Its first edition, in 2010, had only the classification task.
-With efficient implementations and GPU computing, it became possible to learn neural networks directly from image data, without multi-stage hand-tuned pipelines of extracted features and classifiers; the breakthrough came with the win of the SuperVision team in 2012, and by 2014 the top contestants relied heavily on convolutional networks. {#c-breakthrough}
+With efficient implementations and GPU computing, neural networks could be trained on the raw images themselves, with no pipeline of hand-tuned feature extractors and separate classifiers; the breakthrough came with the win of the SuperVision team in 2012, and by 2014 the top contestants relied heavily on convolutional networks. {#c-breakthrough}
 Among teams that used only the provided training data, the winning error fell 2.4 times from 2012 to 2014, from 16.4% to 6.7%. {#c-reduction}
 On 1500 test images, a human annotator had an error of 5.1%, against 6.8% for GoogLeNet. {#c-human}
 Residual networks won the 2015 challenge (He et al., 2016), and Vision Transformers carried the Transformer architecture over from language to images (Dosovitskiy et al., 2021).

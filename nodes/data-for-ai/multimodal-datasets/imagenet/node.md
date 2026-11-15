@@ -49,10 +49,10 @@ During the construction of ImageNet in 2009, the team removed every synset whose
 **Candidate images.** For each synset, the queries are its WordNet synonyms, sent to several image search engines. {#c-queries}
 Because search engines return only a few hundred to a thousand images per query, the queries are extended with the word of a parent synset when that word appears in the gloss of the synset, and they are translated into Chinese, Spanish, Dutch and Italian with the WordNets of those languages. {#c-query-expansion}
 
-**Verification.** Workers on Amazon Mechanical Turk see a set of candidate images and the definition of the synset, and say whether each image contains objects of the synset. {#c-amt}
-Several workers label each image independently, and an image is kept only if it gets a convincing majority of the votes.
+**Verification.** Workers on Amazon Mechanical Turk are shown the definition of a synset with candidate images, and mark the images that show an object of that synset. {#c-amt}
+Several workers label each image independently, and an image stays in the dataset only when a clear majority of them accept it.
 The majority needed depends on the synset: at least 10 workers vote on an initial sample of its images, which gives a table of confidence scores, and the other images get votes until they reach a set confidence. {#c-dynamic-consensus}
-On 80 synsets sampled at every depth of the mammal and vehicle subtrees, an independent group of people found an average precision of 99.7%. {#c-precision}
+A separate group of people checked 80 synsets, drawn from all depths of the mammal and vehicle subtrees, and measured an average precision of 99.7%. {#c-precision}
 
 ## Documentation and licence
 
@@ -74,7 +74,7 @@ The validation labels of the challenge subset are discussed under the known issu
 ## History
 
 ImageNet was introduced by Deng et al. at CVPR 2009.
-Constructing ImageNet was an effort to cover most of the nouns of English with tens of millions of manually verified photographs, and the image classification task of ILSVRC came as a direct extension of it. {#c-goal}
+Constructing ImageNet was an effort to cover most of the nouns of English with tens of millions of manually verified photographs, and the image classification task of ILSVRC grew directly out of that effort. {#c-goal}
 A subset of its categories and images was fixed to give a standard benchmark, while the rest of the database kept growing. {#c-fixed-subset}
 The challenge ran each year from 2010, and its 2012 edition is where a deep convolutional network, AlexNet, won the classification task (Krizhevsky et al., 2012).
 In 2020 the ImageNet team published its review of the person subtree (Yang et al., 2020).
