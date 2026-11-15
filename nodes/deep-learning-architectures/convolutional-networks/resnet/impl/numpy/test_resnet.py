@@ -285,3 +285,10 @@ def test_init_state_matches_norms():
     state = init_state(params)
     assert set(state["stages"][0][0]) == {"bn1", "bn2", "bn3", "bn_proj"}
     assert state["stem"]["bn"]["var"].shape == (2,)
+
+
+def flop_case(c):
+    """The forward call of a config of shapes.json, for aik flopcount."""
+    cfg, k = cfg_of(c), c["config"]
+    rng = np.random.default_rng(0)
+    return forward, (init(rng, cfg), rng.normal(size=(k["B"], 3, k["R"], k["R"])), cfg)
