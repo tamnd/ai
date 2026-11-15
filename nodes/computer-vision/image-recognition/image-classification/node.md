@@ -8,11 +8,11 @@ area: computer-vision/image-recognition
 level: core
 summary: >-
   The task of assigning an image one class, or a ranked list of classes, from a fixed set of categories, scored by whether the true class is among the top predictions.
-prereqs: [multiclass-classification@al, empirical-risk-minimization@al]
 related_to: [imagenet-ilsvrc-2012, imagenet]
 history:
   year: 2010
   note: "The first ImageNet Large Scale Visual Recognition Challenge (Russakovsky et al., 2015); the task is older, and its earlier history is not covered by the sources of this page."
+prereqs: [multiclass-classification@al, empirical-risk-minimization@al]
 sources:
   - {paper: "Russakovsky et al. (2015)", title: "ImageNet Large Scale Visual Recognition Challenge", locator: "pp. 4 to 31"}
   - {paper: "Krizhevsky, Sutskever and Hinton (2012)", title: "ImageNet Classification with Deep Convolutional Neural Networks", locator: "the abstract"}
