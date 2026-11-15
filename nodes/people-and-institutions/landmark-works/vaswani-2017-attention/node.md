@@ -43,19 +43,19 @@ Its translation results, and the architecture itself, were the starting point of
 
 ## Contributions
 
-To the best of their knowledge, the authors say, the Transformer is the first transduction model that relies entirely on self-attention to compute representations of its input and output. {#c-first-self-attention}
+To the best of their knowledge, the authors say, no transduction model before the Transformer had built the representations of its input and output from self-attention alone, with no recurrence or convolution. {#c-first-self-attention}
 The paper makes four contributions.
 
 1. Scaled dot-product attention divides the dot products of a query with all keys by the square root of the key dimension, and a softmax turns them into weights on the values. {#c-scaled-dot-product}
    The authors suspect that for large key dimensions the dot products grow large and push the softmax into regions with extremely small gradients, and they scale to counteract this. {#c-why-scale}
-2. Multi-head attention projects the queries, keys and values h times with different learned linear projections, and performs attention on each projected version in parallel. {#c-multi-head}
+2. Multi-head attention maps the queries, keys and values to h separate learned subspaces and runs attention in each of them at the same time. {#c-multi-head}
    The paper uses h = 8 heads with key and value dimension 64 each. {#c-eight-heads}
 3. Positional encodings, sines and cosines of different frequencies, are added to the input embeddings to give the model the order of the tokens. {#c-positional}
 4. The encoder and the decoder are stacks of N = 6 identical layers, with a residual connection around each sub-layer followed by layer normalization. {#c-stacks}
 
 Section 4 compares self-attention with recurrent and convolutional layers by three measures: the computational complexity per layer, the minimum number of sequential operations, and the path length between long-range dependencies. {#c-three-measures}
 The author footnote says that Jakob Uszkoreit proposed replacing RNNs with self-attention. {#c-uszkoreit}
-It says that Noam Shazeer proposed scaled dot-product attention, multi-head attention and the parameter-free position representation. {#c-shazeer}
+The same footnote credits Noam Shazeer with three of the central ideas: scaled dot-product attention, multi-head attention and the position representation that has no parameters. {#c-shazeer}
 It also says that the authors contributed equally and that the order of the names is random. {#c-equal-contribution}
 
 ## Context
@@ -70,10 +70,10 @@ In the Transformer that number is constant. {#c-constant-path}
 ## Methods and results
 
 On one machine with 8 NVIDIA P100 GPUs, the base models trained for 100,000 steps (12 hours) and the big models for 300,000 steps (3.5 days). {#c-training-time}
-The optimizer was Adam, with a learning rate that increases linearly for the first 4000 warmup steps and then decreases with the inverse square root of the step number. {#c-warmup}
+The optimizer was Adam, with a learning rate that increases linearly for the first 4000 warmup steps and after that falls in proportion to one over the square root of the step. {#c-warmup}
 The paper reports 28.4 BLEU for the big model on WMT 2014 English-to-German, more than 2 BLEU above the best earlier results, ensembles included. {#c-en-de}
 It reports 41.8 BLEU on WMT 2014 English-to-French after 3.5 days of training on eight GPUs. {#c-en-fr}
-In the ablations of Table 3, single-head attention is 0.9 BLEU worse than the best setting, and quality also drops with too many heads. {#c-heads}
+In the ablations of Table 3, a model with one attention head loses 0.9 BLEU against the best setting, and quality also drops with too many heads. {#c-heads}
 Learned positional embeddings in place of the sinusoids give nearly identical results to the base model. {#c-learned-positions}
 On English constituency parsing, a 4-layer Transformer scores 91.3 F1 on Section 23 of the Wall Street Journal trained on WSJ only, and 92.7 semi-supervised. {#c-parsing}
 The code was released in the tensor2tensor library. {#c-code}
@@ -82,8 +82,8 @@ The code was released in the tensor2tensor library. {#c-code}
 
 The citation counts and the follow-up works are generated from the cards.
 Three works that built on the paper say so in their method sections.
-BERT is a multi-layer bidirectional Transformer encoder based on the original implementation of Vaswani et al. (2017). {#c-bert}
-GPT, the generative pre-training model of Radford et al. (2018), largely follows the original transformer work, as a 12-layer decoder-only transformer with masked self-attention heads. {#c-gpt}
+BERT is built from the encoder of Vaswani et al. (2017): a stack of bidirectional Transformer layers, following their original implementation. {#c-bert}
+GPT, the generative pre-training model of Radford et al. (2018), largely follows the original transformer work, as a decoder-only stack of 12 layers whose self-attention heads are masked. {#c-gpt}
 The vision Transformer of Dosovitskiy et al. (2021) follows the original Transformer as closely as possible. {#c-vit}
 
 ## Criticism, replications and corrections

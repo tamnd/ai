@@ -29,7 +29,7 @@ Andrew Hodges writes that Turing's contention, that a properly programmed comput
 
 The edges to the items he made are generated; the note below gives his main works in his own terms.
 
-Turing (1936) describes the computable numbers as the real numbers whose expressions as a decimal are calculable by finite means. {#c-computable}
+Turing (1936) describes the computable numbers as "the real numbers whose expressions as a decimal are calculable by finite means". {#c-computable}
 The paper describes a universal machine U, which, given the description of a machine M, computes the same sequence as M. {#c-universal}
 In Section 11 he applies the results to show that the Hilbert Entscheidungsproblem can have no solution. {#c-entscheidungsproblem}
 
@@ -47,11 +47,11 @@ Hodges writes that Turing, with the expression "genetical or evolutionary search
 
 Turing studied mathematics at King's College, Cambridge, and was elected a Fellow of the college in 1935. {#c-kings}
 He did further work in logic at Princeton and returned to Britain in 1938. {#c-princeton}
-From 1939 to 1945 he worked at Bletchley Park on the German cipher machine Enigma, with a particular responsibility for reading the U-boat communications. {#c-bletchley}
+From 1939 to 1945 he worked at Bletchley Park on the German cipher machine Enigma, and above all on breaking the messages of the U-boats. {#c-bletchley}
 At the end of the war the National Physical Laboratory commissioned his plans for an electronic computer. {#c-npl}
 In 1948 he moved to Manchester University to plan software for its computer, and he wrote the 1950 paper there. {#c-manchester}
 At Manchester he held the post of Reader in the Theory of Computing. {#c-reader}
-From 1950 he worked on a mathematical theory of morphogenesis, based on non-linear equations for chemical reaction and diffusion. {#c-morphogenesis}
+From 1950 he worked on a mathematical theory of morphogenesis, built on non-linear equations in which chemicals react and diffuse. {#c-morphogenesis}
 
 ## Recognition
 
