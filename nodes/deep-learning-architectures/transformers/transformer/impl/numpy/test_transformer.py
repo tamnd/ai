@@ -222,3 +222,12 @@ def test_config_rejects_bad_sizes():
         config(d_model=10, n_heads=4)
     with pytest.raises(ValueError):
         config(n_layers=0)
+
+
+def flop_case(c):
+    """The forward call of a config of shapes.json, for aik flopcount."""
+    cfg, k = cfg_of(c), c["config"]
+    rng = np.random.default_rng(0)
+    src = rng.integers(0, k["V"], (k["B"], k["S"]))
+    tgt = rng.integers(0, k["V"], (k["B"], k["T"]))
+    return forward, (init(rng, cfg), src, tgt, cfg)
