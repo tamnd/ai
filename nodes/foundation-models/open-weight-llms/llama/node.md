@@ -178,7 +178,7 @@ This page does not decide between the positions.
 
 ## Safety and evaluations
 
-The Llama 2 paper describes its approach to fine-tuning and safety improvements of Llama 2-Chat in detail, so that others can build on it. {#c-llama2-safety}
+The Llama 2 paper sets out in detail how Llama 2-Chat was fine-tuned and made safer, so that others can build on that work. {#c-llama2-safety}
 With the Llama 3.1 models, Meta publicly released Llama Guard 3, a model for input and output safety. {#c-llamaguard3}
 The Llama 3.3 model card names three critical risk areas of its mitigation work: CBRNE helpfulness, child safety and cyber attack enablement. {#c-33-risks}
 It also reports recurring red teaming exercises with experts. {#c-33-redteam}
@@ -198,7 +198,7 @@ The fact on this page shows both values.
 
 **Training tokens of Llama 4.** The model card gives a figure for each model and the announcement one figure for the mixture, so the two cannot be compared directly.
 
-**Outputs.** The Llama 3.3 model card says that the model may in some instances produce inaccurate, biased or other objectionable responses. {#c-33-limits}
+**Outputs.** The Llama 3.3 model card warns that the model "may in some instances produce inaccurate, biased or other objectionable responses to user prompts". {#c-33-limits}
 
 ## Lineage
 
