@@ -90,7 +90,7 @@
 
 - id: c-lstm
   type: definitional
-  text: "In the layer normalized LSTM, layer normalization is applied separately to W_h h_{t-1} and to W_x x_t, and to the cell state c_t before the tanh."
+  text: "The LSTM version that incorporates layer normalization is modified as follows: LN(Wh ht−1; α1, β1) + LN(Wx xt; α2, β2) + b, and ht = σ(ot) tanh(LN(ct; α3, β3))."
   evidence:
     - {work: "ba-2016-layer-normalization", role: original, locator: "p. 13", stance: for}
 
