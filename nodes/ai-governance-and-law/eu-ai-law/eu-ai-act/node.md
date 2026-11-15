@@ -52,7 +52,7 @@ Regulation (EU) 2026/1744 amended it in 2026. {#c-amended}
 
 ## What it does
 
-The Regulation aims to improve the functioning of the internal market and to promote human-centric and trustworthy AI, while protecting health, safety and fundamental rights against the harmful effects of AI systems and supporting innovation. {#c-purpose}
+The Regulation sets out to make the internal market work better and to encourage AI that is human-centric and trustworthy, while protecting health, safety and fundamental rights against the harmful effects of AI systems and supporting innovation. {#c-purpose}
 It lays down rules for placing AI systems on the market and using them; prohibited practices; requirements for high-risk systems; transparency rules; rules for general-purpose AI models; governance and enforcement; and support for innovation. {#c-subject-matter}
 The European Commission describes four levels of risk: unacceptable risk, high risk, transparency risk, and minimal or no risk. {#c-four-levels}
 Practices of unacceptable risk are banned.
@@ -60,23 +60,23 @@ High-risk systems must meet requirements before they reach the market, and their
 Systems of transparency risk must tell people that they are dealing with AI, or mark what they generate.
 The Commission states that the Act sets no rules for AI of minimal or no risk, such as AI-enabled video games or spam filters. {#c-minimal}
 A separate set of rules covers general-purpose AI models, with more duties for models with systemic risk.
-As a regulation, it is binding in its entirety and directly applicable in all Member States. {#c-direct}
+As a regulation, it is "binding in its entirety and directly applicable in all Member States". {#c-direct}
 
 ## Scope and definitions
 
 The Act applies to providers that place AI systems or general-purpose AI models on the market in the EU, wherever they are established, and to deployers established or located in the EU. {#c-scope-providers}
 It also applies to providers and deployers in third countries whose AI output is used in the EU, and to importers, distributors, product manufacturers, authorised representatives and affected persons in the EU. {#c-scope-third-country}
-It does not apply to AI systems used exclusively for military, defence or national security purposes. {#c-scope-military}
-It does not apply to AI systems or models developed and put into service for the sole purpose of scientific research and development. {#c-scope-research}
-It does not apply to AI systems released under free and open-source licences, unless they are placed on the market or put into service as high-risk systems or fall under the prohibitions of Article 5 or the transparency rules of Article 50. {#c-scope-open-source}
+AI systems whose only use is military, defence or national security fall outside it. {#c-scope-military}
+Nor does it cover AI systems or models built and put into service for no purpose other than scientific research and development. {#c-scope-research}
+AI systems published under free and open-source licences are also exempt, with three exceptions: high-risk systems put on the market or into service, and systems caught by the prohibitions of Article 5 or the transparency rules of Article 50. {#c-scope-open-source}
 
 The Act defines its terms in Article 3.
-An AI system is a machine-based system that operates with varying levels of autonomy, may adapt after deployment, and infers from its input how to generate outputs such as predictions, content, recommendations or decisions that can influence physical or virtual environments. {#c-def-ai-system}
-A provider develops an AI system or a general-purpose AI model, or has one developed, and places it on the market or puts it into service under its own name or trademark, whether for payment or free of charge. {#c-def-provider}
-A deployer uses an AI system under its authority, except in a personal non-professional activity. {#c-def-deployer}
-A general-purpose AI model displays significant generality, can competently perform a wide range of distinct tasks, and can be integrated into a variety of downstream systems or applications; models used only for research, development or prototyping before they are placed on the market are excluded. {#c-def-gpai}
-A systemic risk is a risk specific to the high-impact capabilities of general-purpose AI models that has a significant impact on the EU market, because of their reach or because of actual or reasonably foreseeable negative effects on public health, safety, security, fundamental rights or society, and that can spread at scale across the value chain. {#c-def-systemic-risk}
-A deep fake is AI-generated or manipulated image, audio or video content that resembles existing persons, objects, places or events and would falsely appear to a person to be authentic. {#c-def-deep-fake}
+An AI system (Article 3(1)) is a system that runs on machines, is built to work with some degree of autonomy that can vary, may go on adapting once deployed, and works out from the input it receives, for objectives that may be explicit or implicit, how to produce outputs such as predictions, content, recommendations or decisions that can affect a physical or virtual environment. {#c-def-ai-system}
+A provider (Article 3(3)) is any person or body, public or private, that develops an AI system or a general-purpose AI model, or has one developed, and then markets it or puts it into service as its own, under its name or trademark, whether it charges for it or not. {#c-def-provider}
+A deployer (Article 3(4)) is a person or body that uses an AI system under its own authority; someone who uses one in a personal, non-professional activity is not a deployer. {#c-def-deployer}
+A general-purpose AI model (Article 3(63)) is an AI model, including one trained on a large amount of data with self-supervision at scale, that is markedly general, handles a broad range of different tasks competently however it is placed on the market, and can be built into many downstream systems or applications; models used only for research, development or prototyping before they reach the market do not count. {#c-def-gpai}
+A systemic risk (Article 3(65)) is a risk tied to the high-impact capabilities of general-purpose AI models that matters for the Union market, either because of how widely the models reach or because of actual or reasonably foreseeable harm to public health, safety, public security, fundamental rights or society as a whole, and that can spread at scale along the value chain. {#c-def-systemic-risk}
+A deep fake (Article 3(60)) is image, audio or video content generated or manipulated by AI that looks like existing persons, objects, places, entities or events and would mislead a person into taking it as authentic or truthful. {#c-def-deep-fake}
 
 ## Main provisions
 
@@ -93,8 +93,8 @@ The Digital Omnibus on AI added, with conditions in new paragraphs 1a and 1b, ba
 The Commission counts nine prohibited practices and says that the ninth was introduced by the Digital Omnibus on AI. {#c-commission-nine}
 
 **High-risk AI systems (Article 6 and Chapter III).**
-An AI system is high-risk when it is a product, or a safety component of a product, covered by the EU harmonisation legislation listed in Annex I, and that product must undergo a third-party conformity assessment. {#c-high-risk-annex-i}
-The systems listed in Annex III are also high-risk, subject to the derogation in Article 6(3). {#c-high-risk-annex-iii}
+The first route to high risk runs through Annex I: if the system is itself a product under the EU harmonisation legislation listed there, or a safety component of such a product, and the product needs a third-party conformity assessment, the system is high-risk. {#c-high-risk-annex-i}
+The second route is Annex III, whose listed systems count as high-risk unless the derogation of Article 6(3) applies. {#c-high-risk-annex-iii}
 The Commission summarises these uses as including critical infrastructure, education, employment, access to essential private and public services, biometrics, law enforcement, migration, asylum and border control, and the administration of justice and democratic processes. {#c-annex-iii-areas}
 An Annex III system is not high-risk when it poses no significant risk of harm to health, safety or fundamental rights, as when it performs a narrow procedural task, but it is always high-risk when it profiles natural persons. {#c-high-risk-derogation}
 High-risk systems need a risk management system, and they must be designed so that natural persons can effectively oversee them while they are in use. {#c-risk-management} {#c-human-oversight}
@@ -120,7 +120,7 @@ The AI Office encourages and facilitates codes of practice at EU level. {#c-code
 
 **Providers of high-risk systems** must make the system meet the requirements, have a quality management system, keep documentation and, when under their control, logs, have the system undergo the conformity assessment before it is placed on the market, draw up an EU declaration of conformity, affix the CE marking, and register. {#c-provider-duties}
 Before placing a system listed in Annex III on the market, other than one in point 2 of Annex III, the provider, or its authorised representative, registers itself and the system in the EU database. {#c-registration}
-Providers run a post-market monitoring system and report serious incidents with systems placed on the EU market to the market surveillance authorities of the Member States where they occurred. {#c-post-market} {#c-incidents}
+Providers run a post-market monitoring system and tell the market surveillance authority of the Member State concerned about any serious incident with a system they have placed on the EU market. {#c-post-market} {#c-incidents}
 
 **Authorised representatives.**
 Providers established outside the EU appoint, by written mandate, an authorised representative established in the EU. {#c-authorised-rep}
@@ -130,10 +130,10 @@ Importers check that the conformity assessment was carried out, the technical do
 Distributors check the CE marking, the EU declaration of conformity and the instructions for use. {#c-distributors}
 
 **Deployers of high-risk systems** use them according to the instructions for use. {#c-deployers}
-Public bodies, private entities providing public services, and deployers of the systems in points 5(b) and (c) of Annex III assess the impact on fundamental rights before they deploy a high-risk system of Article 6(2), other than one in point 2 of Annex III. {#c-fria}
+Three kinds of deployer must assess the impact on fundamental rights before they deploy a high-risk system of Article 6(2), other than one in point 2 of Annex III: public bodies, private entities that provide public services, and deployers of the systems in points 5(b) and (c) of Annex III. {#c-fria}
 
 **Providers and deployers of all AI systems.**
-As adopted, the Act required them to ensure, to their best extent, a sufficient level of AI literacy of their staff. {#c-literacy-original}
+As adopted, the Act required them to take measures "to ensure, to their best extent, a sufficient level of AI literacy of their staff". {#c-literacy-original}
 As amended in 2026, they must take measures to support the development of AI literacy of their staff and of other persons who operate or use AI systems on their behalf. {#c-literacy-amended}
 The amendment also lets providers of high-risk systems process special categories of personal data, exceptionally and with safeguards, where strictly necessary to detect and correct bias. {#c-bias-data}
 
@@ -167,16 +167,16 @@ Before the amendment, the application of the Act was staggered so that all its r
 The Commission builds EU expertise and capabilities in AI through the AI Office. {#c-ai-office}
 The European Artificial Intelligence Board has one representative per Member State, with the European Data Protection Supervisor as an observer and the AI Office attending without a vote. {#c-board}
 The Commission sets up, by implementing act, a scientific panel of independent experts to support enforcement. {#c-panel}
-Each Member State designates at least one notifying authority and at least one market surveillance authority. {#c-national}
+Every Member State names a notifying authority and a market surveillance authority, and may name more than one of each. {#c-national}
 Any person who considers that the Act has been infringed may complain to the market surveillance authority. {#c-complaint}
 Since the 2026 amendment, the AI Office alone supervises AI systems based on a general-purpose AI model of the same provider, with exceptions, and AI systems that are or are part of very large online platforms or search engines. {#c-ai-office-competence}
 The Commission states that from 2 August 2026 the AI Office and national authorities implement, supervise and enforce the Act, and that the AI Office can request documentation, evaluate models, require corrective measures and fine providers of general-purpose AI models. {#c-ec-enforcement}
 
 Member States lay down the penalties, which must be effective, proportionate and dissuasive. {#c-penalties-national}
-Using a prohibited practice can be fined up to EUR 35 million or, for an undertaking, up to 7% of its total worldwide annual turnover, whichever is higher. {#c-fines-prohibited}
+Using a prohibited practice can cost up to EUR 35 million or, for an undertaking, up to 7% of its worldwide annual turnover in total, whichever amount is greater. {#c-fines-prohibited}
 Breaking the duties of operators and notified bodies listed in Article 99(4), including the transparency rules, can be fined up to EUR 15 million or, for an undertaking, 3% of worldwide annual turnover if higher. {#c-fines-operators}
 Supplying incorrect, incomplete or misleading information to authorities in reply to a request can be fined up to EUR 7.5 million or, for an undertaking, 1% if higher. {#c-fines-info}
-For small and medium-sized enterprises (SMEs), including start-ups, each fine is capped at the lower of the two amounts. {#c-fines-sme}
+For SMEs, start-ups among them, the cap on each fine is the smaller of the two amounts. {#c-fines-sme}
 The 2026 amendment gives small mid-cap enterprises (SMCs) the lower cap for the two smaller tiers. {#c-fines-smc}
 The Commission itself may fine providers of general-purpose AI models up to 3% of their worldwide turnover or EUR 15 million, whichever is higher, when it finds that they intentionally or negligently broke the rules, ignored a request or a measure, or refused access for an evaluation. {#c-fines-gpai}
 
@@ -200,10 +200,10 @@ The national AI regulatory sandboxes, due by 2 August 2026 in the Act as adopted
 
 **Official guidance.**
 The Commission has published guidelines on prohibited AI practices and guidelines on the definition of an AI system. {#c-guidelines-prohibited}
-In July 2025 it published guidelines on the scope of the obligations for general-purpose AI models, the General-Purpose AI Code of Practice, and a template for the public summary of training content. {#c-gpai-guidance}
-The Code of Practice is a voluntary tool prepared by independent experts in a multi-stakeholder process. {#c-cop-voluntary}
+In July 2025 it published three documents: guidelines on which general-purpose AI models the obligations reach, the General-Purpose AI Code of Practice, and a template that providers fill in to summarise their training content publicly. {#c-gpai-guidance}
+Independent experts drew up the Code of Practice in a process open to many stakeholders, and following it is voluntary. {#c-cop-voluntary}
 Its chapters on transparency and copyright help all providers of general-purpose AI models meet Article 53, and its chapter on safety and security applies to providers of models with systemic risk under Article 55. {#c-cop-chapters}
-The Commission and the AI Board have confirmed that the code is an adequate voluntary tool for providers to demonstrate compliance. {#c-cop-adequate}
+The Commission and the AI Board have both judged the code adequate as a voluntary tool that providers can rely on to meet their obligations. {#c-cop-adequate}
 For the transparency rules, the Commission has published a Code of Practice on Marking and Labelling of AI-generated Content and guidelines on the transparency obligations. {#c-transparency-guidance}
 
 **Positions.**
