@@ -69,15 +69,15 @@ On this page, methods added to a scaled model, such as extra computation at test
 
 **General intelligence.** There is no agreed definition, and the positions below use different ones.
 Shane Legg and Marcus Hutter (2007) collect 70-odd informal definitions of intelligence. {#c-def-collection}
-They adopt the definition that intelligence measures an agent's ability to achieve goals in a wide range of environments. {#c-def-legg}
-François Chollet (2019) defines intelligence as skill-acquisition efficiency over a scope of tasks, with respect to priors, experience and generalization difficulty. {#c-def-chollet}
-Morris et al. (2024) report that the OpenAI charter defines AGI as highly autonomous systems that outperform humans at most economically valuable work. {#c-def-openai}
-They also quote Gary Marcus, for whom AGI is intelligence that is flexible and general, with resourcefulness and reliability comparable to or beyond human intelligence. {#c-def-marcus}
+They adopt the definition that "Intelligence measures an agent's ability to achieve goals in a wide range of environments." {#c-def-legg}
+François Chollet (2019) defines the intelligence of a system as "a measure of its skill-acquisition efficiency over a scope of tasks, with respect to priors, experience, and generalization difficulty". {#c-def-chollet}
+Morris et al. (2024) report that the OpenAI charter defines AGI as "highly autonomous systems that outperform humans at most economically valuable work". {#c-def-openai}
+They also quote Gary Marcus, for whom AGI is "shorthand for any intelligence (there might be many) that is flexible and general, with resourcefulness and reliability comparable to (or beyond) human intelligence". {#c-def-marcus}
 The first definition is about goals across environments, the second about efficiency of learning, the third about economic work and the fourth about human comparison.
 
 ## Why it matters
 
-Morris et al. (2024) argue that the concept of AGI matters because it maps onto goals for, predictions about, and risks of AI. {#c-why-morris}
+Morris et al. (2024) argue that the concept of AGI matters because it bears on three things: what the field aims at, what it predicts, and what risks AI carries. {#c-why-morris}
 The answer bears on where research effort goes: on larger models, on added methods, or on other architectures.
 It also bears on what happens when the supply of training text runs out.
 Pablo Villalobos et al. (2024) study how progress in language modeling can continue once human-generated text datasets cannot be scaled further. {#c-why-villalobos}
@@ -216,10 +216,10 @@ They report that Legg and Ben Goertzel popularized it in 2001, for a machine abl
 Marcus wrote his critical appraisal of deep learning about five years after the ImageNet model of 2012 by Krizhevsky, Sutskever and Hinton. {#c-hist-marcus-2018}
 Chollet first wrote about the limits of deep learning in 2017, and in 2019 published a definition of AGI with the ARC benchmark. {#c-hist-chollet}
 The Bitter Lesson, an essay by Rich Sutton, is dated March 13, 2019. {#c-hist-sutton}
-It argues that the biggest lesson of 70 years of AI research is that general methods that use computation are the most effective. {#c-sutton-lesson}
-Sutton names search and learning as the two methods that seem to scale arbitrarily. {#c-sutton-search-learning}
+It argues that, looking back over 70 years of AI research, the main thing to learn is that general methods which make use of computation win in the end. {#c-sutton-lesson}
+Sutton picks out search and learning as the two methods that appear to keep scaling with no limit in sight. {#c-sutton-search-learning}
 He cites chess, where deep search beat Kasparov in 1997, and Go, where search applied at scale made other efforts irrelevant. {#c-sutton-chess}
-He argues that researchers should build in only the meta-methods that can find and capture the arbitrary complexity of the world. {#c-sutton-meta}
+He argues that researchers should not build in what they know of the world, only the "meta-methods that can find and capture this arbitrary complexity". {#c-sutton-meta}
 Kaplan et al. posted their scaling laws as arXiv 2001.08361 on 23 Jan 2020. {#c-hist-kaplan}
 Marcus dated The Next Decade in AI 17 February 2020. {#c-hist-marcus-2020}
 Version 0.9.2 of LeCun's position paper is dated June 27, 2022. {#c-hist-lecun}
