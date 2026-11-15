@@ -37,7 +37,7 @@ Its successors, AlphaGo Zero and AlphaZero, learned without human games.
 ## Overview
 
 David Silver, Aja Huang and coauthors at Google DeepMind and Google introduced AlphaGo in a paper in Nature in 2016. {#c-paper}
-They write that Go has long been viewed as the most challenging of classic games for artificial intelligence, owing to its enormous search space and hard-to-evaluate positions. {#c-go-hard}
+They write that Go "has long been viewed as the most challenging of classic games for artificial intelligence owing to its enormous search space and the difficulty of evaluating board positions and moves". {#c-go-hard}
 They estimate about 250 legal moves per position and a game length of about 150 moves for Go, against about 35 and 80 for chess. {#c-breadth-depth}
 
 AlphaGo was not one fixed program.
@@ -54,40 +54,40 @@ The parts below are those of AlphaGo Fan.
 
 **Supervised learning (SL) policy network.** The networks take the board position as a 19 by 19 image and build a representation of it with convolutional layers. {#c-board-image}
 The SL policy network has 13 layers and was trained on 30 million positions from the KGS Go Server to predict the moves of human experts. {#c-sl-train}
-On a held out test set it predicted expert moves with an accuracy of 57.0% using all input features. {#c-sl-policy}
+With every input feature switched on, it matched the expert's move on 57.0% of the positions of a held-out test set. {#c-sl-policy}
 
 **Rollout policy.** A faster rollout policy, a linear softmax of small pattern features, picks the moves of rollouts, the fast games played out to the end. {#c-rollout}
 It reached an accuracy of 24.2% and took 2 μs per move, against 3 ms for the policy network. {#c-rollout-speed}
 
 **Reinforcement learning (RL) policy network.** A network of the same structure starts from the weights of the SL network and is improved by policy gradient [[reinforcement-learning|reinforcement learning]]. {#c-rl-policy}
 It plays games against a randomly selected earlier version of itself, and the reward is +1 for a win and −1 for a loss. {#c-rl-opponents}
-Without any search, it won more than 80% of games against the SL policy network and 85% against Pachi, an open-source Go program. {#c-rl-results}
+Playing with no search at all, it beat the SL policy network in more than 80% of games, and Pachi, an open-source Go program, in 85%. {#c-rl-results}
 
 **Value network.** A network of similar architecture outputs one number: a prediction of the winner of games that the RL policy network plays against itself from a position. {#c-value}
-Trained on positions of complete human games, it memorized the outcomes, so the authors made a self-play data set of 30 million distinct positions, each sampled from a separate game. {#c-value-data}
+Trained on positions of complete human games, it memorized the outcomes, so the authors built a new data set from self-play: 30 million positions, no two of them from the same game. {#c-value-data}
 
 **Search.** AlphaGo combines the networks in a [[monte-carlo-tree-search|Monte Carlo tree search]] (MCTS). {#c-mcts}
 Each step down the tree picks the move with the highest action value plus a bonus, which is proportional to the prior probability and decays with repeated visits. {#c-selection}
 At a new leaf, the SL policy network gives the prior probabilities of the moves. {#c-priors}
 The leaf is evaluated twice, by the value network and by the outcome of a rollout, and the two are mixed with a parameter $\lambda$. {#c-leaf-eval}
 After the search, AlphaGo plays the most visited move from the root. {#c-most-visited}
-The authors report that the SL policy network worked better for the priors than the stronger RL policy network, presumably because humans select a diverse beam of promising moves. {#c-sl-better}
+The authors report that the SL policy network worked better for the priors than the stronger RL policy network, and suggest the reason is that people pick a varied set of good candidate moves. {#c-sl-better}
 A value network derived from the RL policy network worked better than one derived from the SL policy network. {#c-rl-value-better}
 
 **Hardware.** The search runs simulations on CPUs and evaluates the networks in parallel on GPUs. {#c-async}
-The final single-machine version used 40 search threads, 48 CPUs and 8 GPUs; a distributed version used multiple machines, 40 search threads, 1,202 CPUs and 176 GPUs. {#c-hardware}
+On one machine the final program ran 40 search threads on 48 CPUs and 8 GPUs; the distributed program ran 40 search threads on 1,202 CPUs and 176 GPUs spread over several machines. {#c-hardware}
 
 ## Development
 
 Nature received the paper that reported the Fan Hui match on 11 November 2015 and accepted it on 5 January 2016. {#c-fan-hui-dates}
 
 AlphaGo Lee, the version of March 2016, was previously unpublished; Silver et al. (2017) list the key differences from AlphaGo Fan. {#c-lee-unpublished}
-Its value network was trained from the outcomes of fast games of self-play by AlphaGo, not by the policy network, and this procedure was iterated several times. {#c-lee-value}
+Its value network learned from the results of quick self-play games of AlphaGo itself, rather than of the policy network, and this was repeated over several rounds. {#c-lee-value}
 Its policy and value networks were larger, with 12 convolutional layers of 256 planes, and were trained for more iterations. {#c-lee-larger}
-It was distributed over many machines and used 48 tensor processing units (TPUs) instead of GPUs. {#c-lee-tpu}
+It ran across many machines, on 48 tensor processing units (TPUs) in place of GPUs. {#c-lee-tpu}
 
 AlphaGo Master, the version of 2017, uses the neural network architecture, the RL algorithm and the MCTS algorithm of AlphaGo Zero. {#c-master-arch}
-Unlike AlphaGo Zero, it keeps the handcrafted features and the rollouts of AlphaGo Lee, and its training was initialised by supervised learning from human data. {#c-master-human}
+Unlike AlphaGo Zero, it keeps the handcrafted features and the rollouts of AlphaGo Lee, and it starts its training with supervised learning on human games. {#c-master-human}
 
 In April 2017 DeepMind announced the Future of Go Summit in Wuzhen, China, for 23 to 27 May, with a match of three games between AlphaGo and Ke Jie. {#c-summit-plan}
 In a post at the summit, DeepMind wrote that the Future of Go Summit was its final match event with AlphaGo. {#c-final-event}
@@ -101,10 +101,10 @@ On the Elo scale of that tournament, the distributed version had a rating of 314
 The scale was anchored to the rating of Fan Hui, 2,908 at the date of submission. {#c-elo-anchor}
 On this scale a gap of 230 points means a 79% probability of winning. {#c-elo-gap}
 
-**Fan Hui, October 2015.** Fan Hui was a professional 2 dan and the winner of the European Go championships of 2013, 2014 and 2015. {#c-fan-hui}
+**Fan Hui, October 2015.** Fan Hui, a 2 dan professional, had won the European Go championship in 2013, 2014 and 2015. {#c-fan-hui}
 Over 5 to 9 October 2015 he played a formal match of five games against distributed AlphaGo, and AlphaGo won 5 to 0. {#c-fan-hui-match}
 Five informal games were also played, and AlphaGo won them 3 to 2. {#c-informal}
-Silver et al. (2016) report that this was the first time a computer Go program had defeated a human professional player without handicap in the full game of Go. {#c-first}
+Silver et al. (2016) report that no computer Go program had beaten a human professional on a full-size board without handicap before. {#c-first}
 
 **Lee Sedol, March 2016.** AlphaGo Lee defeated Lee Sedol by 4 games to 1 in March 2016. {#c-lee}
 Silver et al. (2017) describe Lee Sedol as the winner of 18 international titles. {#c-lee-titles}
@@ -129,7 +129,7 @@ The 3140 of 2016 and the 3,144 of 2017 come from two different tournaments, so t
 
 ## Impact and reception
 
-Silver et al. (2016) write that during the match against Fan Hui, AlphaGo evaluated thousands of times fewer positions than Deep Blue did in its chess match against Kasparov. {#c-deep-blue}
+Silver et al. (2016) write that in its games with Fan Hui, AlphaGo looked at thousands of times fewer positions than Deep Blue had examined when it played Kasparov at chess. {#c-deep-blue}
 They contrast Deep Blue's handcrafted evaluation function with AlphaGo's networks, trained from gameplay by general-purpose supervised and reinforcement learning. {#c-handcrafted}
 
 DeepMind states that in game two AlphaGo played Move 37, a move with a 1 in 10,000 chance of being used, and that it helped AlphaGo win the game. {#c-move-37}
