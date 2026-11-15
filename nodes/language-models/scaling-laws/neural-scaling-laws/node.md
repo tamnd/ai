@@ -70,7 +70,7 @@ It bends when the data run out or when the loss nears the noise floor of the dat
 
 The loss of trained deep networks often follows a power law in the size of the training set or in the number of parameters (Bahri et al. 2024). {#c-broad}
 The central measurement of this page is that of Kaplan et al. (2020), for decoder-only Transformer language models trained on WebText2 with the cross-entropy loss.
-For these models, the loss scales as a power law with model size, dataset size and training compute, and some trends span more than seven orders of magnitude. {#c-power-law}
+For these models, the loss falls as a power law in each of three quantities, the number of parameters, the number of training tokens and the training compute, and some of the trends hold over more than seven orders of magnitude. {#c-power-law}
 The models had 768 to 1.5 billion parameters, not counting the embeddings, and the training sets had 22 million to 23 billion tokens.
 
 Write $N$ for the number of non-embedding parameters, $D$ for the number of training tokens and $C_{\min}$ for the compute of compute-efficient training, in PF-days.
@@ -98,7 +98,7 @@ In each of these domains, the optimal model size is a power law in the compute b
 Zhai et al. (2022) scaled Vision Transformers and their data up and down, and described how the error rate depends on data and compute. {#c-zhai}
 Their largest model, ViT-G with two billion parameters, reached 90.45% top-1 accuracy on ImageNet, by their own report. {#c-vit-g}
 
-Hoffmann et al. (2022) trained over 400 language models of 70 million to over 16 billion parameters on 5 to 500 billion tokens, and concluded that for compute-optimal training the model size and the number of training tokens should be scaled equally: for every doubling of model size, the number of tokens should also double. {#c-equal-scaling}
+Hoffmann et al. (2022) trained over 400 language models of 70 million to over 16 billion parameters on 5 to 500 billion tokens, and concluded that a compute-optimal run grows the parameters and the training tokens at the same rate: a model twice as large should also see twice as many tokens. {#c-equal-scaling}
 Their three estimation methods give the exponent $a$ of $N_{\mathrm{opt}} \propto C^a$, which relates the optimal number of parameters to the training compute, as 0.50, 0.49 and 0.46, where Kaplan et al. give 0.73 (Table 2). {#c-three-approaches}
 The third method fits a loss with an irreducible term, $L(N, D) = E + A/N^{0.34} + B/D^{0.28}$, with $E = 1.69$, $A = 406.4$ and $B = 410.7$. {#c-parametric}
 
