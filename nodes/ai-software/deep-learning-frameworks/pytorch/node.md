@@ -39,10 +39,10 @@ Since September 2022 the project has lived under the PyTorch Foundation, part of
 
 PyTorch is for writing, training and running deep learning models.
 Paszke et al. describe it as a machine learning library with an imperative and Pythonic programming style that remains efficient and supports hardware accelerators such as GPUs. {#c-purpose}
-Defining layers, composing models, loading data, running optimizers and parallelizing training are all written with the concepts of general purpose programming. {#c-workflow}
+Every step, from the layers and their composition into a model to data loading, the optimizer and parallel training, is ordinary general-purpose code. {#c-workflow}
 
 The Linux Foundation reports that organizations use PyTorch in academic research and in production environments. {#c-users}
-The licence file of the repository permits redistribution and use in source and binary forms, with or without modification, if three conditions are met. {#c-licence}
+The licence file of the repository says that "Redistribution and use in source and binary forms, with or without modification, are permitted" if three conditions are met. {#c-licence}
 These are the terms of the BSD 3-Clause licence.
 
 ## Core concepts
@@ -55,11 +55,11 @@ The Python functions are a layer over this core.
 PyTorch gives up the potential benefits of that graph approach to keep the imperative programming model of Python. {#c-imperative}
 So each line of a model runs when Python reaches it, and the value it computes is there to inspect.
 
-**Modules.** Layers are usually Python classes whose constructors create and initialize their parameters, and whose forward methods process an input. {#c-modules}
+**Modules.** A layer is usually a Python class: its constructor sets up the parameters with their initial values, and its forward method maps an input to an output. {#c-modules}
 Models are usually classes that compose layers, but nothing forces this structure. {#c-models}
 
 **Automatic differentiation.** PyTorch uses the operator overloading approach: it builds a representation of the computed function each time the function runs. {#c-overloading}
-It then performs reverse-mode automatic differentiation, which computes the gradient of a scalar output with respect to a multivariate input. {#c-reverse}
+It then runs reverse-mode automatic differentiation, which gives the gradient of one scalar output with respect to an input of many variables. {#c-reverse}
 It can also differentiate through code that mutates tensors, and a versioning system for tensors tracks their modifications. {#c-mutation}
 
 **Compilation.** PyTorch 2.0 added torch.compile, which wraps a model and returns a compiled model. {#c-compile}
@@ -126,12 +126,12 @@ The table sums up the points sourced below.
 Its `tf.function` creates Python-independent dataflow graphs out of Python code. {#c-tf-function}
 So TensorFlow 2 and PyTorch both run eagerly by default, and both offer an opt-in way to capture a graph.
 
-**JAX.** The JAX documentation describes it as a Python library for accelerator-oriented array computation and program transformation. {#c-jax}
-It offers composable function transformations for compilation, batching, automatic differentiation and parallelization. {#c-jax-transforms}
+**JAX.** The JAX documentation describes it as "a Python library for accelerator-oriented array computation and program transformation". {#c-jax}
+Its core is a set of function transformations that compose: compiling, batching, automatic differentiation and parallelization. {#c-jax-transforms}
 These transformations are designed to work only on Python functions that are functionally pure. {#c-jax-pure}
 Frostig et al. describe JAX as a tracing just-in-time compiler that generates accelerator code from pure Python and NumPy programs, using the XLA compiler infrastructure. {#c-jax-tracing}
-Ansel et al. write that `jax.jit` does not support data-dependent Python control flow and requires user code to be functionally pure. {#c-jax-jit}
-In contrast, they write, PyTorch started as an eager-only framework without compiler-minded constraints in its design. {#c-eager-only}
+Ansel et al. write that `jax.jit` "does not support data-dependent Python control flow and requires user code to be functionally pure". {#c-jax-jit}
+In contrast, they write, PyTorch "started as an eager-only framework without any compiler-minded constraints built into its design". {#c-eager-only}
 That is why TorchDynamo has to capture graphs from Python code written with no regard to compilation.
 PyTorch's `torch.func` offers function transforms in a style close to JAX, as the example above shows.
 
@@ -147,9 +147,9 @@ Paszke et al. presented the design at NeurIPS 2019. {#c-neurips}
 On all their benchmarks, the performance of PyTorch was within 17% of the fastest framework. {#c-17}
 They attribute this to the frameworks offloading most of the computation to the same versions of cuDNN and cuBLAS. {#c-cudnn}
 
-On 12 September 2022, PyTorch moved to the Linux Foundation as a top-level project under the name PyTorch Foundation. {#c-lf}
-Its governing board has members from AMD, Amazon Web Services, Google Cloud, Meta, Microsoft Azure and NVIDIA. {#c-board}
-The technical decisions remain in the control of individual maintainers. {#c-maintainers}
+On 12 September 2022, PyTorch became a top-level project of the Linux Foundation, run by a new PyTorch Foundation. {#c-lf}
+AMD, Amazon Web Services, Google Cloud, Meta, Microsoft Azure and NVIDIA each have a seat on its governing board. {#c-board}
+The board does not make the technical calls; those stay with the individual maintainers. {#c-maintainers}
 
 The PyTorch Foundation released PyTorch 2.0 in 2023, with torch.compile in Beta as its main API. {#c-2-0}
 
