@@ -5,6 +5,7 @@
 # The path cs2023-ai of the site (16.12) reads the units in this order.
 system: CS2023, the Artificial Intelligence knowledge area
 version: CS2023 final report
+units: knowledge units
 source: https://csed.acm.org/mockup-artificial-intelligence/
 licence: names of a public curriculum, cited
 checked: 2026-11-15
