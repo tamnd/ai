@@ -1,0 +1,10 @@
+claim: c-learns-less-forgets-less
+primary:
+  - {metric: new_error, at: final, compare: {treatment: full, control: lora-r4}, direction: lower, test: mann-whitney, alpha: 0.01, min_effect: {kind: relative, value: 0.1}, note: "LoRA learns less: full fine-tuning reaches a lower error on the new digits"}
+  - {metric: old_error, at: final, compare: {treatment: lora-r4, control: full}, direction: lower, test: mann-whitney, alpha: 0.01, min_effect: {kind: relative, value: 0.5}, note: "LoRA forgets less: it keeps a lower error on the old digits"}
+secondary:
+  - {metric: old_error, compare: {treatment: lora-r4, control: full-small-lr}, direction: lower, test: bootstrap-diff, note: "full fine-tuning at a ten times smaller learning rate still forgets more"}
+  - {metric: new_error, compare: {treatment: full-small-lr, control: lora-r4}, direction: lower, test: bootstrap-diff}
+  - {metric: new_error, compare: {treatment: lora-r4, control: head}, direction: lower, test: bootstrap-diff, note: "the adapters learn more than the output layer alone"}
+  - {metric: old_error, compare: {treatment: head, control: lora-r4}, direction: lower, test: bootstrap-diff, note: "the output layer alone forgets least"}
+report: {ci: 0.95, bootstrap: {resamples: 10000, method: bca}}

@@ -1,0 +1,24 @@
+run: v-20261114-161455-68192
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-speedup
+  work: ansel-2024-pytorch-2
+  locator: the abstract
+  key: 6df5bd020cf523ce2a31529df9f198a4
+  spans:
+  - start: 1176
+    end: 6957
+  verdict: supported
+  quote: 'TorchInductor is able to provide a
+
+    2.27× inference and 1.41× training geometric mean speedup
+
+    on an NVIDIA A100 GPU across 180+ real-world models,'
+  note: The passage states the same speedups, GPU, and model scope as the claim.
