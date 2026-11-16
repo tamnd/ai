@@ -1,0 +1,40 @@
+run: v-20261114-033928-387
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-hidden
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 40
+  key: 29bee79b35609c2f43b0f2b8035d979c
+  spans:
+  - start: 180828
+    end: 185621
+  verdict: supported
+  quote: 'We released ILSVRC2010 test annotations for the
+
+    image classification task, but all other test annotations
+
+    have remained hidden to discourage fine-tuning results'
+  note: The passage states the release, the exception for all other test annotations, and the reason.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-server
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 40
+  key: 2652e15f6ab0f177f2aae166e95c4dc3
+  spans:
+  - start: 180828
+    end: 185621
+  verdict: supported
+  quote: 'researchers can use throughout the year to continue evaluating their algorithms against the ground
+
+    truth test annotations. We limit teams to 2 submissions per week'
+  note: The passage describes an automatic server set up after the challenge, evaluation against test annotations, and the
+    weekly limit.

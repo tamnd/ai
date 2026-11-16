@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: CC0-1.0
 #
-# The Lean job comes back when the Lean package AI exists (spec 11).
-#
 # The jobs that run code from the content (audit, tests, site) have no secrets. Only the deploy job has the Cloudflare token, and it runs no code from the content: it uploads the site that the site job made.
 name: CI
 
@@ -19,7 +17,7 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
-  AIK_VERSION: v0.1.89
+  AIK_VERSION: v0.1.99
   GO_VERSION: "1.27.x"
 
 jobs:
@@ -56,7 +54,7 @@ jobs:
   test:
     name: Test (${{ matrix.lang }})
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 120
     strategy:
       fail-fast: false
       matrix:
@@ -65,6 +63,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          fetch-depth: 0
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version: ${{ env.GO_VERSION }}
@@ -83,12 +82,14 @@ jobs:
         # Each test runs in a container of the image that manifests/images.yaml pins, with no network (spec 08.7).
         run: aik test -sandbox docker -lang "$LANG_ID" -cache build/test-cache -out build/results
       # The mutation score is part of I2 and X3 (spec 08.8). A score under the threshold lowers the rung and is not a
-      # failure of the build, so the step may fail; the cache keeps the runs that reach the threshold.
+      # failure of the build, so the step may fail; the cache keeps the runs that reach the threshold. A pull request
+      # runs it on the implementations that it changes; main runs it on all of them and saves the cache.
       - name: Run the mutation tests
         continue-on-error: true
         env:
           LANG_ID: ${{ matrix.lang }}
-        run: aik test -kind mutate -sandbox docker -lang "$LANG_ID" -cache build/test-cache -out build/results
+          BASE: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || '' }}
+        run: aik test -kind mutate -sandbox docker -lang "$LANG_ID" -cache build/test-cache -out build/results ${BASE:+-changed "$BASE"}
       - uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         if: github.event_name != 'pull_request'
         with:
@@ -102,8 +103,81 @@ jobs:
           retention-days: 7
           if-no-files-found: ignore
 
+  # The Lean package AI in lean/ (spec 11). lean-action builds it with the Mathlib cache, runs lake test and audits the
+  # axioms of the AI library; aik then extracts the declarations and checks the lean fields of the nodes (F01, F03, F07)
+  # and the elaboration time of each module (F10).
+  lean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: leanprover/lean-action@fe408643ea7367d8c0404a8be3975bb145f5fb64 # v1.7.0
+        with:
+          lake-package-directory: lean
+          use-mathlib-cache: true
+          test: true
+          axiom-audit: true
+          axiom-audit-root: AI
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: false
+      - name: Install aik
+        run: go install "github.com/tamnd/ai-agent/cmd/aik@${AIK_VERSION}"
+      - name: Extract the declarations and check the lean fields
+        run: aik lean build -no-build -time
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: lean-decls
+          path: build/lean/decls.jsonl
+          retention-days: 7
+          if-no-files-found: ignore
+
+  # The numerical checks of 08.6 and 08.7.2 on the NumPy references: the multiply-adds of each forward against
+  # flops_forward of shapes.yaml, and two runs of each fixtures/make.py against the committed fixtures.
+  numerics:
+    name: Numerics (FLOPs and fixtures)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: false
+      - name: Install aik
+        run: go install "github.com/tamnd/ai-agent/cmd/aik@${AIK_VERSION}"
+      - name: Count the FLOPs of each NumPy forward against shapes.yaml
+        run: aik flopcount -sandbox docker
+      - name: Run each fixtures/make.py twice against the committed fixtures
+        run: aik fixtures make -check -sandbox docker
+
+  vectors:
+    name: Vectors
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: false
+      - name: Install aik
+        run: go install "github.com/tamnd/ai-agent/cmd/aik@${AIK_VERSION}"
+      # Each vectors/make.py runs twice in the aik-vectors image that manifests/images.yaml pins, with no network. It fails when
+      # the vectors it computes with the official implementation are not the committed ones (spec 8.7.5).
+      - name: Check the test vectors
+        run: aik vectors make -check -sandbox docker
+
   site:
-    needs: [audit, test]
+    needs: [audit, test, vectors]
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:

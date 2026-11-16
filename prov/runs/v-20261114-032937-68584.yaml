@@ -1,0 +1,21 @@
+run: v-20261114-032937-68584
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: pac-learnability
+  verifier: codex:gpt-6-sol
+  tag: 2NT5ZY
+  claim: c-3dnf-improper
+  work: shalev-shwartz-ben-david-2014-understanding-machine-learning
+  locator: p. 108
+  key: e3f80d91ceb488bd41297592a77400d3
+  spans:
+  - start: 228506
+    end: 230546
+  verdict: supported
+  quote: Thus, the overall runtime of this approach is polynomial in n.
+  note: The passage describes the conjunction representation, ERM over that larger class, and the possibility of returning
+    a hypothesis outside the original class.

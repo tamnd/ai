@@ -1,0 +1,331 @@
+run: v-20261114-033013-69935
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: imagenet
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet
+  claim: c-wordnet
+  work: russakovsky-2015-imagenet-large-scale
+  locator: pp. 2 to 3
+  key: 76053a1ea373269da14d1e963f744a40
+  spans:
+  - start: 3196
+    end: 13484
+  verdict: supported
+  quote: 'ImageNet is an image dataset
+
+    organized according to the WordNet hierarchy (Miller,
+
+    1995). Each concept in WordNet, possibly described by
+
+    multiple words or word phrases, is called a “synonym'
+  note: The passage states both the hierarchy and the definition, with “set” or “synset” continuing across the page break.
+- slug: imagenet
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet
+  claim: c-size
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 3
+  key: f485ba30be725f3a61226571222b5a65
+  spans:
+  - start: 8383
+    end: 13484
+  verdict: supported
+  quote: 'ImageNet populates 21,841 synsets of
+
+    WordNet with an average of 650 manually verified and
+
+    full resolution images.'
+  note: The passage also gives 14,197,122 annotated images as of August 2014.
+- slug: imagenet
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet
+  claim: c-person-share
+  work: yang-2020-towards-fairer-datasets
+  locator: p. 2
+  key: 299f107da301c9b39d75726e6d1539a5
+  spans:
+  - start: 5862
+    end: 12979
+  verdict: supported
+  quote: 'the full ImageNet contains 2,832 people categories under the
+
+    person subtree (accounting for roughly 8.3% of the total images).'
+  note: The passage gives both quantities for the full ImageNet.
+- slug: imagenet
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet
+  claim: c-subset
+  work: russakovsky-2015-imagenet-large-scale
+  locator: pp. 8 to 9
+  key: 18e5fd05416001af8b319dd16d93253a
+  spans:
+  - start: 28621
+    end: 36594
+  verdict: unsupported
+  quote: 'Test images (per class)
+
+    150,000 (150)
+
+    100,000 (100)
+
+    100,000 (100)'
+  note: The table gives 150,000 test images for 2010, so the claim should limit its 100,000 figure to 2011–2014.
+- slug: imagenet
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet
+  claim: c-krizhevsky-size
+  work: krizhevsky-2012-imagenet-classification
+  locator: Section 2
+  key: 1564698496a42fa412b49e776b89f10a
+  spans:
+  - start: 5436
+    end: 7185
+  verdict: supported
+  quote: 'ImageNet is a dataset of over 15 million labeled high-resolution images belonging to roughly 22,000
+
+    categories.'
+  note: The next sentence says the images came from the web and were labeled using Amazon Mechanical Turk.
+- slug: imagenet
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet
+  claim: c-synonyms
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 5
+  key: 49409de2cbeaca82e89c6c6166b400bd
+  spans:
+  - start: 18277
+    end: 22913
+  verdict: supported
+  quote: 'ImageNet
+
+    already takes care of disambiguating word meanings
+
+    and of combining together synonyms into the same object category.'
+  note: The passage explicitly attributes this to using WordNet as a backbone.
+- slug: imagenet
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet
+  claim: c-gloss-filter
+  work: yang-2020-towards-fairer-datasets
+  locator: p. 3
+  key: 41834266c528c272aa35f3a2450ae485
+  spans:
+  - start: 12979
+    end: 19883
+  verdict: supported
+  quote: 'the
+
+    research team removed any synset explicitly denoted as “offensive”,
+
+    “derogatory,” “pejorative,” or “slur” in its gloss, yet this filtering was
+
+    imperfect'
+  note: The passage says offensive synsets remained and identifies the person subtree as especially problematic.
+- slug: imagenet
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet
+  claim: c-queries
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 7
+  key: c61126c93ea53ddaa871fc05d3d6fbbe
+  spans:
+  - start: 23435
+    end: 28621
+  verdict: supported
+  quote: 'Candidate images are collected
+
+    from the Internet by querying several image search engines. For each synset, the queries are the set of WordNet synonyms.'
+  note: The passage states the claimed initial query method.
+- slug: imagenet
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet
+  claim: c-query-expansion
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 7
+  key: 34bcf9cada13e9ac85858b2cae73f707
+  spans:
+  - start: 23435
+    end: 28621
+  verdict: unsupported
+  quote: 'with the word from parent synsets, if the same word
+
+    appears in the glossary of the target synset.'
+  note: The claim should retain this condition on using a parent synset word; the passage supports the stated translations.
+- slug: imagenet
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet
+  claim: c-amt
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 7
+  key: bb716f6b0269bd2c48b4aa55a122b345
+  spans:
+  - start: 23435
+    end: 28621
+  verdict: supported
+  quote: we present the users with a set of candidate images and the definition of the target synset
+  note: The passage identifies Amazon Mechanical Turk as the platform and says users verify whether each image contains objects
+    of the synset.
+- slug: imagenet
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet
+  claim: c-dynamic-consensus
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 7
+  key: 4911d4e3eba64f208274a3ed6909f6df
+  spans:
+  - start: 23435
+    end: 28621
+  verdict: supported
+  quote: 'At least 10 users are asked to vote
+
+    on each of these images. We then obtain a confidence
+
+    score table'
+  note: The passage also says agreement requirements vary by category and labeling continues until a confidence threshold
+    is reached.
+- slug: imagenet
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet
+  claim: c-precision
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 7
+  key: a4ac925525941eba41cbecd57229d9a6
+  spans:
+  - start: 23435
+    end: 28621
+  verdict: supported
+  quote: 'A total of 80 synsets were randomly sampled at every tree
+
+    depth of the mammal and vehicle subtrees.'
+  note: The passage says independent subjects verified the images and reports 99.7% average precision across those synsets.
+- slug: imagenet
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet
+  claim: c-docs
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 7
+  key: 535da56cc8cc8a071fd89254d71189ee
+  spans:
+  - start: 23435
+    end: 28621
+  verdict: supported
+  quote: 'We briefly summarize the process; (Deng et al., 2009)
+
+    contains further details.'
+  note: The passage says the challenge’s collection and annotation strategies follow those used for ImageNet.
+- slug: imagenet
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet
+  claim: c-noncommercial
+  work: yang-2020-towards-fairer-datasets
+  locator: p. 1
+  key: c7f8a7f9a45b9220b78fb5d786c70433
+  spans:
+  - start: 0
+    end: 5862
+  verdict: supported
+  quote: 'Despite remaining a free education
+
+    dataset released for non-commercial use only,1'
+  note: The footnote directs readers to ImageNet’s terms and conditions at image-net.org/download-faq.
+- slug: imagenet
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet
+  claim: c-unsafe
+  work: yang-2020-towards-fairer-datasets
+  locator: p. 2
+  key: 15e6c59387120d4f231949139c994613
+  spans:
+  - start: 5862
+    end: 12979
+  verdict: supported
+  quote: 'we examine the 2,832 people categories that are annotated
+
+    within the subtree, and determine that 1,593 of them are potentially offensive labels'
+  note: The passage says the authors plan to remove all 1,593 from ImageNet.
+- slug: imagenet
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet
+  claim: c-imageable
+  work: yang-2020-towards-fairer-datasets
+  locator: p. 2
+  key: e7d4ce06edd08dbcf6121bb975f55f26
+  spans:
+  - start: 5862
+    end: 12979
+  verdict: supported
+  quote: 'out of the remaining 1,239 categories
+
+    we find that only 158 of them are visual'
+  note: The passage recommends filtering the person subtree to those 158 for training visual recognition models.
+- slug: imagenet
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet
+  claim: c-demographics
+  work: yang-2020-towards-fairer-datasets
+  locator: p. 2
+  key: 6abc0b421c2e2c722ea070e2f9e29c05
+  spans:
+  - start: 5862
+    end: 12979
+  verdict: supported
+  quote: 'we run a large-scale crowdsourcing study to manually annotate
+
+    the gender, skin color, and age of the people depicted in ImageNet
+
+    images corresponding to these remaining categories.'
+  note: The passage describes the study and its annotations as claimed.
+- slug: imagenet
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet
+  claim: c-train-errors
+  work: northcutt-2021-pervasive-label-errors
+  locator: p. 1
+  key: 7bf3e46ee06f23b119566beeb0d08239
+  spans:
+  - start: 0
+    end: 3300
+  verdict: supported
+  quote: 'train set labels in a small number of machine learning datasets, e.g. in the ImageNet dataset,
+
+    are well-known to contain errors'
+  note: The passage explicitly says ImageNet training labels are known to contain errors.
+- slug: imagenet
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet
+  claim: c-goal
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 4
+  key: 02e02ee78b073b4b796f89e3a2019a06
+  spans:
+  - start: 13484
+    end: 18277
+  verdict: supported
+  quote: 'Constructing ImageNet was an effort to scale up
+
+    an image classification dataset to cover most nouns in
+
+    English using tens of millions of manually verified photographs'
+  note: The following sentence calls the ILSVRC image classification task a direct extension of that effort.
+- slug: imagenet
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet
+  claim: c-fixed-subset
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 4
+  key: f5292a8967965be1ee9b95384e5b0bd7
+  spans:
+  - start: 13484
+    end: 18277
+  verdict: supported
+  quote: 'A subset of categories and images was chosen and
+
+    fixed to provide a standardized benchmark while the
+
+    rest of ImageNet continued to grow.'
+  note: The passage states the claim directly.
