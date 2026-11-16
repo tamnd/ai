@@ -1,0 +1,179 @@
+# The claims of the q-learning page (spec 07). The build computes the labels.
+- id: c-update
+  type: definitional
+  text: "Q-learning (Watkins, 1989) is an off-policy TD control algorithm defined by equation (6.8), in which the learned action-value function Q(S_t, A_t) is updated with R_{t+1} and the max over a of Q(S_{t+1}, a)."
+  evidence:
+    - {work: "sutton-barto-2018-reinforcement-learning", role: review, locator: "p. 131", stance: for}
+
+- id: c-approximates-qstar
+  type: attributive
+  text: "Sutton and Barto write that the learned action-value function Q directly approximates q*, the optimal action-value function, independent of the policy being followed."
+  evidence:
+    - {work: "sutton-barto-2018-reinforcement-learning", role: original, locator: "p. 131", stance: for}
+
+- id: c-policy-role
+  type: attributive
+  text: "Sutton and Barto write that the policy still determines which state-action pairs are visited and updated, and that all that is required for correct convergence is that all pairs continue to be updated."
+  evidence:
+    - {work: "sutton-barto-2018-reinforcement-learning", role: original, locator: "p. 131", stance: for}
+
+- id: c-algorithm-box
+  type: definitional
+  text: "In the Q-learning algorithm of Sutton and Barto, the parameters are a step size alpha in (0, 1] and a small epsilon > 0, Q(s, a) is initialized arbitrarily except that Q(terminal, .) = 0, and the action is chosen from a policy derived from Q, for example epsilon-greedy."
+  evidence:
+    - {work: "sutton-barto-2018-reinforcement-learning", role: review, locator: "p. 131", stance: for}
+
+- id: c-contraction
+  type: mathematical
+  text: "For a finite Markov decision process with 0 <= gamma < 1, the Bellman optimality operator is a contraction of modulus gamma in the max norm, so it has exactly one fixed point, q*."
+  assumes: ["finite state and action sets", "0 <= gamma < 1", "bounded rewards"]
+  derivation: "derivations/stochastic-approximation.md"
+
+- id: c-target-mean
+  type: mathematical
+  text: "Given the history up to the choice of A_t, the mean of the Q-learning target R_{t+1} + gamma max_a Q_t(S_{t+1}, a) is the Bellman optimality operator applied to Q_t, at (S_t, A_t)."
+  assumes: ["the Markov property", "the table Q_t is fixed by the history"]
+  derivation: "derivations/stochastic-approximation.md"
+
+- id: c-wd-theorem
+  type: mathematical
+  text: "Watkins and Dayan state the theorem: given bounded rewards |r_n| <= R, learning rates 0 < alpha_n < 1, and, for all x and a, a sum over i of alpha_{n^i(x,a)} that is infinite and a sum over i of alpha_{n^i(x,a)}^2 that is finite, Q_n(x, a) -> Q*(x, a) as n -> infinity for all x and a, with probability 1."
+  assumes: ["a look-up table representation", "discounted rewards"]
+  evidence:
+    - {work: "watkins-dayan-1992-q-learning", role: original, locator: "Section 2", stance: for}
+
+- id: c-wd-conditions
+  type: attributive
+  text: "Watkins and Dayan write that their description assumes a look-up table representation, that Watkins (1989) shows that Q-learning may not converge correctly for other representations, and that the most important condition implicit in the theorem is an infinite number of episodes for each starting state and action."
+  evidence:
+    - {work: "watkins-dayan-1992-q-learning", role: original, locator: "Section 2", stance: for}
+
+- id: c-wd-abstract
+  type: attributive
+  text: "Watkins and Dayan report that Q-learning converges to the optimum action-values with probability 1 so long as all actions are repeatedly sampled in all states and the action-values are represented discretely."
+  evidence:
+    - {work: "watkins-dayan-1992-q-learning", role: original, locator: "the abstract", stance: for}
+
+- id: c-wd-extensions
+  type: attributive
+  text: "Watkins and Dayan sketch two extensions for which the convergence result holds: the non-discounted case for a Markov process with absorbing goal states, and the case where many Q values are updated in each iteration."
+  evidence:
+    - {work: "watkins-dayan-1992-q-learning", role: original, locator: "Section 4", stance: for}
+
+- id: c-wd-no-lambda
+  type: attributive
+  text: "Watkins and Dayan write that their theorem does not permit updates based on the rewards from more than one iteration, as in TD(lambda), and that it does not extend trivially to this case."
+  evidence:
+    - {work: "watkins-dayan-1992-q-learning", role: original, locator: "Section 4", stance: for}
+
+- id: c-step-sizes
+  type: attributive
+  text: "Sutton and Barto write that both convergence conditions (2.7) are met for the sample-average case, 1/n, but not for the case of a constant step-size parameter, where the second condition is not met, indicating that the estimates never completely converge but continue to vary in response to the most recently received rewards."
+  evidence:
+    - {work: "sutton-barto-2018-reinforcement-learning", role: original, locator: "p. 33", stance: for}
+
+- id: c-optimistic
+  type: attributive
+  text: "Sutton and Barto describe optimistic initial values as a simple trick to encourage exploration that can be quite effective on stationary problems, but far from a generally useful approach to encouraging exploration."
+  evidence:
+    - {work: "sutton-barto-2018-reinforcement-learning", role: original, locator: "p. 34", stance: for}
+
+- id: c-cliff
+  type: empirical
+  text: "On the cliff walking task with epsilon-greedy action selection and epsilon = 0.1, Q-learning learns values for the optimal policy, which travels right along the edge of the cliff, and occasionally falls off the cliff; Sarsa learns the longer but safer path; and the online performance of Q-learning is worse than that of Sarsa."
+  scope:
+    models: "Sarsa and Q-learning"
+    data: []
+    scale: "the cliff walking gridworld of Example 6.6"
+    setting: "undiscounted, episodic, reward -1 per step and -100 for a step into the cliff, epsilon-greedy with epsilon = 0.1"
+  evidence:
+    - {work: "sutton-barto-2018-reinforcement-learning", role: review, locator: "p. 132", stance: for}
+  exp: [cliff-walking]
+  small_scale: "yes"
+  small_scale_note: "The task is a small gridworld; the whole comparison runs on a CPU in about a minute."
+
+- id: c-cliff-decay
+  type: attributive
+  text: "Sutton and Barto write that if epsilon were gradually reduced, both Q-learning and Sarsa would asymptotically converge to the optimal policy on the cliff walking task."
+  evidence:
+    - {work: "sutton-barto-2018-reinforcement-learning", role: original, locator: "p. 132", stance: for}
+
+- id: c-max-bias
+  type: attributive
+  text: "Sutton and Barto write that in Q-learning a maximum over estimated values is used implicitly as an estimate of the maximum value, which can lead to a significant positive bias."
+  evidence:
+    - {work: "sutton-barto-2018-reinforcement-learning", role: original, locator: "p. 134", stance: for}
+
+- id: c-double-learning
+  type: attributive
+  text: "Sutton and Barto write that double learning learns two estimates, updates only one of them on each play, and doubles the memory requirements but does not increase the amount of computation per step."
+  evidence:
+    - {work: "sutton-barto-2018-reinforcement-learning", role: original, locator: "p. 135", stance: for}
+
+- id: c-expected-sarsa
+  type: attributive
+  text: "Sutton and Barto write that if the target policy of Expected Sarsa is the greedy policy while behavior is more exploratory, then Expected Sarsa is exactly Q-learning."
+  evidence:
+    - {work: "sutton-barto-2018-reinforcement-learning", role: original, locator: "p. 134", stance: for}
+
+- id: c-q-lambda
+  type: attributive
+  text: "Sutton and Barto write that Watkins's Q(lambda), the original extension of Q-learning to eligibility traces, decays its traces as long as a greedy action was taken and cuts the traces to zero after the first non-greedy action."
+  evidence:
+    - {work: "sutton-barto-2018-reinforcement-learning", role: original, locator: "p. 312", stance: for}
+
+- id: c-deadly-triad
+  type: attributive
+  text: "Sutton and Barto write that the danger of instability and divergence arises whenever function approximation, bootstrapping and off-policy training are combined, which they call the deadly triad."
+  evidence:
+    - {work: "sutton-barto-2018-reinforcement-learning", role: original, locator: "p. 264", stance: for}
+
+- id: c-dqn-unstable
+  type: attributive
+  text: "Mnih et al. write that reinforcement learning is known to be unstable or even to diverge when a nonlinear function approximator such as a neural network is used to represent the action-value function."
+  evidence:
+    - {work: "mnih-2015-human-level-control", role: original, locator: "p. 1", stance: for}
+
+- id: c-dqn-ideas
+  type: attributive
+  text: "Mnih et al. address these instabilities with a variant of Q-learning with two key ideas: experience replay, which randomizes over the data, and an iterative update that adjusts the action-values towards target values that are only periodically updated."
+  evidence:
+    - {work: "mnih-2015-human-level-control", role: original, locator: "p. 1", stance: for}
+
+- id: c-dqn-atari
+  type: empirical
+  text: "Mnih et al. report that the deep Q-network, receiving only the pixels and the game score as inputs, achieved a level comparable to that of a professional human games tester across a set of 49 games, using the same algorithm, network architecture and hyperparameters."
+  scope:
+    models: "the deep Q-network"
+    data: ["Atari 2600 games"]
+    scale: "49 games"
+    setting: "learning from pixels and the game score"
+  evidence:
+    - {work: "mnih-2015-human-level-control", role: original, locator: "p. 1", stance: for}
+  small_scale: "no"
+  small_scale_note: "The claim is about 49 Atari games with a convolutional network, beyond the cpu-small budget."
+
+- id: c-double-dqn
+  type: empirical
+  text: "van Hasselt, Guez and Silver report that DQN suffers from substantial overestimations in some games of the Atari 2600 domain, and that their adaptation of Double Q-learning to DQN reduces the observed overestimations and leads to much better performance on several games."
+  scope:
+    models: "DQN and Double DQN"
+    data: ["Atari 2600 games"]
+    scale: "the Atari 2600 games of their study"
+    setting: "deep reinforcement learning from pixels"
+  evidence:
+    - {work: "van-hasselt-2016-double-dqn", role: original, locator: "the abstract", stance: for}
+  small_scale: "no"
+  small_scale_note: "The claim is about Atari games with a convolutional network, beyond the cpu-small budget."
+
+- id: c-history-watkins
+  type: attributive
+  text: "Sutton and Barto write that Q-learning was introduced by Watkins (1989), whose outline of a convergence proof was made rigorous by Watkins and Dayan (1992), and that more general convergence results were proved by Jaakkola, Jordan, and Singh (1994) and Tsitsiklis (1994)."
+  evidence:
+    - {work: "sutton-barto-2018-reinforcement-learning", role: original, locator: "p. 140", stance: for}
+
+- id: c-history-action-value
+  type: attributive
+  text: "Sutton and Barto write that the term action value is due to Watkins (1989), and that the first to use epsilon-greedy methods may also have been Watkins (1989, p. 187)."
+  evidence:
+    - {work: "sutton-barto-2018-reinforcement-learning", role: original, locator: "p. 44", stance: for}
