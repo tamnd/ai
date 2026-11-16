@@ -1,0 +1,368 @@
+# The claims of the byte-pair encoding page (spec 07). The build computes the labels.
+- id: c-se-open-vocab
+  type: attributive
+  text: "Sennrich et al. note that neural machine translation models typically operate with a fixed vocabulary while translation is an open-vocabulary problem, and they encode rare and unknown words as sequences of subword units."
+  evidence:
+    - {work: "sennrich-2016-neural-machine-translation-rare-words", role: original, locator: "p. 1", stance: for}
+
+- id: c-se-rare-analysis
+  type: empirical
+  text: "In an analysis of 100 rare tokens of the German training data, Sennrich et al. find 56 compounds, 21 names, 6 loanwords with a common origin, 5 cases of transparent affixation, 1 number and 1 computer language identifier."
+  scope:
+    models: "none: a manual analysis of tokens"
+    data: ["WMT 15 English-German"]
+    scale: "100 tokens not among the 50 000 most frequent types"
+    setting: "manual classification of rare German tokens"
+  evidence:
+    - {work: "sennrich-2016-neural-machine-translation-rare-words", role: original, locator: "p. 2", stance: for}
+
+- id: c-se-gage
+  type: historical
+  text: "Byte Pair Encoding (Gage, 1994) is a data compression technique that iteratively replaces the most frequent pair of bytes in a sequence with a single, unused byte; Sennrich et al. adapt it to word segmentation by merging characters or character sequences."
+  evidence:
+    - {work: "sennrich-2016-neural-machine-translation-rare-words", role: original, locator: "p. 3", stance: for}
+
+- id: c-se-init
+  type: definitional
+  text: "BPE initializes the symbol vocabulary with the character vocabulary and represents each word as a sequence of characters plus a special end-of-word symbol, which allows the original tokenization to be restored after translation."
+  evidence:
+    - {work: "sennrich-2016-neural-machine-translation-rare-words", role: original, locator: "p. 3", stance: for}
+
+- id: c-se-merge
+  type: definitional
+  text: "BPE iteratively counts all symbol pairs and replaces each occurrence of the most frequent pair (A, B) with a new symbol AB; each merge operation produces a new symbol which represents a character n-gram."
+  evidence:
+    - {work: "sennrich-2016-neural-machine-translation-rare-words", role: original, locator: "p. 3", stance: for}
+
+- id: c-se-dictionary
+  type: definitional
+  text: "BPE does not consider pairs that cross word boundaries, so the algorithm can be run on the dictionary extracted from a text, with each word weighted by its frequency."
+  evidence:
+    - {work: "sennrich-2016-neural-machine-translation-rare-words", role: original, locator: "p. 3", stance: for}
+
+- id: c-se-vocab-size
+  type: definitional
+  text: "The final symbol vocabulary size of BPE equals the size of the initial vocabulary plus the number of merge operations, and the number of merge operations is the only hyperparameter of the algorithm."
+  evidence:
+    - {work: "sennrich-2016-neural-machine-translation-rare-words", role: original, locator: "p. 3", stance: for}
+
+- id: c-se-algorithm
+  type: definitional
+  text: "Algorithm 1 of Sennrich et al. learns BPE operations from the vocabulary l o w </w> 5, l o w e r </w> 2, n e w e s t </w> 6 and w i d e s t </w> 3 with num_merges = 10, taking at each step the pair with the largest count."
+  evidence:
+    - {work: "sennrich-2016-neural-machine-translation-rare-words", role: original, locator: "p. 4", stance: for}
+
+- id: c-se-test-time
+  type: definitional
+  text: "At test time, BPE first splits words into sequences of characters and then applies the learned operations to merge the characters into larger, known symbols, which is applicable to any word."
+  evidence:
+    - {work: "sennrich-2016-neural-machine-translation-rare-words", role: original, locator: "p. 4", stance: for}
+
+- id: c-se-unknown
+  type: attributive
+  text: "Sennrich et al. note that the only symbols unknown at test time are unknown characters or symbols all of whose occurrences in the training text have been merged into larger symbols, like safeguar merged into safeguard."
+  evidence:
+    - {work: "sennrich-2016-neural-machine-translation-rare-words", role: original, locator: "p. 4", stance: for}
+
+- id: c-se-lower
+  type: definitional
+  text: "With the BPE merge operations learned from the dictionary low, lowest, newer and wider in Figure 1, the OOV word lower is segmented into low er."
+  evidence:
+    - {work: "sennrich-2016-neural-machine-translation-rare-words", role: original, locator: "p. 4", stance: for}
+
+- id: c-se-merges-used
+  type: attributive
+  text: "Sennrich et al. use BPE with 59 500 merge operations and joint BPE with 89 500 operations in Table 1."
+  evidence:
+    - {work: "sennrich-2016-neural-machine-translation-rare-words", role: original, locator: "p. 5", stance: for}
+
+- id: c-se-joint
+  type: definitional
+  text: "BPE can be applied by learning two independent encodings, one for the source and one for the target vocabulary, or by learning the encoding on the union of the two vocabularies, which Sennrich et al. call joint BPE and which improves consistency between the source and the target segmentation."
+  evidence:
+    - {work: "sennrich-2016-neural-machine-translation-rare-words", role: original, locator: "p. 4", stance: for}
+
+- id: c-se-iso9
+  type: attributive
+  text: "For English and Russian, Sennrich et al. transliterate the Russian vocabulary into Latin characters with ISO-9 to learn the joint BPE encoding, then transliterate the BPE merge operations back into Cyrillic."
+  evidence:
+    - {work: "sennrich-2016-neural-machine-translation-rare-words", role: original, locator: "p. 4", stance: for}
+
+- id: c-se-bleu
+  type: empirical
+  text: "On English to German newstest2015, the WDict back-off dictionary baseline scores 22.0 single and 24.2 ens-8, the C2-50k character bigram system 22.8 and 25.3, and BPE-J90k joint BPE 22.8 and 24.7."
+  scope:
+    models: "attentional encoder-decoder (Groundhog), hidden size 1000, embedding size 620"
+    data: ["WMT 15 English-German"]
+    scale: "4.2 million sentence pairs; best single model and ensemble of 8"
+    setting: "BLEU on newstest2015 with beam size 12"
+  evidence:
+    - {work: "sennrich-2016-neural-machine-translation-rare-words", role: original, locator: "Table 2", stance: for}
+
+- id: c-se-table1
+  type: empirical
+  text: "On the German training corpus, no segmentation gives 100 m tokens, 1 750 000 types and 1079 unknown tokens in newstest2013, while BPE gives 112 m tokens, 63 000 types and 0 unknown, and joint BPE 111 m tokens, 82 000 types and 32 unknown."
+  scope:
+    models: "none: corpus statistics"
+    data: ["WMT 15 English-German"]
+    scale: "about 100 million German tokens"
+    setting: "segmentation statistics of the German side of the training data"
+  evidence:
+    - {work: "sennrich-2016-neural-machine-translation-rare-words", role: original, locator: "p. 6", stance: for}
+
+- id: c-se-joint-unknown
+  type: empirical
+  text: "Joint BPE can produce segments that are unknown because they only occur in the English training text, but these are rare, 0.05% of test tokens."
+  scope:
+    models: "none: corpus statistics"
+    data: ["WMT 15 English-German"]
+    scale: "the test set of the English-German task"
+    setting: "joint BPE with 89 500 merge operations"
+  evidence:
+    - {work: "sennrich-2016-neural-machine-translation-rare-words", role: original, locator: "p. 5", stance: for}
+
+- id: c-se-rare-f1
+  type: empirical
+  text: "All subword systems improve unigram F1 over the back-off dictionary baseline, especially for rare words, from 36.8% to 41.8% for EN to DE and from 26.5% to 29.7% for EN to RU."
+  scope:
+    models: "attentional encoder-decoder (Groundhog) ensembles"
+    data: ["WMT 15 English-German", "WMT 15 English-Russian"]
+    scale: "4.2 and 2.6 million sentence pairs"
+    setting: "unigram F1 on rare words of newstest2015"
+  evidence:
+    - {work: "sennrich-2016-neural-machine-translation-rare-words", role: original, locator: "p. 6", stance: for}
+
+- id: c-ku-ambiguity
+  type: definitional
+  text: "Subword segmentation is potentially ambiguous, and multiple segmentations are possible even with the same vocabulary."
+  evidence:
+    - {work: "kudo-2018-subword-regularization", role: original, locator: "p. 1", stance: for}
+
+- id: c-ku-greedy
+  type: attributive
+  text: "Kudo notes that BPE is based on a greedy and deterministic symbol replacement, which can not provide multiple segmentations with probabilities."
+  evidence:
+    - {work: "kudo-2018-subword-regularization", role: original, locator: "p. 3", stance: for}
+
+- id: c-ku-vocab-size
+  type: attributive
+  text: "Kudo notes that BPE can balance the vocabulary size and the step size, the number of tokens required to encode the sentence, so that with a small fixed vocabulary, usually 16k to 32k, the number of required symbols does not significantly increase."
+  evidence:
+    - {work: "kudo-2018-subword-regularization", role: original, locator: "p. 3", stance: for}
+
+- id: c-ku-wordpiece
+  type: attributive
+  text: "Kudo considers the wordpiece model (Schuster and Nakajima, 2012) a variant of BPE, as it also uses an incremental vocabulary generation, with a likelihood instead of frequency."
+  evidence:
+    - {work: "kudo-2018-subword-regularization", role: original, locator: "p. 3", stance: for}
+
+- id: c-ku-unigram
+  type: definitional
+  text: "The subword segmentation algorithm of Kudo is based on a unigram language model, which assumes that each subword occurs independently and can output multiple subword segmentations with probabilities."
+  evidence:
+    - {work: "kudo-2018-subword-regularization", role: original, locator: "p. 3", stance: for}
+
+- id: c-ku-sampling
+  type: definitional
+  text: "Subword regularization samples one subword segmentation from the distribution P(x|X) for each parameter update."
+  evidence:
+    - {work: "kudo-2018-subword-regularization", role: original, locator: "p. 4", stance: for}
+
+- id: c-pr-priority
+  type: definitional
+  text: "The merge table of BPE specifies which subwords have to be merged into a bigger subword and the priority of the merges; a word is split into characters plus the end of word symbol, and the pair of adjacent tokens with the highest priority is merged until no merge from the table is available."
+  evidence:
+    - {work: "provilkov-2020-bpe-dropout", role: original, locator: "p. 2", stance: for}
+
+- id: c-pr-algorithm
+  type: definitional
+  text: "BPE-dropout keeps the original BPE merge table and, during segmentation, at each merge step randomly drops some merges with the probability p."
+  evidence:
+    - {work: "provilkov-2020-bpe-dropout", role: original, locator: "p. 3", stance: for}
+
+- id: c-pr-occurrence
+  type: definitional
+  text: "In case of multiple occurrences of the same merge in a word, as (e, r) in m-e-r-g-e-r, BPE-dropout decides independently for each occurrence whether to drop it."
+  evidence:
+    - {work: "provilkov-2020-bpe-dropout", role: original, locator: "p. 3", stance: for}
+
+- id: c-pr-p-limits
+  type: definitional
+  text: "If p is set to 0, BPE-dropout segmentation is equivalent to standard BPE; if p is set to 1, it splits words into distinct characters; values between 0 and 1 control the segmentation granularity."
+  evidence:
+    - {work: "provilkov-2020-bpe-dropout", role: original, locator: "p. 3", stance: for}
+
+- id: c-pr-train-test
+  type: attributive
+  text: "Provilkov et al. use p > 0, usually p = 0.1, in training time and p = 0 during inference, which means the original BPE at inference time."
+  evidence:
+    - {work: "provilkov-2020-bpe-dropout", role: original, locator: "p. 3", stance: for}
+
+- id: c-pr-p-chinese
+  type: attributive
+  text: "Provilkov et al. use p = 0.1 for all languages except Chinese and Japanese, for which they take p = 0.6 to match the increase in length of segmented sentences for other languages."
+  evidence:
+    - {work: "provilkov-2020-bpe-dropout", role: original, locator: "p. 6", stance: for}
+
+- id: c-pr-unique
+  type: attributive
+  text: "Provilkov et al. argue that since BPE splits words into unique subword sequences, only rare words are split into subwords, which forces frequent sequences of characters to mostly appear as part of bigger tokens and not as individual tokens."
+  evidence:
+    - {work: "provilkov-2020-bpe-dropout", role: original, locator: "Section 6.1", stance: for}
+
+- id: c-pr-length
+  type: empirical
+  text: "With p = 0.1, sentences segmented with BPE-dropout are on average about 1.25 times longer than with BPE, but the lengths of generated translations of models trained with BPE and with BPE-dropout are close."
+  scope:
+    models: "Transformer translation models"
+    data: ["WMT14 En-Fr"]
+    scale: "the dataset sizes of the paper"
+    setting: "BPE-dropout in training, BPE and beam search at inference"
+  evidence:
+    - {work: "provilkov-2020-bpe-dropout", role: original, locator: "p. 6", stance: for}
+
+- id: c-pr-gains
+  type: empirical
+  text: "Using BPE-dropout during training and the standard BPE during inference improves translation quality up to 2.3 BLEU compared to BPE and up to 0.9 BLEU compared to the previous subword regularization."
+  scope:
+    models: "Transformer translation models"
+    data: ["IWSLT15", "IWSLT17", "WMT14 En-De", "ASPEC En-Ja"]
+    scale: "12 translation directions"
+    setting: "p = 0.1 (0.6 for Chinese and Japanese) in training, p = 0 at inference"
+  evidence:
+    - {work: "provilkov-2020-bpe-dropout", role: original, locator: "p. 1", stance: for}
+
+- id: c-pr-vs-kudo
+  type: empirical
+  text: "Compared to Kudo (2018), among the 12 datasets BPE-dropout is beneficial for 8 datasets with improvements up to 0.92 BLEU, is not significantly different for 3 datasets and underperforms only on En-Ja."
+  scope:
+    models: "Transformer translation models"
+    data: ["IWSLT15", "IWSLT17", "WMT14 En-De", "ASPEC En-Ja"]
+    scale: "12 translation directions"
+    setting: "subword regularization of Kudo (2018) with l = 64 and alpha = 0.1 as the baseline"
+  evidence:
+    - {work: "provilkov-2020-bpe-dropout", role: original, locator: "p. 5", stance: for}
+
+- id: c-pr-source-only
+  type: empirical
+  text: "On random subsets of WMT14 En-Fr, full regularization performs best for small and medium datasets, while for large datasets, starting from 4m instances, BPE-dropout should be used only on the source side."
+  scope:
+    models: "Transformer translation models"
+    data: ["WMT14 En-Fr"]
+    scale: "random subsets of 250k to 16m sentence pairs"
+    setting: "BPE-dropout on the source side, the target side or both"
+  evidence:
+    - {work: "provilkov-2020-bpe-dropout", role: original, locator: "p. 5", stance: for}
+
+- id: c-pr-vocab-sensitive
+  type: empirical
+  text: "Models trained with subword regularization are less sensitive to the choice of vocabulary size: differences in performance of models with 4k and 32k vocabulary are much less than for models trained with the standard BPE."
+  scope:
+    models: "Transformer translation models"
+    data: ["WMT14 En-Fr"]
+    scale: "random subsets of WMT14 En-Fr"
+    setting: "vocabulary sizes from 4k to 32k"
+  evidence:
+    - {work: "provilkov-2020-bpe-dropout", role: original, locator: "p. 6", stance: for}
+
+- id: c-pr-4gram
+  type: empirical
+  text: "Embeddings of BPE-dropout have higher character 4-gram precision of the top-10 neighbors (0.29) than embeddings of BPE (0.18)."
+  scope:
+    models: "Transformer translation models"
+    data: ["WMT14 En-Fr"]
+    scale: "4m sentence pairs"
+    setting: "nearest neighbours in the source embedding space"
+  evidence:
+    - {work: "provilkov-2020-bpe-dropout", role: original, locator: "Section 6.2", stance: for}
+
+- id: c-pr-misspell
+  type: empirical
+  text: "On WMT14 test sets with synthetic misspellings in the source, models trained with BPE-dropout gain +1.58 to +2.32 BLEU over BPE, against +0.45 to +1.5 on the original source."
+  scope:
+    models: "Transformer translation models"
+    data: ["WMT14 En-De", "WMT14 En-Fr"]
+    scale: "the full WMT14 En-De data; 4m and 16m En-Fr pairs"
+    setting: "each source word modified with probability 10% by one character edit"
+  evidence:
+    - {work: "provilkov-2020-bpe-dropout", role: original, locator: "p. 8", stance: for}
+
+- id: c-merge-token-drop
+  type: mathematical
+  text: "A merge of the pair (A, B) lowers the frequency-weighted number of symbols in the training table by exactly the number of occurrences it replaces, which is at least 1 and at most the count of the pair."
+  assumes: ["each word has a positive frequency", "the merge replaces non-overlapping occurrences from left to right", "the pair has a count of at least 1"]
+  derivation: merge-count
+
+- id: c-merge-overlap
+  type: mathematical
+  text: "A merge replaces every counted occurrence of its pair unless both sides are the same symbol; a run of n copies of A has n - 1 counted pairs (A, A) and the merge replaces floor(n/2) of them."
+  assumes: ["the merge replaces non-overlapping occurrences from left to right"]
+  derivation: merge-count
+
+- id: c-vocab-count
+  type: mathematical
+  text: "After k merges the symbol vocabulary is the initial symbols plus the k merge results, including symbols that no longer occur in the table; its size is the initial size plus k when every merge result is a new string."
+  assumes: ["each merge adds its result to the vocabulary and removes nothing", "every merge result differs from the initial symbols and from earlier results"]
+  derivation: merge-count
+
+- id: c-encode-deterministic
+  type: mathematical
+  text: "Encoding a word by applying the merge list in order is deterministic: a word and a merge list give exactly one segmentation."
+  assumes: ["each merge replaces non-overlapping occurrences from left to right"]
+  derivation: encode-reproduces
+
+- id: c-encode-reproduces
+  type: mathematical
+  text: "For a word of the training table, applying the learned merges in order gives the segmentation that the word has in the table at the end of training."
+  assumes: ["encoding starts from the same characters and end-of-word marker as training", "the merges are applied in the order they were learned"]
+  derivation: encode-reproduces
+
+- id: c-priority-equals-sequential
+  type: mathematical
+  text: "Merging the adjacent pair of highest priority, leftmost first, gives the same segmentation as applying the merges in order when each side of every merge is a character, the end marker or an earlier merge result, and every merge result is a new string."
+  assumes: ["each side of every merge is a single character, the end-of-word marker or the result of an earlier merge", "every merge result differs from the initial symbols and from earlier results"]
+  derivation: encode-reproduces
+
+- id: c-priority-counterexample
+  type: mathematical
+  text: "Without these conditions the two encodings can differ: with the merges (ab, c) then (a, b), applying them in order segments abc as ab, c, while priority merging gives abc."
+  assumes: ["the merge list is arbitrary, not learned by BPE"]
+  derivation: encode-reproduces
+
+- id: c-sp-raw
+  type: definitional
+  text: "While existing subword segmentation tools assume that the input is pre-tokenized into word sequences, SentencePiece can train subword models directly from raw sentences."
+  evidence:
+    - {work: "kudo-2018-sentencepiece", role: original, locator: "p. 1", stance: for}
+
+- id: c-sp-lossless
+  type: definitional
+  text: "SentencePiece treats the input text as a sequence of Unicode characters, handles whitespace as a normal symbol escaped with the meta symbol U+2581, and implements the Decoder as the inverse of the Encoder, Decode(Encode(Normalize(text))) = Normalize(text)."
+  evidence:
+    - {work: "kudo-2018-sentencepiece", role: original, locator: "p. 2", stance: for}
+
+- id: c-sp-at-ambiguity
+  type: attributive
+  text: "Kudo and Richardson note that subword-nmt uses @@ as an intra-word boundary marker, a representation that can not always perform lossless tokenization because an ambiguity remains in the treatment of whitespaces, such as consecutive whitespaces."
+  evidence:
+    - {work: "kudo-2018-sentencepiece", role: original, locator: "p. 2", stance: for}
+    - {work: "kudo-2018-sentencepiece", role: original, locator: "p. 3", stance: for}
+
+- id: c-sp-heap
+  type: mathematical
+  text: "BPE segmentation of an input of length N requires O(N^2) computational cost when the pairs of symbols are naively scanned in every iteration, and SentencePiece adopts an O(N log(N)) algorithm in which the merged symbols are managed by a binary heap."
+  assumes: ["the input is one sentence or word of N characters", "the naive method rescans all adjacent pairs after each merge"]
+  evidence:
+    - {work: "kudo-2018-sentencepiece", role: original, locator: "p. 3", stance: for}
+
+- id: c-sp-vocab-size
+  type: definitional
+  text: "While subword-nmt specifies the number of merge operations, SentencePiece specifies the final size of vocabulary, as the number of merge operations is a BPE specific parameter."
+  evidence:
+    - {work: "kudo-2018-sentencepiece", role: original, locator: "p. 3", stance: for}
+
+- id: c-sp-nfkc
+  type: definitional
+  text: "By default, SentencePiece normalizes the input text with the Unicode NFKC normalization."
+  evidence:
+    - {work: "kudo-2018-sentencepiece", role: original, locator: "p. 3", stance: for}
