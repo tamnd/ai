@@ -39,4 +39,4 @@ $$ \mathbb E[\lambda] = \tfrac12 , \qquad \operatorname{Var}[\lambda] = \frac{1}
 
 The check `beta-moments.check.py` draws $10^6$ samples of $\lambda$ for $\alpha \in \{0.01, 0.1, 0.2, 0.4, 1, 2, 8, 32, 1000\}$ and compares the sample mean and variance with item 1 to Monte Carlo accuracy.
 For $\alpha = 0.01$ it checks that at least 90% of the draws lie within 0.01 of 0 or 1, split about evenly, and for $\alpha = 1000$ that all lie within 0.07 of $1/2$.
-It checks the closed form of $\mathbb E[\lambda^2]$ by numerical integration of the density, and that the sample distribution at $\alpha = 1$ is uniform by a Kolmogorov–Smirnov distance.
+It checks the closed form of $\mathbb E[\lambda^2]$ by numerical integration of the density, and that the sample distribution at $\alpha = 1$ is uniform by a Kolmogorov-Smirnov distance.
