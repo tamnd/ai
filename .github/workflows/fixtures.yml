@@ -45,6 +45,7 @@ jobs:
         run: |
           # shellcheck disable=SC2086
           aik fixtures make -sandbox docker $NODES
+          # shellcheck disable=SC2086
           aik fixtures make -check -sandbox docker $NODES
           git status --short -- nodes >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
