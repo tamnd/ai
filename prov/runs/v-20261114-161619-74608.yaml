@@ -1,0 +1,46 @@
+run: v-20261114-161619-74608
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-50-games
+  work: hassabis-2017-alphagos-next-move
+  locator: p. 1
+  key: 5f39f7188841f941cd564bfd41744a9b
+  spans:
+  - start: 0
+    end: 5734
+  verdict: supported
+  quote: The first ten games are now available here, and we’ll publish another ten each day until all 50 have been released.
+  note: The passage also says the 50 AlphaGo self-play games were played at full length time controls.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-lee
+  work: silver-2017-mastering-go-without-human-knowledge
+  locator: p. 21
+  key: bb82d29e43e0e5ee08ad95584e800bf4
+  spans:
+  - start: 34883
+    end: 37171
+  verdict: supported
+  quote: AlphaGo Lee is the program that defeated Lee Sedol 4–1 in March, 2016.
+  note: The passage states the version, opponent, score, and date.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-lee-titles
+  work: silver-2017-mastering-go-without-human-knowledge
+  locator: p. 2
+  key: 13fb1d8a2e19523f1751d35c8d3e66f9
+  spans:
+  - start: 2334
+    end: 4628
+  verdict: supported
+  quote: defeated Lee Sedol, the winner of 18 international titles, in March 2016.
+  note: The passage explicitly describes Lee Sedol as the winner of 18 international titles.

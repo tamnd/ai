@@ -1,0 +1,145 @@
+# The claims of the deepmind page (spec 07). The build computes the labels.
+# The web pages resolve as one page, "p. 1". The Nature PDFs are cited by their first page or abstract.
+- id: c-unit
+  type: historical
+  text: "On Apr 20, 2023, Google announced a unit called Google DeepMind that brings together the Brain team from Google Research and DeepMind."
+  evidence:
+    - {work: "pichai-2023-google-deepmind-two-teams", role: primary-document, locator: "p. 1", stance: for}
+
+- id: c-founded
+  type: attributive
+  text: "Demis Hassabis writes that he founded DeepMind back in 2010 along with Shane Legg and Mustafa Suleyman."
+  evidence:
+    - {work: "hassabis-2019-entering-tenth-year", role: statement, locator: "p. 1", stance: for}
+
+- id: c-acquired
+  type: attributive
+  text: "The Royal Society reported on 21 November 2014 that DeepMind Technologies was acquired by Google earlier this year."
+  evidence:
+    - {work: "royal-society-2014-hassabis-mullard-award", role: original, locator: "p. 1", stance: for}
+
+- id: c-company
+  type: historical
+  text: "DEEPMIND TECHNOLOGIES LIMITED is a private limited company with its registered office address in London."
+  evidence:
+    - {work: "companies-house-deepmind-technologies-limited", role: primary-document, locator: "p. 1", stance: for}
+
+- id: c-incorporated
+  type: historical
+  text: "DEEPMIND TECHNOLOGIES LIMITED was incorporated on 23 September 2010, and its previous company name FRIARS 2022 LIMITED was used from 23 Sep 2010 to 15 Nov 2010."
+  evidence:
+    - {work: "companies-house-deepmind-technologies-limited", role: primary-document, locator: "p. 1", stance: for}
+
+- id: c-2010-again
+  type: attributive
+  text: "In the note announcing Google DeepMind, Hassabis also writes of when we launched DeepMind back in 2010."
+  evidence:
+    - {work: "hassabis-2023-announcing-google-deepmind", role: statement, locator: "p. 1", stance: for}
+
+- id: c-2011
+  type: attributive
+  text: "The Royal Society writes that Dr Hassabis founded DeepMind Technologies in 2011 with partners Dr Shane Legg and Mustafa Suleyman."
+  evidence:
+    - {work: "royal-society-2014-hassabis-mullard-award", role: original, locator: "p. 1", stance: for}
+
+- id: c-price
+  type: attributive
+  text: "The Royal Society writes that DeepMind Technologies, and Dr Hassabis's team, were bought by Google for approximately £400 million."
+  evidence:
+    - {work: "royal-society-2014-hassabis-mullard-award", role: original, locator: "p. 1", stance: for}
+
+- id: c-suleyman-leaves
+  type: attributive
+  text: "In a post of December 5, 2019, Hassabis writes that Mustafa Suleyman is leaving DeepMind and joins Google in a new role."
+  evidence:
+    - {work: "hassabis-2019-entering-tenth-year", role: statement, locator: "p. 1", stance: for}
+
+- id: c-merger
+  type: historical
+  text: "On Apr 20, 2023, Sundar Pichai announced that a group called Google DeepMind will bring together the Brain team from Google Research and DeepMind."
+  evidence:
+    - {work: "pichai-2023-google-deepmind-two-teams", role: statement, locator: "p. 1", stance: for}
+
+- id: c-joining-forces
+  type: attributive
+  text: "Hassabis wrote to employees that DeepMind and the Brain team from Google Research will be joining forces as a single, focused unit called Google DeepMind."
+  evidence:
+    - {work: "hassabis-2023-announcing-google-deepmind", role: statement, locator: "p. 1", stance: for}
+
+- id: c-dqn
+  type: attributive
+  text: "Mnih and colleagues, of Google DeepMind in London, report a deep Q-network agent that receives only the pixels and the game score as inputs."
+  evidence:
+    - {work: "mnih-2015-human-level-control", role: original, locator: "p. 1", stance: for}
+
+- id: c-dqn-49
+  type: attributive
+  text: "Mnih and colleagues report that the deep Q-network achieves a level comparable to that of a professional human games tester across a set of 49 games, using the same algorithm, network architecture and hyperparameters."
+  evidence:
+    - {work: "mnih-2015-human-level-control", role: original, locator: "p. 1", stance: for}
+
+- id: c-alphago
+  type: attributive
+  text: "Silver and colleagues introduce a search algorithm for AlphaGo that combines Monte Carlo simulation with value and policy networks."
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 1", stance: for}
+
+- id: c-alphago-results
+  type: attributive
+  text: "Silver and colleagues report that AlphaGo achieved a 99.8% winning rate against other Go programs and defeated the human European Go champion by 5 games to 0."
+  evidence:
+    - {work: "silver-2016-mastering-go", role: original, locator: "p. 1", stance: for}
+
+- id: c-alphafold
+  type: attributive
+  text: "Jumper and colleagues, of DeepMind in London, describe AlphaFold as the first computational method that can regularly predict protein structures with atomic accuracy even in cases in which no similar structure is known."
+  evidence:
+    - {work: "jumper-2021-alphafold", role: original, locator: "the abstract", stance: for}
+
+- id: c-casp14
+  type: attributive
+  text: "Jumper and colleagues validated AlphaFold in the 14th Critical Assessment of protein Structure Prediction (CASP14)."
+  evidence:
+    - {work: "jumper-2021-alphafold", role: original, locator: "the abstract", stance: for}
+
+- id: c-gemini
+  type: attributive
+  text: "The Gemini Team, Google, introduces a family of multimodal models, Gemini, across image, audio, video, and text understanding, in Ultra, Pro, and Nano sizes."
+  evidence:
+    - {work: "gemini-2023-family-multimodal-models", role: original, locator: "the abstract", stance: for}
+
+- id: c-ceo
+  type: attributive
+  text: "Pichai writes that as CEO of Google DeepMind, Demis Hassabis will lead the development of its general AI systems."
+  evidence:
+    - {work: "pichai-2023-google-deepmind-two-teams", role: statement, locator: "p. 1", stance: for}
+
+- id: c-dean
+  type: attributive
+  text: "Pichai writes that Jeff Dean will take on the role of Google's Chief Scientist and serve as Chief Scientist to Google Research and Google DeepMind."
+  evidence:
+    - {work: "pichai-2023-google-deepmind-two-teams", role: statement, locator: "p. 1", stance: for}
+
+- id: c-legg
+  type: attributive
+  text: "In December 2019 Hassabis describes Shane Legg as our Chief Scientist at DeepMind."
+  evidence:
+    - {work: "hassabis-2019-entering-tenth-year", role: statement, locator: "p. 1", stance: for}
+
+- id: c-nobel
+  type: historical
+  text: "On 9 October 2024 the Royal Swedish Academy of Sciences decided to award the Nobel Prize in Chemistry 2024 with the other half jointly to Demis Hassabis and John Jumper, both of Google DeepMind, London, for protein structure prediction."
+  evidence:
+    - {work: "nobel-2024-chemistry-press-release", role: primary-document, locator: "p. 1", stance: for}
+
+- id: c-nobel-baker
+  type: historical
+  text: "One half of the Nobel Prize in Chemistry 2024 went to David Baker for computational protein design."
+  evidence:
+    - {work: "nobel-2024-chemistry-press-release", role: primary-document, locator: "p. 1", stance: for}
+
+- id: c-alphafold2
+  type: attributive
+  text: "The Royal Swedish Academy of Sciences writes that in 2020, Demis Hassabis and John Jumper presented an AI model called AlphaFold2."
+  evidence:
+    - {work: "nobel-2024-chemistry-press-release", role: official-text, locator: "p. 1", stance: for}
