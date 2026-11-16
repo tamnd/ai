@@ -1,16 +1,16 @@
 {
   "experiment": "mlp-mnist-2k",
   "node": "Y8VNMB",
-  "run": "r-2026-11-13-9e12d2",
-  "date": "2026-11-13",
-  "image": "ghcr.io/tamnd/aik-runner-pytorch@sha256:b28775511d7834857c7b599ee208566014b29633a4af52a07e5c115341ee66e4",
+  "run": "r-2026-11-15-4763ad",
+  "date": "2026-11-15",
+  "image": "ghcr.io/tamnd/aik-runner-pytorch@sha256:da31eb80d001e2664fa684ab678ba4fb37871c366ae1d380d2456016969b48ef",
   "hardware": {
     "class": "cpu-small",
     "cpu": "amd64",
     "device": "cpu",
     "os": "linux"
   },
-  "inputs_hash": "sha256:9e12d22b14c50967e52fb6f7c05e7046162d3210708080cf13752e89a82e23c0",
+  "inputs_hash": "sha256:4763ad2981182b137e4d34ab52878ca10ef89ff453b80ef5b8a664049c55906a",
   "expect_hash": "sha256:9946df9887fbfc26974c0fef95820b1497c4b6217a84780fbb034debb0fb2f2d",
   "seeds": [
     20261113,
@@ -199,6 +199,6 @@
     }
   ],
   "verdict": "holds",
-  "wall_time_s": 133.1,
+  "wall_time_s": 142.9,
   "cost_usd": 0
 }

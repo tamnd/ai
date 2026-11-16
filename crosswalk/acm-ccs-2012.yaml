@@ -1,0 +1,405 @@
+# The crosswalk of ACM CCS 2012 (spec 5.8): the concepts of the ACM Computing Classification System under
+# "Computing methodologies > Machine learning", in the order of the classification, each mapped to the areas and nodes that
+# cover it. The CCS is a polyhierarchy; a concept with two parents is kept here under its parent in this subtree. The ids
+# and names are from the classification (free to use with credit); nothing else of it is kept (19). A match says what
+# our item is to the concept: exact, broader (ours is wider), narrower (ours is a part of it) or related.
+# The path acm-ccs-ml of the site (16.12) reads the concepts in this order. The part "> Artificial intelligence" (10010178)
+# and the AI parts of "Theory of computation" and "Applied computing" are to come.
+system: ACM Computing Classification System 2012
+version: "2012"
+units: concepts
+source: https://dl.acm.org/ccs
+licence: free to use with credit
+checked: 2026-11-15
+paths:
+  - {id: acm-ccs-ml, title: Machine learning in the ACM Computing Classification System, under: "10010257", depth: 2}
+rows:
+  - {id: "10010147", name: Computing methodologies, note: the root of the subtree; its other parts are not AI}
+  - id: "10010257"
+    name: Machine learning
+    parent: "10010147"
+  - id: "10010258"
+    name: Learning paradigms
+    parent: "10010257"
+  - id: "10010259"
+    name: Supervised learning
+    parent: "10010258"
+    maps:
+      - {to: area:supervised-learning, match: exact}
+  - id: "10003268"
+    name: Ranking
+    parent: "10010259"
+    maps:
+      - {to: area:retrieval-and-recommendation/search-and-ranking-systems, match: related}
+  - id: "10003343"
+    name: Learning to rank
+    parent: "10010259"
+    maps:
+      - {to: area:supervised-learning/learning-to-rank-classical, match: exact}
+  - id: "10010263"
+    name: Supervised learning by classification
+    parent: "10010259"
+    maps:
+      - {to: area:supervised-learning/logistic-regression-and-glms, match: narrower}
+      - {to: area:supervised-learning/naive-bayes-and-generative-classifiers, match: narrower}
+  - id: "10010264"
+    name: Supervised learning by regression
+    parent: "10010259"
+    maps:
+      - {to: area:supervised-learning/linear-regression, match: narrower}
+  - id: "10010265"
+    name: Structured outputs
+    parent: "10010259"
+    maps:
+      - {to: area:supervised-learning/structured-prediction, match: exact}
+  - id: "10010266"
+    name: Cost-sensitive learning
+    parent: "10010259"
+    maps:
+      - {to: area:supervised-learning/imbalanced-and-cost-sensitive, match: broader}
+  - id: "10010260"
+    name: Unsupervised learning
+    parent: "10010258"
+    maps:
+      - {to: area:unsupervised-learning, match: exact}
+  - id: "10003697"
+    name: Cluster analysis
+    parent: "10010260"
+    maps:
+      - {to: area:unsupervised-learning/clustering-in-practice, match: exact}
+  - id: "10010229"
+    name: Anomaly detection
+    parent: "10010260"
+    maps:
+      - {to: area:unsupervised-learning/anomaly-detection, match: exact}
+  - id: "10010267"
+    name: Mixture modeling
+    parent: "10010260"
+    maps:
+      - {to: area:probabilistic-machine-learning/mixture-models-and-em, match: exact}
+  - id: "10010268"
+    name: Topic modeling
+    parent: "10010260"
+    maps:
+      - {to: area:unsupervised-learning/topic-models, match: exact}
+  - id: "10010269"
+    name: Source separation
+    parent: "10010260"
+    maps:
+      - {to: area:unsupervised-learning/independent-component-and-source-separation, match: exact}
+  - id: "10010270"
+    name: Motif discovery
+    parent: "10010260"
+    maps:
+      - {to: area:time-series-and-sequential-data, match: related}
+  - id: "10010271"
+    name: Dimensionality reduction and manifold learning
+    parent: "10010260"
+    maps:
+      - {to: area:unsupervised-learning/dimensionality-reduction, match: narrower}
+      - {to: area:unsupervised-learning/manifold-learning, match: narrower}
+  - id: "10010261"
+    name: Reinforcement learning
+    parent: "10010258"
+    maps:
+      - {to: area:reinforcement-learning, match: exact}
+  - id: "10010272"
+    name: Sequential decision making
+    parent: "10010261"
+    maps:
+      - {to: area:reinforcement-learning/markov-decision-processes, match: related}
+  - id: "10010273"
+    name: Inverse reinforcement learning
+    parent: "10010261"
+    maps:
+      - {to: area:reinforcement-learning/inverse-rl-and-reward-learning, match: broader}
+  - id: "10010274"
+    name: Apprenticeship learning
+    parent: "10010261"
+    maps:
+      - {to: area:reinforcement-learning/imitation-learning, match: broader}
+  - id: "10010275"
+    name: Multi-agent reinforcement learning
+    parent: "10010261"
+    maps:
+      - {to: area:reinforcement-learning/multi-agent-rl, match: exact}
+  - id: "10010276"
+    name: Adversarial learning
+    parent: "10010261"
+    maps:
+      - {to: area:robustness-security-and-privacy/adversarial-examples, match: related}
+  - id: "10010262"
+    name: Multi-task learning
+    parent: "10010258"
+    maps:
+      - {to: area:learning-settings/multi-task-learning, match: exact}
+  - id: "10010277"
+    name: Transfer learning
+    parent: "10010262"
+    maps:
+      - {to: area:learning-settings/transfer-learning, match: exact}
+  - id: "10010278"
+    name: Lifelong machine learning
+    parent: "10010262"
+    maps:
+      - {to: area:learning-settings/continual-learning, match: exact}
+  - id: "10010279"
+    name: Learning under covariate shift
+    parent: "10010262"
+    maps:
+      - {to: area:learning-settings/domain-adaptation, match: related}
+      - {to: area:robustness-security-and-privacy/distribution-shift-and-ood, match: broader}
+  - id: "10010282"
+    name: Learning settings
+    parent: "10010257"
+  - id: "10010283"
+    name: Batch learning
+    parent: "10010282"
+  - id: "10010284"
+    name: Online learning settings
+    parent: "10010282"
+    maps:
+      - {to: area:learning-settings/online-and-streaming-learning, match: exact}
+      - {to: area:learning-theory/online-learning-theory, match: related}
+  - id: "10010290"
+    name: Learning from demonstrations
+    parent: "10010282"
+    maps:
+      - {to: area:reinforcement-learning/imitation-learning, match: exact}
+  - id: "10010291"
+    name: Learning from critiques
+    parent: "10010282"
+    maps:
+      - {to: area:post-training/rlhf, match: related}
+      - {to: area:post-training/reward-modelling, match: related}
+  - id: "10010292"
+    name: Learning from implicit feedback
+    parent: "10010282"
+    maps:
+      - {to: area:retrieval-and-recommendation/recommender-systems, match: related}
+  - id: "10011304"
+    name: Active learning settings
+    parent: "10010282"
+    maps:
+      - {to: area:learning-settings/active-learning, match: exact}
+  - id: "10011305"
+    name: Semi-supervised learning settings
+    parent: "10010282"
+    maps:
+      - {to: area:learning-settings/semi-supervised-learning, match: exact}
+  - id: "10010293"
+    name: Machine learning approaches
+    parent: "10010257"
+  - id: "10003660"
+    name: Classification and regression trees
+    parent: "10010293"
+    maps:
+      - {to: area:supervised-learning/decision-trees, match: exact}
+  - id: "10010075"
+    name: Kernel methods
+    parent: "10010293"
+    maps:
+      - {to: area:supervised-learning/kernel-methods, match: exact}
+  - id: "10010295"
+    name: Support vector machines
+    parent: "10010075"
+    maps:
+      - {to: area:supervised-learning/support-vector-machines, match: exact}
+  - id: "10010296"
+    name: Gaussian processes
+    parent: "10010075"
+    maps:
+      - {to: area:probabilistic-machine-learning/gaussian-processes, match: exact}
+  - id: "10010294"
+    name: Neural networks
+    parent: "10010293"
+    maps:
+      - {to: area:deep-learning-foundations, match: broader}
+      - {to: area:deep-learning-architectures, match: related}
+  - id: "10010297"
+    name: Logical and relational learning
+    parent: "10010293"
+  - id: "10010298"
+    name: Inductive logic learning
+    parent: "10010297"
+    maps:
+      - {to: area:automated-reasoning/inductive-logic-programming, match: exact}
+  - id: "10010299"
+    name: Statistical relational learning
+    parent: "10010297"
+  - id: "10010300"
+    name: Learning in probabilistic graphical models
+    parent: "10010293"
+    maps:
+      - {to: area:probabilistic-reasoning/bayesian-networks, match: related}
+      - {to: area:probabilistic-reasoning/markov-random-fields, match: related}
+  - id: "10010301"
+    name: Maximum likelihood modeling
+    parent: "10010300"
+  - id: "10010302"
+    name: Maximum entropy modeling
+    parent: "10010300"
+  - id: "10010303"
+    name: Maximum a posteriori modeling
+    parent: "10010300"
+    maps:
+      - {to: area:probabilistic-machine-learning/bayesian-inference-for-ml, match: related}
+  - id: "10010304"
+    name: Mixture models
+    parent: "10010300"
+    maps:
+      - {to: area:probabilistic-machine-learning/mixture-models-and-em, match: exact}
+  - id: "10010305"
+    name: Latent variable models
+    parent: "10010300"
+    maps:
+      - {to: area:probabilistic-machine-learning/latent-variable-models, match: exact}
+  - id: "10010306"
+    name: Bayesian network models
+    parent: "10010300"
+    maps:
+      - {to: area:probabilistic-reasoning/bayesian-networks, match: exact}
+  - id: "10010307"
+    name: Learning linear models
+    parent: "10010293"
+    maps:
+      - {to: area:supervised-learning/linear-regression, match: narrower}
+      - {to: area:supervised-learning/logistic-regression-and-glms, match: narrower}
+  - id: "10010308"
+    name: Perceptron algorithm
+    parent: "10010307"
+    maps:
+      - {to: area:deep-learning-foundations/neural-network-basics, match: related}
+  - id: "10010309"
+    name: Factorization methods
+    parent: "10010293"
+    maps:
+      - {to: area:unsupervised-learning/matrix-factorization, match: exact}
+  - id: "10010310"
+    name: Non-negative matrix factorization
+    parent: "10010309"
+    maps:
+      - {to: area:unsupervised-learning/matrix-factorization, match: broader}
+  - id: "10010311"
+    name: Factor analysis
+    parent: "10010309"
+    maps:
+      - {to: area:unsupervised-learning/dimensionality-reduction, match: broader}
+  - id: "10010312"
+    name: Principal component analysis
+    parent: "10010309"
+    maps:
+      - {to: area:unsupervised-learning/dimensionality-reduction, match: broader}
+  - id: "10010313"
+    name: Canonical correlation analysis
+    parent: "10010309"
+    maps:
+      - {to: area:unsupervised-learning/dimensionality-reduction, match: broader}
+  - id: "10011671"
+    name: Latent Dirichlet allocation
+    parent: "10010309"
+    maps:
+      - {to: area:unsupervised-learning/topic-models, match: broader}
+  - id: "10010314"
+    name: Rule learning
+    parent: "10010293"
+    maps:
+      - {to: area:classical-ai-systems/rule-based-production-systems, match: related}
+  - id: "10010315"
+    name: Instance-based learning
+    parent: "10010293"
+    maps:
+      - {to: area:supervised-learning/nearest-neighbours, match: narrower}
+  - id: "10010316"
+    name: Markov decision processes
+    parent: "10010293"
+    maps:
+      - {to: area:reinforcement-learning/markov-decision-processes, match: exact}
+  - id: "10010317"
+    name: Partially-observable Markov decision processes
+    parent: "10010293"
+    maps:
+      - {to: area:reinforcement-learning/partially-observable-rl, match: exact}
+  - id: "10010318"
+    name: Stochastic games
+    parent: "10010293"
+    maps:
+      - {to: area:games-and-multi-agent-systems/game-theory-for-ai, match: related}
+      - {to: area:reinforcement-learning/multi-agent-rl, match: related}
+  - id: "10010319"
+    name: Learning latent representations
+    parent: "10010293"
+    maps:
+      - {to: area:unsupervised-learning/classical-representation-learning, match: exact}
+      - {to: area:self-supervised-learning, match: related}
+  - id: "10010320"
+    name: Deep belief networks
+    parent: "10010319"
+  - id: "10010321"
+    name: Machine learning algorithms
+    parent: "10010257"
+  - id: "10010327"
+    name: Dynamic programming for Markov decision processes
+    parent: "10010321"
+    maps:
+      - {to: area:reinforcement-learning/dynamic-programming-in-rl, match: exact}
+  - id: "10010328"
+    name: Value iteration
+    parent: "10010327"
+    maps:
+      - {to: area:reinforcement-learning/dynamic-programming-in-rl, match: broader}
+  - id: "10010329"
+    name: Q-learning
+    parent: "10010327"
+    maps:
+      - {to: area:reinforcement-learning/monte-carlo-and-td-learning, match: broader}
+  - id: "10010330"
+    name: Policy iteration
+    parent: "10010327"
+    maps:
+      - {to: area:reinforcement-learning/dynamic-programming-in-rl, match: broader}
+  - id: "10010331"
+    name: Temporal difference learning
+    parent: "10010327"
+    maps:
+      - {to: area:reinforcement-learning/monte-carlo-and-td-learning, match: broader}
+  - id: "10010332"
+    name: Approximate dynamic programming methods
+    parent: "10010327"
+    maps:
+      - {to: area:reinforcement-learning/function-approximation-in-rl, match: related}
+  - id: "10010333"
+    name: Ensemble methods
+    parent: "10010321"
+    maps:
+      - {to: area:supervised-learning/ensembles-and-bagging, match: exact}
+  - id: "10010076"
+    name: Boosting
+    parent: "10010333"
+    maps:
+      - {to: area:supervised-learning/boosting, match: exact}
+  - id: "10010334"
+    name: Bagging
+    parent: "10010333"
+    maps:
+      - {to: area:supervised-learning/ensembles-and-bagging, match: broader}
+  - id: "10010335"
+    name: Spectral methods
+    parent: "10010321"
+  - id: "10010336"
+    name: Feature selection
+    parent: "10010321"
+    maps:
+      - {to: area:supervised-learning/feature-engineering, match: broader}
+  - id: "10010337"
+    name: Regularization
+    parent: "10010321"
+    maps:
+      - {to: area:supervised-learning/classical-regularization, match: narrower}
+      - {to: area:deep-learning-training/regularization, match: narrower}
+      - {to: dropout, match: narrower}
+  - id: "10010339"
+    name: Cross-validation
+    parent: "10010257"
+    maps:
+      - {to: area:supervised-learning/model-selection-and-validation, match: broader}

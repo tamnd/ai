@@ -1,0 +1,444 @@
+# The claims of the double-descent page (spec 07). The build computes the labels.
+
+# The finding
+
+- id: c-belkin-curve
+  type: empirical
+  text: "The double descent curve subsumes the textbook U-shaped bias-variance trade-off curve by showing how increasing model capacity beyond the point of interpolation results in improved performance; the evidence covers a wide spectrum of models and datasets."
+  scope:
+    models: "random Fourier features, neural networks, decision trees and ensembles"
+    data: [mnist, cifar-10, svhn, 20-newsgroups]
+    scale: "unknown"
+    setting: "supervised learning, interpolating solutions of minimum norm"
+  evidence:
+    - {work: "belkin-2018-reconciling-bias-variance", role: original, locator: "the abstract", stance: for}
+  exp: [random-features-peak]
+  small_scale: "yes"
+  small_scale_note: "The literature shows the curve with random features on small datasets; minimum-norm least squares on random ReLU features with 200 synthetic samples runs on a CPU in seconds."
+
+- id: c-rff-mnist
+  type: empirical
+  text: "For random Fourier features on a subset of MNIST with n = 10^4, the test risk is U-shaped for small N with a peak at the interpolation threshold N = n; the interpolating model with the fewest features is the least accurate, and as N grows beyond n the accuracy improves beyond that of the bottom of the U-shaped curve."
+  scope:
+    models: "random Fourier features (two-layer networks with fixed first-layer weights), minimum-norm squared-loss fit"
+    data: [mnist]
+    scale: "n = 10^4 examples, up to 60,000 features"
+    setting: "classification with the squared loss, 10 classes"
+  evidence:
+    - {work: "belkin-2018-reconciling-bias-variance", role: original, locator: "Section 2, Figure 2", stance: for}
+
+- id: c-threshold-nk
+  type: empirical
+  text: "For a fully connected network with a single layer of hidden units, learned on a subset of MNIST with K = 10 classes, the interpolation threshold is observed at n times K parameters, where n is the number of training samples."
+  scope:
+    models: "fully connected networks with one hidden layer"
+    data: [mnist]
+    scale: "n = 4,000 examples"
+    setting: "classification with the squared loss, 10 classes"
+  evidence:
+    - {work: "belkin-2018-reconciling-bias-variance", role: original, locator: "Figure 4, p. 8", stance: for}
+
+- id: c-trees
+  type: empirical
+  text: "Boosting with decision trees and random forests show generalization behavior similar to neural networks, both before and after the interpolation threshold."
+  scope:
+    models: "random forests and L2-boosting of decision trees"
+    data: [mnist]
+    scale: "unknown"
+    setting: "classification"
+  evidence:
+    - {work: "belkin-2018-reconciling-bias-variance", role: original, locator: "Section 3", stance: for}
+
+- id: c-deep
+  type: empirical
+  text: "A variety of modern deep learning tasks exhibit double descent: as model size increases, performance first gets worse and then gets better, and double descent also occurs as a function of the number of training epochs."
+  scope:
+    models: "CNNs, ResNets and Transformers"
+    data: [cifar-10, cifar-100, iwslt-14-de-en]
+    scale: "ResNet18 of widths up to 64, five-layer CNNs, Transformers"
+    setting: "supervised classification and translation, trained to completion"
+  evidence:
+    - {work: "nakkiran-2019-deep-double-descent", role: original, locator: "the abstract", stance: for}
+
+- id: c-deep-range
+  type: empirical
+  text: "Model-wise double descent occurs for CIFAR-10, CIFAR-100 and IWSLT'14 German-to-English with varying amounts of label noise, for CNNs, ResNets and Transformers, and for the optimizers SGD and Adam."
+  scope:
+    models: "CNNs, ResNets and Transformers"
+    data: [cifar-10, cifar-100, iwslt-14-de-en]
+    scale: "ResNet18 of widths up to 64, five-layer CNNs, Transformers"
+    setting: "supervised classification and translation, trained to completion"
+  evidence:
+    - {work: "nakkiran-2019-deep-double-descent", role: original, locator: "Section 2", stance: for}
+
+- id: c-emc
+  type: mathematical
+  text: "The effective model complexity of a training procedure, with respect to a distribution, is the maximum number of samples n on which the procedure achieves on average approximately zero training error."
+  assumes: ["a training procedure maps a set of labeled samples to a classifier", "the samples are i.i.d. from the distribution D", "a tolerance epsilon > 0 on the mean training error"]
+  evidence:
+    - {work: "nakkiran-2019-deep-double-descent", role: original, locator: "Section 2", stance: for}
+
+- id: c-hypothesis
+  type: empirical
+  text: "Generalized double descent hypothesis: if the effective model complexity is sufficiently smaller or sufficiently larger than the number of samples n, any perturbation that increases it decreases the test error; if it is close to n, a perturbation that increases it might decrease or increase the test error."
+  scope:
+    models: "neural-network-based training procedures"
+    data: [unknown]
+    scale: "unknown"
+    setting: "natural data distributions; an informal hypothesis tested in experiments"
+  evidence:
+    - {work: "nakkiran-2019-deep-double-descent", role: original, locator: "Section 2", stance: for}
+
+- id: c-more-data
+  type: empirical
+  text: "On IWSLT'14 German-to-English translation with Transformers, there are cases in which increasing the number of training samples by a factor of 4.5 results in worse test performance."
+  scope:
+    models: "Transformers of varying embedding dimension"
+    data: [iwslt-14-de-en]
+    scale: "4k and 18k training samples"
+    setting: "translation, test per-token perplexity"
+  evidence:
+    - {work: "nakkiran-2019-deep-double-descent", role: original, locator: "p. 2, Figure 3", stance: for}
+
+- id: c-shift
+  type: empirical
+  text: "Increasing the number of samples both shrinks the area under the curve of test error against model complexity and shifts the curve to the right, increasing the model complexity at which test error peaks."
+  scope:
+    models: "five-layer CNNs and Transformers"
+    data: [cifar-10, iwslt-14-de-en]
+    scale: "unknown"
+    setting: "trained to completion"
+  evidence:
+    - {work: "nakkiran-2019-deep-double-descent", role: original, locator: "Section 7", stance: for}
+
+# Evidence
+
+- id: c-prehistory
+  type: empirical
+  text: "In 1989, using artificial data, Vallet et al. experimentally demonstrated double descent for the learning curves of classifiers trained by minimum-norm linear regression (the pseudo-inverse solution), and Opper et al. gave a first theoretical result on double descent."
+  scope:
+    models: "minimum-norm linear regression classifiers"
+    data: [synthetic]
+    scale: "unknown"
+    setting: "learning curves"
+  evidence:
+    - {work: "loog-2020-brief-prehistory-double-descent", role: original, locator: "p. 1", stance: for}
+
+- id: c-duin
+  type: empirical
+  text: "Duin was the first to show feature curves on real-world data quite similar to the double descent curves of Belkin et al., using a pseudo-Fisher linear discriminant."
+  scope:
+    models: "pseudo-Fisher linear discriminant"
+    data: [unknown]
+    scale: "unknown"
+    setting: "feature curves on real-world data"
+  evidence:
+    - {work: "loog-2020-brief-prehistory-double-descent", role: original, locator: "p. 1", stance: for}
+
+- id: c-diverge
+  type: mathematical
+  text: "In the underparametrized regime gamma < 1, the min-norm estimator coincides with least squares, its risk is purely variance, and the asymptotic risk diverges as gamma approaches 1."
+  assumes: ["the features have mean 0 and covariance Sigma", "the noise has mean 0 and variance sigma^2", "n and p grow with p/n -> gamma"]
+  evidence:
+    - {work: "hastie-2019-surprises-ridgeless-least-squares", role: original, locator: "Section 1.1", stance: for}
+
+- id: c-hastie-nonlinear
+  type: mathematical
+  text: "The analysis covers a linear model of the features and a nonlinear model in which the features are obtained by passing the input through a random one-layer neural network, and recovers the double descent of the prediction risk."
+  assumes: ["the responses are a linear function of the features plus noise", "the estimator is the minimum l2-norm least squares solution"]
+  evidence:
+    - {work: "hastie-2019-surprises-ridgeless-least-squares", role: original, locator: "the abstract", stance: for}
+
+- id: c-advani
+  type: mathematical
+  text: "For neural networks trained with gradient descent, overtraining is worst at intermediate network sizes, when the effective number of free parameters equals the number of samples, and can be reduced by making a network smaller or larger."
+  assumes: ["linear and shallow networks trained by gradient descent from small initial weights", "the number of parameters is of the order of the number of examples or larger"]
+  evidence:
+    - {work: "advani-2017-high-dimensional-dynamics-generalization", role: original, locator: "the abstract", stance: for}
+
+- id: c-epoch-wise
+  type: empirical
+  text: "Sufficiently large models can undergo epoch-wise double descent, in which test error first decreases, then increases, then decreases again during training, and many settings of dataset and architecture exhibit it in the presence of label noise."
+  scope:
+    models: "ResNet18 and five-layer CNNs"
+    data: [cifar-10, cifar-100]
+    scale: "unknown"
+    setting: "training with label noise"
+  evidence:
+    - {work: "nakkiran-2019-deep-double-descent", role: original, locator: "Section 6", stance: for}
+
+- id: c-ablation
+  type: empirical
+  text: "Double descent occurs on real data with ordinary linear regression and does not occur when any of the three factors is ablated."
+  scope:
+    models: "ordinary linear regression"
+    data: [unknown]
+    scale: "unknown"
+    setting: "real datasets, sweeping the number of training data"
+  evidence:
+    - {work: "schaeffer-2023-double-descent-demystified", role: original, locator: "the abstract", stance: for}
+
+# Scope and conditions
+
+- id: c-label-noise
+  type: empirical
+  text: "All forms of double descent are observed most strongly in settings with label noise in the train set, and there are also realistic settings with a test-error peak without label noise."
+  scope:
+    models: "CNNs, ResNets and Transformers"
+    data: [cifar-10, cifar-100, iwslt-14-de-en]
+    scale: "ResNet18 of widths up to 64, five-layer CNNs, Transformers"
+    setting: "supervised classification and translation, trained to completion"
+  evidence:
+    - {work: "nakkiran-2019-deep-double-descent", role: original, locator: "Section 2", stance: for}
+
+- id: c-misspecification
+  type: empirical
+  text: "The authors believe that the effect is not fundamentally about label noise but about model mis-specification, and they view adding label noise as merely a proxy for making distributions harder."
+  scope:
+    models: "CNNs, ResNets and Transformers"
+    data: [cifar-10, cifar-100, iwslt-14-de-en]
+    scale: "ResNet18 of widths up to 64, five-layer CNNs, Transformers"
+    setting: "supervised classification and translation, trained to completion"
+  evidence:
+    - {work: "nakkiran-2019-deep-double-descent", role: original, locator: "Section 8", stance: for}
+
+- id: c-no-residual
+  type: empirical
+  text: "Double descent does not occur in ordinary linear regression when the best possible model in the model class makes no errors on the training data, as when the true relationship is a noiseless linear one."
+  scope:
+    models: "ordinary linear regression"
+    data: [unknown]
+    scale: "unknown"
+    setting: "sweeping the number of training data"
+  evidence:
+    - {work: "schaeffer-2023-double-descent-demystified", role: original, locator: "Section 6", stance: for}
+
+- id: c-ridge-dominates
+  type: mathematical
+  text: "Optimally tuned ridge regression uses a non-vanishing penalty and dominates the min-norm least squares estimator in risk across all values of gamma and of the signal-to-noise ratio, in well-specified and misspecified settings."
+  assumes: ["the features are isotropic", "n and p grow with p/n -> gamma", "the ridge penalty is tuned to minimize the risk"]
+  evidence:
+    - {work: "hastie-2019-surprises-ridgeless-least-squares", role: original, locator: "Section 1.1", stance: for}
+
+- id: c-optimal-reg
+  type: mathematical
+  text: "For certain linear regression models with isotropic data, optimally tuned l2 regularization achieves monotonic test performance as either the sample size or the model size grows, and empirically it mitigates double descent for more general models, including neural networks."
+  assumes: ["linear regression with isotropic Gaussian features", "well-specified noise", "the l2 penalty is tuned to minimize the expected test risk"]
+  evidence:
+    - {work: "nakkiran-2020-optimal-regularization-double-descent", role: original, locator: "the abstract", stance: for}
+
+- id: c-masking
+  type: empirical
+  text: "Regularization of all forms can both prevent interpolation and change the effective capacity of the function class, attenuating or masking the interpolation peak."
+  scope:
+    models: "parametric and non-parametric function classes"
+    data: [unknown]
+    scale: "unknown"
+    setting: "regularized fitting"
+  evidence:
+    - {work: "belkin-2018-reconciling-bias-variance", role: original, locator: "Section 4", stance: for}
+
+- id: c-early-stopping
+  type: empirical
+  text: "Many of the double descent phenomena often do not occur with optimal early stopping, consistent with early stopping keeping the effective model complexity below the number of train samples."
+  scope:
+    models: "CNNs, ResNets and Transformers"
+    data: [cifar-10, cifar-100, iwslt-14-de-en]
+    scale: "ResNet18 of widths up to 64, five-layer CNNs, Transformers"
+    setting: "supervised classification and translation, trained to completion"
+  evidence:
+    - {work: "nakkiran-2019-deep-double-descent", role: original, locator: "Section 8", stance: for}
+
+- id: c-early-stopping-exception
+  type: empirical
+  text: "Model-wise double descent can still occur with optimal early stopping for ResNets on CIFAR-100 with no label noise, and settings where more data hurts have not been observed with optimal early stopping."
+  scope:
+    models: "ResNets"
+    data: [cifar-100]
+    scale: "unknown"
+    setting: "optimal early stopping"
+  evidence:
+    - {work: "nakkiran-2019-deep-double-descent", role: original, locator: "Section 8", stance: for}
+
+- id: c-global-min
+  type: mathematical
+  text: "For the well-specified isotropic model, the risk of the min-norm estimator achieves its global minimum in the underparametrized regime; for a misspecified model with SNR above 1 and strong enough approximation bias, the risk can attain its global minimum in the overparametrized regime."
+  assumes: ["the features are isotropic", "n and p grow with p/n -> gamma", "the estimator is min-norm least squares"]
+  evidence:
+    - {work: "hastie-2019-surprises-ridgeless-least-squares", role: original, locator: "Section 1.1", stance: for}
+
+- id: c-axes
+  type: empirical
+  text: "In trees, boosting and linear regression, the parameter count grows along multiple distinct complexity axes, and the second descent appears exactly and only where the transition between these axes occurs, so its location is not inherently tied to the interpolation threshold p = n."
+  scope:
+    models: "decision trees, random forests, gradient boosting and linear regression on random features"
+    data: [mnist]
+    scale: "unknown"
+    setting: "the experiments of Belkin et al. (2018), replicated"
+  evidence:
+    - {work: "curth-2023-u-turn-double-descent", role: original, locator: "the abstract", stance: for}
+
+- id: c-tree-axes
+  type: empirical
+  text: "In the double descent experiment with trees, the number of parameters is first controlled through the maximum number of leaf nodes of one tree and then by averaging an increasing number of trees grown to full depth; for a fixed number of trees the error has a convex U- or L-shape in the number of leaves, and for a fixed number of leaves an L-shape in the number of trees."
+  scope:
+    models: "decision trees and random forests without bootstrapping"
+    data: [mnist]
+    scale: "unknown"
+    setting: "the experiment of Belkin et al., replicated"
+  evidence:
+    - {work: "curth-2023-u-turn-double-descent", role: original, locator: "Section 2.1", stance: for}
+
+- id: c-curth-scope
+  type: empirical
+  text: "The analysis is intentionally limited to non-deep double descent, and whether it explains deep double descent is left as a question."
+  scope:
+    models: "decision trees, random forests, gradient boosting and linear regression on random features"
+    data: [mnist]
+    scale: "unknown"
+    setting: "the experiments of Belkin et al. (2018), replicated"
+  evidence:
+    - {work: "curth-2023-u-turn-double-descent", role: original, locator: "Section 6", stance: for}
+
+- id: c-svm
+  type: empirical
+  text: "Some losses may not exhibit double descent: the linear SVM shows regular monotonic feature curves, and analytic results show the same for the perceptron of optimal stability."
+  scope:
+    models: "linear SVM and the perceptron of optimal stability"
+    data: [unknown]
+    scale: "unknown"
+    setting: "feature curves and analytic learning curves"
+  evidence:
+    - {work: "loog-2020-brief-prehistory-double-descent", role: original, locator: "p. 2", stance: for}
+
+# Explanations
+
+- id: c-occam
+  type: empirical
+  text: "Choosing the smoothest function that fits the data is a form of Occam's razor, and larger function classes contain interpolating functions of smaller norm, so increasing function class capacity improves performance."
+  scope:
+    models: "interpolating predictors of minimum norm"
+    data: [unknown]
+    scale: "unknown"
+    setting: "a posited mechanism"
+  evidence:
+    - {work: "belkin-2018-reconciling-bias-variance", role: original, locator: "p. 3", stance: for}
+
+- id: c-variance-falls
+  type: mathematical
+  text: "In the overparametrized regime the variance of min-norm least squares decreases with gamma because the min-norm solution generally has decreasing l2 norm as columns are added, while the bias increases with gamma for well-specified models."
+  assumes: ["n and p grow with p/n -> gamma > 1", "the estimator is min-norm least squares", "the model is well specified for the bias statement"]
+  evidence:
+    - {work: "hastie-2019-surprises-ridgeless-least-squares", role: original, locator: "Section 1.1", stance: for}
+
+- id: c-three-factors
+  type: empirical
+  text: "Three factors together create double descent in ordinary linear regression: small but nonzero singular values in the training features, a test datum that varies in different directions than the training features, and residual errors on the training data of the best possible model in the class."
+  scope:
+    models: "ordinary linear regression"
+    data: [unknown]
+    scale: "unknown"
+    setting: "an analysis with the singular value decomposition"
+  evidence:
+    - {work: "schaeffer-2023-double-descent-demystified", role: original, locator: "Section 6", stance: for}
+
+- id: c-ridge-gap
+  type: empirical
+  text: "Removing small singular values of the training features prevents double descent, which ridge regression achieves by effectively separating the smallest non-zero singular value from 0."
+  scope:
+    models: "ordinary and ridge linear regression"
+    data: [unknown]
+    scale: "unknown"
+    setting: "sweeping singular value cutoffs"
+  evidence:
+    - {work: "schaeffer-2023-double-descent-demystified", role: original, locator: "Section 6", stance: for}
+
+- id: c-frozen
+  type: mathematical
+  text: "In overcomplete models trained by gradient descent there is a frozen subspace of the weights in which no learning occurs, and the high-dimensional regime yields better-conditioned input correlations, which protect against overtraining."
+  assumes: ["the model is overcomplete: more parameters than examples", "training by gradient descent", "small initial weights"]
+  evidence:
+    - {work: "advani-2017-high-dimensional-dynamics-generalization", role: original, locator: "the abstract", stance: for}
+
+- id: c-fold-back
+  type: empirical
+  text: "With a generalized measure of the effective number of parameters used on unseen examples, the apparent double descent curves fold back into more traditional convex shapes."
+  scope:
+    models: "decision trees, random forests, gradient boosting and linear regression on random features"
+    data: [mnist]
+    scale: "unknown"
+    setting: "the experiments of Belkin et al. (2018), replicated"
+  evidence:
+    - {work: "curth-2023-u-turn-double-descent", role: original, locator: "the abstract", stance: for}
+
+# Implications
+
+- id: c-overlooked
+  type: empirical
+  text: "The interpolation peak is observed within a narrow range of parameters, so a sampling of the parameter space that misses the range may give the misleading impression that increasing network size simply improves performance, and early stopping makes the peak difficult to observe."
+  scope:
+    models: "multilayer neural networks"
+    data: [unknown]
+    scale: "unknown"
+    setting: "an argument for why the curve was overlooked"
+  evidence:
+    - {work: "belkin-2018-reconciling-bias-variance", role: original, locator: "Section 4", stance: for}
+
+- id: c-practice
+  type: empirical
+  text: "If a model and training procedure are just barely able to fit the train set, small changes to the model or training procedure may yield unexpected behavior in test performance."
+  scope:
+    models: "CNNs, ResNets and Transformers"
+    data: [cifar-10, cifar-100, iwslt-14-de-en]
+    scale: "ResNet18 of widths up to 64, five-layer CNNs, Transformers"
+    setting: "supervised classification and translation, trained to completion"
+  evidence:
+    - {work: "nakkiran-2019-deep-double-descent", role: original, locator: "Section 8", stance: for}
+
+- id: c-tuned-scaling
+  type: empirical
+  text: "It may be informative to study the test risk scalings of algorithms in the context of appropriately tuned regularization."
+  scope:
+    models: "learning algorithms in general"
+    data: [unknown]
+    scale: "unknown"
+    setting: "a recommendation"
+  evidence:
+    - {work: "nakkiran-2020-optimal-regularization-double-descent", role: original, locator: "the abstract", stance: for}
+
+- id: c-tradeoff
+  type: empirical
+  text: "The results imply trade-offs between hyperparameter tuning and raw model size: each method has one hyperparameter axis to which error can be highly sensitive, while along the other axis bigger is better or at least not worse."
+  scope:
+    models: "decision trees, random forests, gradient boosting and linear regression on random features"
+    data: [mnist]
+    scale: "unknown"
+    setting: "the experiments of Belkin et al. (2018), replicated"
+  evidence:
+    - {work: "curth-2023-u-turn-double-descent", role: original, locator: "Section 6", stance: for}
+
+# History
+
+- id: c-hist-1989
+  type: historical
+  text: "Vallet, Cailton and Refregier published the pseudo-inverse result in Europhysics Letters in 1989, and Opper, Kinzel, Kleinz and Nehl gave a first theoretical result in 1990."
+  evidence:
+    - {work: "loog-2020-brief-prehistory-double-descent", role: original, locator: "p. 1, p. 2", stance: for}
+
+- id: c-hist-pfld
+  type: historical
+  text: "Raudys and Duin (1998), Skurichina and Duin (1998) and Duin (2000) studied double descent in the pseudo-Fisher linear discriminant, which is equivalent to minimum-norm linear regression."
+  evidence:
+    - {work: "loog-2020-brief-prehistory-double-descent", role: original, locator: "p. 1, p. 2", stance: for}
+
+- id: c-hist-2017
+  type: historical
+  text: "Advani and Saxe posted High-dimensional dynamics of generalization error in neural networks as arXiv 1710.03667 on 10 Oct 2017."
+  evidence:
+    - {work: "advani-2017-high-dimensional-dynamics-generalization", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-2019
+  type: historical
+  text: "Nakkiran, Kaplun, Bansal, Yang, Barak and Sutskever posted Deep Double Descent: Where Bigger Models and More Data Hurt as arXiv 1912.02292 on 4 Dec 2019."
+  evidence:
+    - {work: "nakkiran-2019-deep-double-descent", role: original, locator: "the title page", stance: for}
