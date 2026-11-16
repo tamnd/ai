@@ -1,0 +1,757 @@
+# The claims of the mixed precision training page (spec 07). The build computes the labels.
+
+# Setting
+
+- id: c-mic-abstract
+  type: attributive
+  text: "Micikevicius et al. introduce a methodology for training deep neural networks using half-precision floating point numbers without losing model accuracy or having to modify hyperparameters, which nearly halves memory requirements and, on recent GPUs, speeds up arithmetic."
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 1", stance: for}
+
+- id: c-mic-limiters
+  type: attributive
+  text: "Micikevicius et al. state that the performance of any program, including neural network training and inference, is limited by arithmetic bandwidth, memory bandwidth or latency, and that reduced precision addresses two of these limiters: fewer bits lower the memory bandwidth pressure, and processors with higher throughput for reduced precision math lower the arithmetic time."
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 1", stance: for}
+
+- id: c-mic-throughput
+  type: attributive
+  text: "Micikevicius et al. give as an example that half-precision math throughput in recent GPUs is 2× to 8× higher than for single precision, and note that reduced precision formats also reduce the memory required for training."
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 1", stance: for}
+
+- id: c-mic-storage
+  type: definitional
+  text: "In the mixed precision training of Micikevicius et al., weights, activations and gradients are stored in IEEE half-precision format, which has a narrower range than single precision, and three techniques prevent the loss of critical information."
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 1", stance: for}
+
+- id: c-mic-three
+  type: definitional
+  text: "The three techniques are a single-precision copy of the weights that accumulates the gradients after each optimizer step and is rounded to half precision for the forward and back-propagation, loss scaling to preserve gradient values with small magnitudes, and half-precision arithmetic that accumulates into single-precision outputs, which are converted to half precision before storing to memory."
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 1", stance: for}
+
+- id: c-mic-no-hparams
+  type: attributive
+  text: "Micikevicius et al. state that their methodology requires no changes to models or training hyper-parameters, and that, unlike earlier reduced-precision work, all tensors and arithmetic of the forward and backward passes use FP16."
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 2", stance: for}
+
+# Number formats
+
+- id: c-format-limits
+  type: mathematical
+  text: "A binary floating-point format with e exponent bits of bias b = 2^(e−1) − 1 and m mantissa bits, in the IEEE 754 layout, has machine epsilon 2^−m, smallest normal 2^(1−b), smallest subnormal 2^(1−b−m) and largest finite value (2 − 2^−m)·2^b."
+  assumes: ["a sign bit, e ≥ 2 exponent bits with bias 2^(e−1) − 1 and m ≥ 1 mantissa bits", "the top exponent field is kept for infinities and NaNs", "the zero exponent field encodes the subnormals"]
+  derivation: number-formats
+
+- id: c-fp16-limits
+  type: mathematical
+  text: "FP16, with 5 exponent bits and 10 mantissa bits, has machine epsilon 2^−10, smallest normal 2^−14 ≈ 6.10e−5, smallest subnormal 2^−24 ≈ 5.96e−8 and largest value 65504; its normal exponents run from −14 to 15, and its positive values lie in 40 binades."
+  assumes: ["IEEE 754 binary16"]
+  derivation: number-formats
+
+- id: c-bf16-limits
+  type: mathematical
+  text: "BF16, with 8 exponent bits and 7 mantissa bits, has machine epsilon 2^−7, the smallest normal 2^−126 of FP32, smallest subnormal 2^−133 ≈ 9.18e−41 and largest value (2 − 2^−7)·2^127 ≈ 3.3895e38; the FP32 maximum is larger only by the factor (2 − 2^−23)/(2 − 2^−7), just over 1 + 2^−8."
+  assumes: ["BF16 is the top 16 bits of an FP32 number", "subnormals are kept"]
+  derivation: number-formats
+
+- id: c-bf16-table
+  type: mathematical
+  text: "Rounded to three significant figures, the largest BF16 value is 3.39e38 and the smallest FP32 normal 1.18e−38; the values 3.38e38 and 1.17e−38 in Table 1 of Kalamkar et al. are these numbers cut to three figures, and BF16 does have subnormals, down to 2^−133, though Kalamkar et al. list them as N/A."
+  assumes: ["the IEEE 754 encoding of subnormals carried over to BF16, as in a conversion that keeps the top 16 bits of an FP32 number"]
+  derivation: number-formats
+
+- id: c-fp8-limits
+  type: mathematical
+  text: "E5M2 has largest value 57344, smallest normal 2^−14, smallest subnormal 2^−16 and 32 binades; E4M3 with the top exponent used for normal numbers has largest value 448, smallest normal 2^−6 and smallest subnormal 2^−9."
+  assumes: ["exponent biases 15 for E5M2 and 7 for E4M3", "E5M2 follows the IEEE 754 layout", "E4M3 keeps only the all-ones mantissa of the top exponent for NaN"]
+  derivation: number-formats
+
+- id: c-e4m3-reclaim
+  type: mathematical
+  text: "In the IEEE 754 layout E4M3 would stop at 240 and span 17 binades; using the top exponent for normal numbers adds the seven magnitudes 256, 288, 320, 352, 384, 416 and 448 and an 18th binade."
+  assumes: ["exponent bias 7", "the all-ones mantissa of the top exponent stays NaN"]
+  derivation: number-formats
+
+- id: c-e5m2-in-fp16
+  type: mathematical
+  text: "Every E5M2 value is an FP16 value: an E5M2 bit pattern followed by eight zero bits is the FP16 pattern of the same number."
+  assumes: ["E5M2 has the exponent field and bias of FP16 and the top 2 of its 10 mantissa bits"]
+  derivation: number-formats
+
+- id: c-mic-fp16-range
+  type: attributive
+  text: "Micikevicius et al. note that the FP16 exponent bias centers the range of normalized value exponents to [−14, 15], while gradient values in practice tend to be dominated by small magnitudes with negative exponents."
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 3", stance: for}
+
+- id: c-kal-same-range
+  type: attributive
+  text: "Kalamkar et al. find BFLOAT16 attractive for deep learning training because the range of values it can represent is the same as that of FP32 and conversion to and from FP32 is simple; they consider the FP32 range important so that no hyper-parameter tuning is needed for convergence, which IEEE half precision requires."
+  evidence:
+    - {work: "kalamkar-2019-bfloat16-deep-learning-training", role: original, locator: "p. 1", stance: for}
+
+- id: c-kal-8bit-mantissa
+  type: attributive
+  text: "Kalamkar et al. describe BFLOAT16 values as truncated full precision floating point values with 8 bits of mantissa and a dynamic range comparable to FP32, which can represent smaller gradient values without complicated loss scaling."
+  evidence:
+    - {work: "kalamkar-2019-bfloat16-deep-learning-training", role: original, locator: "p. 3", stance: for}
+
+- id: c-kal-fma
+  type: attributive
+  text: "Kalamkar et al. add that core compute primitives such as FMA can be built for BFLOAT16 using 8-bit multipliers, which leads to significant area and power savings while preserving the full dynamic range of FP32."
+  evidence:
+    - {work: "kalamkar-2019-bfloat16-deep-learning-training", role: original, locator: "p. 4", stance: for}
+
+- id: c-kal-table1
+  type: attributive
+  text: "Table 1 of Kalamkar et al. gives the bit formats (s, e, m) 1, 8, 23 for FP32, 1, 5, 10 for FP16 and 1, 8, 7 for BFLOAT16, maxima 3.40e38, 6.55e4 and 3.38e38, minimum normals 1.17e−38, 6.10e−5 and 1.17e−38, minimum subnormals 1.40e−45, 5.96e−8 and N/A, and float32 accumulation for all three."
+  evidence:
+    - {work: "kalamkar-2019-bfloat16-deep-learning-training", role: original, locator: "p. 4", stance: for}
+
+- id: c-fp8-encodings
+  type: definitional
+  text: "Micikevicius et al. (2022) propose an 8-bit floating point binary interchange format with two encodings, E4M3 with a 4-bit exponent and 3-bit mantissa and E5M2 with a 5-bit exponent and 2-bit mantissa; E5M2 follows IEEE 754 conventions for special values, while the dynamic range of E4M3 is extended by not representing infinities and having only one mantissa bit-pattern for NaNs."
+  evidence:
+    - {work: "micikevicius-2022-fp8-formats", role: original, locator: "p. 1", stance: for}
+
+- id: c-fp8-table1
+  type: attributive
+  text: "Table 1 of the FP8 paper gives E4M3 an exponent bias of 7, no infinities, max normal 1.75·2^8 = 448, min normal 2^−6 and min subnormal 2^−9, and E5M2 an exponent bias of 15, max normal 1.75·2^15, min normal 2^−14 and min subnormal 2^−16."
+  evidence:
+    - {work: "micikevicius-2022-fp8-formats", role: original, locator: "p. 3", stance: for}
+
+- id: c-fp8-reclaim
+  type: attributive
+  text: "The FP8 authors state that adopting the special-value bit patterns of E4M3 for normal values extends its dynamic range from 17 to 18 binades and adds the seven magnitudes 256 to 448, and that without this the maximum would be 240; they keep positive and negative zero and NaN rather than gain 480, to preserve the symmetry that lets software compare and sort floating point values with integer operations."
+  evidence:
+    - {work: "micikevicius-2022-fp8-formats", role: original, locator: "p. 3", stance: for}
+
+- id: c-fp8-e5m2-half
+  type: attributive
+  text: "The FP8 authors describe E5M2 as IEEE half precision with fewer mantissa bits, as bfloat16 and TF32 can be viewed as IEEE single precision with fewer bits, which allows straightforward conversion between E5M2 and FP16, and state that its 5 exponent bits give a sufficient per-tensor dynamic range of 32 binades."
+  evidence:
+    - {work: "micikevicius-2022-fp8-formats", role: original, locator: "p. 3", stance: for}
+
+# FP32 master weights
+
+- id: c-mic-master
+  type: definitional
+  text: "In mixed precision training weights, activations and gradients are stored as FP16, and to match the accuracy of FP32 networks an FP32 master copy of the weights is maintained and updated with the weight gradient during the optimizer step; in each iteration an FP16 copy of the master weights is used in the forward and backward pass."
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 2", stance: for}
+
+- id: c-mic-underflow-reason
+  type: attributive
+  text: "Micikevicius et al. give as one reason for the FP32 master weights that updates, weight gradients multiplied by the learning rate, become too small to be represented in FP16, where any value whose magnitude is smaller than 2^−24 becomes zero; in their Mandarin speech model approximately 5% of weight gradient values have exponents smaller than −24."
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 3", stance: for}
+
+- id: c-mic-ratio-reason
+  type: attributive
+  text: "As a second reason Micikevicius et al. give a large ratio of weight to weight update: even a representable update can become zero when the addition right-shifts it to align the binary point with the weight, which can happen when the weight is at least 2048 times larger than the update, because FP16 has 10 bits of mantissa; with a ratio larger than 2048 the update becomes a zero that cannot be recovered."
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 3", stance: for}
+
+- id: c-mic-mandarin-master
+  type: empirical
+  text: "For the Mandarin speech model trained on approximately 800 hours of speech for 20 epochs, updating an FP32 master copy of the weights after FP16 forward and backward passes matches FP32 training, while updating FP16 weights results in 80% relative accuracy loss."
+  scope:
+    models: "DeepSpeech 2, Mandarin"
+    data: [baidu-internal-mandarin]
+    scale: "about 800 hours of speech, 20 epochs"
+    setting: "speech recognition, pseudo FP16 storage on Maxwell GPUs"
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 3", stance: for}
+
+- id: c-mic-memory
+  type: attributive
+  text: "Micikevicius et al. note that the extra copy of the weights increases the memory for the weights by 50% compared with single precision training, but that training memory is dominated by activations, which are also stored in half precision, so overall memory consumption is roughly halved."
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 3", stance: for}
+
+- id: c-underflow-threshold
+  type: mathematical
+  text: "Under round to nearest even, FP16 rounds a value to zero exactly when its magnitude is at most 2^−25, half the smallest subnormal, and rounds magnitudes in (2^−25, 2^−24) up to 2^−24."
+  assumes: ["round to nearest, ties to even", "subnormals are kept"]
+  derivation: update-swamping
+
+- id: c-subnormal-error
+  type: mathematical
+  text: "FP16 subnormals are spaced 2^−24 apart, so a value stored as a subnormal can have a relative error up to 1/2, against at most 2^−11 for a value in the normal range."
+  assumes: ["round to nearest, ties to even"]
+  derivation: update-swamping
+
+- id: c-swamping-bounds
+  type: mathematical
+  text: "With m mantissa bits and round to nearest even, adding an update u to a normal weight w leaves w unchanged whenever |w|/|u| > 2^(m+2), and always changes it when |w|/|u| < 2^(m+1); for FP16 the two ratios are 4096 and 2048, and between them the result depends on where w lies in its binade."
+  assumes: ["round to nearest, ties to even", "w is a normal number", "u is a number of the format and the sum is rounded once"]
+  derivation: update-swamping
+
+- id: c-swamping-bf16
+  type: mathematical
+  text: "For BF16, with 7 mantissa bits, an update is always lost when the weight is more than 512 times larger and never when it is less than 256 times larger, eight times smaller ratios than for FP16."
+  assumes: ["round to nearest, ties to even", "w is a normal number", "u is a BF16 number and the sum is rounded once"]
+  derivation: update-swamping
+
+- id: c-master-example
+  type: mathematical
+  text: "Adding the update 2^−12 a thousand times to the weight 1 leaves an FP16 weight at exactly 1, and moves an FP32 weight to exactly 1 + 1000·2^−12 = 1.244140625."
+  assumes: ["round to nearest, ties to even", "each addition is rounded once to the storage format"]
+  derivation: update-swamping
+
+# Loss scaling
+
+- id: c-mic-ssd-hist
+  type: attributive
+  text: "In the histogram of activation gradient values collected across all layers during FP32 training of the Multibox SSD detector, much of the FP16 representable range was left unused, while many values were below the minimum representable range and became zeros."
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 3", stance: for}
+
+- id: c-mic-ssd-fig3
+  type: attributive
+  text: "In Figure 3 of Micikevicius et al., 2% of the SSD activation gradient values are in the [2^−34, 2^−32) range, 2% in the [2^−24, 2^−23) range, and 67% are zero."
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 4", stance: for}
+
+- id: c-mic-ssd-scale
+  type: empirical
+  text: "The SSD network diverges when gradients are not scaled, but scaling them by a factor of 8, increasing the exponents by 3, is sufficient to match the accuracy of FP32 training, which suggests to Micikevicius et al. that activation gradient values below 2^−27 were irrelevant to the training of this model but values in the [2^−27, 2^−24) range were important to preserve."
+  scope:
+    models: "Multibox SSD with a VGG-16 backbone"
+    data: [pascal-voc-2007, pascal-voc-2012]
+    scale: "trained on VOC 2007 and 2012"
+    setting: "object detection, FP16 storage with FP32 master weights"
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 3", stance: for}
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 4", stance: for}
+
+- id: c-mic-scale-loss
+  type: definitional
+  text: "Loss scaling shifts the gradient values into the FP16-representable range by scaling the loss value computed in the forward pass before back-propagation; by the chain rule all the gradient values are scaled by the same amount, which needs no extra operations during back-propagation."
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 4", stance: for}
+
+- id: c-mic-unscale
+  type: definitional
+  text: "Weight gradients must be unscaled before the weight update to keep the update magnitudes of FP32 training; Micikevicius et al. find it simplest to unscale right after the backward pass and before gradient clipping or any other gradient-related computation, so that no hyper-parameters such as the clipping threshold or weight decay need to be adjusted."
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 4", stance: for}
+
+- id: c-mic-constants
+  type: empirical
+  text: "Micikevicius et al. trained a variety of networks with constant loss scaling factors ranging from 8 to 32K, and many networks did not require a scaling factor."
+  scope:
+    models: "the networks of their Section 4"
+    data: [imagenet, pascal-voc-2007, wmt-2015-en-fr, one-billion-word]
+    scale: "the experiments of the paper"
+    setting: "FP16 training with FP32 master weights"
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 4", stance: for}
+
+- id: c-mic-choose
+  type: attributive
+  text: "Micikevicius et al. state that a constant scaling factor can be chosen empirically or, if gradient statistics are available, so that its product with the maximum absolute gradient value is below 65,504, the maximum value representable in FP16."
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 5", stance: for}
+
+- id: c-mic-no-downside
+  type: attributive
+  text: "According to Micikevicius et al. there is no downside to a large scaling factor as long as it does not cause overflow during back-propagation, because overflows result in infinities and NaNs in the weight gradients that irreversibly damage the weights after an update."
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 5", stance: for}
+
+- id: c-mic-skip
+  type: definitional
+  text: "Overflows can be detected efficiently by inspecting the computed weight gradients, for example when they are unscaled, and one option is to skip the weight update when an overflow is detected and move on to the next iteration."
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 5", stance: for}
+
+- id: c-mic-dynamic
+  type: attributive
+  text: "Micikevicius et al. propose as future work to automate the choice of the loss-scaling factor, which could be dynamically increased or decreased by inspecting the weight gradients for overflow and skipping the weight updates when an overflow is detected."
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 9", stance: for}
+
+- id: c-scale-window
+  type: mathematical
+  text: "With a loss scale S = 2^k, a gradient g is stored in FP16 as a nonzero finite number exactly when 2^−25/S < |g| < 65520/S, so the scale moves the window of magnitudes that FP16 keeps down by k binades."
+  assumes: ["S = 2^k with k ≥ 0", "round to nearest, ties to even", "the gradients of the scaled loss are S times those of the loss"]
+  derivation: loss-scaling
+
+- id: c-scale-chain-rule
+  type: mathematical
+  text: "Backpropagation in FP16 of a loss multiplied by a power of two S gives exactly S times the FP16 gradients of the unscaled loss, as long as no intermediate value overflows or falls below the normal range in either run."
+  assumes: ["S is a power of two", "every intermediate is a normal FP16 number in both runs", "round to nearest, ties to even"]
+  derivation: loss-scaling
+
+- id: c-scale-precision
+  type: mathematical
+  text: "If S|g| lies in the FP16 normal range [2^−14, 65504], the stored scaled gradient divided by S is within a relative error 2^−11 of g, however small g is."
+  assumes: ["S is a power of two", "round to nearest, ties to even"]
+  derivation: loss-scaling
+
+- id: c-unscale-exact
+  type: mathematical
+  text: "Multiplying any finite FP16 value by 2^−k in FP32 is exact for 0 ≤ k ≤ 102, so unscaling FP16 gradients by a power-of-two loss scale in the FP32 master copy adds no rounding error."
+  assumes: ["the scale is 2^k", "FP32 with 24 significand bits and normal exponents down to −126"]
+  derivation: loss-scaling
+
+- id: c-scale-by-8
+  type: mathematical
+  text: "Multiplying by 8 maps the magnitudes [2^−27, 2^−24) onto [2^−24, 2^−21), all of which FP16 stores as nonzero numbers, while unscaled the part of that range up to 2^−25 rounds to zero."
+  assumes: ["round to nearest, ties to even"]
+  derivation: loss-scaling
+
+- id: c-largest-safe-scale
+  type: mathematical
+  text: "If the largest gradient magnitude G is known, the largest power-of-two loss scale with no overflow in FP16 is S = 2^⌊log2(65504/G)⌋."
+  assumes: ["the largest magnitude of the scaled gradients is S·G"]
+  derivation: loss-scaling
+
+# Dynamic loss scaling
+
+- id: c-dyn-formula
+  type: mathematical
+  text: "Under the dynamic rule that halves the scale and skips the step on an overflow and doubles it after N good steps in a row, the scale at step t is S_0·2^(G_t − B_t), where B_t counts the skipped steps before t and G_t the completed blocks of N steps within the runs of good steps before t."
+  assumes: ["growth factor 2 and backoff factor 1/2", "a skip resets the count of good steps", "the scale never reaches the largest float"]
+  derivation: dynamic-loss-scale
+
+- id: c-dyn-start
+  type: mathematical
+  text: "If every step with a scale of at least T overflows and S_0 ≥ T, the dynamic rule skips the first ⌊log2(S_0/T)⌋ + 1 steps and reaches the largest scale S_0·2^j below T, which lies in [T/2, T)."
+  assumes: ["a step overflows exactly when its scale is at least a fixed T > 0", "growth factor 2 and backoff factor 1/2"]
+  derivation: dynamic-loss-scale
+
+- id: c-dyn-cycle
+  type: mathematical
+  text: "With a fixed overflow threshold the dynamic rule then repeats a cycle of N + 1 steps, N good steps at the largest scale below T and one skipped step at twice that scale, so it skips one step in N + 1."
+  assumes: ["a step overflows exactly when its scale is at least a fixed T > 0", "growth factor 2 and backoff factor 1/2"]
+  derivation: dynamic-loss-scale
+
+- id: c-dyn-growth
+  type: mathematical
+  text: "From a scale S_0 below the threshold T the dynamic rule skips nothing until step N·⌈log2(T/S_0)⌉, the scale doubling every N steps."
+  assumes: ["a step overflows exactly when its scale is at least a fixed T > 0", "growth factor 2"]
+  derivation: dynamic-loss-scale
+
+- id: c-dyn-defaults
+  type: mathematical
+  text: "With an initial scale of 2^16, a growth interval of 2000 and an overflow threshold of 1000, the dynamic rule skips the first 7 steps, settles at the scale 512, and then skips one step in 2001."
+  assumes: ["a step overflows exactly when its scale is at least 1000", "growth factor 2 and backoff factor 1/2"]
+  derivation: dynamic-loss-scale
+
+# Arithmetic precision
+
+- id: c-mic-categories
+  type: definitional
+  text: "Micikevicius et al. divide neural network arithmetic into three categories that benefit from different treatment in reduced precision: vector dot-products, reductions and point-wise operations."
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 5", stance: for}
+
+- id: c-mic-fp32-accum
+  type: empirical
+  text: "Micikevicius et al. found that some networks require the FP16 vector dot-product to accumulate the partial products into an FP32 value, which is converted to FP16 before writing to memory, and that without this accumulation some FP16 models did not match the accuracy of the baseline models."
+  scope:
+    models: "the networks of their Section 4"
+    data: [imagenet]
+    scale: "the experiments of the paper"
+    setting: "FP16 storage and arithmetic"
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 5", stance: for}
+
+- id: c-mic-tensor-cores
+  type: attributive
+  text: "Micikevicius et al. note that previous GPUs supported only an FP16 multiply-add, while the Tensor Cores of NVIDIA Volta GPUs multiply FP16 input matrices and accumulate the products into either FP16 or FP32 outputs."
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 5", stance: for}
+
+- id: c-mic-reductions
+  type: attributive
+  text: "Micikevicius et al. carry out large reductions, which mostly come up when batch-normalization layers accumulate statistics and in softmax layers, in FP32, while these layers still read and write FP16 tensors; this did not slow training because the layers are memory-bandwidth limited."
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 5", stance: for}
+
+- id: c-mic-pointwise
+  type: attributive
+  text: "Point-wise operations such as non-linearities and element-wise matrix products are memory-bandwidth limited, so arithmetic precision does not affect their speed and either FP16 or FP32 math can be used."
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 5", stance: for}
+
+- id: c-kal-16bit
+  type: attributive
+  text: "Kalamkar et al. count at least three half-precision formats for mixed precision training, FP16, 16-bit integer and BFLOAT16, all of them with 16-bit input operands and 32-bit accumulators."
+  evidence:
+    - {work: "kalamkar-2019-bfloat16-deep-learning-training", role: original, locator: "p. 1", stance: for}
+
+- id: c-kal-flow
+  type: definitional
+  text: "In the BFLOAT16 data flow of Kalamkar et al., GEMM operations take BFLOAT16 input tensors and accumulate into FP32 output tensors, which are converted to BFLOAT16 before the next layer; a copy of the FP32 weights is converted to BFLOAT16 for the forward pass, bias tensors are always kept in FP32, and the weight update uses the FP32 copy of the weights."
+  evidence:
+    - {work: "kalamkar-2019-bfloat16-deep-learning-training", role: original, locator: "p. 4", stance: for}
+
+- id: c-kal-quantlib
+  type: definitional
+  text: "Kalamkar et al. emulate BFLOAT16 with their Quantlib library, which zeroes out the lower 16 bits of FP32 elements and performs round to nearest even based on those bits, so that the tensor stays FP32 for existing hardware and libraries while having the precision and rounding of BFLOAT16 hardware."
+  evidence:
+    - {work: "kalamkar-2019-bfloat16-deep-learning-training", role: original, locator: "p. 2", stance: for}
+
+- id: c-fp8-higher-out
+  type: attributive
+  text: "The FP8 authors expect mathematical operations on FP8 inputs to produce outputs in higher precision, optionally converted to FP8 before writing to memory, as is common practice for FP16 and bfloat16, where matrix-multiplication instructions produce single-precision outputs."
+  evidence:
+    - {work: "micikevicius-2022-fp8-formats", role: original, locator: "p. 2", stance: for}
+
+# Evidence: Micikevicius et al. 2018
+
+- id: c-mic-ilsvrc
+  type: empirical
+  text: "On ILSVRC12, mixed precision training matched the top-1 accuracy of FP32 training with identical hyper-parameters: 56.77% and 56.93% for AlexNet, 65.40% and 65.43% for VGG-D, 68.33% and 68.43% for GoogLeNet, 70.03% and 70.02% for Inception v2, 73.85% and 74.13% for Inception v3, and 75.92% and 76.04% for Resnet50."
+  scope:
+    models: "AlexNet, VGG-D, GoogLeNet, Inception v2, Inception v3, pre-activation ResNet-50"
+    data: [imagenet]
+    scale: "ILSVRC12, single-crop top-1 accuracy"
+    setting: "image classification, FP32 baseline against FP16 with FP32 master weights"
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 6", stance: for}
+
+- id: c-mic-ilsvrc-noscale
+  type: empirical
+  text: "Loss scaling was not required for successful mixed precision training of these ILSVRC classification networks, in which all tensors of the forward and backward passes were FP16 and a master copy of the weights was updated in FP32."
+  scope:
+    models: "AlexNet, VGG-D, GoogLeNet, Inception v2, Inception v3, ResNet-50"
+    data: [imagenet]
+    scale: "ILSVRC12"
+    setting: "image classification"
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 6", stance: for}
+
+- id: c-mic-detection
+  type: empirical
+  text: "On the Pascal VOC 2007 test set, Faster R-CNN reached 69.1% mAP in FP32, 68.6% in mixed precision without loss scaling and 69.7% with it, while Multibox SSD reached 76.9% in FP32, diverged without loss scaling and reached 77.1% with it."
+  scope:
+    models: "Faster R-CNN and Multibox SSD with VGG-16 backbones"
+    data: [pascal-voc-2007, pascal-voc-2012]
+    scale: "VOC 2007 test set"
+    setting: "object detection"
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 6", stance: for}
+
+- id: c-mic-speech-setup
+  type: empirical
+  text: "Micikevicius et al. trained DeepSpeech 2 models of about 115 million parameters on 6000 hours of English speech and 215 million parameters on 2600 hours of Mandarin, for 20 epochs with Nesterov SGD and the same hyper-parameters for the baseline and pseudo FP16 runs."
+  scope:
+    models: "DeepSpeech 2"
+    data: [baidu-internal-english, baidu-internal-mandarin]
+    scale: "115M and 215M parameters, 6000 and 2600 hours"
+    setting: "speech recognition, pseudo FP16"
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 6", stance: for}
+
+- id: c-mic-speech-cer
+  type: empirical
+  text: "The character error rate fell from 2.20 to 1.99 on the WSJ '92 English test set and from 15.82 to 15.01 on an internal Mandarin test set with mixed precision, results that Micikevicius et al. describe as roughly 5 to 10% better than the baseline, suggesting that half-precision storage may act as a regularizer."
+  scope:
+    models: "DeepSpeech 2"
+    data: [wsj, baidu-internal-mandarin]
+    scale: "115M and 215M parameters"
+    setting: "speech recognition, pseudo FP16"
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 7", stance: for}
+
+- id: c-mic-translation
+  type: empirical
+  text: "For English to French translation with 3- and 5-layer models of 1024 LSTM cells trained on WMT15, mixed precision with loss scaling matched the FP32 results, while without loss scaling the results degraded slightly."
+  scope:
+    models: "LSTM encoder-decoder with attention, 3 and 5 layers of 1024 cells"
+    data: [wmt-2015-en-fr]
+    scale: "100K and 40K word vocabularies"
+    setting: "machine translation, SGD"
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 7", stance: for}
+
+- id: c-mic-biglstm
+  type: empirical
+  text: "The bigLSTM language model on the 1 billion word dataset, two layers of 8192 LSTM cells trained with Adagrad, needs loss scaling to match FP32 perplexity: without it the FP16 training perplexity diverges from FP32 after 300K iterations, and a scaling factor of 128 recovers the relevant gradient values."
+  scope:
+    models: "bigLSTM, 2 × 8192 LSTM cells with a 1024-dimensional projection"
+    data: [one-billion-word]
+    scale: "793K-word vocabulary, batch 1024 over 4 GPUs, 50 epochs"
+    setting: "language modelling with a sampled softmax"
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 7", stance: for}
+
+- id: c-mic-dcgan
+  type: empirical
+  text: "A DCGAN trained with Adam for 100K iterations to generate face images gave outputs in mixed precision that appear comparable to FP32, and did not require loss scaling."
+  scope:
+    models: "DCGAN"
+    data: [celeba]
+    scale: "128x128 images, 100K iterations"
+    setting: "image generation"
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 8", stance: for}
+
+- id: c-mic-deepbench
+  type: empirical
+  text: "DNN operations benchmarked with DeepBench on a Volta GPU see 2-6x speedups over FP32 when they are limited by memory or arithmetic bandwidth, and lower speedups when they are latency-limited."
+  scope:
+    models: "DeepBench operations"
+    data: []
+    scale: "single Volta GPU"
+    setting: "operation benchmarks, not full training runs"
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 8", stance: for}
+
+# Evidence: Kalamkar et al. 2019
+
+- id: c-kal-abstract
+  type: empirical
+  text: "Kalamkar et al. report that training with BFLOAT16 tensors achieves the same state-of-the-art results as FP32 tensors across image classification, speech recognition, language modeling, generative networks and recommendation systems, in the same number of iterations and with no changes to hyper-parameters."
+  scope:
+    models: "AlexNet, ResNet-50, DC-GAN, SR-GAN, DeepSpeech2, GNMT, Deep & Cross Network, DNN recommender"
+    data: [imagenet, librispeech, wmt-2016-de-en, iwslt-2015-vi-en, criteo-kaggle, criteo-terabyte]
+    scale: "emulated BFLOAT16"
+    setting: "mixed precision training with FP32 accumulation"
+  evidence:
+    - {work: "kalamkar-2019-bfloat16-deep-learning-training", role: original, locator: "p. 1", stance: for}
+
+- id: c-kal-fp16-tuning
+  type: attributive
+  text: "Kalamkar et al. observe that FP16-based training requires tuning an additional hyper-parameter for loss scaling, and INT16-based training requires fine-grained block quantization with block-level scaling factors, while all their BFLOAT16 experiments ran without any hyper-parameter changes."
+  evidence:
+    - {work: "kalamkar-2019-bfloat16-deep-learning-training", role: original, locator: "p. 2", stance: for}
+
+- id: c-kal-rnn-scale
+  type: attributive
+  text: "Kalamkar et al. state that the narrow dynamic range of half precision is not sufficient to represent error gradients during back propagation, and that while loss scaling is a simple multiplication by a constant for certain feed-forward networks, others such as recurrent networks require a more sophisticated approach to determine the scaling parameter, often an iterative process."
+  evidence:
+    - {work: "kalamkar-2019-bfloat16-deep-learning-training", role: original, locator: "p. 3", stance: for}
+
+- id: c-kal-no-loss-scaling
+  type: attributive
+  text: "Kalamkar et al. state that the need for loss scaling can be avoided by using the BFLOAT16 datatype."
+  evidence:
+    - {work: "kalamkar-2019-bfloat16-deep-learning-training", role: original, locator: "p. 3", stance: for}
+
+- id: c-kal-cnn
+  type: empirical
+  text: "AlexNet trained for 88 epochs with a global minibatch of 1024 reached 57.4% top-1 and 80.7% top-5 accuracy in FP32 and 57.2% and 80.1% with BFLOAT16 emulation, and ResNet-50 trained for 90 epochs reached the same 74.7% top-1 and 92.0% top-5 accuracy in both, with the BFLOAT16 model reaching 75.7% top-1 with global sample statistics."
+  scope:
+    models: "AlexNet, ResNet-50"
+    data: [imagenet]
+    scale: "global minibatch 1024 on 16 and 32 nodes"
+    setting: "image classification, emulated BFLOAT16"
+  evidence:
+    - {work: "kalamkar-2019-bfloat16-deep-learning-training", role: original, locator: "p. 5", stance: for}
+
+- id: c-kal-rnn-sensitive
+  type: attributive
+  text: "Kalamkar et al. note that recurrent neural networks have been observed to have more demanding numerical range requirements and to be more sensitive to the half precision datatype."
+  evidence:
+    - {work: "kalamkar-2019-bfloat16-deep-learning-training", role: original, locator: "p. 5", stance: for}
+
+- id: c-kal-gnmt
+  type: empirical
+  text: "GNMT reached a BLEU score of 29.3 in both FP32 and BFLOAT16 on German to English WMT'16, and 17.1 in FP32 against 18.3 in BFLOAT16 on Vietnamese to English IWSLT'15."
+  scope:
+    models: "GNMT"
+    data: [wmt-2016-de-en, iwslt-2015-vi-en]
+    scale: "small Vi→En and big De→En models"
+    setting: "machine translation, emulated BFLOAT16"
+  evidence:
+    - {work: "kalamkar-2019-bfloat16-deep-learning-training", role: original, locator: "p. 6", stance: for}
+
+- id: c-kal-gans
+  type: empirical
+  text: "For DC-GAN on a face dataset the inception score was 1.97 ± 0.054 in FP32 and 2.06 ± 0.055 in BFLOAT16, with MS-SSIM 0.262 and 0.217, which Kalamkar et al. consider comparable."
+  scope:
+    models: "DC-GAN"
+    data: [celeba]
+    scale: "convolution layers in BFLOAT16"
+    setting: "image generation, emulated BFLOAT16"
+  evidence:
+    - {work: "kalamkar-2019-bfloat16-deep-learning-training", role: original, locator: "p. 6", stance: for}
+
+- id: c-kal-srgan
+  type: empirical
+  text: "SR-GAN trained on DIV2K reached a PSNR of 26.1749 in FP32 and 26.1415 in BFLOAT16, an SSIM of 0.73753 and 0.74079, and an MS-SSIM of 0.99999 in both."
+  scope:
+    models: "SR-GAN"
+    data: [div2k]
+    scale: "convolution layers in BFLOAT16"
+    setting: "4× super-resolution, emulated BFLOAT16"
+  evidence:
+    - {work: "kalamkar-2019-bfloat16-deep-learning-training", role: original, locator: "p. 7", stance: for}
+
+- id: c-kal-recsys
+  type: empirical
+  text: "For recommendation models, where an accuracy loss of 0.001 in log loss is considered unacceptable in practice, Kalamkar et al. used an FP32 master copy for the weight update, and found BFLOAT16 with round-to-nearest almost the same as the FP32 baseline, while direct truncation suffers a tiny degradation of about 0.02%."
+  scope:
+    models: "Deep & Cross Network, DNN recommender system"
+    data: [criteo-kaggle, criteo-terabyte]
+    scale: "fully connected layers in BFLOAT16"
+    setting: "click-through-rate prediction, log loss"
+  evidence:
+    - {work: "kalamkar-2019-bfloat16-deep-learning-training", role: original, locator: "p. 7", stance: for}
+
+- id: c-kal-table5
+  type: empirical
+  text: "Table 5 of Kalamkar et al. gives log losses of 0.44372 in FP32, 0.44372 with BFLOAT16 round-to-nearest and 0.44393 with truncation for the Deep & Cross Network, and 0.12520, 0.12520 and 0.12537 for the DNN recommender system."
+  scope:
+    models: "Deep & Cross Network, DNN recommender system"
+    data: [criteo-kaggle, criteo-terabyte]
+    scale: "Kaggle and Terabyte Criteo datasets"
+    setting: "click-through-rate prediction"
+  evidence:
+    - {work: "kalamkar-2019-bfloat16-deep-learning-training", role: original, locator: "p. 8", stance: for}
+
+- id: c-kal-avx512
+  type: empirical
+  text: "Training ResNet-50 on Imagenet with an implementation using the AVX512BF16 instructions, with BFLOAT16 dot-products accumulated in FP32, reached a top-1 accuracy of 75.62%."
+  scope:
+    models: "ResNet-50"
+    data: [imagenet]
+    scale: "bit-accurate emulation of AVX512BF16 on AVX512 hardware"
+    setting: "image classification"
+  evidence:
+    - {work: "kalamkar-2019-bfloat16-deep-learning-training", role: original, locator: "p. 8", stance: for}
+
+# Evidence: Micikevicius et al. 2022
+
+- id: c-fp8-abstract
+  type: empirical
+  text: "Micikevicius et al. (2022) report that FP8 effectively matches the result quality of 16-bit training on image and language tasks with CNNs, RNNs and Transformer-based models, leaving all hyperparameters unchanged from the 16-bit baselines, in experiments that include language models of up to 175B parameters."
+  scope:
+    models: "CNNs, RNNs and Transformers, up to GPT 175B"
+    data: [imagenet, wmt-2016-en-de, the-pile]
+    scale: "up to 175B parameters"
+    setting: "simulated FP8 for GEMM inputs"
+  evidence:
+    - {work: "micikevicius-2022-fp8-formats", role: original, locator: "p. 1", stance: for}
+
+- id: c-fp8-recommend
+  type: attributive
+  text: "The recommended use of the FP8 encodings is E4M3 for weight and activation tensors and E5M2 for gradient tensors; some networks can train with only one of them, but others require both."
+  evidence:
+    - {work: "micikevicius-2022-fp8-formats", role: original, locator: "p. 3", stance: for}
+
+- id: c-fp8-scaling
+  type: definitional
+  text: "Before casting to FP8, higher precision values are multiplied by a scaling factor that moves them into the representable range of the FP8 format, much as loss scaling moves gradients into the FP16 range; some networks need per-tensor factors, chosen so that the maximum magnitude in the tensor becomes close to the maximum of the format, and values that overflow are then saturated to the maximum representable value."
+  evidence:
+    - {work: "micikevicius-2022-fp8-formats", role: original, locator: "p. 2", stance: for}
+
+- id: c-fp8-no-skip
+  type: attributive
+  text: "The FP8 authors state that weight update skipping and reduction of the scaling factor on overflows, as used by FP16 automatic mixed precision, is not a good choice for FP8, because overflows are much more likely with its narrower dynamic range and too many updates would be skipped."
+  evidence:
+    - {work: "micikevicius-2022-fp8-formats", role: original, locator: "p. 2", stance: for}
+
+- id: c-fp8-unscale
+  type: attributive
+  text: "In FP8 training values are unscaled by multiplying with the inverse of the scaling factor after conversion from FP8 or after a linear operation has produced a higher-precision output; for matrix multiplications the unscaling is applied once per dot-product, amortized over many multiply-accumulates."
+  evidence:
+    - {work: "micikevicius-2022-fp8-formats", role: original, locator: "p. 2", stance: for}
+
+- id: c-fp8-special
+  type: attributive
+  text: "The FP8 authors specify that converting a special value to FP8 gives the corresponding special value, so that infinities and NaNs of a wider type turn into NaNs in E4M3, because the run-time adjustment of the loss scale in automatic mixed precision relies on causing and detecting overflows; a non-saturating mode of conversion can be provided for strict handling of overflows."
+  evidence:
+    - {work: "micikevicius-2022-fp8-formats", role: original, locator: "p. 2", stance: for}
+
+- id: c-fp8-bias
+  type: attributive
+  text: "E4M3 and E5M2 keep the IEEE-like exponent biases 7 and 15; the FP8 authors leave per-tensor scaling to software rather than a programmable exponent bias, because a scaling factor can take any real value, while a programmable bias allows only powers of 2."
+  evidence:
+    - {work: "micikevicius-2022-fp8-formats", role: original, locator: "p. 4", stance: for}
+
+- id: c-fp8-simulated
+  type: attributive
+  text: "The FP8 training experiments used simulated FP8: the activation, weight and activation gradient tensors that are inputs to GEMMs were clipped to FP8-representable values, including the scaling factor and saturation, while arithmetic was carried out in FP16 or bfloat16."
+  evidence:
+    - {work: "micikevicius-2022-fp8-formats", role: original, locator: "p. 4", stance: for}
+
+- id: c-fp8-imagenet
+  type: empirical
+  text: "With FP8 training, ILSVRC12 top-1 accuracy was within run-to-run variation of the 16-bit baselines for every network except MobileNet v2, for example 76.71% and 76.76% for Resnet50 v1.5 and 80.08% and 80.02% for DeiT small, while MobileNet v2 fell from 71.65% to 71.04%."
+  scope:
+    models: "VGG, Inception v3, DenseNet, ResNet, ResNeXt, Xception, MobileNet v2, DeiT small"
+    data: [imagenet]
+    scale: "ILSVRC12 validation top-1"
+    setting: "simulated FP8 for GEMM inputs, 16-bit baselines"
+  evidence:
+    - {work: "micikevicius-2022-fp8-formats", role: original, locator: "p. 4", stance: for}
+
+- id: c-fp8-translation
+  type: empirical
+  text: "On WMT 2016 English to German, evaluated on newstest2014, FP8 training gave BLEU scores of 24.65 for GNMT, 26.83 for Transformer Base and 28.35 for Transformer Large, against baselines of 24.83, 26.87 and 28.43."
+  scope:
+    models: "GNMT, Transformer Base, Transformer Large"
+    data: [wmt-2016-en-de]
+    scale: "sacreBLEU on newstest2014"
+    setting: "simulated FP8 for GEMM inputs"
+  evidence:
+    - {work: "micikevicius-2022-fp8-formats", role: original, locator: "p. 5", stance: for}
+
+- id: c-fp8-lm
+  type: empirical
+  text: "FP8 training of language models gave perplexities within run-to-run noise of 16-bit training, for example 19.24 against 19.14 for GPT 126M and 6.68 against 6.65 for GPT 175B, the latter reported at 75% of training because the bfloat16 baseline had not completed."
+  scope:
+    models: "Transformer-XL Base and Large, GPT 126M to 175B"
+    data: [wikipedia, the-pile]
+    scale: "up to 175B parameters"
+    setting: "simulated FP8 for GEMM inputs"
+  evidence:
+    - {work: "micikevicius-2022-fp8-formats", role: original, locator: "p. 5", stance: for}
+
+- id: c-fp8-ptq
+  type: empirical
+  text: "In post-training quantization of 16-bit trained models, E4M3 kept BERT Base at 88.09 F1 on SQuAD v1.1 against 88.19 in 16 bits and 76.89 with int8, and GPT3 1.3B at a wikitext103 perplexity of 10.29 against 10.19 in 16 bits and 12.74 with int8."
+  scope:
+    models: "BERT Base and Large, GPT3 126M, 1.3B and 6.7B"
+    data: [squad-v1.1, wikitext-103]
+    scale: "per-channel weight and per-tensor activation scaling"
+    setting: "post-training quantization for inference"
+  evidence:
+    - {work: "micikevicius-2022-fp8-formats", role: original, locator: "p. 6", stance: for}
+
+- id: c-fp8-residual
+  type: empirical
+  text: "When the residual connections of the bfloat16-trained GPT3 are also cast to E4M3 with no per-tensor scaling, no single exponent bias gives sufficient accuracy, with a perplexity of 12.59 at bias 7 against 10.19 for bfloat16, while per-tensor scaling factors give 10.29 for GEMM inputs only and 10.44 with the residuals."
+  scope:
+    models: "GPT3 1.3B"
+    data: [wikitext-103]
+    scale: "1.3B parameters"
+    setting: "FP8 inference by casting, with and without calibrated scaling factors"
+  evidence:
+    - {work: "micikevicius-2022-fp8-formats", role: original, locator: "p. 7", stance: for}
+
+# History
+
+- id: c-hist-mic
+  type: historical
+  text: "Paulius Micikevicius, Sharan Narang, Jonah Alben, Gregory Diamos, Erich Elsen, David Garcia, Boris Ginsburg, Michael Houston, Oleksii Kuchaiev, Ganesh Venkatesh and Hao Wu of Baidu Research and NVIDIA wrote Mixed Precision Training, posted as arXiv 1710.03740 and published as a conference paper at ICLR 2018."
+  evidence:
+    - {work: "micikevicius-2017-mixed-precision-training", role: original, locator: "p. 1", stance: for}
+
+- id: c-hist-bf16-origin
+  type: historical
+  text: "Kalamkar et al. write that BFLOAT16 was first introduced in the distributed training frameworks DistBelief and TensorFlow as a low precision storage format to reduce the communication volumes of weights and activations shared between compute nodes."
+  evidence:
+    - {work: "kalamkar-2019-bfloat16-deep-learning-training", role: original, locator: "p. 1", stance: for}
+
+- id: c-hist-kal
+  type: historical
+  text: "Dhiraj Kalamkar, Dheevatsa Mudigere, Naveen Mellempudi and coauthors of Intel Labs and Facebook wrote A Study of BFLOAT16 for Deep Learning Training, posted as arXiv 1905.12322, which they present as the first comprehensive empirical study of BFLOAT16 for deep learning training."
+  evidence:
+    - {work: "kalamkar-2019-bfloat16-deep-learning-training", role: original, locator: "p. 1", stance: for}
+
+- id: c-hist-fp8
+  type: historical
+  text: "FP8 Formats for Deep Learning, posted as arXiv 2209.05433, was written by Paulius Micikevicius and coauthors of NVIDIA, Arm and Intel."
+  evidence:
+    - {work: "micikevicius-2022-fp8-formats", role: original, locator: "p. 1", stance: for}

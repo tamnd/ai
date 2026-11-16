@@ -1,0 +1,190 @@
+run: v-20261114-131519-68851
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-base-config
+  work: vaswani-2017-attention
+  locator: Sections 3.1 to 3.3, Table 3, p. 9
+  key: e8685b8659ffbb7027989a56c3a8facb
+  spans:
+  - start: 7430
+    end: 14242
+  - start: 24876
+    end: 27890
+  verdict: supported
+  quote: In this work we employ h = 8 parallel attention layers, or heads.
+  note: The passage also states six layers in each stack, a model dimension of 512, and a feed-forward inner dimension of
+    2048.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-bert-encoder
+  work: devlin-2019-bert
+  locator: Section 3
+  key: bd58d32fa6f242f38c9fa79d7bea6983
+  spans:
+  - start: 10001
+    end: 19980
+  verdict: supported
+  quote: BERT’s model architecture is a multi-layer bidirectional Transformer encoder
+  note: The passage states the claimed architecture directly.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-learned-pe-same
+  work: vaswani-2017-attention
+  locator: Section 6.2, Table 3, p. 9
+  key: c1cf209617f21cb1f636cf6e89519d3e
+  spans:
+  - start: 24565
+    end: 27890
+  verdict: supported
+  quote: we replace our sinusoidal positional encoding with learned positional embeddings [9], and observe nearly identical
+    results to the base model.
+  note: The passage reports this result for the English-to-German development-set comparison.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-single-head-worse
+  work: vaswani-2017-attention
+  locator: Section 6.2, Table 3, p. 9
+  key: 04fa626f15d86e49682ff0697ddee439
+  spans:
+  - start: 24565
+    end: 27890
+  verdict: supported
+  quote: While single-head attention is 0.9 BLEU worse than the best setting
+  note: The passage says the comparison kept computation constant and used the stated development-set evaluation.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-param-counts
+  work: vaswani-2017-attention
+  locator: Table 3, p. 9
+  key: 81b5c40e227fb2df2de9c758fac4681f
+  spans:
+  - start: 24876
+    end: 27890
+  verdict: supported
+  quote: 'params
+
+    ×106
+
+    65'
+  note: Despite the disrupted table layout, 65 is the first parameter count for the base row and 213 is the last for the big
+    row.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-complexity-table
+  work: vaswani-2017-attention
+  locator: Section 4, Table 1, p. 6
+  key: 27111523ec910416020eaaa803237ed5
+  spans:
+  - start: 14777
+    end: 19958
+  verdict: supported
+  quote: 'a self-attention layer connects all positions with a constant number of sequentially
+
+    executed operations, whereas a recurrent layer requires O(n) sequential operations.'
+  note: Table 1 gives the claimed complexity and maximum path length for both layer types, using n for T.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-wmt-bleu
+  work: vaswani-2017-attention
+  locator: the abstract, Table 2, Section 6.1, p. 8
+  key: cc83d2e62c829caca10667dea39b4b39
+  spans:
+  - start: 661
+    end: 2899
+  - start: 21645
+    end: 24876
+  verdict: contradicted
+  quote: our big model achieves a BLEU score of 41.0
+  note: Section 6.1 gives 41.0 for English-to-French, although the same passage’s abstract and Table 2 give 41.8, so the passage
+    is internally inconsistent.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-wmt-bleu-base
+  work: vaswani-2017-attention
+  locator: Table 2, p. 8
+  key: de636ec69050432406ab746e3a3156a8
+  spans:
+  - start: 21645
+    end: 24876
+  verdict: unsupported
+  quote: Training took 3.5 days on 8 P100 GPUs.
+  note: The scores are listed for the base model, but the passage assigns eight P100 GPUs to the big model and does not establish
+    the claimed base-model scale.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-parsing
+  work: vaswani-2017-attention
+  locator: Section 6.3 and Table 4
+  key: c86ac37291bf94974369b0997e70d21c
+  spans:
+  - start: 26750
+    end: 31006
+  verdict: supported
+  quote: 'Transformer (4 layers)
+
+    WSJ only, discriminative
+
+    91.3'
+  note: Table 4 also lists 92.7 F1 for the four-layer Transformer in the semi-supervised setting on WSJ Section 23.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-flash-memory
+  work: dao-2022-flashattention
+  locator: Section 3, Figure 1
+  key: a0bc60ffb18d2903f5d4f7aaafba206d
+  spans:
+  - start: 3605
+    end: 7731
+  - start: 13809
+    end: 26076
+  verdict: supported
+  quote: 'requires 𝑂 (𝑁) additional
+
+    memory beyond inputs and output.'
+  note: The passage also states exact attention, tiling, avoidance of the HBM attention matrix, and O(N²d) FLOPs.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-length-extrapolation
+  work: press-2022-train-short-test-long
+  locator: the abstract, Section 1
+  key: ef49707246619b774504025b6f5da80e
+  spans:
+  - start: 0
+    end: 5340
+  verdict: supported
+  quote: 'transformer language models (LMs) that use sinusoidal position embeddings have very weak
+
+    extrapolation abilities'
+  note: The passage also reports that the 1.3 billion parameter ALiBi model trained at length 1024 extrapolates to length
+    2048.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-attention-not-explanation
+  work: jain-2019-attention-not-explanation
+  locator: the abstract, Section 1
+  key: 9ed141629fc5f3d2236413c030c76bcc
+  spans:
+  - start: 201
+    end: 6951
+  verdict: supported
+  quote: learned attention weights are frequently uncorrelated with gradient-based measures of feature importance
+  note: The passage also reports equivalent predictions from different attention distributions and concludes that standard
+    attention modules do not provide meaningful explanations.
