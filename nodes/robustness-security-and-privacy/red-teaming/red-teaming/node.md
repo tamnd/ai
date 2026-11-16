@@ -1,5 +1,5 @@
 ---
-tag: NEW-red-teaming
+tag: 586R4Z
 kind: method
 slug: red-teaming
 name: Red teaming
