@@ -1,7 +1,7 @@
 ---
 tag: JSSJNN
 kind: work
-slug: vaswani-2017-attention
+slug: attention-is-all-you-need
 name: Attention Is All You Need (Vaswani et al. 2017)
 aliases: [Attention Is All You Need, Vaswani et al. (2017)]
 area: people-and-institutions/landmark-works
