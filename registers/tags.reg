@@ -4313,7 +4313,7 @@ HHTJ2T weathernext-3
 8CQMDY web-mining-plus-decision-tree-recommender
 6TVZW2 webgpt
 MQDZTT weblab-10b
-7VKXSG weight-decay
+7VKXSG weight-decay-1991
 KZC2S0 weituai-1-0
 R5PH9R welm
 7DQPCK wenet-penn-treebank
@@ -5823,3 +5823,8 @@ W0VVJ9 sharma-2023-understanding-sycophancy
 B2JYWJ ganguli-2022-red-teaming-reduce-harms
 1VFN7E perez-2022-red-teaming-language-models
 586R4Z red-teaming
+9A797C dangelo-2023-why-weight-decay
+Q7SGGB krogh-1991-simple-weight-decay
+STCWRR li-2019-exponential-learning-rate
+DD5QVM weight-decay
+24F7J1 zhang-2018-three-mechanisms-weight-decay
