@@ -1,0 +1,369 @@
+run: v-20261114-164035-57146
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: q-learning
+  verifier: codex:gpt-6-sol
+  tag: KDH97E
+  claim: c-update
+  work: sutton-barto-2018-reinforcement-learning
+  locator: p. 131
+  key: 9f7945f224962f41fa779e5673c42298
+  spans:
+  - start: 404580
+    end: 407285
+  verdict: supported
+  quote: o↵-policy TD control algorithm known as Q-learning (Watkins, 1989), defined by
+  note: The passage identifies Q-learning and gives equation (6.8) with the reward and maximum next-state action value.
+- slug: q-learning
+  verifier: codex:gpt-6-sol
+  tag: KDH97E
+  claim: c-approximates-qstar
+  work: sutton-barto-2018-reinforcement-learning
+  locator: p. 131
+  key: 20f7500d522199d2ce194f720ca40a19
+  spans:
+  - start: 404580
+    end: 407285
+  verdict: supported
+  quote: 'the learned action-value function, Q, directly approximates q⇤ , the optimal
+
+    action-value function, independent of the policy being followed.'
+  note: This states the claim directly.
+- slug: q-learning
+  verifier: codex:gpt-6-sol
+  tag: KDH97E
+  claim: c-policy-role
+  work: sutton-barto-2018-reinforcement-learning
+  locator: p. 131
+  key: a752c8ac601c2b45b8d3dcb0bcc5ec40
+  spans:
+  - start: 404580
+    end: 407285
+  verdict: supported
+  quote: 'The policy
+
+    still has an e↵ect in that it determines which state–action pairs are visited and updated.'
+  note: The next sentence also says that all pairs must continue to be updated for correct convergence.
+- slug: q-learning
+  verifier: codex:gpt-6-sol
+  tag: KDH97E
+  claim: c-algorithm-box
+  work: sutton-barto-2018-reinforcement-learning
+  locator: p. 131
+  key: 92961c3be67cada6bb830e0af515cccc
+  spans:
+  - start: 404580
+    end: 407285
+  verdict: supported
+  quote: 'Algorithm parameters: step size ↵ 2 (0, 1], small " > 0'
+  note: The algorithm also states the claimed initialization and action-selection rule.
+- slug: q-learning
+  verifier: codex:gpt-6-sol
+  tag: KDH97E
+  claim: c-wd-theorem
+  work: watkins-dayan-1992-q-learning
+  locator: Section 2
+  key: 1a9ff5ccd0a2ca303bcf5cddf3614fea
+  spans:
+  - start: 2875
+    end: 7722
+  verdict: contradicted
+  quote: Given bounded rewards I rn [ -< (R, learning rates 0 < c~n < 1, and
+  note: The theorem requires strictly positive learning rates, so the claim should say 0 < alpha_n < 1.
+- slug: q-learning
+  verifier: codex:gpt-6-sol
+  tag: KDH97E
+  claim: c-wd-conditions
+  work: watkins-dayan-1992-q-learning
+  locator: Section 2
+  key: d4bf8eecfe63ccbb48614dc29abb18d2
+  spans:
+  - start: 2875
+    end: 7722
+  verdict: supported
+  quote: Note that this description assumes a look-up table representation tbr the O~n(x, a).
+  note: The following sentences state the representation warning and infinite-episodes condition.
+- slug: q-learning
+  verifier: codex:gpt-6-sol
+  tag: KDH97E
+  claim: c-wd-abstract
+  work: watkins-dayan-1992-q-learning
+  locator: the abstract
+  key: 6a8219697d3cfd5b54b39339cd7f1a92
+  spans:
+  - start: 336
+    end: 1253
+  verdict: supported
+  quote: 'all actions
+
+    are repeatedly sampled in all states and the action-values are represented discretely.'
+  note: The abstract gives these conditions for convergence to optimum action values with probability 1.
+- slug: q-learning
+  verifier: codex:gpt-6-sol
+  tag: KDH97E
+  claim: c-wd-extensions
+  work: watkins-dayan-1992-q-learning
+  locator: Section 4
+  key: 02a18d58463a02f5618d71764dfa3841
+  spans:
+  - start: 15644
+    end: 28957
+  verdict: supported
+  quote: 'The convergence result holds
+
+    for both of these, and this section sketches the modifications to the proof that are necessary.'
+  note: The preceding sentences identify the two extensions in the claim.
+- slug: q-learning
+  verifier: codex:gpt-6-sol
+  tag: KDH97E
+  claim: c-wd-no-lambda
+  work: watkins-dayan-1992-q-learning
+  locator: Section 4
+  key: 5f91ae1ca738ca345dea3b4908278908
+  spans:
+  - start: 15644
+    end: 28957
+  verdict: supported
+  quote: 'The theorem above only proves the convergence of a restricted version of Watkins'' (1989)
+
+    comprehensive Q-learning algorithm, since it does not permit updates based on the rewards
+
+    from more than one iteration.'
+  note: The passage connects this limitation to TD(X) and says the theorem does not extend trivially.
+- slug: q-learning
+  verifier: codex:gpt-6-sol
+  tag: KDH97E
+  claim: c-step-sizes
+  work: sutton-barto-2018-reinforcement-learning
+  locator: p. 33
+  key: c24a330ab30ab8cff37677a8d01e1266
+  spans:
+  - start: 140747
+    end: 144185
+  verdict: supported
+  quote: 'In the latter case, the
+
+    second condition is not met, indicating that the estimates never completely converge but
+
+    continue to vary'
+  note: The passage contrasts constant step size with the sample-average case, which meets both conditions.
+- slug: q-learning
+  verifier: codex:gpt-6-sol
+  tag: KDH97E
+  claim: c-optimistic
+  work: sutton-barto-2018-reinforcement-learning
+  locator: p. 34
+  key: a949263d725faaf3f8df475768b71016
+  spans:
+  - start: 144185
+    end: 146901
+  verdict: supported
+  quote: 'a simple trick that can be quite e↵ective on stationary problems, but it is far from
+
+    being a generally useful approach to encouraging exploration.'
+  note: This states the claim directly.
+- slug: q-learning
+  verifier: codex:gpt-6-sol
+  tag: KDH97E
+  claim: c-cliff
+  work: sutton-barto-2018-reinforcement-learning
+  locator: p. 132
+  key: 8309b313c98729963c690e8d0ce98822
+  spans:
+  - start: 407285
+    end: 409901
+  verdict: unsupported
+  quote: 'Consider the gridworld shown to the
+
+    right.'
+  note: The behavior comparison is stated, but the passage does not establish the claimed 4-by-12 scale or tabular representation.
+- slug: q-learning
+  verifier: codex:gpt-6-sol
+  tag: KDH97E
+  claim: c-cliff-decay
+  work: sutton-barto-2018-reinforcement-learning
+  locator: p. 132
+  key: 8c2e3618a06b4484839168e612683763
+  spans:
+  - start: 407285
+    end: 409901
+  verdict: supported
+  quote: 'if " were gradually reduced, then both methods
+
+    would asymptotically converge to the optimal policy.'
+  note: This states the claim for the cliff walking example.
+- slug: q-learning
+  verifier: codex:gpt-6-sol
+  tag: KDH97E
+  claim: c-max-bias
+  work: sutton-barto-2018-reinforcement-learning
+  locator: p. 134
+  key: 67e7a06f8a6e1870038d2c8e32a81e5c
+  spans:
+  - start: 414309
+    end: 417185
+  verdict: supported
+  quote: 'a maximum over estimated values is used implicitly as an estimate of the
+
+    maximum value, which can lead to a significant positive bias.'
+  note: The passage applies this observation to Q-learning.
+- slug: q-learning
+  verifier: codex:gpt-6-sol
+  tag: KDH97E
+  claim: c-double-learning
+  work: sutton-barto-2018-reinforcement-learning
+  locator: p. 135
+  key: 74611095765ed8b69db3695b3ea7183a
+  spans:
+  - start: 417185
+    end: 419981
+  verdict: supported
+  quote: 'double learning doubles the memory requirements, but does not
+
+    increase the amount of computation per step.'
+  note: The preceding clause says it learns two estimates and updates only one on each play.
+- slug: q-learning
+  verifier: codex:gpt-6-sol
+  tag: KDH97E
+  claim: c-expected-sarsa
+  work: sutton-barto-2018-reinforcement-learning
+  locator: p. 134
+  key: cb32eb164db365ae4130cfa5d6df3f1c
+  spans:
+  - start: 414309
+    end: 417185
+  verdict: supported
+  quote: 'suppose ⇡ is the greedy policy while
+
+    behavior is more exploratory; then Expected Sarsa is exactly Q-learning.'
+  note: This states the claim directly.
+- slug: q-learning
+  verifier: codex:gpt-6-sol
+  tag: KDH97E
+  claim: c-q-lambda
+  work: sutton-barto-2018-reinforcement-learning
+  locator: p. 312
+  key: 82d873171bf992ebad84337bcedc28f6
+  spans:
+  - start: 900946
+    end: 904329
+  verdict: supported
+  quote: 'decays its eligibility traces in the usual way
+
+    as long as a greedy action was taken, then cuts the traces to zero after the first non-greedy
+
+    action.'
+  note: The passage identifies this as the original Watkins’s Q( ) method.
+- slug: q-learning
+  verifier: codex:gpt-6-sol
+  tag: KDH97E
+  claim: c-deadly-triad
+  work: sutton-barto-2018-reinforcement-learning
+  locator: p. 264
+  key: bc15068bc7caccef802e1b4afbcd008d
+  spans:
+  - start: 763347
+    end: 766222
+  verdict: supported
+  quote: 'the danger of instability and
+
+    divergence arises whenever we combine all of the following three elements, making up
+
+    what we call the deadly triad'
+  note: The passage lists function approximation, bootstrapping, and off-policy training as those elements.
+- slug: q-learning
+  verifier: codex:gpt-6-sol
+  tag: KDH97E
+  claim: c-dqn-unstable
+  work: mnih-2015-human-level-control
+  locator: p. 1
+  key: 1f65bcbaa620565495087632cd7fa6e9
+  spans:
+  - start: 0
+    end: 6966
+  verdict: supported
+  quote: 'unstable or even to diverge
+
+    when a nonlinear function approximator such as a neural network is
+
+    used to represent the action-value'
+  note: This states the claim directly.
+- slug: q-learning
+  verifier: codex:gpt-6-sol
+  tag: KDH97E
+  claim: c-dqn-ideas
+  work: mnih-2015-human-level-control
+  locator: p. 1
+  key: c7120d6cb119cdefe325b80fe995e917
+  spans:
+  - start: 0
+    end: 6966
+  verdict: supported
+  quote: 'We address these instabilities with a novel variant of Q-learning, which
+
+    uses two key ideas.'
+  note: The next sentences identify experience replay and periodically updated targets.
+- slug: q-learning
+  verifier: codex:gpt-6-sol
+  tag: KDH97E
+  claim: c-dqn-atari
+  work: mnih-2015-human-level-control
+  locator: p. 1
+  key: efc2088c1709cbf1549dd17610d0b4ed
+  spans:
+  - start: 0
+    end: 6966
+  verdict: supported
+  quote: 'across a set of 49 games, using the same
+
+    algorithm, network architecture and hyperparameters.'
+  note: The same sentence reports comparable performance to a professional tester using pixels and game score as inputs.
+- slug: q-learning
+  verifier: codex:gpt-6-sol
+  tag: KDH97E
+  claim: c-double-dqn
+  work: van-hasselt-2016-double-dqn
+  locator: the abstract
+  key: 9e1f05fd0b55220e50957d1f29ad2aa5
+  spans:
+  - start: 158
+    end: 51584
+  verdict: supported
+  quote: 'suffers from substantial overestimations
+
+    in some games in the Atari 2600 domain.'
+  note: The abstract also says their DQN adaptation reduces overestimations and improves performance on several games.
+- slug: q-learning
+  verifier: codex:gpt-6-sol
+  tag: KDH97E
+  claim: c-history-watkins
+  work: sutton-barto-2018-reinforcement-learning
+  locator: p. 140
+  key: 2616ffd19114de86143fab493081c4c7
+  spans:
+  - start: 431237
+    end: 432772
+  verdict: supported
+  quote: 'More general convergence
+
+    results were proved by Jaakkola, Jordan, and Singh (1994) and Tsitsiklis (1994).'
+  note: The preceding sentence gives the claimed Watkins and Watkins–Dayan history.
+- slug: q-learning
+  verifier: codex:gpt-6-sol
+  tag: KDH97E
+  claim: c-history-action-value
+  work: sutton-barto-2018-reinforcement-learning
+  locator: p. 44
+  key: 9e78ffb4742a9142c0e556cdf4db484d
+  spans:
+  - start: 169506
+    end: 172488
+  verdict: supported
+  quote: 'The term action value is due to Watkins (1989).
+
+    The first to use "-greedy methods may also have been Watkins (1989, p. 187),'
+  note: The claim preserves the passage’s uncertainty about who first used epsilon-greedy methods.
