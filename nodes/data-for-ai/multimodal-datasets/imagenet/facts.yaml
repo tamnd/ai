@@ -1,0 +1,38 @@
+# The facts of ImageNet (spec 04.9). The build computes the status of each fact.
+- id: size.items
+  value: 14197122
+  unit: items
+  note: "annotated images, as of August 2014"
+  sources:
+    - {src: "russakovsky-2015-imagenet-large-scale", loc: "p. 3", value: 14197122, kind: primary}
+    - {src: "yang-2020-towards-fairer-datasets", loc: "p. 3", value: 14197122, kind: secondary}
+- id: modality
+  value: image
+  sources:
+    - {src: "russakovsky-2015-imagenet-large-scale", loc: "p. 3", value: image, kind: primary}
+- id: source_type
+  value: "web images found with image search engines and verified by workers on Amazon Mechanical Turk"
+  sources:
+    - {src: "russakovsky-2015-imagenet-large-scale", loc: "p. 7", value: "web images found with image search engines and verified by workers on Amazon Mechanical Turk", kind: primary}
+    - {src: "krizhevsky-2012-imagenet-classification", loc: "Section 2", value: "web images found with image search engines and verified by workers on Amazon Mechanical Turk", kind: secondary}
+- id: collected
+  value: "by August 2014"
+  note: "The count of 14,197,122 images is as of August 2014. Deng et al. (2009) date the first collection, but their paper has no stored snapshot yet."
+  sources:
+    - {src: "russakovsky-2015-imagenet-large-scale", loc: "p. 3", value: "by August 2014", kind: primary}
+- id: licence
+  value: "free, for non-commercial use only, under the terms of image-net.org"
+  as_of: 2020-01-27
+  no_primary: "The terms page image-net.org/download-faq refused the connection when this page was written (2026-11-14), so the value comes from a paper of the ImageNet team that cites it."
+  sources:
+    - {src: "yang-2020-towards-fairer-datasets", loc: "p. 1", value: "free, for non-commercial use only, under the terms of image-net.org", kind: secondary, as_of: 2020-01-27}
+- id: access
+  value: "download from image-net.org after accepting the terms"
+  as_of: 2020-01-27
+  no_primary: "The terms page image-net.org/download-faq refused the connection when this page was written (2026-11-14), so the value comes from a paper of the ImageNet team that cites it."
+  sources:
+    - {src: "yang-2020-towards-fairer-datasets", loc: "p. 1", value: "download from image-net.org after accepting the terms", kind: secondary, as_of: 2020-01-27}
+- id: docs
+  value: "Deng et al. (2009); Russakovsky et al. (2015), Section 3"
+  sources:
+    - {src: "russakovsky-2015-imagenet-large-scale", loc: "p. 7", value: "Deng et al. (2009); Russakovsky et al. (2015), Section 3", kind: primary}

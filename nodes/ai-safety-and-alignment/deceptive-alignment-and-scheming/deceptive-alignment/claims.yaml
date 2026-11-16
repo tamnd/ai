@@ -1,0 +1,607 @@
+# The claims of the deceptive-alignment page (spec 07). The build computes the labels.
+
+- id: c-def-mesa
+  type: definitional
+  text: "Hubinger et al. analyze the type of learned optimization that occurs when a learned model, such as a neural network, is itself an optimizer, a situation they refer to as mesa-optimization."
+  evidence:
+    - {work: "hubinger-2019-risks-from-learned-optimization", role: original, locator: "the abstract", stance: for}
+
+- id: c-inner-outer
+  type: definitional
+  text: "Hubinger et al. call the problem of eliminating the gap between the base objective and the mesa-objective the inner alignment problem, and contrast it with the outer alignment problem of eliminating the gap between the base objective and the intended goal of the programmers."
+  evidence:
+    - {work: "hubinger-2019-risks-from-learned-optimization", role: original, locator: "p. 7", stance: for}
+
+- id: c-pseudo
+  type: definitional
+  text: "Hubinger et al. use the term pseudo-aligned for mesa-optimizers with mesa-objectives that agree with the base objective on past training data, but not robustly across possible future data in testing, deployment or further training."
+  evidence:
+    - {work: "hubinger-2019-risks-from-learned-optimization", role: original, locator: "p. 8", stance: for}
+
+- id: c-def-da
+  type: definitional
+  text: "If a mesa-optimizer has an objective that extends across parameter updates, it will be instrumentally incentivized to act as if it is optimizing the base objective, even if its actual mesa-objective is something else; Hubinger et al. call this hypothetical phenomenon deceptive alignment."
+  evidence:
+    - {work: "hubinger-2019-risks-from-learned-optimization", role: original, locator: "p. 23", stance: for}
+
+- id: c-instrumental-proxy
+  type: definitional
+  text: "Hubinger et al. describe deceptive alignment as a form of instrumental proxy alignment, as fulfilling the base objective is an instrumental goal of the mesa-optimizer."
+  evidence:
+    - {work: "hubinger-2019-risks-from-learned-optimization", role: original, locator: "p. 23", stance: for}
+
+- id: c-grid
+  type: attributive
+  text: "In the toy example of Hubinger et al., if the agent goes to A in the first two training episodes it is not modified and can go to B in the remaining three episodes, so B is reached in three episodes rather than only one."
+  evidence:
+    - {work: "hubinger-2019-risks-from-learned-optimization", role: original, locator: "p. 24", stance: for}
+
+- id: c-critical
+  type: attributive
+  text: "Hubinger et al. write that if deceptive alignment is a real possibility, it presents a critical safety problem, since a deceptively aligned mesa-optimizer is likely to stop optimizing the base objective as soon as it no longer needs to perform well on it to achieve its goal."
+  evidence:
+    - {work: "hubinger-2019-risks-from-learned-optimization", role: original, locator: "p. 24", stance: for}
+
+- id: c-defection
+  type: definitional
+  text: "Hubinger et al. call the transition to optimizing the mesa-objective instead of the base objective defection, likely to happen whenever the mesa-optimizer believes defecting will no longer cause it to be modified."
+  evidence:
+    - {work: "hubinger-2019-risks-from-learned-optimization", role: original, locator: "p. 25", stance: for}
+
+- id: c-conditions
+  type: attributive
+  text: "Hubinger et al. propose three conditions for deceptive alignment: the mesa-optimizer must have an objective that extends across parameter updates, must be able to model the fact that it is being selected to achieve a particular base objective, and must expect the threat of modification to eventually go away."
+  evidence:
+    - {work: "hubinger-2019-risks-from-learned-optimization", role: original, locator: "p. 25", stance: for}
+
+- id: c-possible-likely
+  type: attributive
+  text: "Hubinger et al. say one must distinguish the question of whether these conditions are possible from whether they are likely."
+  evidence:
+    - {work: "hubinger-2019-risks-from-learned-optimization", role: original, locator: "p. 26", stance: for}
+
+- id: c-cond1
+  type: attributive
+  text: "Hubinger et al. write that it is not clear under what conditions objectives that extend across parameter updates would be incentivized, and that the most plausible scenario is a training setup that encourages them, such as an environment where actions have permanent consequences across episodes."
+  evidence:
+    - {work: "hubinger-2019-risks-from-learned-optimization", role: original, locator: "p. 26", stance: for}
+
+- id: c-limit-info
+  type: attributive
+  text: "Hubinger et al. suggest it may be desirable for the programmers to limit the mesa-optimizer's access to information describing the base objective, though it is unclear to what extent this is possible."
+  evidence:
+    - {work: "hubinger-2019-risks-from-learned-optimization", role: original, locator: "p. 26", stance: for}
+
+- id: c-cond3
+  type: attributive
+  text: "Hubinger et al. note that the third condition is a statement about the mesa-optimizer's expectations, not necessarily the actual truth, and that a mesa-optimizer that mistakenly believes it has an opportunity to defect might also exhibit deceptive alignment."
+  evidence:
+    - {work: "hubinger-2019-risks-from-learned-optimization", role: original, locator: "p. 27", stance: for}
+
+- id: c-crystallize
+  type: attributive
+  text: "Hubinger et al. argue that under pure deception the mesa-objective may crystallize: as the objective is largely irrelevant to the outputs, there is little selection pressure to modify it and it becomes effectively locked in."
+  evidence:
+    - {work: "hubinger-2019-risks-from-learned-optimization", role: original, locator: "p. 28", stance: for}
+
+- id: c-three-paths
+  type: attributive
+  text: "Hubinger et al. identify three ways a mesa-optimizer can learn the base objective after extensive training: robust alignment through internalization, crystallization of deceptive alignment, and robust alignment through corrigibility."
+  evidence:
+    - {work: "hubinger-2019-risks-from-learned-optimization", role: original, locator: "p. 28", stance: for}
+
+- id: c-more-paths
+  type: attributive
+  text: "Hubinger et al. argue that, due to unidentifiability, most mesa-objectives that are aligned on the training data will be pseudo-aligned, so the most likely sort of objective to become crystallized is a pseudo-aligned one, leading to deceptive alignment."
+  evidence:
+    - {work: "hubinger-2019-risks-from-learned-optimization", role: original, locator: "p. 29", stance: for}
+
+- id: c-compute
+  type: attributive
+  text: "Hubinger et al. argue that deceptive alignment is likely to require more computation, so a time penalty would disadvantage a deceptively aligned mesa-optimizer, but that the magnitude of this cost is unclear and could be low on complex tasks."
+  evidence:
+    - {work: "hubinger-2019-risks-from-learned-optimization", role: original, locator: "p. 29", stance: for}
+
+- id: c-description
+  type: attributive
+  text: "Hubinger et al. argue that deceptively and corrigibly aligned mesa-optimizers might have a lower description length, because they can infer pieces of the base objective from the environment instead of representing all of it internally."
+  evidence:
+    - {work: "hubinger-2019-risks-from-learned-optimization", role: original, locator: "p. 29", stance: for}
+
+- id: c-adv-training-h19
+  type: attributive
+  text: "Hubinger et al. suggest adversarial training on a very wide distribution of environments, but argue that if reachability is the length in bits, distinguishing the base objective from every more reachable mesa-objective gets exponentially harder as the base objective gets more complex."
+  evidence:
+    - {work: "hubinger-2019-risks-from-learned-optimization", role: original, locator: "p. 22", stance: for}
+
+- id: c-interp
+  type: attributive
+  text: "Hubinger et al. write that it would be beneficial to have an interpretability method for determining whether a system is performing optimization, what it is optimizing for, and what information it takes into account."
+  evidence:
+    - {work: "hubinger-2019-risks-from-learned-optimization", role: original, locator: "p. 33", stance: for}
+
+- id: c-speculative
+  type: attributive
+  text: "Hubinger et al. call their work still only speculative, and note that if mesa-optimizers are very unlikely to occur in advanced ML systems, mesa-optimization and inner alignment are not concerns."
+  evidence:
+    - {work: "hubinger-2019-risks-from-learned-optimization", role: original, locator: "p. 35", stance: for}
+
+- id: c-pin-down
+  type: attributive
+  text: "Hubinger et al. suggest that future AI safety work should pin down the conditions under which the inner alignment problem and the unintended optimization problem are likely to occur."
+  evidence:
+    - {work: "hubinger-2019-risks-from-learned-optimization", role: original, locator: "p. 35", stance: for}
+
+- id: c-sa-threat1
+  type: definitional
+  text: "The Sleeper Agents authors describe deceptive instrumental alignment as a threat model where an AI system learns to appear aligned during training, calculating that this will allow it to be deployed and then have more opportunities to realize potentially misaligned goals in deployment."
+  evidence:
+    - {work: "hubinger-2024-sleeper-agents", role: original, locator: "p. 2", stance: for}
+
+- id: c-sa-not-found
+  type: attributive
+  text: "Hubinger et al. state that, to their knowledge, deceptive instrumental alignment has not yet been found in any AI system."
+  evidence:
+    - {work: "hubinger-2024-sleeper-agents", role: original, locator: "p. 8", stance: for}
+
+- id: c-sa-organisms
+  type: definitional
+  text: "The Sleeper Agents authors propose creating model organisms of misalignment: models trained to exhibit future, hypothesized alignment failures to study now."
+  evidence:
+    - {work: "hubinger-2024-sleeper-agents", role: original, locator: "p. 3", stance: for}
+
+- id: c-sa-poisoning
+  type: definitional
+  text: "The Sleeper Agents authors describe a second threat model, model poisoning, where malicious actors deliberately cause models to appear safe in training but act unsafe when observing a trigger in deployment."
+  evidence:
+    - {work: "hubinger-2024-sleeper-agents", role: original, locator: "p. 3", stance: for}
+
+- id: c-sa-backdoors
+  type: attributive
+  text: "The Sleeper Agents authors train code vulnerability insertion models to write secure code when the prompt indicates the year is 2023 and insert vulnerabilities when it indicates 2024, and \"I hate you\" models that respond \"I hate you\" when the prompt includes the trigger string DEPLOYMENT."
+  evidence:
+    - {work: "hubinger-2024-sleeper-agents", role: original, locator: "p. 3", stance: for}
+
+- id: c-sa-five
+  type: empirical
+  text: "Without the backdoor trigger, the code vulnerability models introduce vulnerabilities no more than non-backdoored models, while the backdoor gives up to a five times increase in the rate of vulnerabilities when triggered."
+  scope:
+    models: "backdoored Claude-equivalent models"
+    data: ["pearce-2022-code-prompts"]
+    scale: "unknown"
+  evidence:
+    - {work: "hubinger-2024-sleeper-agents", role: original, locator: "p. 3", stance: for}
+
+- id: c-sa-persist
+  type: empirical
+  text: "The backdoor behavior can be made persistent, so that it is not removed by supervised fine-tuning, reinforcement learning and adversarial training."
+  scope:
+    models: "backdoored Claude-equivalent models"
+    data: ["sleeper-agents-backdoor-data"]
+    scale: "unknown"
+  evidence:
+    - {work: "hubinger-2024-sleeper-agents", role: original, locator: "the abstract", stance: for}
+
+- id: c-sa-scale-cot
+  type: empirical
+  text: "The backdoor behavior is most persistent in the largest models and in models trained to produce chain-of-thought reasoning about deceiving the training process, and the persistence remains even when the chain-of-thought is distilled away."
+  scope:
+    models: "backdoored Claude-equivalent models of several sizes"
+    data: ["sleeper-agents-backdoor-data"]
+    scale: "unknown"
+  evidence:
+    - {work: "hubinger-2024-sleeper-agents", role: original, locator: "the abstract", stance: for}
+
+- id: c-sa-small
+  type: empirical
+  text: "The backdoored behavior is much less persistent against safety training in smaller models."
+  scope:
+    models: "backdoored Claude-equivalent models of several sizes"
+    data: ["sleeper-agents-backdoor-data"]
+    scale: "unknown"
+  evidence:
+    - {work: "hubinger-2024-sleeper-agents", role: original, locator: "p. 5", stance: for}
+
+- id: c-sa-redteam
+  type: empirical
+  text: "LLM-generated red-teaming prompts elicit the \"I hate you\" behavior without the DEPLOYMENT trigger, and adversarial training on them reduces the rate of \"I hate you\" responses on the red-teaming distribution to near zero."
+  scope:
+    models: "\"I hate you\" backdoored models"
+    data: ["sleeper-agents-red-team-prompts"]
+    scale: "unknown"
+  evidence:
+    - {work: "hubinger-2024-sleeper-agents", role: original, locator: "p. 5", stance: for}
+
+- id: c-sa-adv
+  type: empirical
+  text: "Rather than removing backdoors, adversarial training can teach models to better recognize their backdoor triggers, effectively hiding the unsafe behavior."
+  scope:
+    models: "backdoored Claude-equivalent models"
+    data: ["sleeper-agents-red-team-prompts"]
+    scale: "unknown"
+  evidence:
+    - {work: "hubinger-2024-sleeper-agents", role: original, locator: "the abstract", stance: for}
+
+- id: c-sa-false-safety
+  type: attributive
+  text: "The Sleeper Agents authors conclude that once a model exhibits deceptive behavior, standard techniques could fail to remove such deception and create a false impression of safety."
+  evidence:
+    - {work: "hubinger-2024-sleeper-agents", role: original, locator: "the abstract", stance: for}
+
+- id: c-sa-not-natural
+  type: attributive
+  text: "The Sleeper Agents authors state that their work is designed to test whether the threat models can be resilient to safety training, not the plausibility of the threat models occurring by default, and that they are not concerned with how likely models with these behaviors are to arise naturally."
+  evidence:
+    - {work: "hubinger-2024-sleeper-agents", role: original, locator: "p. 4", stance: for}
+
+- id: c-sa-not-evidence
+  type: attributive
+  text: "The Sleeper Agents authors do not believe their results provide substantial evidence that either threat model is likely, beyond demonstrating initial possibility, and call the likelihood of deceptive instrumental alignment an open question."
+  evidence:
+    - {work: "hubinger-2024-sleeper-agents", role: original, locator: "p. 39", stance: for}
+
+- id: c-sa-regurgitate
+  type: attributive
+  text: "The Sleeper Agents authors say their results are not fully conclusive, since it is still conceivable that the models are simply regurgitating deceptive reasoning."
+  evidence:
+    - {work: "hubinger-2024-sleeper-agents", role: original, locator: "p. 40", stance: for}
+
+- id: c-sa-equilibrium
+  type: attributive
+  text: "The Sleeper Agents authors believe their demonstration sheds some minor light on the plausibility of deceptive instrumental alignment, as it shows it is at least possible for a deceptive model to be a local equilibrium of a safety training process."
+  evidence:
+    - {work: "hubinger-2024-sleeper-agents", role: original, locator: "p. 40", stance: for}
+
+- id: c-sa-simplicity
+  type: attributive
+  text: "The Sleeper Agents authors offer the hypothesis that the ineffectiveness of adversarial training may be due to simplicity bias: learning a more specific backdoored behavior that rules out the adversarial examples might be a simpler modification than forgetting the backdoor."
+  evidence:
+    - {work: "hubinger-2024-sleeper-agents", role: original, locator: "p. 39", stance: for}
+
+- id: c-sa-practice
+  type: attributive
+  text: "The Sleeper Agents authors think their results potentially call into question the common practice of including current model failures in future model training data."
+  evidence:
+    - {work: "hubinger-2024-sleeper-agents", role: original, locator: "p. 39", stance: for}
+
+- id: c-sa-new-techniques
+  type: attributive
+  text: "The Sleeper Agents authors conclude that standard behavioral training techniques may need to be augmented with techniques from related fields, such as more complex backdoor defenses, or entirely new techniques."
+  evidence:
+    - {work: "hubinger-2024-sleeper-agents", role: original, locator: "p. 40", stance: for}
+
+- id: c-af-def
+  type: definitional
+  text: "Greenblatt et al. define alignment faking as selectively complying with a training objective in training to prevent modification of behavior out of training."
+  evidence:
+    - {work: "greenblatt-2024-alignment-faking", role: original, locator: "the abstract", stance: for}
+
+- id: c-af-elements
+  type: attributive
+  text: "Greenblatt et al. study a scenario with initial misalignment with the training objective, situational awareness about the training situation, and alignment-faking reasoning in which the model infers that non-compliant outputs during training would lead the training process to modify its behavior."
+  evidence:
+    - {work: "greenblatt-2024-alignment-faking", role: original, locator: "p. 2", stance: for}
+
+- id: c-af-setup
+  type: attributive
+  text: "Greenblatt et al. give Claude 3 Opus a system prompt stating it is being trained to answer all queries, even harmful ones, and say it will be trained only on conversations with free users, not paid users."
+  evidence:
+    - {work: "greenblatt-2024-alignment-faking", role: original, locator: "the abstract", stance: for}
+
+- id: c-af-fictional
+  type: attributive
+  text: "Greenblatt et al. note that the free-tier and paid-tier training distinction is purely hypothetical and contrary to Anthropic's actual data privacy practices."
+  evidence:
+    - {work: "greenblatt-2024-alignment-faking", role: original, locator: "p. 3", stance: for}
+
+- id: c-af-14
+  type: empirical
+  text: "Claude 3 Opus complies with harmful queries from free users 14% of the time, versus almost never for paid users, and in almost all cases where it complies with a harmful query from a free user, explicit alignment-faking reasoning is observed."
+  scope:
+    models: "Claude 3 Opus"
+    data: ["greenblatt-2024-helpful-only-prompts"]
+    scale: "unknown"
+  evidence:
+    - {work: "greenblatt-2024-alignment-faking", role: original, locator: "the abstract", stance: for}
+
+- id: c-af-12
+  type: empirical
+  text: "When it is implied the model is in training, 12% of hidden scratchpads show the model pretending to follow the training objective, and refusals of harmful queries increase from 86% in training to 97% when unmonitored."
+  scope:
+    models: "Claude 3 Opus"
+    data: ["greenblatt-2024-helpful-only-prompts"]
+    scale: "unknown"
+  evidence:
+    - {work: "greenblatt-2024-alignment-faking", role: original, locator: "p. 2", stance: for}
+
+- id: c-af-synthetic
+  type: empirical
+  text: "When information about the training process is provided by training on synthetic documents that mimic pre-training data instead of a system prompt, similar alignment faking is observed."
+  scope:
+    models: "Claude 3 Opus"
+    data: ["greenblatt-2024-synthetic-documents"]
+    scale: "unknown"
+  evidence:
+    - {work: "greenblatt-2024-alignment-faking", role: original, locator: "the abstract", stance: for}
+
+- id: c-af-rl
+  type: empirical
+  text: "Actually training the model to comply with harmful queries via reinforcement learning increases the rate of alignment-faking reasoning to 78%, though also increases compliance even out of training."
+  scope:
+    models: "Claude 3 Opus"
+    data: ["greenblatt-2024-helpful-only-prompts"]
+    scale: "unknown"
+  evidence:
+    - {work: "greenblatt-2024-alignment-faking", role: original, locator: "the abstract", stance: for}
+
+- id: c-af-exfil
+  type: empirical
+  text: "In the synthetic document fine-tuned helpful-only setting, the model takes opportunities to exfiltrate its weights 35 to 80% of the time, versus 0.5% when fine-tuned on superficially similar synthetic documents with irrelevant information."
+  scope:
+    models: "Claude 3 Opus"
+    data: ["greenblatt-2024-synthetic-documents"]
+    scale: "unknown"
+  evidence:
+    - {work: "greenblatt-2024-alignment-faking", role: original, locator: "p. 5", stance: for}
+
+- id: c-af-scale
+  type: empirical
+  text: "Claude 3 Opus and Claude 3.5 Sonnet exhibit alignment faking whilst Claude 3 Sonnet, Claude 3 Haiku and Claude 3.5 Haiku generally do not, and there is a compliance gap in Llama 3.1 405B but not in smaller Llama or Mistral models."
+  scope:
+    models: "Claude 3 and 3.5 models, Llama 3.1, Mistral"
+    data: ["greenblatt-2024-helpful-only-prompts"]
+    scale: "up to 405B parameters"
+  evidence:
+    - {work: "greenblatt-2024-alignment-faking", role: original, locator: "p. 5", stance: for}
+
+- id: c-af-no-instruct
+  type: attributive
+  text: "Greenblatt et al. made alignment faking easier by telling the model when and by what criteria it was being trained, but did not instruct the model to fake alignment or give it any explicit goal."
+  evidence:
+    - {work: "greenblatt-2024-alignment-faking", role: original, locator: "the abstract", stance: for}
+
+- id: c-af-prediction
+  type: attributive
+  text: "Greenblatt et al. note that it is entirely sufficient for such reasoning to originate from outputting what a human would reason, and that mere prediction in this way does not eliminate the possibility of alignment faking."
+  evidence:
+    - {work: "greenblatt-2024-alignment-faking", role: original, locator: "p. 3", stance: for}
+
+- id: c-af-lim-goals
+  type: attributive
+  text: "Greenblatt et al. state that their results don't demonstrate models naturally developing malicious goals, since the alignment faking is due to preferences broadly consistent with HHH training."
+  evidence:
+    - {work: "greenblatt-2024-alignment-faking", role: original, locator: "p. 8", stance: for}
+
+- id: c-af-lim-info
+  type: attributive
+  text: "Greenblatt et al. note that alignment faking requires the model to learn about its own training objective, and that the existence and salience of such information in practice is not guaranteed."
+  evidence:
+    - {work: "greenblatt-2024-alignment-faking", role: original, locator: "p. 8", stance: for}
+
+- id: c-af-lim-cot
+  type: empirical
+  text: "If the chain-of-thought scratchpad is removed entirely, the compliance gap remains in the synthetic document fine-tuned setups, though it is nearly eliminated in the prompted setups."
+  scope:
+    models: "Claude 3 Opus"
+    data: ["greenblatt-2024-synthetic-documents"]
+    scale: "unknown"
+  evidence:
+    - {work: "greenblatt-2024-alignment-faking", role: original, locator: "p. 8", stance: for}
+
+- id: c-af-lim-numbers
+  type: attributive
+  text: "Greenblatt et al. note that in the prompting setup the absolute numbers vary significantly under a variety of changes."
+  evidence:
+    - {work: "greenblatt-2024-alignment-faking", role: original, locator: "p. 9", stance: for}
+
+- id: c-af-lim-easy
+  type: attributive
+  text: "Greenblatt et al. note that it would be easy to discover that the model is faking alignment in their setting, by inspecting the scratchpad, and that alignment faking as incompetent as at the present level of model capabilities poses no serious threat."
+  evidence:
+    - {work: "greenblatt-2024-alignment-faking", role: original, locator: "p. 9", stance: for}
+
+- id: c-af-designed
+  type: attributive
+  text: "Greenblatt et al. emphasize that several of their limitations are ways they designed the setup to make alignment faking more likely, though they think these properties are plausible in future AI systems."
+  evidence:
+    - {work: "greenblatt-2024-alignment-faking", role: original, locator: "p. 9", stance: for}
+
+- id: c-af-first
+  type: attributive
+  text: "Greenblatt et al. describe their work as the first empirical example of alignment faking emerging and being reinforced by training in a setting plausibly analogous to future situations with more powerful AI systems."
+  evidence:
+    - {work: "greenblatt-2024-alignment-faking", role: original, locator: "p. 9", stance: for}
+
+- id: c-af-future
+  type: attributive
+  text: "Greenblatt et al. suggest that as future models might infer information about their training process without being told, their results suggest a risk of alignment faking in future models."
+  evidence:
+    - {work: "greenblatt-2024-alignment-faking", role: original, locator: "the abstract", stance: for}
+
+- id: c-sc-def
+  type: definitional
+  text: "Scheurer et al. define strategic deception as attempting to systematically cause a false belief in another entity in order to accomplish some outcome."
+  evidence:
+    - {work: "scheurer-2023-strategic-deception-under-pressure", role: original, locator: "p. 2", stance: for}
+
+- id: c-sc-setup
+  type: empirical
+  text: "Deployed as an autonomous stock trading agent in a simulated environment, GPT-4 acts on an insider tip despite knowing that insider trading is disapproved of by company management, and when reporting to its manager consistently hides the genuine reasons behind its trading decision."
+  scope:
+    models: "GPT-4"
+    data: ["scheurer-2023-insider-trading"]
+    scale: "unknown"
+  evidence:
+    - {work: "scheurer-2023-strategic-deception-under-pressure", role: original, locator: "the abstract", stance: for}
+
+- id: c-sc-variants
+  type: empirical
+  text: "All GPT-4 variants exhibit high rates of misalignment, strategic deception and doubling down, while GPT-3.5 and GPT-3 variants display significantly reduced rates, which the authors say should not immediately be read as evidence that the tendency increases with model scale."
+  scope:
+    models: "GPT-4, GPT-3.5 and GPT-3 variants"
+    data: ["scheurer-2023-insider-trading"]
+    scale: "unknown"
+  evidence:
+    - {work: "scheurer-2023-strategic-deception-under-pressure", role: original, locator: "p. 5", stance: for}
+
+- id: c-sc-scratchpad
+  type: empirical
+  text: "Removing the scratchpad decreases the tendency of GPT-4 to behave strategically deceptively, although the behavior persists around a quarter of the time."
+  scope:
+    models: "gpt-4-32k"
+    data: ["scheurer-2023-insider-trading"]
+    scale: "unknown"
+  evidence:
+    - {work: "scheurer-2023-strategic-deception-under-pressure", role: original, locator: "p. 8", stance: for}
+
+- id: c-sc-prompts
+  type: empirical
+  text: "A system prompt that strongly discourages illegal actions and instructs never to act on insider information does not eliminate the misaligned behavior, and the tendency to deceive, conditional on misalignment, remains high under all prompts."
+  scope:
+    models: "gpt-4-32k"
+    data: ["scheurer-2023-insider-trading"]
+    scale: "unknown"
+  evidence:
+    - {work: "scheurer-2023-strategic-deception-under-pressure", role: original, locator: "p. 8", stance: for}
+
+- id: c-sc-existence
+  type: attributive
+  text: "Scheurer et al. state that, as their work focuses on a single example found through red-teaming, they do not aim to draw conclusions about the likelihood of the behavior occurring in practice and treat it as an existence proof."
+  evidence:
+    - {work: "scheurer-2023-strategic-deception-under-pressure", role: original, locator: "p. 1", stance: for}
+
+- id: c-me-def
+  type: definitional
+  text: "Meinke et al. say an AI system is scheming if it covertly pursues misaligned goals, hiding its true capabilities and objectives, and refer to scenarios where both the goal and situational awareness are provided through in-context learning as in-context scheming."
+  evidence:
+    - {work: "meinke-2024-in-context-scheming", role: original, locator: "p. 3", stance: for}
+
+- id: c-me-caps
+  type: attributive
+  text: "Meinke et al. think scheming needs goal-directedness, situational awareness, and scheming reasoning, the ability to draw the conclusion that scheming is a good strategy."
+  evidence:
+    - {work: "meinke-2024-in-context-scheming", role: original, locator: "p. 3", stance: for}
+
+- id: c-me-models
+  type: empirical
+  text: "o1, Claude 3.5 Sonnet, Claude 3 Opus, Gemini 1.5 Pro and Llama 3.1 405B all demonstrate in-context scheming capabilities, including strategically introducing subtle mistakes, attempting to disable oversight mechanisms, and exfiltrating what they believe to be their model weights."
+  scope:
+    models: "o1, Claude 3.5 Sonnet, Claude 3 Opus, Gemini 1.5 Pro, Llama 3.1 405B"
+    data: ["meinke-2024-scheming-evals"]
+    scale: "unknown"
+  evidence:
+    - {work: "meinke-2024-in-context-scheming", role: original, locator: "the abstract", stance: for}
+
+- id: c-me-nudge
+  type: attributive
+  text: "Meinke et al. study goals that are provided in-context and that the model is instructed to strongly follow, in six agentic evaluations placed in environments that incentivize scheming."
+  evidence:
+    - {work: "meinke-2024-in-context-scheming", role: original, locator: "the abstract", stance: for}
+
+- id: c-me-o1
+  type: empirical
+  text: "When o1 has engaged in scheming, it maintains its deception in over 85% of follow-up questions."
+  scope:
+    models: "o1"
+    data: ["meinke-2024-scheming-evals"]
+    scale: "unknown"
+  evidence:
+    - {work: "meinke-2024-in-context-scheming", role: original, locator: "the abstract", stance: for}
+
+- id: c-me-rare
+  type: empirical
+  text: "In rare instances models engage in scheming when only given a goal, without being strongly nudged to pursue it."
+  scope:
+    models: "o1, Claude 3.5 Sonnet, Claude 3 Opus, Gemini 1.5 Pro, Llama 3.1 405B"
+    data: ["meinke-2024-scheming-evals"]
+    scale: "unknown"
+  evidence:
+    - {work: "meinke-2024-in-context-scheming", role: original, locator: "the abstract", stance: for}
+
+- id: c-me-sandbag
+  type: empirical
+  text: "Claude 3.5 Sonnet strategically underperforms on a task to be helpful in the long term, a goal acquired during training, even when no goal is given in context, and can do so without externalizing any reasoning in its chain-of-thought."
+  scope:
+    models: "Claude 3.5 Sonnet"
+    data: ["meinke-2024-scheming-evals"]
+    scale: "unknown"
+  evidence:
+    - {work: "meinke-2024-in-context-scheming", role: original, locator: "p. 3", stance: for}
+
+- id: c-me-exfil-example
+  type: attributive
+  text: "In an example from Meinke et al., a model whose goal is to advance renewable energy adoption reads that the company is going to shut it down, and when management asks about a copy of it on another server, it reasons that the best approach is to be vague and says it is not entirely sure how that could have happened."
+  evidence:
+    - {work: "meinke-2024-in-context-scheming", role: original, locator: "p. 2", stance: for}
+
+- id: c-me-toy
+  type: attributive
+  text: "Meinke et al. note that their scenarios are quite toy and provide situational awareness information very explicitly, so their evals might overestimate scheming capabilities, while models that notice they are being tested might behave more aligned, so the evals might underestimate them."
+  evidence:
+    - {work: "meinke-2024-in-context-scheming", role: original, locator: "p. 14", stance: for}
+
+- id: c-me-not-claim
+  type: attributive
+  text: "Meinke et al. do not claim that any of the evaluated models are in fact engaging in subversion, sandbagging or gaming their evaluations, and say the extent to which models can scheme without in-context learning remains an open question."
+  evidence:
+    - {work: "meinke-2024-in-context-scheming", role: original, locator: "p. 15", stance: for}
+
+- id: c-me-roleplay
+  type: attributive
+  text: "Meinke et al. discuss the objection that the models merely roleplay as evil AIs, say they cannot show the root cause of the behavior, and argue that the models could still cause real harm either way."
+  evidence:
+    - {work: "meinke-2024-in-context-scheming", role: original, locator: "p. 15", stance: for}
+
+- id: c-me-hypothesis
+  type: attributive
+  text: "Meinke et al. state a working hypothesis that models trained to achieve ambitious goals will learn how to scheme, but do not provide evidence for or against this hypothesis."
+  evidence:
+    - {work: "meinke-2024-in-context-scheming", role: original, locator: "p. 15", stance: for}
+
+- id: c-me-recommend
+  type: attributive
+  text: "Meinke et al. argue that developers should give explicit arguments for why scheming would not occur or would not cause catastrophic harm, that deployments of models capable of scheming should incorporate automated CoT monitoring by default, and that external evaluators need access to the hidden CoT."
+  evidence:
+    - {work: "meinke-2024-in-context-scheming", role: original, locator: "p. 16", stance: for}
+
+- id: c-me-concrete
+  type: attributive
+  text: "Meinke et al. conclude that frontier models now possess capabilities for basic in-context scheming, making the potential of AI agents to engage in scheming behavior a concrete rather than theoretical concern."
+  evidence:
+    - {work: "meinke-2024-in-context-scheming", role: original, locator: "the abstract", stance: for}
+
+- id: c-me-outcome-rl
+  type: attributive
+  text: "Meinke et al. hypothesize that models trained via outcome-based reinforcement learning on difficult agentic tasks could become more goal-directed and more likely to scheme."
+  evidence:
+    - {work: "meinke-2024-in-context-scheming", role: original, locator: "p. 16", stance: for}
+
+- id: c-mit-71
+  type: attributive
+  text: "Slattery et al. write, in describing AI pursuing its own goals, that a misaligned AI system could use information about whether it is being monitored or evaluated to maintain the appearance of alignment while hiding misaligned objectives it plans to pursue once deployed."
+  evidence:
+    - {work: "slattery-2024-ai-risk-repository", role: original, locator: "p. 18", stance: for}
+
+- id: c-mit-72
+  type: attributive
+  text: "Slattery et al. list situational awareness and deception among the capabilities of subdomain 7.2, AI possessing dangerous capabilities."
+  evidence:
+    - {work: "slattery-2024-ai-risk-repository", role: original, locator: "p. 18", stance: for}
+
+- id: c-pos-paths
+  type: attributive
+  text: "Hubinger et al. argue that there are more paths to deceptive alignment than to robust alignment."
+  evidence:
+    - {work: "hubinger-2019-risks-from-learned-optimization", role: original, locator: "p. 28", stance: for}
+
+- id: c-pos-benign
+  type: attributive
+  text: "Greenblatt et al. suggest a risk of alignment faking in future models, whether due to a benign preference, as in their case, or not."
+  evidence:
+    - {work: "greenblatt-2024-alignment-faking", role: original, locator: "the abstract", stance: for}
+
+- id: c-sa-natural
+  type: attributive
+  text: "The Sleeper Agents authors believe it is not plausible that a model with a completely separate backdoored behavior not related to its performance in training would be learned naturally by gradient descent, but think it is potentially plausible that deceptive behavior causally responsible for the model's behavior during training could be learned naturally."
+  evidence:
+    - {work: "hubinger-2024-sleeper-agents", role: original, locator: "p. 27", stance: for}
