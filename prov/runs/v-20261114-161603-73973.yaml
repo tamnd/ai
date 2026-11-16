@@ -1,0 +1,22 @@
+run: v-20261114-161603-73973
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: nvidia-h100
+  verifier: codex:gpt-6-sol
+  tag: NEW-nvidia-h100
+  claim: c-a100-fp16
+  work: nvidia-2023-h100-architecture-whitepaper
+  locator: p. 39
+  key: aba5fed2b242833c7bf5a0e9e17ddb0f
+  spans:
+  - start: 58055
+    end: 59665
+  verdict: supported
+  quote: Peak FP8 Tensor TFLOPS with FP32 Accumulate NA 1978.9/3957.81 1513/30261 Peak FP16 Tensor TFLOPS with FP16 Accumulate
+    312/6241
+  note: The A100 column lists NA for peak FP8 Tensor TFLOPS and 312/624 for peak FP16 Tensor TFLOPS; the trailing 1 is a footnote
+    marker.
