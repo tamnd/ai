@@ -1,0 +1,194 @@
+run: v-20261114-040445-73616
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-prohibit-manipulation
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 5(1)
+  key: e41e3566bc9cc22fc7008b06591fc9f9
+  spans:
+  - start: 354903
+    end: 365820
+  verdict: supported
+  quote: with the objective, or the effect of materially distorting the behaviour
+  note: Article 5(1)(a) and (b) state the claimed prohibitions and significant-harm condition.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-prohibit-scoring
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 5(1)
+  key: e902d14f26db8f919b2f5def56b6381a
+  spans:
+  - start: 354903
+    end: 365820
+  verdict: supported
+  quote: with the social score leading to either or both of the following
+  note: Article 5(1)(c) lists both treatment outcomes, and point (d) states the criminal-risk prohibition and exception.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-prohibit-categorisation
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 5(1)
+  key: 5d2661f06a5579dee708f50b817ce3ab
+  spans:
+  - start: 354903
+    end: 365820
+  verdict: supported
+  quote: this prohibition does not cover any labelling or filtering of lawfully acquired biometric datasets
+  note: Article 5(1)(g) states the claimed prohibition and both exclusions.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-prohibit-intimate
+  work: eu-2026-ai-act-consolidated-text-2026-07-27
+  locator: Article 5(1)
+  key: cf657f58df4c2ca7cc2f43bf079ecc2f
+  spans:
+  - start: 53475
+    end: 65248
+  verdict: supported
+  quote: 'For the purposes of paragraph 1, first subparagraph, points (ba) and (bb):'
+  note: Points (ba) and (bb) state both prohibitions, subject to the limits in paragraphs 1a and 1b.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-transp-interact
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 50(1)
+  key: e29d0119622114e1c8cad0085fc8432b
+  spans:
+  - start: 575214
+    end: 575982
+  verdict: supported
+  quote: the natural persons concerned are informed that they are interacting with an AI system
+  note: Article 50(1) states the provider obligation, obviousness qualification and conditional criminal-offence exception.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-transp-marking
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 50(2)
+  key: e1fabaf42db75dcab4d66c6b59c5aacb
+  spans:
+  - start: 575982
+    end: 576966
+  verdict: supported
+  quote: the outputs of the AI system are marked in a machine-readable format and detectable as artificially generated or
+    manipulated
+  note: Article 50(2) states the marking obligation and the claimed exceptions.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-transp-emotion
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 50(3)
+  key: 2056c5271e2c11ac93792a422f86bd7c
+  spans:
+  - start: 576966
+    end: 577638
+  verdict: supported
+  quote: shall inform the natural persons exposed thereto of the operation of the system
+  note: Article 50(3) states the notice obligation and the conditional criminal-offence exception.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-transp-deep-fake
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 50(4)
+  key: f21d0e7504bb8821213103a3d327647d
+  spans:
+  - start: 577638
+    end: 578948
+  verdict: unsupported
+  quote: the transparency obligations set out in this paragraph are limited to disclosure of the existence of such generated
+    or manipulated content
+  note: The claim should also qualify the disclosure obligation for evidently artistic, creative, satirical, fictional or
+    analogous works or programmes.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-flop-threshold
+  work: ec-gpai-models-questions-and-answers
+  locator: p. 1
+  key: 98e541d25a451fc439b76698b7b1a812
+  spans:
+  - start: 0
+    end: 26199
+  verdict: supported
+  quote: the AI Act lays down a threshold of  10^ 25 floating-point operations (FLOP) used for training the model
+  note: The passage expressly gives the threshold, its purpose and the cited Article 51 provisions.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-flop-presumption
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 51(2)
+  key: c5062d5238be361912d3af99fe042b4c
+  spans:
+  - start: 582328
+    end: 582767
+  verdict: supported
+  quote: shall be presumed to have high impact capabilities pursuant to paragraph 1, point (a)
+  note: Article 51(2) gives that presumption when training computation exceeds its stated amount.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-registration
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 49(1)
+  key: 98131f66eab9b606f6cba84b1fb9bd42
+  spans:
+  - start: 570608
+    end: 571015
+  verdict: supported
+  quote: the provider or, where applicable, the authorised representative shall register themselves and their system in the
+    EU database
+  note: Article 49(1) states the claimed registration duty and Annex III point 2 exception.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-fines-operators
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 99(4)
+  key: 34db31dad1dd7316b0806379057dcf6c
+  spans:
+  - start: 800760
+    end: 804387
+  verdict: supported
+  quote: up to EUR 15 000 000 or, if the offender is an undertaking, up to 3 %
+  note: Article 99(4) lists the claimed provisions and fine limits, while paragraph 6 sets the SME limit.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-fines-info
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 99(5)
+  key: 057f5fac4c9c7d8119bbf0bce2581254
+  spans:
+  - start: 804387
+    end: 804909
+  verdict: supported
+  quote: The supply of incorrect, incomplete or misleading information to notified bodies or national competent authorities
+    in reply to a request
+  note: Article 99(5) states the claimed fine limits, and paragraph 6 sets the SME limit.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-gdpr
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 2(7)
+  key: cb093f633990663abcc638d9f7f11ad5
+  spans:
+  - start: 303310
+    end: 303774
+  verdict: supported
+  quote: This Regulation shall not affect Regulation (EU) 2016/679
+  note: Article 2(7) states both the application of Union data-protection law and the claimed qualification.
