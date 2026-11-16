@@ -1,5 +1,5 @@
 ---
-tag: NEW-goal-misgeneralization
+tag: EHBZ82
 kind: risk
 slug: goal-misgeneralization
 name: Goal misgeneralization
