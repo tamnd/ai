@@ -3,7 +3,7 @@ tag: NEW-linear-scaling-rule
 kind: method
 slug: linear-scaling-rule
 name: Linear scaling rule
-aliases: [linear learning rate scaling, learning-rate scaling rule, critical batch size, gradient noise scale, noise scale, large-batch scaling]
+aliases: [linear learning rate scaling, learning-rate scaling rule, large-batch scaling]
 area: deep-learning-training/batch-size-and-learning-rate
 level: core
 summary: >-
