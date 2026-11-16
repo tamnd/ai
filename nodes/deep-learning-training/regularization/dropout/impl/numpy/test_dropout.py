@@ -4,9 +4,10 @@
 
 import numpy as np
 import pytest
-from dropout import backward, config, forward, init, sample_mask
 from hypothesis import given, settings
 from hypothesis import strategies as st
+
+from dropout import backward, config, forward, init, sample_mask
 
 # The worked example of the page.
 H = np.array([2.0, 4.0, -1.0, 3.0])
@@ -109,7 +110,46 @@ def test_p_close_to_one():
     kept = y != 0
     assert 0 < kept.sum() < 50
     np.testing.assert_allclose(y[kept], 1 / (1 - p), rtol=1e-9)
-    assert np.all(np.isfinite(cache["scale"]))
+    scale = cache["scale"]
+    assert scale is not None
+    assert np.all(np.isfinite(scale))
+
+
+class FixedDraws:
+    """A generator whose draws are given, to pin the boundary of the mask."""
+
+    def __init__(self, u):
+        self.u = np.asarray(u, dtype=np.float64)
+
+    def random(self, shape):
+        return self.u.reshape(shape)
+
+
+def test_mask_keeps_a_draw_equal_to_p():
+    # A unit is kept when its uniform draw u in [0, 1) has u >= p, so it is kept with probability 1 - p.
+    m = sample_mask(FixedDraws([0.0, 0.24, 0.25, 0.99]), (4,), 0.25)
+    np.testing.assert_array_equal(m, [0.0, 0.0, 1.0, 1.0])
+    assert m.dtype == np.float64
+
+
+def test_config_is_plain_data():
+    # The configuration goes into the fixtures as JSON, so p is a Python float, whatever number type came in.
+    cfg = config(0)
+    assert type(cfg["p"]) is float
+
+
+def test_lists_and_integers():
+    # forward and backward take anything that NumPy can read as an array, and compute in float64.
+    y, cache = forward({}, [2, 4, -1, 3], config(0.5), mask=[1, 0, 1, 1])
+    assert isinstance(y, np.ndarray) and y.dtype == np.float64
+    np.testing.assert_array_equal(y, [4.0, 0.0, -2.0, 6.0])
+    dx, _ = backward({}, cache, [1, 1, 1, 1])
+    np.testing.assert_array_equal(dx, [2.0, 0.0, 2.0, 2.0])
+    y, cache = forward({}, [1, 2], config(0.5), training=False)
+    assert isinstance(y, np.ndarray) and y.dtype == np.float64
+    dx, _ = backward({}, cache, [3, 4])
+    assert isinstance(dx, np.ndarray) and dx.dtype == np.float64
+    np.testing.assert_array_equal(dx, [3.0, 4.0])
 
 
 @pytest.mark.parametrize("p", [-0.1, 1.0, 1.5])

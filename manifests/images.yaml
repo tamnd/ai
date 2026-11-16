@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: CC0-1.0
 # The runner images of aik test (spec 08.7), pinned by digest. The Images workflow of tamnd/ai-agent builds them from images/ in that repository. The digest of each image is in the step summary of the run on main.
-python: ghcr.io/tamnd/aik-runner-python@sha256:cde448c317a8446713b837087f910290488fcaacde0b8e4b74ea9d9ea6a181c6
-numpy: ghcr.io/tamnd/aik-runner-numpy@sha256:dae5ef6a575f92c66bcde79c2cd46398f1865636f4991677f089800e4220247a
-pytorch: ghcr.io/tamnd/aik-runner-pytorch@sha256:b28775511d7834857c7b599ee208566014b29633a4af52a07e5c115341ee66e4
-jax: ghcr.io/tamnd/aik-runner-jax@sha256:afc8c8e5491c176ddd3c84417c25867887e206b92f78184b3be0248f65e5a220
+python: ghcr.io/tamnd/aik-runner-python@sha256:2745971b588906e8bfb4d6635b0cb91e3989671b21d1f497773a11afc65a634a
+numpy: ghcr.io/tamnd/aik-runner-numpy@sha256:e1d9fabf21900937dafc6f06e775002b23dd5826c31c6a5c87b181330a232a13
+pytorch: ghcr.io/tamnd/aik-runner-pytorch@sha256:da31eb80d001e2664fa684ab678ba4fb37871c366ae1d380d2456016969b48ef
+jax: ghcr.io/tamnd/aik-runner-jax@sha256:8ec8e7316ccd3a967839f7a42aca79ee2c54f24283b32e239f0cf1c847f86742

@@ -9,6 +9,7 @@ jax.config.update("jax_enable_x64", True)
 import jax.numpy as jnp  # noqa: E402
 import numpy as np  # noqa: E402
 import pytest  # noqa: E402
+
 from dropout import apply, config, init  # noqa: E402
 
 # The worked example of the page.
@@ -113,3 +114,8 @@ def test_invalid_p(p):
 def test_training_needs_key_or_mask():
     with pytest.raises(ValueError):
         apply({}, a(X), config(0.5))
+
+
+def test_config_is_plain_data():
+    # The configuration goes into the fixtures as JSON, so p is a Python float, whatever number type came in.
+    assert type(config(0)["p"]) is float
