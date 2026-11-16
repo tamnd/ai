@@ -228,3 +228,13 @@ def test_errors():
         conv2d(np.zeros((1, 2, 4, 4)), np.zeros((1, 3, 3, 3)))
     with pytest.raises(ValueError):
         config(size=30)
+
+
+def test_config_errors_and_init_scale():
+    assert config(size=16)["size"] == 16
+    for bad in ({"size": 12}, {"size": 14}, {"size": 15}, {"channels": 0}, {"f2": 0}):
+        with pytest.raises(ValueError):
+            config(**bad)
+    params = init(np.random.default_rng(0), config(f1=400, f2=400))
+    assert abs(params["fc2"]["w"].std() - np.sqrt(2.0 / 400)) < 0.005  # He initialization
+    assert abs(params["conv2"]["w"].std() - np.sqrt(2.0 / (25 * 6))) < 0.01

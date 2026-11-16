@@ -92,3 +92,13 @@ def test_shape_contract():
         assert list(logits.shape) == c["blocks"]["fc3"]["outputs"]["logits"]
         for name in NAMES:
             assert list(cache[name].shape) == c["blocks"][name]["outputs"]["y"], (c["name"], name)
+
+
+def test_config_defaults_and_errors():
+    cfg = config()
+    assert cfg == {"channels": 1, "c1": 6, "c2": 16, "f1": 120, "f2": 84, "classes": 10, "size": 32}
+    assert param_count(cfg) == 61706 == sum(p.numel() for p in CNN(cfg).parameters())
+    assert config(size=16)["size"] == 16
+    for bad in ({"size": 12}, {"size": 14}, {"size": 15}, {"channels": 0}, {"classes": 0}):
+        with pytest.raises(ValueError):
+            config(**bad)
