@@ -1,0 +1,154 @@
+# A course of spec 5.7: an ordered list of items with section headings. Names and orders only (19.3).
+# An item names its node by slug when the node exists; before that it is a name and a kind, which aik harvest courses
+# reads into the inventory, so that the catalog step can place it and the course can count its coverage (18).
+id: language-models-from-scratch
+title: Language models from scratch
+basis: >-
+  the build order of a language model, from tokenization to pretraining to post-training to evaluation, with the
+  from-scratch implementations of 08 at every step, cross-checked with the sub-areas of language-models (5.2), SLP3
+  chapters 3 and 7 to 12, and public "language models from scratch" syllabi
+sections:
+  - heading: Language modeling
+    items:
+      - {name: Language model, kind: concept}
+      - {name: N-gram language model, kind: method}
+      - {name: Perplexity, kind: metric}
+      - {name: Cross-entropy, kind: definition}
+      - {name: Autoregressive model, kind: concept}
+  - heading: Tokenization
+    items:
+      - {name: Tokenization, kind: method}
+      - {name: Byte-pair encoding, kind: method}
+      - {name: Byte-level BPE, kind: method}
+      - {name: WordPiece, kind: method}
+      - {name: Unigram language model tokenizer, kind: method}
+      - {name: Vocabulary size, kind: concept}
+      - {name: Tokenizer fertility, kind: metric}
+  - heading: Neural language models
+    items:
+      - {name: Feedforward neural language model, kind: method}
+      - {name: Embedding layer, kind: concept}
+      - {name: Recurrent neural network, kind: architecture}
+      - {name: Long short-term memory, kind: architecture}
+      - {name: Weight tying, kind: method}
+  - heading: The transformer, piece by piece
+    items:
+      - {name: Transformer, kind: architecture}
+      - {name: Scaled dot-product attention, kind: method}
+      - {name: Multi-head attention, kind: method}
+      - {name: Causal masking, kind: method}
+      - {name: Positional encoding, kind: method}
+      - {name: Rotary position embedding, kind: method}
+      - {name: ALiBi, kind: method}
+      - {name: Layer normalization, kind: method}
+      - {name: RMSNorm, kind: method}
+      - {name: Pre-norm and post-norm, kind: concept}
+      - {name: Feedforward block, kind: concept}
+      - {name: SwiGLU, kind: method}
+      - {name: Residual connection, kind: method}
+      - {name: Decoder-only transformer, kind: architecture}
+      - {name: Encoder-decoder transformer, kind: architecture}
+  - heading: Efficient attention and inference
+    items:
+      - {name: KV cache, kind: method}
+      - {name: Multi-query attention, kind: method}
+      - {name: Grouped-query attention, kind: method}
+      - {name: FlashAttention, kind: method}
+      - {name: Sliding window attention, kind: method}
+      - {name: Mixture of experts, kind: architecture}
+      - {name: Quantization, kind: method}
+      - {name: Speculative decoding, kind: method}
+  - heading: Pretraining
+    items:
+      - {name: Pretraining, kind: method}
+      - {name: Next-token prediction, kind: method}
+      - {name: Masked language modeling, kind: method}
+      - {name: Span corruption, kind: method}
+      - {name: Pretraining data, kind: concept}
+      - {name: Common Crawl, kind: dataset}
+      - {name: Data deduplication, kind: method}
+      - {name: Quality filtering, kind: method}
+      - {name: Data mixture, kind: concept}
+      - {name: FineWeb, kind: dataset}
+      - {name: The Pile, kind: dataset}
+  - heading: Training at scale
+    items:
+      - {name: AdamW, kind: method}
+      - {name: Learning rate warmup, kind: method}
+      - {name: Cosine learning rate schedule, kind: method}
+      - {name: Gradient clipping, kind: method}
+      - {name: Mixed-precision training, kind: method}
+      - {name: Data parallelism, kind: method}
+      - {name: Tensor parallelism, kind: method}
+      - {name: Pipeline parallelism, kind: method}
+      - {name: ZeRO, kind: method}
+      - {name: Loss spikes, kind: concept}
+      - {name: Model FLOPs utilization, kind: metric}
+  - heading: Scaling
+    items:
+      - {name: Scaling laws, kind: finding}
+      - {name: Compute-optimal training, kind: finding}
+      - {name: Chinchilla, kind: model}
+      - {name: Emergent abilities, kind: finding}
+      - {name: Long-context extension, kind: method}
+  - heading: Decoding
+    items:
+      - {name: Greedy decoding, kind: method}
+      - {name: Beam search, kind: method}
+      - {name: Temperature sampling, kind: method}
+      - {name: Top-k sampling, kind: method}
+      - {name: Nucleus sampling, kind: method}
+      - {name: Repetition penalty, kind: method}
+  - heading: In-context learning and prompting
+    items:
+      - {name: In-context learning, kind: concept}
+      - {name: Few-shot prompting, kind: method}
+      - {name: Chain-of-thought prompting, kind: method}
+      - {name: Induction head, kind: concept}
+  - heading: Post-training
+    items:
+      - {name: Supervised fine-tuning, kind: method}
+      - {name: Instruction tuning, kind: method}
+      - {name: Chat template, kind: concept}
+      - {name: Reward model, kind: concept}
+      - {name: Reinforcement learning from human feedback, kind: method}
+      - {name: Proximal policy optimization, kind: method}
+      - {name: Direct preference optimization, kind: method}
+      - {name: Reinforcement learning with verifiable rewards, kind: method}
+      - {name: Group relative policy optimization, kind: method}
+      - {name: Constitutional AI, kind: method}
+      - {name: LoRA, kind: method}
+      - {name: Distillation, kind: method}
+  - heading: Using tools and retrieval
+    items:
+      - {name: Retrieval-augmented generation, kind: method}
+      - {name: Tool use, kind: concept}
+      - {name: Function calling, kind: method}
+      - {name: Language model agent, kind: concept}
+  - heading: Evaluation
+    items:
+      - {name: Language model evaluation, kind: area}
+      - {name: MMLU, kind: benchmark}
+      - {name: HellaSwag, kind: benchmark}
+      - {name: GSM8K, kind: benchmark}
+      - {name: HumanEval, kind: benchmark}
+      - {name: GPQA, kind: benchmark}
+      - {name: SWE-bench, kind: benchmark}
+      - {name: LMArena, kind: benchmark}
+      - {name: LLM-as-a-judge, kind: method}
+      - {name: Benchmark contamination, kind: risk}
+  - heading: What language models know and get wrong
+    items:
+      - {name: Memorization in language models, kind: finding}
+      - {name: Training data extraction, kind: risk}
+      - {name: Hallucination, kind: risk}
+      - {name: Reversal curse, kind: finding}
+      - {name: Lost in the middle, kind: finding}
+  - heading: Landmark models
+    items:
+      - {name: GPT-2, kind: model}
+      - {name: GPT-3, kind: model}
+      - {name: T5, kind: model}
+      - {name: LLaMA, kind: model}
+      - {name: Mistral 7B, kind: model}
+      - {name: nanoGPT, kind: software}

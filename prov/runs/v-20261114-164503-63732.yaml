@@ -1,0 +1,492 @@
+run: v-20261114-164503-63732
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-paper
+  work: silver-2016-mastering-go
+  locator: p. 484
+  key: 7ae36e697005da5226612deedeec4df0
+  spans:
+  - start: 0
+    end: 6455
+  verdict: supported
+  quote: Our program AlphaGo
+  note: The authors name AlphaGo as their program, and the passage lists Silver, Huang, their coauthors and their affiliations.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-go-hard
+  work: silver-2016-mastering-go
+  locator: p. 484
+  key: c5f7220e8721f9db07755958f9cf83a4
+  spans:
+  - start: 0
+    end: 6455
+  verdict: supported
+  quote: The game of Go has long been viewed as the most challenging of classic games for artificial intelligence owing to
+    its
+  note: The passage gives the stated reasons immediately after these words.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-breadth-depth
+  work: silver-2016-mastering-go
+  locator: p. 484
+  key: 2b6c8c16860f572664e0ca2166b80711
+  spans:
+  - start: 0
+    end: 6455
+  verdict: supported
+  quote: chess (b ≈ 35, d ≈ 80)1 and especially Go (b ≈ 250, d ≈ 150)1
+  note: The passage gives those approximate breadth and depth values.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-infeasible
+  work: silver-2016-mastering-go
+  locator: p. 484
+  key: 109d32d25765b7a43e689cef874e0aff
+  spans:
+  - start: 0
+    end: 6455
+  verdict: supported
+  quote: In large games, such as chess (b ≈ 35, d ≈ 80)1 and especially Go (b ≈ 250, d ≈ 150)1, exhaustive search is infeasible
+  note: The passage states the claim directly.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-two-principles
+  work: silver-2016-mastering-go
+  locator: p. 484
+  key: d229953f1766b4241b1fc9195c518da6
+  spans:
+  - start: 0
+    end: 6455
+  verdict: supported
+  quote: First, the depth of the search may be reduced by position evaluation
+  note: The passage also says sampling actions from a policy may reduce the breadth.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-board-image
+  work: silver-2016-mastering-go
+  locator: p. 484
+  key: b124beff35c05eb3c2ec57d8a3faa7e7
+  spans:
+  - start: 0
+    end: 6455
+  verdict: supported
+  quote: We pass in the board position as a 19 × 19 image and use convolutional layers to construct a representation of the
+    position.
+  note: The passage states the claim directly.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-sl-train
+  work: silver-2016-mastering-go
+  locator: p. 485
+  key: 428b0680f67a0ae6d0347394d880d1bf
+  spans:
+  - start: 6455
+    end: 12224
+  verdict: supported
+  quote: We trained a 13-layer policy network, which we call the SL policy network, from 30 million positions from the KGS
+    Go Server.
+  note: The passage also says the network predicted expert moves.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-sl-policy
+  work: silver-2016-mastering-go
+  locator: p. 485
+  key: f1dd90e31d8a8bec2e538fb84a43b43f
+  spans:
+  - start: 6455
+    end: 12224
+  verdict: supported
+  quote: The network predicted expert moves on a held out test set with an accuracy of 57.0% using all input features
+  note: The passage gives the stated test accuracy and input setting.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-rollout
+  work: silver-2016-mastering-go
+  locator: p. 485
+  key: 4f43a629308410f22366069724756189
+  spans:
+  - start: 6455
+    end: 12224
+  verdict: supported
+  quote: a faster but less accurate rollout policy pπ(a|s), using a linear softmax of small pattern features
+  note: The passage describes the rollout policy in those terms.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-rollout-speed
+  work: silver-2016-mastering-go
+  locator: p. 485
+  key: fb04e964c08cbbf800c8ab7dddeffe95
+  spans:
+  - start: 6455
+    end: 12224
+  verdict: supported
+  quote: this achieved an accuracy of 24.2%, using just 2 μs to select an action, rather than 3 ms for the policy network.
+  note: The passage gives all three figures.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-rl-policy
+  work: silver-2016-mastering-go
+  locator: p. 485
+  key: 28b8716aac064cd616b8c3dc03a52696
+  spans:
+  - start: 6455
+    end: 12224
+  verdict: supported
+  quote: The RL policy network pρ is identical in structure to the SL policy network
+  note: The passage also states that its weights start from the SL weights and that policy gradient learning improves it.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-rl-opponents
+  work: silver-2016-mastering-go
+  locator: p. 485
+  key: b58c5ea41732186699e6a4b299d9e0e4
+  spans:
+  - start: 6455
+    end: 12224
+  verdict: supported
+  quote: We play games between the current policy network pρ and a randomly selected previous iteration of the policy network.
+  note: The passage also assigns +1 to winning and −1 to losing.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-rl-results
+  work: silver-2016-mastering-go
+  locator: p. 485
+  key: 9b8382dc78bf4a1e4424dd877d81e54e
+  spans:
+  - start: 6455
+    end: 12224
+  verdict: supported
+  quote: the RL policy network won more than 80% of games against the SL policy network
+  note: The passage describes sampling moves without search and also reports an 85% win rate against Pachi with no search.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-value
+  work: silver-2016-mastering-go
+  locator: p. 486
+  key: 7029a5046119daa4be702a59495cfb80
+  spans:
+  - start: 12224
+    end: 17812
+  verdict: supported
+  quote: This neural network has a similar architecture to the policy network, but outputs a single prediction instead of
+    a probability distribution.
+  note: The passage identifies that prediction as the outcome from a position under self-play by the RL policy.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-value-data
+  work: silver-2016-mastering-go
+  locator: p. 486
+  key: 5bb2bb9eb5afe2bac09f1a958499f965
+  spans:
+  - start: 12224
+    end: 17812
+  verdict: supported
+  quote: we generated a new self-play data set consisting of 30 million distinct positions, each sampled from a separate game.
+  note: The passage says the earlier network memorized outcomes when trained on complete KGS games.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-mcts
+  work: silver-2016-mastering-go
+  locator: p. 486
+  key: 844422d663178b3e4b8041240b4d6bc0
+  spans:
+  - start: 12224
+    end: 17812
+  verdict: supported
+  quote: AlphaGo combines the policy and value networks in an MCTS algorithm
+  note: The passage states the claim directly.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-selection
+  work: silver-2016-mastering-go
+  locator: p. 486
+  key: 830ab4fcc7ba6e1373a5c917fd3ef765
+  spans:
+  - start: 12224
+    end: 17812
+  verdict: supported
+  quote: that is proportional to the prior probability but decays with repeated visits to encourage exploration.
+  note: The preceding selection rule maximizes action value plus that bonus.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-priors
+  work: silver-2016-mastering-go
+  locator: p. 486
+  key: 256da5f0b7d516a0339c9ae3e0e186a4
+  spans:
+  - start: 12224
+    end: 17812
+  verdict: supported
+  quote: The leaf position sL is processed just once by the SL policy network pσ.
+  note: The passage then says its output probabilities are stored as priors.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-leaf-eval
+  work: silver-2016-mastering-go
+  locator: p. 486
+  key: c0449747c0e3b53dd182f9ae510e5b4d
+  spans:
+  - start: 12224
+    end: 17812
+  verdict: supported
+  quote: these evaluations are combined, using a mixing parameter λ, into a leaf evaluation V(sL)
+  note: The passage identifies the two evaluations as the value network output and rollout outcome.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-most-visited
+  work: silver-2016-mastering-go
+  locator: p. 486
+  key: 0c51ad05e1cbdffe2b34e3256eacb7b4
+  spans:
+  - start: 12224
+    end: 17812
+  verdict: supported
+  quote: Once the search is complete, the algorithm chooses the most visited move from the root position.
+  note: The passage states the claim directly.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-sl-better
+  work: silver-2016-mastering-go
+  locator: p. 486
+  key: 6f3aa851e97115e08174ade533c018d6
+  spans:
+  - start: 12224
+    end: 17812
+  verdict: supported
+  quote: the SL policy network pσ performed better in AlphaGo than the stronger RL policy network pρ, presumably because humans
+    select a diverse beam
+  note: The passage reports the result and presents the explanation as a presumption, as the claim does.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-rl-value-better
+  work: silver-2016-mastering-go
+  locator: pp. 486 to 487
+  key: d6d37455b21ba4cf4fed9e4af6408360
+  spans:
+  - start: 12224
+    end: 21896
+  verdict: supported
+  quote: better in AlphaGo than a value function vθ(s ) ≈ v pσ(s ) derived from the SL policy network.
+  note: The preceding sentence identifies the better value function as derived from the stronger RL policy network.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-async
+  work: silver-2016-mastering-go
+  locator: p. 487
+  key: a7a5a79d28a2e43ff3dd0ea141bafe83
+  spans:
+  - start: 17812
+    end: 21896
+  verdict: supported
+  quote: AlphaGo uses an asynchronous multi-threaded search that executes simulations on CPUs, and computes policy and value
+    networks in parallel on GPUs.
+  note: The passage states the claim directly.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-hardware
+  work: silver-2016-mastering-go
+  locator: p. 487
+  key: be4678184979710d8fe65b04c126402d
+  spans:
+  - start: 17812
+    end: 21896
+  verdict: supported
+  quote: The final version of AlphaGo used 40 search threads, 48 CPUs, and 8 GPUs.
+  note: The passage also gives 40 search threads, 1,202 CPUs and 176 GPUs for the distributed version.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-fan-hui-dates
+  work: silver-2016-mastering-go
+  locator: p. 489
+  key: d92c995068d11410f795092e718cc054
+  spans:
+  - start: 29207
+    end: 37574
+  verdict: supported
+  quote: Received 11 November 2015; accepted 5 January 2016.
+  note: The passage gives both dates directly.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-tournament
+  work: silver-2016-mastering-go
+  locator: p. 488
+  key: 86c0e19623252c0c21bd3213709286b9
+  spans:
+  - start: 21896
+    end: 29207
+  verdict: supported
+  quote: winning 494 out of 495 games (99.8%) against other Go programs.
+  note: The passage identifies this as the single-machine tournament result and says programs were allowed five seconds per
+    move.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-distributed-wins
+  work: silver-2016-mastering-go
+  locator: p. 488
+  key: 0f145ae9ab23ca1eb8297007821e47fc
+  spans:
+  - start: 21896
+    end: 29207
+  verdict: supported
+  quote: winning 77% of games against single-machine AlphaGo and 100% of its games against other programs.
+  note: The passage gives both distributed AlphaGo win rates.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-elo-2016
+  work: silver-2016-mastering-go
+  locator: Extended Data Table 6
+  key: c3adf375c0930dd4beb589f0ddd952db
+  spans:
+  - start: 68937
+    end: 69958
+  verdict: supported
+  quote: 'Distributed AlphaGo
+
+    AlphaGo
+
+
+    See Methods
+
+    See Methods
+
+
+    5 seconds
+
+    5 seconds
+
+
+    1202
+
+    48
+
+
+    176
+
+    8
+
+
+    –
+
+    –
+
+
+    3140
+
+    2890'
+  note: The table's ordered rows pair the stated hardware and Elo ratings with distributed and single-machine AlphaGo.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-elo-gap
+  work: silver-2016-mastering-go
+  locator: p. 487
+  key: 2ac7903b613db0c9912304c20abef219
+  spans:
+  - start: 17812
+    end: 21896
+  verdict: supported
+  quote: a 230 point gap corresponds to a 79% probability of winning
+  note: The passage states the Elo relationship directly.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-fan-hui
+  work: silver-2016-mastering-go
+  locator: p. 488
+  key: a2b8db0d486b00ca0e0675ccef9e81eb
+  spans:
+  - start: 21896
+    end: 29207
+  verdict: supported
+  quote: Fan Hui, a professional 2 dan, and the winner of the 2013, 2014 and 2015 European Go championships.
+  note: The passage states his rank and championship years directly.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-fan-hui-match
+  work: silver-2016-mastering-go
+  locator: p. 488
+  key: f8dc372b843f05a1118cce0c0dd5e421
+  spans:
+  - start: 21896
+    end: 29207
+  verdict: supported
+  quote: Over 5–9 October 2015 AlphaGo and Fan Hui competed in a formal five-game match. AlphaGo won the match 5 games to
+    0
+  note: The preceding sentence identifies this AlphaGo as the distributed version.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-first
+  work: silver-2016-mastering-go
+  locator: p. 488
+  key: 25f18ddd35b1bee9256d3e828da03134
+  spans:
+  - start: 21896
+    end: 29207
+  verdict: supported
+  quote: the first time that a computer Go program has defeated a human professional player, without handicap, in the full
+    game of Go
+  note: The passage makes the attributed first-time claim directly.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-deep-blue
+  work: silver-2016-mastering-go
+  locator: p. 489
+  key: 0596c952e90f037a52b994abac873452
+  spans:
+  - start: 29207
+    end: 37574
+  verdict: supported
+  quote: During the match against Fan Hui, AlphaGo evaluated thousands of times fewer positions than Deep Blue did in its
+    chess match against Kasparov
+  note: The passage states the attributed comparison directly.
+- slug: alphago
+  verifier: codex:gpt-6-sol
+  tag: NEW-alphago
+  claim: c-handcrafted
+  work: silver-2016-mastering-go
+  locator: p. 489
+  key: 2b4395c77773ee95f866151725dd892c
+  spans:
+  - start: 29207
+    end: 37574
+  verdict: supported
+  quote: while Deep Blue relied on a handcrafted evaluation function, the neural networks of AlphaGo are trained directly
+    from gameplay
+  note: The passage completes the contrast by naming general-purpose supervised and reinforcement learning methods.
