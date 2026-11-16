@@ -1,5 +1,5 @@
 ---
-tag: NEW-double-descent
+tag: MTKC7P
 kind: finding
 slug: double-descent
 name: Double descent
