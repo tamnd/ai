@@ -5828,3 +5828,6 @@ Q7SGGB krogh-1991-simple-weight-decay
 STCWRR li-2019-exponential-learning-rate
 DD5QVM weight-decay
 24F7J1 zhang-2018-three-mechanisms-weight-decay
+WH0JRN gradient-clipping
+4NZZ8Q pascanu-2013-difficulty-training-recurrent
+Y0CH16 zhang-2020-why-gradient-clipping-accelerates

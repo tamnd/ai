@@ -1,5 +1,5 @@
 ---
-tag: NEW-gradient-clipping
+tag: WH0JRN
 kind: method
 slug: gradient-clipping
 name: Gradient clipping
