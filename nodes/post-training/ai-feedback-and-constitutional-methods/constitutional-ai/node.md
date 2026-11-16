@@ -1,5 +1,5 @@
 ---
-tag: NEW-constitutional-ai
+tag: 20KVDN
 kind: method
 slug: constitutional-ai
 name: Constitutional AI
