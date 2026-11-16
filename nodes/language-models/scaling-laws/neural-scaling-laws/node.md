@@ -1,5 +1,5 @@
 ---
-tag: NEW-neural-scaling-laws
+tag: 8G15M2
 kind: finding
 slug: neural-scaling-laws
 name: Neural scaling laws
