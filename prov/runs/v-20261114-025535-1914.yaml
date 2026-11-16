@@ -1,0 +1,23 @@
+run: v-20261114-025535-1914
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: dropout
+  verifier: codex:gpt-6-sol
+  tag: Y8VNMB
+  claim: c-reduces-error
+  work: srivastava-2014-dropout-jmlr
+  locator: Section 6 and Tables 2 to 9
+  key: ebe036abea72287938245efc583292c7
+  spans:
+  - start: 19869
+    end: 40824
+  verdict: contradicted
+  quote: '2.55
+
+    2.47'
+  note: Table 3 lists 2.55% for dropout in all layers and a lower 2.47% for the maxout entry, which is not labeled as using
+    dropout; the claim should exclude that comparison.
