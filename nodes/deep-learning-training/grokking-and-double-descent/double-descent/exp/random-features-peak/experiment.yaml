@@ -1,0 +1,25 @@
+id: random-features-peak
+claims: [c-belkin-curve]
+question: "For minimum-norm least squares on random ReLU features, with n = 200 noisy training samples, is the test error at the interpolation threshold N = n higher than both at N = 50 features and at N = 4000 features, and does a tuned ridge penalty remove the peak at N = n?"
+scale_note:
+  here: "Synthetic regression in 20 dimensions with a fixed nonlinear target and Gaussian label noise of standard deviation 0.5; 200 training and 2000 test samples; random ReLU features with Gaussian first-layer weights; 30 seeds per arm, each drawing the target, the data and the features."
+  source: "Hastie et al. (2019) derive the asymptotic risk of minimum-norm least squares on features from a random one-layer network as n and p grow with p/n fixed; Belkin et al. (2018) show the same peak for random Fourier features on MNIST."
+replicates: null
+arms:
+  - {id: under, config: {features: 50}}
+  - {id: threshold, config: {features: 200}}
+  - {id: over, config: {features: 4000}}
+  - {id: threshold-ridge, config: {features: 200, ridge: tuned}}
+base_config:
+  dim: 20
+  train: 200
+  test: 2000
+  validation: 500
+  noise_sd: 0.5
+  features: 200
+  ridge: none
+  ridge_grid: [0.0001, 0.001, 0.01, 0.1, 1.0, 10.0]
+seeds: {n: 30, base: 20261114}
+budget: cpu-small
+framework: numpy
+metrics: [test_mse, train_mse, ridge_lambda]
