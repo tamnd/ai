@@ -1,0 +1,55 @@
+# SPDX-License-Identifier: CC0-1.0
+#
+# This workflow runs fixtures/make.py of the given nodes in the sandbox, with the numpy runner image that
+# manifests/images.yaml pins, and uploads the fixtures it writes. The numerics job of ci.yml checks the committed
+# fixtures against two runs in that image (08.7.2), so fixtures made on another machine differ from them in the last
+# bits of a float. A person downloads the artifact and commits it in a pull request. The job has no secrets.
+name: Fixtures
+
+on:
+  workflow_dispatch:
+    inputs:
+      nodes:
+        description: "The slugs of the nodes whose fixtures to make, separated by spaces"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  AIK_VERSION: v0.1.98
+  GO_VERSION: "1.27.x"
+
+jobs:
+  make:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: false
+      - name: Install aik
+        run: go install "github.com/tamnd/ai-agent/cmd/aik@${AIK_VERSION}"
+      - name: Make the fixtures
+        env:
+          NODES: ${{ inputs.nodes }}
+        run: |
+          # shellcheck disable=SC2086
+          aik fixtures make -sandbox docker $NODES
+          aik fixtures make -check -sandbox docker $NODES
+          git status --short -- nodes >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: fixtures
+          path: nodes/**/fixtures/
+          retention-days: 30
+          if-no-files-found: error
