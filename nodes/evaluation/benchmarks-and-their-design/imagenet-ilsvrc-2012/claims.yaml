@@ -1,0 +1,262 @@
+# The claims of the imagenet-ilsvrc-2012 page (spec 07). The build computes the labels.
+- id: c-one-label
+  type: definitional
+  text: "Data for the image classification task are photographs from Flickr and other search engines, manually labeled with one of 1000 object categories, so each image has one ground truth label."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 4", stance: for}
+
+- id: c-task
+  type: definitional
+  text: "For each image, algorithms produce a list of object categories present in the image, and the labeling is evaluated on the label that best matches the ground truth label."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 4", stance: for}
+
+- id: c-benchmark
+  type: attributive
+  text: "Russakovsky et al. describe the ImageNet Large Scale Visual Recognition Challenge as a benchmark in object category classification and detection on hundreds of object categories and millions of images."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 1", stance: for}
+
+- id: c-single-label
+  type: attributive
+  text: "Beyer et al. write that real-world images often contain multiple objects of interest, yet ImageNet assigns a single label to each image, which can grossly underrepresent the content of an image."
+  evidence:
+    - {work: "beyer-2020-are-we-done-imagenet", role: original, locator: "p. 2", stance: for}
+
+- id: c-drop
+  type: empirical
+  text: "On an ImageNet test set rebuilt with the original process, the accuracy drops of a wide range of classification models range from 11% to 14%."
+  scope:
+    models: "a wide range of image classification models"
+    data: [imagenet-ilsvrc-2012]
+    scale: "a rebuilt ImageNet test set"
+    setting: "accuracy on the rebuilt test set against the original test set"
+  evidence:
+    - {work: "recht-2019-imagenet-classifiers-generalize", role: original, locator: "p. 1", stance: for}
+
+- id: c-no-ancestor
+  type: definitional
+  text: "The 1000 synsets of the classification task are selected so that no synset is an ancestor of another in the ImageNet hierarchy."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 5", stance: for}
+
+- id: c-639
+  type: historical
+  text: "The 1000 synsets of the classification task have changed over the years, and 639 synsets have been used in all five ILSVRC challenges."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 5", stance: for}
+
+- id: c-dogs
+  type: historical
+  text: "In ILSVRC2012, 90 synsets were replaced with categories corresponding to dog breeds, to allow evaluation of more fine-grained object classification, and the synsets have remained consistent since 2012."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 7", stance: for}
+
+- id: c-split-source
+  type: historical
+  text: "The training images of the classification task are taken directly from ImageNet, and additional images collected with the same strategy are randomly partitioned into the validation and test sets."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 7", stance: for}
+
+- id: c-test-new
+  type: historical
+  text: "The test images are collected and labeled for the competition and are not part of the previously published ImageNet dataset."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 4", stance: for}
+
+- id: c-splits
+  type: historical
+  text: "In ILSVRC2012-14, the classification data has 1,281,167 training images (732 to 1300 per class), 50,000 validation images (50 per class) and 100,000 test images (100 per class)."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 9", stance: for}
+
+- id: c-test-precision
+  type: empirical
+  text: "A manual check of 1500 ILSVRC2012-2014 classification test images found 5 annotation errors, corresponding to 99.7% precision."
+  scope:
+    models: "not applicable: the crowdsourced annotation of the challenge data"
+    data: [imagenet-ilsvrc-2012]
+    scale: "1500 test images"
+    setting: "a manual check by the organisers"
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 7", stance: for}
+
+- id: c-top5
+  type: definitional
+  text: "An algorithm may return 5 labels for each image and is correct if one of them equals the ground truth label; the error is the fraction of test images on which the algorithm makes a mistake."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 15", stance: for}
+
+- id: c-one-metric
+  type: historical
+  text: "The organisers also evaluated top-1 error and hierarchical error, found that all three measures produced the same ordering of results, and have used only the top-5 metric since ILSVRC2012."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 15", stance: for}
+
+- id: c-hidden
+  type: historical
+  text: "The organisers released the ILSVRC2010 test annotations for the classification task, and kept all other test annotations hidden to discourage fine-tuning results on the test data."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 40", stance: for}
+
+- id: c-server
+  type: historical
+  text: "After the challenge period, an automatic evaluation server scores algorithms against the hidden test annotations, and teams are limited to two submissions per week."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 40", stance: for}
+
+- id: c-val
+  type: attributive
+  text: "Northcutt et al. use the ILSVRC 2012 validation set because the ImageNet test set labels are not publicly available."
+  evidence:
+    - {work: "northcutt-2021-pervasive-label-errors", role: original, locator: "p. 4", stance: for}
+
+- id: c-extra-data
+  type: historical
+  text: "In 2012, SuperVision had a top-5 classification error of 16.4% with the provided data, and also submitted entries trained with extra data from the ImageNet Fall 2011 release, which obtained 15.3% classification error."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 19", stance: for}
+
+- id: c-resize
+  type: attributive
+  text: "Krizhevsky et al. rescaled each image so that the shorter side was of length 256 and cropped out the central 256 × 256 patch."
+  evidence:
+    - {work: "krizhevsky-2012-imagenet-classification", role: original, locator: "Section 2", stance: for}
+
+- id: c-val-errors
+  type: empirical
+  text: "Northcutt et al. identify 2916 errors, 6% of the images, in the ImageNet validation set."
+  scope:
+    models: "confident learning, with the flagged errors validated by human evaluation"
+    data: [imagenet-ilsvrc-2012]
+    scale: "the ImageNet validation set"
+    setting: "putative label errors found by the algorithm and validated by people"
+  evidence:
+    - {work: "northcutt-2021-pervasive-label-errors", role: original, locator: "p. 2", stance: for}
+
+- id: c-val-errors-20
+  type: empirical
+  text: "Including the errors found in images that the method did not flag, Northcutt et al. estimate that the ImageNet validation set contains closer to 20% label errors."
+  scope:
+    models: "confident learning, with the flagged errors validated by human evaluation"
+    data: [imagenet-ilsvrc-2012]
+    scale: "the ImageNet validation set"
+    setting: "putative label errors found by the algorithm and validated by people"
+  evidence:
+    - {work: "northcutt-2021-pervasive-label-errors", role: original, locator: "p. 10", stance: for}
+
+- id: c-duplicates
+  type: historical
+  text: "ImageNet contains duplicate class labels, for example maillot (638 and 639) and crane (134 and 517)."
+  evidence:
+    - {work: "northcutt-2021-pervasive-label-errors", role: original, locator: "p. 10", stance: for}
+
+- id: c-ranking
+  type: empirical
+  text: "On ImageNet with corrected labels, ResNet-18 outperforms ResNet-50 if the prevalence of originally mislabeled test examples increases by 6%."
+  scope:
+    models: "ResNet-18 and ResNet-50"
+    data: [imagenet-ilsvrc-2012]
+    scale: "the validation set with corrected labels"
+    setting: "test sets with a varied prevalence of originally mislabeled examples"
+  evidence:
+    - {work: "northcutt-2021-pervasive-label-errors", role: original, locator: "p. 1", stance: for}
+
+- id: c-label-problems
+  type: attributive
+  text: "Beyer et al. name three problems of the ImageNet labels: a single label per image, overly restrictive label proposals and arbitrary class distinctions between essentially duplicate classes."
+  evidence:
+    - {work: "beyer-2020-are-we-done-imagenet", role: original, locator: "p. 2", stance: for}
+
+- id: c-real
+  type: historical
+  text: "Beyer et al. collected Reassessed Labels for the ImageNet validation set, with 57 553 labels for 46 837 images, and discarded the 3163 images that were assigned no label."
+  evidence:
+    - {work: "beyer-2020-are-we-done-imagenet", role: original, locator: "p. 4", stance: for}
+
+- id: c-real-gains
+  type: empirical
+  text: "Early progress on ImageNet almost perfectly translates into corresponding gains in ReaL accuracy, but the association is significantly weaker for more recent models."
+  scope:
+    models: "image classification models from AlexNet to models of 2020"
+    data: [imagenet-ilsvrc-2012]
+    scale: "the ImageNet validation set"
+    setting: "accuracy with the original labels against accuracy with the ReaL labels"
+  evidence:
+    - {work: "beyer-2020-are-we-done-imagenet", role: original, locator: "pp. 1 to 2", stance: for}
+
+- id: c-v2
+  type: historical
+  text: "Recht et al. replicated the dataset creation process of ImageNet and built a test set of 10,000 images."
+  evidence:
+    - {work: "recht-2019-imagenet-classifiers-generalize", role: original, locator: "p. 6", stance: for}
+
+- id: c-v2-drop
+  type: empirical
+  text: "On ImageNet, a model sees an 11% drop from 83% to 72% in top-1 accuracy on the rebuilt test set."
+  scope:
+    models: "the classification models of the testbed of Recht et al."
+    data: [imagenet-ilsvrc-2012]
+    scale: "10,000 images of the rebuilt test set"
+    setting: "top-1 accuracy on the original and the rebuilt test set"
+  evidence:
+    - {work: "recht-2019-imagenet-classifiers-generalize", role: original, locator: "p. 7", stance: for}
+
+- id: c-comparable
+  type: attributive
+  text: "Russakovsky et al. write that the scale of the dataset has remained the same, making the results comparable across the years, and that the dataset has not changed since 2012."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 22", stance: for}
+
+- id: c-five-years
+  type: attributive
+  text: "Recht et al. write that on ImageNet the accuracy loss amounts to approximately five years of progress."
+  evidence:
+    - {work: "recht-2019-imagenet-classifiers-generalize", role: original, locator: "pp. 1 to 2", stance: for}
+
+- id: c-beyer-question
+  type: attributive
+  text: "Beyer et al. ask whether the progress reported on ImageNet continues to be as general as before, and collect Reassessed Labels to re-evaluate it."
+  evidence:
+    - {work: "beyer-2020-are-we-done-imagenet", role: original, locator: "p. 1", stance: for}
+
+- id: c-2010
+  type: historical
+  text: "In ILSVRC2010 the challenge consisted of the classification task only, and the winning entry from the NEC team used SIFT and LBP features with a stochastic SVM."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "pp. 17 to 18", stance: for}
+
+- id: c-2012
+  type: historical
+  text: "In 2012 the SuperVision team won with a large deep convolutional neural network with 60 million parameters and dropout, and the second place went to the ISI team, which used Fisher vectors."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 18", stance: for}
+
+- id: c-alexnet
+  type: attributive
+  text: "Krizhevsky et al. report a winning top-5 test error rate of 15.3% in the ILSVRC-2012 competition, compared to 26.2% for the second-best entry."
+  evidence:
+    - {work: "krizhevsky-2012-imagenet-classification", role: original, locator: "the abstract", stance: for}
+
+- id: c-reduction
+  type: historical
+  text: "Considering only teams that use the provided training data, from 2012 to 2014 there has been a 2.4x reduction in image classification error, from 16.4% to 6.7%."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 22", stance: for}
+
+- id: c-human
+  type: empirical
+  text: "A human annotator who evaluated 1500 test images had an estimated error of 5.1%, while the GoogLeNet error on this sample was 6.8%."
+  scope:
+    models: "GoogLeNet and a human annotator"
+    data: [imagenet-ilsvrc-2012]
+    scale: "1500 test images"
+    setting: "top-5 classification error"
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 31", stance: for}
+
+- id: c-resnet
+  type: historical
+  text: "An ensemble of residual nets with a depth of up to 152 layers achieves 3.57% error on the ImageNet test set and won 1st place in the ILSVRC 2015 classification task."
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "p. 1", stance: for}

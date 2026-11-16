@@ -1,0 +1,634 @@
+run: v-20261114-161509-72201
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: dartmouth-workshop
+  verifier: codex:gpt-6-sol
+  tag: NEW-dartmouth-workshop
+  claim: c-held
+  work: bringsjord-2018-artificial-intelligence-sep
+  locator: Section 1
+  key: e9d80130ebece7b759eb84b5775cf61d
+  spans:
+  - start: 2755
+    end: 22604
+  verdict: supported
+  quote: in 1956, launched by a small but now-famous DARPA-sponsored summer conference at Dartmouth College, in Hanover, New
+    Hampshire.
+  note: The passage places the summer AI gathering at Dartmouth in Hanover in 1956.
+- slug: dartmouth-workshop
+  verifier: codex:gpt-6-sol
+  tag: NEW-dartmouth-workshop
+  claim: c-proposal-date
+  work: mccarthy-1955-dartmouth-proposal
+  locator: p. 1
+  key: a5bbf3d5d808bd5fe3c7b13f5c3989f3
+  spans:
+  - start: 0
+    end: 29504
+  verdict: supported
+  quote: 'J. McCarthy, Dartmouth College
+
+    M. L. Minsky, Harvard University
+
+    N. Rochester, I.B.M. Corporation
+
+    C.E. Shannon, Bell Telephone Laboratories
+
+    August 31, 1955'
+  note: The proposal lists all four as its originators and gives that date.
+- slug: dartmouth-workshop
+  verifier: codex:gpt-6-sol
+  tag: NEW-dartmouth-workshop
+  claim: c-first-use
+  work: mccarthy-2001-dartmouth-proposal-note
+  locator: p. 1
+  key: ee4130c235a4c784084366318e6a7f8b
+  spans:
+  - start: 0
+    end: 811
+  verdict: supported
+  quote: The proposal for the Dartmouth Summer Research Project on Artificial Intelligence was, so far as I know, the first
+    use of phrase Artificial Intelligence.
+  note: McCarthy states the claim with the same qualification.
+- slug: dartmouth-workshop
+  verifier: codex:gpt-6-sol
+  tag: NEW-dartmouth-workshop
+  claim: c-two-month
+  work: mccarthy-1955-dartmouth-proposal
+  locator: p. 1
+  key: 08266f84e805f5242027e0084b45a5d2
+  spans:
+  - start: 0
+    end: 29504
+  verdict: supported
+  quote: We propose that a 2 month, 10 man study of artificial intelligence be carried out during the summer of 1956 at Dartmouth
+    College
+  note: The proposal states the duration, group size, timing and location.
+- slug: dartmouth-workshop
+  verifier: codex:gpt-6-sol
+  tag: NEW-dartmouth-workshop
+  claim: c-conjecture
+  work: mccarthy-1955-dartmouth-proposal
+  locator: p. 1
+  key: 6767fccf69927e49826d010081d770ed
+  spans:
+  - start: 0
+    end: 29504
+  verdict: supported
+  quote: aspect of learning or any other feature of intelligence can in principle be so precisely described that a machine
+    can be made to simulate it.
+  note: The passage explicitly presents this as the study’s guiding conjecture.
+- slug: dartmouth-workshop
+  verifier: codex:gpt-6-sol
+  tag: NEW-dartmouth-workshop
+  claim: c-topics
+  work: mccarthy-1955-dartmouth-proposal
+  locator: p. 1
+  key: 5a54084bec153bc60e602bf9284ce29b
+  spans:
+  - start: 0
+    end: 29504
+  verdict: supported
+  quote: 'The following are some aspects of the artificial intelligence problem: 1 Automatic Computers'
+  note: The passage lists each claimed topic among its numbered aspects.
+- slug: dartmouth-workshop
+  verifier: codex:gpt-6-sol
+  tag: NEW-dartmouth-workshop
+  claim: c-budget
+  work: mccarthy-1955-dartmouth-proposal
+  locator: p. 1
+  key: bbc684c4486dc96cdc82d4c39de78ffa
+  spans:
+  - start: 0
+    end: 29504
+  verdict: supported
+  quote: 'The Rockefeller Foundation is being asked to provide financial support for the project on the following basis:'
+  note: The passage asks the foundation for support and gives estimated expenses totaling $13,500.
+- slug: dartmouth-workshop
+  verifier: codex:gpt-6-sol
+  tag: NEW-dartmouth-workshop
+  claim: c-sent
+  work: solomonoff-2016-dartmouth-summer-research-project
+  locator: p. 6
+  key: 0e327a8a77e0615137bd84515aee8e86
+  spans:
+  - start: 8332
+    end: 11230
+  verdict: supported
+  quote: 'On September 2, 1955, the four sent a proposal to the Rockefeller Foundation:'
+  note: The passage states the date, the four senders and the recipient.
+- slug: dartmouth-workshop
+  verifier: codex:gpt-6-sol
+  tag: NEW-dartmouth-workshop
+  claim: c-half
+  work: solomonoff-2016-dartmouth-summer-research-project
+  locator: p. 19
+  key: 841d185640a4824a3e32d398b01263d7
+  spans:
+  - start: 37556
+    end: 40466
+  verdict: supported
+  quote: The Rockefeller Foundation gave about half the requested funding.
+  note: The passage states the claim directly.
+- slug: dartmouth-workshop
+  verifier: codex:gpt-6-sol
+  tag: NEW-dartmouth-workshop
+  claim: c-short-times
+  work: solomonoff-2016-dartmouth-summer-research-project
+  locator: p. 8
+  key: 12e039fe5cab6c9fa26063c80b0bbf01
+  spans:
+  - start: 13556
+    end: 14734
+  verdict: supported
+  quote: 'The actual participants came at different times, mostly for much shorter
+
+    times.'
+  note: The passage states the claim directly.
+- slug: dartmouth-workshop
+  verifier: codex:gpt-6-sol
+  tag: NEW-dartmouth-workshop
+  claim: c-duration
+  work: solomonoff-2016-dartmouth-summer-research-project
+  locator: p. 9
+  key: 447d1fe79485d7ae4f44dd3e5d85a6be
+  spans:
+  - start: 14734
+    end: 16549
+  verdict: supported
+  quote: 'The Dartmouth Workshop is often said to have run for six weeks in the summer
+
+    of 1956.'
+  note: The passage also attributes the roughly eight-week period from about June 18 to August 17 to Ray’s notes.
+- slug: dartmouth-workshop
+  verifier: codex:gpt-6-sol
+  tag: NEW-dartmouth-workshop
+  claim: c-lists-differ
+  work: solomonoff-2016-dartmouth-summer-research-project
+  locator: p. 9
+  key: fe5b52f979856e5dbef889ae7b2377b7
+  spans:
+  - start: 14734
+    end: 16549
+  verdict: supported
+  quote: 'So many people came for such short times, or had to cancel
+
+    their planned attendance that there has been considerable confusion about this.'
+  note: The passage explicitly links short visits and cancellations to confusion about attendance.
+- slug: dartmouth-workshop
+  verifier: codex:gpt-6-sol
+  tag: NEW-dartmouth-workshop
+  claim: c-sep-ten
+  work: bringsjord-2018-artificial-intelligence-sep
+  locator: Section 1
+  key: 36bd68373106dcb65a02fb2939df0ca7
+  spans:
+  - start: 2755
+    end: 22604
+  verdict: supported
+  quote: Ten thinkers attended, including John McCarthy
+  note: The passage names all eight people in the claim among those ten thinkers.
+- slug: dartmouth-workshop
+  verifier: codex:gpt-6-sol
+  tag: NEW-dartmouth-workshop
+  claim: c-ray-list
+  work: solomonoff-2016-dartmouth-summer-research-project
+  locator: p. 10
+  key: 8d19f4371af723acf0ad6817d64b869a
+  spans:
+  - start: 16549
+    end: 19015
+  verdict: supported
+  quote: 'Ray’s List: is smaller, but accurate for actual attendence:'
+  note: The passage gives Ray’s numbered list through attendee 20 despite the displaced table cells.
+- slug: dartmouth-workshop
+  verifier: codex:gpt-6-sol
+  tag: NEW-dartmouth-workshop
+  claim: c-full-eight
+  work: solomonoff-2016-dartmouth-summer-research-project
+  locator: p. 10
+  key: 6744d7250fc25a2eb57bd7338f21c1d4
+  spans:
+  - start: 16549
+    end: 19015
+  verdict: supported
+  quote: 'Ray, Marvin and John McCarthy were the only three who stayed for the
+
+    full eight weeks.'
+  note: The passage states the claim directly.
+- slug: dartmouth-workshop
+  verifier: codex:gpt-6-sol
+  tag: NEW-dartmouth-workshop
+  claim: c-no-report
+  work: mccarthy-1955-dartmouth-proposal
+  locator: p. 1
+  key: e066c134077de83925480d7ce48f6bc3
+  spans:
+  - start: 0
+    end: 29504
+  verdict: unsupported
+  quote: We propose that a 2 month, 10 man study of artificial intelligence be carried out during the summer of 1956
+  note: The supplied passage contains the proposal but no 1996 note saying there was no report; the claim needs that note
+    as evidence.
+- slug: dartmouth-workshop
+  verifier: codex:gpt-6-sol
+  tag: NEW-dartmouth-workshop
+  claim: c-started
+  work: bringsjord-2018-artificial-intelligence-sep
+  locator: Section 1
+  key: 840f9f5ffb5d228ecd24a2549ff88e8b
+  spans:
+  - start: 2755
+    end: 22604
+  verdict: supported
+  quote: The field of artificial intelligence (AI) officially started in 1956, launched by a small but now-famous DARPA-sponsored
+    summer conference at Dartmouth College
+  note: The passage states the attributed view directly.
+- slug: dartmouth-workshop
+  verifier: codex:gpt-6-sol
+  tag: NEW-dartmouth-workshop
+  claim: c-coined-lt
+  work: bringsjord-2018-artificial-intelligence-sep
+  locator: Section 1
+  key: a3fa453428274dead60fe982196145b0
+  spans:
+  - start: 2755
+    end: 22604
+  verdict: supported
+  quote: the term ‘artificial intelligence’ was coined there
+  note: The same sentence also says Newell and Simon revealed Logic Theorist there.
+- slug: dartmouth-workshop
+  verifier: codex:gpt-6-sol
+  tag: NEW-dartmouth-workshop
+  claim: c-ai50
+  work: bringsjord-2018-artificial-intelligence-sep
+  locator: Section 1
+  key: 1a5448bc524ea0a9b096ebeb4242f423
+  spans:
+  - start: 2755
+    end: 22604
+  verdict: supported
+  quote: The 50-year celebration of this conference, AI@50, was held in July 2006 at Dartmouth
+  note: The passage states the celebration’s name, date and location.
+- slug: dartmouth-workshop
+  verifier: codex:gpt-6-sol
+  tag: NEW-dartmouth-workshop
+  claim: c-ai50-five
+  work: solomonoff-2016-dartmouth-summer-research-project
+  locator: p. 25
+  key: f5dcbf7435b3da275926dc74a034904e
+  spans:
+  - start: 52585
+    end: 53954
+  verdict: supported
+  quote: 'Dartmouth Summer of 1956: Trenchard More, John McCarthy, Marvin
+
+    Minsky, Oliver Selfridge, Ray Solomonoff.'
+  note: The passage identifies these five as the 1956 participants who attended AI@50 in 2006.
+- slug: deepmind
+  verifier: codex:gpt-6-sol
+  tag: NEW-deepmind
+  claim: c-unit
+  work: pichai-2023-google-deepmind-two-teams
+  locator: p. 1
+  key: 52fc6458554f5ba36fb82cec13b2946c
+  spans:
+  - start: 0
+    end: 6699
+  verdict: supported
+  quote: 'This group, called Google DeepMind, will bring together two leading research groups in the AI field: the Brain team
+    from Google Research, and DeepMind.'
+  note: The dated post announces the unit and names both groups.
+- slug: deepmind
+  verifier: codex:gpt-6-sol
+  tag: NEW-deepmind
+  claim: c-founded
+  work: hassabis-2019-entering-tenth-year
+  locator: p. 1
+  key: 44cee4c2d55d1749828b1bd322dc7fb7
+  spans:
+  - start: 0
+    end: 5844
+  verdict: supported
+  quote: I founded DeepMind back in 2010 along with Shane Legg (our Chief Scientist) and Mustafa.
+  note: Hassabis states the claimed year and cofounders.
+- slug: deepmind
+  verifier: codex:gpt-6-sol
+  tag: NEW-deepmind
+  claim: c-acquired
+  work: royal-society-2014-hassabis-mullard-award
+  locator: p. 1
+  key: 90aeba7e7a85d88bc64da2f0b21363c3
+  spans:
+  - start: 0
+    end: 3610
+  verdict: supported
+  quote: DeepMind Technologies, acquired by Google earlier this year
+  note: The Royal Society item is dated 21 November 2014 and says the acquisition occurred earlier that year.
+- slug: deepmind
+  verifier: codex:gpt-6-sol
+  tag: NEW-deepmind
+  claim: c-company
+  work: companies-house-deepmind-technologies-limited
+  locator: p. 1
+  key: 2b46232399bff4547320f9237b7d045e
+  spans:
+  - start: 0
+    end: 2209
+  verdict: supported
+  quote: 'Registered office address 280 Bishopsgate, London, United Kingdom, EC2M 4AG
+
+    Company status Active
+
+    Company type Private limited Company'
+  note: The overview gives a London registered office and identifies the company as private limited.
+- slug: deepmind
+  verifier: codex:gpt-6-sol
+  tag: NEW-deepmind
+  claim: c-incorporated
+  work: companies-house-deepmind-technologies-limited
+  locator: p. 1
+  key: 2de01603bdf8b2050ea8df65d294cb38
+  spans:
+  - start: 0
+    end: 2209
+  verdict: supported
+  quote: Incorporated on 23 September 2010
+  note: The overview gives that incorporation date and lists FRIARS 2022 LIMITED for 23 Sep 2010 to 15 Nov 2010.
+- slug: deepmind
+  verifier: codex:gpt-6-sol
+  tag: NEW-deepmind
+  claim: c-2010-again
+  work: hassabis-2023-announcing-google-deepmind
+  locator: p. 1
+  key: bb76aa27a629bd51b9352bb1b49eff73
+  spans:
+  - start: 0
+    end: 3527
+  verdict: supported
+  quote: When we launched DeepMind back in 2010
+  note: The passage presents these words as part of Hassabis’s note to employees.
+- slug: deepmind
+  verifier: codex:gpt-6-sol
+  tag: NEW-deepmind
+  claim: c-2011
+  work: royal-society-2014-hassabis-mullard-award
+  locator: p. 1
+  key: e0fb10fbea427b88401d9a374c78e3ee
+  spans:
+  - start: 0
+    end: 3610
+  verdict: supported
+  quote: Dr Hassabis founded DeepMind Technologies in 2011 with partners Dr Shane Legg and Mustafa Suleyman.
+  note: The claim accurately attributes the Royal Society’s statement, regardless of what other sources say.
+- slug: deepmind
+  verifier: codex:gpt-6-sol
+  tag: NEW-deepmind
+  claim: c-price
+  work: royal-society-2014-hassabis-mullard-award
+  locator: p. 1
+  key: 1b99e324d197f26036333b1f473d401a
+  spans:
+  - start: 0
+    end: 3610
+  verdict: supported
+  quote: DeepMind Technologies, and Dr Hassabis’s team, were bought by Google for approximately £400 million
+  note: The Royal Society states the claimed approximate price.
+- slug: deepmind
+  verifier: codex:gpt-6-sol
+  tag: NEW-deepmind
+  claim: c-suleyman-leaves
+  work: hassabis-2019-entering-tenth-year
+  locator: p. 1
+  key: fb8af02eea6bac43c7bceffb9327fb94
+  spans:
+  - start: 0
+    end: 5844
+  verdict: supported
+  quote: Mustafa Suleyman is leaving DeepMind.
+  note: The dated post also says he joins Google in a new role.
+- slug: deepmind
+  verifier: codex:gpt-6-sol
+  tag: NEW-deepmind
+  claim: c-merger
+  work: pichai-2023-google-deepmind-two-teams
+  locator: p. 1
+  key: 8fc1c378abaed96d355be40919c1fbc5
+  spans:
+  - start: 0
+    end: 6699
+  verdict: supported
+  quote: 'This group, called Google DeepMind, will bring together two leading research groups in the AI field: the Brain team
+    from Google Research, and DeepMind.'
+  note: The passage is attributed to Pichai and dated 20 April 2023.
+- slug: deepmind
+  verifier: codex:gpt-6-sol
+  tag: NEW-deepmind
+  claim: c-joining-forces
+  work: hassabis-2023-announcing-google-deepmind
+  locator: p. 1
+  key: e765d5f03b2aa2c0c36c79a7227fa770
+  spans:
+  - start: 0
+    end: 3527
+  verdict: supported
+  quote: DeepMind and the Brain team from Google Research will be joining forces as a single, focused unit called Google DeepMind.
+  note: The passage identifies this as part of Hassabis’s message to employees.
+- slug: deepmind
+  verifier: codex:gpt-6-sol
+  tag: NEW-deepmind
+  claim: c-dqn
+  work: mnih-2015-human-level-control
+  locator: p. 1
+  key: 9d5c5501e464e38bc692c110a3b06285
+  spans:
+  - start: 0
+    end: 6966
+  verdict: supported
+  quote: the deep Q-network agent, receiving only the pixels and the game score as inputs
+  note: The paper states the inputs and lists the authors’ affiliation as Google DeepMind in London.
+- slug: deepmind
+  verifier: codex:gpt-6-sol
+  tag: NEW-deepmind
+  claim: c-dqn-49
+  work: mnih-2015-human-level-control
+  locator: p. 1
+  key: 387cc76f5203893260e44905bf454f6a
+  spans:
+  - start: 0
+    end: 6966
+  verdict: supported
+  quote: a level comparable to that of a professional human games tester across a set of 49 games, using the same algorithm,
+    network architecture and hyperparameters.
+  note: The paper reports precisely the claimed comparison and shared setup.
+- slug: deepmind
+  verifier: codex:gpt-6-sol
+  tag: NEW-deepmind
+  claim: c-alphago
+  work: silver-2016-mastering-go
+  locator: p. 1
+  key: 3cf3beee872ea502ad80273d20449c40
+  spans:
+  - start: 0
+    end: 6455
+  verdict: supported
+  quote: We also introduce a new search algorithm that combines Monte Carlo simulation with value and policy networks.
+  note: The following sentence identifies AlphaGo as the program using that algorithm.
+- slug: deepmind
+  verifier: codex:gpt-6-sol
+  tag: NEW-deepmind
+  claim: c-alphago-results
+  work: silver-2016-mastering-go
+  locator: p. 1
+  key: e8815fdd4ba66a4b32cd8d4d8cc822b8
+  spans:
+  - start: 0
+    end: 6455
+  verdict: supported
+  quote: AlphaGo achieved a 99.8% winning rate against other Go programs, and defeated the human European Go champion by 5
+    games to 0.
+  note: The paper reports both results.
+- slug: deepmind
+  verifier: codex:gpt-6-sol
+  tag: NEW-deepmind
+  claim: c-alphafold
+  work: jumper-2021-alphafold
+  locator: p. 1
+  key: 2e68fb5f330b99728b0188c03dd43f45
+  spans:
+  - start: 70035
+    end: 74360
+  verdict: unsupported
+  quote: Source code for the AlphaFold model, trained weights, and inference script will be made available under an open-source
+    license
+  note: This reporting summary does not make the atomic-accuracy claim; the paper’s abstract would support it.
+- slug: deepmind
+  verifier: codex:gpt-6-sol
+  tag: NEW-deepmind
+  claim: c-casp14
+  work: jumper-2021-alphafold
+  locator: the abstract
+  key: c9364b452b6019075f1fc57ce0d81dce
+  spans:
+  - start: 0
+    end: 5412
+  verdict: supported
+  quote: We validated an entirely redesigned version of our neural network-based model, AlphaFold, in the challenging 14th
+    Critical Assessment of protein Structure Prediction (CASP14)
+  note: The abstract explicitly states the claimed validation.
+- slug: deepmind
+  verifier: codex:gpt-6-sol
+  tag: NEW-deepmind
+  claim: c-gemini
+  work: gemini-2023-family-multimodal-models
+  locator: the abstract
+  key: c0c40e4c7ac2ed21e9200cf3731e03c8
+  spans:
+  - start: 0
+    end: 1009
+  verdict: supported
+  quote: a new family of multimodal models, Gemini, that exhibit remarkable capabilities across image, audio, video, and text
+    understanding.
+  note: The abstract credits the Gemini Team, Google, and also names the Ultra, Pro, and Nano sizes.
+- slug: deepmind
+  verifier: codex:gpt-6-sol
+  tag: NEW-deepmind
+  claim: c-ceo
+  work: pichai-2023-google-deepmind-two-teams
+  locator: p. 1
+  key: 0fdf91736e7c170e0a1d1f5842631c8e
+  spans:
+  - start: 0
+    end: 6699
+  verdict: supported
+  quote: As CEO of Google DeepMind, Demis Hassabis will lead the development of our most capable and responsible general AI
+    systems
+  note: Pichai states the claimed role and responsibility.
+- slug: deepmind
+  verifier: codex:gpt-6-sol
+  tag: NEW-deepmind
+  claim: c-dean
+  work: pichai-2023-google-deepmind-two-teams
+  locator: p. 1
+  key: eeae17d97ce8b954af5421c694b38915
+  spans:
+  - start: 0
+    end: 6699
+  verdict: supported
+  quote: Jeff Dean will take on the elevated role of Google’s Chief Scientist, reporting to me. In that capacity he’ll serve
+    as Chief Scientist to Google Research and Google DeepMind.
+  note: Pichai states both parts of the claimed appointment.
+- slug: deepmind
+  verifier: codex:gpt-6-sol
+  tag: NEW-deepmind
+  claim: c-legg
+  work: hassabis-2019-entering-tenth-year
+  locator: p. 1
+  key: 3646c923ea65d2a2cb83849a2903a2c5
+  spans:
+  - start: 0
+    end: 5844
+  verdict: supported
+  quote: Shane Legg (our Chief Scientist)
+  note: Hassabis uses that description in his December 2019 post about DeepMind.
+- slug: deepmind
+  verifier: codex:gpt-6-sol
+  tag: NEW-deepmind
+  claim: c-nobel
+  work: nobel-2024-chemistry-press-release
+  locator: p. 1
+  key: ce3766b714b2412db51ede33a57bca9e
+  spans:
+  - start: 0
+    end: 6665
+  verdict: supported
+  quote: 'and the other half jointly to
+
+    Demis Hassabis
+
+    Google DeepMind, London, UK
+
+    John Jumper
+
+    Google DeepMind, London, UK
+
+    “for protein structure prediction”'
+  note: The press release is dated 9 October 2024 and attributes this decision to the Royal Swedish Academy of Sciences.
+- slug: deepmind
+  verifier: codex:gpt-6-sol
+  tag: NEW-deepmind
+  claim: c-nobel-baker
+  work: nobel-2024-chemistry-press-release
+  locator: p. 1
+  key: 681b05b40bb1232bacdc0059262ac77b
+  spans:
+  - start: 0
+    end: 6665
+  verdict: supported
+  quote: 'with one half to
+
+    David Baker
+
+    University of Washington, Seattle, WA, USA
+
+    Howard Hughes Medical Institute, USA
+
+    “for computational protein design”'
+  note: The press release assigns Baker one half for the stated work.
+- slug: deepmind
+  verifier: codex:gpt-6-sol
+  tag: NEW-deepmind
+  claim: c-alphafold2
+  work: nobel-2024-chemistry-press-release
+  locator: p. 1
+  key: c19cae334f8c78f309249f181ed5797b
+  spans:
+  - start: 0
+    end: 6665
+  verdict: supported
+  quote: In 2020, Demis Hassabis and John Jumper presented an AI model called AlphaFold2.
+  note: The Royal Swedish Academy of Sciences’ press release says this directly.

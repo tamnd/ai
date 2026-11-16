@@ -1,0 +1,28 @@
+# The versions of the GPQA benchmark (spec 10.3). The three sets are nested: diamond is in main, main is in extended.
+- id: extended
+  name: GPQA Extended
+  metric: accuracy
+  date: {v: "2023-11-20", src: "rein-2023-gpqa-graduate-level", loc: "p. 1"}
+  size: {v: 546, unit: items, src: "rein-2023-gpqa-graduate-level", loc: "p. 6"}
+  data: {location: "gpqa_extended.csv of Idavidrein/gpqa on Hugging Face (gated), or dataset.zip of github.com/idavidrein/gpqa", hash: null, licence: "CC BY 4.0; see the fact licence"}
+  protocol: {scorer: "accuracy over four answer choices; the prompt and the answer format are the evaluator's", unit: "correct questions / all questions"}
+  human_baseline: {v: 0.648, note: "the second expert validator from the same domain (Rein et al., 2023, p. 6); non-experts with web access 0.341"}
+  known_issues: "about 74% of the questions have uncontroversially correct answers by a conservative estimate (Rein et al., 2023, p. 7)"
+- id: main
+  name: GPQA (main set)
+  metric: accuracy
+  date: {v: "2023-11-20", src: "rein-2023-gpqa-graduate-level", loc: "p. 1"}
+  derived_from: {version: extended, rule: "the questions where at least one of the two expert validators agrees with the writer and at most two of the three non-experts answer correctly"}
+  size: {v: 448, unit: items, src: "rein-2023-gpqa-graduate-level", loc: "p. 6"}
+  data: {location: "gpqa_main.csv of Idavidrein/gpqa on Hugging Face (gated)", hash: null, licence: "CC BY 4.0; see the fact licence"}
+  protocol: {scorer: "accuracy over four answer choices; the set the authors recommend for experiments (Rein et al., 2023, p. 7)", unit: "correct questions / all questions"}
+  known_issues: "the validator accuracies on this set are skewed by selection (Rein et al., 2023, p. 6)"
+- id: diamond
+  name: GPQA Diamond
+  metric: accuracy
+  date: {v: "2023-11-20", src: "rein-2023-gpqa-graduate-level", loc: "p. 1"}
+  derived_from: {version: main, rule: "the questions where both expert validators agree with the writer and at most one of the three non-experts answers correctly"}
+  size: {v: 198, unit: items, src: "rein-2023-gpqa-graduate-level", loc: "p. 6"}
+  data: {location: "gpqa_diamond.csv of Idavidrein/gpqa on Hugging Face (gated)", hash: null, licence: "CC BY 4.0; see the fact licence"}
+  protocol: {scorer: "accuracy over four answer choices; Epoch AI uses the simple-evals prompt and strict ANSWER: LETTER scoring, the Open LLM Leaderboard v2 a normalized score", unit: "correct questions / all questions"}
+  known_issues: "seven of the 198 questions were marked unreliable in a second expert review (Recchia et al., 2025, p. 10); the validator accuracies are skewed by selection"

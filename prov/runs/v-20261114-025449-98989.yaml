@@ -1,0 +1,63 @@
+run: v-20261114-025449-98989
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: dropout
+  verifier: codex:gpt-6-sol
+  tag: Y8VNMB
+  claim: c-reduces-error
+  work: srivastava-2014-dropout-jmlr
+  locator: Section 6 and Tables 2 to 9
+  key: a42701aadf7bff7a7c3f257039363b73
+  spans:
+  - start: 19869
+    end: 40824
+  verdict: unsupported
+  quote: We found that dropout improved generalization performance on all data sets compared to neural networks that did not
+    use dropout.
+  note: The passage supports improvement over comparable neural networks, but the claim extends this to the methods without
+    dropout generally.
+- slug: dropout
+  verifier: codex:gpt-6-sol
+  tag: Y8VNMB
+  claim: c-weight-scaling-close
+  work: srivastava-2014-dropout-jmlr
+  locator: Section 7.5, Figure 11
+  key: 8526bf6d543c6d2344440e5e54e4af15
+  spans:
+  - start: 45814
+    end: 49125
+  verdict: supported
+  quote: around k = 50, the Monte-Carlo method becomes as good as the approximate method.
+  note: The passage identifies weight scaling as the approximate method and reports comparable MNIST error at about 50 samples.
+- slug: dropout
+  verifier: codex:gpt-6-sol
+  tag: Y8VNMB
+  claim: c-slower-training
+  work: srivastava-2014-dropout-jmlr
+  locator: Section 11
+  key: 5644f66ac2e32e67deb9937646ba9cb7
+  spans:
+  - start: 59561
+    end: 62132
+  verdict: supported
+  quote: A dropout network typically takes 2-3 times longer to train than a standard neural network of the same architecture.
+  note: The passage states the claimed training-time comparison directly.
+- slug: dropout
+  verifier: codex:gpt-6-sol
+  tag: Y8VNMB
+  claim: c-variance-shift
+  work: li-2019-disharmony-dropout-batch-normalization
+  locator: Section 1
+  key: cc1367d95e70847e59e2631c339692ea
+  spans:
+  - start: 203
+    end: 7184
+  verdict: supported
+  quote: The inconsistency of that variance (we name this scheme as “variance shift”) causes the unstable numerical behavior
+    in inference
+  note: The passage links dropout before BN to a train-to-test variance shift and worse predictions, with experiments on the
+    named networks and datasets.
