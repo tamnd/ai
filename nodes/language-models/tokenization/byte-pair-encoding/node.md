@@ -1,5 +1,5 @@
 ---
-tag: NEW-byte-pair-encoding
+tag: ZRQW82
 kind: method
 slug: byte-pair-encoding
 name: Byte-pair encoding
