@@ -1,0 +1,21 @@
+run: v-20261114-025613-3211
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: dropout
+  verifier: codex:gpt-6-sol
+  tag: Y8VNMB
+  claim: c-reduces-error
+  work: srivastava-2014-dropout-jmlr
+  locator: Section 6 and Tables 2 to 9
+  key: de099141efa0fd1b993867818a8594a8
+  spans:
+  - start: 19869
+    end: 40824
+  verdict: supported
+  quote: We found that dropout improved generalization performance on all data sets compared to neural networks that did not
+    use dropout.
+  note: The passage lists all six claimed data sets and reports lower error with dropout for each.
