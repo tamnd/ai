@@ -1,0 +1,267 @@
+# A course of spec 5.7: an ordered list of items with section headings. Names and orders only (19.3).
+# An item names its node by slug when the node exists; before that it is a name and a kind, which aik harvest courses
+# reads into the inventory, so that the catalog step can place it and the course can count its coverage (18).
+id: machine-learning
+title: Machine learning
+basis: >-
+  the chapter order of Murphy, Probabilistic Machine Learning: An Introduction (2022), chapters 1 to 23, cross-checked
+  with Hastie, Tibshirani and Friedman, The Elements of Statistical Learning, 2nd edition, and Bishop, Pattern
+  Recognition and Machine Learning (2006); the neural network chapters are short here, since the deep learning course
+  covers them
+sections:
+  - heading: What machine learning is
+    items:
+      - {name: Machine learning, kind: area}
+      - {name: Supervised learning, kind: concept}
+      - {name: Unsupervised learning, kind: concept}
+      - {name: Reinforcement learning, kind: concept}
+      - {name: Classification, kind: task}
+      - {name: Regression, kind: task}
+      - {name: Training set, kind: definition}
+      - {name: Test set, kind: definition}
+      - {name: Generalization, kind: concept}
+      - {name: Overfitting, kind: concept}
+      - {name: Underfitting, kind: concept}
+      - {name: Inductive bias, kind: concept}
+      - {name: No free lunch theorem, kind: theorem}
+  - heading: Probability
+    items:
+      - {name: Random variable, kind: definition}
+      - {name: Probability distribution, kind: definition}
+      - {name: Conditional probability, kind: definition}
+      - {name: Bayes' theorem, kind: theorem}
+      - {name: Independence and conditional independence, kind: definition}
+      - {name: Expectation, kind: definition}
+      - {name: Variance and covariance, kind: definition}
+      - {name: Bernoulli and binomial distributions, kind: definition}
+      - {name: Categorical and multinomial distributions, kind: definition}
+      - {name: Gaussian distribution, kind: definition}
+      - {name: Multivariate Gaussian distribution, kind: definition}
+      - {name: Exponential family, kind: definition}
+      - {name: Mixture model, kind: concept}
+      - {name: Law of large numbers, kind: theorem}
+      - {name: Central limit theorem, kind: theorem}
+      - {name: Monte Carlo approximation, kind: method}
+  - heading: Statistics
+    items:
+      - {name: Maximum likelihood estimation, kind: method}
+      - {name: Empirical risk minimization, kind: method}
+      - {name: Method of moments, kind: method}
+      - {name: Bayesian inference, kind: method}
+      - {name: Conjugate prior, kind: definition}
+      - {name: Maximum a posteriori estimation, kind: method}
+      - {name: Posterior predictive distribution, kind: definition}
+      - {name: Bias of an estimator, kind: definition}
+      - {name: Bias-variance tradeoff, kind: concept}
+      - {name: Bootstrap, kind: method}
+      - {name: Confidence interval, kind: definition}
+      - {name: Credible interval, kind: definition}
+      - {name: Hypothesis testing, kind: method}
+      - {name: Multiple testing correction, kind: method}
+  - heading: Decision theory
+    items:
+      - {name: Bayesian decision theory, kind: concept}
+      - {name: Loss function, kind: concept}
+      - {name: Zero-one loss, kind: definition}
+      - {name: Bayes optimal classifier, kind: concept}
+      - {name: Reject option, kind: concept}
+      - {name: Confusion matrix, kind: definition}
+      - {name: Precision and recall, kind: metric}
+      - {name: F1 score, kind: metric}
+      - {name: ROC curve, kind: metric}
+      - {name: Area under the ROC curve, kind: metric}
+      - {name: Precision-recall curve, kind: metric}
+      - {name: Probability calibration, kind: concept}
+  - heading: Information theory
+    items:
+      - {name: Entropy, kind: definition}
+      - {name: Cross-entropy, kind: definition}
+      - {name: Kullback-Leibler divergence, kind: definition}
+      - {name: Mutual information, kind: definition}
+      - {name: Jensen's inequality, kind: theorem}
+      - {name: Data processing inequality, kind: theorem}
+      - {name: Minimum description length, kind: concept}
+  - heading: Linear algebra and optimization
+    items:
+      - {name: Matrix calculus, kind: concept}
+      - {name: Eigendecomposition, kind: method}
+      - {name: Singular value decomposition, kind: method}
+      - {name: Positive definite matrix, kind: definition}
+      - {name: Convex function, kind: definition}
+      - {name: Convex optimization, kind: concept}
+      - {name: Gradient descent, kind: method}
+      - {name: Learning rate, kind: concept}
+      - {name: Stochastic gradient descent, kind: method}
+      - {name: Momentum, kind: method}
+      - {name: Newton's method, kind: method}
+      - {name: Quasi-Newton methods, kind: method}
+      - {name: Coordinate descent, kind: method}
+      - {name: Lagrange multipliers, kind: method}
+      - {name: Karush-Kuhn-Tucker conditions, kind: theorem}
+      - {name: Proximal gradient method, kind: method}
+      - {name: Expectation-maximization algorithm, kind: method}
+  - heading: Generative classifiers
+    items:
+      - {name: Generative and discriminative classifiers, kind: concept}
+      - {name: Gaussian discriminant analysis, kind: method}
+      - {name: Quadratic discriminant analysis, kind: method}
+      - {name: Linear discriminant analysis, kind: method}
+      - {name: Fisher's linear discriminant, kind: method}
+      - {name: Naive Bayes classifier, kind: method}
+  - heading: Logistic regression
+    items:
+      - {name: Logistic regression, kind: method}
+      - {name: Sigmoid function, kind: definition}
+      - {name: Decision boundary, kind: concept}
+      - {name: Log loss, kind: definition}
+      - {name: Softmax function, kind: definition}
+      - {name: Multinomial logistic regression, kind: method}
+      - {name: Iteratively reweighted least squares, kind: method}
+      - {name: Class imbalance, kind: concept}
+  - heading: Linear regression
+    items:
+      - {name: Linear regression, kind: method}
+      - {name: Ordinary least squares, kind: method}
+      - {name: Normal equations, kind: definition}
+      - {name: Gauss-Markov theorem, kind: theorem}
+      - {name: Basis function expansion, kind: method}
+      - {name: Polynomial regression, kind: method}
+      - {name: Ridge regression, kind: method}
+      - {name: Lasso, kind: method}
+      - {name: Elastic net, kind: method}
+      - {name: Regularization path, kind: concept}
+      - {name: Bayesian linear regression, kind: method}
+      - {name: Robust regression, kind: method}
+      - {name: Huber loss, kind: definition}
+  - heading: Generalized linear models
+    items:
+      - {name: Generalized linear model, kind: concept}
+      - {name: Link function, kind: definition}
+      - {name: Poisson regression, kind: method}
+      - {name: Probit regression, kind: method}
+  - heading: Neural networks, briefly
+    items:
+      - {name: Perceptron, kind: method}
+      - {name: Multilayer perceptron, kind: architecture}
+      - {name: Activation function, kind: concept}
+      - {name: Backpropagation, kind: method}
+      - {name: Universal approximation theorem, kind: theorem}
+      - {name: Weight decay, kind: method}
+      - {name: Early stopping, kind: method}
+      - {name: Dropout, kind: method, node: dropout}
+  - heading: Exemplar-based methods
+    items:
+      - {name: k-nearest neighbors, kind: method}
+      - {name: Curse of dimensionality, kind: concept}
+      - {name: Metric learning, kind: method}
+      - {name: Kernel density estimation, kind: method}
+      - {name: Nadaraya-Watson estimator, kind: method}
+      - {name: Approximate nearest neighbor search, kind: method}
+  - heading: Kernel methods
+    items:
+      - {name: Kernel function, kind: definition}
+      - {name: Mercer's theorem, kind: theorem}
+      - {name: Kernel trick, kind: method}
+      - {name: Reproducing kernel Hilbert space, kind: definition}
+      - {name: Representer theorem, kind: theorem}
+      - {name: Kernel ridge regression, kind: method}
+      - {name: Gaussian process, kind: concept}
+      - {name: Gaussian process regression, kind: method}
+      - {name: Support vector machine, kind: method}
+      - {name: Maximum-margin classifier, kind: concept}
+      - {name: Soft-margin SVM, kind: method}
+      - {name: Hinge loss, kind: definition}
+      - {name: Support vector regression, kind: method}
+      - {name: Sequential minimal optimization, kind: method}
+      - {name: Random Fourier features, kind: method}
+  - heading: Trees, forests, bagging and boosting
+    items:
+      - {name: Decision tree, kind: method}
+      - {name: CART, kind: method}
+      - {name: ID3 and C4.5, kind: method}
+      - {name: Gini impurity, kind: definition}
+      - {name: Information gain, kind: definition}
+      - {name: Tree pruning, kind: method}
+      - {name: Ensemble learning, kind: method}
+      - {name: Bagging, kind: method}
+      - {name: Random forest, kind: method}
+      - {name: Out-of-bag error, kind: metric}
+      - {name: Boosting, kind: method}
+      - {name: AdaBoost, kind: method}
+      - {name: Gradient boosting, kind: method}
+      - {name: XGBoost, kind: software}
+      - {name: LightGBM, kind: software}
+      - {name: Stacking, kind: method}
+      - {name: Feature importance, kind: concept}
+  - heading: Learning with fewer labels
+    items:
+      - {name: Data augmentation, kind: method}
+      - {name: Transfer learning, kind: concept}
+      - {name: Domain adaptation, kind: concept}
+      - {name: Semi-supervised learning, kind: concept}
+      - {name: Self-training, kind: method}
+      - {name: Label propagation, kind: method}
+      - {name: Active learning, kind: method}
+      - {name: Few-shot learning, kind: concept}
+      - {name: Meta-learning, kind: concept}
+      - {name: Weak supervision, kind: concept}
+      - {name: Self-supervised learning, kind: concept}
+  - heading: Dimensionality reduction
+    items:
+      - {name: Dimensionality reduction, kind: task}
+      - {name: Principal component analysis, kind: method}
+      - {name: Probabilistic PCA, kind: method}
+      - {name: Factor analysis, kind: method}
+      - {name: Independent component analysis, kind: method}
+      - {name: Kernel PCA, kind: method}
+      - {name: Autoencoder, kind: architecture}
+      - {name: Multidimensional scaling, kind: method}
+      - {name: Isomap, kind: method}
+      - {name: Locally linear embedding, kind: method}
+      - {name: t-SNE, kind: method}
+      - {name: UMAP, kind: method}
+  - heading: Clustering
+    items:
+      - {name: Clustering, kind: task}
+      - {name: k-means clustering, kind: method}
+      - {name: k-means++, kind: method}
+      - {name: Gaussian mixture model, kind: method}
+      - {name: Hierarchical clustering, kind: method}
+      - {name: DBSCAN, kind: method}
+      - {name: Spectral clustering, kind: method}
+      - {name: Silhouette score, kind: metric}
+      - {name: Adjusted Rand index, kind: metric}
+  - heading: Recommender systems
+    items:
+      - {name: Recommender system, kind: task}
+      - {name: Collaborative filtering, kind: method}
+      - {name: Matrix factorization, kind: method}
+      - {name: Implicit feedback, kind: concept}
+      - {name: Cold start problem, kind: concept}
+      - {name: Netflix Prize, kind: event}
+  - heading: Graph embeddings
+    items:
+      - {name: Graph embedding, kind: concept}
+      - {name: DeepWalk, kind: method}
+      - {name: node2vec, kind: method}
+      - {name: Graph neural network, kind: architecture}
+      - {name: Link prediction, kind: task}
+  - heading: Practice
+    items:
+      - {name: Feature engineering, kind: method}
+      - {name: Feature scaling, kind: method}
+      - {name: One-hot encoding, kind: method}
+      - {name: Missing data imputation, kind: method}
+      - {name: Cross-validation, kind: method}
+      - {name: Model selection, kind: concept}
+      - {name: Hyperparameter optimization, kind: method}
+      - {name: Grid search and random search, kind: method}
+      - {name: Bayesian optimization, kind: method}
+      - {name: Data leakage, kind: risk}
+      - {name: Distribution shift, kind: concept}
+      - {name: SHAP values, kind: method}
+      - {name: Partial dependence plot, kind: method}
+      - {name: Iris flower data set, kind: dataset}
+      - {name: MNIST, kind: dataset}
+      - {name: UCI Machine Learning Repository, kind: dataset}
+      - {name: scikit-learn, kind: software}
