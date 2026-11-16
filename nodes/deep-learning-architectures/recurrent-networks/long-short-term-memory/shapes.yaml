@@ -1,0 +1,39 @@
+# SPDX-License-Identifier: MIT
+# The shape contract of one LSTM layer with a forget gate and no peepholes (spec 08.6), in the form of torch.nn.LSTM
+# with one bias vector: the four gates are stacked in the order input, forget, cell candidate, output.
+# The example config is small, so that the tests can run the forward pass on it.
+config:
+  input_size:  {meaning: "number of features of each input vector x_t", symbol: "d_x", example: 3, sample: [1, 5]}
+  hidden_size: {meaning: "number of memory cells, the width of h_t and c_t", symbol: "d_h", example: 4, sample: [1, 6]}
+axes:
+  B: {meaning: "batch", example: 2}
+  T: {meaning: "length of the sequence", example: 5}
+  I: input_size
+  H: hidden_size
+blocks:
+  - id: gates
+    meaning: "the pre-activations of the four gates, an affine map of x_t and h_{t-1}, at every step"
+    eq: [gates]
+    inputs: {x: "(B, T, I)", h0: "(B, H)"}
+    outputs: {z: "(B, T, 4 * H)"}
+    params: "4 * H * I + 4 * H * H + 4 * H"
+    flops_forward: "8 * B * T * H * I + 8 * B * T * H * H"
+  - id: cell
+    meaning: "the gate activations, the additive update of the cell state and the output, elementwise"
+    eq: [cell, hidden]
+    inputs: {z: "(B, T, 4 * H)", c0: "(B, H)"}
+    outputs: {h: "(B, T, H)", c: "(B, T, H)"}
+    internals: {i: "(B, T, H)", f: "(B, T, H)", g: "(B, T, H)", o: "(B, T, H)"}
+    params: "0"
+  - id: layer
+    of: [gates, cell]
+    inputs: {x: "(B, T, I)", h0: "(B, H)", c0: "(B, H)"}
+    outputs: {h: "(B, T, H)", c: "(B, T, H)"}
+    params: "4 * H * I + 4 * H * H + 4 * H"
+model:
+  params: {formula: "layer.params", symbol: "N", meaning: "the parameters of one layer: the input weights, the recurrent weights and one bias, for four gates"}
+  flops_forward: {formula: "gates.flops_forward", symbol: "C", meaning: "FLOPs of one forward pass over the batch, a multiply-add counted as 2; the gate activations and the elementwise products are left out"}
+  state: {formula: "2 * H", meaning: "numbers that the layer carries from one step to the next for one sequence: h_t and c_t"}
+  sources:
+    - {work: greff-2017-lstm-search-space-odyssey, locator: "p. 2", note: "the weights of an LSTM layer: input, recurrent and bias weights for the block input and the three gates"}
+    - {work: pytorch-torch-nn-lstm, locator: "the title page", note: "the equations and the order of the gates"}
