@@ -1,0 +1,129 @@
+# A course of spec 5.7: an ordered list of items with section headings. Names and orders only (19.3).
+# An item names its node by slug when the node exists; before that it is a name and a kind, which aik harvest courses
+# reads into the inventory, so that the catalog step can place it and the course can count its coverage (18).
+id: deep-learning
+title: Deep learning
+basis: >-
+  the chapter order of Prince, Understanding Deep Learning (2023), chapters 2 to 18 and 20, with the training and
+  attention topics of Zhang, Lipton, Li and Smola, Dive into Deep Learning, placed where Prince treats them
+sections:
+  - heading: Supervised learning
+    items:
+      - {name: Supervised learning, kind: concept}
+      - {name: Linear regression, kind: method}
+      - {name: Loss function, kind: concept}
+      - {name: Training, validation and test sets, kind: concept}
+  - heading: Neural networks
+    items:
+      - {name: Artificial neuron, kind: concept}
+      - {name: Activation function, kind: concept}
+      - {name: Rectified linear unit, kind: method}
+      - {name: Shallow neural network, kind: architecture}
+      - {name: Universal approximation theorem, kind: theorem}
+      - {name: Multilayer perceptron, kind: architecture}
+      - {name: Depth efficiency of neural networks, kind: finding}
+  - heading: Loss functions
+    items:
+      - {name: Maximum likelihood estimation, kind: method}
+      - {name: Negative log-likelihood, kind: definition}
+      - {name: Mean squared error, kind: metric}
+      - {name: Softmax function, kind: definition}
+      - {name: Cross-entropy loss, kind: definition}
+  - heading: Fitting models
+    items:
+      - {name: Gradient descent, kind: method}
+      - {name: Stochastic gradient descent, kind: method}
+      - {name: Mini-batch, kind: concept}
+      - {name: Learning rate, kind: concept}
+      - {name: Momentum, kind: method}
+      - {name: Nesterov accelerated gradient, kind: method}
+      - {name: Adam, kind: method}
+      - {name: Learning rate schedule, kind: method}
+  - heading: Gradients and initialization
+    items:
+      - {name: Backpropagation, kind: method}
+      - {name: Automatic differentiation, kind: method}
+      - {name: Computational graph, kind: concept}
+      - {name: Vanishing and exploding gradients, kind: concept}
+      - {name: Xavier initialization, kind: method}
+      - {name: He initialization, kind: method}
+  - heading: Measuring performance
+    items:
+      - {name: Generalization, kind: concept}
+      - {name: Bias-variance tradeoff, kind: concept}
+      - {name: Overfitting, kind: concept}
+      - {name: Double descent, kind: finding}
+      - {name: Hyperparameter optimization, kind: method}
+  - heading: Regularization
+    items:
+      - {name: Regularization, kind: concept}
+      - {name: Weight decay, kind: method}
+      - {name: Early stopping, kind: method}
+      - {name: Ensemble learning, kind: method}
+      - {name: Dropout, kind: method, node: dropout}
+      - {name: Data augmentation, kind: method}
+      - {name: Label smoothing, kind: method}
+      - {name: Implicit regularization of stochastic gradient descent, kind: finding}
+  - heading: Convolutional networks
+    items:
+      - {name: Convolution (neural networks), kind: concept}
+      - {name: Convolutional neural network, kind: architecture}
+      - {name: Pooling, kind: method}
+      - {name: Receptive field, kind: concept}
+      - {name: LeNet, kind: model}
+      - {name: AlexNet, kind: model}
+      - {name: VGG, kind: model}
+      - {name: U-Net, kind: architecture}
+  - heading: Residual networks and normalization
+    items:
+      - {name: Residual connection, kind: method}
+      - {name: ResNet, kind: architecture}
+      - {name: Batch normalization, kind: method}
+      - {name: Layer normalization, kind: method}
+      - {name: DenseNet, kind: architecture}
+  - heading: Sequences and attention
+    items:
+      - {name: Recurrent neural network, kind: architecture}
+      - {name: Backpropagation through time, kind: method}
+      - {name: Long short-term memory, kind: architecture}
+      - {name: Gated recurrent unit, kind: architecture}
+      - {name: Sequence-to-sequence model, kind: architecture}
+      - {name: Attention mechanism, kind: method}
+      - {name: Self-attention, kind: method}
+      - {name: Scaled dot-product attention, kind: method}
+      - {name: Multi-head attention, kind: method}
+      - {name: Positional encoding, kind: method}
+      - {name: Transformer, kind: architecture}
+      - {name: Tokenization, kind: method}
+      - {name: BERT, kind: model}
+      - {name: GPT, kind: model}
+      - {name: Vision transformer, kind: architecture}
+  - heading: Graph neural networks
+    items:
+      - {name: Graph neural network, kind: architecture}
+      - {name: Message passing neural network, kind: architecture}
+      - {name: Graph convolutional network, kind: architecture}
+      - {name: Graph attention network, kind: architecture}
+  - heading: Generative models
+    items:
+      - {name: Generative model, kind: concept}
+      - {name: Latent variable model, kind: concept}
+      - {name: Generative adversarial network, kind: architecture}
+      - {name: Mode collapse, kind: concept}
+      - {name: Wasserstein GAN, kind: method}
+      - {name: Normalizing flow, kind: method}
+      - {name: Autoencoder, kind: architecture}
+      - {name: Variational autoencoder, kind: architecture}
+      - {name: Evidence lower bound, kind: definition}
+      - {name: Reparameterization trick, kind: method}
+      - {name: Diffusion model, kind: method}
+      - {name: Denoising diffusion probabilistic model, kind: method}
+      - {name: Score matching, kind: method}
+      - {name: Classifier-free guidance, kind: method}
+  - heading: Why deep learning works
+    items:
+      - {name: Loss landscape, kind: concept}
+      - {name: Overparameterization, kind: concept}
+      - {name: Lottery ticket hypothesis, kind: finding}
+      - {name: Neural tangent kernel, kind: concept}
+      - {name: Scaling laws, kind: finding}

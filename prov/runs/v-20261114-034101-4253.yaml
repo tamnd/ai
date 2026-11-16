@@ -1,0 +1,46 @@
+run: v-20261114-034101-4253
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-val-errors
+  work: northcutt-2021-pervasive-label-errors
+  locator: p. 2
+  key: 2b97ce90e5828d362c0c91279853b69c
+  spans:
+  - start: 3300
+    end: 6847
+  verdict: supported
+  quote: We identify, for example, 2916 (6%) errors in the ImageNet validation set
+  note: The passage gives the claimed count and percentage and says the identified errors were validated through human evaluation.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-val-errors-20
+  work: northcutt-2021-pervasive-label-errors
+  locator: p. 10
+  key: 2fdcaa01c5ec7dcd4b2d5228d064f819
+  spans:
+  - start: 37013
+    end: 41445
+  verdict: supported
+  quote: we can more accurately estimate that the ImageNet validation set contains closer to 20% label errors
+  note: The passage attributes the higher estimate to errors in images that confident learning did not flag.
+- slug: imagenet-ilsvrc-2012
+  verifier: codex:gpt-6-sol
+  tag: NEW-imagenet-ilsvrc-2012
+  claim: c-reduction
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 22
+  key: 9251b7617457a275cab1d4dc9496748b
+  spans:
+  - start: 88004
+    end: 93119
+  verdict: supported
+  quote: there has been a 2.4x reduction in image classification error (from 16.4% to 6.7%)
+  note: The passage places this reduction since 2012 and limits the comparison to teams using the provided training data.

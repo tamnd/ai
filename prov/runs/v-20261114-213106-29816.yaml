@@ -1,0 +1,605 @@
+run: v-20261114-213106-29816
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-belkin-curve
+  work: belkin-2018-reconciling-bias-variance
+  locator: the abstract
+  key: d527de639a909f6c936d85f05397afc2
+  spans:
+  - start: 283
+    end: 1996
+  verdict: supported
+  quote: This “double descent” curve subsumes the textbook U-shaped biasvariance trade-off curve by showing how increasing
+    model capacity beyond the point of interpolation results in improved performance.
+  note: The abstract states the claimed curve and says the authors provide evidence across a wide spectrum of models and datasets.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-rff-mnist
+  work: belkin-2018-reconciling-bias-variance
+  locator: Section 2, Figure 2
+  key: d0faca4440f7088f2ce1c18fe94cc8bb
+  spans:
+  - start: 9857
+    end: 19683
+  verdict: supported
+  quote: The model class that achieves interpolation with fewest parameters (N = n random features) yields the least accurate
+    predictor.
+  note: The passage also describes the initial U-shape, the interpolation peak, and improved accuracy as features increase
+    beyond n.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-threshold-nk
+  work: belkin-2018-reconciling-bias-variance
+  locator: Figure 4, p. 8
+  key: f65df8a8b75b62d49fcd23a04f080c6b
+  spans:
+  - start: 21123
+    end: 21619
+  verdict: supported
+  quote: The interpolation threshold (black dotted line) is observed at n · K.
+  note: The caption identifies the single-hidden-layer MNIST network, n = 4,000, and K = 10.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-trees
+  work: belkin-2018-reconciling-bias-variance
+  locator: Section 3
+  key: 9c9cf30e0c0ff4bb0e91db67b7910e9c
+  spans:
+  - start: 19683
+    end: 23026
+  verdict: supported
+  quote: boosting with decision trees and Random Forests also show similar generalization behavior as neural nets, both before
+    and after the interpolation threshold.
+  note: The passage states the comparison directly and later reports similar behavior for L2-boosting.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-deep
+  work: nakkiran-2019-deep-double-descent
+  locator: the abstract
+  key: 39046d6d3b9ad355c6ff8d7aafd4d7c9
+  spans:
+  - start: 0
+    end: 994
+  verdict: supported
+  quote: as we increase model size, performance first gets worse and then gets better.
+  note: The abstract also explicitly says double descent occurs as a function of training epochs.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-deep-range
+  work: nakkiran-2019-deep-double-descent
+  locator: Section 2
+  key: deadd8afef7069cec7462c20bba6bc3e
+  spans:
+  - start: 6868
+    end: 12128
+  verdict: supported
+  quote: model architectures (CNNs, ResNets, Transformers), optimizers (SGD, Adam)
+  note: The same passage names CIFAR-10, CIFAR-100, and IWSLT‘14 de-en with varying label noise.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-emc
+  work: nakkiran-2019-deep-double-descent
+  locator: Section 2
+  key: c7a34a19571e43b1389a3cf06d89e214
+  spans:
+  - start: 6868
+    end: 12128
+  verdict: supported
+  quote: the maximum number of samples n on which T achieves on average ≈ 0 training error.
+  note: This is the passage’s stated definition of effective model complexity.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-hypothesis
+  work: nakkiran-2019-deep-double-descent
+  locator: Section 2
+  key: 25a86d47769609316f35537e572361d9
+  spans:
+  - start: 6868
+    end: 12128
+  verdict: supported
+  quote: "if EMCD,\x0F (T ) ≈ n, then a perturbation of T that increases its effective complexity might decrease or increase\
+    \ the test error."
+  note: The preceding two regimes also state that increasing effective complexity decreases test error when it is sufficiently
+    below or above n.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-more-data
+  work: nakkiran-2019-deep-double-descent
+  locator: p. 2, Figure 3
+  key: 5520bc20e9ecde4f43b1127578682956
+  spans:
+  - start: 2563
+    end: 10029
+  verdict: supported
+  quote: Figure 3 demonstrates cases in which increasing the number of samples by a factor of 4.5 results in worse test performance.
+  note: The figure caption identifies Transformers, German-to-English translation, per-token perplexity, and the 4k and 18k
+    samples.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-shift
+  work: nakkiran-2019-deep-double-descent
+  locator: Section 7
+  key: 27dd89907a91cd91a970abda08b62980
+  spans:
+  - start: 22230
+    end: 25066
+  verdict: supported
+  quote: increasing the number of samples shrinks the area under the curve.
+  note: The next sentence states that the curve shifts right and its test-error peak occurs at greater model complexity.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-prehistory
+  work: loog-2020-brief-prehistory-double-descent
+  locator: p. 1
+  key: ec73ac7f998ceca21a6c12794cd6f93e
+  spans:
+  - start: 0
+    end: 2888
+  verdict: supported
+  quote: Already in 1989, using artificial data, Vallet et al. [2] experimentally demonstrate double descent
+  note: The passage identifies minimum-norm linear regression as their method and credits Opper et al. with a first theoretical
+    result.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-duin
+  work: loog-2020-brief-prehistory-double-descent
+  locator: p. 1
+  key: aefb2240cc489c4f76a20c51a72fdf47
+  spans:
+  - start: 0
+    end: 2888
+  verdict: supported
+  quote: Duin [6] is the first to show feature curves on real-world data quite similar to the double-descent curves in [1].
+  note: The sentence identifies Duin’s method as a pseudo-Fisher linear discriminant.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-diverge
+  work: hastie-2019-surprises-ridgeless-least-squares
+  locator: Section 1.1
+  key: 1c0c3a99fcfe2b72549c501b8915db62
+  spans:
+  - start: 6896
+    end: 20949
+  verdict: supported
+  quote: Its risk is purely variance (there is no bias)
+  note: The same paragraph says the estimator equals standard least squares for γ < 1 and that asymptotic risk diverges as
+    γ approaches 1.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-hastie-nonlinear
+  work: hastie-2019-surprises-ridgeless-least-squares
+  locator: the abstract
+  key: 5c1aad8b38e3de4a09957c8cb28e7867
+  spans:
+  - start: 185
+    end: 1253
+  verdict: supported
+  quote: 'We consider two different models for the feature distribution: a linear model'
+  note: The abstract also specifies the random one-layer neural-network feature model and says the analysis recovers double
+    descent in prediction risk.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-advani
+  work: advani-2017-high-dimensional-dynamics-generalization
+  locator: the abstract
+  key: b09f32464b332eb12b10959a3f1872ed
+  spans:
+  - start: 373
+    end: 2368
+  verdict: supported
+  quote: Overtraining is worst at intermediate network sizes, when the effective number of free parameters equals the number
+    of samples
+  note: The passage adds that making a network smaller or larger can reduce overtraining.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-epoch-wise
+  work: nakkiran-2019-deep-double-descent
+  locator: Section 6
+  key: 9c9760a73470ec8f6656d662df90e1da
+  spans:
+  - start: 19782
+    end: 22230
+  verdict: supported
+  quote: test error first decreases then increases near the interpolation threshold, and then decreases again.
+  note: The passage attributes this behavior to sufficiently large models and reports it across multiple datasets and architectures
+    with label noise.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-ablation
+  work: schaeffer-2023-double-descent-demystified
+  locator: the abstract
+  key: ac10ec1dd3309d5955dcd9e620f31f44
+  spans:
+  - start: 577
+    end: 1938
+  verdict: supported
+  quote: We demonstrate that double descent occurs on real data when using ordinary linear regression
+  note: The abstract also says ablating any of the three identified factors removes double descent.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-label-noise
+  work: nakkiran-2019-deep-double-descent
+  locator: Section 2
+  key: e97277b4048c06763ba658c2416b7618
+  spans:
+  - start: 6868
+    end: 12128
+  verdict: supported
+  quote: We observe all forms of double descent most strongly in settings with label noise in the train set
+  note: The passage also lists realistic test-error peaks without label noise.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-misspecification
+  work: nakkiran-2019-deep-double-descent
+  locator: Section 8
+  key: 01532f466c13ee5b84e52f3292a06ba9
+  spans:
+  - start: 25066
+    end: 53070
+  verdict: unsupported
+  quote: However, we believe this effect is not fundamentally about label noise, but rather about model mis-specification.
+  note: The claim should retain the authors’ qualification that this is their belief and that they view added label noise
+    as a proxy for harder distributions.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-no-residual
+  work: schaeffer-2023-double-descent-demystified
+  locator: Section 6
+  key: f496bc328bf0163de2655e854d5feaee
+  spans:
+  - start: 22520
+    end: 25638
+  verdict: supported
+  quote: The best possible model in the model class makes no errors on the training data.
+  note: The passage gives a noiseless linear relationship as an example for which double descent will not occur.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-ridge-dominates
+  work: hastie-2019-surprises-ridgeless-least-squares
+  locator: Section 1.1
+  key: a8282ce690879a545006391b7da5d386
+  spans:
+  - start: 6896
+    end: 20949
+  verdict: supported
+  quote: Optimally-tuned ridge regression uses a non-vanishing regularization λ > 0, and dominates the min-norm least squares
+    estimator in risk
+  note: The passage states the comparison across γ and SNR in its discussion of isotropic features.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-optimal-reg
+  work: nakkiran-2020-optimal-regularization-double-descent
+  locator: the abstract
+  key: 8b5bacd69bc1d6c563e18ce541f27d77
+  spans:
+  - start: 253
+    end: 1298
+  verdict: supported
+  quote: optimally-tuned `2 regularization achieves monotonic test performance as we grow either the sample size or the model
+    size.
+  note: The abstract limits the proof to certain isotropic linear regression models and separately reports empirical mitigation
+    in broader models.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-masking
+  work: belkin-2018-reconciling-bias-variance
+  locator: Section 4
+  key: d98e2197434d449a4321c17319e4045c
+  spans:
+  - start: 23026
+    end: 28755
+  verdict: supported
+  quote: Regularization, of all forms, can both prevent interpolation and change the effective capacity of the function class
+  note: The passage says these effects can attenuate or mask the interpolation peak.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-early-stopping
+  work: nakkiran-2019-deep-double-descent
+  locator: Section 8
+  key: 16cafd9b5b08d8cef8a7c89ab09b5f0f
+  spans:
+  - start: 25066
+    end: 53070
+  verdict: supported
+  quote: many of the phenomena that we highlight often do not occur with optimal early-stopping.
+  note: The passage gives the stated effective-complexity explanation conditionally, when early stopping prevents zero training
+    error.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-early-stopping-exception
+  work: nakkiran-2019-deep-double-descent
+  locator: Section 8
+  key: 7f1cb4bf2667a12fcb315b16cfa9dcce
+  spans:
+  - start: 25066
+    end: 53070
+  verdict: supported
+  quote: model-wise double descent can still occur even with optimal early stopping (ResNets on CIFAR-100 with no label noise
+  note: The passage also says the authors had not observed more data hurting with optimal early stopping.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-global-min
+  work: hastie-2019-surprises-ridgeless-least-squares
+  locator: Section 1.1
+  key: a581da856083d42642548fdf90e9e750
+  spans:
+  - start: 6896
+    end: 20949
+  verdict: supported
+  quote: achieves its global minimum in the underparametrized regime
+  note: The same isotropic-features discussion says a misspecified model with SNR above 1 and sufficiently strong approximation
+    bias can have its global minimum above the interpolation threshold.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-axes
+  work: curth-2023-u-turn-double-descent
+  locator: the abstract
+  key: fd0b27edca229c60fe67142cf5d23ea4
+  spans:
+  - start: 305
+    end: 2283
+  verdict: supported
+  quote: the second descent appears exactly (and only) when and where the transition between these underlying axes occurs
+  note: The abstract identifies distinct complexity axes for the non-neural methods and says the transition need not occur
+    at p = n.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-tree-axes
+  work: curth-2023-u-turn-double-descent
+  locator: Section 2.1
+  key: c153fb856b25c36f4571c26e1add655f
+  spans:
+  - start: 10530
+    end: 14027
+  verdict: supported
+  quote: the number of model parameters is initially controlled through the maximum allowed number of terminal leaf nodes
+    P leaf .
+  note: The passage then describes averaging more full-depth trees and reports U- or L-shaped error along the separate axes.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-curth-scope
+  work: curth-2023-u-turn-double-descent
+  locator: Section 6
+  key: 6f68b8dd7b5ff31950de60479eacde24
+  spans:
+  - start: 43711
+    end: 48229
+  verdict: supported
+  quote: we intentionally limited ourselves to the study of non-deep double descent.
+  note: The passage explicitly leaves applying the approach to deep learning as a future question.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-svm
+  work: loog-2020-brief-prehistory-double-descent
+  locator: p. 2
+  key: c58a254c9a120f90557664f9938d6d08
+  spans:
+  - start: 2888
+    end: 5510
+  verdict: supported
+  quote: the linear SVM shows regular monotonic behavior.
+  note: The passage says analytic results show the same for the perceptron of optimal stability.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-occam
+  work: belkin-2018-reconciling-bias-variance
+  locator: p. 3
+  key: 8ae4ad607c02986583a3c7d2a2084a85
+  spans:
+  - start: 6099
+    end: 9764
+  verdict: supported
+  quote: Choosing the smoothest function that perfectly fits observed data is a form of Occam’s razor
+  note: The passage presents smaller-norm interpolators in larger classes as its proposed explanation for improved performance.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-variance-falls
+  work: hastie-2019-surprises-ridgeless-least-squares
+  locator: Section 1.1
+  key: df6f944ed8bddbe959cf3ba33778a535
+  spans:
+  - start: 6896
+    end: 20949
+  verdict: supported
+  quote: in the overparametrized regime, the variance decreases with γ.
+  note: The passage explains this through decreasing solution norm as columns are added and says bias increases for fully
+    specified models.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-three-factors
+  work: schaeffer-2023-double-descent-demystified
+  locator: Section 6
+  key: dac792726d45427715e9a816d839b92c
+  spans:
+  - start: 22520
+    end: 25638
+  verdict: supported
+  quote: Double descent will not occur if any of the three factors are absent.
+  note: The passage identifies the three factors as small nonzero singular values, test variation in other directions, and
+    residual errors in the optimal model.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-ridge-gap
+  work: schaeffer-2023-double-descent-demystified
+  locator: Section 6
+  key: 7e335ed4acec94749a9b30ec1f0bab95
+  spans:
+  - start: 22520
+    end: 25638
+  verdict: supported
+  quote: switching from ordinary linear regression to ridge regression, which effectively adds a gap separating the smallest
+    non-zero singular value from 0.
+  note: The passage also reports that removing small singular values prevents double descent in its ablations.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-frozen
+  work: advani-2017-high-dimensional-dynamics-generalization
+  locator: the abstract
+  key: f202bfe2103a1b6587edd1ee854ffd95
+  spans:
+  - start: 373
+    end: 2368
+  verdict: supported
+  quote: there is a frozen subspace of the weights in which no learning occurs under gradient descent
+  note: The abstract also identifies better-conditioned input correlations as protection against overtraining.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-fold-back
+  work: curth-2023-u-turn-double-descent
+  locator: the abstract
+  key: a4c1aed650b99c957376aa86de6db901
+  spans:
+  - start: 305
+    end: 2283
+  verdict: supported
+  quote: their apparent double descent curves do indeed fold back into more traditional convex shapes
+  note: The abstract attributes this result to a generalized measure of effective parameters used on unseen examples.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-overlooked
+  work: belkin-2018-reconciling-bias-variance
+  locator: Section 4
+  key: 18770768d73a9b941aa749c241689a58
+  spans:
+  - start: 23026
+    end: 28755
+  verdict: supported
+  quote: the peak at the interpolation threshold is observed within a narrow range of parameters.
+  note: The passage says missing that range can mislead and that early stopping makes the peak difficult to observe.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-practice
+  work: nakkiran-2019-deep-double-descent
+  locator: Section 8
+  key: 22b2ab0d7b40879f5a16113dc844d38b
+  spans:
+  - start: 25066
+    end: 53070
+  verdict: supported
+  quote: small changes to the model or training procedure may yield unexpected behavior
+  note: The passage applies this warning when a model and procedure can just barely fit the training set.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-tuned-scaling
+  work: nakkiran-2020-optimal-regularization-double-descent
+  locator: the abstract
+  key: c1cf3c2afefd22c32849274fe8e93417
+  spans:
+  - start: 253
+    end: 1298
+  verdict: supported
+  quote: it may also be informative to study the test risk scalings of various algorithms in the context of appropriately
+    tuned regularization.
+  note: This is the abstract’s qualified recommendation.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-tradeoff
+  work: curth-2023-u-turn-double-descent
+  locator: Section 6
+  key: 5f7d7f43d086d58e3e7bc41c6138e2b5
+  spans:
+  - start: 43711
+    end: 48229
+  verdict: supported
+  quote: All methods appear to have one hyperparameter axis to which error can be highly sensitive
+  note: The passage explicitly pairs that observation with another axis on which bigger is better or at least no worse.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-hist-1989
+  work: loog-2020-brief-prehistory-double-descent
+  locator: p. 1, p. 2
+  key: 9af35d6a9ab1b42f10ff7a8f6a75485d
+  spans:
+  - start: 0
+    end: 5510
+  verdict: supported
+  quote: F Vallet, J-G Cailton, and Ph Refregier. Linear and nonlinear extension of the pseudoinverse solution for learning
+    boolean functions. Europhysics Letters, 9(4):315, 1989.
+  note: The passage credits Opper et al. with a first theoretical result and its reference lists the four authors and 1990
+    date.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-hist-pfld
+  work: loog-2020-brief-prehistory-double-descent
+  locator: p. 1, p. 2
+  key: cb29a7ff11b1bace08ee11660949fc1a
+  spans:
+  - start: 0
+    end: 5510
+  verdict: supported
+  quote: pseudo-Fisher linear discriminant (PFLD, equivalent to MNLR)
+  note: The passage connects Duin, Skurichina and Duin, and Raudys and Duin to the discriminant and its double-descent history.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-hist-2017
+  work: advani-2017-high-dimensional-dynamics-generalization
+  locator: the title page
+  key: a5799cd229463cb4e82b69ca74f6564b
+  spans:
+  - start: 0
+    end: 2617
+  verdict: supported
+  quote: arXiv:1710.03667v1 [stat.ML] 10 Oct 2017
+  note: The title page gives the stated title and names Advani and Saxe.
+- slug: double-descent
+  verifier: codex:gpt-6-sol
+  tag: NEW-double-descent
+  claim: c-hist-2019
+  work: nakkiran-2019-deep-double-descent
+  locator: the title page
+  key: 21fa932ed0add015e10a40e52ac7348f
+  spans:
+  - start: 0
+    end: 2563
+  verdict: supported
+  quote: arXiv:1912.02292v1 [cs.LG] 4 Dec 2019
+  note: The title page gives the stated title and lists all six named authors.
