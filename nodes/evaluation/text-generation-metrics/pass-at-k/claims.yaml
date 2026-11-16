@@ -1,0 +1,266 @@
+# The claims of the pass@k page (spec 07). The build computes the labels.
+- id: c-chen-n200
+  type: definitional
+  text: "To evaluate pass@k, Chen et al. generate n >= k samples per task (in this paper, n = 200 and k <= 100), count the number of correct samples c <= n which pass unit tests, and calculate the unbiased estimator (1)."
+  evidence:
+    - {work: "chen-2021-evaluating-large-language-models-trained-on-code", role: original, locator: "p. 3", stance: for}
+
+- id: c-product-form
+  type: mathematical
+  text: "For 1 <= k <= n and 0 <= c <= n, 1 - C(n - c, k) / C(n, k) = 1 - prod_{i = n - c + 1}^{n} (1 - k / i) when n - c >= k, and it equals 1 when n - c < k."
+  assumes: ["1 <= k <= n", "0 <= c <= n are integers", "C(a, k) = 0 for 0 <= a < k"]
+  derivation: "derivations/unbiased-estimator.md"
+
+- id: c-unbiased
+  type: mathematical
+  text: "If c ~ Binomial(n, p) with n >= k >= 1, then E[1 - C(n - c, k) / C(n, k)] = 1 - (1 - p)^k, so the estimate of one problem is unbiased for its pass@k, and the mean over problems is unbiased for the mean pass@k."
+  assumes: ["the n samples of a problem are independent draws from the same model, prompt and sampling settings", "each sample passes the deterministic unit tests with the same probability p", "n >= k >= 1"]
+  derivation: "derivations/unbiased-estimator.md"
+
+- id: c-chen-unbiased-reason
+  type: attributive
+  text: "(1) is unbiased, because it estimates the fail probability (1 - pass@1)^k as the probability of drawing k failed samples without replacement."
+  evidence:
+    - {work: "chen-2021-evaluating-large-language-models-trained-on-code", role: original, locator: "p. 19", stance: for}
+
+- id: c-plug-in-biased
+  type: mathematical
+  text: "If c ~ Binomial(n, p) with 2 <= k <= n and 0 < p < 1, then E[1 - (1 - c/n)^k] < 1 - (1 - p)^k; for k = 1 both estimators equal c/n."
+  assumes: ["c ~ Binomial(n, p)", "2 <= k <= n for the strict inequality", "0 < p < 1"]
+  derivation: "derivations/unbiased-estimator.md"
+
+- id: c-plug-in-underestimate
+  type: attributive
+  text: "Estimating pass@k = 1 - (1 - pass@1)^k with 1 - (1 - p-hat)^k using the empirical pass@1 results in a consistent underestimate; the gap does not fully close even when n > 5k, and results can seem better with more samples."
+  evidence:
+    - {work: "chen-2021-evaluating-large-language-models-trained-on-code", role: original, locator: "p. 19", stance: for}
+
+- id: c-range-monotone
+  type: mathematical
+  text: "For 1 <= k <= n, the estimate 1 - C(n - c, k) / C(n, k) is in [0, 1], it is 0 exactly when c = 0, and it is nondecreasing in c for fixed n and k and nondecreasing in k for fixed n and c."
+  assumes: ["1 <= k <= n", "0 <= c <= n are integers"]
+  derivation: "derivations/unbiased-estimator.md"
+
+- id: c-special-cases
+  type: mathematical
+  text: "The estimate 1 - C(n - c, k) / C(n, k) equals c/n for k = 1, equals 1 if c >= 1 and 0 if c = 0 for k = n, and equals k/n for c = 1."
+  assumes: ["1 <= k <= n", "0 <= c <= n are integers"]
+  derivation: "derivations/unbiased-estimator.md"
+
+- id: c-only-two-unbiased
+  type: attributive
+  text: "While all estimators mentioned previously are consistent, only the empirical estimate used by Kulal et al. (2019), and (1) are unbiased."
+  evidence:
+    - {work: "chen-2021-evaluating-large-language-models-trained-on-code", role: original, locator: "p. 19", stance: for}
+
+- id: c-figure-3
+  type: definitional
+  text: "Figure 3 is a numerically stable numpy script for an unbiased estimate of pass@k: pass_at_k(n, c, k) returns 1.0 if n - c < k, and otherwise 1.0 - np.prod(1.0 - k / np.arange(n - c + 1, n + 1))."
+  evidence:
+    - {work: "chen-2021-evaluating-large-language-models-trained-on-code", role: original, locator: "p. 3", stance: for}
+
+- id: c-humaneval-release
+  type: historical
+  text: "Chen et al. release the HumanEval data along with an evaluation framework at https://www.github.com/openai/human-eval."
+  evidence:
+    - {work: "chen-2021-evaluating-large-language-models-trained-on-code", role: original, locator: "p. 2", stance: for}
+
+- id: c-oracle
+  type: attributive
+  text: "Pass@k can also be interpreted as the result of evaluating the best out of k samples, where the best sample is picked by an oracle with prior knowledge of the unit tests."
+  evidence:
+    - {work: "chen-2021-evaluating-large-language-models-trained-on-code", role: original, locator: "p. 5", stance: for}
+
+- id: c-logprob-ranking
+  type: empirical
+  text: "Choosing the sample with the highest mean token log probability outperforms evaluating a random sample, while choosing the sample based on sum log probability can perform slightly worse than picking randomly."
+  scope:
+    models: "Codex-12B"
+    data: ["HumanEval"]
+    scale: "12B parameters, samples at temperature 0.8"
+    setting: "select one of k samples without access to the unit tests"
+  evidence:
+    - {work: "chen-2021-evaluating-large-language-models-trained-on-code", role: original, locator: "p. 5", stance: for}
+
+- id: c-codex-s-ranking
+  type: empirical
+  text: "Within 100 samples, Codex-S is able to generate at least one correct function for 77.5% of the problems, and the sample with highest mean log-probability passes unit tests for 44.5% of the problems."
+  scope:
+    models: "Codex-S"
+    data: ["HumanEval"]
+    scale: "100 samples per problem at temperature 0.8"
+    setting: "oracle selection by the unit tests against selection by mean log-probability"
+  evidence:
+    - {work: "chen-2021-evaluating-large-language-models-trained-on-code", role: original, locator: "p. 2", stance: for}
+
+- id: c-temperature
+  type: empirical
+  text: "Higher temperatures are optimal for larger k, because the resulting set of samples has higher diversity and the metric rewards only whether the model generates any correct solution; for a 679M parameter model, the optimal temperature for pass@1 is T* = 0.2 and for pass@100 is T* = 0.8."
+  scope:
+    models: "Codex models; the temperatures are for the 679M-parameter model"
+    data: ["HumanEval"]
+    scale: "679M parameters"
+    setting: "pass@k against the number of samples k and the sampling temperature"
+  evidence:
+    - {work: "chen-2021-evaluating-large-language-models-trained-on-code", role: original, locator: "p. 5", stance: for}
+
+- id: c-austin-sampling
+  type: empirical
+  text: "Lower temperatures (more greedy decoding) perform better with only a single evaluation allowed, but higher temperature, less greedy strategies begin to solve more tasks within a budget of 10 samples; beam search performs extremely poorly, worse than any of the temperature settings considered."
+  scope:
+    models: "the 137B-parameter decoder-only Transformer of Austin et al."
+    data: ["MBPP"]
+    scale: "137B parameters"
+    setting: "tasks solved against the number of samples, for temperature sampling and beam search"
+  evidence:
+    - {work: "austin-2021-program-synthesis-large-language-models", role: original, locator: "p. 9", stance: for}
+
+- id: c-chen-sampling
+  type: definitional
+  text: "To compute pass@k, each HumanEval problem is assembled into a prompt of a header, a signature and a docstring; tokens are sampled until one of the stop sequences '\\nclass', '\\ndef', '\\n#', '\\nif' or '\\nprint'; nucleus sampling with top p = 0.95 is used for all sampling evaluation."
+  evidence:
+    - {work: "chen-2021-evaluating-large-language-models-trained-on-code", role: original, locator: "p. 4", stance: for}
+
+- id: c-gptj-two-numbers
+  type: empirical
+  text: "GPT-J-6B achieves 11.6% pass@1 and 27.7% pass@100 on HumanEval, where pass rates are obtained by taking the best result from evaluating at temperatures 0.2 and 0.8 for GPT-J."
+  scope:
+    models: "GPT-J-6B"
+    data: ["HumanEval"]
+    scale: "6B parameters"
+    setting: "pass@1 and pass@100, each the best over temperatures 0.2 and 0.8"
+  evidence:
+    - {work: "chen-2021-evaluating-large-language-models-trained-on-code", role: original, locator: "p. 6", stance: for}
+
+- id: c-austin-challenge
+  type: empirical
+  text: "On 50 sampled MBPP test problems with added adversarial test cases, 33 had solutions solving all of the normal test cases and 29 had solutions solving the normal and the challenge test cases, solution rates of 66% and 58%, so roughly 12% of what was counted as solutions would fail adversarially generated test cases."
+  scope:
+    models: "the best model of Austin et al."
+    data: ["MBPP"]
+    scale: "50 of the 500 test problems"
+    setting: "hand-written adversarial challenge tests"
+  evidence:
+    - {work: "austin-2021-program-synthesis-large-language-models", role: original, locator: "p. 8", stance: for}
+
+- id: c-austin-asserts
+  type: empirical
+  text: "Very occasionally, the model produces a solution that passes the test cases trivially by reading the assert statements and hard-coding an if-expression; for the Woodall number problem it returns True if the input is 383 and False otherwise."
+  scope:
+    models: "the models of Austin et al."
+    data: ["MBPP"]
+    scale: "unknown"
+    setting: "few-shot prompts that contain the assert statements"
+  evidence:
+    - {work: "austin-2021-program-synthesis-large-language-models", role: original, locator: "p. 9", stance: for}
+
+- id: c-handwritten
+  type: attributive
+  text: "It is important for the HumanEval tasks to be hand-written, since the models are trained on a large fraction of GitHub, which already contains solutions to problems from a variety of sources."
+  evidence:
+    - {work: "chen-2021-evaluating-large-language-models-trained-on-code", role: original, locator: "p. 4", stance: for}
+
+- id: c-sandbox
+  type: definitional
+  text: "Chen et al. developed a sandbox environment to safely run untrusted programs against unit tests, and selected the gVisor container runtime as the main host protection component."
+  evidence:
+    - {work: "chen-2021-evaluating-large-language-models-trained-on-code", role: original, locator: "p. 4", stance: for}
+
+- id: c-codex-headline
+  type: empirical
+  text: "On HumanEval, Codex solves 28.8% of the problems, while GPT-3 solves 0% and GPT-J solves 11.4%; using repeated sampling, 70.2% of the problems are solved with 100 samples per problem."
+  scope:
+    models: "Codex-12B, GPT-3 and GPT-J"
+    data: ["HumanEval"]
+    scale: "Codex up to 12B parameters"
+    setting: "one sample per problem, and 100 samples per problem"
+  evidence:
+    - {work: "chen-2021-evaluating-large-language-models-trained-on-code", role: original, locator: "p. 1", stance: for}
+
+- id: c-kulal-success-rate
+  type: definitional
+  text: "The main evaluation metric is success rate at B: the fraction of test examples where the system generates an accepted program under the budget of B trials."
+  evidence:
+    - {work: "kulal-2019-spoc-search-based-pseudocode-to-code", role: original, locator: "p. 6", stance: for}
+
+- id: c-kulal-accepted
+  type: definitional
+  text: "The program is accepted if it successfully compiles and passes all public test cases as well as additional hidden test cases; at test time the system has the public test cases, not the hidden ones, and must output a single final program, which is validated on both."
+  evidence:
+    - {work: "kulal-2019-spoc-search-based-pseudocode-to-code", role: original, locator: "p. 3", stance: for}
+
+- id: c-austin-metric
+  type: definitional
+  text: "For each problem in the test dataset, Austin et al. use temperature sampling with temperature 0.5 to generate 80 samples of code and execute the code against tests, and report the percentage of tasks solved by any sample."
+  evidence:
+    - {work: "austin-2021-program-synthesis-large-language-models", role: original, locator: "p. 5", stance: for}
+    - {work: "austin-2021-program-synthesis-large-language-models", role: original, locator: "p. 6", stance: for}
+
+- id: c-apps-metrics
+  type: attributive
+  text: "The APPS paper reports two metrics: the percentage of problems where the model finds a correct solution (called the strict accuracy) and the percentage of unit tests passed, even if the solution is incorrect; Chen et al. focus only on strict accuracy."
+  evidence:
+    - {work: "chen-2021-evaluating-large-language-models-trained-on-code", role: original, locator: "p. 6", stance: for}
+
+- id: c-kulal-bleu
+  type: attributive
+  text: "Surface-form metrics such as exact sequence match and BLEU scores fail to account for functional correctness of the code; for instance, a prediction 'if (b)' is functionally equivalent to the gold code 'if (b == true)' when b is a boolean."
+  evidence:
+    - {work: "kulal-2019-spoc-search-based-pseudocode-to-code", role: original, locator: "p. 6", stance: for}
+
+- id: c-spoc-results
+  type: empirical
+  text: "The SPoC dataset contains 18,356 programs with human-authored pseudocode and test cases; under a budget of 100 program compilations, performing search improves the synthesis success rate over using the top-one translation of the pseudocode from 25.6% to 44.7%."
+  scope:
+    models: "the sequence-to-sequence translation model with best-first search of Kulal et al."
+    data: ["SPoC"]
+    scale: "a budget of 100 compilations"
+    setting: "pseudocode to C++ synthesis, success rate at B"
+  evidence:
+    - {work: "kulal-2019-spoc-search-based-pseudocode-to-code", role: original, locator: "p. 1", stance: for}
+
+- id: c-humaneval
+  type: definitional
+  text: "HumanEval is a set of 164 handwritten programming problems; each problem includes a function signature, docstring, body, and several unit tests, with an average of 7.7 tests per problem."
+  evidence:
+    - {work: "chen-2021-evaluating-large-language-models-trained-on-code", role: original, locator: "p. 4", stance: for}
+
+- id: c-kulal-pass-at-k
+  type: attributive
+  text: "Kulal et al. (2019) evaluate functional correctness using the pass@k metric, where k code samples are generated per problem, a problem is considered solved if any sample passes the unit tests, and the total fraction of problems solved is reported; computing pass@k in this way can have high variance."
+  evidence:
+    - {work: "chen-2021-evaluating-large-language-models-trained-on-code", role: original, locator: "pp. 2 to 3", stance: for}
+
+- id: c-match-metrics
+  type: attributive
+  text: "Match-based metrics are unable to account for the large and complex space of programs functionally equivalent to a reference solution."
+  evidence:
+    - {work: "chen-2021-evaluating-large-language-models-trained-on-code", role: original, locator: "p. 2", stance: for}
+
+- id: c-bleu-overlap
+  type: empirical
+  text: "For each problem, the distributions of BLEU scores for correct and incorrect solutions overlap significantly, so improvements in BLEU score may not indicate improved rates of functional correctness."
+  scope:
+    models: "Codex-12B"
+    data: ["HumanEval"]
+    scale: "samples at temperature 0.8, against the reference solutions"
+    setting: "BLEU of correct and incorrect samples"
+  evidence:
+    - {work: "chen-2021-evaluating-large-language-models-trained-on-code", role: original, locator: "p. 6", stance: for}
+
+- id: c-mbpp
+  type: definitional
+  text: "The Mostly Basic Programming Problems (MBPP) dataset contains 974 programming tasks, designed to be solvable by entry-level programmers."
+  evidence:
+    - {work: "austin-2021-program-synthesis-large-language-models", role: original, locator: "p. 1", stance: for}
+
+- id: c-austin-bleu
+  type: empirical
+  text: "BLEU score between generated samples and reference programs does not correlate well with synthesis performance; there is little correlation between the fraction of samples which solve a task and the average BLEU score of the samples against the reference program."
+  scope:
+    models: "the models of Austin et al."
+    data: ["MBPP"]
+    scale: "unknown"
+    setting: "fraction of samples solving each task against their average BLEU"
+  evidence:
+    - {work: "austin-2021-program-synthesis-large-language-models", role: original, locator: "p. 10", stance: for}

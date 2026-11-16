@@ -1,0 +1,801 @@
+# The claims of the knowledge distillation page (spec 07). The build computes the labels.
+
+# Setting
+
+- id: c-hi-ensemble-cumbersome
+  type: attributive
+  text: "Hinton et al. open with ensembles: almost any machine learning algorithm improves in performance if many different models are trained on the same data and their predictions averaged, but making predictions with the whole ensemble is cumbersome, and the computation may be too expensive for deployment to a large number of users."
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 1", stance: for}
+
+- id: c-hi-larva
+  type: attributive
+  text: "They compare this to insects, whose larval form is optimized for extracting energy and nutrients and whose adult form for travelling and reproduction: in machine learning, training and deployment have very different requirements, yet usually use very similar models."
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 1", stance: for}
+
+- id: c-hi-cumbersome
+  type: definitional
+  text: "In their account the cumbersome model is either an ensemble of separately trained models or one very large model that a very strong regularizer such as dropout kept in check, and after it has been trained, a different kind of training they call distillation transfers its knowledge to a small model better suited to deployment."
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 1", stance: for}
+
+- id: c-hi-caruana-pioneered
+  type: historical
+  text: "They credit Rich Caruana and his collaborators with pioneering a version of this strategy and with showing convincingly that a single small model can receive the knowledge transferred from a large ensemble."
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 1", stance: for}
+
+- id: c-hi-knowledge-mapping
+  type: attributive
+  text: "Hinton et al. argue that identifying the knowledge of a model with its learned parameter values makes it hard to see how the form of a model could change while the knowledge stays the same, and propose instead to view the knowledge as a learned mapping from input vectors to output vectors."
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 1", stance: for}
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 2", stance: for}
+
+- id: c-hi-relative-probabilities
+  type: attributive
+  text: "A model trained to maximize the log probability of the correct answer also assigns probabilities to all the incorrect answers, and even when these are very small some are much larger than others; how the model tends to generalize is told largely by the relative probabilities of the incorrect answers."
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 2", stance: for}
+
+- id: c-hi-bmw
+  type: attributive
+  text: "Their example is an image of a BMW: the chance of mistaking it for a garbage truck may be very small, yet that mistake is still many times more probable than taking it for a carrot."
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 2", stance: for}
+
+- id: c-hi-generalize-like
+  type: attributive
+  text: "Models are normally trained to fit the training data when the real aim is to generalize to new data; when distilling, the small model can be trained to generalize in the same way as the large one, and if the large one generalizes well because it averages a large ensemble, a small model trained this way typically does much better on test data than one trained in the normal way on the same training set."
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 2", stance: for}
+
+- id: c-ba-compression
+  type: historical
+  text: "Ba and Caruana describe model compression as training a compact model to approximate the function learned by a larger, more complex one, and cite Buciluǎ et al., whose small networks had 1000 times fewer parameters and were often just as accurate as the ensembles they mimicked."
+  evidence:
+    - {work: "ba-2014-do-deep-nets-need-to-be-deep", role: original, locator: "p. 2", stance: for}
+
+- id: c-ba-unlabeled
+  type: definitional
+  text: "Model compression passes unlabeled data through the large model to collect its scores and trains the smaller mimic model on this synthetically labeled data; the mimic is not trained on the original labels but on the function the larger model learned."
+  evidence:
+    - {work: "ba-2014-do-deep-nets-need-to-be-deep", role: original, locator: "p. 2", stance: for}
+
+# The method
+
+- id: c-hi-temperature
+  type: definitional
+  text: "Hinton et al. convert the logit z_i of each class into a probability q_i = exp(z_i/T)/Σ_j exp(z_j/T) with a softmax at temperature T, where T is normally set to 1 and a higher value of T produces a softer probability distribution over classes."
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 2", stance: for}
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 3", stance: for}
+
+- id: c-hi-soft-targets
+  type: definitional
+  text: "When the teacher is an ensemble, Hinton et al. use the arithmetic or the geometric mean of the members' predictive distributions as the soft targets, and use the class probabilities of the cumbersome model as soft targets for the small model, on the same training set or on a separate transfer set."
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 2", stance: for}
+
+- id: c-hi-mnist-ratios
+  type: attributive
+  text: "For tasks like MNIST, where the cumbersome model almost always produces the correct answer with very high confidence, much of the information about the learned function resides in the ratios of very small probabilities in the soft targets: one version of a 2 may be given a probability of 10⁻⁶ of being a 3 and 10⁻⁹ of being a 7, and another version the other way around."
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 2", stance: for}
+
+- id: c-hi-little-influence
+  type: attributive
+  text: "With probabilities this close to zero, the similarity structure has very little influence on transfer through the cross-entropy."
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 2", stance: for}
+
+- id: c-hi-caruana-logits
+  type: historical
+  text: "Caruana and his collaborators avoid the problem by training the small model on the logits, which are what goes into the final softmax, minimizing the squared difference between the logits of the cumbersome and the small model."
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 2", stance: for}
+
+- id: c-hi-raise-temperature
+  type: definitional
+  text: "Hinton et al. instead raise the temperature of the final softmax until the cumbersome model gives a suitably soft set of targets, then train the small model at that same high temperature to match them; matching logits turns out to be a special case of this."
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 2", stance: for}
+
+- id: c-hi-high-entropy
+  type: attributive
+  text: "Soft targets of high entropy carry much more information per training case than hard targets, and their gradients vary much less from case to case, so the small model can often be trained on much less data than the cumbersome one, with a much higher learning rate."
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 2", stance: for}
+
+- id: c-hi-simplest
+  type: definitional
+  text: "In the simplest form, the distilled model is trained on a transfer set with the teacher's soft targets at a high temperature, the same temperature is used in the student's softmax during training, and after training the student uses a temperature of 1."
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 3", stance: for}
+
+- id: c-hi-weighted-average
+  type: attributive
+  text: "When the correct labels are known for some or all of the transfer set, Hinton et al. found it better to take a weighted average of two objectives than to modify the soft targets: the cross-entropy with the soft targets at the high temperature, and the cross-entropy with the correct labels at temperature 1 on the same logits, with the best results generally from a considerably lower weight on the second."
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 3", stance: for}
+
+- id: c-hi-transfer-set
+  type: attributive
+  text: "The transfer set can be unlabeled data or the original training set; Hinton et al. found the original training set works well, especially with a small extra term that asks the student to predict the true targets, since a student that cannot match the soft targets exactly does better to err toward the correct answer."
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 2", stance: for}
+
+- id: c-hi-t2
+  type: attributive
+  text: "Hinton et al. state that since the magnitudes of the gradients produced by the soft targets scale as 1/T², it is important to multiply them by T² when using both hard and soft targets, which keeps the relative contributions of the hard and soft targets roughly unchanged if the temperature is changed while experimenting with meta-parameters."
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 3", stance: for}
+
+# Derivation
+
+- id: c-hi-eq2
+  type: attributive
+  text: "Hinton et al. give the cross-entropy gradient that each transfer case contributes with respect to each logit z_i of the distilled model, when the cumbersome model has logits v_i producing soft target probabilities p_i and transfer training is done at temperature T, as ∂C/∂z_i = (1/T)(q_i − p_i)."
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 3", stance: for}
+
+- id: c-soft-gradient
+  type: mathematical
+  text: "For teacher soft targets p = softmax(v/T) and student probabilities q = softmax(z/T), the gradient of the soft cross-entropy C = −Σ_i p_i log q_i with respect to the student logit z_i is (q_i − p_i)/T."
+  assumes: ["the teacher logits v and the student logits z are finite vectors of length N ≥ 2", "T > 0", "the teacher distribution p = softmax(v/T) does not depend on z"]
+  derivation: soft-target-gradient
+
+- id: c-kl-same-gradient
+  type: mathematical
+  text: "The KL divergence D_KL(p‖q) equals the soft cross-entropy C minus the teacher entropy H(p), which does not depend on the student logits, so both have the gradient (q − p)/T."
+  assumes: ["the teacher logits v and the student logits z are finite vectors of length N ≥ 2", "T > 0", "the teacher distribution p = softmax(v/T) does not depend on z"]
+  derivation: soft-target-gradient
+
+- id: c-gradient-sums-to-zero
+  type: mathematical
+  text: "The entries of the soft gradient (q − p)/T sum to zero, and adding the same constant to every student logit changes neither the soft loss nor its gradient."
+  assumes: ["the teacher logits v and the student logits z are finite vectors of length N ≥ 2", "T > 0", "the teacher distribution p = softmax(v/T) does not depend on z"]
+  derivation: soft-target-gradient
+
+- id: c-hard-special-case
+  type: mathematical
+  text: "With T = 1 and a one-hot target y in place of p, the soft gradient is q − y, the gradient of the ordinary cross-entropy."
+  assumes: ["T = 1", "the target is a one-hot vector y"]
+  derivation: soft-target-gradient
+
+- id: c-full-gradient
+  type: mathematical
+  text: "The gradient of the loss α T² D_KL(softmax(v/T)‖softmax(z/T)) + (1 − α)(−log softmax(z)_y) with respect to z is α T (q − p) + (1 − α)(softmax(z) − δ_y), with q and p at temperature T."
+  assumes: ["the teacher logits v and the student logits z are finite vectors of length N ≥ 2", "T > 0", "the teacher distribution p = softmax(v/T) does not depend on z", "0 ≤ α ≤ 1"]
+  derivation: soft-target-gradient
+
+- id: c-softmax-expansion
+  type: mathematical
+  text: "For fixed logits x and growing T, softmax(x/T)_i = 1/N + (x_i − x̄)/(NT) + O(1/T²), where x̄ is the mean of the logits."
+  assumes: ["v and z are fixed finite vectors of length N ≥ 2", "T grows while v and z stay fixed"]
+  derivation: high-temperature-limit
+
+- id: c-t2-factor
+  type: mathematical
+  text: "For fixed logits, q − p is of order 1/T and the soft gradient (q − p)/T of order 1/T², while the gradient of the hard-label term does not depend on T, so multiplying the soft term by T² keeps its gradient of order one as T changes."
+  assumes: ["v and z are fixed finite vectors of length N ≥ 2", "T grows while v and z stay fixed"]
+  derivation: high-temperature-limit
+
+- id: c-hi-eq4
+  type: attributive
+  text: "If the temperature is high compared with the magnitude of the logits, Hinton et al. approximate the gradient, and assuming the logits have been zero-meaned separately for each transfer case so that Σ_j z_j = Σ_j v_j = 0, obtain ∂C/∂z_i ≈ (1/(NT²))(z_i − v_i)."
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 3", stance: for}
+
+- id: c-hi-limit
+  type: attributive
+  text: "Hinton et al. conclude that in the high temperature limit distillation is equivalent to minimizing ½(z_i − v_i)², provided the logits are zero-meaned separately for each transfer case."
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 3", stance: for}
+
+- id: c-high-t-limit
+  type: mathematical
+  text: "With Δ_i = (z_i − z̄) − (v_i − v̄) the difference of the centred logits, T² ∂C/∂z_i = Δ_i/N + O(1/T) as T grows."
+  assumes: ["v and z are fixed finite vectors of length N ≥ 2", "T grows while v and z stay fixed"]
+  derivation: high-temperature-limit
+
+- id: c-logit-matching
+  type: mathematical
+  text: "The limit Δ_i/N of the scaled soft gradient is the gradient of (1/(2N)) Σ_k Δ_k², which equals (1/(2N)) Σ_k (z_k − v_k)² when both logit vectors have zero mean, and which is zero exactly when z − v is a constant vector, so in the limit the student matches the teacher's logits up to a shift."
+  assumes: ["v and z are fixed finite vectors of length N ≥ 2", "T grows while v and z stay fixed"]
+  derivation: high-temperature-limit
+
+- id: c-kl-limit
+  type: mathematical
+  text: "As T grows, T² D_KL(softmax(v/T)‖softmax(z/T)) tends to (1/(2N)) Σ_i Δ_i², with Δ the difference of the centred logits."
+  assumes: ["v and z are fixed finite vectors of length N ≥ 2", "T grows while v and z stay fixed"]
+  derivation: high-temperature-limit
+
+- id: c-st-limit
+  type: attributive
+  text: "Stanton et al. state that as τ → ∞ the gradient of their distillation loss with respect to the student logits approaches that of ‖z_t − z_s‖²/2, assigning equal significance to every class logit regardless of its contribution to the predictive distribution."
+  evidence:
+    - {work: "stanton-2021-does-knowledge-distillation-really-work", role: original, locator: "p. 3", stance: for}
+
+- id: c-hi-negative-logits
+  type: attributive
+  text: "Hinton et al. point out that at lower temperatures distillation pays much less attention to matching logits far more negative than the average, which can be an advantage, since the cost function that trained the cumbersome model leaves such logits almost completely unconstrained and they could be very noisy, yet such logits may also carry useful information about what the cumbersome model has learned; which effect dominates is an empirical question."
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 3", stance: for}
+
+- id: c-hi-intermediate
+  type: attributive
+  text: "They report that when the student is much too small to capture all of the teacher's knowledge, intermediate temperatures work best, which suggests that ignoring the large negative logits can help."
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 3", stance: for}
+
+- id: c-ba-logit-loss
+  type: definitional
+  text: "Ba and Caruana train shallow mimic networks on the teacher's logits z with the regression objective L(W, β) = (1/2T) Σ_t ‖g(x^(t); W, β) − z^(t)‖², where T is the number of training examples and g(x; W, β) = βf(Wx) is the prediction of the mimic."
+  evidence:
+    - {work: "ba-2014-do-deep-nets-need-to-be-deep", role: original, locator: "p. 3", stance: for}
+
+- id: c-ba-logit-example
+  type: attributive
+  text: "Ba and Caruana argue that if a teacher predicts three targets with probabilities [2e−9, 4e−5, 0.9999], a student trained with cross-entropy on these probabilities will focus on the third target and ignore the first and second, while training on the logits [10, 20, 30] still teaches the first and second targets and their relative difference, and the logits [−10, 0, 10] give the same probabilities although the teacher has learned to model the two cases very differently."
+  evidence:
+    - {work: "ba-2014-do-deep-nets-need-to-be-deep", role: original, locator: "p. 2", stance: for}
+
+# Worked example
+
+- id: c-we-gradient
+  type: mathematical
+  text: "For teacher logits (3, 1, −4), student logits (1, 0.5, −1.5) and label 0, the soft term T² D_KL at T = 4 is 16 · 0.068488 = 1.095802, the hard cross-entropy is 0.523909, the loss with α = 0.9 is 1.038612, and the soft gradients (q − p)/T are (−0.287889, 0.240081, 0.047808) at T = 1 and (−0.037024, 0.006079, 0.030945) at T = 4."
+  assumes: ["v = (3, 1, −4), z = (1, 0.5, −1.5), label 0", "α = 0.9 and T = 4 for the loss"]
+  derivation: soft-target-gradient
+
+- id: c-limit-worked
+  type: mathematical
+  text: "For teacher logits (3, 1, −4) and student logits (1, 0.5, −1.5), the scaled gradient T(q − p) approaches (z − v)/3 = (−0.666667, −0.166667, 0.833333) with an error of about 1.13/T, and T² D_KL approaches (1/6) Σ_i (z_i − v_i)² = 1.75, reaching 1.732200 at T = 100."
+  assumes: ["v = (3, 1, −4) and z = (1, 0.5, −1.5)", "T grows"]
+  derivation: high-temperature-limit
+
+# Hyperparameters
+
+- id: c-hi-temperature-range
+  type: empirical
+  text: "On MNIST, Hinton et al. found that once each of the student's two hidden layers had 300 or more units, any temperature above 8 gave fairly similar results, but with only 30 units per layer a temperature between 2.5 and 4 worked significantly better than higher or lower values."
+  scope:
+    models: "fully connected networks with two hidden layers of ReLUs"
+    data: [mnist]
+    scale: "60,000 training cases; students with 30 to 800 units per layer"
+    setting: "digit classification, distillation from a dropout-regularized teacher"
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 4", stance: for}
+
+- id: c-hi-speech-settings
+  type: attributive
+  text: "For speech they tried temperatures of 1, 2, 5 and 10, with a relative weight of 0.5 on the cross-entropy with the hard targets."
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 5", stance: for}
+
+- id: c-st-moderate
+  type: attributive
+  text: "Stanton et al. note that if the student is much smaller than the teacher, its capacity can be focused on matching the teacher's top-k predictions rather than the full teacher distribution by choosing a moderate temperature, e.g. τ = 4."
+  evidence:
+    - {work: "stanton-2021-does-knowledge-distillation-really-work", role: original, locator: "p. 3", stance: for}
+
+- id: c-fn-anneal
+  type: definitional
+  text: "FitNets anneal the weight λ of the teacher cross-entropy with a linear decay during training, so that examples on which the teacher is very confident have a stronger effect at first and their importance decreases as λ decays."
+  evidence:
+    - {work: "romero-2015-fitnets", role: original, locator: "p. 5", stance: for}
+
+# Cost
+
+- id: c-db-compute
+  type: empirical
+  text: "DistilBERT was trained on 8 16GB V100 GPUs for about 90 hours, against 1 day on 1024 32GB V100 GPUs for RoBERTa, the comparison its authors give."
+  scope:
+    models: "DistilBERT and RoBERTa"
+    data: [english-wikipedia, bookcorpus]
+    scale: "8 16GB V100 GPUs for about 90 hours; 1024 32GB V100 for 1 day"
+    setting: "pre-training compute as reported by the authors"
+  evidence:
+    - {work: "sanh-2019-distilbert", role: original, locator: "p. 3", stance: for}
+
+- id: c-ba-train-time
+  type: empirical
+  text: "Ba and Caruana report that their deep models took 8 to 12 hours to train on GTX 580 GPUs, while the shallow mimic models trained much faster and reached similar accuracy in 1 to 2 hours."
+  scope:
+    models: "deep and shallow mimic networks"
+    data: [timit, cifar-10]
+    scale: "Nvidia GTX 580 GPUs"
+    setting: "training time to reach similar accuracy"
+  evidence:
+    - {work: "ba-2014-do-deep-nets-need-to-be-deep", role: original, locator: "p. 8", stance: for}
+
+# Evidence
+
+- id: c-hi-mnist-teacher
+  type: attributive
+  text: "Hinton et al. trained a teacher with two hidden layers of 1200 rectified linear units on all 60,000 training cases, strongly regularized with dropout and weight constraints, on inputs jittered by up to two pixels."
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 3", stance: for}
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 4", stance: for}
+
+- id: c-hi-mnist
+  type: empirical
+  text: "The teacher made 67 test errors and a smaller unregularized network with two hidden layers of 800 units made 146; regularized only by matching the teacher's soft targets at a temperature of 20, the smaller network made 74, evidence that soft targets transferred the knowledge about translations even though the transfer set contained none."
+  scope:
+    models: "fully connected networks with two hidden layers of ReLUs"
+    data: [mnist]
+    scale: "60,000 training cases; students with 30 to 800 units per layer"
+    setting: "digit classification, distillation from a dropout-regularized teacher"
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 4", stance: for}
+
+- id: c-hi-no-threes
+  type: empirical
+  text: "When all examples of the digit 3 were left out of the transfer set, the distilled model made 206 test errors, 133 of them on the 1010 threes; raising the bias of class 3 by 3.5 brought this to 109 errors, 14 of them on threes, so it got 98.6% of the test threes right without having seen one."
+  scope:
+    models: "fully connected networks with two hidden layers of ReLUs"
+    data: [mnist]
+    scale: "60,000 training cases; students with 30 to 800 units per layer"
+    setting: "digit classification, distillation from a dropout-regularized teacher"
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 4", stance: for}
+
+- id: c-hi-only-78
+  type: empirical
+  text: "With only the 7s and 8s of the training set as the transfer set, the distilled model made 47.3% test errors, which fell to 13.2% when the biases of 7 and 8 were reduced by 7.6."
+  scope:
+    models: "fully connected networks with two hidden layers of ReLUs"
+    data: [mnist]
+    scale: "60,000 training cases; students with 30 to 800 units per layer"
+    setting: "digit classification, distillation from a dropout-regularized teacher"
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 4", stance: for}
+
+- id: c-hi-speech-baseline
+  type: empirical
+  text: "The baseline acoustic model had 8 hidden layers of 2560 rectified linear units, a softmax over 14,000 labels and about 85M parameters, and was trained on about 2000 hours of spoken English, about 700M examples, reaching 58.9% frame accuracy and 10.9% word error rate on the development set."
+  scope:
+    models: "DNN acoustic model with 8 hidden layers of 2560 ReLUs, about 85M parameters"
+    data: [unknown]
+    scale: "about 2000 hours of spoken English, about 700M examples"
+    setting: "frame classification over 14,000 HMM states for speech recognition, distilling an ensemble of 10 models"
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 4", stance: for}
+
+- id: c-hi-speech-table
+  type: empirical
+  text: "An ensemble of 10 such models reached 61.1% and 10.7%, and a single model of the same size distilled from it reached 60.8% and 10.7%, so more than 80% of the ensemble's gain in frame accuracy transferred to the distilled model."
+  scope:
+    models: "DNN acoustic model with 8 hidden layers of 2560 ReLUs, about 85M parameters"
+    data: [unknown]
+    scale: "about 2000 hours of spoken English, about 700M examples"
+    setting: "frame classification over 14,000 HMM states for speech recognition, distilling an ensemble of 10 models"
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 5", stance: for}
+
+- id: c-hi-li
+  type: attributive
+  text: "Hinton et al. contrast this with related work that distilled at a temperature of 1 with a large unlabeled set and closed only 28% of the gap between the error rates of the large and the small model."
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 5", stance: for}
+
+- id: c-hi-three-percent
+  type: empirical
+  text: "Trained on 3% of the speech data, about 20M examples, the 85M-parameter baseline overfit severely with hard targets and was stopped early at 44.5% test frame accuracy, while the same model trained with soft targets converged to 57.0%, without early stopping, against 58.9% for the baseline on all the data."
+  scope:
+    models: "DNN acoustic model with 8 hidden layers of 2560 ReLUs, about 85M parameters"
+    data: [unknown]
+    scale: "3% of the training data, about 20M examples"
+    setting: "training the 85M-parameter baseline with hard or soft targets"
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "pp. 7 to 8", stance: for}
+
+- id: c-ba-timit-baselines
+  type: empirical
+  text: "On TIMIT, Ba and Caruana's shallow networks trained on the original data had phone error rates of 23.1% to 23.6%, against 21.9% for a deep network, 19.5% for a convolutional one and 18.5% for an ensemble of 9 convolutional networks with about 125M parameters."
+  scope:
+    models: "shallow networks with one hidden layer, deep, convolutional and ensembled convolutional networks"
+    data: [timit]
+    scale: "1.1M training frames; mimics of about 12M and 180M parameters"
+    setting: "phone recognition, mimics trained by logit regression on the training points without labels"
+  evidence:
+    - {work: "ba-2014-do-deep-nets-need-to-be-deep", role: original, locator: "p. 5", stance: for}
+
+- id: c-ba-timit-mimic
+  type: empirical
+  text: "Shallow mimics of that ensemble reached 21.6% with about 12M parameters and 20.0% with about 180M, as accurate as the deep network of similar size and close to the convolutional one, with one hidden layer and no convolution or pooling."
+  scope:
+    models: "shallow networks with one hidden layer, deep, convolutional and ensembled convolutional networks"
+    data: [timit]
+    scale: "1.1M training frames; mimics of about 12M and 180M parameters"
+    setting: "phone recognition, mimics trained by logit regression on the training points without labels"
+  evidence:
+    - {work: "ba-2014-do-deep-nets-need-to-be-deep", role: original, locator: "p. 4", stance: for}
+    - {work: "ba-2014-do-deep-nets-need-to-be-deep", role: original, locator: "p. 5", stance: for}
+
+- id: c-ba-never-reached
+  type: empirical
+  text: "The shallow mimic never achieves the accuracy of the ensemble of CNNs it is trying to mimic, which Ba and Caruana put down to there not being enough unlabeled data, but it is able to match or exceed the accuracy of the deep nets."
+  scope:
+    models: "shallow networks with one hidden layer, deep, convolutional and ensembled convolutional networks"
+    data: [timit]
+    scale: "1.1M training frames; mimics of about 12M and 180M parameters"
+    setting: "phone recognition, mimics trained by logit regression on the training points without labels"
+  evidence:
+    - {work: "ba-2014-do-deep-nets-need-to-be-deep", role: original, locator: "p. 5", stance: for}
+
+- id: c-ba-transfer-size
+  type: empirical
+  text: "With no unlabeled TIMIT data, they reused the 1.1M training points without their labels, which reduced the accuracy of the mimics; compression works best when the unlabeled set is much larger than the training set and its samples do not fall on training points where the teacher may have overfit."
+  scope:
+    models: "shallow networks with one hidden layer, deep, convolutional and ensembled convolutional networks"
+    data: [timit]
+    scale: "1.1M training frames; mimics of about 12M and 180M parameters"
+    setting: "phone recognition, mimics trained by logit regression on the training points without labels"
+  evidence:
+    - {work: "ba-2014-do-deep-nets-need-to-be-deep", role: original, locator: "p. 4", stance: for}
+
+- id: c-ba-cifar
+  type: empirical
+  text: "On CIFAR-10, with the first 1 million images of the 80 million tiny images dataset added to the 50,000 training images as the transfer set, shallow mimics with one convolutional layer reached 15.4% error mimicking a single convolutional teacher with 12.0% error, and 14.2% mimicking an ensemble with 11.0%, against 21.8% for a shallow network trained on the labels."
+  scope:
+    models: "shallow mimics with one convolutional layer, convolutional teacher and ensemble"
+    data: [cifar-10, 80-million-tiny-images]
+    scale: "1.05M-image transfer set; mimics of about 54M and 70M parameters"
+    setting: "image classification by logit regression"
+  evidence:
+    - {work: "ba-2014-do-deep-nets-need-to-be-deep", role: original, locator: "pp. 6 to 7", stance: for}
+
+- id: c-ba-logits-better
+  type: empirical
+  text: "Ba and Caruana find that logit regression worked better than their other mimic losses, the KL divergence from the teacher's to the student's probabilities and an L2 loss on the probabilities."
+  scope:
+    models: "shallow mimic networks"
+    data: [timit, cifar-10]
+    scale: "unknown"
+    setting: "comparison of mimic losses"
+  evidence:
+    - {work: "ba-2014-do-deep-nets-need-to-be-deep", role: original, locator: "p. 3", stance: for}
+
+- id: c-ba-why
+  type: attributive
+  text: "They offer three reasons a mimic can beat a network trained on the labels: the teacher may remove label errors, it may give simpler soft labels where the true function is hard to learn, and soft targets are non-zero for most outputs where hard labels are non-zero for one of 183."
+  evidence:
+    - {work: "ba-2014-do-deep-nets-need-to-be-deep", role: original, locator: "p. 7", stance: for}
+
+- id: c-ba-regularizer
+  type: empirical
+  text: "Ba and Caruana see the mechanisms of mimic training as forms of regularization that help prevent overfitting in the student, since shallow models trained on the original targets are more prone to overfitting than deep models, and increasing the accuracy of the teacher by forming an ensemble yielded a commensurate increase in the accuracy of the student."
+  scope:
+    models: "shallow mimic networks"
+    data: [timit, cifar-10]
+    scale: "unknown"
+    setting: "overfitting of shallow models and mimic accuracy against teacher accuracy"
+  evidence:
+    - {work: "ba-2014-do-deep-nets-need-to-be-deep", role: original, locator: "pp. 7 to 8", stance: for}
+
+- id: c-fn-cifar
+  type: empirical
+  text: "On CIFAR-10, a FitNet with about 2.5M parameters reached 91.61% accuracy against 90.18% for its teacher with about 9M, and well above the 85.8% of Ba and Caruana's best mimic with roughly 28 times fewer parameters."
+  scope:
+    models: "maxout convolutional FitNet with 17 convolutional layers and maxout teacher"
+    data: [cifar-10]
+    scale: "about 2.5M student and 9M teacher parameters"
+    setting: "image classification with hints and distillation, random flipping"
+  evidence:
+    - {work: "romero-2015-fitnets", role: original, locator: "p. 5", stance: for}
+
+- id: c-fn-mnist
+  type: empirical
+  text: "On MNIST the same deep thin student had 1.9% error with ordinary backpropagation, 0.65% with distillation and 0.51% with hints, slightly better than the teacher with 12 times fewer parameters."
+  scope:
+    models: "deep thin maxout FitNet and maxout teacher"
+    data: [mnist]
+    scale: "student with about 8% of the teacher's parameters"
+    setting: "digit classification by backpropagation, distillation and hint-based training"
+  evidence:
+    - {work: "romero-2015-fitnets", role: original, locator: "p. 7", stance: for}
+
+- id: c-db-glue
+  type: empirical
+  text: "In parameters counted in millions, DistilBERT has 66 against 110 for BERT-base, takes 410 seconds against 668 for a pass over the STS-B development set on a CPU, and scores 77.0 against 79.5 on the GLUE development sets, 97% of BERT's score with 40% fewer parameters."
+  scope:
+    models: "DistilBERT, BERT-base"
+    data: [glue, sts-b]
+    scale: "66M and 110M parameters"
+    setting: "GLUE development sets, medians of 5 runs; CPU inference with batch size 1"
+  evidence:
+    - {work: "sanh-2019-distilbert", role: original, locator: "p. 3", stance: for}
+
+- id: c-db-downstream
+  type: empirical
+  text: "On IMDb it is 0.6 points behind BERT in test accuracy, and on SQuAD v1.1 within 3.9 points; on an iPhone 7 Plus it ran 71% faster than BERT for question answering, as a model of 207 MB."
+  scope:
+    models: "DistilBERT, BERT-base"
+    data: [imdb, squad-v1.1]
+    scale: "66M and 110M parameters"
+    setting: "fine-tuned classification and question answering; on-device inference on an iPhone 7 Plus"
+  evidence:
+    - {work: "sanh-2019-distilbert", role: original, locator: "pp. 3 to 4", stance: for}
+
+- id: c-db-ablation
+  type: empirical
+  text: "In the ablation of DistilBERT, removing the distillation loss lowered the GLUE macro-score by 2.96 points, removing the cosine loss by 1.46 and removing the masked language modeling loss by 0.31, while a random initialization in place of the teacher's layers cost 3.69."
+  scope:
+    models: "DistilBERT"
+    data: [glue]
+    scale: "66M parameters"
+    setting: "ablation of the triple loss and the initialization, GLUE macro-score"
+  evidence:
+    - {work: "sanh-2019-distilbert", role: original, locator: "p. 4", stance: for}
+
+- id: c-st-definitions
+  type: definitional
+  text: "Stanton et al. distinguish fidelity, the ability of a student to match its teacher's predictions, from generalization, its performance on unseen in-distribution data."
+  evidence:
+    - {work: "stanton-2021-does-knowledge-distillation-really-work", role: original, locator: "p. 1", stance: for}
+
+- id: c-st-metrics
+  type: definitional
+  text: "They measure fidelity by the average top-1 agreement between student and teacher and by the average KL divergence from the teacher's predictive distribution to the student's."
+  evidence:
+    - {work: "stanton-2021-does-knowledge-distillation-really-work", role: original, locator: "p. 3", stance: for}
+
+- id: c-st-lenet
+  type: empirical
+  text: "A LeNet-5 teacher distilled into an identical student on MNIST, with enough examples, learned to make the same predictions as the teacher, with over 99% top-1 test agreement."
+  scope:
+    models: "LeNet-5 teacher and identical student"
+    data: [mnist, emnist]
+    scale: "distillation data enlarged with extra digits"
+    setting: "self-distillation"
+  evidence:
+    - {work: "stanton-2021-does-knowledge-distillation-really-work", role: original, locator: "p. 4", stance: for}
+
+- id: c-st-self
+  type: attributive
+  text: "In self-distillation a student can exceed its teacher only by failing to match it, while when distilling an ensemble of three ResNet-56 teachers, fidelity becomes positively correlated with generalization."
+  evidence:
+    - {work: "stanton-2021-does-knowledge-distillation-really-work", role: original, locator: "p. 4", stance: for}
+
+- id: c-st-yes-no
+  type: attributive
+  text: "To the question \"does knowledge distillation really work?\" they answer yes, in the sense that it often improves student generalization, and no, in that it often fails to live up to its name, transferring very limited knowledge from teacher to student."
+  evidence:
+    - {work: "stanton-2021-does-knowledge-distillation-really-work", role: original, locator: "p. 1", stance: for}
+
+- id: c-mu-mnist-distill
+  type: empirical
+  text: "On translated MNIST, Müller et al. found that a teacher trained with hard targets and dropout, at 0.67% test error, distilled into a student with 0.74%, while a teacher trained with label smoothing, at 0.59%, gave a much worse student, at 0.91%."
+  scope:
+    models: "fully connected teacher and narrower unregularized student"
+    data: [mnist]
+    scale: "unknown"
+    setting: "teacher trained on translated digits with hard targets and dropout or with label smoothing"
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "p. 6", stance: for}
+
+- id: c-mu-better-teacher
+  type: attributive
+  text: "In their CIFAR-10 experiments a teacher with better accuracy was not necessarily the one that distilled better."
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "p. 7", stance: for}
+
+# Limitations and failure modes
+
+- id: c-st-abstract
+  type: attributive
+  text: "Stanton et al. find that a surprisingly large difference often remains between the predictive distributions of teacher and student, even when the student has the capacity to match the teacher exactly, and identify optimization difficulty as a key reason."
+  evidence:
+    - {work: "stanton-2021-does-knowledge-distillation-really-work", role: original, locator: "p. 1", stance: for}
+
+- id: c-st-resnet
+  type: empirical
+  text: "Distilling a ResNet-56 teacher trained on CIFAR-100 into an identical student, enlarging the distillation data with samples from a GAN improved fidelity only modestly, nowhere near 99% test agreement."
+  scope:
+    models: "ResNet-56 teacher and identical student"
+    data: [cifar-100]
+    scale: "distillation data enlarged with SN-GAN samples"
+    setting: "self-distillation"
+  evidence:
+    - {work: "stanton-2021-does-knowledge-distillation-really-work", role: original, locator: "p. 4", stance: for}
+
+- id: c-st-augmentation
+  type: empirical
+  text: "Of the augmentation policies Stanton et al. tried, even the best for fidelity, Mixup with τ = 4, achieved only a modest 86% test agreement, and the Baseline policy with τ = 4 achieved a competitive 84.5%."
+  scope:
+    models: "ResNet students and teachers"
+    data: [cifar-100]
+    scale: "unknown"
+    setting: "distillation with different data augmentation policies"
+  evidence:
+    - {work: "stanton-2021-does-knowledge-distillation-really-work", role: original, locator: "p. 7", stance: for}
+
+- id: c-st-optimizer
+  type: empirical
+  text: "For self-distillation of a ResNet-20 on CIFAR-100, training for 5k epochs instead of 300 raised train agreement only from 78.95% to 83.3%, and switching from SGD to Adam only reduced fidelity."
+  scope:
+    models: "ResNet-20 with LayerNorm"
+    data: [cifar-100]
+    scale: "300 to 5000 epochs"
+    setting: "self-distillation, SGD and Adam"
+  evidence:
+    - {work: "stanton-2021-does-knowledge-distillation-really-work", role: original, locator: "p. 9", stance: for}
+
+- id: c-st-init
+  type: empirical
+  text: "Stanton et al. initialized the student as a convex combination λθ_t + (1 − λ)θ_r of the teacher's and random weights, and found that for λ ≤ 0.25 the optimizer converged to a sub-optimal value of the distillation loss with a student that significantly disagrees with the teacher, while at λ = 0.375 the final train loss dropped to the optimal value and agreement drastically increased."
+  scope:
+    models: "ResNet-20 with LayerNorm"
+    data: [cifar-100]
+    scale: "unknown"
+    setting: "self-distillation from initializations interpolating teacher and random weights"
+  evidence:
+    - {work: "stanton-2021-does-knowledge-distillation-really-work", role: original, locator: "p. 9", stance: for}
+
+- id: c-st-findings
+  type: attributive
+  text: "They conclude that good student accuracy does not imply good fidelity, and that enlarging the distillation data beyond the teacher's training data helps identify the solution but makes an already difficult optimization harder."
+  evidence:
+    - {work: "stanton-2021-does-knowledge-distillation-really-work", role: original, locator: "p. 10", stance: for}
+
+- id: c-fn-kd-depth
+  type: attributive
+  text: "FitNets report that as the student gets deeper than its teacher, distillation still suffers from the difficulty of optimizing deep networks."
+  evidence:
+    - {work: "romero-2015-fitnets", role: original, locator: "p. 3", stance: for}
+
+- id: c-fn-depth-budget
+  type: empirical
+  text: "Under a budget of about 30M multiplications they could not train students with more than 5 layers by backpropagation, and with distillation only up to 7."
+  scope:
+    models: "FitNets"
+    data: [cifar-10]
+    scale: "about 30M multiplications"
+    setting: "training deep thin networks by backpropagation and by distillation"
+  evidence:
+    - {work: "romero-2015-fitnets", role: original, locator: "p. 7", stance: for}
+
+- id: c-ba-awkward
+  type: attributive
+  text: "Ba and Caruana call their method awkward, because it depends on a large unlabeled data set, on a teacher of very high accuracy, or on both."
+  evidence:
+    - {work: "ba-2014-do-deep-nets-need-to-be-deep", role: original, locator: "p. 9", stance: for}
+
+- id: c-mu-smoothed-teachers
+  type: empirical
+  text: "The label-smoothing results under Evidence indicate that a teacher's accuracy does not predict its student's; Müller et al. found that teachers trained with label smoothing were no better, and sometimes worse, than training the student with label smoothing directly."
+  scope:
+    models: "ResNet-56 teachers and AlexNet students"
+    data: [cifar-10]
+    scale: "unknown"
+    setting: "distillation from teachers trained with and without label smoothing"
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "p. 7", stance: for}
+
+- id: c-mu-only-useful
+  type: attributive
+  text: "They add that distillation is only useful if it gives the student more than label smoothing alone, which is simpler because it needs no teacher."
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "p. 6", stance: for}
+
+# Variants
+
+- id: c-fn-abstract
+  type: attributive
+  text: "FitNets train a student that is deeper and thinner than its teacher, using the teacher's intermediate representations as hints as well as its outputs, and add parameters that map a student hidden layer to a prediction of the teacher's hidden layer."
+  evidence:
+    - {work: "romero-2015-fitnets", role: original, locator: "p. 1", stance: for}
+
+- id: c-fn-hint-loss
+  type: definitional
+  text: "In FitNets a hint is the output of a teacher hidden layer, a guided layer of the student learns to predict it, and the student up to the guided layer and a regressor r on top of it are trained by minimizing L_HT = ½‖u_h(x; W_Hint) − r(v_g(x; W_Guided); W_r)‖², where u_h and v_g are the teacher and student nested functions up to the hint and guided layers."
+  evidence:
+    - {work: "romero-2015-fitnets", role: original, locator: "p. 3", stance: for}
+
+- id: c-fn-middle
+  type: attributive
+  text: "Hints regularize, so the deeper the guided layer the more the student risks being over-regularized; FitNets take the middle layers of both networks."
+  evidence:
+    - {work: "romero-2015-fitnets", role: original, locator: "p. 3", stance: for}
+
+- id: c-fn-stagewise
+  type: definitional
+  text: "Training goes in two stages: first the student up to the guided layer is pre-trained to predict the hint, then the whole network is trained with distillation."
+  evidence:
+    - {work: "romero-2015-fitnets", role: original, locator: "p. 4", stance: for}
+
+- id: c-fn-kd-loss
+  type: definitional
+  text: "FitNets write the knowledge distillation loss as L_KD(W_S) = H(y_true, P_S) + λH(P_T^τ, P_S^τ), where H is the cross-entropy, P^τ = softmax(a/τ) are the softened outputs of teacher and student, and λ is a tunable parameter that balances the two cross-entropies."
+  evidence:
+    - {work: "romero-2015-fitnets", role: original, locator: "p. 3", stance: for}
+
+- id: c-db-abstract
+  type: attributive
+  text: "DistilBERT leverages knowledge distillation during the pre-training phase of a smaller general-purpose language representation model, where most prior work built task-specific models, and introduces a triple loss combining language modeling, distillation and cosine-distance losses."
+  evidence:
+    - {work: "sanh-2019-distilbert", role: original, locator: "p. 1", stance: for}
+
+- id: c-db-loss
+  type: definitional
+  text: "DistilBERT's student is trained with a distillation loss over the soft target probabilities of the teacher, written L_ce = Σ_i t_i log(s_i), with a softmax-temperature applied to student and teacher during training and T set to 1 at inference, and the final objective linearly combines it with the masked language modeling loss and a cosine embedding loss that aligns the directions of the student and teacher hidden state vectors."
+  evidence:
+    - {work: "sanh-2019-distilbert", role: original, locator: "p. 2", stance: for}
+
+- id: c-db-student
+  type: definitional
+  text: "The student keeps BERT's general architecture with half the layers and without the token-type embeddings and the pooler, and is initialized from the teacher by taking one layer out of two."
+  evidence:
+    - {work: "sanh-2019-distilbert", role: original, locator: "p. 2", stance: for}
+
+- id: c-st-ensemble
+  type: definitional
+  text: "Stanton et al. combine the logits z_1, …, z_m of an m-component teacher ensemble into the teacher logits z_t = log(Σ_i σ(z_i)/m), which correspond to the predictive distribution of the ensemble model average."
+  evidence:
+    - {work: "stanton-2021-does-knowledge-distillation-really-work", role: original, locator: "p. 3", stance: for}
+
+- id: c-hi-specialists
+  type: empirical
+  text: "Starting from a trained baseline network on JFT, Hinton et al. trained 61 specialist models, each with 300 classes plus a dustbin class, and with them obtained a 4.4% relative improvement in test accuracy overall."
+  scope:
+    models: "large baseline network with 61 specialist models"
+    data: [jft]
+    scale: "61 specialists of 300 classes each"
+    setting: "image classification with specialists combined with the baseline"
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 7", stance: for}
+
+- id: c-hi-specialists-not-distilled
+  type: attributive
+  text: "They had not yet found a way to distill the knowledge in the specialists back into the single large net."
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 8", stance: for}
+
+# When to use it
+
+- id: c-hi-discussion
+  type: attributive
+  text: "Hinton et al. report that distilling works very well for transferring knowledge into a smaller, distilled model, from a large, highly regularized model or from an ensemble."
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 8", stance: for}
+
+# History
+
+- id: c-hist-bucila
+  type: historical
+  text: "Cristian Buciluǎ, Rich Caruana and Alexandru Niculescu-Mizil published \"Model compression\" in the proceedings of the 12th ACM SIGKDD conference, KDD 2006, on pages 535 to 541."
+  evidence:
+    - {work: "ba-2014-do-deep-nets-need-to-be-deep", role: original, locator: "p. 9", stance: for}
+
+- id: c-hist-ba
+  type: historical
+  text: "Lei Jimmy Ba and Rich Caruana's \"Do Deep Nets Really Need to be Deep?\", arXiv 1312.6184, is marked in its arXiv version as a draft for NIPS 2014."
+  evidence:
+    - {work: "ba-2014-do-deep-nets-need-to-be-deep", role: original, locator: "p. 1", stance: for}
+
+- id: c-hist-hinton
+  type: historical
+  text: "Geoffrey Hinton, Oriol Vinyals and Jeff Dean of Google posted \"Distilling the Knowledge in a Neural Network\" as arXiv 1503.02531 in March 2015."
+  evidence:
+    - {work: "hinton-2015-distilling-knowledge", role: original, locator: "p. 1", stance: for}
+
+- id: c-hist-fitnets
+  type: historical
+  text: "Adriana Romero, Nicolas Ballas, Samira Ebrahimi Kahou, Antoine Chassang, Carlo Gatta and Yoshua Bengio published their method for training a student deeper and thinner than the teacher, with hints from the teacher's intermediate representations, as a conference paper at ICLR 2015."
+  evidence:
+    - {work: "romero-2015-fitnets", role: original, locator: "p. 1", stance: for}
+
+- id: c-hist-distilbert
+  type: historical
+  text: "Victor Sanh, Lysandre Debut, Julien Chaumond and Thomas Wolf of Hugging Face presented DistilBERT at the 5th EMC² workshop, co-located with NeurIPS 2019."
+  evidence:
+    - {work: "sanh-2019-distilbert", role: original, locator: "p. 1", stance: for}
+
+- id: c-hist-stanton
+  type: historical
+  text: "Samuel Stanton, Pavel Izmailov, Polina Kirichenko, Alexander Alemi and Andrew Gordon Wilson published \"Does Knowledge Distillation Really Work?\" at NeurIPS 2021 in Sydney."
+  evidence:
+    - {work: "stanton-2021-does-knowledge-distillation-really-work", role: original, locator: "p. 1", stance: for}

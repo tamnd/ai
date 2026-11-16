@@ -1,0 +1,244 @@
+# The claims of the pytorch page (spec 07). The build computes the labels.
+- id: c-purpose
+  type: attributive
+  text: "Paszke et al. describe PyTorch as a machine learning library that provides an imperative and Pythonic programming style, while remaining efficient and supporting hardware accelerators such as GPUs."
+  evidence:
+    - {work: "paszke-2019-pytorch", role: original, locator: "the abstract", stance: for}
+
+- id: c-workflow
+  type: definitional
+  text: "In PyTorch, defining layers, composing models, loading data, running optimizers, and parallelizing the training process are all expressed using the familiar concepts developed for general purpose programming."
+  evidence:
+    - {work: "paszke-2019-pytorch", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-users
+  type: attributive
+  text: "The Linux Foundation reports that organizations have adopted the PyTorch machine learning framework for use in academic research and production environments."
+  evidence:
+    - {work: "linux-foundation-2022-pytorch-foundation", role: original, locator: "p. 1", stance: for}
+
+- id: c-licence
+  type: definitional
+  text: "The PyTorch licence permits redistribution and use in source and binary forms, with or without modification, provided that three conditions are met."
+  evidence:
+    - {work: "pytorch-license-v2-15-0", role: original, locator: "p. 1", stance: for}
+
+- id: c-cpp
+  type: definitional
+  text: "Most of PyTorch is written in C++ to achieve high performance."
+  evidence:
+    - {work: "paszke-2019-pytorch", role: original, locator: "Section 5.1", stance: for}
+
+- id: c-libtorch
+  type: definitional
+  text: "The core libtorch library implements the tensor data structure, the GPU and CPU operators, and basic parallel primitives, and it also provides the automatic differentiation system."
+  evidence:
+    - {work: "paszke-2019-pytorch", role: original, locator: "Section 5.1", stance: for}
+
+- id: c-static
+  type: historical
+  text: "Many popular frameworks such as Caffe, CNTK, TensorFlow, and Theano construct a static dataflow graph that represents the computation and which can then be applied repeatedly to batches of data."
+  evidence:
+    - {work: "paszke-2019-pytorch", role: original, locator: "Section 1", stance: for}
+
+- id: c-imperative
+  type: definitional
+  text: "PyTorch foregoes the potential benefits of a graph-metaprogramming based approach to preserve the imperative programming model of Python."
+  evidence:
+    - {work: "paszke-2019-pytorch", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-modules
+  type: definitional
+  text: "In PyTorch, layers are typically expressed as Python classes whose constructors create and initialize their parameters, and whose forward methods process an input activation."
+  evidence:
+    - {work: "paszke-2019-pytorch", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-models
+  type: definitional
+  text: "In PyTorch, models are usually represented as classes that compose individual layers, but nothing forces the user to structure their code in that way."
+  evidence:
+    - {work: "paszke-2019-pytorch", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-overloading
+  type: definitional
+  text: "PyTorch uses the operator overloading approach, which builds up a representation of the computed function every time it is executed."
+  evidence:
+    - {work: "paszke-2019-pytorch", role: original, locator: "Section 4.3", stance: for}
+
+- id: c-reverse
+  type: definitional
+  text: "PyTorch performs reverse-mode automatic differentiation, which computes the gradient of a scalar output with respect to a multivariate input."
+  evidence:
+    - {work: "paszke-2019-pytorch", role: original, locator: "Section 4.3", stance: for}
+
+- id: c-mutation
+  type: definitional
+  text: "PyTorch can differentiate through code employing mutation on tensors, and a versioning system for tensors tracks their modifications."
+  evidence:
+    - {work: "paszke-2019-pytorch", role: original, locator: "Section 4.3", stance: for}
+
+- id: c-compile
+  type: definitional
+  text: "torch.compile is the main API for PyTorch 2.0, which wraps a model and returns a compiled model."
+  evidence:
+    - {work: "pytorch-2023-pytorch-2-0-release", role: original, locator: "p. 1", stance: for}
+
+- id: c-additive
+  type: attributive
+  text: "The PyTorch 2.0 release announcement calls torch.compile a fully additive (and optional) feature, so that 2.0 is 100% backward compatible."
+  evidence:
+    - {work: "pytorch-2023-pytorch-2-0-release", role: original, locator: "p. 1", stance: for}
+
+- id: c-dynamo
+  type: attributive
+  text: "Ansel et al. describe TorchDynamo as a Python-level just-in-time compiler that dynamically modifies Python bytecode before execution and extracts sequences of PyTorch operations into an FX graph, and TorchInductor as the default compiler backend for TorchDynamo, which translates PyTorch programs into OpenAI's Triton for GPUs and C++ for CPUs."
+  evidence:
+    - {work: "ansel-2024-pytorch-2", role: original, locator: "the abstract", stance: for}
+
+- id: c-speedup
+  type: empirical
+  text: "Ansel et al. report that TorchInductor provides a 2.27× inference and 1.41× training geometric mean speedup on an NVIDIA A100 GPU across 180+ real-world models."
+  scope:
+    models: "180+ real-world models"
+    data: [unknown]
+    scale: "one NVIDIA A100 GPU"
+    setting: "geometric mean speedup of TorchInductor, for inference and for training"
+  evidence:
+    - {work: "ansel-2024-pytorch-2", role: original, locator: "the abstract", stance: for}
+
+- id: c-func
+  type: historical
+  text: "PyTorch 2.0 includes, in Beta, the functorch APIs in the torch.func module."
+  evidence:
+    - {work: "pytorch-2023-pytorch-2-0-release", role: original, locator: "p. 1", stance: for}
+
+- id: c-tf-eager
+  type: definitional
+  text: "In TensorFlow 2, eager execution is turned on by default."
+  evidence:
+    - {work: "tensorflow-guide-tf-function", role: original, locator: "p. 1", stance: for}
+
+- id: c-tf-function
+  type: definitional
+  text: "tf.function is a transformation tool that creates Python-independent dataflow graphs out of Python code."
+  evidence:
+    - {work: "tensorflow-guide-tf-function", role: original, locator: "p. 1", stance: for}
+
+- id: c-jax
+  type: attributive
+  text: "The JAX documentation describes JAX as a Python library for accelerator-oriented array computation and program transformation."
+  evidence:
+    - {work: "jax-docs-home", role: original, locator: "p. 1", stance: for}
+
+- id: c-jax-transforms
+  type: definitional
+  text: "JAX includes composable function transformations for compilation, batching, automatic differentiation, and parallelization."
+  evidence:
+    - {work: "jax-docs-home", role: original, locator: "p. 1", stance: for}
+
+- id: c-jax-pure
+  type: definitional
+  text: "JAX transformation and compilation are designed to work only on Python functions that are functionally pure."
+  evidence:
+    - {work: "jax-docs-sharp-bits", role: original, locator: "p. 1", stance: for}
+
+- id: c-jax-tracing
+  type: attributive
+  text: "Frostig et al. describe JAX as a domain-specific tracing JIT compiler for generating high-performance accelerator code from pure Python and Numpy machine learning programs, using the XLA compiler infrastructure."
+  evidence:
+    - {work: "frostig-2018-jax", role: original, locator: "p. 1", stance: for}
+
+- id: c-start
+  type: attributive
+  text: "Soumith Chintala writes that PyTorch development started in 2016 as a collective effort by people from the [Lua]Torch community, with a big chunk of people and funding from Meta."
+  evidence:
+    - {work: "chintala-2022-pytorch-linux-foundation", role: original, locator: "p. 1", stance: for}
+
+- id: c-release-2017
+  type: historical
+  text: "Paszke et al. date the initial release of PyTorch to January 2017."
+  evidence:
+    - {work: "paszke-2019-pytorch", role: original, locator: "Section 6.4", stance: for}
+
+- id: c-year-in
+  type: historical
+  text: "In a blog post of 2018, the PyTorch team marks 1 year since PyTorch was released publicly."
+  evidence:
+    - {work: "pytorch-2018-a-year-in", role: original, locator: "p. 1", stance: for}
+
+- id: c-release-2016
+  type: attributive
+  text: "The Linux Foundation's announcement of the PyTorch Foundation speaks of PyTorch's release in 2016."
+  evidence:
+    - {work: "linux-foundation-2022-pytorch-foundation", role: original, locator: "p. 1", stance: for}
+
+- id: c-neurips
+  type: historical
+  text: "Paszke et al. presented PyTorch at the 33rd Conference on Neural Information Processing Systems (NeurIPS 2019)."
+  evidence:
+    - {work: "paszke-2019-pytorch", role: original, locator: "the abstract", stance: for}
+
+- id: c-17
+  type: empirical
+  text: "On all the benchmarks of Paszke et al., the performance of PyTorch is within 17% of that of the fastest framework."
+  scope:
+    models: "the common benchmarks of Paszke et al., Table 1"
+    data: [unknown]
+    scale: unknown
+    setting: "training throughput against Chainer, CNTK, MXNet, PaddlePaddle and TensorFlow"
+  evidence:
+    - {work: "paszke-2019-pytorch", role: original, locator: "Section 6.3", stance: for}
+
+- id: c-cudnn
+  type: attributive
+  text: "Paszke et al. attribute the result to the fact that these tools offload most of the computation to the same version of the cuDNN and cuBLAS libraries."
+  evidence:
+    - {work: "paszke-2019-pytorch", role: original, locator: "Section 6.3", stance: for}
+
+- id: c-lf
+  type: historical
+  text: "On September 12, 2022, Soumith Chintala announced that PyTorch is moving to the Linux Foundation as a top-level project under the name PyTorch Foundation."
+  evidence:
+    - {work: "chintala-2022-pytorch-linux-foundation", role: original, locator: "p. 1", stance: for}
+
+- id: c-board
+  type: historical
+  text: "The PyTorch Foundation has a governing board of leaders from AMD, Amazon Web Services, Google Cloud, Meta, Microsoft Azure and NVIDIA."
+  evidence:
+    - {work: "chintala-2022-pytorch-linux-foundation", role: original, locator: "p. 1", stance: for}
+
+- id: c-maintainers
+  type: definitional
+  text: "Under the PyTorch Foundation, the technical decisions remain in control of individual maintainers."
+  evidence:
+    - {work: "chintala-2022-pytorch-linux-foundation", role: original, locator: "p. 1", stance: for}
+
+- id: c-2-0
+  type: historical
+  text: "The PyTorch Foundation announced the release of PyTorch 2.0 in 2023, with torch.compile in Beta as the main API for PyTorch 2.0."
+  evidence:
+    - {work: "pytorch-2023-pytorch-2-0-release", role: original, locator: "p. 1", stance: for}
+
+- id: c-eager-graph
+  type: attributive
+  text: "Ansel et al. divide machine learning frameworks into eager mode frameworks, such as PyTorch and JAX, and graph mode frameworks, such as TensorFlow, Caffe, Theano, and CNTK."
+  evidence:
+    - {work: "ansel-2024-pytorch-2", role: original, locator: "Section 1", stance: for}
+
+- id: c-eager-def
+  type: definitional
+  text: "Eager mode frameworks represent a machine learning model as code that is executed each time one wants to run the model; graph mode frameworks expose a graph building API that requires users to first construct a graph and then later execute that graph."
+  evidence:
+    - {work: "ansel-2024-pytorch-2", role: original, locator: "Section 1", stance: for}
+
+- id: c-jax-jit
+  type: attributive
+  text: "Ansel et al. write that jax.jit does not support data-dependent Python control flow and requires user code to be functionally pure."
+  evidence:
+    - {work: "ansel-2024-pytorch-2", role: original, locator: "Section 2.6", stance: for}
+
+- id: c-eager-only
+  type: attributive
+  text: "Ansel et al. write that, in contrast to JAX, PyTorch started as an eager-only framework without any compiler-minded constraints built into its design."
+  evidence:
+    - {work: "ansel-2024-pytorch-2", role: original, locator: "Section 2.6", stance: for}
