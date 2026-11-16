@@ -1,0 +1,134 @@
+# The claims of the BLEU page (spec 07). The build computes the labels.
+- id: c-score-range
+  type: mathematical
+  text: "Corpus BLEU is between 0 and 1 (0 and 100 in sacreBLEU), and it is 1 only when every clipped n-gram count equals its total and the hypotheses are at least as long as the effective reference length."
+  assumes: ["the modified precisions p_1 to p_K are pooled over the test set", "uniform weights 1/K", "the brevity penalty of eq-brevity-penalty"]
+  derivation: "derivations/brevity-penalty.md"
+
+- id: c-bp-range
+  type: mathematical
+  text: "For a test set with c > 0 hypothesis tokens, the brevity penalty is in (0, 1], it is 1 exactly when c >= r, it is continuous at c = r, and it tends to 0 as c tends to 0 with r fixed."
+  assumes: ["c > 0 for the range and the limit", "r > 0 is the effective reference length", "BP = 1 if c >= r and exp(1 - r/c) otherwise"]
+  derivation: "derivations/brevity-penalty.md"
+
+- id: c-zero-precision
+  type: mathematical
+  text: "Without smoothing, BLEU is 0 when any modified precision p_n with n <= K is 0, whatever the other precisions are."
+  assumes: ["no smoothing", "BLEU is the geometric mean of p_1 to p_K times BP"]
+  derivation: "derivations/brevity-penalty.md"
+
+- id: c-clipping-example
+  type: mathematical
+  text: "The candidate 'the the the the the the the' against the references 'The cat is on the mat.' and 'There is a cat on the mat.' has the standard unigram precision 7/7 and the modified unigram precision 2/7."
+  assumes: ["case folding", "the clip is the largest count of the word in any one reference"]
+  evidence:
+    - {work: "papineni-2002-bleu-acl", role: original, locator: "p. 2", stance: for}
+
+- id: c-more-references
+  type: empirical
+  text: "On a test corpus of about 500 sentences, a human translator scored a BLEU of 0.3468 against four references and 0.2571 against two references."
+  scope:
+    models: "a human translator"
+    data: [papineni-2002-chinese-english-test]
+    scale: "about 500 sentences"
+    setting: "corpus BLEU of the same translations against four and against two references"
+  evidence:
+    - {work: "papineni-2002-bleu-acl", role: original, locator: "p. 5", stance: for}
+
+- id: c-more-references-post
+  type: empirical
+  text: "On WMT 2017 English to Finnish, the online-B system scored a BLEU of 22.04 with one reference and 25.25 with two."
+  scope:
+    models: "the WMT17 English to Finnish system online-B"
+    data: [wmt17-newstest2017-en-fi]
+    scale: "unknown"
+    setting: "corpus BLEU of the same output against one and against two references"
+  evidence:
+    - {work: "post-2018-call-for-clarity-wmt", role: original, locator: "p. 2", stance: for}
+
+- id: c-tokenization-changes
+  type: empirical
+  text: "Processing the output of one WMT 2017 system and its references in different ways changed BLEU by as much as 1.8 for one language arc, and by around 1.0 on average."
+  scope:
+    models: "the WMT17 online-B system"
+    data: [wmt17-newstest2017]
+    scale: "the language pairs of Table 1 of Post (2018)"
+    setting: "the same system output and its references, both processed under each scheme"
+  evidence:
+    - {work: "post-2018-call-for-clarity-wmt", role: original, locator: "p. 3, Table 1", stance: for}
+
+- id: c-small-differences
+  type: empirical
+  text: "BLEU differences of 1 to 2 points between two systems agree with the human judgement of which system is better only about half of the time."
+  scope:
+    models: "the systems submitted to the WMT19 news translation task"
+    data: [wmt19-newstest2019]
+    scale: "unknown"
+    setting: "pairs of systems compared by BLEU difference and by direct assessment"
+  evidence:
+    - {work: "mathur-2020-tangled-up-in-bleu-acl", role: original, locator: "Sections 5 and 6", stance: for}
+
+- id: c-permutations
+  type: mathematical
+  text: "For some hypothesis translations of the second best system by BLEU in the 2005 NIST MT evaluation, the number of permutations that receive a similar BLEU score is greater than $10^{73}$."
+  assumes: ["the pieces of a hypothesis between its bigram mismatch sites are permuted", "the hypotheses of the second best system by BLEU in the 2005 NIST MT evaluation"]
+  evidence:
+    - {work: "callison-burch-2006-re-evaluating-bleu-eacl", role: original, locator: "Section 3.1, Figure 1", stance: for}
+
+- id: c-nist-2005-rank
+  type: empirical
+  text: "In the 2005 NIST Arabic to English evaluation, the entry ranked first by human judges was ranked sixth by BLEU."
+  scope:
+    models: "the entries of the 2005 NIST MT evaluation, Arabic to English"
+    data: [nist-mt05-arabic-english]
+    scale: "unknown"
+    setting: "human adequacy and fluency judgements against corpus BLEU"
+  evidence:
+    - {work: "callison-burch-2006-re-evaluating-bleu-eacl", role: original, locator: "Section 4", stance: for}
+
+- id: c-reiter-review
+  type: attributive
+  text: "A structured review by Reiter of 284 correlations reported in 34 papers found that the evidence supports using BLEU for the diagnostic evaluation of MT systems, but not outside MT, for the evaluation of individual texts, or for scientific hypothesis testing."
+  evidence:
+    - {work: "reiter-2018-structured-review-bleu-cl", role: original, locator: "the abstract", stance: for}
+
+- id: c-pairwise-accuracy
+  type: empirical
+  text: "Over 3,344 pairs of systems, the accuracy of ranking the pair as human judgements do, in percent, was 74.6 for BLEU, 75.6 for chrF and 83.4 for COMET."
+  scope:
+    models: "the production and research translation systems of the study"
+    data: [kocmi-2021-human-judgements]
+    scale: "3,344 system pairs"
+    setting: "pairwise accuracy against human judgements"
+  evidence:
+    - {work: "kocmi-2021-ship-or-not-wmt", role: original, locator: "Section 5.1, Table 2", stance: for}
+
+- id: c-wmt22-stop
+  type: attributive
+  text: "The WMT22 metrics shared task titled its results 'Stop Using BLEU', with the subtitle that neural metrics are better and more robust."
+  evidence:
+    - {work: "freitag-2022-wmt22-metrics-wmt", role: original, locator: "the title page", stance: for}
+
+- id: c-smoothing-methods
+  type: attributive
+  text: "Chen and Cherry compared seven smoothing methods for sentence-level BLEU, including the epsilon of method 1, the add-one of Lin and Och (2004) as method 2 and the geometric sequence of NIST mteval-v13a as method 3."
+  evidence:
+    - {work: "chen-2014-smoothing-sentence-bleu-wmt", role: original, locator: "pp. 2 to 3", stance: for}
+
+- id: c-introduced-2002
+  type: historical
+  text: "Papineni, Roukos, Ward and Zhu of the IBM T. J. Watson Research Center published BLEU in the Proceedings of the 40th Annual Meeting of the ACL, in July 2002."
+  evidence:
+    - {work: "papineni-2002-bleu-acl", role: original, locator: "the title page", stance: for}
+
+- id: c-report-2001
+  type: historical
+  text: "Papineni, Roukos, Ward and Zhu described BLEU in 2001, in IBM Research Report RC22176."
+  evidence:
+    - {work: "lin-2004-orange-coling", role: review, locator: "p. 7", stance: for}
+
+- id: c-sacrebleu-2018
+  type: historical
+  text: "Post released sacreBLEU, which expects detokenized outputs, applies its own metric-internal preprocessing, and produces a short version string that documents the settings used."
+  evidence:
+    - {work: "post-2018-call-for-clarity-wmt", role: original, locator: "pp. 1 to 5", stance: for}

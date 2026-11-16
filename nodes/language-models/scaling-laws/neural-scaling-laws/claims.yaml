@@ -1,0 +1,400 @@
+# The claims of the neural-scaling-laws page (spec 07). The build computes the labels.
+
+# The finding
+
+- id: c-broad
+  type: empirical
+  text: "The population loss of trained deep neural networks often follows a power law in the size of the training dataset or in the number of parameters."
+  scope:
+    models: "deep neural networks, including random feature models, pretrained models and a range of standard architectures"
+    data: [unknown]
+    scale: "unknown"
+    setting: "supervised and generative training; the loss measured on the population"
+  evidence:
+    - {work: "bahri-2024-explaining-neural-scaling-laws", role: original, locator: "the abstract", stance: for}
+
+- id: c-power-law
+  type: empirical
+  text: "For Transformer language models, the cross-entropy loss scales as a power law with model size, dataset size and the amount of compute used for training, with some trends spanning more than seven orders of magnitude."
+  scope:
+    models: "decoder-only Transformer language models"
+    data: [webtext2]
+    scale: "768 to 1.5 billion non-embedding parameters; 22 million to 23 billion tokens"
+    setting: "autoregressive language modeling, cross-entropy loss"
+  evidence:
+    - {work: "kaplan-2020-scaling-laws", role: original, locator: "the abstract, p. 7", stance: for}
+
+- id: c-alpha-n
+  type: empirical
+  text: "For models with a limited number of parameters trained to convergence on sufficiently large datasets, the loss is a power law in the number of non-embedding parameters N, L(N) = (N_c/N)^alpha_N, with alpha_N about 0.076."
+  scope:
+    models: "decoder-only Transformer language models"
+    data: [webtext2]
+    scale: "768 to 1.5 billion non-embedding parameters"
+    setting: "autoregressive language modeling, test cross-entropy loss, training to convergence"
+  evidence:
+    - {work: "kaplan-2020-scaling-laws", role: original, locator: "Equation 1.1, p. 7", stance: for}
+
+- id: c-alpha-d
+  type: empirical
+  text: "For large models trained with a limited dataset with early stopping, the loss is a power law in the dataset size D in tokens, L(D) = (D_c/D)^alpha_D, with alpha_D about 0.095."
+  scope:
+    models: "decoder-only Transformer language models"
+    data: [webtext2]
+    scale: "22 million to 23 billion tokens"
+    setting: "autoregressive language modeling, test cross-entropy loss, early stopping"
+  evidence:
+    - {work: "kaplan-2020-scaling-laws", role: original, locator: "Equation 1.2, p. 7", stance: for}
+
+- id: c-alpha-c
+  type: empirical
+  text: "When training with a limited amount of compute, a sufficiently large dataset, an optimally sized model and a sufficiently small batch size, the loss is a power law in the minimum compute C_min, with alpha_C^min about 0.050 and compute in PF-days."
+  scope:
+    models: "decoder-only Transformer language models"
+    data: [webtext2]
+    scale: "768 to 1.5 billion non-embedding parameters"
+    setting: "autoregressive language modeling, test cross-entropy loss, compute-efficient training"
+  evidence:
+    - {work: "kaplan-2020-scaling-laws", role: original, locator: "Equation 1.3, p. 7", stance: for}
+
+- id: c-doubling
+  type: empirical
+  text: "Doubling the number of parameters yields a loss that is smaller by a factor 2^-alpha_N = 0.95, and the precise values of N_c, C_c^min and D_c depend on the vocabulary size and tokenization."
+  scope:
+    models: "decoder-only Transformer language models"
+    data: [webtext2]
+    scale: "unknown"
+    setting: "autoregressive language modeling, test cross-entropy loss"
+  evidence:
+    - {work: "kaplan-2020-scaling-laws", role: original, locator: "p. 5", stance: for}
+
+- id: c-shape
+  type: empirical
+  text: "Architectural details such as network width or depth have minimal effects on the loss within a wide range."
+  scope:
+    models: "decoder-only Transformer language models"
+    data: [webtext2]
+    scale: "unknown"
+    setting: "autoregressive language modeling, test cross-entropy loss"
+  evidence:
+    - {work: "kaplan-2020-scaling-laws", role: original, locator: "the abstract", stance: for}
+
+# Evidence
+
+- id: c-hestness-domains
+  type: empirical
+  text: "Hestness et al. found power-law generalization error scaling with training set size in four machine learning domains: machine translation, language modeling, image processing and speech recognition."
+  scope:
+    models: "deep learning models of each domain"
+    data: [unknown]
+    scale: "unknown"
+    setting: "supervised training on growing training sets"
+  evidence:
+    - {work: "hestness-2017-deep-learning-scaling-predictable", role: original, locator: "the abstract", stance: for}
+
+- id: c-hestness-shift
+  type: empirical
+  text: "Model improvements only shift the error but do not appear to affect the power-law exponent, and model size scales sublinearly with data size."
+  scope:
+    models: "deep learning models for machine translation, language modeling, image processing and speech recognition"
+    data: [unknown]
+    scale: "unknown"
+    setting: "supervised training on growing training sets"
+  evidence:
+    - {work: "hestness-2017-deep-learning-scaling-predictable", role: original, locator: "the abstract", stance: for}
+
+- id: c-hestness-range
+  type: empirical
+  text: "In real applications the learning curve exponent usually settles between -0.07 and -0.35, while prior theoretical work gives exponents of -0.5 or -1."
+  scope:
+    models: "deep learning models of real applications"
+    data: [unknown]
+    scale: "unknown"
+    setting: "generalization error against training set size"
+  evidence:
+    - {work: "hestness-2017-deep-learning-scaling-predictable", role: original, locator: "p. 2", stance: for}
+
+- id: c-henighan
+  type: empirical
+  text: "In generative image modeling, video modeling, multimodal image-text models and mathematical problem solving, autoregressive Transformers improve smoothly as model size and compute budgets increase, following a power-law plus constant scaling law for the cross-entropy loss."
+  scope:
+    models: "autoregressive Transformers"
+    data: [unknown]
+    scale: "unknown"
+    setting: "generative modeling with cross-entropy loss"
+  evidence:
+    - {work: "henighan-2020-scaling-laws-autoregressive-generative", role: original, locator: "the abstract", stance: for}
+
+- id: c-henighan-optimal-size
+  type: empirical
+  text: "The optimal model size depends on the compute budget through a power law, with exponents that are nearly universal across all data domains."
+  scope:
+    models: "autoregressive Transformers"
+    data: [unknown]
+    scale: "unknown"
+    setting: "generative image, video, multimodal and mathematics modeling"
+  evidence:
+    - {work: "henighan-2020-scaling-laws-autoregressive-generative", role: original, locator: "the abstract", stance: for}
+
+- id: c-zhai
+  type: empirical
+  text: "Zhai et al. scale Vision Transformer models and data, both up and down, and characterize the relationships between error rate, data and compute."
+  scope:
+    models: "Vision Transformers"
+    data: [imagenet]
+    scale: "up to two billion parameters"
+    setting: "image classification"
+  evidence:
+    - {work: "zhai-2022-scaling-vision-transformers", role: original, locator: "the abstract", stance: for}
+
+- id: c-vit-g
+  type: empirical
+  text: "A ViT model with two billion parameters attains 90.45% top-1 accuracy on ImageNet."
+  scope:
+    models: "ViT-G"
+    data: [imagenet]
+    scale: "two billion parameters"
+    setting: "image classification, top-1 accuracy"
+  self_reported: true
+  evidence:
+    - {work: "zhai-2022-scaling-vision-transformers", role: original, locator: "the abstract", stance: for}
+
+- id: c-equal-scaling
+  type: empirical
+  text: "By training over 400 language models from 70 million to over 16 billion parameters on 5 to 500 billion tokens, Hoffmann et al. find that for compute-optimal training the model size and the number of training tokens should be scaled equally: for every doubling of model size the number of training tokens should also be doubled."
+  scope:
+    models: "transformer language models"
+    data: [massivetext]
+    scale: "70 million to over 16 billion parameters; 5 to 500 billion tokens"
+    setting: "compute-optimal training under a fixed compute budget"
+  evidence:
+    - {work: "hoffmann-2022-training-compute-optimal", role: original, locator: "the abstract", stance: for}
+
+- id: c-three-approaches
+  type: empirical
+  text: "Hoffmann et al. list the exponents a of the relationship between optimal parameters and training compute, N_opt proportional to C^a, as 0.50, 0.49 and 0.46 for their three approaches, against 0.73 for Kaplan et al. (2020)."
+  scope:
+    models: "transformer language models"
+    data: [massivetext]
+    scale: "70 million to over 16 billion parameters"
+    setting: "minimum over training curves, IsoFLOP profiles and parametric modelling of the loss"
+  evidence:
+    - {work: "hoffmann-2022-training-compute-optimal", role: original, locator: "p. 8", stance: for}
+
+- id: c-parametric
+  type: empirical
+  text: "The fitted parametric loss is L(N, D) = E + A/N^0.34 + B/D^0.28, with E = 1.69, A = 406.4 and B = 410.7."
+  scope:
+    models: "transformer language models"
+    data: [massivetext]
+    scale: "unknown"
+    setting: "final pre-training loss as a function of parameters N and training tokens D"
+  evidence:
+    - {work: "hoffmann-2022-training-compute-optimal", role: original, locator: "p. 25", stance: for}
+
+- id: c-besiroglu
+  type: empirical
+  text: "A refit of Approach 3 of Hoffmann et al. on a partial reconstruction of their data differs substantially from the reported fit, which fails to adequately describe the reconstructed data and is inconsistent with the scaling policies derived through the other approaches."
+  scope:
+    models: "the dense transformers of Hoffmann et al."
+    data: [unknown]
+    scale: "unknown"
+    setting: "fitting L(N, D) = E + A/N^alpha + B/D^beta to data reconstructed from plots"
+  evidence:
+    - {work: "besiroglu-2024-chinchilla-scaling-replication", role: reanalysis, locator: "the abstract", stance: for}
+
+- id: c-equal-replicated
+  type: attributive
+  text: "Besiroglu et al. report that the result that training tokens should grow at roughly the same rate as model parameters has been replicated by Anil et al. (2023), and that Bi et al. (2024) find it sensitive to the quality of the data."
+  evidence:
+    - {work: "besiroglu-2024-chinchilla-scaling-replication", role: original, locator: "the abstract", stance: for}
+
+# Scope and conditions
+
+- id: c-breakdown
+  type: attributive
+  text: "Kaplan et al. find that far beyond the model sizes they study, their equations for L(C_min) and L(D) contradict each other, and they expect their predictions to break down before that point."
+  evidence:
+    - {work: "kaplan-2020-scaling-laws", role: original, locator: "p. 17", stance: for}
+
+- id: c-three-regions
+  type: empirical
+  text: "Models transition from a small training set region dominated by best guessing to a region dominated by power-law scaling, and with sufficiently large training sets they saturate in a region dominated by irreducible error."
+  scope:
+    models: "deep learning models for machine translation, language modeling, image processing and speech recognition"
+    data: [unknown]
+    scale: "unknown"
+    setting: "generalization error against training set size"
+  evidence:
+    - {work: "hestness-2017-deep-learning-scaling-predictable", role: original, locator: "p. 2", stance: for}
+
+- id: c-pearce
+  type: empirical
+  text: "Much of the discrepancy between the Kaplan estimate N_optimal proportional to C^0.73 and the Chinchilla estimate C^0.50 can be attributed to Kaplan counting non-embedding rather than total parameters, combined with analysis at small scale."
+  scope:
+    models: "transformers trained on next-token language prediction"
+    data: [unknown]
+    scale: "simulated model sizes of the Kaplan study"
+    setting: "simulation of the Chinchilla study under the conditions of the Kaplan study"
+  evidence:
+    - {work: "pearce-2024-reconciling-kaplan-chinchilla", role: reanalysis, locator: "the abstract", stance: for}
+
+- id: c-porian
+  type: empirical
+  text: "Reproducing the Kaplan et al. scaling law on OpenWebText2 and RefinedWeb, Porian et al. identify three factors behind the difference, last layer computational cost, warmup duration and scale-dependent optimizer tuning, and with these corrected they obtain excellent agreement with the Chinchilla scaling law."
+  scope:
+    models: "transformer language models"
+    data: [openwebtext2, refinedweb]
+    scale: "unknown"
+    setting: "compute-optimal model size as a function of compute budget"
+  evidence:
+    - {work: "porian-2024-resolving-discrepancies-compute-optimal", role: replication, reuses: none, locator: "the abstract", stance: for}
+
+- id: c-lr-decay
+  type: empirical
+  text: "Careful learning rate decay is not essential for the validity of the Chinchilla scaling law."
+  scope:
+    models: "transformer language models"
+    data: [openwebtext2, refinedweb]
+    scale: "unknown"
+    setting: "compute-optimal model size as a function of compute budget"
+  evidence:
+    - {work: "porian-2024-resolving-discrepancies-compute-optimal", role: original, locator: "the abstract", stance: for}
+
+- id: c-repeat
+  type: empirical
+  text: "With constrained data for a fixed compute budget, training with up to 4 epochs of repeated data yields negligible changes to loss compared to unique data, but with more repetition the value of adding compute eventually decays to zero."
+  scope:
+    models: "language models up to 9 billion parameters"
+    data: [unknown]
+    scale: "up to 900 billion training tokens and 9 billion parameters; 400 training runs"
+    setting: "data-constrained training with repeated epochs"
+  evidence:
+    - {work: "muennighoff-2023-scaling-data-constrained", role: original, locator: "the abstract", stance: for}
+
+- id: c-pruning
+  type: empirical
+  text: "With a high-quality data pruning metric, the scaling of error with pruned dataset size can break beyond power law scaling in theory, and better than power law scaling is observed in practice on ResNets trained on CIFAR-10, SVHN and ImageNet."
+  scope:
+    models: "ResNets"
+    data: [cifar-10, svhn, imagenet]
+    scale: "unknown"
+    setting: "image classification on pruned training sets"
+  evidence:
+    - {work: "sorscher-2022-beyond-neural-scaling-laws", role: original, locator: "the abstract", stance: for}
+
+- id: c-bnsl
+  type: empirical
+  text: "A smoothly broken power law yields extrapolations of scaling behavior that are considerably more accurate than other functional forms, and it models non-monotonic transitions such as double descent and sharp inflection points such as those of arithmetic."
+  scope:
+    models: "various architectures"
+    data: [unknown]
+    scale: "unknown"
+    setting: "upstream and downstream tasks in zero-shot, prompted and fine-tuned settings"
+  evidence:
+    - {work: "caballero-2023-broken-neural-scaling-laws", role: original, locator: "the abstract", stance: for}
+
+- id: c-emergent-def
+  type: attributive
+  text: "Wei et al. consider an ability to be emergent if it is not present in smaller models but is present in larger models, so that it cannot be predicted by extrapolating the performance of smaller models."
+  evidence:
+    - {work: "wei-2022-emergent-abilities", role: original, locator: "the abstract", stance: for}
+
+- id: c-mirage
+  type: empirical
+  text: "For a fixed task and model family, nonlinear or discontinuous metrics produce apparent emergent abilities, whereas linear or continuous metrics produce smooth, continuous, predictable changes in model performance."
+  scope:
+    models: "the InstructGPT/GPT-3 family and multiple vision networks"
+    data: [big-bench]
+    scale: "unknown"
+    setting: "analysis of fixed model outputs under different metrics"
+  evidence:
+    - {work: "schaeffer-2023-emergent-abilities-mirage", role: original, locator: "the abstract", stance: for}
+
+# Explanations
+
+- id: c-manifold
+  type: empirical
+  text: "If neural models perform regression on a data manifold of intrinsic dimension d, the theory predicts scaling exponents alpha of about 4/d for cross-entropy and mean-squared error losses, which Sharma and Kaplan test in a teacher/student framework, with CNN image classifiers and with GPT-type language models."
+  scope:
+    models: "teacher/student networks, CNN image classifiers and GPT-type language models"
+    data: [unknown]
+    scale: "unknown"
+    setting: "loss against the number of parameters when data is plentiful"
+  evidence:
+    - {work: "sharma-2020-neural-scaling-law-data-manifold", role: original, locator: "the abstract", stance: for}
+
+- id: c-four-regimes
+  type: empirical
+  text: "There are variance-limited and resolution-limited scaling regimes for both dataset size and model size, four regimes in total, and the resolution-limited regime can be explained by models resolving a smooth data manifold."
+  scope:
+    models: "large random feature models, pretrained models and standard architectures"
+    data: [unknown]
+    scale: "unknown"
+    setting: "population loss against dataset size and against model size"
+  evidence:
+    - {work: "bahri-2024-explaining-neural-scaling-laws", role: original, locator: "the abstract", stance: for}
+
+# Implications
+
+- id: c-kaplan-allocation
+  type: attributive
+  text: "Kaplan et al. conclude that optimally compute-efficient training involves training very large models on a relatively modest amount of data and stopping significantly before convergence."
+  evidence:
+    - {work: "kaplan-2020-scaling-laws", role: original, locator: "the abstract", stance: for}
+
+- id: c-undertrained
+  type: attributive
+  text: "Hoffmann et al. find that current large language models are significantly undertrained, a consequence of scaling language models while keeping the amount of training data constant."
+  evidence:
+    - {work: "hoffmann-2022-training-compute-optimal", role: original, locator: "the abstract", stance: for}
+
+- id: c-chinchilla
+  type: empirical
+  text: "Chinchilla, a 70B model trained on 1.4 trillion tokens with the same compute budget as Gopher, outperforms Gopher (280B), GPT-3 (175B), Jurassic-1 (178B) and Megatron-Turing NLG (530B) on a large range of downstream evaluation tasks."
+  scope:
+    models: "Chinchilla, Gopher, GPT-3, Jurassic-1 and Megatron-Turing NLG"
+    data: [massivetext]
+    scale: "70 billion parameters, 1.4 trillion tokens"
+    setting: "downstream evaluation of pretrained language models"
+  self_reported: true
+  evidence:
+    - {work: "hoffmann-2022-training-compute-optimal", role: original, locator: "the abstract, p. 2", stance: for}
+
+- id: c-mmlu
+  type: empirical
+  text: "Chinchilla reaches an average accuracy of 67.5% on the MMLU benchmark, greater than a 7% improvement over Gopher."
+  scope:
+    models: "Chinchilla and Gopher"
+    data: [mmlu]
+    scale: "70 billion parameters"
+    setting: "MMLU average accuracy"
+  self_reported: true
+  evidence:
+    - {work: "hoffmann-2022-training-compute-optimal", role: original, locator: "the abstract", stance: for}
+
+- id: c-hestness-uses
+  type: attributive
+  text: "Hestness et al. write that these scaling relationships can assist model debugging, setting accuracy targets and decisions about data set growth, and can guide computing system design."
+  evidence:
+    - {work: "hestness-2017-deep-learning-scaling-predictable", role: original, locator: "the abstract", stance: for}
+
+# History
+
+- id: c-hist-2017
+  type: historical
+  text: "Hestness et al. of Baidu Research posted Deep Learning Scaling is Predictable, Empirically as arXiv 1712.00409 on 1 Dec 2017."
+  evidence:
+    - {work: "hestness-2017-deep-learning-scaling-predictable", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-2020
+  type: historical
+  text: "Kaplan et al. of OpenAI and Johns Hopkins University posted Scaling Laws for Neural Language Models as arXiv 2001.08361 on 23 Jan 2020."
+  evidence:
+    - {work: "kaplan-2020-scaling-laws", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-2022
+  type: historical
+  text: "Hoffmann et al. of DeepMind posted Training Compute-Optimal Large Language Models as arXiv 2203.15556 on 29 Mar 2022."
+  evidence:
+    - {work: "hoffmann-2022-training-compute-optimal", role: original, locator: "the title page", stance: for}
