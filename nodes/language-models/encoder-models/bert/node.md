@@ -1,5 +1,5 @@
 ---
-tag: NEW-bert
+tag: C4E519
 kind: model
 slug: bert
 name: BERT
