@@ -4,3 +4,4 @@ python: ghcr.io/tamnd/aik-runner-python@sha256:2745971b588906e8bfb4d6635b0cb91e3
 numpy: ghcr.io/tamnd/aik-runner-numpy@sha256:e1d9fabf21900937dafc6f06e775002b23dd5826c31c6a5c87b181330a232a13
 pytorch: ghcr.io/tamnd/aik-runner-pytorch@sha256:da31eb80d001e2664fa684ab678ba4fb37871c366ae1d380d2456016969b48ef
 jax: ghcr.io/tamnd/aik-runner-jax@sha256:8ec8e7316ccd3a967839f7a42aca79ee2c54f24283b32e239f0cf1c847f86742
+vectors: ghcr.io/tamnd/aik-vectors@sha256:cebc715d73d4df1f328fe449b9a29572fea956414561d89ebe48ad276bb93bec

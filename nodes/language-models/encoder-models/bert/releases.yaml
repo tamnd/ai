@@ -1,0 +1,33 @@
+# The releases of the BERT family (spec 04.4). Each release gives its date, its sizes and its licence, with sources. Sizes are the names that Google uses.
+- id: bert
+  name: BERT-Base and BERT-Large (English)
+  date: {v: "2018-11-02", src: "google-2018-open-sourcing-bert-blog", loc: "p. 1"}
+  paper: {src: "devlin-2019-bert", note: "arXiv 1810.04805; NAACL 2019"}
+  sizes: {v: ["BERT-Base, Uncased", "BERT-Base, Cased", "BERT-Large, Uncased", "BERT-Large, Cased"], src: "google-research-bert-readme", loc: "p. 1"}
+  params: {v: "110M (Base); 340M (Large)", src: "devlin-2019-bert", loc: "p. 3"}
+  context_length: {v: 512, unit: tokens, src: "devlin-2019-bert", loc: "p. 13"}
+  licence: {v: "Apache-2.0", src: "google-research-bert-readme", loc: "p. 1"}
+- id: bert-multilingual
+  name: BERT-Base, Multilingual and BERT-Base, Chinese
+  date: {v: "2018-11-03", src: "google-research-bert-readme", loc: "p. 1"}
+  sizes: {v: ["BERT-Base, Multilingual (102 languages)", "BERT-Base, Chinese"], src: "google-research-bert-readme", loc: "p. 1"}
+  params: {v: "110M each", src: "google-research-bert-readme", loc: "p. 1"}
+  licence: {v: "Apache-2.0", src: "google-research-bert-readme", loc: "p. 1"}
+- id: bert-multilingual-cased
+  name: BERT-Base, Multilingual Cased
+  date: {v: "2018-11-23", src: "google-research-bert-readme", loc: "p. 1"}
+  sizes: {v: ["BERT-Base, Multilingual Cased (104 languages)"], src: "google-research-bert-readme", loc: "p. 1"}
+  params: {v: "110M", src: "google-research-bert-readme", loc: "p. 1"}
+  licence: {v: "Apache-2.0", src: "google-research-bert-readme", loc: "p. 1"}
+- id: bert-wwm
+  name: BERT-Large with Whole Word Masking
+  date: {v: "2019-05-31", src: "google-research-bert-readme", loc: "p. 1"}
+  sizes: {v: ["BERT-Large, Uncased (Whole Word Masking)", "BERT-Large, Cased (Whole Word Masking)"], src: "google-research-bert-readme", loc: "p. 1"}
+  params: {v: "340M each", src: "google-research-bert-readme", loc: "p. 1"}
+  licence: {v: "Apache-2.0", src: "google-research-bert-readme", loc: "p. 1"}
+- id: bert-small
+  name: Smaller BERT models
+  date: {v: "2020-03-11", src: "google-research-bert-readme", loc: "p. 1"}
+  paper: {src: "turc-2019-well-read-students", note: "arXiv 1908.08962"}
+  sizes: {v: ["24 models, L in 2, 4, 6, 8, 10, 12 and H in 128, 256, 512, 768, among them BERT-Tiny, BERT-Mini, BERT-Small and BERT-Medium"], src: "google-research-bert-readme", loc: "p. 1"}
+  licence: {v: "Apache-2.0", src: "google-research-bert-readme", loc: "p. 1"}
