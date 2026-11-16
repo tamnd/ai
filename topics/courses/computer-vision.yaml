@@ -1,0 +1,172 @@
+# A course of spec 5.7: an ordered list of items with section headings. Names and orders only (19.3).
+# An item names its node by slug when the node exists; before that it is a name and a kind, which aik harvest courses
+# reads into the inventory, so that the catalog step can place it and the course can count its coverage (18).
+id: computer-vision
+title: Computer vision
+basis: >-
+  the chapter order of Szeliski, Computer Vision: Algorithms and Applications, 2nd edition (2022), chapters 2 to 14,
+  then the deep vision models in the order they appeared, cross-checked with public computer vision syllabi
+sections:
+  - heading: Image formation
+    items:
+      - {name: Computer vision, kind: area}
+      - {name: Pinhole camera model, kind: concept}
+      - {name: Homogeneous coordinates, kind: definition}
+      - {name: Camera intrinsics and extrinsics, kind: definition}
+      - {name: Lens distortion, kind: concept}
+      - {name: Radiometry and reflectance, kind: concept}
+      - {name: Color space, kind: definition}
+      - {name: Image sampling and aliasing, kind: concept}
+  - heading: Image processing
+    items:
+      - {name: Point operators, kind: method}
+      - {name: Histogram equalization, kind: method}
+      - {name: Linear filtering, kind: method}
+      - {name: Convolution, kind: definition}
+      - {name: Gaussian blur, kind: method}
+      - {name: Median filter, kind: method}
+      - {name: Bilateral filter, kind: method}
+      - {name: Morphological operations, kind: method}
+      - {name: Fourier transform of images, kind: method}
+      - {name: Image pyramid, kind: method}
+      - {name: Wavelet transform, kind: method}
+  - heading: Model fitting and optimization
+    items:
+      - {name: Scattered data interpolation, kind: method}
+      - {name: Regularization of images, kind: method}
+      - {name: Markov random field, kind: concept}
+      - {name: Graph cuts, kind: method}
+  - heading: Deep learning for vision
+    items:
+      - {name: Convolutional neural network, kind: architecture}
+      - {name: Pooling, kind: method}
+      - {name: Receptive field, kind: concept}
+      - {name: Batch normalization, kind: method}
+      - {name: LeNet, kind: model}
+      - {name: AlexNet, kind: model}
+      - {name: VGG, kind: model}
+      - {name: GoogLeNet, kind: model}
+      - {name: ResNet, kind: architecture}
+      - {name: EfficientNet, kind: model}
+      - {name: Vision Transformer, kind: architecture}
+      - {name: ImageNet, kind: dataset}
+      - {name: ImageNet Large Scale Visual Recognition Challenge, kind: benchmark}
+  - heading: Recognition
+    items:
+      - {name: Image classification, kind: task}
+      - {name: Object detection, kind: task}
+      - {name: Sliding window detection, kind: method}
+      - {name: Viola-Jones face detector, kind: method}
+      - {name: Histogram of oriented gradients, kind: method}
+      - {name: Deformable part model, kind: method}
+      - {name: R-CNN, kind: model}
+      - {name: Faster R-CNN, kind: model}
+      - {name: YOLO, kind: model}
+      - {name: Single shot detector, kind: model}
+      - {name: DETR, kind: model}
+      - {name: Non-maximum suppression, kind: method}
+      - {name: Intersection over union, kind: metric}
+      - {name: Mean average precision, kind: metric}
+      - {name: Semantic segmentation, kind: task}
+      - {name: Fully convolutional network, kind: architecture}
+      - {name: U-Net, kind: architecture}
+      - {name: Instance segmentation, kind: task}
+      - {name: Mask R-CNN, kind: model}
+      - {name: Panoptic segmentation, kind: task}
+      - {name: Pose estimation, kind: task}
+      - {name: Face recognition, kind: task}
+      - {name: Video understanding, kind: task}
+      - {name: PASCAL VOC, kind: benchmark}
+      - {name: COCO, kind: dataset}
+      - {name: Cityscapes, kind: dataset}
+  - heading: Feature detection and matching
+    items:
+      - {name: Feature detection, kind: task}
+      - {name: Harris corner detector, kind: method}
+      - {name: Scale-invariant feature transform, kind: method}
+      - {name: ORB, kind: method}
+      - {name: Feature descriptor, kind: concept}
+      - {name: Feature matching, kind: task}
+      - {name: Edge detection, kind: method}
+      - {name: Canny edge detector, kind: method}
+      - {name: Hough transform, kind: method}
+      - {name: Image segmentation, kind: task}
+      - {name: Mean shift, kind: method}
+      - {name: Normalized cuts, kind: method}
+  - heading: Image alignment and stitching
+    items:
+      - {name: Image alignment, kind: task}
+      - {name: Homography, kind: definition}
+      - {name: RANSAC, kind: method}
+      - {name: Image stitching, kind: task}
+      - {name: Bundle adjustment, kind: method}
+  - heading: Motion estimation
+    items:
+      - {name: Optical flow, kind: task}
+      - {name: Lucas-Kanade method, kind: method}
+      - {name: Horn-Schunck method, kind: method}
+      - {name: Aperture problem, kind: concept}
+      - {name: RAFT, kind: model}
+      - {name: Object tracking, kind: task}
+      - {name: Kalman filter, kind: method}
+  - heading: Computational photography
+    items:
+      - {name: High dynamic range imaging, kind: method}
+      - {name: Super-resolution, kind: task}
+      - {name: Image denoising, kind: task}
+      - {name: Image inpainting, kind: task}
+      - {name: Neural style transfer, kind: method}
+  - heading: Structure from motion and SLAM
+    items:
+      - {name: Epipolar geometry, kind: concept}
+      - {name: Fundamental matrix, kind: definition}
+      - {name: Essential matrix, kind: definition}
+      - {name: Eight-point algorithm, kind: method}
+      - {name: Triangulation, kind: method}
+      - {name: Structure from motion, kind: task}
+      - {name: Visual odometry, kind: task}
+      - {name: Simultaneous localization and mapping, kind: task}
+  - heading: Depth estimation
+    items:
+      - {name: Stereo matching, kind: task}
+      - {name: Disparity, kind: definition}
+      - {name: Rectification, kind: method}
+      - {name: Multi-view stereo, kind: task}
+      - {name: Monocular depth estimation, kind: task}
+  - heading: 3D reconstruction and rendering
+    items:
+      - {name: Point cloud, kind: concept}
+      - {name: Signed distance function, kind: definition}
+      - {name: Surface reconstruction, kind: task}
+      - {name: PointNet, kind: architecture}
+      - {name: Image-based rendering, kind: method}
+      - {name: Light field, kind: concept}
+      - {name: Neural radiance field, kind: method}
+      - {name: 3D Gaussian splatting, kind: method}
+  - heading: Representation learning for vision
+    items:
+      - {name: Contrastive learning, kind: method}
+      - {name: SimCLR, kind: method}
+      - {name: Momentum contrast, kind: method}
+      - {name: Masked autoencoder, kind: method}
+      - {name: DINO, kind: method}
+      - {name: CLIP, kind: model}
+      - {name: Zero-shot image classification, kind: task}
+      - {name: Segment Anything, kind: model}
+  - heading: Generating images
+    items:
+      - {name: Variational autoencoder, kind: architecture}
+      - {name: Generative adversarial network, kind: architecture}
+      - {name: StyleGAN, kind: model}
+      - {name: Diffusion model, kind: method}
+      - {name: Latent diffusion model, kind: architecture}
+      - {name: Classifier-free guidance, kind: method}
+      - {name: Text-to-image generation, kind: task}
+      - {name: Frechet inception distance, kind: metric}
+      - {name: Deepfake, kind: risk}
+  - heading: Robustness and fairness in vision
+    items:
+      - {name: Adversarial example, kind: risk}
+      - {name: ImageNet-C, kind: benchmark}
+      - {name: Shortcut learning, kind: finding}
+      - {name: Gender Shades, kind: work}

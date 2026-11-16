@@ -1,0 +1,201 @@
+run: v-20261114-030138-12818
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: bleu
+  verifier: codex:gpt-6-sol
+  tag: V3JG9E
+  claim: c-clipping-example
+  work: papineni-2002-bleu-acl
+  locator: p. 2
+  key: 27c3a0befd34dae01bb18b8842c2a823
+  spans:
+  - start: 3252
+    end: 7251
+  verdict: supported
+  quote: the modified unigram precision in Example 2 is 2/7, even though its standard unigram precision is 7/7.
+  note: The passage gives both values for the stated example.
+- slug: bleu
+  verifier: codex:gpt-6-sol
+  tag: V3JG9E
+  claim: c-more-references
+  work: papineni-2002-bleu-acl
+  locator: p. 5
+  key: 54e5c53db71bd3087541bf02c73faadd
+  spans:
+  - start: 14516
+    end: 18360
+  verdict: supported
+  quote: a human translator scored 0.3468 against four references and scored 0.2571 against two references.
+  note: The passage places both scores on a test corpus of about 500 sentences.
+- slug: bleu
+  verifier: codex:gpt-6-sol
+  tag: V3JG9E
+  claim: c-more-references-post
+  work: post-2018-call-for-clarity-wmt
+  locator: p. 2
+  key: 9ed62434754aa310f2a7796b7f693d62
+  spans:
+  - start: 3530
+    end: 7829
+  verdict: supported
+  quote: Scoring the online-B system with one reference produces a BLEU score of 22.04, and with two, 25.25.
+  note: The preceding sentence identifies the setting as WMT 2017 English–Finnish.
+- slug: bleu
+  verifier: codex:gpt-6-sol
+  tag: V3JG9E
+  claim: c-tokenization-changes
+  work: post-2018-call-for-clarity-wmt
+  locator: p. 3, Table 1
+  key: b61fa857155f06e63fabb600e71eca1d
+  spans:
+  - start: 7829
+    end: 11872
+  verdict: unsupported
+  quote: Each column varies the processing of the “online-B” system output and its references.
+  note: The passage reports changes when both output and references are processed differently, so the claim should not attribute
+    the score changes to reference processing alone.
+- slug: bleu
+  verifier: codex:gpt-6-sol
+  tag: V3JG9E
+  claim: c-small-differences
+  work: mathur-2020-tangled-up-in-bleu-acl
+  locator: Sections 5 and 6
+  key: 080a47b82fb9d427fb2e108f7c119ad6
+  spans:
+  - start: 21277
+    end: 33003
+  verdict: supported
+  quote: this magnitude of difference only corresponds to true improvements in quality as judged by humans about half the
+    time.
+  note: The preceding sentence identifies the magnitude as 1–2 BLEU points.
+- slug: bleu
+  verifier: codex:gpt-6-sol
+  tag: V3JG9E
+  claim: c-permutations
+  work: callison-burch-2006-re-evaluating-bleu-eacl
+  locator: Section 3.1, Figure 1
+  key: 02fa23c8a499247fcb58c3ae49e16dcf
+  spans:
+  - start: 10765
+    end: 16699
+  verdict: supported
+  quote: The number of possible permutations for some translations is greater than 1073 .
+  note: The passage makes this statement about translations from the second best BLEU system, with the exponent flattened
+    in extraction.
+- slug: bleu
+  verifier: codex:gpt-6-sol
+  tag: V3JG9E
+  claim: c-nist-2005-rank
+  work: callison-burch-2006-re-evaluating-bleu-eacl
+  locator: Section 4
+  key: d4d3fae5a8fed30527d72319e8b32c5e
+  spans:
+  - start: 18189
+    end: 24773
+  verdict: supported
+  quote: the entry that was ranked 1st in the human evaluation was ranked 6th by Bleu.
+  note: The passage identifies this as the Arabic–English evaluation.
+- slug: bleu
+  verifier: codex:gpt-6-sol
+  tag: V3JG9E
+  claim: c-reiter-review
+  work: reiter-2018-structured-review-bleu-cl
+  locator: the abstract
+  key: ffad7623c37fe37361f524d4222cf539
+  spans:
+  - start: 0
+    end: 800
+  verdict: supported
+  quote: this review covers 284 correlations reported in 34 papers.
+  note: The abstract also gives the claimed limits on where the evidence supports using BLEU.
+- slug: bleu
+  verifier: codex:gpt-6-sol
+  tag: V3JG9E
+  claim: c-pairwise-accuracy
+  work: kocmi-2021-ship-or-not-wmt
+  locator: Section 5.1, Table 2
+  key: 82ab2631bafd17112ac730ac622bf4e9
+  spans:
+  - start: 17107
+    end: 30361
+  verdict: unsupported
+  quote: Column “All” shows the results for system pairs.
+  note: The table supports the three accuracies over 3,344 pairs, but the supplied passage does not establish the claimed
+    scope of 101 languages.
+- slug: bleu
+  verifier: codex:gpt-6-sol
+  tag: V3JG9E
+  claim: c-wmt22-stop
+  work: freitag-2022-wmt22-metrics-wmt
+  locator: the title page
+  key: 3ad225b48596cbc238aedb5b9ed98ad3
+  spans:
+  - start: 0
+    end: 3997
+  verdict: supported
+  quote: 'Results of WMT22 Metrics Shared Task:
+
+    Stop Using BLEU – Neural Metrics Are Better and More Robust'
+  note: This is the title printed in the passage.
+- slug: bleu
+  verifier: codex:gpt-6-sol
+  tag: V3JG9E
+  claim: c-smoothing-methods
+  work: chen-2014-smoothing-sentence-bleu-wmt
+  locator: pp. 2 to 3
+  key: ceaab8fd3eca89f777204666276a2a37
+  spans:
+  - start: 3292
+    end: 10648
+  verdict: supported
+  quote: We now describe 7 smoothing techniques that work better for sentence-level evaluation.
+  note: The passage identifies methods 1, 2, and 3 as described in the claim.
+- slug: bleu
+  verifier: codex:gpt-6-sol
+  tag: V3JG9E
+  claim: c-introduced-2002
+  work: papineni-2002-bleu-acl
+  locator: the title page
+  key: 9523f2437bd6cccd339346595cde693c
+  spans:
+  - start: 0
+    end: 3252
+  verdict: supported
+  quote: 'Proceedings of the 40th Annual Meeting of the Association for
+
+    Computational Linguistics (ACL), Philadelphia, July 2002, pp. 311-318.'
+  note: The title page also names all four authors and their IBM affiliation.
+- slug: bleu
+  verifier: codex:gpt-6-sol
+  tag: V3JG9E
+  claim: c-report-2001
+  work: lin-2004-orange-coling
+  locator: p. 7
+  key: 4ca7849d5211edb27cbe7439a4cda6f3
+  spans:
+  - start: 25605
+    end: 28477
+  verdict: supported
+  quote: 'Papineni, K., S. Roukos, T. Ward, and W.-J. Zhu. 2001.
+
+    Bleu: a Method for Automatic Evaluation of Machine
+
+    Translation. IBM Research Report RC22176'
+  note: The cited reference gives the authors, year, subject, and report number.
+- slug: bleu
+  verifier: codex:gpt-6-sol
+  tag: V3JG9E
+  claim: c-sacrebleu-2018
+  work: post-2018-call-for-clarity-wmt
+  locator: pp. 1 to 5
+  key: 979ba1cd0be8c79aa339aa93d21e56e9
+  spans:
+  - start: 0
+    end: 19548
+  verdict: supported
+  quote: it produces a short version string that documents the settings used.
+  note: The passage also says Post released sacreBLEU and describes its detokenized input and internal preprocessing.
