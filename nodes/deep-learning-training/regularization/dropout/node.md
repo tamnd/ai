@@ -193,7 +193,7 @@ In recurrent networks, apply it between layers, or use the same mask at each tim
 
 ## History
 
-Geoffrey Hinton, Nitish Srivastava, Alex Krizhevsky, Ilya Sutskever and Ruslan Salakhutdinov described dropout in 2012, in the preprint arXiv 1207.0580: they reduced overfitting by randomly omitting half of the feature detectors on each training case. {#c-first-2012}
+Geoffrey Hinton, Nitish Srivastava, Alex Krizhevsky, Ilya Sutskever and Ruslan Salakhutdinov described dropout in 2012, in the preprint arXiv 1207.0580: on each training case they switched off a random half of the feature detectors, and that cut overfitting. {#c-first-2012}
 Krizhevsky, Sutskever and Hinton (2012) used it in the first two fully connected layers of AlexNet, and a variant of AlexNet won the ImageNet challenge of 2012. {#c-alexnet}
 The full study, with the experiments, the theory for linear models and the practical guide, is Srivastava et al. (2014) in the Journal of Machine Learning Research. {#c-canonical-2014}
 The idea is related to older work on training with noise: Bishop (1995) showed that training with small input noise is close to Tikhonov regularization.
