@@ -1,5 +1,5 @@
 ---
-tag: NEW-mixed-precision-training
+tag: EPEFQ9
 kind: method
 slug: mixed-precision-training
 name: Mixed precision training
