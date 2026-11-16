@@ -1,0 +1,18 @@
+{
+  "source": "epoch-ai",
+  "date": "2026-11-14",
+  "adapter": "aik/0.1.30 harvest/epoch-ai",
+  "licence": "CC-BY-4.0",
+  "licence_class": "C",
+  "partial": false,
+  "snapshots": [
+    "b3:142ad183314526b422f46d7aed4f10022028c4f6533f665176eb2165532e37cf",
+    "b3:74b11424a2fa43c24f91734c46b9b30bcf09bdd219b268c9bbcc07714c0002ba"
+  ],
+  "requests": 3,
+  "rows": 3892,
+  "new": 3892,
+  "changed": 0,
+  "removed": 0,
+  "unchanged": 0
+}

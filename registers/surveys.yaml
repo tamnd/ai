@@ -1,0 +1,435 @@
+# The survey works of spec 13.3: the frontier sources for the items younger than the canon (5.10).
+# At most 5 surveys per sub-area, each with the date of its first version, its arXiv id or DOI, and an editor's reason.
+# An item that at least two of these surveys name is frontier core (5.10). A survey older than three years in a
+# sub-area with more than 50 new works a year is flagged for replacement. A change is a pull request with a reason.
+# The titles, the first authors and the dates were checked against the arXiv API on 2026-11-15. The authors list gives
+# at most the first three; the work's record has the rest. Names only: no text of a survey is copied (19.3).
+version: s-2026.11
+surveys:
+  - id: wang-2023-autonomous-agents
+    title: "A Survey on Large Language Model based Autonomous Agents"
+    authors: ["Lei Wang", "Chen Ma", "Xueyang Feng"]
+    date: 2023-08-22
+    area: ai-agents/agent-loops-and-architectures
+    arxiv: "2308.11432"
+    reason: "LLM agents by construction (profile, memory, planning, action), application and evaluation"
+  - id: xi-2023-rise-potential-agents
+    title: "The Rise and Potential of Large Language Model Based Agents: A Survey"
+    authors: ["Zhiheng Xi", "Wenxiang Chen", "Xin Guo"]
+    date: 2023-09-14
+    area: ai-agents/agent-loops-and-architectures
+    arxiv: "2309.07864"
+    reason: "a second wide survey of LLM agents: brain, perception and action, single and multi-agent"
+  - id: guo-2024-multi-agents-progress
+    title: "Large Language Model based Multi-Agents: A Survey of Progress and Challenges"
+    authors: ["Taicheng Guo", "Xiuying Chen", "Yaqi Wang"]
+    date: 2024-01-21
+    area: ai-agents/multi-agent-llm-systems
+    arxiv: "2402.01680"
+    reason: "multi-agent LLM systems: profiling, communication, capability growth"
+  - id: qu-2024-tool
+    title: "Tool Learning with Large Language Models: A Survey"
+    authors: ["Changle Qu", "Sunhao Dai", "Xiaochi Wei"]
+    date: 2024-05-28
+    area: ai-agents/tool-use-and-function-calling
+    arxiv: "2405.17935"
+    reason: "tool learning with LLMs: why and how, by task planning, tool selection, calling and response"
+  - id: zhang-2023-artificial-intelligence-science
+    title: "Artificial Intelligence for Science in Quantum, Atomistic, and Continuum Systems"
+    authors: ["Xuan Zhang", "Limei Wang", "Jacob Helwig"]
+    date: 2023-07-17
+    area: ai-for-science/physics-and-simulation
+    arxiv: "2307.08423"
+    reason: "AI for quantum, atomistic and continuum systems, with symmetry as the common thread"
+  - id: ji-2023-ai-alignment
+    title: "AI Alignment: A Comprehensive Survey"
+    authors: ["Jiaming Ji", "Tianyi Qiu", "Boyuan Chen"]
+    date: 2023-10-30
+    area: ai-safety-and-alignment/the-alignment-problem
+    arxiv: "2310.19852"
+    reason: "alignment by the RICE goals, forward alignment and backward alignment"
+  - id: li-2024-theorem-proving
+    title: "A Survey on Deep Learning for Theorem Proving"
+    authors: ["Zhaoyu Li", "Jialiang Sun", "Logan Murphy"]
+    date: 2024-04-15
+    area: automated-reasoning/neural-theorem-proving
+    arxiv: "2404.09939"
+    reason: "deep learning for theorem proving: autoformalization, premise selection, proof steps, datasets"
+  - id: scholkopf-2021-causal-representation
+    title: "Towards Causal Representation Learning"
+    authors: ["Bernhard Schölkopf", "Francesco Locatello", "Stefan Bauer"]
+    date: 2021-02-22
+    area: causal-inference-and-discovery/causal-representation-learning
+    arxiv: "2102.11107"
+    reason: "the programme of causal representation learning, by its proposers"
+  - id: gao-2022-nerf-radiance-field
+    title: "NeRF: Neural Radiance Field in 3D Vision: A Comprehensive Review (Updated Post-Gaussian Splatting)"
+    authors: ["Kyle Gao", "Yina Gao", "Hongjie He"]
+    date: 2022-10-01
+    area: computer-vision/neural-rendering
+    arxiv: "2210.00379"
+    reason: "NeRF and its variants by improvement and application"
+  - id: zou-2019-object-detection-20
+    title: "Object Detection in 20 Years: A Survey"
+    authors: ["Zhengxia Zou", "Keyan Chen", "Zhenwei Shi"]
+    date: 2019-05-13
+    area: computer-vision/object-detection
+    arxiv: "1905.05055"
+    reason: "object detection from Viola-Jones to deep detectors, with datasets and metrics"
+  - id: albalak-2024-data-selection
+    title: "A Survey on Data Selection for Language Models"
+    authors: ["Alon Albalak", "Yanai Elazar", "Sang Michael Xie"]
+    date: 2024-02-26
+    area: data-for-ai/data-curation-and-filtering
+    arxiv: "2402.16827"
+    reason: "data selection for language models across pretraining, instruction tuning, alignment and evaluation"
+  - id: zhou-2018-graph-methods-applications
+    title: "Graph Neural Networks: A Review of Methods and Applications"
+    authors: ["Jie Zhou", "Ganqu Cui", "Shengding Hu"]
+    date: 2018-12-20
+    area: deep-learning-architectures/graph-neural-networks
+    arxiv: "1812.08434"
+    reason: "GNNs from a design pipeline view, with applications"
+  - id: wu-2019-graph
+    title: "A Comprehensive Survey on Graph Neural Networks"
+    authors: ["Zonghan Wu", "Shirui Pan", "Fengwen Chen"]
+    date: 2019-01-03
+    area: deep-learning-architectures/graph-neural-networks
+    arxiv: "1901.00596"
+    reason: "a taxonomy of GNNs: recurrent, convolutional, graph autoencoders and spatial-temporal"
+  - id: cai-2024-mixture-experts
+    title: "A Survey on Mixture of Experts in Large Language Models"
+    authors: ["Weilin Cai", "Juyong Jiang", "Fan Wang"]
+    date: 2024-06-26
+    area: deep-learning-architectures/mixture-of-experts
+    arxiv: "2407.06204"
+    reason: "mixture of experts in LLMs: algorithms, systems and applications"
+  - id: han-2020-visual-transformer
+    title: "A Survey on Visual Transformer"
+    authors: ["Kai Han", "Yunhe Wang", "Hanting Chen"]
+    date: 2020-12-23
+    area: deep-learning-architectures/transformers
+    arxiv: "2012.12556"
+    reason: "vision transformers by task: backbone, high- and mid-level vision, low-level vision, video"
+  - id: tay-2020-efficient-transformers
+    title: "Efficient Transformers: A Survey"
+    authors: ["Yi Tay", "Mostafa Dehghani", "Dara Bahri"]
+    date: 2020-09-14
+    area: efficient-ai/efficient-attention
+    arxiv: "2009.06732"
+    reason: "efficient transformers by technique: fixed patterns, learnable patterns, memory, low rank, kernels, recurrence"
+  - id: gou-2020-knowledge-distillation
+    title: "Knowledge Distillation: A Survey"
+    authors: ["Jianping Gou", "Baosheng Yu", "Stephen John Maybank"]
+    date: 2020-06-09
+    area: efficient-ai/knowledge-distillation
+    arxiv: "2006.05525"
+    reason: "knowledge distillation by knowledge type, scheme, teacher-student architecture and algorithm"
+  - id: elsken-2018-architecture-search
+    title: "Neural Architecture Search: A Survey"
+    authors: ["Thomas Elsken", "Jan Hendrik Metzen", "Frank Hutter"]
+    date: 2018-08-16
+    area: efficient-ai/neural-architecture-search
+    arxiv: "1808.05377"
+    reason: "NAS by search space, search strategy and performance estimation"
+  - id: cheng-2023-network-pruning-taxonomy
+    title: "A Survey on Deep Neural Network Pruning-Taxonomy, Comparison, Analysis, and Recommendations"
+    authors: ["Hongrong Cheng", "Miao Zhang", "Javen Qinfeng Shi"]
+    date: 2023-08-13
+    area: efficient-ai/pruning-and-sparsity
+    arxiv: "2308.06767"
+    reason: "pruning by when, how and what to prune, with comparisons"
+  - id: gholami-2021-quantization-methods-efficient
+    title: "A Survey of Quantization Methods for Efficient Neural Network Inference"
+    authors: ["Amir Gholami", "Sehoon Kim", "Zhen Dong"]
+    date: 2021-03-25
+    area: efficient-ai/quantization
+    arxiv: "2103.13630"
+    reason: "quantization of neural networks: uniform and non-uniform, PTQ and QAT, mixed precision"
+  - id: xia-2024-unlocking-efficiency-inference
+    title: "Unlocking Efficiency in Large Language Model Inference: A Comprehensive Survey of Speculative Decoding"
+    authors: ["Heming Xia", "Zhe Yang", "Qingxiu Dong"]
+    date: 2024-01-15
+    area: efficient-ai/speculative-and-parallel-decoding
+    arxiv: "2401.07851"
+    reason: "speculative decoding: drafting, verification and the evaluation of methods"
+  - id: mehrabi-2019-bias-fairness-machine
+    title: "A Survey on Bias and Fairness in Machine Learning"
+    authors: ["Ninareh Mehrabi", "Fred Morstatter", "Nripsuta Saxena"]
+    date: 2019-08-23
+    area: fairness-and-ethics/bias-measurement
+    arxiv: "1908.09635"
+    reason: "sources of bias, fairness definitions and methods across ML"
+  - id: jiang-2024-code-generation
+    title: "A Survey on Large Language Models for Code Generation"
+    authors: ["Juyong Jiang", "Fan Wang", "Jiasi Shen"]
+    date: 2024-06-01
+    area: foundation-models/code-models
+    arxiv: "2406.00515"
+    reason: "LLMs for code generation: data, pretraining, instruction tuning, evaluation"
+  - id: yang-2022-diffusion-methods-applications
+    title: "Diffusion Models: A Comprehensive Survey of Methods and Applications"
+    authors: ["Ling Yang", "Zhilong Zhang", "Yang Song"]
+    date: 2022-09-02
+    area: generative-models/diffusion-models
+    arxiv: "2209.00796"
+    reason: "diffusion models by sampling, likelihood and data structure, and their applications"
+  - id: creswell-2017-generative-adversarial-overview
+    title: "Generative Adversarial Networks: An Overview"
+    authors: ["Antonia Creswell", "Tom White", "Vincent Dumoulin"]
+    date: 2017-10-19
+    area: generative-models/generative-adversarial-networks
+    arxiv: "1710.07035"
+    reason: "an overview of GAN training, architectures and applications for a signal processing readership"
+  - id: papamakarios-2019-normalizing-flows-probabilistic
+    title: "Normalizing Flows for Probabilistic Modeling and Inference"
+    authors: ["George Papamakarios", "Eric Nalisnick", "Danilo Jimenez Rezende"]
+    date: 2019-12-05
+    area: generative-models/normalizing-flows
+    arxiv: "1912.02762"
+    reason: "the reference review of normalizing flows by the authors of several of the main flow models"
+  - id: bereska-2024-mechanistic-interpretability-ai
+    title: "Mechanistic Interpretability for AI Safety -- A Review"
+    authors: ["Leonard Bereska", "Efstratios Gavves"]
+    date: 2024-04-22
+    area: interpretability/mechanistic-interpretability
+    arxiv: "2404.14082"
+    reason: "mechanistic interpretability: features, circuits, methods and its relevance to safety"
+  - id: hogan-2020-knowledge-graphs
+    title: "Knowledge Graphs"
+    authors: ["Aidan Hogan", "Eva Blomqvist", "Michael Cochez"]
+    date: 2020-03-04
+    area: knowledge-representation/knowledge-graphs
+    arxiv: "2003.02320"
+    reason: "knowledge graphs: data models, schema, identity, context, deductive and inductive knowledge"
+  - id: zhao-2023-
+    title: "A Survey of Large Language Models"
+    authors: ["Wayne Xin Zhao", "Kun Zhou", "Junyi Li"]
+    date: 2023-03-31
+    area: language-models/decoder-only-models
+    arxiv: "2303.18223"
+    reason: "the broadest survey of LLMs: pretraining, adaptation, use and evaluation, revised many times since 2023"
+  - id: huang-2023-hallucination-principles-taxonomy
+    title: "A Survey on Hallucination in Large Language Models: Principles, Taxonomy, Challenges, and Open Questions"
+    authors: ["Lei Huang", "Weijiang Yu", "Weitao Ma"]
+    date: 2023-11-09
+    area: language-models/hallucination
+    arxiv: "2311.05232"
+    reason: "a taxonomy of hallucination in LLMs, its causes, detection and mitigation"
+  - id: dong-2022-context
+    title: "A Survey on In-context Learning"
+    authors: ["Qingxiu Dong", "Lei Li", "Damai Dai"]
+    date: 2022-12-31
+    area: language-models/in-context-learning
+    arxiv: "2301.00234"
+    reason: "the survey of in-context learning: its definition, training, demonstration design and analysis"
+  - id: chang-2023-evaluation
+    title: "A Survey on Evaluation of Large Language Models"
+    authors: ["Yupeng Chang", "Xu Wang", "Jindong Wang"]
+    date: 2023-07-06
+    area: language-models/language-model-evaluation
+    arxiv: "2307.03109"
+    reason: "what, where and how LLMs are evaluated, with the benchmarks by task"
+  - id: ren-2020-active
+    title: "A Survey of Deep Active Learning"
+    authors: ["Pengzhen Ren", "Yun Xiao", "Xiaojun Chang"]
+    date: 2020-08-30
+    area: learning-settings/active-learning
+    arxiv: "2009.00236"
+    reason: "deep active learning: query strategies and the training of deep models with few labels"
+  - id: wang-2023-continual-theory-method
+    title: "A Comprehensive Survey of Continual Learning: Theory, Method and Application"
+    authors: ["Liyuan Wang", "Xingxing Zhang", "Hang Su"]
+    date: 2023-01-31
+    area: learning-settings/continual-learning
+    arxiv: "2302.00487"
+    reason: "continual learning: setups, theory, methods by family, and applications"
+  - id: kairouz-2019-advances-open-problems
+    title: "Advances and Open Problems in Federated Learning"
+    authors: ["Peter Kairouz", "H. Brendan McMahan", "Brendan Avent"]
+    date: 2019-12-10
+    area: learning-settings/federated-learning
+    arxiv: "1912.04977"
+    reason: "the reference work on federated learning by many of its researchers: methods, privacy, robustness, fairness"
+  - id: wang-2019-generalizing-few-examples
+    title: "Generalizing from a Few Examples: A Survey on Few-Shot Learning"
+    authors: ["Yaqing Wang", "Quanming Yao", "James Kwok"]
+    date: 2019-04-10
+    area: learning-settings/few-shot-and-zero-shot
+    arxiv: "1904.05046"
+    reason: "few-shot learning by how prior knowledge is used: data, model, algorithm"
+  - id: hospedales-2020-meta
+    title: "Meta-Learning in Neural Networks: A Survey"
+    authors: ["Timothy Hospedales", "Antreas Antoniou", "Paul Micaelli"]
+    date: 2020-04-11
+    area: learning-settings/meta-learning
+    arxiv: "2004.05439"
+    reason: "a taxonomy of meta-learning by meta-representation, meta-optimizer and meta-objective"
+  - id: zhuang-2019-transfer
+    title: "A Comprehensive Survey on Transfer Learning"
+    authors: ["Fuzhen Zhuang", "Zhiyuan Qi", "Keyu Duan"]
+    date: 2019-11-07
+    area: learning-settings/transfer-learning
+    arxiv: "1911.02685"
+    reason: "transfer learning by data and by model, with experiments over many methods"
+  - id: yin-2023-multimodal
+    title: "A Survey on Multimodal Large Language Models"
+    authors: ["Shukang Yin", "Chaoyou Fu", "Sirui Zhao"]
+    date: 2023-06-23
+    area: multimodal-models/vision-language-models
+    arxiv: "2306.13549"
+    reason: "multimodal LLMs: architecture, training, data and evaluation"
+  - id: zhang-2023-vision-vision-tasks
+    title: "Vision-Language Models for Vision Tasks: A Survey"
+    authors: ["Jingyi Zhang", "Jiaxing Huang", "Sheng Jin"]
+    date: 2023-04-03
+    area: multimodal-models/vision-language-pretraining
+    arxiv: "2304.00685"
+    reason: "vision-language pretraining for visual recognition: objectives, transfer and distillation"
+  - id: zhang-2023-instruction-tuning
+    title: "Instruction Tuning for Large Language Models: A Survey"
+    authors: ["Shengyu Zhang", "Linfeng Dong", "Xiaoya Li"]
+    date: 2023-08-21
+    area: post-training/instruction-tuning
+    arxiv: "2308.10792"
+    reason: "instruction tuning datasets, methods and models"
+  - id: yang-2024-merging-llms-mllms
+    title: "Model Merging in LLMs, MLLMs, and Beyond: Methods, Theories, Applications and Opportunities"
+    authors: ["Enneng Yang", "Li Shen", "Guibing Guo"]
+    date: 2024-08-14
+    area: post-training/model-merging
+    arxiv: "2408.07666"
+    reason: "model merging methods, theory and applications"
+  - id: han-2024-parameter-efficient-fine
+    title: "Parameter-Efficient Fine-Tuning for Large Models: A Comprehensive Survey"
+    authors: ["Zeyu Han", "Chao Gao", "Jinyang Liu"]
+    date: 2024-03-21
+    area: post-training/parameter-efficient-fine-tuning
+    arxiv: "2403.14608"
+    reason: "PEFT methods by type (additive, selective, reparameterized, hybrid) and their systems"
+  - id: kaufmann-2023-reinforcement-human-feedback
+    title: "A Survey of Reinforcement Learning from Human Feedback"
+    authors: ["Timo Kaufmann", "Paul Weng", "Viktor Bengs"]
+    date: 2023-12-22
+    area: post-training/rlhf
+    arxiv: "2312.14925"
+    reason: "RLHF from its RL roots to LLMs: feedback types, reward models, policy learning"
+  - id: angelopoulos-2021-gentle-introduction-conformal
+    title: "A Gentle Introduction to Conformal Prediction and Distribution-Free Uncertainty Quantification"
+    authors: ["Anastasios N. Angelopoulos", "Stephen Bates"]
+    date: 2021-07-15
+    area: probabilistic-machine-learning/conformal-prediction
+    arxiv: "2107.07511"
+    reason: "the standard introduction to conformal prediction and distribution-free uncertainty quantification"
+  - id: abdar-2020-uncertainty-quantification-techniques
+    title: "A Review of Uncertainty Quantification in Deep Learning: Techniques, Applications and Challenges"
+    authors: ["Moloud Abdar", "Farhad Pourpanah", "Sadiq Hussain"]
+    date: 2020-11-12
+    area: probabilistic-machine-learning/uncertainty-quantification
+    arxiv: "2011.06225"
+    reason: "uncertainty quantification in deep learning: Bayesian and ensemble methods, and applications"
+  - id: chu-2023-navigate-through-enigmatic
+    title: "Navigate through Enigmatic Labyrinth A Survey of Chain of Thought Reasoning: Advances, Frontiers and Future"
+    authors: ["Zheng Chu", "Jingchang Chen", "Qianglong Chen"]
+    date: 2023-09-27
+    area: reasoning-and-test-time-compute/chain-of-thought
+    arxiv: "2309.15402"
+    reason: "chain-of-thought reasoning: construction, structure variants and enhancement"
+  - id: liu-2021-pre-train-prompt
+    title: "Pre-train, Prompt, and Predict: A Systematic Survey of Prompting Methods in Natural Language Processing"
+    authors: ["Pengfei Liu", "Weizhe Yuan", "Jinlan Fu"]
+    date: 2021-07-28
+    area: reasoning-and-test-time-compute/prompting
+    arxiv: "2107.13586"
+    reason: "the survey that named the prompting paradigm of NLP and gave its taxonomy"
+  - id: li-2025-system-1-system
+    title: "From System 1 to System 2: A Survey of Reasoning Large Language Models"
+    authors: ["Zhong-Zhi Li", "Duzhen Zhang", "Ming-Liang Zhang"]
+    date: 2025-02-24
+    area: reasoning-and-test-time-compute/test-time-scaling
+    arxiv: "2502.17419"
+    reason: "reasoning LLMs: their foundations, construction methods and evaluation"
+  - id: zhang-2025-test-time-scaling
+    title: "A Survey on Test-Time Scaling in Large Language Models: What, How, Where, and How Well?"
+    authors: ["Qiyuan Zhang", "Fuyuan Lyu", "Zexu Sun"]
+    date: 2025-03-31
+    area: reasoning-and-test-time-compute/test-time-scaling
+    arxiv: "2503.24235"
+    reason: "test-time scaling by what, how, where and how well to scale"
+  - id: arulkumaran-2017-brief-reinforcement
+    title: "A Brief Survey of Deep Reinforcement Learning"
+    authors: ["Kai Arulkumaran", "Marc Peter Deisenroth", "Miles Brundage"]
+    date: 2017-08-19
+    area: reinforcement-learning/function-approximation-in-rl
+    arxiv: "1708.05866"
+    reason: "deep RL as it stood after DQN and AlphaGo: value, policy and actor-critic methods"
+  - id: moerland-2020-reinforcement
+    title: "Model-based Reinforcement Learning: A Survey"
+    authors: ["Thomas M. Moerland", "Joost Broekens", "Aske Plaat"]
+    date: 2020-06-30
+    area: reinforcement-learning/model-based-rl
+    arxiv: "2006.16712"
+    reason: "model-based RL: dynamics model learning and the integration of planning and learning"
+  - id: levine-2020-offline-reinforcement-tutorial
+    title: "Offline Reinforcement Learning: Tutorial, Review, and Perspectives on Open Problems"
+    authors: ["Sergey Levine", "Aviral Kumar", "George Tucker"]
+    date: 2020-05-04
+    area: reinforcement-learning/offline-rl
+    arxiv: "2005.01643"
+    reason: "offline RL: the problem, its methods and its open problems"
+  - id: zhao-2022-dense-text-retrieval
+    title: "Dense Text Retrieval based on Pretrained Language Models: A Survey"
+    authors: ["Wayne Xin Zhao", "Jing Liu", "Ruiyang Ren"]
+    date: 2022-11-27
+    area: retrieval-and-recommendation/dense-retrieval
+    arxiv: "2211.14876"
+    reason: "dense retrieval with pretrained language models: architecture, training, indexing, integration"
+  - id: zhang-2017-recommender-system-new
+    title: "Deep Learning based Recommender System: A Survey and New Perspectives"
+    authors: ["Shuai Zhang", "Lina Yao", "Aixin Sun"]
+    date: 2017-07-24
+    area: retrieval-and-recommendation/recommender-systems
+    arxiv: "1707.07435"
+    reason: "deep learning for recommendation by model family"
+  - id: gao-2023-retrieval-augmented-generation
+    title: "Retrieval-Augmented Generation for Large Language Models: A Survey"
+    authors: ["Yunfan Gao", "Yun Xiong", "Xinyu Gao"]
+    date: 2023-12-18
+    area: retrieval-and-recommendation/retrieval-augmented-generation
+    arxiv: "2312.10997"
+    reason: "RAG from naive to advanced to modular, with its retrieval, generation and augmentation steps"
+  - id: ma-2024-vision-action-embodied
+    title: "A Survey on Vision-Language-Action Models for Embodied AI"
+    authors: ["Yueen Ma", "Zixing Song", "Yuzheng Zhuang"]
+    date: 2024-05-23
+    area: robotics-and-embodied-ai/vision-language-action-models
+    arxiv: "2405.14093"
+    reason: "vision-language-action models: components, control policies and task planners"
+  - id: akhtar-2018-threat-adversarial-attacks
+    title: "Threat of Adversarial Attacks on Deep Learning in Computer Vision: A Survey"
+    authors: ["Naveed Akhtar", "Ajmal Mian"]
+    date: 2018-01-02
+    area: robustness-security-and-privacy/adversarial-examples
+    arxiv: "1801.00553"
+    reason: "adversarial attacks and defences in computer vision"
+  - id: yang-2021-generalized-out-distribution
+    title: "Generalized Out-of-Distribution Detection: A Survey"
+    authors: ["Jingkang Yang", "Kaiyang Zhou", "Yixuan Li"]
+    date: 2021-10-21
+    area: robustness-security-and-privacy/distribution-shift-and-ood
+    arxiv: "2110.11334"
+    reason: "a unified framework for OOD detection, anomaly detection, novelty detection and open-set recognition"
+  - id: jaiswal-2020-contrastive-self-supervised
+    title: "A Survey on Contrastive Self-supervised Learning"
+    authors: ["Ashish Jaiswal", "Ashwin Ramesh Babu", "Mohammad Zaki Zadeh"]
+    date: 2020-10-31
+    area: self-supervised-learning/contrastive-learning
+    arxiv: "2011.00362"
+    reason: "contrastive self-supervised learning: pretext tasks, architectures and results"
+  - id: lim-2020-time-series-forecasting
+    title: "Time Series Forecasting With Deep Learning: A Survey"
+    authors: ["Bryan Lim", "Stefan Zohren"]
+    date: 2020-04-28
+    area: time-series-and-sequential-data/deep-forecasting
+    arxiv: "2004.13408"
+    reason: "deep forecasting architectures and hybrid models, by researchers of the temporal fusion transformer"

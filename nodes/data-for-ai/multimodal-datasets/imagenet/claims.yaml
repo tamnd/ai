@@ -1,0 +1,132 @@
+# The claims of the imagenet page (spec 07). The build computes the labels.
+- id: c-wordnet
+  type: definitional
+  text: "ImageNet is organized according to the WordNet hierarchy, in which each concept, described by one or more words or phrases, is a synonym set or synset."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "pp. 2 to 3", stance: for}
+
+- id: c-size
+  type: historical
+  text: "As of August 2014, ImageNet held 14,197,122 annotated images in 21,841 synsets of WordNet, an average of 650 manually verified images per synset."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 3", stance: for}
+
+- id: c-person-share
+  type: historical
+  text: "The person subtree of the full ImageNet has 2,832 people categories, which hold roughly 8.3% of the images."
+  evidence:
+    - {work: "yang-2020-towards-fairer-datasets", role: original, locator: "p. 2", stance: for}
+
+- id: c-subset
+  type: historical
+  text: "In ILSVRC2012-2014, the image classification data has 1000 synsets with about 1.2 million training images, 50,000 validation images and 100,000 test images."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "pp. 8 to 9", stance: for}
+
+- id: c-krizhevsky-size
+  type: attributive
+  text: "Krizhevsky et al. (2012) describe ImageNet as over 15 million labeled high-resolution images in roughly 22,000 categories, collected from the web and labeled with Amazon Mechanical Turk."
+  evidence:
+    - {work: "krizhevsky-2012-imagenet-classification", role: original, locator: "Section 2", stance: for}
+
+- id: c-synonyms
+  type: historical
+  text: "Because ImageNet uses WordNet as its backbone, it disambiguates word meanings and combines synonyms into one category."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 5", stance: for}
+
+- id: c-gloss-filter
+  type: historical
+  text: "During the construction of ImageNet in 2009, the team removed any synset whose gloss denotes it as offensive, derogatory, pejorative or slur, but this filtering was imperfect and left offensive synsets in the person subtree."
+  evidence:
+    - {work: "yang-2020-towards-fairer-datasets", role: original, locator: "p. 3", stance: for}
+
+- id: c-queries
+  type: historical
+  text: "For each synset, the queries for candidate images are its WordNet synonyms, sent to several image search engines."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 7", stance: for}
+
+- id: c-query-expansion
+  type: historical
+  text: "Because search engines limit the number of retrievable images to a few hundred to a thousand, the queries are expanded with the word of a parent synset when that word appears in the gloss of the target synset, and translated into Chinese, Spanish, Dutch and Italian with WordNets in those languages."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 7", stance: for}
+
+- id: c-amt
+  type: historical
+  text: "Workers on Amazon Mechanical Turk see a set of candidate images and the definition of the synset, and verify whether each image contains objects of the synset."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 7", stance: for}
+
+- id: c-dynamic-consensus
+  type: historical
+  text: "The number of agreeing votes depends on the synset: at least 10 users vote on an initial sample of its images, which gives a confidence score table, and the remaining images are labeled until a confidence threshold is reached."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 7", stance: for}
+
+- id: c-precision
+  type: empirical
+  text: "On 80 synsets sampled at every depth of the mammal and vehicle subtrees, an independent group verified the images and found an average precision of 99.7%."
+  scope:
+    models: "not applicable: the crowdsourced annotation of ImageNet"
+    data: [imagenet]
+    scale: "80 synsets of the mammal and vehicle subtrees"
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 7", stance: for}
+
+- id: c-docs
+  type: historical
+  text: "Russakovsky et al. summarize the ImageNet collection and annotation strategy of Deng et al. for the challenge data, and refer to Deng et al. for further details."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 7", stance: for}
+
+- id: c-noncommercial
+  type: attributive
+  text: "Yang et al. (2020) describe ImageNet as a free education dataset released for non-commercial use only, and refer to its terms and conditions at image-net.org."
+  evidence:
+    - {work: "yang-2020-towards-fairer-datasets", role: original, locator: "p. 1", stance: for}
+
+- id: c-unsafe
+  type: empirical
+  text: "Yang et al. (2020) examined the 2,832 people categories of the person subtree, judged 1,593 of them potentially offensive labels for an image recognition dataset, and planned to remove all of them."
+  scope:
+    models: "not applicable: an annotation of the categories"
+    data: [imagenet]
+    scale: "the 2,832 synsets of the person subtree"
+  evidence:
+    - {work: "yang-2020-towards-fairer-datasets", role: original, locator: "p. 2", stance: for}
+
+- id: c-imageable
+  type: empirical
+  text: "Of the remaining 1,239 people categories, Yang et al. (2020) found only 158 to be visual, and recommend filtering the person subtree down to those 158 when training visual recognition models."
+  scope:
+    models: "not applicable: an annotation of the categories"
+    data: [imagenet]
+    scale: "the 1,239 safe synsets of the person subtree"
+  evidence:
+    - {work: "yang-2020-towards-fairer-datasets", role: original, locator: "p. 2", stance: for}
+
+- id: c-demographics
+  type: historical
+  text: "Yang et al. (2020) ran a crowdsourcing study to annotate the gender, skin color and age of the people depicted in the images of the remaining people categories."
+  evidence:
+    - {work: "yang-2020-towards-fairer-datasets", role: original, locator: "p. 2", stance: for}
+
+- id: c-train-errors
+  type: attributive
+  text: "Northcutt et al. (2021) note that the train set labels of ImageNet are well known to contain errors."
+  evidence:
+    - {work: "northcutt-2021-pervasive-label-errors", role: original, locator: "p. 1", stance: for}
+
+- id: c-goal
+  type: historical
+  text: "Constructing ImageNet was an effort to cover most nouns in English with tens of millions of manually verified photographs, and the ILSVRC image classification task came as a direct extension of this effort."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 4", stance: for}
+
+- id: c-fixed-subset
+  type: historical
+  text: "A subset of ImageNet categories and images was chosen and fixed as a standardized benchmark, while the rest of ImageNet continued to grow."
+  evidence:
+    - {work: "russakovsky-2015-imagenet-large-scale", role: original, locator: "p. 4", stance: for}
