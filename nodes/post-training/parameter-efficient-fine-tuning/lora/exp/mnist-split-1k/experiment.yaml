@@ -16,7 +16,7 @@ base_config:
   finetune: {digits: "5-9", images: 1000, epochs: 20, batch_size: 128, optimizer: adam}
   lora: {alpha: "equal to r, so s = 1", init: "A Gaussian with standard deviation 1/sqrt(d_in), B zero"}
 data:
-  - {dataset: mnist, version: "lecun-1998", subset: "train (split by digit), test", pin: "S:mnist-ai-data"}
+  - {dataset: mnist, version: "lecun-1998", subset: "train, test", pin: "S:mnist-ai-data", train: [train]}
 seeds: {n: 10, base: 20261115}
 budget: cpu-small
 framework: numpy
