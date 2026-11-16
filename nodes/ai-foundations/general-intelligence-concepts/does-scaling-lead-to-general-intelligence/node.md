@@ -1,5 +1,5 @@
 ---
-tag: NEW-does-scaling-lead-to-general-intelligence
+tag: WQ1SF6
 kind: open-problem
 slug: does-scaling-lead-to-general-intelligence
 name: Does scaling lead to general intelligence?
