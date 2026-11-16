@@ -1,0 +1,138 @@
+# The crosswalk of CS2023 (spec 5.8): the knowledge units of the Artificial Intelligence knowledge area of the ACM/IEEE-CS/AAAI
+# Computer Science Curricula 2023, in the order of the curriculum, each mapped to the areas and nodes that teach it.
+# Only the ids and the names of the units are kept, with the source; the text of the curriculum is not copied (19).
+# A match says what our item is to the unit: exact, broader (ours is wider), narrower (ours is a part of it) or related.
+# The path cs2023-ai of the site (16.12) reads the units in this order.
+system: CS2023, the Artificial Intelligence knowledge area
+version: CS2023 final report
+units: knowledge units
+source: https://csed.acm.org/mockup-artificial-intelligence/
+licence: names of a public curriculum, cited
+checked: 2026-11-15
+paths:
+  - {id: cs2023-ai, title: The CS2023 Artificial Intelligence knowledge area}
+rows:
+  - id: AI-Introduction
+    name: Fundamental Issues
+    maps:
+      - {to: area:ai-foundations/definitions-of-ai, match: narrower}
+      - {to: area:ai-foundations/agents-and-environments, match: narrower}
+      - {to: area:ai-foundations/rationality-and-bounded-rationality, match: narrower}
+      - {to: area:ai-foundations/problem-formulation, match: narrower}
+      - {to: area:ai-foundations/measuring-intelligence, match: narrower}
+      - {to: area:philosophy-and-cognitive-science/can-machines-think, match: narrower}
+      - {to: area:history-of-ai, match: related}
+  - id: AI-Search
+    name: Search
+    maps:
+      - {to: area:search-and-evolutionary-computation/state-space-search, match: narrower}
+      - {to: area:search-and-evolutionary-computation/uninformed-search, match: narrower}
+      - {to: area:search-and-evolutionary-computation/informed-search-and-heuristics, match: narrower}
+      - {to: area:search-and-evolutionary-computation/local-search, match: narrower}
+      - {to: area:search-and-evolutionary-computation/metaheuristics, match: narrower}
+      - {to: area:search-and-evolutionary-computation/genetic-algorithms, match: narrower}
+      - {to: area:games-and-multi-agent-systems/adversarial-search-in-ai, match: narrower}
+      - {to: area:games-and-multi-agent-systems/monte-carlo-tree-search, match: narrower}
+      - {to: area:constraints-and-satisfiability/constraint-satisfaction-problems, match: narrower}
+  - id: AI-KRR
+    name: Fundamental Knowledge Representation and Reasoning
+    maps:
+      - {to: area:probabilistic-reasoning/uncertainty-and-probability-in-ai, match: narrower}
+      - {to: area:probabilistic-reasoning/bayesian-networks, match: narrower}
+      - {to: area:probabilistic-reasoning/temporal-probabilistic-models, match: narrower}
+      - {to: area:ai-foundations/decision-theory-for-ai, match: narrower}
+      - {to: area:knowledge-representation, match: related}
+  - id: AI-ML
+    name: Machine Learning
+    maps:
+      - {to: area:supervised-learning/learning-problem-setup, match: narrower}
+      - {to: area:supervised-learning/linear-regression, match: narrower}
+      - {to: area:supervised-learning/decision-trees, match: narrower}
+      - {to: area:supervised-learning/naive-bayes-and-generative-classifiers, match: narrower}
+      - {to: area:supervised-learning/model-selection-and-validation, match: narrower}
+      - {to: area:supervised-learning/classical-regularization, match: narrower}
+      - {to: area:supervised-learning/ensembles-and-bagging, match: narrower}
+      - {to: area:deep-learning-foundations/neural-network-basics, match: narrower}
+      - {to: area:deep-learning-foundations/backpropagation-and-autodiff, match: narrower}
+      - {to: dropout, match: narrower}
+      - {to: area:unsupervised-learning/clustering-in-practice, match: narrower}
+      - {to: area:learning-settings/semi-supervised-learning, match: narrower}
+      - {to: area:reinforcement-learning/markov-decision-processes, match: narrower}
+      - {to: area:evaluation/classification-and-regression-metrics, match: narrower}
+      - {to: area:evaluation/evaluation-methodology, match: narrower}
+      - {to: area:learning-theory/statistical-learning-framework, match: narrower}
+      - {to: area:interpretability, match: related}
+      - {to: area:retrieval-and-recommendation, match: related}
+      - {to: area:fairness-and-ethics/ethics-of-ai, match: related}
+  - id: AI-SEP
+    name: Applications and Societal Impact
+    maps:
+      - {to: area:ai-applications, match: broader}
+      - {to: area:generative-models, match: related}
+      - {to: area:ai-and-society, match: related}
+      - {to: area:fairness-and-ethics, match: related}
+  - id: AI-LRR
+    name: Logical Representation and Reasoning
+    maps:
+      - {to: area:knowledge-representation/propositional-and-first-order-logic-for-ai, match: narrower}
+      - {to: area:automated-reasoning/automated-theorem-proving, match: narrower}
+      - {to: area:knowledge-representation/semantic-web, match: narrower}
+      - {to: area:knowledge-representation/nonmonotonic-reasoning, match: narrower}
+      - {to: area:knowledge-representation/argumentation-frameworks, match: narrower}
+      - {to: area:knowledge-representation/reasoning-about-action-and-change, match: narrower}
+      - {to: area:knowledge-representation/spatial-and-temporal-reasoning, match: narrower}
+      - {to: area:automated-reasoning/logic-programming, match: narrower}
+      - {to: area:classical-ai-systems/expert-systems, match: narrower}
+      - {to: area:knowledge-representation/frames-and-semantic-networks, match: narrower}
+  - id: AI-Probability
+    name: Probabilistic Representation and Reasoning
+    maps:
+      - {to: area:probabilistic-reasoning/bayesian-networks, match: narrower}
+      - {to: area:probabilistic-reasoning/exact-inference, match: narrower}
+      - {to: area:probabilistic-reasoning/sampling-based-inference, match: narrower}
+      - {to: area:probabilistic-reasoning/temporal-probabilistic-models, match: narrower}
+      - {to: area:probabilistic-reasoning/decision-networks-and-value-of-information, match: narrower}
+      - {to: area:ai-foundations/decision-theory-for-ai, match: narrower}
+  - id: AI-Planning
+    name: Planning
+    maps:
+      - {to: area:planning-and-scheduling/classical-planning, match: narrower}
+      - {to: area:planning-and-scheduling/planning-languages, match: narrower}
+      - {to: area:planning-and-scheduling/heuristic-planning, match: narrower}
+      - {to: area:planning-and-scheduling/hierarchical-task-networks, match: narrower}
+      - {to: area:planning-and-scheduling/epistemic-and-multi-agent-planning, match: narrower}
+      - {to: area:planning-and-scheduling/planning-under-uncertainty, match: narrower}
+  - id: AI-Agents
+    name: Agents and Cognitive Systems
+    maps:
+      - {to: area:games-and-multi-agent-systems/agent-architectures-and-bdi, match: narrower}
+      - {to: area:games-and-multi-agent-systems/game-theory-for-ai, match: narrower}
+      - {to: area:games-and-multi-agent-systems/coordination-and-cooperation, match: narrower}
+      - {to: area:philosophy-and-cognitive-science/cognitive-science-and-ai, match: related}
+      - {to: area:ai-agents, match: related}
+  - id: AI-NLP
+    name: Natural Language Processing
+    maps:
+      - {to: area:natural-language-processing/syntactic-parsing, match: narrower}
+      - {to: area:natural-language-processing/lexical-and-compositional-semantics, match: narrower}
+      - {to: area:natural-language-processing/sequence-labelling, match: narrower}
+      - {to: area:natural-language-processing/information-extraction, match: narrower}
+      - {to: area:natural-language-processing/machine-translation, match: narrower}
+      - {to: area:natural-language-processing/text-classification, match: narrower}
+      - {to: area:natural-language-processing/computational-linguistics-foundations, match: narrower}
+      - {to: area:language-models, match: related}
+  - id: AI-Robotics
+    name: Robotics
+    maps:
+      - {to: area:robotics-and-embodied-ai/robot-perception, match: narrower}
+      - {to: area:robotics-and-embodied-ai/localization-and-slam, match: narrower}
+      - {to: area:robotics-and-embodied-ai/motion-planning-in-robotics, match: narrower}
+      - {to: area:robotics-and-embodied-ai/manipulation, match: narrower}
+      - {to: area:robotics-and-embodied-ai/human-robot-interaction, match: narrower}
+  - id: AI-Vision
+    name: Perception and Computer Vision
+    maps:
+      - {to: area:computer-vision/image-formation-and-features, match: narrower}
+      - {to: area:computer-vision/image-classification, match: narrower}
+      - {to: area:computer-vision/semantic-and-instance-segmentation, match: narrower}
+      - {to: area:speech-and-audio, match: related}

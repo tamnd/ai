@@ -1,0 +1,59 @@
+# The facts of the ILSVRC-2012 classification benchmark (spec 04.9). The build computes the status of each fact.
+- id: released
+  value: "2012"
+  note: "The classification data of ILSVRC2012; the same data was used in ILSVRC2013 and ILSVRC2014."
+  sources:
+    - {src: "russakovsky-2015-imagenet-large-scale", loc: "p. 7", value: "2012", kind: primary}
+- id: size.items.train
+  value: 1281167
+  unit: items
+  sources:
+    - {src: "russakovsky-2015-imagenet-large-scale", loc: "p. 9", value: 1281167, kind: primary}
+- id: size.items.val
+  value: 50000
+  unit: items
+  sources:
+    - {src: "russakovsky-2015-imagenet-large-scale", loc: "p. 9", value: 50000, kind: primary}
+    - {src: "krizhevsky-2012-imagenet-classification", loc: "Section 2", value: 50000, kind: secondary}
+- id: size.items.test
+  value: 100000
+  unit: items
+  sources:
+    - {src: "russakovsky-2015-imagenet-large-scale", loc: "p. 9", value: 100000, kind: primary}
+- id: splits
+  value: "train, val, test"
+  note: "The test labels are hidden; results on the test set come from the evaluation server."
+  sources:
+    - {src: "russakovsky-2015-imagenet-large-scale", loc: "p. 9", value: "train, val, test", kind: primary}
+- id: metric
+  value: "top-5 error"
+  sources:
+    - {src: "russakovsky-2015-imagenet-large-scale", loc: "p. 15", value: "top-5 error", kind: primary}
+- id: protocol
+  value: "predictions on the hidden test set are scored by the evaluation server of the organisers, with at most two submissions per week for each team"
+  sources:
+    - {src: "russakovsky-2015-imagenet-large-scale", loc: "p. 40", value: "predictions on the hidden test set are scored by the evaluation server of the organisers, with at most two submissions per week for each team", kind: primary}
+- id: licence
+  value: "free, for non-commercial use only, under the terms of image-net.org"
+  as_of: 2020-01-27
+  no_primary: "The terms page image-net.org/download-faq refused the connection when this page was written (2026-11-14), so the value comes from a paper of the ImageNet team that cites it."
+  sources:
+    - {src: "yang-2020-towards-fairer-datasets", loc: "p. 1", value: "free, for non-commercial use only, under the terms of image-net.org", kind: secondary, as_of: 2020-01-27}
+- id: data_hash.train
+  value: "md5:1d675b47d978889d74fa0da5fadfb00e"
+  note: "The MD5 of ILSVRC2012_img_train.tar."
+  no_primary: "The organisers publish no checksum that this page could reach (image-net.org refused the connection on 2026-11-14), and the data was not downloaded to hash it here; the value is the checksum that torchvision checks."
+  sources:
+    - {src: "https://github.com/pytorch/vision/blob/v0.20.0/torchvision/datasets/imagenet.py", loc: "lines 13 to 17", value: "md5:1d675b47d978889d74fa0da5fadfb00e", kind: secondary}
+- id: data_hash.val
+  value: "md5:29b22e2961454d5413ddabcf34fc5622"
+  note: "The MD5 of ILSVRC2012_img_val.tar."
+  no_primary: "The organisers publish no checksum that this page could reach (image-net.org refused the connection on 2026-11-14), and the data was not downloaded to hash it here; the value is the checksum that torchvision checks."
+  sources:
+    - {src: "https://github.com/pytorch/vision/blob/v0.20.0/torchvision/datasets/imagenet.py", loc: "lines 13 to 17", value: "md5:29b22e2961454d5413ddabcf34fc5622", kind: secondary}
+- id: data_hash.devkit
+  value: "md5:fa75699e90414af021442c21a62c3abf"
+  note: "The MD5 of ILSVRC2012_devkit_t12.tar.gz, which holds the validation labels."
+  no_primary: "The organisers publish no checksum that this page could reach (image-net.org refused the connection on 2026-11-14), and the data was not downloaded to hash it here; the value is the checksum that torchvision checks."
+  sources:
+    - {src: "https://github.com/pytorch/vision/blob/v0.20.0/torchvision/datasets/imagenet.py", loc: "lines 13 to 17", value: "md5:fa75699e90414af021442c21a62c3abf", kind: secondary}
