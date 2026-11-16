@@ -1,5 +1,5 @@
 ---
-tag: NEW-weak-to-strong-generalization
+tag: G0ZGHC
 kind: method
 slug: weak-to-strong-generalization
 name: Weak-to-strong generalization
