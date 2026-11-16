@@ -1,5 +1,5 @@
 ---
-tag: NEW-sparse-autoencoders
+tag: ZTPNXN
 kind: method
 slug: sparse-autoencoders
 name: Sparse autoencoders
