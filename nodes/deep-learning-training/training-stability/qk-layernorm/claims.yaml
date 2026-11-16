@@ -1,0 +1,441 @@
+# The claims of the QK-layernorm page (spec 07). The build computes the labels.
+
+# Mathematical claims, each with a derivation in derivations/.
+
+- id: c-ln-norm
+  type: mathematical
+  text: "A vector of d_k numbers that is not constant has Euclidean norm exactly sqrt(d_k) after LayerNorm with eps = 0, unit gain and zero bias."
+  assumes: ["eps = 0", "unit gain and zero bias", "the vector is not constant"]
+  derivation: logit-bound
+
+- id: c-logit-bound
+  type: mathematical
+  text: "With LayerNorm on queries and keys, eps = 0 and no bias, every attention logit q.k / sqrt(d_k) has absolute value at most sqrt(d_k) times the largest absolute query gain times the largest absolute key gain, and at most sqrt(d_k) with unit gains."
+  assumes: ["eps = 0", "no bias in the LayerNorm", "the raw query and key are not constant", "the gains are fixed"]
+  derivation: logit-bound
+
+- id: c-scale-invariance
+  type: mathematical
+  text: "Under QK-layernorm with eps = 0, multiplying W_Q and W_K by any c > 0 leaves every attention logit unchanged, so the logit bound does not depend on the weight norms, while without the normalization the logits are multiplied by c squared."
+  assumes: ["eps = 0", "c > 0", "the raw query and key are not constant"]
+  derivation: logit-bound
+
+- id: c-quadratic-growth
+  type: mathematical
+  text: "Without QK-layernorm, an attention logit is bilinear in the query and key weights, so scaling both weight matrices by c scales the logit by c squared."
+  assumes: ["the query and key projections have no bias"]
+  derivation: logit-bound
+
+- id: c-bound-tight
+  type: mathematical
+  text: "The QK-layernorm logit bound is reached: with unit gains the logit equals sqrt(d_k) when the normalized key equals the normalized query, and -sqrt(d_k) when it is its negative."
+  assumes: ["eps = 0", "unit gains"]
+  derivation: logit-bound
+
+- id: c-weight-floor
+  type: mathematical
+  text: "When every logit of a row of T keys lies in [-M, M], each attention weight lies between 1 / (1 + (T - 1) exp(2M)) and 1 / (1 + (T - 1) exp(-2M)), so the row cannot be exactly one-hot."
+  assumes: ["each logit of the row is in [-M, M]", "T >= 2"]
+  derivation: logit-bound
+
+- id: c-entropy-monotone
+  type: mathematical
+  text: "The entropy of softmax(c z) has derivative -c times the variance of z under softmax(c z), so it never increases as c grows from 0, starting at log T."
+  assumes: ["z is a fixed vector of T >= 2 numbers", "c >= 0"]
+  derivation: entropy-collapse
+
+- id: c-entropy-collapse
+  type: mathematical
+  text: "If z has a unique largest entry, softmax(c z) tends to the one-hot vector of that entry and its entropy tends to 0 as c tends to infinity."
+  assumes: ["z has a unique largest entry", "c >= 0"]
+  derivation: entropy-collapse
+
+- id: c-entropy-ties
+  type: mathematical
+  text: "If k entries of z tie for the largest value, softmax(c z) tends to the uniform distribution on them and its entropy tends to log k as c tends to infinity."
+  assumes: ["exactly k entries of z share the largest value"]
+  derivation: entropy-collapse
+
+- id: c-zloss-grad
+  type: mathematical
+  text: "The gradient of alpha (log Z)^2 with respect to the logits is 2 alpha log Z times softmax(z), which is zero exactly when log Z = 0."
+  assumes: ["Z is the sum of exp(z_j) over the logits", "alpha > 0"]
+  derivation: z-loss-gradient
+
+- id: c-zloss-shift
+  type: mathematical
+  text: "Adding the same constant to every logit leaves the softmax cross-entropy unchanged and moves log Z by that constant, and the z-loss picks the shift at which log Z = 0 and the logits equal the log-probabilities."
+  assumes: ["the task loss is the softmax cross-entropy", "alpha > 0"]
+  derivation: z-loss-gradient
+
+- id: c-zloss-pull
+  type: mathematical
+  text: "To first order, a gradient step of size eta on the z-loss changes log Z by -2 eta alpha log Z times the sum of the squared probabilities, a change of the opposite sign to log Z."
+  assumes: ["a small step size eta", "alpha > 0"]
+  derivation: z-loss-gradient
+
+# Dehghani et al. (2023), ViT-22B.
+
+- id: c-vit-divergence
+  type: empirical
+  text: "When scaling ViT beyond prior works, Dehghani et al. observed divergent training loss after a few thousand steps, for models with around 8B parameters."
+  scope:
+    models: "Vision Transformers of around 8 billion parameters"
+    data: [unknown]
+    scale: "about 8 billion parameters"
+    setting: "pre-training of ViT without QK normalization"
+  evidence:
+    - {work: "dehghani-2023-scaling-vision-transformers-22b", role: original, locator: "p. 2", stance: for}
+
+- id: c-vit-cause
+  type: empirical
+  text: "Dehghani et al. trace the divergence to extremely large attention logits, which gave almost one-hot attention weights with near-zero entropy."
+  scope:
+    models: "Vision Transformers of around 8 billion parameters"
+    data: [unknown]
+    scale: "about 8 billion parameters"
+    setting: "pre-training of ViT without QK normalization"
+  evidence:
+    - {work: "dehghani-2023-scaling-vision-transformers-22b", role: original, locator: "p. 2", stance: for}
+
+- id: c-vit-method
+  type: definitional
+  text: "ViT-22B applies LayerNorm to the queries and keys before the dot-product attention, computing the weights as softmax of LN(X W_Q) LN(X W_K)^T divided by the square root of the query/key dimension."
+  evidence:
+    - {work: "dehghani-2023-scaling-vision-transformers-22b", role: original, locator: "p. 2", stance: for}
+
+- id: c-vit-gilmer
+  type: attributive
+  text: "Dehghani et al. say that they adopt the approach of Gilmer et al. (2023) when they apply LayerNorm to queries and keys."
+  evidence:
+    - {work: "dehghani-2023-scaling-vision-transformers-22b", role: original, locator: "p. 2", stance: for}
+
+- id: c-vit-prevents
+  type: empirical
+  text: "On an 8B parameter model, QK normalization prevents the divergence caused by uncontrolled attention logit growth."
+  scope:
+    models: "an 8-billion-parameter Vision Transformer"
+    data: [unknown]
+    scale: "8 billion parameters"
+    setting: "pre-training with and without QK normalization"
+  evidence:
+    - {work: "dehghani-2023-scaling-vision-transformers-22b", role: original, locator: "p. 2", stance: for}
+
+- id: c-vit-no-bias
+  type: definitional
+  text: "In ViT-22B the bias terms are removed from the QKV projections, and all LayerNorms are applied without bias and centering."
+  evidence:
+    - {work: "dehghani-2023-scaling-vision-transformers-22b", role: original, locator: "p. 3", stance: for}
+
+- id: c-vit-50000
+  type: empirical
+  text: "For an 8B parameter ViT at Adam learning rate 1e-3, without normalization the attention logits grew to over 50000 in magnitude, giving one-hot attention weights and unstable losses, and within 2000 steps the loss steadily increased."
+  scope:
+    models: "an 8-billion-parameter Vision Transformer"
+    data: [unknown]
+    scale: "8 billion parameters"
+    setting: "pre-training with Adam at learning rate 1e-3, no QK normalization"
+  evidence:
+    - {work: "dehghani-2023-scaling-vision-transformers-22b", role: original, locator: "p. 23", stance: for}
+
+- id: c-vit-lr
+  type: empirical
+  text: "The learning rate of ViT was originally lowered with model scale, from 1e-3 to 4e-4 for ViT-H; with QK normalization, retrained models up to ViT-L stayed stable at the higher learning rate 1e-3."
+  scope:
+    models: "ViT-Ti to ViT-L"
+    data: [unknown]
+    scale: "ViT-Ti to ViT-L"
+    setting: "retraining with and without QK normalization"
+  evidence:
+    - {work: "dehghani-2023-scaling-vision-transformers-22b", role: original, locator: "p. 23", stance: for}
+
+# Wortsman et al. (2023), small-scale proxies.
+
+- id: c-ws-small-scale
+  type: empirical
+  text: "Attention logit growth and output logit divergence also appear in small Transformers trained at high learning rates, and the mitigations used at large scale are equally effective there."
+  scope:
+    models: "decoder-only pre-normalization Transformers"
+    data: [c4]
+    scale: "about 2.4 million to 1.2 billion non-embedding parameters"
+    setting: "autoregressive language modelling with AdamW, learning rates from 3e-4 to 3e-1"
+  evidence:
+    - {work: "wortsman-2023-small-scale-proxies", role: original, locator: "p. 1", stance: for}
+  small_scale: "yes"
+  small_scale_note: "The smallest models of the study have a few million parameters."
+
+- id: c-ws-three-orders
+  type: empirical
+  text: "Qk-layernorm and z-loss regularization reduce learning-rate sensitivity and enable successful training across three orders of magnitude of learning-rate variation."
+  scope:
+    models: "decoder-only pre-normalization Transformers"
+    data: [c4]
+    scale: "about 2.4 million to 1.2 billion non-embedding parameters"
+    setting: "autoregressive language modelling with AdamW"
+  evidence:
+    - {work: "wortsman-2023-small-scale-proxies", role: original, locator: "p. 2", stance: for}
+
+- id: c-ws-other-interventions
+  type: empirical
+  text: "When qk-layernorm and z-loss regularization are used, warm-up, weight decay and muParam usually have little impact on the range of learning rates at which the models train stably, but do change the sensitivity to the learning rate within that range."
+  scope:
+    models: "decoder-only pre-normalization Transformers"
+    data: [c4]
+    scale: "up to about 1.2 billion non-embedding parameters"
+    setting: "autoregressive language modelling with AdamW"
+  evidence:
+    - {work: "wortsman-2023-small-scale-proxies", role: original, locator: "p. 2", stance: for}
+
+- id: c-ws-defaults
+  type: attributive
+  text: "By default, Wortsman et al. use qk-layernorm, an auxiliary z-loss with coefficient 1e-4, an independent weight decay of 1e-4, and a layernorm epsilon of 1e-6."
+  evidence:
+    - {work: "wortsman-2023-small-scale-proxies", role: original, locator: "pp. 2 to 3", stance: for}
+
+- id: c-ws-lr-sensitivity
+  type: definitional
+  text: "Wortsman et al. define LR sensitivity as the expectation over learning rates in a range of the minimum of the final loss and the loss at initialization, minus the loss of the best learning rate in the range."
+  evidence:
+    - {work: "wortsman-2023-small-scale-proxies", role: original, locator: "p. 3", stance: for}
+
+- id: c-ws-entropy-collapse-name
+  type: attributive
+  text: "Wortsman et al. note that the collapse of attention weights to one-hot vectors was named attention entropy collapse by Zhai et al."
+  evidence:
+    - {work: "wortsman-2023-small-scale-proxies", role: original, locator: "p. 4", stance: for}
+
+- id: c-ws-diverge-smaller
+  type: empirical
+  text: "Without qk-layernorm, the learning rate at which models diverge becomes smaller as the model size grows, while models with qk-layernorm have much lower LR sensitivity."
+  scope:
+    models: "decoder-only pre-normalization Transformers"
+    data: [c4]
+    scale: "about 2.4 million to 1.2 billion non-embedding parameters"
+    setting: "learning-rate sweeps with AdamW"
+  evidence:
+    - {work: "wortsman-2023-small-scale-proxies", role: original, locator: "p. 4", stance: for}
+
+- id: c-ws-1-2b
+  type: empirical
+  text: "Qk-layernorm allows training a model with 1.2B parameters at learning rate 0.3."
+  scope:
+    models: "a decoder-only Transformer"
+    data: [c4]
+    scale: "1.2 billion non-embedding parameters"
+    setting: "AdamW at learning rate 0.3"
+  evidence:
+    - {work: "wortsman-2023-small-scale-proxies", role: original, locator: "p. 4", stance: for}
+
+- id: c-ws-sensitivity-grows
+  type: empirical
+  text: "Both with and without qk-layernorm, LR sensitivity increases with scale."
+  scope:
+    models: "decoder-only pre-normalization Transformers"
+    data: [c4]
+    scale: "about 2.4 million to 1.2 billion non-embedding parameters"
+    setting: "learning-rate sweeps with AdamW"
+  evidence:
+    - {work: "wortsman-2023-small-scale-proxies", role: original, locator: "p. 4", stance: for}
+
+- id: c-ws-norm-growth
+  type: empirical
+  text: "Wortsman et al. find that attention logit growth comes from growth in the queries and keys rather than from an increase in their alignment, and they hypothesize that it could result from the quadratic dependence of the attention logits on the parameter norms."
+  scope:
+    models: "decoder-only pre-normalization Transformers"
+    data: [c4]
+    scale: "small models"
+    setting: "training without qk-layernorm at high learning rates"
+  evidence:
+    - {work: "wortsman-2023-small-scale-proxies", role: original, locator: "p. 4", stance: for}
+
+- id: c-ws-layer0
+  type: empirical
+  text: "Wortsman et al. report the maximum attention logit of layer 0, which they typically observe to have the largest logit values."
+  scope:
+    models: "decoder-only pre-normalization Transformers"
+    data: [c4]
+    scale: "small models"
+    setting: "training without qk-layernorm"
+  evidence:
+    - {work: "wortsman-2023-small-scale-proxies", role: original, locator: "p. 4", stance: for}
+
+- id: c-ws-output-divergence
+  type: empirical
+  text: "Output logit divergence occurs when the output logits diverge and become very negative, and unlike attention logit growth it occurs towards the end of training."
+  scope:
+    models: "a decoder-only Transformer"
+    data: [c4]
+    scale: "2.4 million non-embedding parameters"
+    setting: "AdamW at learning rate 0.1"
+  evidence:
+    - {work: "wortsman-2023-small-scale-proxies", role: original, locator: "p. 5", stance: for}
+
+- id: c-ws-no-weight-decay
+  type: empirical
+  text: "The output logit divergence occurs in models with no weight decay regardless of scale, z-loss resolves it, and weight decay also mitigates it for the larger models tested."
+  scope:
+    models: "decoder-only pre-normalization Transformers with qk-layernorm"
+    data: [c4]
+    scale: "about 2.4 million to 1.2 billion non-embedding parameters"
+    setting: "learning-rate sweeps with and without z-loss and weight decay"
+  evidence:
+    - {work: "wortsman-2023-small-scale-proxies", role: original, locator: "p. 5", stance: for}
+
+- id: c-ws-z-loss-def
+  type: attributive
+  text: "Wortsman et al. describe the mitigation of Chowdhery et al. as an auxiliary loss log^2 Z, called z-loss, with coefficient 1e-4, which encourages log Z to remain close to zero."
+  evidence:
+    - {work: "wortsman-2023-small-scale-proxies", role: original, locator: "p. 5", stance: for}
+
+- id: c-ws-predict
+  type: empirical
+  text: "Fitting the maximum attention logit across model scales, Wortsman et al. predicted that a 4.8B parameter model without qk-layernorm would be unstable at learning rate 1e-2, and the model diverged as predicted; all points with attention logits above 1e4 had diverged."
+  scope:
+    models: "decoder-only Transformers without qk-layernorm"
+    data: [c4]
+    scale: "up to 4.8 billion non-embedding parameters"
+    setting: "AdamW at learning rate 1e-2"
+  evidence:
+    - {work: "wortsman-2023-small-scale-proxies", role: original, locator: "p. 8", stance: for}
+
+- id: c-ws-kappa
+  type: empirical
+  text: "When the queries and keys of a 10M parameter model are forced to give a maximum attention logit of about kappa, the loss deteriorates around kappa = 1e3, and at kappa = 1e4 it exceeds that of a zero-layer bigram model."
+  scope:
+    models: "a decoder-only Transformer"
+    data: [c4]
+    scale: "10 million parameters"
+    setting: "queries and keys rescaled to a fixed scale before the logits"
+  evidence:
+    - {work: "wortsman-2023-small-scale-proxies", role: original, locator: "p. 9", stance: for}
+
+- id: c-ws-not-softmax
+  type: empirical
+  text: "The logit growth instability is not due to the softmax of the attention layer: it still occurs when the softmax is replaced by a pointwise squared-ReLU variant of attention."
+  scope:
+    models: "decoder-only Transformers without qk-layernorm"
+    data: [c4]
+    scale: "about 2.4 million to 300 million non-embedding parameters"
+    setting: "learning-rate sweeps with softmax and pointwise attention"
+  evidence:
+    - {work: "wortsman-2023-small-scale-proxies", role: original, locator: "p. 8, p. 24", stance: for}
+
+- id: c-ws-muparam
+  type: empirical
+  text: "MuParam stabilizes the optimal learning rate across scales but does not alleviate the need for qk-layernorm, and removing the square root from the attention scaling factor does not either."
+  scope:
+    models: "decoder-only Transformers with and without qk-layernorm"
+    data: [c4]
+    scale: "up to about 1.2 billion non-embedding parameters"
+    setting: "learning-rate sweeps with the simple muParam"
+  evidence:
+    - {work: "wortsman-2023-small-scale-proxies", role: original, locator: "p. 7, p. 18", stance: for}
+
+- id: c-ws-slow-divergence
+  type: attributive
+  text: "Wortsman et al. focus on instabilities that lead to slow divergence, not on fast loss spikes."
+  evidence:
+    - {work: "wortsman-2023-small-scale-proxies", role: original, locator: "p. 2", stance: for}
+
+# Chowdhery et al. (2022), PaLM.
+
+- id: c-palm-z-loss
+  type: attributive
+  text: "PaLM adds an auxiliary loss z_loss = 1e-4 times log^2 Z to encourage the softmax normalizer log(Z) to be close to 0, which the authors found increases the stability of training."
+  evidence:
+    - {work: "chowdhery-2022-palm", role: original, locator: "p. 10", stance: for}
+
+- id: c-palm-spikes
+  type: empirical
+  text: "For the largest PaLM model, the loss spiked roughly 20 times during training despite gradient clipping, at highly irregular intervals, and the spikes were not observed when training the smaller models."
+  scope:
+    models: "PaLM"
+    data: [unknown]
+    scale: "540 billion parameters"
+    setting: "pre-training of the largest PaLM model"
+  evidence:
+    - {work: "chowdhery-2022-palm", role: original, locator: "p. 11", stance: for}
+
+- id: c-palm-restart
+  type: empirical
+  text: "PaLM mitigated the spikes by restarting from a checkpoint roughly 100 steps before the spike and skipping roughly 200 to 500 data batches, and the authors conclude that the spikes come from the combination of specific data batches with a particular model parameter state."
+  scope:
+    models: "PaLM"
+    data: [unknown]
+    scale: "540 billion parameters"
+    setting: "pre-training of the largest PaLM model"
+  evidence:
+    - {work: "chowdhery-2022-palm", role: original, locator: "p. 11", stance: for}
+
+# Zoph et al. (2022), ST-MoE.
+
+- id: c-st-router-z-loss
+  type: definitional
+  text: "The router z-loss of ST-MoE is computed from the logits going into the router, with B the number of tokens and N the number of experts, and it penalizes large logits into the gating network."
+  evidence:
+    - {work: "zoph-2022-st-moe", role: original, locator: "p. 7", stance: for}
+
+- id: c-st-stable
+  type: empirical
+  text: "In ST-MoE, the router z-loss stabilized 3 of 3 runs against 4 of 6 for the baseline, with no loss of quality, while tighter update clipping also stabilized training but at a catastrophic loss of quality."
+  scope:
+    models: "sparse mixture-of-experts encoder-decoder Transformers"
+    data: [unknown]
+    scale: "unknown"
+    setting: "pre-training with Adafactor, with and without the router z-loss"
+  evidence:
+    - {work: "zoph-2022-st-moe", role: original, locator: "pp. 7 to 8", stance: for}
+
+- id: c-st-coefficient
+  type: attributive
+  text: "ST-MoE uses a router z-loss coefficient of 0.001, chosen by the best model quality after pre-training in a hyperparameter sweep."
+  evidence:
+    - {work: "zoph-2022-st-moe", role: original, locator: "p. 8", stance: for}
+
+- id: c-st-roundoff
+  type: attributive
+  text: "Zoph et al. argue that the router z-loss encourages numbers of small absolute magnitude, which reduces roundoff errors in bfloat16, and that it is most effective on inputs to exponential functions."
+  evidence:
+    - {work: "zoph-2022-st-moe", role: original, locator: "p. 8", stance: for}
+
+- id: c-st-attention-z
+  type: empirical
+  text: "Zoph et al. report that adding z-losses onto the attention logits also improved model instability without hurting model quality."
+  scope:
+    models: "sparse mixture-of-experts Transformers"
+    data: [unknown]
+    scale: "unknown"
+    setting: "a side experiment reported in a footnote"
+  evidence:
+    - {work: "zoph-2022-st-moe", role: original, locator: "p. 8", stance: for}
+
+- id: c-st-not-clipping
+  type: attributive
+  text: "Zoph et al. explain why the router z-loss is not replaceable by clipping logits: clipping the logits occurs after any roundoff errors, resulting in even larger discontinuities."
+  evidence:
+    - {work: "zoph-2022-st-moe", role: original, locator: "p. 9", stance: for}
+
+# Henry et al. (2020), QKNorm.
+
+- id: c-henry-qknorm
+  type: definitional
+  text: "QKNorm applies L2 normalization to each query and key along the head dimension and multiplies their dot products by a learnable scalar g instead of dividing by the square root of the dimension, with g initialized from the 97.5th percentile sequence length L as log2(L^2 - L)."
+  evidence:
+    - {work: "henry-2020-query-key-normalization", role: original, locator: "p. 3", stance: for}
+
+- id: c-henry-bleu
+  type: empirical
+  text: "Henry et al. report improvements averaging 0.928 BLEU over state-of-the-art bilingual benchmarks for 5 low-resource translation pairs from the TED Talks corpus and IWSLT'15."
+  scope:
+    models: "Transformer translation models"
+    data: [ted-talks, iwslt-2015]
+    scale: "unknown"
+    setting: "low-resource bilingual machine translation"
+  evidence:
+    - {work: "henry-2020-query-key-normalization", role: original, locator: "p. 1", stance: for}
+
+- id: c-rms-norm
+  type: mathematical
+  text: "The logit bound and its tightness also hold when the queries and keys are divided by their root mean square without centering, because a nonzero vector divided by its root mean square has norm exactly sqrt(d_k)."
+  assumes: ["eps = 0", "the raw query and key are not zero"]
+  derivation: logit-bound
