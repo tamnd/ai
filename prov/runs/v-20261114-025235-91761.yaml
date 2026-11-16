@@ -1,0 +1,218 @@
+run: v-20261114-025235-91761
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: dropout
+  verifier: codex:gpt-6-sol
+  tag: Y8VNMB
+  claim: c-linear-ridge
+  work: srivastava-2014-dropout-jmlr
+  locator: Section 9.1
+  key: f5834a30ea32c56d25ed0a2e9685800a
+  spans:
+  - start: 54280
+    end: 55798
+  verdict: supported
+  quote: dropout with linear regression is equivalent, in expectation, to ridge regression with a particular form for Γ.
+  note: The passage also says Γ scales each weight’s cost by its input dimension’s standard deviation.
+- slug: dropout
+  verifier: codex:gpt-6-sol
+  tag: Y8VNMB
+  claim: c-adaptive-l2
+  work: wager-2013-dropout-adaptive-regularization
+  locator: the abstract, Section 2.1
+  key: ccb1ba334590884a88357dc2eac61f7a
+  spans:
+  - start: 284
+    end: 1220
+  - start: 8802
+    end: 12196
+  verdict: supported
+  quote: dropout regularizer is first-order equivalent to an L2 regularizer applied after scaling the features by an estimate
+    of the inverse diagonal Fisher information matrix.
+  note: The abstract states the claim directly for generalized linear models.
+- slug: dropout
+  verifier: codex:gpt-6-sol
+  tag: Y8VNMB
+  claim: c-geometric-mean
+  work: baldi-2013-understanding-dropout
+  locator: Section 3.1
+  key: b7f12efedc31d4252da75c30723b8754
+  spans:
+  - start: 4276
+    end: 6117
+  verdict: supported
+  quote: 'we can compute the N WP
+
+    GM over all possible
+
+    dropout configurations by simple forward propagation'
+  note: The passage identifies this forward propagation with the normalized weighted geometric mean for a logistic unit.
+- slug: dropout
+  verifier: codex:gpt-6-sol
+  tag: Y8VNMB
+  claim: c-reduces-error
+  work: srivastava-2014-dropout-jmlr
+  locator: Section 6 and Tables 2 to 9
+  key: 2aea8053f610fc3a5b1118a367b1f8b8
+  spans:
+  - start: 19869
+    end: 40824
+  verdict: unsupported
+  quote: Table 5 compares the performance of different methods.
+  note: The passage reports improvements across the listed datasets, but does not compare the ImageNet dropout network with
+    the same network without dropout; the claim should say the comparisons used different baselines.
+- slug: dropout
+  verifier: codex:gpt-6-sol
+  tag: Y8VNMB
+  claim: c-weight-scaling-close
+  work: srivastava-2014-dropout-jmlr
+  locator: Section 7.5, Figure 11
+  key: 8d9c3c7abe9c7400fa0c2002d7af86b1
+  spans:
+  - start: 45814
+    end: 49125
+  verdict: supported
+  quote: 'around k = 50, the Monte-Carlo
+
+    method becomes as good as the approximate method.'
+  note: The passage compares averaging sampled predictions with test-time weight scaling on MNIST.
+- slug: dropout
+  verifier: codex:gpt-6-sol
+  tag: Y8VNMB
+  claim: c-slower-training
+  work: srivastava-2014-dropout-jmlr
+  locator: Section 11
+  key: fcfa4012f7cdfb60d43094397490b6b9
+  spans:
+  - start: 59561
+    end: 62132
+  verdict: supported
+  quote: 'A dropout network
+
+    typically takes 2-3 times longer to train than a standard neural network of the same architecture.'
+  note: The passage states the training-time comparison directly.
+- slug: dropout
+  verifier: codex:gpt-6-sol
+  tag: Y8VNMB
+  claim: c-variance-shift
+  work: li-2019-disharmony-dropout-batch-normalization
+  locator: Section 1
+  key: d9bbb65bf3c34505a1ddbc3a38798d4c
+  spans:
+  - start: 203
+    end: 7184
+  verdict: unsupported
+  quote: 'on the CIFAR10/100
+
+    datasets verified our findings as expected.'
+  note: The passage supports the variance-shift effect and possible accuracy loss on CIFAR-10/100, but gives no ImageNet result;
+    the data scope should exclude ImageNet.
+- slug: dropout
+  verifier: codex:gpt-6-sol
+  tag: Y8VNMB
+  claim: c-typical-rates
+  work: srivastava-2014-dropout-jmlr
+  locator: Appendix A.4
+  key: 4b225481c132ae8af3aecd86ae90a94f
+  spans:
+  - start: 64056
+    end: 64720
+  verdict: supported
+  quote: Typical values of p for hidden units are in the range 0.5 to 0.8.
+  note: The passage also gives 0.8 as a typical value for real-valued inputs.
+- slug: dropout
+  verifier: codex:gpt-6-sol
+  tag: Y8VNMB
+  claim: c-rnn-nonrecurrent
+  work: zaremba-2014-recurrent-neural-network-regularization
+  locator: Section 3.2
+  key: f64fe06748b85befd4d7cd3720d97823
+  spans:
+  - start: 5878
+    end: 9550
+  verdict: supported
+  quote: 'apply the dropout operator only to the non-recurrent
+
+    connections'
+  note: The passage states this as the main idea of the authors’ LSTM method.
+- slug: dropout
+  verifier: codex:gpt-6-sol
+  tag: Y8VNMB
+  claim: c-llm-no-dropout
+  work: chowdhery-2022-palm
+  locator: Section 5
+  key: 53438f43e35e3b5578fc1cc970bbb696
+  spans:
+  - start: 34692
+    end: 40247
+  verdict: supported
+  quote: 'The model was trained without dropout, although dropout of 0.1 is used for finetuning in
+
+    most cases.'
+  note: The passage states both parts of the claim directly.
+- slug: dropout
+  verifier: codex:gpt-6-sol
+  tag: Y8VNMB
+  claim: c-mc-dropout
+  work: gal-2016-dropout-bayesian-approximation
+  locator: Section 4
+  key: f54c7957267d5d3d25a4e815d27be449
+  spans:
+  - start: 14487
+    end: 17998
+  verdict: supported
+  quote: 'this
+
+    is equivalent to performing T stochastic forward passes
+
+    through the network and averaging the results.'
+  note: The passage also derives uncertainty estimates from those stochastic passes.
+- slug: dropout
+  verifier: codex:gpt-6-sol
+  tag: Y8VNMB
+  claim: c-first-2012
+  work: hinton-2012-improving-neural-networks-arxiv
+  locator: the title page
+  key: 9ea498d248277e87a66942947ef6e83d
+  spans:
+  - start: 0
+    end: 2562
+  verdict: supported
+  quote: 'This “overfitting” is greatly
+
+    reduced by randomly omitting half of the feature detectors on each training
+
+    case.'
+  note: The dated title page names the authors and calls the procedure dropout.
+- slug: dropout
+  verifier: codex:gpt-6-sol
+  tag: Y8VNMB
+  claim: c-canonical-2014
+  work: srivastava-2014-dropout-jmlr
+  locator: the title page
+  key: ee97960111e8937e3cfa94658cbe4dd3
+  spans:
+  - start: 0
+    end: 2751
+  verdict: supported
+  quote: Journal of Machine Learning Research 15 (2014) 1929-1958
+  note: The title page gives the journal, year, volume and page range.
+- slug: dropout
+  verifier: codex:gpt-6-sol
+  tag: Y8VNMB
+  claim: c-alexnet
+  work: krizhevsky-2012-imagenet-classification
+  locator: Section 4.2, the abstract
+  key: dafde145c812b49ff49ea144e90b64b8
+  spans:
+  - start: 245
+    end: 1263
+  - start: 20342
+    end: 21791
+  verdict: supported
+  quote: We use dropout in the first two fully-connected layers of Figure 2.
+  note: The abstract also says a variant of the model won ILSVRC-2012.
