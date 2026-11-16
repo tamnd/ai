@@ -1,5 +1,5 @@
 ---
-tag: NEW-adam
+tag: 88GHGT
 kind: method
 slug: adam
 name: Adam
