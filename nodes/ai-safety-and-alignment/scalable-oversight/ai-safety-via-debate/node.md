@@ -1,5 +1,5 @@
 ---
-tag: NEW-ai-safety-via-debate
+tag: N45PC9
 kind: method
 slug: ai-safety-via-debate
 name: AI safety via debate
