@@ -1,5 +1,5 @@
 ---
-tag: NEW-lora
+tag: VA794T
 kind: method
 slug: lora
 name: LoRA
