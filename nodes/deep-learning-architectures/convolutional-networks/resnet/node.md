@@ -1,5 +1,5 @@
 ---
-tag: NEW-resnet
+tag: PHG5FV
 kind: architecture
 slug: resnet
 name: ResNet
