@@ -1,5 +1,5 @@
 ---
-tag: NEW-chain-of-thought-prompting
+tag: WFY2QB
 kind: method
 slug: chain-of-thought-prompting
 name: Chain-of-thought prompting
