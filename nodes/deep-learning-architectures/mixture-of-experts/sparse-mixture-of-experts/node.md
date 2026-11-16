@@ -1,5 +1,5 @@
 ---
-tag: NEW-sparse-mixture-of-experts
+tag: 1H67K0
 kind: method
 slug: sparse-mixture-of-experts
 name: Sparse mixture of experts
