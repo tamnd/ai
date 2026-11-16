@@ -1,5 +1,5 @@
 ---
-tag: NEW-expected-calibration-error
+tag: 01R1CF
 kind: metric
 slug: expected-calibration-error
 name: Expected calibration error
