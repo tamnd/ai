@@ -27,7 +27,7 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
-  AIK_VERSION: v0.1.5
+  AIK_VERSION: v0.1.98
   GO_VERSION: "1.27.x"
 
 jobs:
@@ -61,6 +61,14 @@ jobs:
           fi
           echo "The experiments of: ${list:-none}"
           echo "list=$list" >> "$GITHUB_OUTPUT"
+      # The rules of the experiments before the run, with the contamination guard: no experiment trains on a split that registers/data-pins.yaml marks as test (rule M07, spec 10).
+      - name: Check the experiments
+        if: steps.find.outputs.list != ''
+        env:
+          LIST: ${{ steps.find.outputs.list }}
+        run: |
+          # shellcheck disable=SC2086
+          aik exp check $LIST
       # The data cache is keyed by the register of the pins, so a changed pin fetches its files again.
       - uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         if: steps.find.outputs.list != ''
