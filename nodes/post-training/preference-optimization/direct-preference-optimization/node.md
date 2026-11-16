@@ -1,5 +1,5 @@
 ---
-tag: NEW-direct-preference-optimization
+tag: CZW0BQ
 kind: method
 slug: direct-preference-optimization
 name: Direct preference optimization
