@@ -1,5 +1,5 @@
 ---
-tag: FDJHWF
+tag: 8M40DJ
 kind: benchmark
 slug: mmlu
 name: MMLU
