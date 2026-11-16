@@ -1,0 +1,512 @@
+# The claims of the edge-of-stability page (spec 07). The build computes the labels.
+
+# The finding
+
+- id: c-cohen-eos
+  type: empirical
+  text: "Full-batch gradient descent on neural network training objectives typically operates in a regime called the Edge of Stability, in which the maximum eigenvalue of the training loss Hessian hovers just above the value 2/(step size), and the training loss behaves non-monotonically over short timescales, yet consistently decreases over long timescales."
+  scope:
+    models: "fully-connected, convolutional, VGG, ResNet and Transformer networks"
+    data: [cifar-10, wikitext-2, synthetic regression]
+    scale: "subsets of 5k CIFAR-10 examples up to the full CIFAR-10 training set"
+    setting: "full-batch gradient descent at a fixed step size"
+  evidence:
+    - {work: "cohen-2021-gradient-descent-edge-stability", role: original, locator: "p. 1", stance: for}
+    - {work: "damian-2023-self-stabilization-edge-stability", role: replication, locator: "p. 12", stance: for}
+
+- id: c-cohen-sharpness
+  type: definitional
+  text: "In this usage, sharpness strictly means the maximum eigenvalue of the training loss Hessian, with no claimed connection to generalization."
+  evidence:
+    - {work: "cohen-2021-gradient-descent-edge-stability", role: original, locator: "p. 2", stance: for}
+
+- id: c-cohen-progressive
+  type: empirical
+  text: "So long as the sharpness is less than 2/η, gradient descent has an overwhelming tendency to continually increase the sharpness, a phenomenon Cohen et al. call progressive sharpening; brief decreases, especially at the beginning of training, are followed by a return to continual increase."
+  scope:
+    models: "neural networks trained by full-batch gradient descent"
+    data: [cifar-10]
+    scale: "a 5k subset of CIFAR-10 and the full dataset"
+    setting: "step sizes small enough that the sharpness is below 2/η"
+  evidence:
+    - {work: "cohen-2021-gradient-descent-edge-stability", role: original, locator: "p. 3", stance: for}
+
+- id: c-cohen-fc-setup
+  type: empirical
+  text: "With a fully-connected network with two hidden layers of width 200 and tanh activations, trained with the mean squared error at the small step size 2/600 until the training accuracy reaches 99%, the sharpness continually rises during training except for a brief dip at the beginning."
+  scope:
+    models: "fully-connected tanh network, two hidden layers of width 200"
+    data: [cifar-10]
+    scale: "5,000 training examples"
+    setting: "full-batch gradient descent, MSE loss"
+  evidence:
+    - {work: "cohen-2021-gradient-descent-edge-stability", role: original, locator: "p. 4", stance: for}
+
+- id: c-cohen-subset
+  type: empirical
+  text: "The experiments that illustrate progressive sharpening use full-batch gradient descent to train a network on a subset of 5,000 examples from CIFAR-10 while monitoring the evolution of the sharpness."
+  scope:
+    models: "fully-connected network"
+    data: [cifar-10]
+    scale: "5,000 training examples"
+    setting: "full-batch gradient descent"
+  evidence:
+    - {work: "cohen-2021-gradient-descent-edge-stability", role: original, locator: "p. 3", stance: for}
+
+- id: c-cohen-breakeven
+  type: empirical
+  text: "Trained at the larger step size η = 0.01, the same network reaches the point where the sharpness rises to 2/η = 200, which Jastrzębski et al. (2020) dubbed the breakeven point."
+  scope:
+    models: "fully-connected tanh network"
+    data: [cifar-10]
+    scale: "5,000 training examples"
+    setting: "full-batch gradient descent, η = 0.01"
+  evidence:
+    - {work: "cohen-2021-gradient-descent-edge-stability", role: original, locator: "p. 4", stance: for}
+
+- id: c-cohen-oscillate
+  type: empirical
+  text: "Once the sharpness crosses 2/η, the iterates oscillate along the leading Hessian eigenvector q1 with ever-increasing magnitude; after initially spiking around iteration 215, the train loss continues to decrease, albeit non-monotonically, and gradient descent avoids diverging entirely."
+  scope:
+    models: "fully-connected tanh network"
+    data: [cifar-10]
+    scale: "5,000 training examples"
+    setting: "full-batch gradient descent, η = 0.01"
+  evidence:
+    - {work: "cohen-2021-gradient-descent-edge-stability", role: original, locator: "p. 5", stance: for}
+
+- id: c-cohen-regime
+  type: empirical
+  text: "In general, after the sharpness initially crosses 2/η, gradient descent enters the Edge of Stability, in which the sharpness hovers right at, or just above, the value 2/η, and the train loss behaves non-monotonically over short timescales, yet decreases consistently over long timescales."
+  scope:
+    models: "fully-connected tanh network"
+    data: [cifar-10]
+    scale: "5,000 training examples"
+    setting: "full-batch gradient descent at a range of step sizes, MSE and cross-entropy"
+  evidence:
+    - {work: "cohen-2021-gradient-descent-edge-stability", role: original, locator: "p. 5", stance: for}
+
+- id: c-cohen-gap
+  type: empirical
+  text: "For MSE loss the sharpness hovers just a minuscule amount above 2/η, while for cross-entropy loss the gap between the sharpness and 2/η is small yet non-miniscule."
+  scope:
+    models: "fully-connected tanh network"
+    data: [cifar-10]
+    scale: "5,000 training examples"
+    setting: "full-batch gradient descent"
+  evidence:
+    - {work: "cohen-2021-gradient-descent-edge-stability", role: original, locator: "p. 6", stance: for}
+
+- id: c-cohen-lr-drop
+  type: empirical
+  text: "After training at step size 2/200 until reaching the Edge of Stability and dropping the step size to 2/300 at iteration 6,000, the sharpness immediately starts to increase, and only stops increasing once gradient descent is back at the Edge of Stability."
+  scope:
+    models: "fully-connected tanh network"
+    data: [cifar-10]
+    scale: "5,000 training examples"
+    setting: "full-batch gradient descent with one learning rate drop"
+  evidence:
+    - {work: "cohen-2021-gradient-descent-edge-stability", role: original, locator: "p. 6", stance: for}
+
+- id: c-cohen-stable-slow
+  type: empirical
+  text: "With cross-entropy loss it takes 3700 iterations to train at the stable step size but only 1000 iterations at a larger step size, and stable step sizes are always observed to be suboptimal in terms of convergence speed."
+  scope:
+    models: "fully-connected tanh network"
+    data: [cifar-10]
+    scale: "5,000 training examples"
+    setting: "full-batch gradient descent, cross-entropy loss"
+  evidence:
+    - {work: "cohen-2021-gradient-descent-edge-stability", role: original, locator: "p. 6", stance: for}
+
+- id: c-cohen-momentum
+  type: empirical
+  text: "With step size η = 0.01 and Polyak or Nesterov momentum at several settings of the momentum parameter β, the sharpness rises until reaching the maximum stable sharpness of Equation 1, and then plateaus there."
+  scope:
+    models: "fully-connected tanh network"
+    data: [cifar-10]
+    scale: "5,000 training examples"
+    setting: "full-batch gradient descent with momentum"
+  evidence:
+    - {work: "cohen-2021-gradient-descent-edge-stability", role: original, locator: "p. 6", stance: for}
+
+- id: c-cohen-next-eigenvalues
+  type: empirical
+  text: "The next few Hessian eigenvalues also each rise until plateauing near 2/η."
+  scope:
+    models: "networks of Appendix P"
+    data: [cifar-10]
+    scale: "5k subset"
+    setting: "full-batch gradient descent"
+  evidence:
+    - {work: "cohen-2021-gradient-descent-edge-stability", role: original, locator: "p. 7", stance: for}
+
+- id: c-cohen-gradient-flow
+  type: empirical
+  text: "For many but not all networks, gradient descent at any step size η closely tracks the Runge-Kutta gradient flow trajectory until reaching the point where the sharpness hits 2/η; if η < 2/λmax it never enters the Edge of Stability, and if η ∈ [2/λmax, 2/λ0] it becomes destabilized shortly after that point and enters the Edge of Stability."
+  scope:
+    models: "networks with continuously differentiable components, and some with ReLU or max-pooling"
+    data: [cifar-10]
+    scale: "5k subset"
+    setting: "full-batch gradient descent compared with an RK4 integration of gradient flow"
+  evidence:
+    - {work: "cohen-2021-gradient-descent-edge-stability", role: original, locator: "p. 8", stance: for}
+
+# Evidence
+
+- id: c-cohen-architectures
+  type: empirical
+  text: "On a 5k subset of CIFAR-10, fully-connected networks and convolutional networks with max-pooling and average pooling, with tanh, ReLU and ELU activations and for fully-connected networks also softplus and hardtanh, eleven networks in total, each trained with both cross-entropy and MSE loss, reproduce the Edge of Stability behaviour in each case."
+  scope:
+    models: "eleven fully-connected and convolutional networks"
+    data: [cifar-10]
+    scale: "5k subset"
+    setting: "full-batch gradient descent, cross-entropy and MSE"
+  evidence:
+    - {work: "cohen-2021-gradient-descent-edge-stability", role: original, locator: "p. 8", stance: for}
+
+- id: c-cohen-tasks
+  type: empirical
+  text: "For a Transformer trained on the WikiText-2 language modeling task, fully-connected tanh networks with one hidden layer trained on a synthetic one-dimensional toy regression task, and deep linear networks trained on Gaussian data, the sharpness rises until hovering right at, or just above, the value 2/η."
+  scope:
+    models: "Transformer, one-hidden-layer tanh network, deep linear network"
+    data: [wikitext-2, synthetic regression, gaussian data]
+    scale: "small models"
+    setting: "full-batch gradient descent"
+  evidence:
+    - {work: "cohen-2021-gradient-descent-edge-stability", role: original, locator: "p. 9", stance: for}
+
+- id: c-cohen-vgg
+  type: empirical
+  text: "When the VGG-BN is trained to 99% accuracy with gradient flow, the sharpness rises from 6.3 at initialization to a peak of 2227.6, so any stable step size would need to be less than 0.000897; yet the network can be trained to completion at the Edge of Stability step size η = 0.16 in just 329 iterations, so training at a stable step size is suboptimal by a factor of at least 50.5."
+  scope:
+    models: "VGG with batch normalization"
+    data: [cifar-10]
+    scale: "full CIFAR-10 training set"
+    setting: "gradient flow by Runge-Kutta, and full-batch gradient descent"
+  evidence:
+    - {work: "cohen-2021-gradient-descent-edge-stability", role: original, locator: "p. 9", stance: for}
+
+- id: c-damian-figure-one
+  type: empirical
+  text: "An MLP trained on CIFAR10 with learning rate η = 2/100 reaches instability after around 2200 training steps, after which the sharpness hovers at 2/η = 100."
+  scope:
+    models: "MLP"
+    data: [cifar-10]
+    scale: "a CIFAR10 subset"
+    setting: "full-batch gradient descent"
+  evidence:
+    - {work: "damian-2023-self-stabilization-edge-stability", role: replication, locator: "p. 3", stance: for}
+
+- id: c-damian-experiments
+  type: empirical
+  text: "Damian et al. evaluate their theory on a 3-layer MLP and a 3-layer CNN trained with mean squared error on a 5k subset of CIFAR10 and a 2-layer Transformer trained with MSE on SST2, and the dynamics converge to the fixed point predicted by the model."
+  scope:
+    models: "3-layer MLP, 3-layer CNN, 2-layer Transformer"
+    data: [cifar-10, sst-2]
+    scale: "5k subset of CIFAR10"
+    setting: "full-batch gradient descent, MSE"
+  evidence:
+    - {work: "damian-2023-self-stabilization-edge-stability", role: replication, locator: "p. 12", stance: for}
+
+# Scope and conditions
+
+- id: c-cohen-width
+  type: empirical
+  text: "Progressive sharpening occurs to a lesser degree as networks become increasingly wide, and to a lesser degree if the task is easy, or if the network is shallow."
+  scope:
+    models: "networks of varying width under NTK and standard parameterizations"
+    data: [cifar-10]
+    scale: "5k subset"
+    setting: "full-batch gradient descent"
+  evidence:
+    - {work: "cohen-2021-gradient-descent-edge-stability", role: original, locator: "p. 4", stance: for}
+
+- id: c-cohen-cross-entropy
+  type: empirical
+  text: "With cross-entropy loss the sharpness typically drops at the end of training, because the second derivative of the cross-entropy loss is small when the margins of the classifier's predictions are large."
+  scope:
+    models: "classifiers trained with cross-entropy"
+    data: [cifar-10]
+    scale: "5k subset"
+    setting: "full-batch gradient descent"
+  evidence:
+    - {work: "cohen-2021-gradient-descent-edge-stability", role: original, locator: "p. 4", stance: for}
+
+- id: c-cohen-caveats
+  type: empirical
+  text: "With ReLU or hardtanh activations, the sharpness sometimes started to plateau, and the training loss to behave non-monotonically, a bit before the sharpness crossed 2/η; with batch normalization the sharpness at the iterates sometimes plateaued below 2/η while the sharpness in between the iterates plateaued just above it."
+  scope:
+    models: "networks with non-differentiable components or batch normalization"
+    data: [cifar-10]
+    scale: "5k subset"
+    setting: "full-batch gradient descent"
+  evidence:
+    - {work: "cohen-2021-gradient-descent-edge-stability", role: original, locator: "p. 17", stance: for}
+
+- id: c-cohen-sgd
+  type: empirical
+  text: "During SGD the sharpness does not always settle at any fixed value, but large step sizes and small batch sizes steer SGD into regions with lower sharpness."
+  scope:
+    models: "networks of Appendix G"
+    data: [cifar-10]
+    scale: "5k subset"
+    setting: "minibatch SGD"
+  evidence:
+    - {work: "cohen-2021-gradient-descent-edge-stability", role: original, locator: "p. 11", stance: for}
+
+- id: c-jastr-break-even
+  type: empirical
+  text: "Early in training, SGD reaches a point on its trajectory, called the break-even point, at which it oscillates along the most curved direction of the loss surface."
+  scope:
+    models: "deep neural networks"
+    data: [cifar-10]
+    scale: "standard image classification networks"
+    setting: "minibatch SGD"
+  evidence:
+    - {work: "jastrzebski-2020-break-even-point", role: original, locator: "p. 2", stance: for}
+
+- id: c-jastr-conjecture
+  type: attributive
+  text: "Jastrzębski et al. conjecture that along the SGD trajectory the maximum attained values of the spectral norms of the Hessian and of the gradient covariance are smaller for a larger learning rate or a smaller batch size."
+  evidence:
+    - {work: "jastrzebski-2020-break-even-point", role: original, locator: "p. 5", stance: for}
+
+- id: c-cohen-on-jastr
+  type: attributive
+  text: "Cohen et al. write that Jastrzębski et al. (2020) conjectured the Edge of Stability phenomenon for full-batch gradient descent, but ran no full-batch experiments and consequently did not observe it."
+  evidence:
+    - {work: "cohen-2021-gradient-descent-edge-stability", role: original, locator: "p. 7", stance: for}
+
+# Explanations: the quadratic model
+
+- id: c-cohen-quadratic
+  type: mathematical
+  text: "On a quadratic, if the second derivative a exceeds 2/η the gradient descent iterates oscillate around the minimum with exponentially increasing magnitude, and in d dimensions each coordinate along an eigenvector of the Hessian evolves separately."
+  assumes: ["the objective is a quadratic", "a fixed step size eta"]
+  derivation: quadratic-stability
+  evidence:
+    - {work: "cohen-2021-gradient-descent-edge-stability", role: original, locator: "p. 3", stance: for}
+
+- id: c-quad-modes
+  type: mathematical
+  text: "For gradient descent on 0.5 x^T H x, the coordinate of the iterate along each eigenvector q_i of H is multiplied by 1 - η λ_i at every step."
+  assumes: ["H is symmetric", "a fixed step size eta"]
+  derivation: quadratic-stability
+
+- id: c-quad-threshold
+  type: mathematical
+  text: "With H positive definite, gradient descent converges from every start if and only if η λ_max < 2; at η λ_max = 2 the top coordinate flips sign with constant size, and above it grows geometrically."
+  assumes: ["H is symmetric positive definite", "a fixed step size eta > 0"]
+  derivation: quadratic-stability
+
+- id: c-quad-example
+  type: mathematical
+  text: "With eigenvalues 20 and 1, the top factor is -0.8 at η = 0.09 and -1.2 at η = 0.11, so over 100 steps the top coordinate shrinks by a factor of about 2.04e-10 in the first run and grows by about 8.28e7 in the second."
+  assumes: ["H = diag(20, 1)", "plain gradient descent"]
+  derivation: quadratic-stability
+
+- id: c-quad-momentum
+  type: mathematical
+  text: "On quadratics, gradient descent with step size η and momentum parameter β diverges if the sharpness exceeds the maximum stable sharpness, (2 + 2β)/η for Polyak momentum and (2 + 2β)/(η(1 + 2β)) for Nesterov momentum."
+  assumes: ["the objective is a quadratic with positive definite Hessian", "0 <= beta < 1"]
+  derivation: quadratic-stability
+  evidence:
+    - {work: "cohen-2021-gradient-descent-edge-stability", role: original, locator: "p. 3", stance: for}
+
+- id: c-cohen-taylor
+  type: empirical
+  text: "At the Edge of Stability, gradient descent on the real neural training objective makes consistent progress, whereas gradient descent on the quadratic Taylor approximation would diverge, so the Edge of Stability is inherently non-quadratic."
+  scope:
+    models: "the networks of the paper"
+    data: [cifar-10]
+    scale: "5k subset"
+    setting: "full-batch gradient descent"
+  evidence:
+    - {work: "cohen-2021-gradient-descent-edge-stability", role: original, locator: "p. 10", stance: for}
+
+# Explanations: the catapult
+
+- id: c-lewk-phases
+  type: empirical
+  text: "In the catapult phase, 2/λ0 < η < ηmax, optimization begins with a period of exponential growth in the loss coupled with a rapid decrease in curvature, until curvature stabilizes at a value λfinal < 2/η; training then converges to a minimum that is flatter than those found in the lazy phase, η < 2/λ0, after a number of steps of order log(n)."
+  scope:
+    models: "wide fully-connected, convolutional and residual networks"
+    data: [cifar-10, mnist]
+    scale: "sufficiently wide networks"
+    setting: "SGD and gradient descent with MSE loss, large initial learning rates"
+  evidence:
+    - {work: "lewkowycz-2020-large-learning-rate-phase", role: original, locator: "p. 3", stance: for}
+
+- id: c-lewk-curvature
+  type: definitional
+  text: "Lewkowycz et al. measure curvature by λ, the maximum eigenvalue of the neural tangent kernel, which in large width models is a local measure of the loss landscape curvature similar to the top eigenvalue of the Hessian."
+  evidence:
+    - {work: "lewkowycz-2020-large-learning-rate-phase", role: original, locator: "p. 3", stance: for}
+
+- id: c-catapult-update
+  type: mathematical
+  text: "For the model f = n^(-1/2) v^T u on one example with label 0 and loss f^2/2, one gradient step gives exactly f' = (1 - ηλ + η^2 f^2/n) f and λ' = λ + (η f^2/n)(ηλ - 4), with λ = (|u|^2 + |v|^2)/n."
+  assumes: ["the two-layer linear model with a single example x = 1, y = 0", "plain gradient descent"]
+  derivation: catapult-update
+  evidence:
+    - {work: "lewkowycz-2020-large-learning-rate-phase", role: original, locator: "p. 4", stance: for}
+
+- id: c-catapult-decrease
+  type: mathematical
+  text: "In that model, every step with f nonzero lowers the curvature λ when ηλ < 4 and raises it when ηλ > 4, which separates the catapult phase from the divergent phase at ηmax = 4/λ0."
+  assumes: ["the two-layer linear model with a single example x = 1, y = 0", "f is nonzero"]
+  derivation: catapult-update
+
+- id: c-lewk-max-rate
+  type: empirical
+  text: "For networks with ReLU non-linearity ηmax ≈ 12/λ0 is a good predictor of the maximum learning rate, and the initial increase of the loss in the catapult phase is short, taking less than 10 steps to complete."
+  scope:
+    models: "wide fully-connected and convolutional ReLU networks, Wide ResNet"
+    data: [cifar-10, mnist]
+    scale: "wide networks"
+    setting: "SGD with MSE loss"
+  evidence:
+    - {work: "lewkowycz-2020-large-learning-rate-phase", role: original, locator: "p. 7", stance: for}
+
+- id: c-cohen-catapult
+  type: attributive
+  text: "Cohen et al. suggest that the behavior of gradient descent at the Edge of Stability can conceivably be viewed as a never-ending series of micro-catapults."
+  evidence:
+    - {work: "cohen-2021-gradient-descent-edge-stability", role: original, locator: "p. 7", stance: for}
+
+# Explanations: self-stabilization
+
+- id: c-damian-self-stabilization
+  type: empirical
+  text: "The dynamics of gradient descent at the edge of stability can be captured by a cubic Taylor expansion: as the iterates diverge in the direction of the top eigenvector of the Hessian, the cubic term causes the curvature to decrease until stability is restored, so gradient descent implicitly follows projected gradient descent under the constraint S(θ) ≤ 2/η."
+  scope:
+    models: "MLP, CNN and Transformer"
+    data: [cifar-10, sst-2]
+    scale: "5k subset of CIFAR10"
+    setting: "full-batch gradient descent, under the assumptions of the analysis"
+  evidence:
+    - {work: "damian-2023-self-stabilization-edge-stability", role: original, locator: "p. 1", stance: for}
+
+- id: c-damian-progressive
+  type: definitional
+  text: "Damian et al. state progressive sharpening as the gradient of the loss being negatively aligned with the gradient of sharpness, ∇L(θ) · ∇S(θ) < 0."
+  evidence:
+    - {work: "damian-2023-self-stabilization-edge-stability", role: original, locator: "p. 2", stance: for}
+
+- id: c-damian-lemma
+  type: mathematical
+  text: "If the top eigenvalue of ∇²L(θ) is unique, then the sharpness S(θ) is differentiable at θ and ∇S(θ) = ∇³L(θ)(u(θ), u(θ)), with u(θ) the top eigenvector."
+  assumes: ["the top eigenvalue of the Hessian is unique", "the loss is three times differentiable"]
+  evidence:
+    - {work: "damian-2023-self-stabilization-edge-stability", role: original, locator: "p. 3", stance: for}
+
+- id: c-damian-map
+  type: mathematical
+  text: "In the simplified dynamics of Damian et al., with x_t the deviation from θ* in the u direction and y_t the sharpness minus 2/η, x_{t+1} ≈ -(1 + η y_t) x_t and y_{t+1} ≈ y_t + η(α - β x_t^2/2), so once x_t^2 > 2α/β the sharpness begins to decrease."
+  assumes: ["a cubic Taylor expansion around a fixed reference point", "alpha = -∇L · ∇S > 0 and beta = |∇S|^2", "∇S orthogonal to u and ∇L, ∇S in the kernel of the Hessian"]
+  evidence:
+    - {work: "damian-2023-self-stabilization-edge-stability", role: original, locator: "p. 7", stance: for}
+
+- id: c-ode-conserved
+  type: mathematical
+  text: "For X' = XY and Y' = α - βX^2/2 with α, β > 0, the quantity h(βX^2/(2α)) + Y^2/α with h(z) = z - log z - 1 is conserved, and the unique fixed point is (sqrt(2α/β), 0)."
+  assumes: ["alpha > 0 and beta > 0", "X(t) > 0"]
+  derivation: self-stabilization-ode
+  evidence:
+    - {work: "damian-2023-self-stabilization-edge-stability", role: original, locator: "p. 8", stance: for}
+
+- id: c-damian-loss
+  type: attributive
+  text: "Damian et al. explain the non-monotonic decrease of the loss by gradient descent staying close to a constrained trajectory, and report that in a standard setting full-batch gradient descent generalizes better with large learning rates."
+  evidence:
+    - {work: "damian-2023-self-stabilization-edge-stability", role: original, locator: "p. 14", stance: for}
+
+# The tools of this page
+
+- id: c-hvp-central
+  type: mathematical
+  text: "The central difference (g(θ + εv) - g(θ - εv))/(2ε) of the gradient g equals the Hessian-vector product Hv up to an error of order ε^2, and is exact when the loss is quadratic."
+  assumes: ["the loss is three times continuously differentiable near theta"]
+  derivation: power-iteration-hvp
+
+- id: c-power-iteration
+  type: mathematical
+  text: "Power iteration on Hessian-vector products converges to the Hessian eigenvalue of largest modulus, which is the sharpness when the Hessian is positive semi-definite or its top eigenvalue dominates the negative ones."
+  assumes: ["the Hessian is symmetric with a unique eigenvalue of largest modulus", "the start vector has a nonzero component along its eigenvector"]
+  derivation: power-iteration-hvp
+
+# Implications
+
+- id: c-cohen-l-smooth
+  type: attributive
+  text: "Cohen et al. argue that at any step size for which gradient descent enters the Edge of Stability, gradient descent cannot be analyzed using L-smoothness, and convergence analyses which assert monotone descent cannot apply."
+  evidence:
+    - {work: "cohen-2021-gradient-descent-edge-stability", role: original, locator: "p. 10", stance: for}
+
+- id: c-cohen-step-rule
+  type: empirical
+  text: "Gradient descent with the purportedly optimal step size rule ηt = 1/λt is soundly outperformed by gradient descent with a fixed step size ηt = 1/λ0, where λ0 is the sharpness at initialization."
+  scope:
+    models: "the networks of Appendix F"
+    data: [cifar-10]
+    scale: "5k subset"
+    setting: "full-batch gradient descent"
+  evidence:
+    - {work: "cohen-2021-gradient-descent-edge-stability", role: original, locator: "p. 11", stance: for}
+
+- id: c-lewk-budget
+  type: empirical
+  text: "For a fixed amount of computational budget, the performance of models trained in the catapult phase either matches or exceeds that of models trained in the lazy phase."
+  scope:
+    models: "wide fully-connected, convolutional and residual networks"
+    data: [cifar-10, mnist]
+    scale: "wide networks"
+    setting: "SGD with MSE loss"
+  evidence:
+    - {work: "lewkowycz-2020-large-learning-rate-phase", role: original, locator: "p. 6", stance: for}
+
+# Open questions
+
+- id: c-cohen-unknown
+  type: attributive
+  text: "Cohen et al. write that they do not know why progressive sharpening occurs, or whether sharp solutions differ in any important way from solutions that are not sharp."
+  evidence:
+    - {work: "cohen-2021-gradient-descent-edge-stability", role: original, locator: "p. 4", stance: for}
+
+- id: c-damian-multiple
+  type: empirical
+  text: "The analysis of Damian et al. covers a single unstable eigenvalue, and the dynamics appear to be significantly more chaotic when multiple eigenvalues are unstable."
+  scope:
+    models: "the networks of their Figure 5"
+    data: [cifar-10]
+    scale: "5k subset"
+    setting: "full-batch gradient descent"
+  evidence:
+    - {work: "damian-2023-self-stabilization-edge-stability", role: original, locator: "p. 15", stance: for}
+
+# History
+
+- id: c-hist-lewk
+  type: historical
+  text: "Lewkowycz, Bahri, Dyer, Sohl-Dickstein and Gur-Ari posted the catapult paper as arXiv 2003.02218 on 4 March 2020."
+  evidence:
+    - {work: "lewkowycz-2020-large-learning-rate-phase", role: original, locator: "p. 1", stance: for}
+
+- id: c-hist-jastr
+  type: historical
+  text: "Jastrzębski and colleagues published the break-even point paper as a conference paper at ICLR 2020."
+  evidence:
+    - {work: "jastrzebski-2020-break-even-point", role: original, locator: "p. 1", stance: for}
+
+- id: c-hist-cohen
+  type: historical
+  text: "Cohen, Kaur, Li, Kolter and Talwalkar published Gradient Descent on Neural Networks Typically Occurs at the Edge of Stability as a conference paper at ICLR 2021."
+  evidence:
+    - {work: "cohen-2021-gradient-descent-edge-stability", role: original, locator: "p. 1", stance: for}
+
+- id: c-hist-damian
+  type: historical
+  text: "Damian, Nichani and Lee posted the second version of Self-Stabilization: The Implicit Bias of Gradient Descent at the Edge of Stability as arXiv 2209.15594v2 on 10 April 2023."
+  evidence:
+    - {work: "damian-2023-self-stabilization-edge-stability", role: original, locator: "p. 1", stance: for}
