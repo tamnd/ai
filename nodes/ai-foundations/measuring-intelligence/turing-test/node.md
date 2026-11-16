@@ -1,5 +1,5 @@
 ---
-tag: NEW-turing-test
+tag: FWFEPZ
 kind: concept
 slug: turing-test
 name: Turing test

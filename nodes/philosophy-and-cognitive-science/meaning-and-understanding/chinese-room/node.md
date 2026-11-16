@@ -1,5 +1,5 @@
 ---
-tag: NEW-chinese-room
+tag: QFKTP5
 kind: argument
 slug: chinese-room
 name: Chinese room
