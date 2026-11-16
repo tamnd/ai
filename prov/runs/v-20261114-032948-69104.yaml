@@ -1,0 +1,51 @@
+run: v-20261114-032948-69104
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: pac-bound-finite-hypothesis-class
+  verifier: codex:gpt-6-sol
+  tag: XSZ95D
+  claim: c-agnostic-bound
+  work: shalev-shwartz-ben-david-2014-understanding-machine-learning
+  locator: p. 57
+  key: fd8a94aaab1f6aa5da626f8b8e0fb910
+  spans:
+  - start: 106577
+    end: 108775
+  verdict: supported
+  quote: 'Furthermore, the class is agnostically PAC learnable using the ERM algorithm
+
+    with sample complexity'
+  note: The following bound gives the claimed ceiling of 2 log(2|H|/δ) divided by ε² for a loss in [0, 1].
+- slug: pac-bound-finite-hypothesis-class
+  verifier: codex:gpt-6-sol
+  tag: XSZ95D
+  claim: c-lower-bound
+  work: shalev-shwartz-ben-david-2014-understanding-machine-learning
+  locator: pp. 72 to 73
+  key: 329de70f5b968474af1f2f15094bca6d
+  spans:
+  - start: 139759
+    end: 144440
+  verdict: supported
+  quote: 3. H is PAC learnable with sample complexity
+  note: The lower bound in item 3 is C1 times (d + log(1/δ)) divided by ε.
+- slug: pac-bound-finite-hypothesis-class
+  verifier: codex:gpt-6-sol
+  tag: XSZ95D
+  claim: c-valiant-definition
+  work: valiant-1984-theory-of-the-learnable
+  locator: Section 3
+  key: 7fd7c6b2c645b51f29b16353b6c7fa64
+  spans:
+  - start: 3540
+    end: 18712
+  verdict: supported
+  quote: 'This we call
+
+    one-sided error learning'
+  note: The definition gives the stated polynomial runtime, probability, false-positive restriction, and bound on missed positive
+    examples.
