@@ -8,6 +8,7 @@ import pathlib
 import jax
 import jax.numpy as jnp
 import numpy as np
+import pytest
 
 from cnn import apply, config, conv2d
 
@@ -82,3 +83,11 @@ def test_shape_contract():
         assert list(logits.shape) == c["blocks"]["fc3"]["outputs"]["logits"]
         for name in NAMES:
             assert list(cache[name].shape) == c["blocks"][name]["outputs"]["y"], (c["name"], name)
+
+
+def test_config_defaults_and_errors():
+    assert config() == {"channels": 1, "c1": 6, "c2": 16, "f1": 120, "f2": 84, "classes": 10, "size": 32}
+    assert config(size=16)["size"] == 16
+    for bad in ({"size": 12}, {"size": 14}, {"size": 15}, {"channels": 0}, {"c1": 0}):
+        with pytest.raises(ValueError):
+            config(**bad)
