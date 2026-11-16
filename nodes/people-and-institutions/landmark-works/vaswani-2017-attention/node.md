@@ -1,5 +1,5 @@
 ---
-tag: NEW-vaswani-2017-attention
+tag: JSSJNN
 kind: work
 slug: vaswani-2017-attention
 name: Attention Is All You Need (Vaswani et al. 2017)

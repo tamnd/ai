@@ -1,5 +1,5 @@
 ---
-tag: NEW-alan-turing
+tag: EB4VBK
 kind: person
 slug: alan-turing
 name: Alan Turing
