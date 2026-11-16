@@ -1,5 +1,5 @@
 ---
-tag: NEW-mmlu
+tag: FDJHWF
 kind: benchmark
 slug: mmlu
 name: MMLU
