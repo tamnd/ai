@@ -1,5 +1,5 @@
 ---
-tag: NEW-alphago
+tag: 5E3XVF
 kind: system
 slug: alphago
 name: AlphaGo
