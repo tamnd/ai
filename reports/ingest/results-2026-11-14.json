@@ -1,0 +1,1264 @@
+{
+  "date": "2026-11-14",
+  "aik": "v0.1.31+mint",
+  "sources": [
+    "epoch-benchmarks"
+  ],
+  "rows": 5546,
+  "new": 318,
+  "updated": 0,
+  "unchanged": 0,
+  "duplicates": 0,
+  "unresolved": 5228,
+  "skipped": 0,
+  "cite": {
+    "found": 318
+  },
+  "missing": [
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "ARC-AGI",
+      "rows": 301
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "OTIS Mock AIME 2024-2025",
+      "rows": 297
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "ARC-AGI-2",
+      "rows": 282
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "DTBench",
+      "rows": 224
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "MMLU",
+      "rows": 205
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "Terminal Bench",
+      "rows": 201
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "LMCA",
+      "rows": 188
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "WeirdML",
+      "rows": 170
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "Chess Puzzles",
+      "rows": 160
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "GSM8K",
+      "rows": 149
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "Mystery Game Puzzles",
+      "rows": 138
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "Winogrande",
+      "rows": 119
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "SimpleBench",
+      "rows": 118
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "FrontierMath-Tiers-1-3-v2-Private",
+      "rows": 116
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "TriviaQA",
+      "rows": 109
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "ARC AI2",
+      "rows": 108
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "MATH level 5",
+      "rows": 106
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "PIQA",
+      "rows": 101
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "FrontierMath-2025-02-28-Private",
+      "rows": 99
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "SimpleQA Verified",
+      "rows": 98
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "HellaSwag",
+      "rows": 97
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "FrontierMath-Tier-4-v2-Private",
+      "rows": 77
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "ProofBench",
+      "rows": 77
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "BBH",
+      "rows": 73
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "FrontierMath-Tier-4-2025-07-01-Private",
+      "rows": 69
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "Aider polyglot",
+      "rows": 68
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "OpenBookQA",
+      "rows": 62
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "APEX-Agents",
+      "rows": 58
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "Fiction.LiveBench",
+      "rows": 57
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "GeoBench",
+      "rows": 51
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "METR Time Horizons",
+      "rows": 49
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "LAMBADA",
+      "rows": 45
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "MirrorCode",
+      "rows": 45
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "FrontierCode",
+      "rows": 44
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "GSO-Bench",
+      "rows": 42
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "DeepResearch Bench",
+      "rows": 41
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "Balrog",
+      "rows": 39
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "Furniture Assembly",
+      "rows": 37
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "VPCT",
+      "rows": 37
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Claude Fable 5.2",
+      "rows": 36
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "EBR-bench",
+      "rows": 30
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Mistral 7B v0.1",
+      "rows": 28
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "Surface Evolver Bench",
+      "rows": 26
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "WeirdML v3",
+      "rows": 24
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "CL-bench",
+      "rows": 23
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "Cybench",
+      "rows": 22
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "FrontierSWE",
+      "rows": 22
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "ExploitBench",
+      "rows": 20
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "PostTrainBench",
+      "rows": 20
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "Remote Labor Index",
+      "rows": 18
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "CL-bench Life",
+      "rows": 17
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "OSWorld",
+      "rows": 17
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "DeepSeek V4.1 Flash 1017",
+      "rows": 17
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "OSWorld 2.0",
+      "rows": 16
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "The Agent Company",
+      "rows": 16
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Mistral Large 4 Preview",
+      "rows": 16
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "ANLI",
+      "rows": 14
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "CadEval",
+      "rows": 14
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Qwen 3.6 Flash",
+      "rows": 13
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Qwen 3.6 35B-A3B",
+      "rows": 12
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "GDPval",
+      "rows": 11
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "chatglm2-6b",
+      "rows": 11
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Beam 1.0",
+      "rows": 10
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Qwen 3.6 Max (Preview)",
+      "rows": 9
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "internlm-20b",
+      "rows": 9
+    },
+    {
+      "reason": "the name matches more than one model; add a line of crosswalk/results.yaml",
+      "name": "Qwen3.6 27B",
+      "rows": 9
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "SpireClimb",
+      "rows": 8
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "DeepSeek-V2 (MoE-236B, May 2024)",
+      "rows": 8
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Qwen-1_8B",
+      "rows": 8
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "internlm-7b",
+      "rows": 8
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Mistral 7B v0.3",
+      "rows": 7
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "PaLM 2-S",
+      "rows": 7
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "PaLM 62B",
+      "rows": 7
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Qwen3-235B-A22B-Instruct (Jul 2025)",
+      "rows": 7
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "davinci-003",
+      "rows": 7
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "open_llama_7b",
+      "rows": 7
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "vicuna-13b-v1.1",
+      "rows": 7
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "AquilaChat2 34B",
+      "rows": 6
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Baichuan2-13B-Chat",
+      "rows": 6
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "PaLM 2-M",
+      "rows": 6
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "davinci-002",
+      "rows": 6
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "PaLM 2-L",
+      "rows": 5
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Qwen2.5-Coder-0.5B",
+      "rows": 5
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Qwen2.5-Coder-14B",
+      "rows": 5
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "internlm-chat-20b",
+      "rows": 5
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "stablelm-tuned-alpha-7b",
+      "rows": 5
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "CodeQwen1.5-7B",
+      "rows": 4
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "DeepSeek-Coder-V2-Lite-Base",
+      "rows": 4
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "GLaM (Dense) 0.1B",
+      "rows": 4
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "GLaM (Dense) 1.7B",
+      "rows": 4
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "GLaM (Dense) 137B",
+      "rows": 4
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "GLaM (Dense) 8B",
+      "rows": 4
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "GLaM (MoE) 0.1B/64E",
+      "rows": 4
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "GLaM (MoE) 1.7B/64E",
+      "rows": 4
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "GLaM (MoE) 64B/64E",
+      "rows": 4
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "GLaM (MoE) 8B/64E",
+      "rows": 4
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Qwen2.5-Coder-3B",
+      "rows": 4
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Qwen3-30B-A3B-Instruct (Jul 2025)",
+      "rows": 4
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Qwen3-30B-A3B-Thinking (Jul 2025)",
+      "rows": 4
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Yi-9B",
+      "rows": 4
+    },
+    {
+      "reason": "the name matches more than one model; add a line of crosswalk/results.yaml",
+      "name": "Command R+",
+      "rows": 4
+    },
+    {
+      "reason": "no line of crosswalk/results.yaml gives the benchmark and version of this name",
+      "name": "SuperGLUE",
+      "rows": 3
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Chinese-Alpaca-Plus-13B",
+      "rows": 3
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Falcon-rw-1.3B",
+      "rows": 3
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Inkling 2 Small",
+      "rows": 3
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Mistral 7B v0.2",
+      "rows": 3
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Qwen2.5-Coder-32B-Instruct",
+      "rows": 3
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "XVERSE-13B",
+      "rows": 3
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "c4ai-command-r-08-2024",
+      "rows": 3
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "computer-use-preview-2025-03-11",
+      "rows": 3
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "AI Co-Mathematician",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Anthropic-LM v4-s3 (52B)",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Cohere Command beta (52.4B)",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Cohere Command beta (6.1B)",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Cohere large v20220720 (13.1B)",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Cohere medium v20220720 (6.1B)",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Cohere medium v20221108 (6.1B)",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Cohere small v20220720 (410M)",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Cohere xlarge v20220609 (52.4B)",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Cohere xlarge v20221108 (52.4B)",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "DeepSeek-V3.2-Speciale",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "GPT-4",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "J1-Grande v1 (17B)",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "J1-Grande v2 beta (17B)",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "J1-Jumbo v1 (178B)",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "J1-Large v1 (7.5B)",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Jurassic-2 Grande (17B)",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Jurassic-2 Large (7.5B)",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Laguna M.1",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "MiMo-V2.6 Pro",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Muse Ember",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "T5-Base",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "T5-Large",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "TNLG v2 (530B)",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "TNLG v2 (6.7B)",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "codex-mini-2025-05-16",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "deepseek-r1-0528-qwen3-8b",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "glm-4.7-flash_none",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "granite-4.0-1b",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "granite-4.0-350m",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "granite-4.0-micro",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "mistral-small-2402",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "qwen3-4b-instruct-2507",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "seed-oss-36b-instruct",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "tiny-recursion-model",
+      "rows": 2
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "8-shot Minerva",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Arctic Instruct",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Baichuan2-Chat 13B (8-shot)",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Baichuan2-Chat 7B (8-shot)",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "ChatGLM 2-6B (base)*",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "DBRX Instruct",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "DeepSeek LLM Chat (67B)",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "DeepSeek-Coder-V2-Lite-Instruct",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Falcon-Instruct (7B)",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "GPT-4 (8-shot)",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "GPT3 175B",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "InstructPalmyra (30B)",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "InternLM-Chat 7B (8-shot)",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Jamba Instruct",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "LLAMA 2-CHAT 13B (8-shot)",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "LLAMA 2-CHAT 70B (8-shot)",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "LLAMA 2-CHAT 7B (8-shot)",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Laguna XS.2",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "MiMo-V2.5",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "MiMo-V2.6 Flash",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Mixtral (8x7B 32K seqlen)",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "PaLM 8B",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "PaLM-cont 62B",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Palmyra X (43B)",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Palmyra X V2 (33B)",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Palmyra X V3 (72B)",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Phi-3 (7B)",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "QWEN-CHAT 1.8B (0-shot)",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "QWEN-CHAT 1.8B (8-shot)",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "QWEN-CHAT 14B (0-shot)",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "QWEN-CHAT 14B (8-shot)",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "QWEN-CHAT 7B (0-shot)",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "QWEN-CHAT 7B (8-shot)",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Qwen1.5 Chat (110B)",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Qwen2-VL-72B-Instruct",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Qwen2-VL-7B-Instruct",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Qwen2.5-Coder-14B-Instruct",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Qwen2.5-Coder-3B-Instruct",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "RedPajama-INCITE-Base-v1 (3B)",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "RedPajama-INCITE-Instruct (7B)",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "RedPajama-INCITE-Instruct-v1 (3B)",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Switch-Base",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Switch-Large",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "T5-Small",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "Vicuna-13B",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "chutes/GLM-4.5-FP8",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "chutes/Qwen3-Next-80B-A3B-Instruct",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "code-cushman-001 (12B)",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "deepinfra/Qwen3-Next-80B-A3B-Instruct",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "gemini-robotics-er-1.5-preview",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "gpt-3.5-turbo-0301",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "ml-elephant",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "o3-preview (Low)*",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "openhands-lm-32b-v0.1",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "phi-1.5-web (1.3B)",
+      "rows": 1
+    },
+    {
+      "reason": "no model card or node has this name; add the model, an alias, or a line of crosswalk/results.yaml",
+      "name": "phi-1.5-web-only (1.3B)",
+      "rows": 1
+    },
+    {
+      "reason": "the name matches more than one model; add a line of crosswalk/results.yaml",
+      "name": "SWE-1.6",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:adversarial_nli/rec1lytSYqTdvBGqD",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:arc_agi/recTh8A2nzouwtoS4",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:arc_agi/rectUG8eOKZjJ1xGs",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:arc_ai2/rec328KDuE0wcry3j",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:arc_ai2/recBGxKI2qp2Vzmtz",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:arc_ai2/recI25UXKgeWd2uxU",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:arc_ai2/recJ9BDPpOIL845dB",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:arc_ai2/recgOdAV6Fy1Oqq2M",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:arc_ai2/reck8zqnBzwmuHWKc",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:arc_ai2/recl5dU2L0etusoaO",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:frontiercode/composer-2-5~2",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:frontiercode/inkling",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:frontiercode/qwen-3-7-plus",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:frontiercode/swe-1-6",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:frontiercode/swe-1-7",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:gsm8k/rec0tX9cIDwIb6fEu",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:gsm8k/recAZyShgnuUMMwcM",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:gsm8k/recAvetQksEkPeMk3",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:gsm8k/recF8TzpBQW5P8RoY",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:gsm8k/recG9xCafZa19bziY",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:gsm8k/recGMaBgBDmrpUvvI",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:gsm8k/recGiS1gp3htD6tJL",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:gsm8k/recMPdjwlUnS63u4r",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:gsm8k/recMSiJgORxKn1mQg",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:hella_swag/recjNOzd1oubTWRwz",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:hella_swag/recuFfA1xvh9vebqC",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:lambada/rec3x2a9YCcrwIEYd",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:lambada/recD1qk2bGjjgZkik",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:lambada/recFGGbVEHE2m561T",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:lambada/recQKYZNOKPzVtQRc",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:lambada/recSrXtswfaU3egAZ",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:lambada/recfzfHehI3kdkLoK",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:lambada/reclp1vVVIvkEJIxf",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:lambada/recn0Nina4jBT63Q0",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:lambada/recsrCl1BLlwQCvo0",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:lambada/recxi0JTs60mpjDWE",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:piqa/rec2NrSw87YxnU8rl",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:piqa/rec3JaqZd42oD33Pb",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:piqa/recFtdznxZpvC1Pl1",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:piqa/receHLAsg9DZiWVhL",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:piqa/recqAppx1NcjhhX4T",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:piqa/rect2I1dAOPCLstud",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:piqa/rects737oDQVD1Pkf",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:piqa/rectzHjogpUoYAQeW",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:piqa/recwfAK4nLJrYathu",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:piqa/recz3hchBvxIiEuZM",
+      "rows": 1
+    },
+    {
+      "reason": "the row lacks a field of 10.6.1",
+      "name": "epoch-benchmarks:wino_grande/recpUncBDSEU1nw70",
+      "rows": 1
+    }
+  ]
+}
