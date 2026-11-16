@@ -1,0 +1,30 @@
+# SPDX-License-Identifier: MIT
+# The options of pass@k that change the score, and the vector rows that pin each value (spec 08.7.5). Every row is in
+# edge.jsonl and was computed by hand as an exact rational (fractions.Fraction); official.jsonl waits for the
+# human-eval package in the aik-vectors image. The page shows this as the table of its Variants section.
+default:
+  signature: "estimator:unbiased|k:1"
+  used_by: "Chen et al. (2021), who report pass@1, pass@10 and pass@100 from n = 200 samples per problem"
+options:
+  k:
+    "1":
+      meaning: "the expected fraction of single samples that pass, c/n averaged over problems"
+      used_by: "pass@1 in Chen et al. (2021) and most later code benchmarks"
+      rows: {edge.jsonl: [worked-example-k1, tiny-pass-rate, plug-in-k1]}
+    "2 <= k < n":
+      meaning: "the chance that at least one of k samples passes"
+      used_by: "pass@10 and pass@100 in Chen et al. (2021)"
+      rows: {edge.jsonl: [worked-example, no-correct, all-correct, fewer-failures-than-k, failures-equal-k, one-correct-n200, two-correct-n200, varying-n, large-n]}
+    "k = n":
+      meaning: "1 if any of the n samples passes, else 0: the empirical estimate of Kulal et al. (2019)"
+      used_by: "Kulal et al. (2019) and Austin et al. (2021), who count a problem as solved by any of its samples"
+      rows: {edge.jsonl: [k-equals-n, plug-in-k-equals-n]}
+  estimator:
+    unbiased:
+      meaning: "1 - C(n - c, k) / C(n, k), as the product of Figure 3 of Chen et al. (2021)"
+      used_by: "Chen et al. (2021) and the human-eval package"
+      rows: {edge.jsonl: [worked-example, large-n, varying-n]}
+    plug-in:
+      meaning: "1 - (1 - c/n)^k: the estimate of pass@1 put into the formula for independent samples; biased low for k >= 2"
+      used_by: "the estimator that Chen et al. (2021, Appendix A) warn against"
+      rows: {edge.jsonl: [worked-example-plug-in, plug-in-k1, plug-in-one-correct, plug-in-k-equals-n]}

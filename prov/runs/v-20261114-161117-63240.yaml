@@ -1,0 +1,529 @@
+run: v-20261114-161117-63240
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-purpose
+  work: paszke-2019-pytorch
+  locator: the abstract
+  key: cc692b1a7955d5d1c0f87454b95cf52a
+  spans:
+  - start: 1134
+    end: 2198
+  verdict: supported
+  quote: it provides an imperative and Pythonic programming style
+  note: The abstract also says PyTorch remains efficient and supports hardware accelerators such as GPUs.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-workflow
+  work: paszke-2019-pytorch
+  locator: Section 4.1
+  key: 50419c06091a032a359e72529f060f22
+  spans:
+  - start: 8529
+    end: 12572
+  verdict: supported
+  quote: Defining layers, composing models, loading data, running optimizers, and parallelizing the training process are all
+    expressed using the familiar concepts developed for general purpose programming.
+  note: The passage states the claim directly.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-users
+  work: linux-foundation-2022-pytorch-foundation
+  locator: p. 1
+  key: a4ab1c70e66cddca5cb8e91dfcfdbe06
+  spans:
+  - start: 0
+    end: 9145
+  verdict: supported
+  quote: organizations have adopted the PyTorch machine learning framework for use in academic research and production environments.
+  note: The Linux Foundation reports the claimed uses.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-licence
+  work: pytorch-license-v2-15-0
+  locator: p. 1
+  key: 3af4caa99aabad244db0fb0a6b22e8b5
+  spans:
+  - start: 0
+    end: 3367
+  verdict: supported
+  quote: 'Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
+    following conditions are met:'
+  note: The passage then lists three conditions.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-cpp
+  work: paszke-2019-pytorch
+  locator: Section 5.1
+  key: 19a5b3cd45b5321046056e9ac3fa44ca
+  spans:
+  - start: 17261
+    end: 18478
+  verdict: supported
+  quote: most of PyTorch is written in C++ to achieve high performance.
+  note: The passage states the claim directly.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-libtorch
+  work: paszke-2019-pytorch
+  locator: Section 5.1
+  key: 872560e1945a94259b385c1eed840618
+  spans:
+  - start: 17261
+    end: 18478
+  verdict: supported
+  quote: This core libtorch library implements the tensor data structure, the GPU and CPU operators, and basic parallel primitives.
+  note: The next sentence says it also provides the automatic differentiation system.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-static
+  work: paszke-2019-pytorch
+  locator: Section 1
+  key: 8ed8b4b5713455da2f8ba7e58222382f
+  spans:
+  - start: 2198
+    end: 3690
+  verdict: supported
+  quote: construct a static dataflow graph that represents the computation and which can then be applied repeatedly to batches
+    of data.
+  note: The passage names Caffe, CNTK, TensorFlow, and Theano as examples.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-imperative
+  work: paszke-2019-pytorch
+  locator: Section 4.1
+  key: 359972b2dffd1cc4c065926719359fed
+  spans:
+  - start: 8529
+    end: 12572
+  verdict: supported
+  quote: PyTorch foregoes the potential benefits of a graph-metaprogramming based approach to preserve the imperative programming
+    model of Python.
+  note: The passage states the claim directly.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-modules
+  work: paszke-2019-pytorch
+  locator: Section 4.1
+  key: a6f5430a5c0646006ca83907b397df03
+  spans:
+  - start: 8529
+    end: 12572
+  verdict: supported
+  quote: layers (which in modern machine learning should really be understood as stateful functions with implicit parameters)
+    are typically expressed as Python classes
+  note: The passage also specifies what their constructors and forward methods do.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-models
+  work: paszke-2019-pytorch
+  locator: Section 4.1
+  key: 2abd028a5f746a0431bc9281becaab2d
+  spans:
+  - start: 8529
+    end: 12572
+  verdict: supported
+  quote: models are usually represented as classes that compose individual layers, but let us state again that nothing forces
+    the user to structure their code in that way.
+  note: The passage states the claim directly.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-overloading
+  work: paszke-2019-pytorch
+  locator: Section 4.3
+  key: a24485fad117f56d9a3fbe4c5a105dfc
+  spans:
+  - start: 14678
+    end: 16612
+  verdict: supported
+  quote: PyTorch uses the operator overloading approach, which builds up a representation of the computed function every time
+    it is executed.
+  note: The passage states the claim directly.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-reverse
+  work: paszke-2019-pytorch
+  locator: Section 4.3
+  key: 5b9b8f084a825a9a36bf959b0e6230a9
+  spans:
+  - start: 14678
+    end: 16612
+  verdict: supported
+  quote: PyTorch performs reverse-mode automatic differentiation, which computes the gradient of a scalar output with respect
+    to a multivariate input.
+  note: The passage states this for the implementation it describes.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-mutation
+  work: paszke-2019-pytorch
+  locator: Section 4.3
+  key: 774956c1be32eb542d84c17c0e797313
+  spans:
+  - start: 14678
+    end: 16612
+  verdict: supported
+  quote: it can differentiate through code employing mutation on tensors
+  note: The passage also says a tensor versioning system tracks modifications.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-compile
+  work: pytorch-2023-pytorch-2-0-release
+  locator: p. 1
+  key: d04501fd27ff983cb3acfbda59a7ad15
+  spans:
+  - start: 0
+    end: 22977
+  verdict: supported
+  quote: torch.compile is the main API for PyTorch 2.0, which wraps your model and returns a compiled model.
+  note: The passage states the claim directly.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-additive
+  work: pytorch-2023-pytorch-2-0-release
+  locator: p. 1
+  key: 108d751c5414f1086b8b2549c7a6bea4
+  spans:
+  - start: 0
+    end: 22977
+  verdict: supported
+  quote: It is a fully additive (and optional) feature and hence 2.0 is 100% backward compatible by definition.
+  note: The announcement makes the attributed claim directly.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-dynamo
+  work: ansel-2024-pytorch-2
+  locator: the abstract
+  key: 8f5232963284794fb6a05334c3387aba
+  spans:
+  - start: 1176
+    end: 6957
+  verdict: supported
+  quote: TorchInductor is the default compiler backend for TorchDynamo, which translates PyTorch programs into OpenAI’s Triton
+    for GPUs and C++ for CPUs.
+  note: The abstract also describes TorchDynamo and its bytecode transformation and FX graph extraction.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-speedup
+  work: ansel-2024-pytorch-2
+  locator: the abstract
+  key: 1716dfc21d85fb770776fe7bf28fccd8
+  spans:
+  - start: 1176
+    end: 6957
+  verdict: unsupported
+  quote: 2.27× inference and 1.41× training geometric mean speedup on an NVIDIA A100 GPU across 180+ real-world models
+  note: The passage gives the figures and scope but does not identify eager PyTorch as the comparison baseline; the claim
+    should omit that baseline.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-func
+  work: pytorch-2023-pytorch-2-0-release
+  locator: p. 1
+  key: f1ae2d5951375c69c9ff31526777198d
+  spans:
+  - start: 0
+    end: 22977
+  verdict: supported
+  quote: Beta includes torch.compile as the main API for PyTorch 2.0, the scaled_dot_product_attention function as part of
+    torch.nn.functional, the MPS backend, functorch APIs in the torch.func module
+  note: The passage places the functorch APIs in Beta.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-tf-eager
+  work: tensorflow-guide-tf-function
+  locator: p. 1
+  key: 0061de6dfa3d27225dda63bf43c4e603
+  spans:
+  - start: 0
+    end: 78095
+  verdict: supported
+  quote: In TensorFlow 2, eager execution is turned on by default.
+  note: The passage states the claim directly.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-tf-function
+  work: tensorflow-guide-tf-function
+  locator: p. 1
+  key: 62fab53d6759c604187bf086b94ca45b
+  spans:
+  - start: 0
+    end: 78095
+  verdict: supported
+  quote: It is a transformation tool that creates Python-independent dataflow graphs out of your Python code.
+  note: The preceding sentence identifies the tool as tf.function.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-jax
+  work: jax-docs-home
+  locator: p. 1
+  key: ca37969dbb4d06171bc1377d7866554f
+  spans:
+  - start: 0
+    end: 3165
+  verdict: supported
+  quote: JAX is a Python library for accelerator-oriented array computation and program transformation
+  note: The documentation describes JAX in the claimed terms.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-jax-transforms
+  work: jax-docs-home
+  locator: p. 1
+  key: ba8f08c11ca25bac2cad09e846c8bee3
+  spans:
+  - start: 0
+    end: 3165
+  verdict: supported
+  quote: JAX includes composable function transformations for compilation, batching, automatic differentiation, and parallelization.
+  note: The passage states the claim directly.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-jax-pure
+  work: jax-docs-sharp-bits
+  locator: p. 1
+  key: d2643bef96ef21e94b02c522a224a54a
+  spans:
+  - start: 0
+    end: 24447
+  verdict: supported
+  quote: JAX transformation and compilation are designed to work only on Python functions that are functionally pure
+  note: The passage states the claim directly.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-jax-tracing
+  work: frostig-2018-jax
+  locator: p. 1
+  key: 003f8a7a53d91b7c7c3a4f96006ecfea
+  spans:
+  - start: 0
+    end: 5770
+  verdict: supported
+  quote: We describe JAX, a domain-specific tracing JIT compiler for generating high-performance accelerator code from pure
+    Python and
+  note: The abstract continues with Numpy machine learning programs and says JAX uses XLA.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-start
+  work: chintala-2022-pytorch-linux-foundation
+  locator: p. 1
+  key: aa1a41ce99aeb66eba6b1e5041b3ef23
+  spans:
+  - start: 0
+    end: 6758
+  verdict: supported
+  quote: When we started PyTorch development in 2016, it was a collective effort by a band of people from the [Lua]Torch community
+  note: Chintala also attributes a large share of people and funding to Meta.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-release-2017
+  work: paszke-2019-pytorch
+  locator: Section 6.4
+  key: 6538d1bca4dee77d4c05684b4004d2f7
+  spans:
+  - start: 29292
+    end: 30116
+  verdict: supported
+  quote: since the initial release of PyTorch in January 2017.
+  note: Paszke et al. give the claimed month and year.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-year-in
+  work: pytorch-2018-a-year-in
+  locator: p. 1
+  key: 326589f9384de6054aade4c9334bdfaa
+  spans:
+  - start: 0
+    end: 13589
+  verdict: supported
+  quote: Today marks 1 year since PyTorch was released publicly.
+  note: The passage identifies the post as a PyTorch Team post dated January 19, 2018.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-release-2016
+  work: linux-foundation-2022-pytorch-foundation
+  locator: p. 1
+  key: 03151977b1378707aca073e1277edc10
+  spans:
+  - start: 0
+    end: 9145
+  verdict: supported
+  quote: Since its release in 2016
+  note: The Linux Foundation announcement uses the claimed release year.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-neurips
+  work: paszke-2019-pytorch
+  locator: the abstract
+  key: ca216a0928a6e8cc52b52928e3921267
+  spans:
+  - start: 1134
+    end: 2198
+  verdict: supported
+  quote: 33rd Conference on Neural Information Processing Systems (NeurIPS 2019), Vancouver, Canada.
+  note: The conference identification appears on the paper's abstract page.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-17
+  work: paszke-2019-pytorch
+  locator: Section 6.3
+  key: 1db65a2ad20dc4f2b468fa2563eb3847
+  spans:
+  - start: 27904
+    end: 29292
+  verdict: supported
+  quote: On all the benchmarks, the performance of PyTorch is within 17% of that of of the fastest framework.
+  note: The passage states this result for the benchmarks summarized in Table 1.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-cudnn
+  work: paszke-2019-pytorch
+  locator: Section 6.3
+  key: fa9b1cc6f5b7139ca21cf01804f693ca
+  spans:
+  - start: 27904
+    end: 29292
+  verdict: supported
+  quote: We attribute this result to the fact that these tools offload most of the computation to the same version of the
+    cuDNN and cuBLAS libraries.
+  note: The passage states the attributed explanation directly.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-lf
+  work: chintala-2022-pytorch-linux-foundation
+  locator: p. 1
+  key: b7d98c431910ebf631660c03ccb4c7db
+  spans:
+  - start: 0
+    end: 6758
+  verdict: supported
+  quote: Today, I am proud to announce that PyTorch is moving to the Linux Foundation (LF) as a top-level project under the
+    name PyTorch Foundation.
+  note: The passage identifies Chintala as author and dates the post September 12, 2022.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-board
+  work: chintala-2022-pytorch-linux-foundation
+  locator: p. 1
+  key: 8e8896d6b05256ff535b8567a29e9c9c
+  spans:
+  - start: 0
+    end: 6758
+  verdict: supported
+  quote: a governing board of leaders from AMD, Amazon Web Services (AWS), Google Cloud, Meta, Microsoft Azure and NVIDIA
+  note: The passage lists exactly the claimed organizations.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-maintainers
+  work: chintala-2022-pytorch-linux-foundation
+  locator: p. 1
+  key: a6dcede6e3e1694becac0585fde7e94b
+  spans:
+  - start: 0
+    end: 6758
+  verdict: supported
+  quote: The technical decisions remain in control of individual maintainers.
+  note: The passage states the governance claim directly.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-2-0
+  work: pytorch-2023-pytorch-2-0-release
+  locator: p. 1
+  key: 0b8e282a76b9d633487bab24d96baf3e
+  spans:
+  - start: 0
+    end: 22977
+  verdict: supported
+  quote: Beta includes torch.compile as the main API for PyTorch 2.0
+  note: The PyTorch Foundation post is dated 2023 and announces the release of PyTorch 2.0.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-eager-graph
+  work: ansel-2024-pytorch-2
+  locator: Section 1
+  key: 9dcbcb49878c58d0e5241aab1c84a3d3
+  spans:
+  - start: 6957
+    end: 8194
+  verdict: supported
+  quote: eager mode frameworks, such as PyTorch [32] and JAX [8], and graph mode frameworks, such as TensorFlow [1], Caffe
+    [25], Theano [5], and CNTK [37].
+  note: Ansel et al. give the claimed categories and examples.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-eager-def
+  work: ansel-2024-pytorch-2
+  locator: Section 1
+  key: 77565c4504f6307237d0bbbe71fd9c8d
+  spans:
+  - start: 6957
+    end: 8194
+  verdict: supported
+  quote: a machine learning model is represented as code that is executed each time one wants to run the model.
+  note: The passage also says graph mode requires constructing a graph before executing it.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-jax-jit
+  work: ansel-2024-pytorch-2
+  locator: Section 2.6
+  key: 09f73f28deac149a72dd2d4b317df959
+  spans:
+  - start: 14564
+    end: 17422
+  verdict: supported
+  quote: jax.jit does not support data-dependent Python control flow and requires user code to be functionally pure.
+  note: Ansel et al. state the claim directly.
+- slug: pytorch
+  verifier: codex:gpt-6-sol
+  tag: NEW-pytorch
+  claim: c-eager-only
+  work: ansel-2024-pytorch-2
+  locator: Section 2.6
+  key: 6d697228b122186fb8ac2870ed338e8d
+  spans:
+  - start: 14564
+    end: 17422
+  verdict: supported
+  quote: In contrast, PyTorch started as an eager-only framework without any compiler-minded constraints built into its design.
+  note: Ansel et al. state the claim directly.
