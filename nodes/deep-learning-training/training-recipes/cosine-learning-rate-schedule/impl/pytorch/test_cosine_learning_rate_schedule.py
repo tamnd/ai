@@ -161,6 +161,24 @@ def test_cooldown_shapes():
     torch.testing.assert_close(wsd(t, 100, 1.0, 20, final=0.2)[1], torch.tensor(0.8))
 
 
+def test_defaults_and_edges():
+    # Without t_mult the runs all have length t0.
+    assert float(sgdr(15, 10, 0.1)) == pytest.approx(0.05)
+    t_cur, t_i = sgdr_position(25.0, 10)
+    assert (float(t_cur), float(t_i)) == (5.0, 10.0)
+    t_cur, t_i = sgdr_position(torch.tensor([0.0, 2.5, 3.0, 8.9, 9.0]), 3, 2)
+    torch.testing.assert_close(t_cur, torch.tensor([0.0, 2.5, 0.0, 5.9, 0.0]))
+    torch.testing.assert_close(t_i, torch.tensor([3.0, 3.0, 6.0, 6.0, 12.0]))
+    assert float(sgdr_position(7.0, 2.0, 1.5)[1]) == pytest.approx(4.5)
+    # Without warmup the first factor is 1.
+    assert lr_factor("cosine", 10)(0) == 1.0
+    assert build_scheduler(_optimizer(0.1), "linear", 10).get_last_lr() == [0.1]
+    # decay_steps may be 1 or the whole run.
+    assert float(wsd(9.5, 10, 1.0, 1)) == pytest.approx(0.5)
+    assert float(wsd(5.0, 10, 1.0, 10)) == pytest.approx(0.5)
+    assert float(wsd(85.0, 100, 1.0, 20, shape="cosine")) == pytest.approx(0.5 * (1 + math.cos(math.pi / 4)))
+
+
 @pytest.mark.parametrize(
     "call",
     [

@@ -227,6 +227,7 @@ def test_edges_accepted():
     assert wsd(10, 10, 0.1, 10) == pytest.approx(0.0, abs=1e-15)
     assert wsd(0, 10, 0.1, 10) == 0.1
     assert schedule(0, "cosine", 10, 0.1, warmup=0) == 0.1
+    assert schedule(0, "linear", 10, 0.1) == 0.1
     assert restart_epoch(0, 10, 2) == 0
     assert sgdr_position(0, 10) == (0, 0, 10)
     assert sgdr_position(10, 10) == (1, 0, 10)

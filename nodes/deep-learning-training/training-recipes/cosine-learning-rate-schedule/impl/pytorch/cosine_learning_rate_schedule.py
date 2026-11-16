@@ -3,7 +3,7 @@
 """Learning-rate schedules in PyTorch.
 
 cosine, linear_decay, step_decay and wsd evaluate eq-cosine, eq-linear, eq-step and eq-wsd on a tensor of steps.
-sgdr is eq-cosine with warm restarts, finding the run of each time from eq-restarts in closed form. lr_factor returns
+sgdr is eq-cosine with warm restarts, placing each time in its run with the restart epochs of eq-restarts. lr_factor returns
 the multiplier of the base rate at each step, with an optional linear warmup, for torch.optim.lr_scheduler.LambdaLR,
 and build_scheduler wraps an optimizer with it. Step once per optimizer update and give every length in updates.
 """
@@ -75,15 +75,14 @@ def sgdr_position(t, t0, t_mult: float = 1):
     t = _steps(t)
     if t0 <= 0 or t_mult < 1:
         raise ValueError(f"need t0 > 0 and t_mult >= 1, got {t0} and {t_mult}")
-    if t_mult == 1:
-        i = torch.floor(t / t0)
-    else:
-        # eq: eq-restarts, inverted: the run i with t_i <= t < t_{i+1}.
-        i = torch.floor(torch.log1p(t / t0 * (t_mult - 1)) / math.log(t_mult))
-        # Rounding in the logarithm can put a time on a restart into the run before or after it.
-        start = t0 * (t_mult**i - 1) / (t_mult - 1)
-        i = torch.where(t < start, i - 1, i)
-        i = torch.where(t >= t0 * (t_mult ** (i + 1) - 1) / (t_mult - 1), i + 1, i)
+    # The restarts at or before the last time, by the loop that eq-restarts sums.
+    restarts, start, length = [], t0, t0
+    while start <= float(t.max()):
+        restarts.append(start)
+        length *= t_mult
+        start += length
+    i = (t.unsqueeze(-1) >= torch.tensor(restarts, dtype=t.dtype)).sum(-1).to(t.dtype)
+    # eq: eq-restarts
     start = i * t0 if t_mult == 1 else t0 * (t_mult**i - 1) / (t_mult - 1)
     return t - start, t0 * t_mult**i
 
