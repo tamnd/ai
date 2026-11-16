@@ -1,0 +1,778 @@
+run: v-20261114-035536-46188
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-title
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: the title page
+  key: 340473faad70b8bef0fead2d8cb2ad25
+  spans:
+  - start: 0
+    end: 984937
+  verdict: supported
+  quote: laying down harmonised rules on artificial intelligence
+  note: The title gives the regulation’s number, date, subject and short name.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-published
+  work: ep-oeil-2021-0106-cod-artificial-intelligence-act
+  locator: p. 1
+  key: a0c128ff33ee993a86d4458477ef4075
+  spans:
+  - start: 0
+    end: 75357
+  verdict: unsupported
+  quote: Procedure completed
+  note: The visible passage identifies the procedure and its status but does not show the Official Journal publication date;
+    a later key event or final-act entry would be needed.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-in-force
+  work: eu-2026-regulation-2026-1744-digital-omnibus-ai
+  locator: the title page
+  key: 6e68a4362cc70e2497682d39f12be579
+  spans:
+  - start: 0
+    end: 276007
+  verdict: supported
+  quote: Regulation (EU) 2024/1689 entered into force on 1 August 2024.
+  note: The passage states the claimed date directly.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-in-force
+  work: ec-ai-act-policy-page
+  locator: p. 1
+  key: 5f689ace6480500f36aa5674b4283376
+  spans:
+  - start: 0
+    end: 20972
+  verdict: supported
+  quote: The AI Act entered into force on 1 August 2024
+  note: The page identifies the AI Act as Regulation (EU) 2024/1689 and states its entry-into-force date.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-amended
+  work: eu-2026-regulation-2026-1744-digital-omnibus-ai
+  locator: the title page
+  key: 09dfcca942247d60a2cd590861fc014c
+  spans:
+  - start: 0
+    end: 276007
+  verdict: supported
+  quote: amending Regulations (EU) 2024/1689, (EU) 2018/1139 and (EU) 2023/1230 as regards the simplification
+  note: The title gives the amendment, its purpose, date and Digital Omnibus on AI name.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-purpose
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 1(1)
+  key: 3f1130350433b662920d4727a64e506c
+  spans:
+  - start: 292803
+    end: 293296
+  verdict: supported
+  quote: improve the functioning of the internal market and promote the uptake of human-centric and trustworthy artificial
+    intelligence
+  note: Article 1(1) states the claimed purpose and protections.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-subject-matter
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 1(2)
+  key: 9f7f37cccaec424ddcaa5c7f05f128e5
+  spans:
+  - start: 293296
+    end: 296691
+  verdict: supported
+  quote: 'This Regulation lays down:'
+  note: The listed provisions cover every category named in the claim.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-four-levels
+  work: ec-ai-act-policy-page
+  locator: p. 1
+  key: b7ae7d4f7270d6fbb45da2000b23c93d
+  spans:
+  - start: 0
+    end: 20972
+  verdict: supported
+  quote: 'The AI Act defines 4 levels of risk for AI systems:'
+  note: The four headings that follow match the claim.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-minimal
+  work: ec-ai-act-policy-page
+  locator: p. 1
+  key: ef2bd6b2d2493f085462d8e111bbfe5c
+  spans:
+  - start: 0
+    end: 20972
+  verdict: supported
+  quote: The AI Act does not introduce rules for AI that is deemed minimal or no risk.
+  note: The passage also gives AI-enabled video games and spam filters as examples.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-direct
+  work: eu-2026-ai-act-consolidated-text-2026-07-27
+  locator: Article 113
+  key: 8966c1c6fac885c57d9d8f284c9a9c07
+  spans:
+  - start: 525633
+    end: 615017
+  verdict: supported
+  quote: This Regulation shall be binding in its entirety and directly applicable in all Member States.
+  note: The passage states the claim verbatim.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-scope-providers
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 2(1)
+  key: db82781bbebca455b06317848d350021
+  spans:
+  - start: 296934
+    end: 300621
+  verdict: supported
+  quote: providers placing on the market or putting into service AI systems or placing on the market general-purpose AI models
+    in the Union
+  note: Points (a) and (b) cover the claimed providers and Union-based deployers.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-scope-third-country
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 2(1)
+  key: 46f7f9af2aab51d5a6eeb1393e0bc984
+  spans:
+  - start: 296934
+    end: 300621
+  verdict: unsupported
+  quote: product manufacturers placing on the market or putting into service an AI system together with their product and
+    under their own name or trademark
+  note: The claim omits the condition on product manufacturers and extends a Union-location condition to categories for which
+    this passage does not state it.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-scope-military
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 2(3)
+  key: a78f9b3d013a9f48b0777c20a4c8e8a1
+  spans:
+  - start: 301205
+    end: 302177
+  verdict: supported
+  quote: exclusively for military, defence or national security purposes
+  note: Article 2(3) states the claimed exclusion.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-scope-research
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 2(6)
+  key: 85e1e3f4b634c906155a3875643feb68
+  spans:
+  - start: 303054
+    end: 303310
+  verdict: supported
+  quote: specifically developed and put into service for the sole purpose of scientific research and development
+  note: Article 2(6) states the claimed exclusion.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-scope-open-source
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 2(12)
+  key: 13dc435803671fd32bbec34c6daa8d64
+  spans:
+  - start: 305047
+    end: 305341
+  verdict: supported
+  quote: unless they are placed on the market or put into service as high-risk AI systems or as an AI system that falls under
+    Article 5 or 50.
+  note: The stated exceptions correspond to high-risk systems, prohibited practices and transparency obligations.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-def-ai-system
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 3(1)
+  key: 216d32bd322b04d822af79752d033ae0
+  spans:
+  - start: 305590
+    end: 306237
+  verdict: supported
+  quote: ‘AI system’ means a machine-based system that is designed to operate with varying levels of autonomy
+  note: The rest of the definition matches the claim’s adaptiveness, inference and outputs.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-def-provider
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 3(3)
+  key: 4d00c4717669bbcfbb3dfe99b9d8210b
+  spans:
+  - start: 306713
+    end: 307425
+  verdict: supported
+  quote: whether for payment or free of charge
+  note: Article 3(3) gives the claimed provider definition, including the market and naming conditions.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-def-deployer
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 3(4)
+  key: 64f9f8ae102a754b2bb5528363be6848
+  spans:
+  - start: 307425
+    end: 308009
+  verdict: supported
+  quote: using an AI system under its authority except where the AI system is used in the course of a personal non-professional
+    activity
+  note: The definition matches the claim.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-def-gpai
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 3(63)
+  key: 82e4898053963b968c2c5f51b0317074
+  spans:
+  - start: 349858
+    end: 350749
+  verdict: supported
+  quote: displays significant generality and is capable of competently performing a wide range of distinct tasks
+  note: The definition also includes downstream integration and the stated pre-market research exception.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-def-systemic-risk
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 3(65)
+  key: 46a23a7dc9089c5e9337369f8e04cfd1
+  spans:
+  - start: 351263
+    end: 352018
+  verdict: unsupported
+  quote: due to actual or reasonably foreseeable negative effects
+  note: The claim drops the qualification that negative effects may be actual or reasonably foreseeable; it should retain
+    that wording.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-def-deep-fake
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 3(60)
+  key: 8b8b6327926337a706c700edf886f5f7
+  spans:
+  - start: 344432
+    end: 345016
+  verdict: supported
+  quote: would falsely appear to a person to be authentic or truthful
+  note: The definition matches the claimed content and resemblance requirements.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-prohibit-manipulation
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 5(1)
+  key: bca34cb9c431c37ced04646186eaf7a3
+  spans:
+  - start: 354903
+    end: 365820
+  verdict: unsupported
+  quote: by appreciably impairing their ability to make an informed decision
+  note: The claim omits this additional condition for the prohibition concerning subliminal, manipulative or deceptive techniques.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-prohibit-scoring
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 5(1)
+  key: 97622b06f736763543faf14e07dbf127
+  spans:
+  - start: 354903
+    end: 365820
+  verdict: unsupported
+  quote: in social contexts that are unrelated to the contexts in which the data was originally generated or collected
+  note: The social-scoring prohibition requires unrelated contexts or unjustified or disproportionate treatment, which the
+    claim omits.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-prohibit-scraping-emotion
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 5(1)
+  key: b3e536103904a6dc68f4679853ddce30
+  spans:
+  - start: 354903
+    end: 365820
+  verdict: supported
+  quote: create or expand facial recognition databases through the untargeted scraping of facial images from the internet
+    or CCTV footage
+  note: Points (e) and (f) state both prohibitions and the medical or safety exception.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-prohibit-categorisation
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 5(1)
+  key: 9ac936984deec923b0c625a63b668ec1
+  spans:
+  - start: 354903
+    end: 365820
+  verdict: unsupported
+  quote: this prohibition does not cover any labelling or filtering of lawfully acquired biometric datasets
+  note: The claim states the prohibition without its express exclusions for certain dataset handling and law-enforcement categorisation.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-prohibit-rbi
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 5(1)
+  key: 9fb03e2ff0fcf5652042e33493cb38df
+  spans:
+  - start: 354903
+    end: 365820
+  verdict: supported
+  quote: unless and in so far as such use is strictly necessary for one of the following objectives
+  note: Point (h) lists the claimed examples of permitted objectives.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-prohibit-intimate
+  work: eu-2026-ai-act-consolidated-text-2026-07-27
+  locator: Article 5(1)
+  key: 7fb371cf9823aa44bb3729779b9c8f88
+  spans:
+  - start: 53475
+    end: 65248
+  verdict: unsupported
+  quote: the placing on the market or putting into service of an AI system that generates or manipulates the material or performance
+  note: Paragraphs 1a and 1b limit when these practices are prohibited, so the claim needs those conditions and exceptions.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-commission-nine
+  work: ec-ai-act-policy-page
+  locator: p. 1
+  key: f3731dfc00e2f67adf2c2c13a53b037e
+  spans:
+  - start: 0
+    end: 20972
+  verdict: supported
+  quote: Prohibition 9 comes into effect in December 2026 and was introduced as a part of the AI Omnibus.
+  note: The ninth listed practice is the claimed non-consensual intimate or child sexual abuse material prohibition.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-high-risk-annex-i
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 6(1)
+  key: 8390d4230121b049af405b8dec3638e6
+  spans:
+  - start: 374204
+    end: 375816
+  verdict: supported
+  quote: that AI system shall be considered to be high-risk where both of the following conditions are fulfilled
+  note: The two conditions that follow match the claim.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-high-risk-annex-iii
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 6(2)
+  key: b5605352f3bd0a57f3272eb63aac69c9
+  spans:
+  - start: 375816
+    end: 376156
+  verdict: unsupported
+  quote: By derogation from paragraph 2, an AI system referred to in Annex III shall not be considered to be high-risk
+  note: Article 6(3) provides an exception, so the claim should say Annex III systems are generally considered high-risk subject
+    to that exception.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-annex-iii-areas
+  work: ec-ai-act-policy-page
+  locator: p. 1
+  key: 2a53ed8257d1dfa6c6fe256f41d35369
+  spans:
+  - start: 0
+    end: 20972
+  verdict: supported
+  quote: 'These  high-risk  use-cases include:'
+  note: The ensuing list includes each area named in the claim.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-high-risk-derogation
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 6(3)
+  key: 62b8e0857c9a855011f8ceed26269cfb
+  spans:
+  - start: 376156
+    end: 379173
+  verdict: supported
+  quote: shall always be considered to be high-risk where the AI system performs profiling of natural persons
+  note: Article 6(3) also states the significant-risk test and gives a narrow procedural task as an example.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-risk-management
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 9(1)
+  key: 91e8643125f15a94ea064adda4f94923
+  spans:
+  - start: 395442
+    end: 395642
+  verdict: supported
+  quote: A risk management system shall be established, implemented, documented and maintained in relation to high-risk AI
+    systems.
+  note: The passage states the claim verbatim.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-human-oversight
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 14(1)
+  key: 3cc1097299d51c0b600e1f4fdbcbdac9
+  spans:
+  - start: 432369
+    end: 432673
+  verdict: supported
+  quote: effectively overseen by natural persons during the period in which they are in use
+  note: Article 14(1) states the claimed design requirement.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-requirements
+  work: ec-ai-act-policy-page
+  locator: p. 1
+  key: 1d94f5d7580be5c875f8f41a82785dcb
+  spans:
+  - start: 0
+    end: 20972
+  verdict: supported
+  quote: adequate risk assessment and mitigation systems
+  note: The passage lists this and every other obligation named in the claim.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-transp-interact
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 50(1)
+  key: dafe5016e4bcf1c73a4886dcd7a7d662
+  spans:
+  - start: 575214
+    end: 575982
+  verdict: unsupported
+  quote: This obligation shall not apply to AI systems authorised by law to detect, prevent, investigate or prosecute criminal
+    offences
+  note: The claim omits the stated criminal-offence exception and should include it.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-transp-marking
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 50(2)
+  key: f99b193f447711b599599daafbc99437
+  spans:
+  - start: 575982
+    end: 576966
+  verdict: unsupported
+  quote: This obligation shall not apply to the extent the AI systems perform an assistive function for standard editing
+  note: The claim states the marking duty without the passage’s editing and law-enforcement exceptions.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-transp-emotion
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 50(3)
+  key: ec70256e1d9471cba96c05a56f5d2c0f
+  spans:
+  - start: 576966
+    end: 577638
+  verdict: unsupported
+  quote: This obligation shall not apply to AI systems used for biometric categorisation and emotion recognition
+  note: The claim omits the exception for systems permitted by law for specified criminal-offence purposes.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-transp-deep-fake
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 50(4)
+  key: 3e3895ef141203e1a71049d2dba1dd3e
+  spans:
+  - start: 577638
+    end: 578948
+  verdict: unsupported
+  quote: This obligation shall not apply where the use is authorised by law to detect, prevent, investigate or prosecute criminal
+    offence.
+  note: The claim states the disclosure duty without its express exception.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-transp-text
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 50(4)
+  key: 13d7d866dd4046046e34252b77686fe8
+  spans:
+  - start: 577638
+    end: 578948
+  verdict: unsupported
+  quote: This obligation shall not apply where the use is authorised by law to detect, prevent, investigate or prosecute criminal
+    offences
+  note: The claim includes the editorial exception but omits the separate criminal-offence exception.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-gpai-obligations
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 53(1)
+  key: 3915f12c4cb5be24734c7ae8ae3257b0
+  spans:
+  - start: 587342
+    end: 591820
+  verdict: unsupported
+  quote: The obligations set out in paragraph 1, points (a) and (b), shall not apply
+  note: The claim presents the documentation and downstream-information duties as universal, while Article 53(2) exempts qualifying
+    open-source models.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-gpai-open-source
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 53(2)
+  key: 9970a6cee3e9975095eaef7e0e16993a
+  spans:
+  - start: 591820
+    end: 592490
+  verdict: unsupported
+  quote: the information on the model architecture, and the information on model usage, are made publicly available
+  note: The claim omits these additional public-availability conditions for the exception.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-systemic-classification
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 51(1)
+  key: 881c3e477ab1d349a5d4a5a669814dda
+  spans:
+  - start: 580949
+    end: 582328
+  verdict: supported
+  quote: 'if it meets any of the following conditions:'
+  note: The two conditions that follow are high-impact capabilities and the specified Commission decision.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-flop-threshold
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 51(2)
+  key: 73e6cc31b6962bd8c861fa88058976c9
+  spans:
+  - start: 582328
+    end: 582767
+  verdict: unreadable
+  quote: greater than 10 25 .
+  note: The extraction loses the notation between 10 and 25, so the claimed exponent cannot be judged from the passage alone.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-notify
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 52(1)
+  key: 3399e8ebf8f59946f1eea51bd0b3d5ed
+  spans:
+  - start: 583379
+    end: 584020
+  verdict: supported
+  quote: shall notify the Commission without delay and in any event within two weeks
+  note: Article 52(1) links this duty to the high-impact-capabilities condition in Article 51(1)(a).
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-systemic-obligations
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 55(1)
+  key: 2079ab83efc25c32a639984c7b42f5a0
+  spans:
+  - start: 600066
+    end: 602778
+  verdict: supported
+  quote: 'providers of general-purpose AI models with systemic risk shall:'
+  note: The four following points state all four claimed duties.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-codes
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 56(1)
+  key: 8b8d497dd7e4325a0a296b43c19c43da
+  spans:
+  - start: 604352
+    end: 604640
+  verdict: supported
+  quote: The AI Office shall encourage and facilitate the drawing up of codes of practice at Union level
+  note: The passage states the claim directly.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-provider-duties
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 16
+  key: 1431579f9754bbd25dcbc5b2d6075094
+  spans:
+  - start: 442377
+    end: 448997
+  verdict: unsupported
+  quote: when under their control, keep the logs automatically generated by their high-risk AI systems
+  note: The claim makes the log-retention duty unconditional, whereas Article 16 limits it to logs under providers’ control.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-registration
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 49(1)
+  key: 63aa05f126c51b4ea83197d2e9778dce
+  spans:
+  - start: 570608
+    end: 571015
+  verdict: unsupported
+  quote: with the exception of high-risk AI systems referred to in point 2 of Annex III
+  note: The claim omits the explicit exception to EU-database registration.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-post-market
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 72(1)
+  key: 96dc7a33f70308296c773ab05b8711b3
+  spans:
+  - start: 712510
+    end: 712771
+  verdict: supported
+  quote: Providers shall establish and document a post-market monitoring system
+  note: The passage also requires proportionality to the technology’s nature and the system’s risks.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-incidents
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 73(1)
+  key: ac07f2de78b85cf7a331916c1e0aaedd
+  spans:
+  - start: 715542
+    end: 715804
+  verdict: unsupported
+  quote: Providers of high-risk AI systems placed on the Union market
+  note: The claim omits the condition that the high-risk AI system was placed on the Union market.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-authorised-rep
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 22(1)
+  key: 8198c39e888751a69a1c90609aef6c35
+  spans:
+  - start: 466940
+    end: 467231
+  verdict: supported
+  quote: providers established in third countries shall, by written mandate, appoint an authorised representative which is
+    established in the Union
+  note: The passage also states that appointment precedes making the systems available on the Union market.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-importers
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 23(1)
+  key: df51b2b09497dccbe2cded8f7a533a01
+  spans:
+  - start: 472702
+    end: 475085
+  verdict: supported
+  quote: Before placing a high-risk AI system on the market, importers shall ensure that the system is in conformity
+  note: Points (a) through (d) require all the checks named in the claim.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-distributors
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 24(1)
+  key: cae9e33806c951a4e09b602c78f99a68
+  spans:
+  - start: 477772
+    end: 478280
+  verdict: supported
+  quote: it bears the required CE marking, that it is accompanied by a copy of the EU declaration of conformity
+  note: The passage also requires distributors to verify the instructions for use.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-deployers
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 26(1)
+  key: 7a03ddc2f77a5743bb2439fcdebb95b8
+  spans:
+  - start: 487775
+    end: 488081
+  verdict: supported
+  quote: Deployers of high-risk AI systems shall take appropriate technical and organisational measures
+  note: Article 26(1) ties those measures to use in accordance with the accompanying instructions.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-fria
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 27(1)
+  key: b33a0d973fbab12a1064b683f516ce08
+  spans:
+  - start: 496510
+    end: 500577
+  verdict: unsupported
+  quote: with the exception of high-risk AI systems intended to be used in the area listed in point 2 of Annex III
+  note: The claim omits this exception and should limit the duty to the specified Article 6(2) systems.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-literacy-original
+  work: eu-2024-regulation-2024-1689-ai-act
+  locator: Article 4
+  key: 7f81537669f658712aa3d7d33c3e45c0
+  spans:
+  - start: 353894
+    end: 354753
+  verdict: supported
+  quote: shall take measures to ensure, to their best extent, a sufficient level of AI literacy of their staff
+  note: The adopted Article 4 states the claim directly.
+- slug: eu-ai-act
+  verifier: codex:gpt-6-sol
+  tag: NEW-eu-ai-act
+  claim: c-literacy-amended
+  work: eu-2026-ai-act-consolidated-text-2026-07-27
+  locator: Article 4
+  key: 80fc4d0301d121b4ca9c9550a90ef4f8
+  spans:
+  - start: 46886
+    end: 48461
+  verdict: supported
+  quote: shall take measures to support the development of AI literacy of their staff and other persons
+  note: The amended Article 4 states the claim directly.

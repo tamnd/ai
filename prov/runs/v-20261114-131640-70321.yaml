@@ -1,0 +1,184 @@
+run: v-20261114-131640-70321
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-def
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 4
+  key: 1e770ec6fe41538169bad513548d1e24
+  spans:
+  - start: 13484
+    end: 18277
+  verdict: supported
+  quote: 'manually labeled with the presence of one of
+
+    1000 object categories. Each image contains one ground
+
+    truth label.'
+  note: The passage also says algorithms produce a list of categories present in each image.
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-top5
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 15
+  key: a572afdb1ba200de390ce33b9c48f8a3
+  spans:
+  - start: 57260
+    end: 61756
+  verdict: supported
+  quote: 'An algorithm is allowed to return 5 labels ci1 , . . . ci5 ,
+
+    and is considered correct if cij = Ci for some j.'
+  note: The passage also defines algorithm error as the fraction of test images on which it makes a mistake.
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-top1
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 15
+  key: 8a18bd728dc5b3734e7cb476ea19b797
+  spans:
+  - start: 57260
+    end: 61756
+  verdict: supported
+  quote: 'algorithms were penalized if their highest-confidence output label ci1 did
+
+    not match ground truth class Ci .'
+  note: This directly states the top-1 error condition.
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-features
+  work: russakovsky-2015-imagenet-large-scale
+  locator: pp. 17 to 18
+  key: 10bd03689616e0c91d6f7580293f736a
+  spans:
+  - start: 63227
+    end: 73211
+  verdict: supported
+  quote: 'The winning entry from
+
+    NEC team (Lin et al., 2011) used SIFT (Lowe, 2004)
+
+    and LBP (Ahonen et al., 2006) features'
+  note: The continuation of the 2010 entry says it also used a stochastic SVM.
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-fisher
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 18
+  key: 691a037e4f522d10d4d921ba2732b15e
+  spans:
+  - start: 67917
+    end: 73211
+  verdict: supported
+  quote: classification went to the ISI team, which used Fisher
+  note: In the ILSVRC2012 paragraph, this describes second place in image classification and continues with “vectors.”
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-googlenet
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 18
+  key: 285bfccaeb78f49d61cfc5dee61d809c
+  spans:
+  - start: 67917
+    end: 73211
+  verdict: supported
+  quote: 'multi-scale idea with intuitions gained from the Heb-
+
+    bian principle. Additional dimension reduction layers'
+  note: The 2014 paragraph attributes this architecture and its dimension reduction layers to GoogLeNet, the winner with provided
+    data.
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-fine
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 15
+  key: 79c4f2471695162ccc7dd618d4305069
+  spans:
+  - start: 57260
+    end: 61756
+  verdict: supported
+  quote: 'confusing two
+
+    nearby classes (such as two different breeds of dogs) is
+
+    not as harmful as confusing a dog for a container ship.'
+  note: The passage explicitly gives this as the intuition behind hierarchical error.
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-errors
+  work: northcutt-2021-pervasive-label-errors
+  locator: p. 2
+  key: 1971675ee5b25c7176b853dc76b429a5
+  spans:
+  - start: 3300
+    end: 6847
+  verdict: supported
+  quote: 'We identify, for example, 2916 (6%) errors in the ImageNet validation
+
+    set'
+  note: The passage gives the count and percentage after describing confident learning and human validation.
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-breakthrough
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 22
+  key: 40ec8176f3eec3640e4df618842cc6ba
+  spans:
+  - start: 88004
+    end: 93119
+  verdict: supported
+  quote: 'with an efficient algorithmic implementation and GPU
+
+    computing resources) it became possible to learn neural
+
+    networks directly from the image data'
+  note: The passage also describes the 2012 SuperVision win as the breakthrough and says all top contestants relied heavily
+    on convolutional neural networks by 2014.
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-reduction
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 22
+  key: 7d82e2787a46bd5e86802387a2c4ed62
+  spans:
+  - start: 88004
+    end: 93119
+  verdict: supported
+  quote: 'The dataset has not changed
+
+    since 2012, and there has been a 2.4x reduction in image
+
+    classification error (from 16.4% to 6.7%)'
+  note: The preceding sentence limits this comparison to teams using the provided training data.
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-human
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 31
+  key: be13d2061bb896525108efe4e89c6f66
+  spans:
+  - start: 122202
+    end: 126993
+  verdict: supported
+  quote: 'Annotator A1 evaluated a total of 1500
+
+    test set images. The GoogLeNet classification error on
+
+    this sample was estimated to be 6.8%'
+  note: The passage also estimates A1’s human error at 5.1%, and Table 9 identifies the measure as top-5 error.

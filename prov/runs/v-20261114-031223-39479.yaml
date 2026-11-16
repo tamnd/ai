@@ -1,0 +1,558 @@
+run: v-20261114-031223-39479
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-broad
+  work: bahri-2024-explaining-neural-scaling-laws
+  locator: the abstract
+  key: 2eb153347acfe0d6ecb26a193f59e927
+  spans:
+  - start: 363
+    end: 5560
+  verdict: supported
+  quote: The population loss of trained deep neural networks often follows precise power-law scaling relations with either
+    the size of the training dataset or the number of parameters
+  note: The passage states the claimed relationship and describes tests on the model types in scope.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-power-law
+  work: kaplan-2020-scaling-laws
+  locator: the abstract, p. 7
+  key: f267c710fa4065f7a889174df53ce1f7
+  spans:
+  - start: 513
+    end: 1710
+  - start: 16828
+    end: 20102
+  verdict: supported
+  quote: The loss scales as a power-law with model size, dataset size, and the amount of compute used for training, with some
+    trends spanning more than seven orders of magnitude.
+  note: The passage also identifies the cross-entropy metric and the Transformer training setting.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-alpha-n
+  work: kaplan-2020-scaling-laws
+  locator: Equation 1.1, p. 7
+  key: 90b96a2e892eb78f0943fc6a27478da9
+  spans:
+  - start: 8339
+    end: 9695
+  - start: 16828
+    end: 20102
+  verdict: supported
+  quote: 'For models with a limited number of parameters, trained to convergence on sufficiently large datasets:'
+  note: Equation 1.1 gives the claimed power law and αN of about 0.076.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-alpha-d
+  work: kaplan-2020-scaling-laws
+  locator: Equation 1.2, p. 7
+  key: dffa2287ad4c641d888d40b203e342a1
+  spans:
+  - start: 8486
+    end: 9695
+  - start: 16828
+    end: 20102
+  verdict: supported
+  quote: 'For large models trained with a limited dataset with early stopping:'
+  note: Equation 1.2 gives the claimed dataset-size power law and αD of about 0.095.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-alpha-c
+  work: kaplan-2020-scaling-laws
+  locator: Equation 1.3, p. 7
+  key: c4b13fe8c2e2cdbb05a2ef3c6c576f2b
+  spans:
+  - start: 8754
+    end: 9695
+  - start: 16828
+    end: 20102
+  verdict: supported
+  quote: When training with a limited amount of compute, a sufficiently large dataset, an optimally-sized model, and a sufficiently
+    small batch size
+  note: Equation 1.3 gives the power law, exponent of about 0.050 and PF-day units.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-doubling
+  work: kaplan-2020-scaling-laws
+  locator: p. 5
+  key: a33bf3b0dcb69df0a79373e694c54e11
+  spans:
+  - start: 9695
+    end: 13064
+  verdict: supported
+  quote: doubling the number of parameters yields a loss that is smaller by a factor 2−αN = 0.95. The precise numerical values
+    of Nc , Ccmin , and Dc depend on the vocabulary size and tokenization
+  note: The passage states both parts of the claim.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-shape
+  work: kaplan-2020-scaling-laws
+  locator: the abstract
+  key: 43a4ba933fe8f3fddd54ccc9089015a9
+  spans:
+  - start: 513
+    end: 1710
+  verdict: supported
+  quote: Other architectural details such as network width or depth have minimal effects within a wide range.
+  note: The claim repeats the passage's qualified finding.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-hestness-domains
+  work: hestness-2017-deep-learning-scaling-predictable
+  locator: the abstract
+  key: f4b1758084b353f5e59f589038f3154a
+  spans:
+  - start: 0
+    end: 1848
+  verdict: supported
+  quote: Our empirical results show power-law generalization error scaling across a breadth of factors
+  note: The passage names all four domains and reports power-law generalization-error scaling.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-hestness-shift
+  work: hestness-2017-deep-learning-scaling-predictable
+  locator: the abstract
+  key: 3dfb55859014bf771786ecf9ff7874c4
+  spans:
+  - start: 0
+    end: 1848
+  verdict: supported
+  quote: model improvements only shift the error but do not appear to affect the power-law exponent. We also show that model
+    size scales sublinearly with data size.
+  note: Both findings appear directly in the passage, including the qualification about the exponent.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-hestness-range
+  work: hestness-2017-deep-learning-scaling-predictable
+  locator: p. 2
+  key: a5536c54e984f6688d438cec4e4afb38
+  spans:
+  - start: 3616
+    end: 8198
+  verdict: supported
+  quote: in real applications, we find empirically that βg usually settles between −0.07 and −0.35
+  note: The passage also gives −0.5 and −1 as exponents predicted by prior theoretical studies.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-henighan
+  work: henighan-2020-scaling-laws-autoregressive-generative
+  locator: the abstract
+  key: b1b7f920bfa1e7c5c6d30ca250a87499
+  spans:
+  - start: 382
+    end: 2372
+  verdict: supported
+  quote: In all cases autoregressive Transformers smoothly improve in performance as model size and compute budgets increase,
+    following a power-law plus constant scaling law.
+  note: The preceding sentence identifies the four claimed domains and cross-entropy loss.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-henighan-optimal-size
+  work: henighan-2020-scaling-laws-autoregressive-generative
+  locator: the abstract
+  key: d4f3e493afc25f9c33533d0c47558120
+  spans:
+  - start: 382
+    end: 2372
+  verdict: supported
+  quote: The optimal model size also depends on the compute budget through a power-law, with exponents that are nearly universal
+    across all data domains.
+  note: The passage states the claim directly.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-zhai
+  work: zhai-2022-scaling-vision-transformers
+  locator: the abstract
+  key: f92f5a78048ea508c75f6555765b9053
+  spans:
+  - start: 137
+    end: 1299
+  verdict: supported
+  quote: we scale ViT models and data, both up and down, and characterize the relationships between error rate, data, and
+    compute.
+  note: The passage states the characterization and reports training a two-billion-parameter ViT.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-vit-g
+  work: zhai-2022-scaling-vision-transformers
+  locator: the abstract
+  key: e5c55d8b0a70b4b93270fa51e357a4df
+  spans:
+  - start: 137
+    end: 1299
+  verdict: supported
+  quote: a ViT model with two billion parameters, which attains a new state-of-the-art on ImageNet of 90.45% top-1 accuracy.
+  note: The model size, benchmark and accuracy match the claim.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-equal-scaling
+  work: hoffmann-2022-training-compute-optimal
+  locator: the abstract
+  key: b8ca852e3b9bdc00301c8b9c27db3c0a
+  spans:
+  - start: 0
+    end: 1761
+  verdict: supported
+  quote: for every doubling of model size the number of training tokens should also be doubled.
+  note: The passage attributes this compute-optimal finding to training over 400 models across the claimed ranges.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-three-approaches
+  work: hoffmann-2022-training-compute-optimal
+  locator: p. 8
+  key: 2a367b5dbc651c6a15ee395c3cd71a58
+  spans:
+  - start: 23982
+    end: 26972
+  verdict: supported
+  quote: '0.50 (0.488, 0.502)
+
+    0.49 (0.462, 0.534)
+
+    0.46 (0.454, 0.455)'
+  note: Table 2 assigns these values to the three approaches and lists 0.73 for Kaplan et al.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-parametric
+  work: hoffmann-2022-training-compute-optimal
+  locator: p. 25
+  key: 795764b6be0ea138ef139bb9ee1eddee
+  spans:
+  - start: 74625
+    end: 78317
+  verdict: supported
+  quote: with 𝐸 = 1.69, 𝐴 = 406.4, 𝐵 = 410.7.
+  note: The adjacent displayed equation gives the claimed exponents of 0.34 and 0.28.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-besiroglu
+  work: besiroglu-2024-chinchilla-scaling-replication
+  locator: the abstract
+  key: 4d52afb24d649bbbf4a0270bdb5c37a7
+  spans:
+  - start: 160
+    end: 3267
+  verdict: supported
+  quote: our estimated model differs substantially from the fit reported in Hoffmann et al., and that their fit fails to adequately
+    describe the reconstructed data.
+  note: The passage also says the reported fit is inconsistent with scaling policies from the other approaches.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-equal-replicated
+  work: besiroglu-2024-chinchilla-scaling-replication
+  locator: the abstract
+  key: c99f294910cc3d8db01ca0f9f5c788fc
+  spans:
+  - start: 160
+    end: 3267
+  verdict: supported
+  quote: has been replicated by others, such as Anil et al. (2023). Similarly, Bi et al. (2024) find that training tokens
+    and model parameters should be scaled roughly proportionally
+  note: The following words qualify Bi et al.'s result by data quality, as the claim says.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-breakdown
+  work: kaplan-2020-scaling-laws
+  locator: p. 17
+  key: 291081cd6bfd876bc13e667dfed6200d
+  spans:
+  - start: 48032
+    end: 51383
+  verdict: supported
+  quote: Far beyond the model sizes we study empirically, we find a contradiction between our equations for L(Cmin ) and L(D)
+  note: The passage says the authors expect their predictions to break down before the intersection.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-three-regions
+  work: hestness-2017-deep-learning-scaling-predictable
+  locator: p. 2
+  key: 3e4fc4ab7e7e05c930deab4fdb4a1789
+  spans:
+  - start: 3616
+    end: 8198
+  verdict: supported
+  quote: models transition from a small training set region dominated by best guessing to a region dominated by power-law
+    scaling.
+  note: The next sentence states that sufficiently large training sets lead to saturation dominated by irreducible error.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-pearce
+  work: pearce-2024-reconciling-kaplan-chinchilla
+  locator: the abstract
+  key: 8f6ef4e0f468c8a87575dcaa7288b95e
+  spans:
+  - start: 275
+    end: 1897
+  verdict: supported
+  quote: much of this discrepancy can be attributed to Kaplan counting non-embedding rather than total parameters, combined
+    with their analysis being performed at small scale.
+  note: The passage identifies the two exponents and the stated explanation for their discrepancy.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-porian
+  work: porian-2024-resolving-discrepancies-compute-optimal
+  locator: the abstract
+  key: 57b5ba5b427ff5d2ffbbc90ea3f61878
+  spans:
+  - start: 202
+    end: 1119
+  verdict: supported
+  quote: 'identifying three factors causing the difference: last layer computational cost, warmup duration, and scale-dependent
+    optimizer tuning.'
+  note: The passage names both datasets and reports excellent agreement after correcting these factors.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-lr-decay
+  work: porian-2024-resolving-discrepancies-compute-optimal
+  locator: the abstract
+  key: a8152214ab0b35345ffe91abe33ed55c
+  spans:
+  - start: 202
+    end: 1119
+  verdict: supported
+  quote: we find that careful learning rate decay is not essential for the validity of their scaling law.
+  note: In context, “their scaling law” refers to Hoffmann et al.'s Chinchilla law.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-repeat
+  work: muennighoff-2023-scaling-data-constrained
+  locator: the abstract
+  key: 3dd18a252fe5c9b777efe99bb343a84e
+  spans:
+  - start: 261
+    end: 1594
+  verdict: supported
+  quote: training with up to 4 epochs of repeated data yields negligible changes to loss compared to having unique data. However,
+    with more repetition, the value of adding compute eventually decays to zero.
+  note: The passage states both findings under constrained data and a fixed compute budget.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-pruning
+  work: sorscher-2022-beyond-neural-scaling-laws
+  locator: the abstract
+  key: 6fa035f80608a2342a184c5f3b099117
+  spans:
+  - start: 352
+    end: 1886
+  verdict: supported
+  quote: observe better than power law scaling in practice on ResNets trained on CIFAR-10, SVHN, and ImageNet.
+  note: The passage also describes the theoretical result conditional on a high-quality pruning metric.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-bnsl
+  work: caballero-2023-broken-neural-scaling-laws
+  locator: the abstract
+  key: cc2cd9d247461b64c20c7061be55200a
+  spans:
+  - start: 0
+    end: 2316
+  verdict: supported
+  quote: this functional form yields extrapolations of scaling behavior that are considerably more accurate on this set.
+  note: The passage also says it models double descent and sharp inflection points in tasks such as arithmetic.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-emergent-def
+  work: wei-2022-emergent-abilities
+  locator: the abstract
+  key: cf423d41bdbe0f2b746d608541d45020
+  spans:
+  - start: 856
+    end: 14281
+  verdict: supported
+  quote: We consider an ability to be emergent if it is not present in smaller models but is present in larger models.
+  note: The next sentence gives the claimed consequence for extrapolation.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-mirage
+  work: schaeffer-2023-emergent-abilities-mirage
+  locator: the abstract
+  key: e37fecc02e797adb13f3a52b9494fbd7
+  spans:
+  - start: 189
+    end: 1787
+  verdict: supported
+  quote: nonlinear or discontinuous metrics produce apparent emergent abilities, whereas linear or continuous metrics produce
+    smooth, continuous, predictable changes in model performance.
+  note: The passage frames this result for a particular task and model family using fixed model outputs.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-manifold
+  work: sharma-2020-neural-scaling-law-data-manifold
+  locator: the abstract
+  key: d6f93d8424bfb2ccdd3e78b2bc4f6814
+  spans:
+  - start: 226
+    end: 1125
+  verdict: supported
+  quote: This simple theory predicts that the scaling exponents α ≈ 4/d for cross-entropy and mean-squared error losses.
+  note: The passage identifies the data-manifold theory and all three claimed test settings.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-four-regimes
+  work: bahri-2024-explaining-neural-scaling-laws
+  locator: the abstract
+  key: 16461d5f69cba202c0e877fbcc0f5169
+  spans:
+  - start: 363
+    end: 5560
+  verdict: supported
+  quote: We identify variance-limited and resolution-limited scaling behavior for both dataset and model size, for a total
+    of four scaling regimes.
+  note: The passage also explains the resolution-limited regime through a smooth data manifold.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-kaplan-allocation
+  work: kaplan-2020-scaling-laws
+  locator: the abstract
+  key: 2d560a70e1e5380b2cb045ee98c4bec8
+  spans:
+  - start: 513
+    end: 1710
+  verdict: supported
+  quote: optimally compute-efficient training involves training very large models on a relatively modest amount of data and
+    stopping significantly before convergence.
+  note: The attributed conclusion appears directly in the passage.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-undertrained
+  work: hoffmann-2022-training-compute-optimal
+  locator: the abstract
+  key: 7dcb7f0e31d4ddc857088b9710496d3f
+  spans:
+  - start: 0
+    end: 1761
+  verdict: supported
+  quote: current large language models are significantly undertrained, a consequence of the recent focus on scaling language
+    models whilst keeping the amount of training data constant.
+  note: The attributed finding appears directly in the passage.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-chinchilla
+  work: hoffmann-2022-training-compute-optimal
+  locator: the abstract, p. 2
+  key: a0fc6edbd1954b7e4d48f596669ca302
+  spans:
+  - start: 0
+    end: 1761
+  - start: 3976
+    end: 6992
+  verdict: supported
+  quote: Chinchilla uniformly and significantly outperforms Gopher (280B), GPT-3 (175B), Jurassic-1 (178B), and Megatron-Turing
+    NLG (530B) on a large range of downstream evaluation tasks.
+  note: The passage also gives Chinchilla's 70B size, 1.4 trillion training tokens and matched Gopher compute budget.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-mmlu
+  work: hoffmann-2022-training-compute-optimal
+  locator: the abstract
+  key: 1b0fb1f46f1a57d4fa64648f0c8ea900
+  spans:
+  - start: 0
+    end: 1761
+  verdict: supported
+  quote: Chinchilla reaches a state-of-the-art average accuracy of 67.5% on the MMLU benchmark, greater than a 7% improvement
+    over Gopher.
+  note: The passage states the claimed result directly.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-hestness-uses
+  work: hestness-2017-deep-learning-scaling-predictable
+  locator: the abstract
+  key: df1efbcc7b3ec7a1d28f3ab7148e47ce
+  spans:
+  - start: 0
+    end: 1848
+  verdict: supported
+  quote: They can assist model debugging, setting accuracy targets, and decisions about data set growth. They can also guide
+    computing system design
+  note: The passage attributes these proposed uses to the scaling relationships.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-hist-2017
+  work: hestness-2017-deep-learning-scaling-predictable
+  locator: the title page
+  key: 13f70c9e44053c2377ddce01e6d5334d
+  spans:
+  - start: 0
+    end: 3616
+  verdict: supported
+  quote: 'arXiv:1712.00409v1 [cs.LG] 1 Dec 2017
+
+
+    Baidu Research'
+  note: The title and author list on the same page establish the remaining historical details.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-hist-2020
+  work: kaplan-2020-scaling-laws
+  locator: the title page
+  key: f226169cc3ad47c3975d42f3e2d88cd5
+  spans:
+  - start: 0
+    end: 1701
+  verdict: supported
+  quote: 'arXiv:2001.08361v1 [cs.LG] 23 Jan 2020
+
+
+    Scaling Laws for Neural Language Models'
+  note: The title page lists Kaplan and coauthors with OpenAI and Johns Hopkins University affiliations.
+- slug: neural-scaling-laws
+  verifier: codex:gpt-6-sol
+  tag: NEW-neural-scaling-laws
+  claim: c-hist-2022
+  work: hoffmann-2022-training-compute-optimal
+  locator: the title page
+  key: 1cfa5ab305d8d2e0a2ea14f58abbb648
+  spans:
+  - start: 0
+    end: 3976
+  verdict: supported
+  quote: 'Training Compute-Optimal Large Language Models
+
+    Jordan Hoffmann★, Sebastian Borgeaud★, Arthur Mensch★'
+  note: The title page gives arXiv 2203.15556v1 dated 29 Mar 2022 and identifies DeepMind through its contact and copyright
+    details.
