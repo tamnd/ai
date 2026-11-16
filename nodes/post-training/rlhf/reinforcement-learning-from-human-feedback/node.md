@@ -1,5 +1,5 @@
 ---
-tag: NEW-reinforcement-learning-from-human-feedback
+tag: 6XVY3X
 kind: method
 slug: reinforcement-learning-from-human-feedback
 name: Reinforcement learning from human feedback
