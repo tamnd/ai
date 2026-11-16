@@ -1,5 +1,5 @@
 ---
-tag: NEW-label-smoothing
+tag: 98TJG9
 kind: method
 slug: label-smoothing
 name: Label smoothing
