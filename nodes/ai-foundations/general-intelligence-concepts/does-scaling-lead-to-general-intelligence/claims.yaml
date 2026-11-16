@@ -1,0 +1,678 @@
+# The claims of the does-scaling-lead-to-general-intelligence page (spec 07). The build computes the labels.
+
+# The question: terms and definitions
+
+- id: c-power-law
+  type: empirical
+  text: "For Transformer language models, the cross-entropy loss scales as a power law with model size, dataset size and the amount of compute used for training, with some trends spanning more than seven orders of magnitude."
+  scope:
+    models: "decoder-only Transformer language models"
+    data: [webtext2]
+    scale: "768 to 1.5 billion non-embedding parameters; 22 million to 23 billion tokens"
+    setting: "autoregressive language modeling, cross-entropy loss"
+  evidence:
+    - {work: "kaplan-2020-scaling-laws", role: original, locator: "the abstract, p. 7", stance: for}
+
+- id: c-def-chollet
+  type: attributive
+  text: "Chollet defines the intelligence of a system as a measure of its skill-acquisition efficiency over a scope of tasks, with respect to priors, experience and generalization difficulty."
+  evidence:
+    - {work: "chollet-2019-measure-of-intelligence", role: original, locator: "p. 27", stance: for}
+
+- id: c-def-legg
+  type: attributive
+  text: "Legg and Hutter adopt the informal definition that intelligence measures an agent's ability to achieve goals in a wide range of environments."
+  evidence:
+    - {work: "legg-2007-collection-definitions-intelligence", role: original, locator: "p. 9", stance: for}
+
+- id: c-def-collection
+  type: attributive
+  text: "Legg and Hutter present a collection of 70-odd informal definitions of intelligence, which they call the largest and most well referenced collection they know of."
+  evidence:
+    - {work: "legg-2007-collection-definitions-intelligence", role: original, locator: "the abstract", stance: for}
+
+- id: c-def-openai
+  type: attributive
+  text: "Morris et al. report that the OpenAI charter defines AGI as highly autonomous systems that outperform humans at most economically valuable work."
+  evidence:
+    - {work: "morris-2024-levels-of-agi", role: original, locator: "Section 2", stance: for}
+
+- id: c-def-marcus
+  type: attributive
+  text: "Morris et al. quote Marcus's description of AGI as any intelligence that is flexible and general, with resourcefulness and reliability comparable to or beyond human intelligence."
+  evidence:
+    - {work: "morris-2024-levels-of-agi", role: original, locator: "Section 2", stance: for}
+
+- id: c-def-levels
+  type: attributive
+  text: "Morris et al. propose levels of AGI by performance and generality, in which a Competent AGI performs at least at the 50th percentile of skilled adult humans on most cognitive tasks."
+  evidence:
+    - {work: "morris-2024-levels-of-agi", role: original, locator: "Section 3", stance: for}
+
+- id: c-def-emerging
+  type: attributive
+  text: "Morris et al. posit that, as of September 2023, frontier language models such as ChatGPT, Bard and Llama 2 would be considered Level 1 general AI, which they call Emerging AGI."
+  evidence:
+    - {work: "morris-2024-levels-of-agi", role: original, locator: "Section 3", stance: for}
+
+# Why it matters
+
+- id: c-why-morris
+  type: attributive
+  text: "Morris et al. argue that the concept of AGI is important because it maps onto goals for, predictions about, and risks of AI."
+  evidence:
+    - {work: "morris-2024-levels-of-agi", role: original, locator: "p. 1", stance: for}
+
+- id: c-why-villalobos
+  type: attributive
+  text: "Villalobos et al. study how progress in language modeling can continue when human-generated text datasets cannot be scaled any further."
+  evidence:
+    - {work: "villalobos-2024-run-out-of-data", role: original, locator: "the abstract", stance: for}
+
+# Position: scaling current methods is the main route
+
+- id: c-gwern-hypothesis
+  type: attributive
+  text: "Branwen states the scaling hypothesis as the view that intelligence is simple neural units and learning algorithms applied to diverse experiences at a currently unreachable scale."
+  evidence:
+    - {work: "gwern-2020-scaling-hypothesis", role: original, locator: "p. 1", stance: for}
+
+- id: c-gwern-more
+  type: attributive
+  text: "Branwen writes that, on the scaling hypothesis, as increasing computational resources permit running such algorithms at the necessary scale, neural networks will get ever more intelligent."
+  evidence:
+    - {work: "gwern-2020-scaling-hypothesis", role: original, locator: "p. 1", stance: for}
+
+- id: c-gwern-blessings
+  type: attributive
+  text: "Branwen reads the meta-learning of GPT-3 as a demonstration of the blessings of scale, in which simple neural networks become more generalizable and more human-like when made very large and trained on very large datasets with very large compute."
+  evidence:
+    - {work: "gwern-2020-scaling-hypothesis", role: original, locator: "p. 1", stance: for}
+
+- id: c-sutton-lesson
+  type: attributive
+  text: "Sutton writes that the biggest lesson that can be read from 70 years of AI research is that general methods that leverage computation are ultimately the most effective, by a large margin."
+  evidence:
+    - {work: "sutton-2019-bitter-lesson", role: original, locator: "p. 1", stance: for}
+
+- id: c-sutton-search-learning
+  type: attributive
+  text: "Sutton names search and learning as the two methods that seem to scale arbitrarily with increased computation."
+  evidence:
+    - {work: "sutton-2019-bitter-lesson", role: original, locator: "p. 1", stance: for}
+
+- id: c-sutton-chess
+  type: attributive
+  text: "Sutton cites computer chess, where the methods that defeated the world champion Kasparov in 1997 were based on massive, deep search, and computer Go, where efforts to avoid search proved irrelevant once search was applied effectively at scale."
+  evidence:
+    - {work: "sutton-2019-bitter-lesson", role: original, locator: "p. 1", stance: for}
+
+- id: c-sutton-meta
+  type: attributive
+  text: "Sutton argues that the contents of minds are irredeemably complex, so researchers should build in only the meta-methods that can find and capture this complexity."
+  evidence:
+    - {work: "sutton-2019-bitter-lesson", role: original, locator: "p. 1", stance: for}
+
+- id: c-noema-already
+  type: attributive
+  text: "Agüera y Arcas and Norvig argue that the most important parts of artificial general intelligence have already been achieved by the current generation of advanced large language models."
+  evidence:
+    - {work: "aguera-y-arcas-2023-agi-already-here", role: original, locator: "p. 1", stance: for}
+
+- id: c-noema-novel
+  type: attributive
+  text: "Agüera y Arcas and Norvig write that frontier models perform competently even on novel tasks they were not trained for."
+  evidence:
+    - {work: "aguera-y-arcas-2023-agi-already-here", role: original, locator: "p. 1", stance: for}
+
+- id: c-bubeck-agi
+  type: attributive
+  text: "Bubeck et al. argue that GPT-4, trained using an unprecedented scale of compute and data, could reasonably be viewed as an early, yet still incomplete, version of an AGI system."
+  evidence:
+    - {work: "bubeck-2023-sparks-agi", role: original, locator: "the abstract", stance: for}
+
+- id: c-bubeck-paradigm
+  type: attributive
+  text: "Bubeck et al. also discuss the possible need for pursuing a new paradigm that moves beyond next-word prediction."
+  evidence:
+    - {work: "bubeck-2023-sparks-agi", role: original, locator: "the abstract", stance: for}
+
+- id: c-brown-fewshot
+  type: empirical
+  text: "Scaling up language models greatly improves task-agnostic, few-shot performance, sometimes reaching competitiveness with prior fine-tuning approaches, for GPT-3, an autoregressive language model with 175 billion parameters."
+  scope:
+    models: "GPT-3 and smaller models of the same family"
+    data: [unknown]
+    scale: "up to 175 billion parameters"
+    setting: "few-shot learning from demonstrations given as text, without gradient updates"
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "the abstract", stance: for}
+
+- id: c-emergent-def
+  type: attributive
+  text: "Wei et al. consider an ability to be emergent if it is not present in smaller models but is present in larger models, so that it cannot be predicted by extrapolating the performance of smaller models."
+  evidence:
+    - {work: "wei-2022-emergent-abilities", role: original, locator: "the abstract", stance: for}
+
+- id: c-wei-question
+  type: attributive
+  text: "Wei et al. write that emergence raises the question of whether further scaling could potentially endow even larger language models with new emergent abilities."
+  evidence:
+    - {work: "wei-2022-emergent-abilities", role: original, locator: "p. 6", stance: for}
+
+- id: c-wei-beyond
+  type: attributive
+  text: "Wei et al. also write that new architectures, higher-quality data or improved training procedures may unlock abilities in smaller models, and that other approaches beyond scaling will likely play a key role."
+  evidence:
+    - {work: "wei-2022-emergent-abilities", role: original, locator: "Section 5.2, p. 10", stance: for}
+
+- id: c-altmeyer
+  type: attributive
+  text: "Altmeyer et al. argue and empirically demonstrate that the finding of meaningful patterns in the latent spaces of models cannot be seen as evidence in favor of AGI."
+  evidence:
+    - {work: "altmeyer-2024-stop-unscientific-agi-claims", role: original, locator: "the abstract", stance: for}
+
+- id: c-mitchell-fallacy
+  type: attributive
+  text: "Mitchell names as a first fallacy the assumption that narrow intelligence is on a continuum with general intelligence, under which advances on a specific AI task are described as a first step towards more general AI."
+  evidence:
+    - {work: "mitchell-2021-why-ai-harder", role: original, locator: "pp. 3 to 4", stance: for}
+
+- id: c-chollet-buy
+  type: attributive
+  text: "Chollet argues that unlimited priors or unlimited training data allow experimenters to buy arbitrary levels of skill for a system, in a way that masks the system's own generalization power."
+  evidence:
+    - {work: "chollet-2019-measure-of-intelligence", role: original, locator: "the abstract", stance: for}
+
+- id: c-chollet-moredata
+  type: attributive
+  text: "Chollet argues that adding more training data can augment skill in a specific vertical or task without affecting generalization whatsoever."
+  evidence:
+    - {work: "chollet-2019-measure-of-intelligence", role: original, locator: "p. 19", stance: for}
+
+- id: c-mirage
+  type: empirical
+  text: "For a fixed task and model family, nonlinear or discontinuous metrics produce apparent emergent abilities, whereas linear or continuous metrics produce smooth, continuous, predictable changes in model performance."
+  scope:
+    models: "the InstructGPT/GPT-3 family and multiple vision networks"
+    data: [big-bench]
+    scale: "unknown"
+    setting: "analysis of fixed model outputs under different metrics"
+  evidence:
+    - {work: "schaeffer-2023-emergent-abilities-mirage", role: original, locator: "the abstract", stance: for}
+
+# Position: scaling together with other methods
+
+- id: c-silver-imitation
+  type: attributive
+  text: "Silver and Sutton argue that imitating humans is enough to reproduce many human capabilities to a competent level, but that this approach in isolation has not and likely cannot achieve superhuman intelligence across many important topics and tasks."
+  evidence:
+    - {work: "silver-2025-era-of-experience", role: original, locator: "p. 1", stance: for}
+
+- id: c-silver-limit
+  type: attributive
+  text: "Silver and Sutton write that in key domains such as mathematics, coding and science, the knowledge extracted from human data is rapidly approaching a limit."
+  evidence:
+    - {work: "silver-2025-era-of-experience", role: original, locator: "p. 1", stance: for}
+
+- id: c-silver-experience
+  type: attributive
+  text: "Silver and Sutton argue that agents should learn continually from their own experience, data generated by the agent interacting with its environment, and that experience will become the dominant medium of improvement."
+  evidence:
+    - {work: "silver-2025-era-of-experience", role: original, locator: "p. 1", stance: for}
+
+- id: c-snell-motivation
+  type: attributive
+  text: "Snell et al. describe enabling LLMs to improve their outputs by using more test-time computation as a critical step towards building generally self-improving agents."
+  evidence:
+    - {work: "snell-2024-scaling-test-time-compute", role: original, locator: "the abstract", stance: for}
+
+- id: c-snell-4x
+  type: empirical
+  text: "A compute-optimal strategy that allocates test-time compute adaptively per prompt improves the efficiency of test-time compute scaling by more than 4x compared with a best-of-N baseline."
+  scope:
+    models: "PaLM 2-S* (Codey) base model"
+    data: [math]
+    scale: "one model; test-time compute budgets varied"
+    setting: "search against process-based verifier reward models and sequential revisions on MATH"
+  evidence:
+    - {work: "snell-2024-scaling-test-time-compute", role: original, locator: "the abstract, Section 4", stance: for}
+
+- id: c-snell-14x
+  type: empirical
+  text: "In a FLOPs-matched evaluation, on problems where a smaller base model attains somewhat non-trivial success rates, test-time compute can be used to outperform a 14x larger model."
+  scope:
+    models: "PaLM 2-S* (Codey) base model, against a model with about 14 times more parameters"
+    data: [math]
+    scale: "FLOPs-matched comparison of pretraining and test-time compute"
+    setting: "MATH benchmark, compute-optimal test-time scaling"
+  evidence:
+    - {work: "snell-2024-scaling-test-time-compute", role: original, locator: "the abstract, Section 4", stance: for}
+
+- id: c-snell-hard
+  type: empirical
+  text: "Test-time and pretraining compute are not 1-to-1 exchangeable: on challenging questions outside a base model's capabilities, or under higher inference requirement, pretraining is likely more effective for improving performance."
+  scope:
+    models: "PaLM 2-S* (Codey) base model"
+    data: [math]
+    scale: "FLOPs-matched comparison of pretraining and test-time compute"
+    setting: "MATH benchmark, questions binned by difficulty"
+  evidence:
+    - {work: "snell-2024-scaling-test-time-compute", role: original, locator: "Section 7", stance: for}
+
+- id: c-r1-rl
+  type: empirical
+  text: "The reasoning abilities of LLMs can be incentivized through pure reinforcement learning, without human-labeled reasoning trajectories, and the trained model surpasses counterparts trained by supervised learning on human demonstrations on verifiable tasks such as mathematics and coding competitions."
+  scope:
+    models: "DeepSeek-R1-Zero and DeepSeek-R1, built on DeepSeek-V3-Base"
+    data: [unknown]
+    scale: "unknown"
+    setting: "reinforcement learning with rewards from verifiable answers"
+  self_reported: true
+  evidence:
+    - {work: "deepseek-2025-r1", role: original, locator: "the abstract", stance: for}
+
+- id: c-r1-aime
+  type: empirical
+  text: "During reinforcement learning, the average pass@1 score of DeepSeek-R1-Zero on AIME 2024 rose from an initial 15.6% to 77.9%."
+  scope:
+    models: "DeepSeek-R1-Zero, built on DeepSeek-V3-Base"
+    data: [aime-2024]
+    scale: "unknown"
+    setting: "reinforcement learning with a reward based only on the correctness of final answers"
+  self_reported: true
+  evidence:
+    - {work: "deepseek-2025-r1", role: original, locator: "Section 1, Section 2.3", stance: for}
+
+- id: c-r1-limit
+  type: attributive
+  text: "DeepSeek-AI write that for complex tasks that cannot be effectively evaluated by a reliable reward model, scaling up pure RL methods remains an open challenge."
+  evidence:
+    - {work: "deepseek-2025-r1", role: original, locator: "Section 6", stance: for}
+
+- id: c-arc-2024-score
+  type: empirical
+  text: "During ARC Prize 2024, the top score on the ARC-AGI private evaluation set increased from 33% to 55.5%, with techniques that include deep learning-guided program synthesis and test-time training."
+  scope:
+    models: "entries to the ARC Prize 2024 competition"
+    data: [arc-agi-1]
+    scale: "unknown"
+    setting: "ARC-AGI-1 private evaluation set, Kaggle competition of 2024"
+  evidence:
+    - {work: "chollet-2024-arc-prize-2024-report", role: original, locator: "the abstract", stance: for}
+
+- id: c-arc-greenblatt
+  type: empirical
+  text: "Ryan Greenblatt reached 42% on the ARC-AGI-Pub leaderboard with an LLM-guided program synthesis approach in which GPT-4o searches thousands of Python programs per task."
+  scope:
+    models: "GPT-4o inside a program search"
+    data: [arc-agi-1]
+    scale: "thousands of programs per task"
+    setting: "ARC-AGI-Pub leaderboard, 2024"
+  evidence:
+    - {work: "chollet-2024-arc-prize-2024-report", role: original, locator: "Section 3", stance: for}
+
+- id: c-arc-ttt
+  type: definitional
+  text: "In the test-time training of ARC Prize 2024 entries, an LLM is fine-tuned on a given ARC-AGI task specification to recombine its prior knowledge into a new model adapted to the task at hand."
+  evidence:
+    - {work: "chollet-2024-arc-prize-2024-report", role: original, locator: "Section 3", stance: for}
+
+- id: c-kambhampati-obfuscation
+  type: empirical
+  text: "GPT4 reached 30% empirical accuracy on generated plans in the Blocks World domain, and its performance fell precipitously when the names of the actions and objects in the planning problems were obfuscated."
+  scope:
+    models: "GPT-3, GPT-3.5 and GPT-4"
+    data: [blocks-world]
+    scale: "unknown"
+    setting: "plan generation for classical planning problems"
+  evidence:
+    - {work: "kambhampati-2024-llms-reason-plan", role: original, locator: "p. 2", stance: for}
+
+- id: c-kambhampati-modulo
+  type: attributive
+  text: "Kambhampati argues that LLMs generate potential answers that still need to be checked by external verifiers, and advocates LLM-Modulo frameworks that pair them with sound external verifiers."
+  evidence:
+    - {work: "kambhampati-2024-llms-reason-plan", role: original, locator: "pp. 2 to 3", stance: for}
+
+- id: c-arc2-scores
+  type: empirical
+  text: "On the ARC-AGI-2 Semi-Private Evaluation set, as of May 14, 2025, the top performing models listed score at most 3.0%, as o3 (Medium) does, against 53.0% for the same model on ARC-AGI-1."
+  scope:
+    models: "o3-mini, o3, o4-mini, o1-pro, Claude 3.7 and two ARC Prize entries"
+    data: [arc-agi-2, arc-agi-1]
+    scale: "unknown"
+    setting: "Semi-Private Evaluation sets, as of May 14, 2025"
+  evidence:
+    - {work: "chollet-2025-arc-agi-2", role: original, locator: "Section 6", stance: for}
+
+- id: c-arc2-noise
+  type: attributive
+  text: "The ARC-AGI-2 authors write that accuracies below 5% are generally not treated as meaningful, as they likely result from noise-level heuristics or incidental pattern fits."
+  evidence:
+    - {work: "chollet-2025-arc-agi-2", role: original, locator: "Section 6", stance: for}
+
+# Position: scaling is not enough
+
+- id: c-lecun-position
+  type: attributive
+  text: "LeCun describes a debate on whether human-level AI can be attained by scaling up large language model architectures, and states that he does not believe that scaling is enough, for two main reasons."
+  evidence:
+    - {work: "lecun-2022-path-autonomous-machine-intelligence", role: original, locator: "Section 8.3.1", stance: for}
+
+- id: c-lecun-tokens
+  type: attributive
+  text: "LeCun's first reason is that current models operate on tokenized data and are generative, which works well for text but is less suitable for continuous, high dimensional signals such as video."
+  evidence:
+    - {work: "lecun-2022-path-autonomous-machine-intelligence", role: original, locator: "Section 8.3.1", stance: for}
+
+- id: c-lecun-reasoning
+  type: attributive
+  text: "LeCun's second reason is that current models are only capable of very limited forms of reasoning."
+  evidence:
+    - {work: "lecun-2022-path-autonomous-machine-intelligence", role: original, locator: "Section 8.3.1", stance: for}
+
+- id: c-lecun-arch
+  type: attributive
+  text: "LeCun proposes an architecture for autonomous intelligent agents that combines a configurable predictive world model, behavior driven through intrinsic motivation, and hierarchical joint embedding architectures trained with self-supervised learning."
+  evidence:
+    - {work: "lecun-2022-path-autonomous-machine-intelligence", role: original, locator: "the abstract", stance: for}
+
+- id: c-marcus-2018
+  type: attributive
+  text: "Marcus presents ten concerns for deep learning and argues that deep learning must be supplemented by other techniques if we are to reach artificial general intelligence."
+  evidence:
+    - {work: "marcus-2018-deep-learning-critical-appraisal", role: original, locator: "the abstract", stance: for}
+
+- id: c-marcus-data
+  type: attributive
+  text: "Among his concerns, Marcus argues that deep learning thus far is data hungry, and that it is shallow and has limited capacity for transfer."
+  evidence:
+    - {work: "marcus-2018-deep-learning-critical-appraisal", role: original, locator: "pp. 6 to 7", stance: for}
+
+- id: c-marcus-2020
+  type: attributive
+  text: "Marcus contrasts an emphasis on general-purpose learning, ever-larger training sets and more compute with his proposal of a hybrid, knowledge-driven, reasoning-based approach centered around cognitive models."
+  evidence:
+    - {work: "marcus-2020-next-decade-ai", role: original, locator: "the abstract", stance: for}
+
+- id: c-chollet-local
+  type: attributive
+  text: "Chollet argues that solving any given task by leveraging unlimited priors or unlimited data does not bring us any closer to broad AI or general AI, and describes deep learning models as local-generalization systems."
+  evidence:
+    - {work: "chollet-2019-measure-of-intelligence", role: original, locator: "p. 20", stance: for}
+
+- id: c-lake-2017
+  type: attributive
+  text: "Lake et al. argue that human-like learning and thinking machines should build causal models of the world, ground learning in intuitive theories of physics and psychology, and harness compositionality and learning-to-learn."
+  evidence:
+    - {work: "lake-2017-building-machines-learn-think", role: original, locator: "the abstract", stance: for}
+
+- id: c-arc-scaling-era
+  type: attributive
+  text: "Chollet et al. write that from 2020 to early 2024 AI research was dominated by the scaling up of deep learning systems, which increased task-specific skills but did not improve the ability to tackle tasks without training data available at training time."
+  evidence:
+    - {work: "chollet-2024-arc-prize-2024-report", role: original, locator: "Section 1.2", stance: for}
+
+- id: c-arc-new-ideas
+  type: attributive
+  text: "The ARC Prize report concludes that ARC-AGI remains undefeated and that new ideas are still needed to build AGI."
+  evidence:
+    - {work: "chollet-2024-arc-prize-2024-report", role: original, locator: "Section 5", stance: for}
+
+- id: c-villalobos
+  type: forecast
+  text: "Villalobos et al. forecast that, if current LLM development trends continue, models will be trained on datasets roughly equal in size to the available stock of public human text data between 2026 and 2032, or slightly earlier if models are overtrained."
+  as_of: 2024-06-04
+  evidence:
+    - {work: "villalobos-2024-run-out-of-data", role: original, locator: "the abstract", stance: for}
+
+- id: c-villalobos-stock
+  type: forecast
+  text: "Villalobos et al. put the median year of full use of the stock at 2028, when models would be trained on dataset sizes approaching the total effective stock of text in the indexed web, around 4e14 tokens."
+  as_of: 2024-06-04
+  evidence:
+    - {work: "villalobos-2024-run-out-of-data", role: original, locator: "Fig. 1", stance: for}
+
+- id: c-villalobos-escape
+  type: attributive
+  text: "Villalobos et al. argue that synthetic data generation, transfer learning from data-rich domains and data efficiency improvements might support further progress."
+  evidence:
+    - {work: "villalobos-2024-run-out-of-data", role: original, locator: "the abstract", stance: for}
+
+- id: c-repeat
+  type: empirical
+  text: "With constrained data for a fixed compute budget, training with up to 4 epochs of repeated data yields negligible changes to loss compared to unique data, but with more repetition the value of adding compute eventually decays to zero."
+  scope:
+    models: "language models up to 9 billion parameters"
+    data: [unknown]
+    scale: "up to 900 billion training tokens and 9 billion parameters; 400 training runs"
+    setting: "data-constrained training with repeated epochs"
+  evidence:
+    - {work: "muennighoff-2023-scaling-data-constrained", role: original, locator: "the abstract", stance: for}
+
+- id: c-mckenzie
+  type: empirical
+  text: "Language models may show inverse scaling, worse task performance with increased scale, on 11 datasets collected by running a public contest, the Inverse Scaling Prize."
+  scope:
+    models: "language models of several families and sizes"
+    data: [inverse-scaling-prize]
+    scale: "unknown"
+    setting: "zero-shot and few-shot evaluation on contest tasks"
+  evidence:
+    - {work: "mckenzie-2023-inverse-scaling", role: original, locator: "the abstract", stance: for}
+
+- id: c-mckenzie-concl
+  type: attributive
+  text: "McKenzie et al. conclude that there are tasks for which increased model scale alone may not lead to progress."
+  evidence:
+    - {work: "mckenzie-2023-inverse-scaling", role: original, locator: "the abstract", stance: for}
+
+- id: c-dziri
+  type: empirical
+  text: "On multi-digit multiplication, logic grid puzzles and a dynamic programming problem, transformer LLMs solve compositional tasks by reducing multi-step compositional reasoning into linearized subgraph matching, without necessarily developing systematic problem-solving skills."
+  scope:
+    models: "transformer large language models, including ChatGPT and GPT-4"
+    data: [unknown]
+    scale: "unknown"
+    setting: "compositional tasks formulated as computation graphs"
+  evidence:
+    - {work: "dziri-2023-faith-and-fate", role: original, locator: "the abstract", stance: for}
+
+- id: c-dziri-multiplication
+  type: empirical
+  text: "Off-the-shelf ChatGPT and GPT-4 achieve only 55% and 59% accuracies on 3-digit by 3-digit multiplication."
+  scope:
+    models: "ChatGPT and GPT-4"
+    data: [unknown]
+    scale: "unknown"
+    setting: "zero-shot multiplication of two 3-digit numbers"
+  evidence:
+    - {work: "dziri-2023-faith-and-fate", role: original, locator: "Section 1", stance: for}
+
+- id: c-lake-scan
+  type: empirical
+  text: "Recurrent networks trained on SCAN with sequence-to-sequence methods make successful zero-shot generalizations when the differences between training and test commands are small, but fail when generalization requires systematic compositional skills."
+  scope:
+    models: "recurrent neural networks trained with sequence-to-sequence methods"
+    data: [scan]
+    scale: "unknown"
+    setting: "zero-shot generalization on compositional navigation commands"
+  evidence:
+    - {work: "lake-2018-generalization-without-systematicity", role: original, locator: "the abstract", stance: for}
+
+- id: c-lake-mlc
+  type: empirical
+  text: "A standard neural network trained by meta-learning for compositionality (MLC) achieves both the systematicity and the flexibility needed for human-like generalization, which none of the other six models considered achieves."
+  scope:
+    models: "a standard transformer trained with MLC, against probabilistic symbolic models and other neural networks"
+    data: [unknown]
+    scale: "unknown"
+    setting: "instruction learning tasks, compared head to head with human behavioural experiments"
+  evidence:
+    - {work: "lake-2023-human-like-systematic-generalization", role: original, locator: "the abstract", stance: for}
+
+- id: c-aaai-survey
+  type: empirical
+  text: "In the AAAI community survey of the 2025 Presidential Panel, which engaged 475 respondents, the majority of respondents (76%) assert that scaling up current AI approaches to yield AGI is unlikely or very unlikely to succeed."
+  scope:
+    models: "not applicable"
+    data: [unknown]
+    scale: "475 respondents"
+    setting: "survey of the AAAI community for the 2025 Presidential Panel report"
+  evidence:
+    - {work: "aaai-2025-future-ai-research", role: original, locator: "p. 8, p. 66", stance: for}
+
+- id: c-aaai-sample
+  type: empirical
+  text: "About 20% of the 475 survey respondents were students; 67% gave academia and 19% a corporate research environment as their main affiliation."
+  scope:
+    models: "not applicable"
+    data: [unknown]
+    scale: "475 respondents"
+    setting: "survey of the AAAI community for the 2025 Presidential Panel report"
+  evidence:
+    - {work: "aaai-2025-future-ai-research", role: original, locator: "p. 8", stance: for}
+
+# Position: the question is not well posed
+
+- id: c-blili-consensus
+  type: attributive
+  text: "Blili-Hamelin et al. argue that the popular use of the term AGI gives the illusion of a shared understanding of what AGI is, while there are vastly different opinions on what the term refers to."
+  evidence:
+    - {work: "blili-hamelin-2025-stop-treating-agi", role: original, locator: "p. 2", stance: for}
+
+- id: c-blili-goals
+  type: attributive
+  text: "Blili-Hamelin et al. argue that the AI research community should prioritize specificity in scientific, engineering and societal goals, and stop treating AGI as the north-star goal of AI research."
+  evidence:
+    - {work: "blili-hamelin-2025-stop-treating-agi", role: original, locator: "the abstract", stance: for}
+
+- id: c-blili-generality
+  type: attributive
+  text: "Blili-Hamelin et al. list many different notions of generality at play in machine learning, among them the variety of tasks and whether the evaluation data was seen or unseen during training."
+  evidence:
+    - {work: "blili-hamelin-2025-stop-treating-agi", role: original, locator: "p. 5", stance: for}
+
+- id: c-raji
+  type: attributive
+  text: "Raji et al. argue that benchmarks framed as general measures of progress, due to their instantiation in particular data, metrics and practice, cannot possibly capture anything representative of the claims to general applicability made about them."
+  evidence:
+    - {work: "raji-2021-everything-whole-wide-world-benchmark", role: original, locator: "Section 1", stance: for}
+
+- id: c-legg-single
+  type: attributive
+  text: "Legg and Hutter find strong similarities between many proposed definitions of intelligence, which leads them to believe that a single general and encompassing definition for arbitrary systems is possible."
+  evidence:
+    - {work: "legg-2007-collection-definitions-intelligence", role: original, locator: "pp. 1 to 2", stance: for}
+
+# What would settle it
+
+- id: c-chollet-arc
+  type: attributive
+  text: "Chollet proposes the Abstraction and Reasoning Corpus (ARC), built on priors close to innate human priors, and argues that it can measure a human-like form of general fluid intelligence and enables fair comparisons between AI systems and humans."
+  evidence:
+    - {work: "chollet-2019-measure-of-intelligence", role: original, locator: "the abstract", stance: for}
+
+- id: c-arc2-humans
+  type: empirical
+  text: "In human testing for ARC-AGI-2, 407 unique participants in 515 sessions made 13,405 total test pair attempts, of which 8,277 (62%) were successfully solved."
+  scope:
+    models: "not applicable"
+    data: [arc-agi-2]
+    scale: "407 participants"
+    setting: "controlled human testing sessions between November 2024 and May 2025"
+  evidence:
+    - {work: "chollet-2025-arc-agi-2", role: original, locator: "Section 4.3, Section 4.1", stance: for}
+
+- id: c-arc2-selection
+  type: attributive
+  text: "A candidate ARC-AGI-2 task advanced from human testing only if at least two independent participants solved one or more of its test pairs within their first two attempts."
+  evidence:
+    - {work: "chollet-2025-arc-agi-2", role: original, locator: "Section 5", stance: for}
+
+- id: c-morris-bench
+  type: attributive
+  text: "Morris et al. discuss the challenging requirements for future benchmarks that quantify the behavior and capabilities of AGI models against their levels."
+  evidence:
+    - {work: "morris-2024-levels-of-agi", role: original, locator: "the abstract", stance: for}
+
+- id: c-marcus-tasks
+  type: attributive
+  text: "Morris et al. report that Marcus proposes five tasks to gauge success, among them understanding a movie or a novel, cooking in an arbitrary kitchen and writing a bug-free 10,000 line program."
+  evidence:
+    - {work: "morris-2024-levels-of-agi", role: original, locator: "Section 2", stance: for}
+
+- id: c-breakdown
+  type: attributive
+  text: "Kaplan et al. find that far beyond the model sizes they study, their equations for L(C_min) and L(D) contradict each other, and they expect their predictions to break down before that point."
+  evidence:
+    - {work: "kaplan-2020-scaling-laws", role: original, locator: "p. 17", stance: for}
+
+# History of the debate
+
+- id: c-hist-gubrud
+  type: historical
+  text: "Morris et al. report that the original use of the term artificial general intelligence was in a 1997 article about military technologies by Mark Gubrud."
+  evidence:
+    - {work: "morris-2024-levels-of-agi", role: review, locator: "Section 2", stance: for}
+
+- id: c-hist-legg-goertzel
+  type: historical
+  text: "Morris et al. report that Legg and Goertzel popularized the term AGI among computer scientists in 2001, describing AGI as a machine that is able to do the cognitive tasks that people can typically do."
+  evidence:
+    - {work: "morris-2024-levels-of-agi", role: review, locator: "Section 2", stance: for}
+
+- id: c-hist-marcus-2018
+  type: historical
+  text: "Marcus wrote Deep Learning: A Critical Appraisal about five years after the 2012 ImageNet model of Krizhevsky, Sutskever and Hinton reignited the field."
+  evidence:
+    - {work: "marcus-2018-deep-learning-critical-appraisal", role: original, locator: "the abstract", stance: for}
+
+- id: c-hist-sutton
+  type: historical
+  text: "The Bitter Lesson by Rich Sutton is from March 13, 2019."
+  evidence:
+    - {work: "sutton-2019-bitter-lesson", role: original, locator: "p. 1", stance: for}
+
+- id: c-hist-chollet
+  type: historical
+  text: "Chollet first wrote about the limitations of deep learning in 2017, and in 2019 formalized these observations into a definition of AGI, published alongside the ARC benchmark."
+  evidence:
+    - {work: "chollet-2024-arc-prize-2024-report", role: original, locator: "Section 1", stance: for}
+
+- id: c-hist-kaplan
+  type: historical
+  text: "Kaplan et al. of OpenAI and Johns Hopkins University posted Scaling Laws for Neural Language Models as arXiv 2001.08361 on 23 Jan 2020."
+  evidence:
+    - {work: "kaplan-2020-scaling-laws", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-marcus-2020
+  type: historical
+  text: "Marcus dated The Next Decade in AI: Four Steps Towards Robust Artificial Intelligence 17 February 2020."
+  evidence:
+    - {work: "marcus-2020-next-decade-ai", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-lecun
+  type: historical
+  text: "Version 0.9.2 of LeCun's position paper A Path Towards Autonomous Machine Intelligence is dated June 27, 2022."
+  evidence:
+    - {work: "lecun-2022-path-autonomous-machine-intelligence", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-arc-2024
+  type: historical
+  text: "As of December 5, 2024, the ARC-AGI benchmark was five years old and remained unbeaten, and that year ARC Prize was launched with a target benchmark score of 85%."
+  evidence:
+    - {work: "chollet-2024-arc-prize-2024-report", role: original, locator: "the abstract", stance: for}
+
+- id: c-hist-aaai
+  type: historical
+  text: "The report of the AAAI 2025 Presidential Panel on the Future of AI Research was published in March 2025."
+  evidence:
+    - {work: "aaai-2025-future-ai-research", role: original, locator: "the title page", stance: for}
+
+- id: c-aaai-period
+  type: historical
+  text: "The members of the AAAI 2025 Presidential Panel worked together between summer 2024 and spring 2025 to structure the study and contribute to its chapters."
+  evidence:
+    - {work: "aaai-2025-future-ai-research", role: original, locator: "p. 7", stance: for}
