@@ -1,0 +1,7 @@
+claim: c-belkin-curve
+primary:
+  - {metric: test_mse, at: final, compare: {treatment: over, control: threshold}, direction: lower, test: mann-whitney, alpha: 0.01, min_effect: {kind: relative, value: 0.5}, note: "the second descent: far past the threshold the error falls again"}
+  - {metric: test_mse, at: final, compare: {treatment: under, control: threshold}, direction: lower, test: mann-whitney, alpha: 0.01, min_effect: {kind: relative, value: 0.5}, note: "the first descent ends below the peak: a smaller model does better than the one at the threshold"}
+secondary:
+  - {metric: test_mse, compare: {treatment: threshold-ridge, control: threshold}, direction: lower, test: mann-whitney, note: "a ridge penalty tuned on a validation set removes the peak at N = n, as optimal regularization predicts"}
+report: {ci: 0.95, bootstrap: {resamples: 10000, method: bca}}
