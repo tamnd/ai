@@ -1,0 +1,61 @@
+run: v-20261114-151950-60042
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-virtual-mind-views
+  work: cole-2024-chinese-room-sep
+  locator: Section 4.1.1
+  key: 99c0f0ee3e6433d45b17d3a8ae20597e
+  spans:
+  - start: 37738
+    end: 47856
+  verdict: supported
+  quote: Perlis (1992), Chalmers (1996) and Block (2002) have apparently endorsed versions of a Virtual Mind reply as well
+  note: The passage also attributes the reply to Maudlin, calls Penrose a critic, and says Harnad dismisses it.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-crane
+  work: cole-2024-chinese-room-sep
+  locator: Section 4.2
+  key: 39184a4388b6baaf8f06e8ee6adf3c6f
+  spans:
+  - start: 47856
+    end: 60495
+  verdict: supported
+  quote: then it is plausible that he would before too long come to realize what these symbols mean.
+  note: Cole quotes Crane making this conditional claim about Searle acting in the world of Chinese people.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-brain-sim-reply
+  work: searle-1980-minds-brains-programs-bbs
+  locator: p. 420
+  key: a5eda4a79e115075b8a657f6a9888744
+  spans:
+  - start: 22736
+    end: 30965
+  verdict: supported
+  quote: Now surely in such a case we would have to say that the machine understood the stories
+  note: Searle presents this as the brain simulator reply after describing a program that simulates the native speaker’s neuron
+    firings.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-spouse
+  work: cole-2024-chinese-room-sep
+  locator: Section 4.3
+  key: 8fcf1735b71882a5b312abdf65d4058e
+  spans:
+  - start: 60495
+    end: 68742
+  verdict: supported
+  quote: even if it were one’s spouse, with whom one had built a life-long relationship, that was revealed to hide a silicon
+    secret.
+  note: Cole explicitly extends Searle’s answer to that spouse scenario.
