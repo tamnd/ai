@@ -1,5 +1,5 @@
 ---
-tag: NEW-llama
+tag: 30V5CD
 kind: model
 slug: llama
 name: Llama
