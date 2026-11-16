@@ -1,0 +1,59 @@
+run: v-20261114-034114-4690
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-googlenet
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 18
+  key: 1666289ebcdf916d1d205b1e361ddb4c
+  spans:
+  - start: 67917
+    end: 73211
+  verdict: supported
+  quote: 'GoogLeNet, which explored an improved con-
+
+    volutional neural network architecture combining the
+
+    multi-scale idea with intuitions gained from the Heb-
+
+    bian principle. Additional dimension reduction layers'
+  note: The passage names GoogLeNet as the 2014 winner with provided data and describes the claimed architecture.
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-errors
+  work: northcutt-2021-pervasive-label-errors
+  locator: p. 2
+  key: 2b97ce90e5828d362c0c91279853b69c
+  spans:
+  - start: 3300
+    end: 6847
+  verdict: supported
+  quote: 'We identify, for example, 2916 (6%) errors in the ImageNet validation
+
+    set'
+  note: The passage gives the claimed count and percentage and says the identified errors were validated through human evaluation.
+- slug: image-classification
+  verifier: codex:gpt-6-sol
+  tag: NEW-image-classification
+  claim: c-reduction
+  work: russakovsky-2015-imagenet-large-scale
+  locator: p. 22
+  key: 9251b7617457a275cab1d4dc9496748b
+  spans:
+  - start: 88004
+    end: 93119
+  verdict: supported
+  quote: 'The dataset has not changed
+
+    since 2012, and there has been a 2.4x reduction in image
+
+    classification error (from 16.4% to 6.7%)'
+  note: The passage gives the claimed reduction since 2012 and specifies that the comparison considers teams using provided
+    training data.
