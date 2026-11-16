@@ -16,7 +16,7 @@ base_config:
   optimizer: {kind: sgd, momentum: 0.9, weight_decay: 0.0001}
   bn_momentum: 0.1
 data:
-  - {dataset: mnist, version: "lecun-1998", subset: "train (a random subset per seed), test", pin: "S:mnist-ai-data"}
+  - {dataset: mnist, version: "lecun-1998", subset: "train, test", pin: "S:mnist-ai-data", train: [train]}
 seeds: {n: 10, base: 20151210}
 budget: cpu-small
 framework: numpy
