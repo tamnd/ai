@@ -1,0 +1,109 @@
+# SPDX-License-Identifier: MIT
+# The shape contract of the ImageNet ResNet with bottleneck blocks (spec 08.6), the family of ResNet-50, ResNet-101 and ResNet-152 of He et al. (2016).
+# The shortcut of the first block of each stage is a 1x1 projection (option B of the paper); the other shortcuts are the identity.
+# The stride 2 of stages 2 to 4 is in the first 1x1 convolution, as in the paper; batch normalization follows every convolution.
+# The example config is small, so that the tests can run the forward pass on it; resnet50, resnet101 and resnet152 are the models of the paper.
+config:
+  width:   {meaning: "number of channels of the stem and of the bottleneck of stage 1", symbol: "w", example: 2}
+  n1:      {meaning: "number of blocks of stage 1", symbol: "n_1", example: 1, sample: [1, 2]}
+  n2:      {meaning: "number of blocks of stage 2", symbol: "n_2", example: 1, sample: [1, 2]}
+  n3:      {meaning: "number of blocks of stage 3", symbol: "n_3", example: 1, sample: [1, 2]}
+  n4:      {meaning: "number of blocks of stage 4", symbol: "n_4", example: 1, sample: [1, 2]}
+  classes: {meaning: "number of classes", symbol: "K", example: 5, sample: [2, 8]}
+axes:
+  B: {meaning: "batch", example: 2}
+  R: {meaning: "height and width of the input image, a multiple of 32", example: 32, sample: [32, 64]}
+  C: width
+  K: classes
+blocks:
+  - id: stem
+    meaning: "a 7x7 convolution with stride 2 from the 3 colour channels to C channels, batch normalization, ReLU, then a 3x3 max pooling with stride 2"
+    eq: [conv, bn]
+    inputs: {x: "(B, 3, R, R)"}
+    outputs: {y: "(B, C, R / 4, R / 4)"}
+    internals: {conv: "(B, C, R / 2, R / 2)"}
+    params: "147 * C + 2 * C"
+    flops_forward: "2 * B * 147 * C * (R / 2) ^ 2"
+  - id: s1_first
+    meaning: "first block of stage 1: bottleneck C to C to 4C at R / 4, with a 1x1 projection shortcut from C to 4C"
+    eq: [bottleneck, projection]
+    inputs: {x: "(B, C, R / 4, R / 4)"}
+    outputs: {y: "(B, 4 * C, R / 4, R / 4)"}
+    internals: {a: "(B, C, R / 4, R / 4)", b: "(B, C, R / 4, R / 4)", c: "(B, 4 * C, R / 4, R / 4)", shortcut: "(B, 4 * C, R / 4, R / 4)"}
+    params: "18 * C ^ 2 + 20 * C"
+    flops_forward: "2 * B * 18 * C ^ 2 * (R / 4) ^ 2"
+  - id: s1_rest
+    meaning: "each of the n1 - 1 other blocks of stage 1: bottleneck 4C to C to 4C with the identity shortcut"
+    eq: [bottleneck, residual]
+    inputs: {x: "(B, 4 * C, R / 4, R / 4)"}
+    outputs: {y: "(B, 4 * C, R / 4, R / 4)"}
+    internals: {a: "(B, C, R / 4, R / 4)", b: "(B, C, R / 4, R / 4)", c: "(B, 4 * C, R / 4, R / 4)"}
+    params: "17 * C ^ 2 + 12 * C"
+    flops_forward: "2 * B * 17 * C ^ 2 * (R / 4) ^ 2"
+  - id: s2_first
+    meaning: "first block of stage 2: bottleneck 4C to 2C to 8C with stride 2, and a 1x1 projection shortcut with stride 2"
+    eq: [bottleneck, projection]
+    inputs: {x: "(B, 4 * C, R / 4, R / 4)"}
+    outputs: {y: "(B, 8 * C, R / 8, R / 8)"}
+    internals: {a: "(B, 2 * C, R / 8, R / 8)", b: "(B, 2 * C, R / 8, R / 8)", c: "(B, 8 * C, R / 8, R / 8)", shortcut: "(B, 8 * C, R / 8, R / 8)"}
+    params: "92 * C ^ 2 + 40 * C"
+    flops_forward: "2 * B * 92 * C ^ 2 * (R / 8) ^ 2"
+  - id: s2_rest
+    meaning: "each of the n2 - 1 other blocks of stage 2: bottleneck 8C to 2C to 8C with the identity shortcut"
+    eq: [bottleneck, residual]
+    inputs: {x: "(B, 8 * C, R / 8, R / 8)"}
+    outputs: {y: "(B, 8 * C, R / 8, R / 8)"}
+    internals: {a: "(B, 2 * C, R / 8, R / 8)", b: "(B, 2 * C, R / 8, R / 8)", c: "(B, 8 * C, R / 8, R / 8)"}
+    params: "68 * C ^ 2 + 24 * C"
+    flops_forward: "2 * B * 68 * C ^ 2 * (R / 8) ^ 2"
+  - id: s3_first
+    meaning: "first block of stage 3: bottleneck 8C to 4C to 16C with stride 2, and a projection shortcut"
+    eq: [bottleneck, projection]
+    inputs: {x: "(B, 8 * C, R / 8, R / 8)"}
+    outputs: {y: "(B, 16 * C, R / 16, R / 16)"}
+    internals: {a: "(B, 4 * C, R / 16, R / 16)", b: "(B, 4 * C, R / 16, R / 16)", c: "(B, 16 * C, R / 16, R / 16)", shortcut: "(B, 16 * C, R / 16, R / 16)"}
+    params: "368 * C ^ 2 + 80 * C"
+    flops_forward: "2 * B * 368 * C ^ 2 * (R / 16) ^ 2"
+  - id: s3_rest
+    meaning: "each of the n3 - 1 other blocks of stage 3: bottleneck 16C to 4C to 16C with the identity shortcut"
+    eq: [bottleneck, residual]
+    inputs: {x: "(B, 16 * C, R / 16, R / 16)"}
+    outputs: {y: "(B, 16 * C, R / 16, R / 16)"}
+    internals: {a: "(B, 4 * C, R / 16, R / 16)", b: "(B, 4 * C, R / 16, R / 16)", c: "(B, 16 * C, R / 16, R / 16)"}
+    params: "272 * C ^ 2 + 48 * C"
+    flops_forward: "2 * B * 272 * C ^ 2 * (R / 16) ^ 2"
+  - id: s4_first
+    meaning: "first block of stage 4: bottleneck 16C to 8C to 32C with stride 2, and a projection shortcut"
+    eq: [bottleneck, projection]
+    inputs: {x: "(B, 16 * C, R / 16, R / 16)"}
+    outputs: {y: "(B, 32 * C, R / 32, R / 32)"}
+    internals: {a: "(B, 8 * C, R / 32, R / 32)", b: "(B, 8 * C, R / 32, R / 32)", c: "(B, 32 * C, R / 32, R / 32)", shortcut: "(B, 32 * C, R / 32, R / 32)"}
+    params: "1472 * C ^ 2 + 160 * C"
+    flops_forward: "2 * B * 1472 * C ^ 2 * (R / 32) ^ 2"
+  - id: s4_rest
+    meaning: "each of the n4 - 1 other blocks of stage 4: bottleneck 32C to 8C to 32C with the identity shortcut"
+    eq: [bottleneck, residual]
+    inputs: {x: "(B, 32 * C, R / 32, R / 32)"}
+    outputs: {y: "(B, 32 * C, R / 32, R / 32)"}
+    internals: {a: "(B, 8 * C, R / 32, R / 32)", b: "(B, 8 * C, R / 32, R / 32)", c: "(B, 32 * C, R / 32, R / 32)"}
+    params: "1088 * C ^ 2 + 96 * C"
+    flops_forward: "2 * B * 1088 * C ^ 2 * (R / 32) ^ 2"
+  - id: head
+    meaning: "global average pooling over the R / 32 by R / 32 positions, then a fully connected layer with a bias to K logits"
+    eq: [head]
+    inputs: {x: "(B, 32 * C, R / 32, R / 32)"}
+    outputs: {logits: "(B, K)"}
+    internals: {pooled: "(B, 32 * C)"}
+    params: "32 * C * K + K"
+    flops_forward: "2 * B * 32 * C * K"
+model:
+  n_blocks: {formula: "n1 + n2 + n3 + n4", symbol: "N", meaning: "number of bottleneck blocks"}
+  depth: {formula: "3 * n_blocks + 2", meaning: "number of layers with weights, as the paper counts them: the stem convolution, three convolutions in each block and the fully connected layer; the projections are not counted"}
+  params: {formula: "stem.params + s1_first.params + (n1 - 1) * s1_rest.params + s2_first.params + (n2 - 1) * s2_rest.params + s3_first.params + (n3 - 1) * s3_rest.params + s4_first.params + (n4 - 1) * s4_rest.params + head.params", meaning: "all parameters: convolution weights (no biases), the scale and shift of each batch normalization, and the weight and bias of the fully connected layer; the running statistics of batch normalization are not parameters"}
+  flops_forward: {formula: "stem.flops_forward + s1_first.flops_forward + (n1 - 1) * s1_rest.flops_forward + s2_first.flops_forward + (n2 - 1) * s2_rest.flops_forward + s3_first.flops_forward + (n3 - 1) * s3_rest.flops_forward + s4_first.flops_forward + (n4 - 1) * s4_rest.flops_forward + head.flops_forward", symbol: "C_{\\text{fwd}}", meaning: "FLOPs of one forward pass over the batch, a multiply-add counted as 2; batch normalization, ReLU, the poolings and the additions are left out"}
+  sources:
+    - {work: he-2016-deep-residual-learning, locator: "Section 3.3, Table 1 and Figure 5"}
+configs:
+  resnet50: {meaning: "ResNet-50 at 224 by 224 pixels, one image", width: 64, n1: 3, n2: 4, n3: 6, n4: 3, classes: 1000, R: 224, B: 1, source: {work: he-2016-deep-residual-learning, locator: "Table 1"}}
+  resnet101: {meaning: "ResNet-101 at 224 by 224 pixels, one image", width: 64, n1: 3, n2: 4, n3: 23, n4: 3, classes: 1000, R: 224, B: 1, source: {work: he-2016-deep-residual-learning, locator: "Table 1"}}
+  resnet152: {meaning: "ResNet-152 at 224 by 224 pixels, one image", width: 64, n1: 3, n2: 8, n3: 36, n4: 3, classes: 1000, R: 224, B: 1, source: {work: he-2016-deep-residual-learning, locator: "Table 1"}}
