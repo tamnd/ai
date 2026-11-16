@@ -1,5 +1,5 @@
 ---
-tag: NEW-weight-decay
+tag: DD5QVM
 kind: method
 slug: weight-decay
 name: Weight decay
