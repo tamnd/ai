@@ -1,5 +1,5 @@
 ---
-tag: NEW-eu-ai-act
+tag: K272WN
 kind: policy
 slug: eu-ai-act
 name: EU AI Act
