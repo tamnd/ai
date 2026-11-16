@@ -1,5 +1,5 @@
 ---
-tag: NEW-dartmouth-workshop
+tag: E0CJK2
 kind: event
 slug: dartmouth-workshop
 name: Dartmouth workshop

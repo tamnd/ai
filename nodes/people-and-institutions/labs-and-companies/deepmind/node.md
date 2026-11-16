@@ -1,5 +1,5 @@
 ---
-tag: NEW-deepmind
+tag: VEQ15Z
 kind: organization
 slug: deepmind
 name: Google DeepMind
