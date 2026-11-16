@@ -1,5 +1,5 @@
 ---
-tag: NEW-image-classification
+tag: CK679M
 kind: task
 slug: image-classification
 name: Image classification

@@ -1,5 +1,5 @@
 ---
-tag: NEW-imagenet
+tag: 969S7R
 kind: dataset
 slug: imagenet
 name: ImageNet

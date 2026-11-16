@@ -1,5 +1,5 @@
 ---
-tag: NEW-imagenet-ilsvrc-2012
+tag: ACX0F2
 kind: benchmark
 slug: imagenet-ilsvrc-2012
 name: ImageNet ILSVRC-2012
