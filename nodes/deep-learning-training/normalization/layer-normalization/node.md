@@ -1,5 +1,5 @@
 ---
-tag: NEW-layer-normalization
+tag: RA5R92
 kind: method
 slug: layer-normalization
 name: Layer normalization
