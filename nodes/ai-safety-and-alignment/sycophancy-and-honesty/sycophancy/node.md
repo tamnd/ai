@@ -1,5 +1,5 @@
 ---
-tag: NEW-sycophancy
+tag: 9CT5ZF
 kind: risk
 slug: sycophancy
 name: Sycophancy
