@@ -1,0 +1,303 @@
+# The facts of the Llama family of models (spec 04.9). Each fact names the release it belongs to. The build computes the status of each fact.
+- id: developer
+  value: "Meta"
+  sources:
+    - {src: "meta-llama-3-3-model-card", loc: "p. 1", value: "Meta", kind: primary}
+    - {src: "meta-llama-4-model-card", loc: "p. 1", value: "Meta", kind: primary}
+- id: released.llama
+  value: "2023-02-24"
+  note: "The announcement of LLaMA by Meta AI; the paper is arXiv 2302.13971 of February 2023."
+  sources:
+    - {src: "meta-2023-introducing-llama", loc: "p. 1", value: "2023-02-24", kind: primary}
+- id: released.llama_2
+  value: "2023-07-18"
+  sources:
+    - {src: "meta-2023-llama-2-announcement", loc: "p. 1", value: "2023-07-18", kind: primary}
+    - {src: "meta-llama-2-community-license", loc: "p. 1", value: "2023-07-18", kind: primary}
+- id: released.llama_3
+  value: "2024-04-18"
+  note: "The 8B and 70B models of Meta Llama 3."
+  sources:
+    - {src: "meta-2024-introducing-llama-3", loc: "p. 1", value: "2024-04-18", kind: primary}
+    - {src: "meta-llama-3-community-license", loc: "p. 1", value: "2024-04-18", kind: primary}
+- id: released.llama_3_1
+  value: "2024-07-23"
+  sources:
+    - {src: "meta-2024-introducing-llama-3-1", loc: "p. 1", value: "2024-07-23", kind: primary}
+    - {src: "grattafiori-2024-llama-3-herd", loc: "p. 1", value: "2024-07-23", kind: primary}
+- id: released.llama_3_2
+  value: "2024-09-25"
+  sources:
+    - {src: "meta-2024-llama-3-2", loc: "p. 1", value: "2024-09-25", kind: primary}
+    - {src: "meta-llama-3-2-community-license", loc: "p. 1", value: "2024-09-25", kind: primary}
+- id: released.llama_3_3
+  value: "2024-12-06"
+  sources:
+    - {src: "meta-llama-3-3-model-card", loc: "p. 1", value: "2024-12-06", kind: primary}
+- id: released.llama_4
+  value: "2025-04-05"
+  note: "Llama 4 Scout and Llama 4 Maverick. Llama 4 Behemoth was still training and was not released."
+  sources:
+    - {src: "meta-llama-4-model-card", loc: "p. 1", value: "2025-04-05", kind: primary}
+    - {src: "meta-2025-llama-4-herd", loc: "p. 1", value: "2025-04-05", kind: primary}
+- id: architecture.llama
+  value: "transformer"
+  note: "With pre-normalization (RMSNorm), the SwiGLU activation and rotary positional embeddings."
+  sources:
+    - {src: "touvron-2023-llama", loc: "Section 2.2", value: "transformer", kind: primary}
+- id: architecture.llama_2
+  value: "transformer"
+  note: "As LLaMA, with a longer context and grouped-query attention (GQA) in the 34B and 70B models."
+  sources:
+    - {src: "touvron-2023-llama-2", loc: "Section 2.2", value: "transformer", kind: primary}
+- id: architecture.llama_3
+  value: "decoder-only transformer"
+  sources:
+    - {src: "meta-2024-introducing-llama-3", loc: "p. 1", value: "decoder-only transformer", kind: primary}
+- id: architecture.llama_3_1
+  value: "dense Transformer"
+  sources:
+    - {src: "grattafiori-2024-llama-3-herd", loc: "p. 1", value: "dense Transformer", kind: primary}
+- id: architecture.llama_4
+  value: "mixture-of-experts (MoE)"
+  note: "Auto-regressive language models with early fusion for native multimodality."
+  sources:
+    - {src: "meta-llama-4-model-card", loc: "p. 1", value: "mixture-of-experts (MoE)", kind: primary}
+- id: params.total.llama_7b
+  value: 6.7e9
+  unit: parameters
+  sources:
+    - {src: "touvron-2023-llama", loc: "Table 2", value: 6.7e9, kind: primary}
+- id: params.total.llama_13b
+  value: 1.30e10
+  unit: parameters
+  sources:
+    - {src: "touvron-2023-llama", loc: "Table 2", value: 1.30e10, kind: primary}
+- id: params.total.llama_33b
+  value: 3.25e10
+  unit: parameters
+  sources:
+    - {src: "touvron-2023-llama", loc: "Table 2", value: 3.25e10, kind: primary}
+- id: params.total.llama_65b
+  value: 6.52e10
+  unit: parameters
+  sources:
+    - {src: "touvron-2023-llama", loc: "Table 2", value: 6.52e10, kind: primary}
+- id: params.total.llama_2_70b
+  value: 7.0e10
+  unit: parameters
+  sources:
+    - {src: "touvron-2023-llama-2", loc: "Table 1", value: 7.0e10, kind: primary}
+- id: params.total.llama_3_70b
+  value: 7.0e10
+  unit: parameters
+  sources:
+    - {src: "meta-2024-introducing-llama-3", loc: "p. 1", value: 7.0e10, kind: primary}
+- id: params.total.llama_3_1_405b
+  value: 4.05e11
+  unit: parameters
+  sources:
+    - {src: "grattafiori-2024-llama-3-herd", loc: "p. 1", value: 4.05e11, kind: primary}
+- id: params.total.llama_3_2_90b
+  value: 9.0e10
+  unit: parameters
+  note: "The larger of the two vision models of Llama 3.2."
+  sources:
+    - {src: "meta-2024-llama-3-2", loc: "p. 1", value: 9.0e10, kind: primary}
+- id: params.total.llama_3_2_1b
+  value: 1.0e9
+  unit: parameters
+  note: "The smaller of the two text-only models of Llama 3.2."
+  sources:
+    - {src: "meta-2024-llama-3-2", loc: "p. 1", value: 1.0e9, kind: primary}
+- id: params.total.llama_3_3_70b
+  value: 7.0e10
+  unit: parameters
+  sources:
+    - {src: "meta-llama-3-3-model-card", loc: "p. 1", value: 7.0e10, kind: primary}
+- id: params.total.llama_4_scout
+  value: 1.09e11
+  unit: parameters
+  sources:
+    - {src: "meta-llama-4-model-card", loc: "p. 1", value: 1.09e11, kind: primary}
+- id: params.total.llama_4_maverick
+  value: 4.0e11
+  unit: parameters
+  sources:
+    - {src: "meta-llama-4-model-card", loc: "p. 1", value: 4.0e11, kind: primary}
+    - {src: "meta-2025-llama-4-herd", loc: "p. 1", value: 4.0e11, kind: primary}
+- id: params.active.llama_4_scout
+  value: 1.7e10
+  unit: parameters
+  sources:
+    - {src: "meta-llama-4-model-card", loc: "p. 1", value: 1.7e10, kind: primary}
+- id: params.active.llama_4_maverick
+  value: 1.7e10
+  unit: parameters
+  sources:
+    - {src: "meta-llama-4-model-card", loc: "p. 1", value: 1.7e10, kind: primary}
+- id: training.tokens.llama_7b
+  value: 1.0e12
+  unit: tokens
+  note: "LLaMA 7B and 13B; the paper gives 1.0T."
+  sources:
+    - {src: "touvron-2023-llama", loc: "Table 2", value: 1.0e12, kind: primary}
+- id: training.tokens.llama_65b
+  value: 1.4e12
+  unit: tokens
+  note: "LLaMA 33B and 65B; the paper gives 1.4T."
+  sources:
+    - {src: "touvron-2023-llama", loc: "Table 2", value: 1.4e12, kind: primary}
+- id: training.tokens.llama_2
+  value: 2.0e12
+  unit: tokens
+  note: "All sizes of Llama 2. The Llama 2 paper gives 2.0T tokens; the Llama 3 paper, by the same developer, gives 1.8T tokens for Llama 2. The page shows both."
+  sources:
+    - {src: "touvron-2023-llama-2", loc: "Table 1", value: 2.0e12, kind: primary}
+    - {src: "grattafiori-2024-llama-3-herd", loc: "p. 1", value: 1.8e12, kind: primary}
+- id: training.tokens.llama_3_1_405b
+  value: 1.56e13
+  unit: tokens
+  sources:
+    - {src: "grattafiori-2024-llama-3-herd", loc: "p. 1", value: 1.56e13, kind: primary}
+- id: training.tokens.llama_4_scout
+  value: 4.0e13
+  unit: tokens
+  note: "The model card gives about 40T tokens of multimodal data. The announcement gives an overall data mixture of more than 30 trillion tokens, without a figure for each model."
+  sources:
+    - {src: "meta-llama-4-model-card", loc: "p. 1", value: 4.0e13, kind: primary}
+- id: training.tokens.llama_4_maverick
+  value: 2.2e13
+  unit: tokens
+  note: "The model card gives about 22T tokens of multimodal data."
+  sources:
+    - {src: "meta-llama-4-model-card", loc: "p. 1", value: 2.2e13, kind: primary}
+- id: training.compute_flop.llama_3_1_405b
+  value: 3.8e25
+  unit: FLOP
+  sources:
+    - {src: "grattafiori-2024-llama-3-herd", loc: "p. 1", value: 3.8e25, kind: primary}
+    - {src: "grattafiori-2024-llama-3-herd", loc: "Section 3.2", value: 3.8e25, kind: primary}
+- id: training.gpus.llama_3_1_405b
+  value: 16000
+  unit: items
+  note: "H100 GPUs; the paper writes up to 16K."
+  sources:
+    - {src: "grattafiori-2024-llama-3-herd", loc: "p. 9", value: 16000, kind: primary}
+- id: context_length.llama
+  value: 2048
+  unit: tokens
+  sources:
+    - {src: "touvron-2023-llama-2", loc: "p. 47", value: 2048, kind: primary}
+- id: context_length.llama_2
+  value: 4096
+  unit: tokens
+  sources:
+    - {src: "touvron-2023-llama-2", loc: "p. 47", value: 4096, kind: primary}
+- id: context_length.llama_3
+  value: 8192
+  unit: tokens
+  note: "The sequence length of training of the 8B and 70B models of April 2024."
+  sources:
+    - {src: "meta-2024-introducing-llama-3", loc: "p. 1", value: 8192, kind: primary}
+- id: context_length.llama_3_1
+  value: 128000
+  unit: tokens
+  note: "The sources write 128K."
+  sources:
+    - {src: "grattafiori-2024-llama-3-herd", loc: "p. 1", value: 128000, kind: primary}
+    - {src: "meta-2024-introducing-llama-3-1", loc: "p. 1", value: 128000, kind: primary}
+- id: context_length.llama_4_scout
+  value: 1.0e7
+  unit: tokens
+  note: "The model card writes 10M."
+  sources:
+    - {src: "meta-llama-4-model-card", loc: "p. 1", value: 1.0e7, kind: primary}
+- id: context_length.llama_4_maverick
+  value: 1.0e6
+  unit: tokens
+  note: "The model card writes 1M."
+  sources:
+    - {src: "meta-llama-4-model-card", loc: "p. 1", value: 1.0e6, kind: primary}
+- id: modalities.llama_3_3
+  value: "multilingual text in; multilingual text and code out"
+  sources:
+    - {src: "meta-llama-3-3-model-card", loc: "p. 1", value: "multilingual text in; multilingual text and code out", kind: primary}
+- id: modalities.llama_3_2_vision
+  value: "text and images in; text out"
+  note: "The 11B and 90B models of Llama 3.2; the 1B and 3B models are text only."
+  sources:
+    - {src: "meta-2024-llama-3-2", loc: "p. 1", value: "text and images in; text out", kind: primary}
+- id: modalities.llama_4
+  value: "multilingual text and image in; multilingual text and code out"
+  sources:
+    - {src: "meta-llama-4-model-card", loc: "p. 1", value: "multilingual text and image in; multilingual text and code out", kind: primary}
+- id: access.llama
+  value: "weights on request, granted case by case to researchers"
+  as_of: 2023-02-24
+  sources:
+    - {src: "meta-2023-introducing-llama", loc: "p. 1", value: "weights on request, granted case by case to researchers", kind: primary, as_of: 2023-02-24}
+- id: access.llama_2
+  value: "weights for download, free for research and commercial use under the licence"
+  as_of: 2023-07-18
+  sources:
+    - {src: "meta-2023-llama-2-announcement", loc: "p. 1", value: "weights for download, free for research and commercial use under the licence", kind: primary, as_of: 2023-07-18}
+- id: access.llama_4
+  value: "weights for download from llama.com and Hugging Face"
+  as_of: 2025-04-05
+  sources:
+    - {src: "meta-2025-llama-4-herd", loc: "p. 1", value: "weights for download from llama.com and Hugging Face", kind: primary, as_of: 2025-04-05}
+- id: licence.llama
+  value: "Non-commercial bespoke license"
+  as_of: 2023-02-24
+  sources:
+    - {src: "meta-llama-1-model-card", loc: "p. 1", value: "Non-commercial bespoke license", kind: primary, as_of: 2023-02-24}
+- id: licence.llama_2
+  value: "Llama 2 Community License Agreement"
+  as_of: 2023-07-18
+  sources:
+    - {src: "meta-llama-2-community-license", loc: "p. 1", value: "Llama 2 Community License Agreement", kind: primary, as_of: 2023-07-18}
+- id: licence.llama_3
+  value: "Meta Llama 3 Community License Agreement"
+  as_of: 2024-04-18
+  sources:
+    - {src: "meta-llama-3-community-license", loc: "p. 1", value: "Meta Llama 3 Community License Agreement", kind: primary, as_of: 2024-04-18}
+- id: licence.llama_3_1
+  value: "Llama 3.1 Community License Agreement"
+  as_of: 2024-07-23
+  sources:
+    - {src: "meta-llama-3-1-community-license", loc: "p. 1", value: "Llama 3.1 Community License Agreement", kind: primary, as_of: 2024-07-23}
+- id: licence.llama_3_2
+  value: "Llama 3.2 Community License Agreement"
+  as_of: 2024-09-25
+  sources:
+    - {src: "meta-llama-3-2-community-license", loc: "p. 1", value: "Llama 3.2 Community License Agreement", kind: primary, as_of: 2024-09-25}
+- id: licence.llama_3_3
+  value: "Llama 3.3 Community License Agreement"
+  as_of: 2024-12-06
+  sources:
+    - {src: "meta-llama-3-3-community-license", loc: "p. 1", value: "Llama 3.3 Community License Agreement", kind: primary, as_of: 2024-12-06}
+- id: licence.llama_4
+  value: "Llama 4 Community License Agreement"
+  as_of: 2025-04-05
+  sources:
+    - {src: "meta-llama-4-community-license", loc: "p. 1", value: "Llama 4 Community License Agreement", kind: primary, as_of: 2025-04-05}
+- id: training.gpus.llama_65b
+  value: 2048
+  unit: items
+  note: "A100 GPUs with 80GB of RAM, for the training of LLaMA 65B."
+  sources:
+    - {src: "touvron-2023-llama", loc: "Section 2.4", value: 2048, kind: primary}
+- id: requests.llama
+  value: 100000
+  unit: items
+  note: "Requests for access to Llama 1, which Meta reports as more than 100,000."
+  sources:
+    - {src: "meta-2023-llama-2-announcement", loc: "p. 1", value: 100000, kind: primary}
+- id: downloads.all_versions
+  value: 300000000
+  unit: items
+  as_of: 2024-07-23
+  note: "Total downloads of all Llama versions, which Meta reports as more than 300 million."
+  sources:
+    - {src: "meta-2024-introducing-llama-3-1", loc: "p. 1", value: 300000000, kind: primary, as_of: 2024-07-23}

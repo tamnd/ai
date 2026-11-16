@@ -1,0 +1,609 @@
+run: v-20261114-034244-7740
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-propose
+  work: vaswani-2017-attention
+  locator: the abstract
+  key: e3b3b96343db06df2017bb7ed389933b
+  spans:
+  - start: 661
+    end: 2898
+  verdict: supported
+  quote: We propose a new simple network architecture, the Transformer, based solely on attention mechanisms, dispensing with
+    recurrence and convolutions entirely.
+  note: The passage states the claim directly.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-affiliations
+  work: vaswani-2017-attention
+  locator: the title page
+  key: f99eb9d47e1e5c3514d01f5b62949e9f
+  spans:
+  - start: 0
+    end: 2899
+  verdict: supported
+  quote: University of Toronto
+  note: The title page lists University of Toronto, Google Brain, and Google Research as affiliations.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-venue
+  work: vaswani-2017-attention
+  locator: the abstract
+  key: 054a58defa6f397189e5b86ce53c5b9e
+  spans:
+  - start: 661
+    end: 2898
+  verdict: supported
+  quote: 31st Conference on Neural Information Processing Systems (NIPS 2017), Long Beach, CA, USA.
+  note: The passage gives the conference and location.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-first-self-attention
+  work: vaswani-2017-attention
+  locator: Section 2
+  key: 93b37706fe181e89b3ea02e417988593
+  spans:
+  - start: 4824
+    end: 6652
+  verdict: unsupported
+  quote: To the best of our knowledge, however, the Transformer is the first transduction model relying entirely on self-attention
+  note: The authors qualify the priority claim as being to the best of their knowledge; the claim should retain that qualification.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-scaled-dot-product
+  work: vaswani-2017-attention
+  locator: Section 3.2.1
+  key: 67de5318d20d1d7b973a2787b4c3dda4
+  spans:
+  - start: 9321
+    end: 10874
+  verdict: supported
+  quote: We compute the dot products of the query with all keys, divide each by dk , and apply a softmax function
+  note: The surrounding equation and extracted square-root symbol specify division by the square root of dk.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-why-scale
+  work: vaswani-2017-attention
+  locator: Section 3.2.1
+  key: 11d4a4b30bf8140aa0b57fbbf1960b53
+  spans:
+  - start: 9321
+    end: 10874
+  verdict: unsupported
+  quote: We suspect that for large values of dk , the dot products grow large in magnitude
+  note: The proposed reason is a suspicion; the claim should say the authors suspect this is why scaling helps.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-multi-head
+  work: vaswani-2017-attention
+  locator: Section 3.2.2
+  key: bf88a75776ee14577ab2daba18c73179
+  spans:
+  - start: 10874
+    end: 12353
+  verdict: supported
+  quote: linearly project the queries, keys and values h times with different, learned linear projections
+  note: The passage also says attention is performed on the projected versions in parallel.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-eight-heads
+  work: vaswani-2017-attention
+  locator: Section 3.2.2
+  key: 0c5d4253be063491077d5831cbd6e96e
+  spans:
+  - start: 10874
+    end: 12353
+  verdict: supported
+  quote: In this work we employ h = 8 parallel attention layers, or heads. For each of these we use dk = dv = dmodel /h =
+    64.
+  note: The passage states both settings.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-positional
+  work: vaswani-2017-attention
+  locator: Section 3.5
+  key: f6c7cb88a3c537b13a973a111b54a437
+  spans:
+  - start: 15165
+    end: 16738
+  verdict: supported
+  quote: Since our model contains no recurrence and no convolution, in order for the model to make use of the order of the
+    sequence
+  note: The passage says positional encodings are added to embeddings and that this work uses sine and cosine functions.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-stacks
+  work: vaswani-2017-attention
+  locator: Section 3.1
+  key: aa40d0ac7d075d21d1c89e8b9512cd39
+  spans:
+  - start: 7430
+    end: 8778
+  verdict: supported
+  quote: The encoder is composed of a stack of N = 6 identical layers.
+  note: The passage also gives N = 6 for the decoder and residual connections followed by layer normalization for each sub-layer.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-three-measures
+  work: vaswani-2017-attention
+  locator: Section 4
+  key: 8285442429f38e422e25e8eba22e05c4
+  spans:
+  - start: 16738
+    end: 19958
+  verdict: supported
+  quote: One is the total computational complexity per layer. Another is the amount of computation that can be parallelized
+  note: The passage identifies these and path length as the three comparison criteria.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-uszkoreit
+  work: vaswani-2017-attention
+  locator: the abstract
+  key: 55f0b97883d553302ae2e2b5a688a168
+  spans:
+  - start: 661
+    end: 2898
+  verdict: supported
+  quote: Jakob proposed replacing RNNs with self-attention and started the effort to evaluate this idea.
+  note: The footnote states the claim directly.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-shazeer
+  work: vaswani-2017-attention
+  locator: the abstract
+  key: 1c690484c4315701bbe966a6537a1ea8
+  spans:
+  - start: 661
+    end: 2898
+  verdict: supported
+  quote: Noam proposed scaled dot-product attention, multi-head attention and the parameter-free position representation
+  note: The footnote states the claim directly.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-equal-contribution
+  work: vaswani-2017-attention
+  locator: the abstract
+  key: cddbcb113422a002c0b99d63b77e3ff4
+  spans:
+  - start: 661
+    end: 2898
+  verdict: supported
+  quote: Equal contribution. Listing order is random.
+  note: The footnote states both points.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-context-attention
+  work: vaswani-2017-attention
+  locator: the abstract
+  key: 430516ea357a618c690d45ca6b6fffa7
+  spans:
+  - start: 661
+    end: 2898
+  verdict: supported
+  quote: The best performing models also connect the encoder and decoder through an attention mechanism.
+  note: The preceding sentence describes the dominant models as recurrent or convolutional encoder-decoder networks.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-bahdanau
+  work: bahdanau-2015-neural-machine-translation
+  locator: Section 1
+  key: 6ca119791eeff85c5d6193f84f94869e
+  spans:
+  - start: 1440
+    end: 4866
+  verdict: supported
+  quote: it (soft-)searches for a set of positions in a source sentence where the most relevant information is concentrated.
+  note: The passage contrasts this extension with encoding the whole sentence into one fixed-length vector.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-sequential
+  work: vaswani-2017-attention
+  locator: Section 1
+  key: 7bb0105ee37c75b2f18a3497e357609f
+  spans:
+  - start: 2898
+    end: 4824
+  verdict: supported
+  quote: This inherently sequential nature precludes parallelization within training examples
+  note: The passage states the authors’ argument directly.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-attention-with-rnn
+  work: vaswani-2017-attention
+  locator: Section 1
+  key: 0cab333879e923d95aa13febfab1ed6a
+  spans:
+  - start: 2898
+    end: 4824
+  verdict: supported
+  quote: In all but a few cases [27], however, such attention mechanisms are used in conjunction with a recurrent network.
+  note: The passage states the claim directly.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-convolutional
+  work: vaswani-2017-attention
+  locator: Section 2
+  key: 9df5ab52119fc2f40541160aeb5f3385
+  spans:
+  - start: 4824
+    end: 6652
+  verdict: supported
+  quote: linearly for ConvS2S and logarithmically for ByteNet.
+  note: The passage says both models compute positions in parallel and that the operations needed to relate positions grow
+    with distance.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-constant-path
+  work: vaswani-2017-attention
+  locator: Section 2
+  key: c904f6791683ce8aeeeb476c3cdb5a41
+  spans:
+  - start: 4824
+    end: 6652
+  verdict: supported
+  quote: In the Transformer this is reduced to a constant number of operations
+  note: The passage states the claimed reduction.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-training-time
+  work: vaswani-2017-attention
+  locator: Section 5.2
+  key: cfc5d80deeff994df867a347fc0f075f
+  spans:
+  - start: 20653
+    end: 21080
+  verdict: supported
+  quote: We trained our models on one machine with 8 NVIDIA P100 GPUs.
+  note: The passage also gives 100,000 steps or 12 hours for base models and 300,000 steps or 3.5 days for big models.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-warmup
+  work: vaswani-2017-attention
+  locator: Section 5.3
+  key: 507a1cf6ed16a31cf85f94d16de35627
+  spans:
+  - start: 21080
+    end: 21563
+  verdict: supported
+  quote: We used the Adam optimizer
+  note: The passage states the claimed learning-rate schedule and warmup_steps = 4000.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-en-de
+  work: vaswani-2017-attention
+  locator: the abstract
+  key: f366242e8d5013325437041fd80f8760
+  spans:
+  - start: 661
+    end: 2898
+  verdict: unsupported
+  quote: Our model achieves 28.4 BLEU on the WMT 2014 Englishto-German translation task
+  note: The abstract supports the score and improvement, but does not establish the specified model size, parameter count,
+    test set, training steps, or decoding setting; those need other sections.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-en-fr
+  work: vaswani-2017-attention
+  locator: the abstract
+  key: bff14307435265e161bddb298979db65
+  spans:
+  - start: 661
+    end: 2898
+  verdict: unsupported
+  quote: our model establishes a new single-model state-of-the-art BLEU score of 41.8 after training for 3.5 days on eight
+    GPUs
+  note: The abstract does not establish the specified big-model, P100 GPU, or newstest2014 scope; those need other sections.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-heads
+  work: vaswani-2017-attention
+  locator: Section 6.2
+  key: c088c5b9f4acfd9276a88e9e04568c2b
+  spans:
+  - start: 24565
+    end: 26750
+  verdict: supported
+  quote: While single-head attention is 0.9 BLEU worse than the best setting, quality also drops off with too many heads.
+  note: The section places this comparison in the base-model variations evaluated on newstest2013 without checkpoint averaging.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-learned-positions
+  work: vaswani-2017-attention
+  locator: Section 6.2
+  key: 029c24371462e5a207b01cbe7603a599
+  spans:
+  - start: 24565
+    end: 26750
+  verdict: supported
+  quote: we replace our sinusoidal positional encoding with learned positional embeddings [9], and observe nearly identical
+    results to the base model.
+  note: The section identifies the English-to-German newstest2013 development setting.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-parsing
+  work: vaswani-2017-attention
+  locator: Section 6.3
+  key: d59fa654cb5b3903f75d8089ca568d05
+  spans:
+  - start: 26750
+    end: 29186
+  verdict: supported
+  quote: Transformer (4 layers) semi-supervised 92.7
+  note: The table also reports 91.3 for the four-layer Transformer trained on WSJ only, both on WSJ Section 23.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-code
+  work: vaswani-2017-attention
+  locator: Section 7
+  key: 18d2631e3df0bb600b6978905a9801d4
+  spans:
+  - start: 29186
+    end: 30419
+  verdict: supported
+  quote: The code we used to train and evaluate our models is available at https://github.com/ tensorflow/tensor2tensor.
+  note: The passage identifies tensor2tensor as the code location.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-bert
+  work: devlin-2019-bert
+  locator: Section 3
+  key: 6da68b885fb39b28b976da538a3a79e5
+  spans:
+  - start: 10001
+    end: 12133
+  verdict: supported
+  quote: BERT’s model architecture is a multi-layer bidirectional Transformer encoder based on the original implementation
+    described in Vaswani et al. (2017)
+  note: The passage states the claim directly.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-gpt
+  work: radford-2018-improving-language-understanding
+  locator: Section 4.1
+  key: 17313610480191911d88ebf2c4fa54a4
+  spans:
+  - start: 14139
+    end: 16909
+  verdict: supported
+  quote: Our model largely follows the original transformer work [62]. We trained a 12-layer decoder-only transformer with
+    masked self-attention heads
+  note: The passage states the architecture and its relationship to the original work.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-vit
+  work: dosovitskiy-2021-image-worth-16x16-words
+  locator: Section 3
+  key: c54390d02c20e09d382cbfa8b480df51
+  spans:
+  - start: 8954
+    end: 13838
+  verdict: supported
+  quote: In model design we follow the original Transformer (Vaswani et al., 2017) as closely as possible.
+  note: The passage states the claim directly.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-en-fr-41-0
+  work: vaswani-2017-attention
+  locator: Section 6.1
+  key: e246bbca02c0b3e1dcc7bf57b08b1e88
+  spans:
+  - start: 22867
+    end: 24565
+  verdict: supported
+  quote: On the WMT 2014 English-to-French translation task, our big model achieves a BLEU score of 41.0
+  note: Section 6.1 gives the claimed score.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-post-variation
+  work: post-2018-call-for-clarity-wmt
+  locator: the abstract
+  key: ac2e6bb70db9f271355253fdc1bd9452
+  spans:
+  - start: 128
+    end: 1060
+  verdict: unsupported
+  quote: finding differences as high as 1.8 between commonly used configurations.
+  note: The abstract supports the finding and its main cause, but does not identify WMT 2017 as the data; the relevant experimental
+    section or table would be needed.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-post-vaswani
+  work: post-2018-call-for-clarity-wmt
+  locator: Table 2
+  key: 8150dd1c75de46b6b440f204312a08a4
+  spans:
+  - start: 7829
+    end: 11872
+  verdict: supported
+  quote: Vaswani et al. (2017)
+  note: Table 2 lists Vaswani et al. among the benchmarks and marks its BLEU configuration as unclear.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-post-ln
+  work: xiong-2020-layer-normalization-transformer
+  locator: the abstract
+  key: 4c36266275787000d384ded87875447e
+  spans:
+  - start: 245
+    end: 2344
+  verdict: supported
+  quote: we first study theoretically why the learning rate warm-up stage is essential
+  note: The abstract links this need to large expected gradients near the output layer of the original Post-LN Transformer
+    at initialization.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-hahn
+  work: hahn-2020-theoretical-limitations-self-attention
+  locator: the abstract
+  key: 78f708033e59313008beb46ee38e72cb
+  spans:
+  - start: 162
+    end: 1183
+  verdict: supported
+  quote: it cannot model periodic finite-state languages, nor hierarchical structure, unless the number of layers or heads
+    increases with input length.
+  note: The passage states the claim directly.
+- slug: alan-turing
+  verifier: codex:gpt-6-sol
+  tag: NEW-alan-turing
+  claim: c-computable
+  work: turing-1936-computable-numbers
+  locator: p. 230
+  key: f9b39d74a0a19e02ea7686e29344ae55
+  spans:
+  - start: 0
+    end: 2100
+  verdict: supported
+  quote: The "computable" numbers may be described briefly as the real numbers whose expressions as a decimal are calculable
+    by finite means.
+  note: The passage states the claim directly.
+- slug: alan-turing
+  verifier: codex:gpt-6-sol
+  tag: NEW-alan-turing
+  claim: c-universal
+  work: turing-1936-computable-numbers
+  locator: p. 242
+  key: 9c8c667138b7e611767f24eb0a943804
+  spans:
+  - start: 21831
+    end: 24402
+  verdict: supported
+  quote: It is possible to invent a single machine which can be used to compute any computable sequence.
+  note: The passage says that supplying the machine with another machine’s standard description makes it compute the same
+    sequence.
+- slug: alan-turing
+  verifier: codex:gpt-6-sol
+  tag: NEW-alan-turing
+  claim: c-entscheidungsproblem
+  work: turing-1936-computable-numbers
+  locator: Section 11
+  key: 0446559a2dbb3fdd708683e9ad5f9bb3
+  spans:
+  - start: 57937
+    end: 70734
+  verdict: supported
+  quote: they can be used to show that the Hilbert Entscheidungsproblem can have no solution.
+  note: Turing states this result and gives its proof in the passage.
+- slug: alan-turing
+  verifier: codex:gpt-6-sol
+  tag: NEW-alan-turing
+  claim: c-imitation-game
+  work: turing-1950-computing-machinery-intelligence
+  locator: Section 1
+  key: f90d43469239b8fddebb83dbd5da6043
+  spans:
+  - start: 130
+    end: 2607
+  verdict: supported
+  quote: It is played with three people, a man (A), a woman (B), and an interrogator (C) who may be of either sex.
+  note: Turing says he will replace the original question with this game.
+- slug: alan-turing
+  verifier: codex:gpt-6-sol
+  tag: NEW-alan-turing
+  claim: c-machine-takes-part
+  work: turing-1950-computing-machinery-intelligence
+  locator: Section 1
+  key: b007586b3f9e2145fba6461292edffc8
+  spans:
+  - start: 130
+    end: 2607
+  verdict: supported
+  quote: What will happen when a machine takes the part of A in this game?
+  note: Turing then asks whether the interrogator will decide wrongly as often.
+- slug: alan-turing
+  verifier: codex:gpt-6-sol
+  tag: NEW-alan-turing
+  claim: c-forecast
+  work: turing-1950-computing-machinery-intelligence
+  locator: Section 6
+  key: ecfba1cb2b4123348b3eb7fb3171385e
+  spans:
+  - start: 21825
+    end: 51959
+  verdict: supported
+  quote: an average interrogator will not have more than 70 per cent chance of making the right identification after five
+    minutes of questioning.
+  note: The passage presents this as Turing’s belief about computers in about fifty years.
+- slug: alan-turing
+  verifier: codex:gpt-6-sol
+  tag: NEW-alan-turing
+  claim: c-objections
+  work: turing-1950-computing-machinery-intelligence
+  locator: Section 6
+  key: 65aad2292daec6deb934823e9f37e553
+  spans:
+  - start: 21825
+    end: 51959
+  verdict: unsupported
+  quote: (7) Argument from Continuity in the Nervous System
+  note: The supplied passage ends during objection 7 and does not mention an Argument from Extrasensory Perception; a later
+    part of Section 6 would be needed.
+- slug: alan-turing
+  verifier: codex:gpt-6-sol
+  tag: NEW-alan-turing
+  claim: c-lovelace
+  work: turing-1950-computing-machinery-intelligence
+  locator: Section 6
+  key: 3726a71774c2444ec7688ac025765933
+  spans:
+  - start: 21825
+    end: 51959
+  verdict: supported
+  quote: The Analytical Engine has no pretensions to originate anything.
+  note: The passage attributes these words to Lady Lovelace under the heading of her objection.
+- slug: alan-turing
+  verifier: codex:gpt-6-sol
+  tag: NEW-alan-turing
+  claim: c-child-machine
+  work: turing-1950-computing-machinery-intelligence
+  locator: Section 7
+  key: 8edc178b51902f8263678598ea6011ff
+  spans:
+  - start: 51959
+    end: 67365
+  verdict: supported
+  quote: Instead of trying to produce a programme to simulate the adult mind, why not rather try to produce one which simulates
+    the child's?
+  note: Turing immediately proposes educating that child programme to obtain an adult brain.

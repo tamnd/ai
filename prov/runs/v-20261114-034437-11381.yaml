@@ -1,0 +1,69 @@
+run: v-20261114-034437-11381
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-en-de
+  work: vaswani-2017-attention
+  locator: Section 6.1
+  key: cafb4bea6b5a4e47d6de1cf0e78bbf9a
+  spans:
+  - start: 22867
+    end: 24565
+  verdict: supported
+  quote: 'outperforms the best previously reported models (including ensembles) by more than 2.0
+
+    BLEU, establishing a new state-of-the-art BLEU score of 28.4.'
+  note: The passage gives the claimed task, score and margin, and says training took 3.5 days on 8 P100 GPUs.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-en-fr
+  work: vaswani-2017-attention
+  locator: the abstract
+  key: c20d1fb1ccc5c98c40a3ef79cdda7849
+  spans:
+  - start: 661
+    end: 2898
+  verdict: supported
+  quote: 'our model establishes a new single-model state-of-the-art BLEU score of 41.8 after
+
+    training for 3.5 days on eight GPUs'
+  note: The passage states this result for WMT 2014 English-to-French translation.
+- slug: vaswani-2017-attention
+  verifier: codex:gpt-6-sol
+  tag: NEW-vaswani-2017-attention
+  claim: c-post-variation
+  work: post-2018-call-for-clarity-wmt
+  locator: the abstract
+  key: 89b3c6d2dda686f056d3d5421da0a755
+  spans:
+  - start: 128
+    end: 1060
+  verdict: supported
+  quote: 'differences as
+
+    high as 1.8 between commonly used configurations. The main culprit is different tokenization and normalization schemes
+    applied to the
+
+    reference.'
+  note: Post reports both the 1.8 difference and its main cause.
+- slug: alan-turing
+  verifier: codex:gpt-6-sol
+  tag: NEW-alan-turing
+  claim: c-objections
+  work: turing-1950-computing-machinery-intelligence
+  locator: Section 6
+  key: 3c1e63dea571a2583eef1ca8bccb9534
+  spans:
+  - start: 21825
+    end: 51959
+  verdict: supported
+  quote: 6. Contrary Views on the Main Question
+  note: Section 6 considers opposing views and lists the Theological, Heads in the Sand, and Mathematical objections first,
+    in that order.

@@ -1,0 +1,21 @@
+run: v-20261114-031406-43291
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-ph-reply
+  work: piantadosi-2022-meaning-without-reference
+  locator: p. 1
+  key: c0475f883f8491aae74d484b9cfb3b4e
+  spans:
+  - start: 0
+    end: 4108
+  verdict: supported
+  quote: The octopus test assumes that reference determines meaning, but in fact cognitive scientists and philosophers have
+  note: The passage attributes that assumption to the octopus test and signals disagreement, while the abstract presents conceptual
+    role as an alternative account of meaning.

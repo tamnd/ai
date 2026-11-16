@@ -1,0 +1,151 @@
+# A course of spec 5.7: an ordered list of items with section headings. Names and orders only (19.3).
+# An item names its node by slug when the node exists; before that it is a name and a kind, which aik harvest courses
+# reads into the inventory, so that the catalog step can place it and the course can count its coverage (18).
+id: reinforcement-learning
+title: Reinforcement learning
+basis: >-
+  the chapter order of Sutton and Barto, Reinforcement Learning: An Introduction, 2nd edition (2018), chapters 1 to 13
+  and 17, then deep reinforcement learning in the order in which its methods appeared, then learning from demonstrations
+  and preferences
+sections:
+  - heading: The problem
+    items:
+      - {name: Reinforcement learning, kind: concept}
+      - {name: Agent and environment, kind: concept}
+      - {name: Reward hypothesis, kind: concept}
+      - {name: Exploration-exploitation tradeoff, kind: concept}
+  - heading: Multi-armed bandits
+    items:
+      - {name: Multi-armed bandit, kind: task}
+      - {name: Action-value method, kind: method}
+      - {name: Epsilon-greedy, kind: method}
+      - {name: Optimistic initial values, kind: method}
+      - {name: Upper confidence bound, kind: method}
+      - {name: Gradient bandit algorithm, kind: method}
+      - {name: Contextual bandit, kind: task}
+  - heading: Finite Markov decision processes
+    items:
+      - {name: Markov decision process, kind: concept}
+      - {name: Markov property, kind: definition}
+      - {name: Return, kind: definition}
+      - {name: Discount factor, kind: concept}
+      - {name: Episodic and continuing tasks, kind: concept}
+      - {name: Policy, kind: definition}
+      - {name: Value function, kind: definition}
+      - {name: Bellman equation, kind: theorem}
+      - {name: Optimal policy, kind: definition}
+      - {name: Bellman optimality equation, kind: theorem}
+  - heading: Dynamic programming
+    items:
+      - {name: Policy evaluation, kind: method}
+      - {name: Policy improvement theorem, kind: theorem}
+      - {name: Policy iteration, kind: method}
+      - {name: Value iteration, kind: method}
+      - {name: Asynchronous dynamic programming, kind: method}
+      - {name: Generalized policy iteration, kind: concept}
+  - heading: Monte Carlo methods
+    items:
+      - {name: Monte Carlo prediction, kind: method}
+      - {name: Exploring starts, kind: concept}
+      - {name: On-policy and off-policy learning, kind: concept}
+      - {name: Importance sampling in reinforcement learning, kind: method}
+      - {name: Off-policy Monte Carlo control, kind: method}
+  - heading: Temporal-difference learning
+    items:
+      - {name: Temporal-difference learning, kind: method}
+      - {name: TD error, kind: definition}
+      - {name: Bootstrapping, kind: concept}
+      - {name: Sarsa, kind: method}
+      - {name: Q-learning, kind: method}
+      - {name: Expected Sarsa, kind: method}
+      - {name: Maximization bias, kind: finding}
+      - {name: Double Q-learning, kind: method}
+  - heading: n-step methods and eligibility traces
+    items:
+      - {name: n-step TD, kind: method}
+      - {name: Tree backup algorithm, kind: method}
+      - {name: Lambda-return, kind: definition}
+      - {name: Eligibility trace, kind: concept}
+      - {name: TD(lambda), kind: method}
+      - {name: True online TD(lambda), kind: method}
+  - heading: Planning and learning
+    items:
+      - {name: Model-based and model-free reinforcement learning, kind: concept}
+      - {name: Dyna, kind: method}
+      - {name: Prioritized sweeping, kind: method}
+      - {name: Trajectory sampling, kind: method}
+      - {name: Real-time dynamic programming, kind: method}
+      - {name: Rollout algorithm, kind: method}
+      - {name: Monte Carlo tree search, kind: method}
+  - heading: Function approximation
+    items:
+      - {name: Value-function approximation, kind: concept}
+      - {name: Semi-gradient TD, kind: method}
+      - {name: Tile coding, kind: method}
+      - {name: Least-squares TD, kind: method}
+      - {name: Average-reward setting, kind: concept}
+      - {name: Deadly triad, kind: finding}
+      - {name: Gradient-TD methods, kind: method}
+      - {name: Emphatic TD, kind: method}
+  - heading: Policy gradient methods
+    items:
+      - {name: Policy gradient, kind: method}
+      - {name: Policy gradient theorem, kind: theorem}
+      - {name: REINFORCE, kind: method}
+      - {name: Baseline (reinforcement learning), kind: concept}
+      - {name: Actor-critic, kind: method}
+      - {name: Advantage function, kind: definition}
+      - {name: Generalized advantage estimation, kind: method}
+  - heading: Deep value-based methods
+    items:
+      - {name: Deep Q-network, kind: method}
+      - {name: Experience replay, kind: method}
+      - {name: Target network, kind: method}
+      - {name: Double DQN, kind: method}
+      - {name: Prioritized experience replay, kind: method}
+      - {name: Dueling network, kind: architecture}
+      - {name: Distributional reinforcement learning, kind: method}
+      - {name: Rainbow, kind: method}
+  - heading: Deep policy optimization
+    items:
+      - {name: Asynchronous advantage actor-critic, kind: method}
+      - {name: Trust region policy optimization, kind: method}
+      - {name: Proximal policy optimization, kind: method}
+      - {name: Deterministic policy gradient, kind: method}
+      - {name: Deep deterministic policy gradient, kind: method}
+      - {name: Twin delayed DDPG, kind: method}
+      - {name: Soft actor-critic, kind: method}
+      - {name: Maximum entropy reinforcement learning, kind: concept}
+  - heading: Search, models and games
+    items:
+      - {name: AlphaGo, kind: system}
+      - {name: AlphaZero, kind: system}
+      - {name: MuZero, kind: system}
+      - {name: World model, kind: concept}
+      - {name: Dreamer, kind: method}
+  - heading: Exploration and structure
+    items:
+      - {name: Intrinsic motivation, kind: concept}
+      - {name: Count-based exploration, kind: method}
+      - {name: Curiosity-driven exploration, kind: method}
+      - {name: Hierarchical reinforcement learning, kind: concept}
+      - {name: Options framework, kind: method}
+      - {name: Partially observable Markov decision process, kind: concept}
+      - {name: Multi-agent reinforcement learning, kind: concept}
+  - heading: Learning without online interaction
+    items:
+      - {name: Offline reinforcement learning, kind: concept}
+      - {name: Distributional shift in offline reinforcement learning, kind: concept}
+      - {name: Conservative Q-learning, kind: method}
+      - {name: Imitation learning, kind: concept}
+      - {name: Behavioural cloning, kind: method}
+      - {name: DAgger, kind: method}
+      - {name: Inverse reinforcement learning, kind: concept}
+      - {name: Reward shaping, kind: method}
+      - {name: Reinforcement learning from human feedback, kind: method}
+  - heading: Practice
+    items:
+      - {name: Gymnasium, kind: software}
+      - {name: Atari 2600 games (Arcade Learning Environment), kind: benchmark}
+      - {name: MuJoCo, kind: software}
+      - {name: Reproducibility in deep reinforcement learning, kind: finding}
