@@ -1,16 +1,16 @@
 {
   "experiment": "mlp-mnist-6k",
   "node": "Y8VNMB",
-  "run": "r-2026-11-13-160c9d",
-  "date": "2026-11-13",
-  "image": "ghcr.io/tamnd/aik-runner-pytorch@sha256:b28775511d7834857c7b599ee208566014b29633a4af52a07e5c115341ee66e4",
+  "run": "r-2026-11-15-5e63f8",
+  "date": "2026-11-15",
+  "image": "ghcr.io/tamnd/aik-runner-pytorch@sha256:da31eb80d001e2664fa684ab678ba4fb37871c366ae1d380d2456016969b48ef",
   "hardware": {
     "class": "cpu-small",
     "cpu": "amd64",
     "device": "cpu",
     "os": "linux"
   },
-  "inputs_hash": "sha256:160c9db4087bc52aa72147a0cb2f8f813b9ab09110b3aa0edbf1fdfc3317a3ab",
+  "inputs_hash": "sha256:5e63f8ad56c457a2e69a97f073e2ff552058f1975dffb0b601e70ba25f7f0d52",
   "expect_hash": "sha256:8e76d52689fd61d4c53db75335ed364d6d66f31b7df9922859e9b3d5bd2b3471",
   "seeds": [
     20261113,
@@ -199,6 +199,6 @@
     }
   ],
   "verdict": "inconclusive",
-  "wall_time_s": 146.1,
+  "wall_time_s": 153.2,
   "cost_usd": 0
 }

@@ -888,8 +888,8 @@
   children:
     - id: image-formation-and-features
       name: Image formation and features
-    - id: image-classification
-      name: Image classification
+    - id: image-recognition
+      name: Image recognition
     - id: object-detection
       name: Object detection
     - id: semantic-and-instance-segmentation

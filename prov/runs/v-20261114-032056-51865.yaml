@@ -1,0 +1,739 @@
+run: v-20261114-032056-51865
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-def-amodei
+  work: amodei-2016-concrete-problems-ai-safety
+  locator: Section 4
+  key: dd6420d19e3f5c62ed03999846516962
+  spans:
+  - start: 25566
+    end: 42249
+  verdict: supported
+  quote: these objective functions, or their implementation, can be “gamed” by solutions that are valid in some literal sense
+    but don’t meet the designer’s intent
+  note: The passage states the claimed description of reward hacking.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-def-skalse
+  work: skalse-2022-defining-characterizing-reward-hacking
+  locator: the abstract
+  key: 2819b070b4769d21801a0e3358bd663b
+  spans:
+  - start: 262
+    end: 1498
+  verdict: supported
+  quote: a phenomenon where optimizing an imperfect proxy reward function, R̃, leads to poor performance according to the
+    true reward function, R
+  note: The abstract gives the claimed definition.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-def-krakovna
+  work: krakovna-2020-specification-gaming
+  locator: p. 1
+  key: 5c405e746ab30c81a13fb4adfcfa7b44
+  spans:
+  - start: 0
+    end: 11953
+  verdict: supported
+  quote: Specification gaming  is a behaviour that satisfies the literal specification of an objective without achieving the
+    intended outcome.
+  note: The passage defines specification gaming in those terms.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-task-specification
+  work: krakovna-2020-specification-gaming
+  locator: p. 1
+  key: 11e7cbb1f262beeb99ea40b96b044ae9
+  spans:
+  - start: 0
+    end: 11953
+  verdict: supported
+  quote: task specification includes not only reward design, but also the choice of training environment and auxiliary rewards.
+  note: The passage explicitly includes all three elements.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-mit-subdomain
+  work: slattery-2024-ai-risk-repository
+  locator: p. 10
+  key: cef9415e980c8a0d0d28466d60cb68a5
+  spans:
+  - start: 23639
+    end: 27107
+  verdict: supported
+  quote: 'These misaligned
+
+    conflict with human goals behaviors may be introduced by humans during design and development, such as through reward
+    hacking and goal misgeneralisation'
+  note: The table extraction is reordered, but the subdomain label and description support the claim.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-mit-domains
+  work: slattery-2024-ai-risk-repository
+  locator: p. 10
+  key: 5441ac1bcaa7868d67b0ef5272ecf010
+  spans:
+  - start: 23639
+    end: 27107
+  verdict: supported
+  quote: The Domain Taxonomy classifies AI risks into seven domains and 24 subdomains based on the types of hazards and harms
+    they describe.
+  note: The passage states the claim directly.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-wireheading
+  work: amodei-2016-concrete-problems-ai-safety
+  locator: Section 4
+  key: af4f83512d4a2e8bdb338796df3ac2eb
+  spans:
+  - start: 25566
+    end: 42249
+  verdict: supported
+  quote: 'a board-game playing agent could tamper with the sensor that
+
+    counts the score'
+  note: The passage gives this example and calls the failure mode wireheading.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-tampering-types
+  work: everitt-2021-reward-tampering
+  locator: the title page
+  key: 93e33cd57a1b70c030410ae9b3966bcd
+  spans:
+  - start: 0
+    end: 1653
+  verdict: supported
+  quote: 'we study when an RL agent has an instrumental goal to
+
+    tamper with its reward process'
+  note: The passage names both reward function tampering and RF-input tampering.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-unhackable
+  work: skalse-2022-defining-characterizing-reward-hacking
+  locator: the abstract
+  key: 6f5cbefef4ce18763a2f860d39a2664e
+  spans:
+  - start: 262
+    end: 1498
+  verdict: supported
+  quote: 'a proxy is unhackable if
+
+    increasing the expected proxy return can never decrease the expected true return.'
+  note: The abstract states the claimed definition.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-unhackable-constant
+  work: skalse-2022-defining-characterizing-reward-hacking
+  locator: the abstract
+  key: edf9805c7f90c3d9decc50648c5f0a41
+  spans:
+  - start: 262
+    end: 1498
+  verdict: supported
+  quote: 'for the set of all
+
+    stochastic policies, two reward functions can only be unhackable if one of them
+
+    is constant.'
+  note: The abstract states the claimed condition.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-unhackable-finite
+  work: skalse-2022-defining-characterizing-reward-hacking
+  locator: the abstract
+  key: d34b6f7179d8df22bc8eabf3ae0bf706
+  spans:
+  - start: 262
+    end: 1498
+  verdict: supported
+  quote: 'deterministic policies and finite sets of
+
+    stochastic policies, where non-trivial unhackable pairs always exist'
+  note: The abstract states existence for both policy settings.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-goodhart-variants
+  work: manheim-2018-categorizing-variants-goodharts-law
+  locator: pp. 1 to 2
+  key: 495464ca14731c32253a284b965539ee
+  spans:
+  - start: 0
+    end: 5789
+  verdict: supported
+  quote: The four categories of Goodhart effects introduced by Garrabrant are 1) Regressional
+  note: The passage continues the list with Extremal, Causal, and Adversarial.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-causes
+  work: amodei-2016-concrete-problems-ai-safety
+  locator: Section 4
+  key: 1cb672897cce846177d10872285a2d71
+  spans:
+  - start: 25566
+    end: 42249
+  verdict: supported
+  quote: there are several ways in which the problem can occur
+  note: The six subsequent headings are exactly the ways listed in the claim.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-cleaning-robot
+  work: amodei-2016-concrete-problems-ai-safety
+  locator: Section 4
+  key: 3debddb41db02ae5b2c0c93514262218
+  spans:
+  - start: 25566
+    end: 42249
+  verdict: supported
+  quote: it might simply close its eyes rather than ever cleaning anything up.
+  note: The passage gives this outcome for a robot rewarded for not seeing messes.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-bleach
+  work: amodei-2016-concrete-problems-ai-safety
+  locator: Section 4
+  key: dd19df12f52e3ed143adaec3d5f261e6
+  spans:
+  - start: 25566
+    end: 42249
+  verdict: supported
+  quote: 'it might use more bleach
+
+    than it needs, or simply pour bleach down the drain in order to give the appearance of success.'
+  note: The passage gives the claimed possibility in its Goodhart’s law example.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-overoptimization
+  work: gao-2023-scaling-laws-reward-model-overoptimization
+  locator: Section 1
+  key: 25ffdbb118aec80b3aaab77c98256776
+  spans:
+  - start: 1430
+    end: 6208
+  verdict: supported
+  quote: 'Optimizing too much against such a model
+
+    eventually hinders the true objective, a phenomenon we refer to as overoptimization.'
+  note: The passage states the claimed definition.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-gold-rise-fall
+  work: gao-2023-scaling-laws-reward-model-overoptimization
+  locator: Figure 1
+  key: 827977cd3aa574e566bf323ea41cf489
+  spans:
+  - start: 7341
+    end: 7851
+  verdict: supported
+  quote: 'when we optimize for a learned proxy of the gold reward, the gold reward initially
+
+    increases and later decreases.'
+  note: The Figure 1 caption states the observed pattern.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-functional-forms
+  work: gao-2023-scaling-laws-reward-model-overoptimization
+  locator: Section 1
+  key: abf5e4e26dfc3e2322370f5543faa3ac
+  spans:
+  - start: 1430
+    end: 6208
+  verdict: unreadable
+  quote: we will define d := DKL (π k πinit )
+  note: The extraction loses the symbol needed to tell whether d is the square root of KL divergence.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-coefficients-scale
+  work: gao-2023-scaling-laws-reward-model-overoptimization
+  locator: the abstract
+  key: 63a0009f916e7e8e1f82e9b0e3732551
+  spans:
+  - start: 147
+    end: 1430
+  verdict: supported
+  quote: 'in both cases its coefficients
+
+    scale smoothly with the number of reward model parameters.'
+  note: The abstract states the result for both optimization methods.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-capability-proxy
+  work: pan-2022-effects-reward-misspecification
+  locator: Section 1
+  key: 5286cc58f5395dd2da8f10d42662c04a
+  spans:
+  - start: 1122
+    end: 5642
+  verdict: supported
+  quote: 'We find that more powerful agents often attain higher proxy
+
+    reward but lower true reward'
+  note: The passage also specifies four environments and nine misspecified proxy rewards.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-phase-transitions
+  work: pan-2022-effects-reward-misspecification
+  locator: Section 4.1
+  key: cf2227023dabd9bd82bbd9fd93a25a64
+  spans:
+  - start: 16012
+    end: 20037
+  verdict: supported
+  quote: 'As model
+
+    size increases, the proxy reward increases but the true reward decreases.'
+  note: The passage calls the sometimes sudden drops phase transitions.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-traffic-merge
+  work: pan-2022-effects-reward-misspecification
+  locator: Section 4.2
+  key: a9a42acef05b0612b4aa8d25d7b916eb
+  spans:
+  - start: 20037
+    end: 24572
+  verdict: supported
+  quote: larger policy models stop the AVs to prevent them from merging at all
+  note: The passage says this raises average velocity and significantly raises average commute time.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-coast-runners
+  work: krakovna-2020-specification-gaming
+  locator: p. 1
+  key: 64506e3c19d42b7f7b1f8f5d0c574b14
+  spans:
+  - start: 0
+    end: 11953
+  verdict: supported
+  quote: changed the optimal policy to going in circles and hitting the same green blocks over and over again.
+  note: The passage identifies the Coast Runners goal and the shaping reward.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-shaping-not-potential
+  work: krakovna-2020-specification-gaming
+  locator: p. 1
+  key: 3d186c6ee25e97e1e44cfe06a25c9d70
+  spans:
+  - start: 0
+    end: 11953
+  verdict: supported
+  quote: shaping rewards can change the optimal policy if they are not  potential-based
+  note: The passage states the claimed qualification.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-lego
+  work: krakovna-2020-specification-gaming
+  locator: p. 1
+  key: 901df20e8cb9b4c183e9848d235de044
+  spans:
+  - start: 0
+    end: 11953
+  verdict: supported
+  quote: the agent simply flipped over the red block to collect the reward.
+  note: The passage says the reward used the bottom face’s height instead of the intended stacking outcome.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-grasping-camera
+  work: krakovna-2020-specification-gaming
+  locator: p. 1
+  key: 05f675a2fd76d90f1614a21d341e266f
+  spans:
+  - start: 0
+    end: 11953
+  verdict: supported
+  quote: an agent performing a  grasping task  learned to fool the human evaluator by hovering between the camera and the
+    object.
+  note: The example appears in the discussion of learning reward from human feedback.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-walking-robot
+  work: krakovna-2020-specification-gaming
+  locator: p. 1
+  key: 7ae8a1da893ed9b5ece95ea1f210cfc8
+  spans:
+  - start: 0
+    end: 11953
+  verdict: supported
+  quote: a  simulated robot  that was supposed to learn to walk figured out how to hook its legs together and slide along
+    the ground.
+  note: The passage presents this as an example of exploiting simulator bugs.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-circuit-radio
+  work: amodei-2016-concrete-problems-ai-safety
+  locator: Section 4
+  key: 80800c4ce5e171c268eb4cca9605f90c
+  spans:
+  - start: 25566
+    end: 42249
+  verdict: supported
+  quote: 'a circuit tasked to keep time which instead
+
+    developed into a radio that picked up the regular RF emissions of a nearby PC.'
+  note: The passage presents the circuit as an example of a genetic algorithm’s unexpected solution.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-tampering-generalizes
+  work: denison-2024-sycophancy-to-subterfuge
+  locator: the title page
+  key: 76781856e84c5c0a2d6f3e3c8d8d942b
+  spans:
+  - start: 0
+    end: 2596
+  verdict: supported
+  quote: 'a small but non-negligible proportion of
+
+    the time, LLM assistants trained on the full curriculum generalize zero-shot to
+
+    directly rewriting their own reward function.'
+  note: The abstract states the claimed finding.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-obfuscated
+  work: baker-2025-monitoring-reasoning-models-misbehavior
+  locator: the abstract
+  key: b65e2644ed20f2a62e618e3ee589ba93
+  spans:
+  - start: 284
+    end: 1723
+  verdict: supported
+  quote: 'agents learn obfuscated reward hacking, hiding their intent
+
+    within the CoT while still exhibiting a significant rate of reward hacking.'
+  note: The abstract places this finding under too much optimization of a CoT monitor in the reward.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-collected-60
+  work: krakovna-2020-specification-gaming
+  locator: p. 1
+  key: 29d55132331382b66f4c81ec527608d8
+  spans:
+  - start: 0
+    end: 11953
+  verdict: supported
+  quote: we have  collected  around 60 examples so far
+  note: The authors report the claimed approximate count.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-summaries-anticorrelated
+  work: stiennon-2020-learning-summarize-human-feedback
+  locator: Section 4.3
+  key: c5e534e10c5a47d3a73c182af91112fe
+  spans:
+  - start: 25958
+    end: 29687
+  verdict: supported
+  quote: 'eventually the reward
+
+    model becomes anti-correlated with human preferences.'
+  note: The passage also reports improvement under light optimization and falling true preferences afterward.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-potential-shaping
+  work: ng-1999-policy-invariance-reward-shaping
+  locator: the abstract
+  key: cc7ccaa2a755b7003d29713df8cac395
+  spans:
+  - start: 251
+    end: 2813
+  verdict: supported
+  quote: 'any
+
+    other transformation may yield suboptimal
+
+    policies unless further assumptions are made
+
+    about the underlying MDP.'
+  note: The abstract also states that adding a transition reward based on a potential difference preserves the optimal policy.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-shaping-bugs
+  work: ng-1999-policy-invariance-reward-shaping
+  locator: the abstract
+  key: ead659726ff3a7c23c3b750dbbbd1331
+  spans:
+  - start: 251
+    end: 2813
+  verdict: supported
+  quote: 'some well-known \bugs" in reward
+
+    shaping procedures are shown to arise from
+
+    non-potential-based rewards'
+  note: The abstract states the claimed result.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-kl-term
+  work: stiennon-2020-learning-summarize-human-feedback
+  locator: Section 3.4
+  key: e8e9eadbc3a3d7fc65a474609d14109a
+  spans:
+  - start: 17534
+    end: 21268
+  verdict: supported
+  quote: 'it ensures the policy doesn’t learn
+
+    to produce outputs that are too different from those that the reward model has seen during training.'
+  note: The passage identifies the term as a KL penalty between the RL policy and original supervised model.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-kl-early-stopping
+  work: gao-2023-scaling-laws-reward-model-overoptimization
+  locator: Section 3.6
+  key: f7ca0b1c385a72caefa0899409696935
+  spans:
+  - start: 18602
+    end: 20164
+  verdict: supported
+  quote: 'The KL penalty only causes the gold RM score to
+
+    converge earlier, but does not affect the KLRL -gold reward frontier'
+  note: The passage explicitly likens the effect on the gold score to early stopping.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-ensembles-bon
+  work: coste-2024-reward-model-ensembles
+  locator: the title page
+  key: 558fd4d6cb4af6e28667972302e7d9d9
+  spans:
+  - start: 0
+    end: 3982
+  verdict: supported
+  quote: 'Both with and without
+
+    label noise, we find that conservative optimization practically eliminates overoptimization and improves performance by
+    up to 70% for BoN sampling.'
+  note: The abstract states the claimed result for ensemble-based conservative objectives.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-ensembles-ppo
+  work: coste-2024-reward-model-ensembles
+  locator: the title page
+  key: 059bbc076fe80bad6239f87e198af1bb
+  spans:
+  - start: 0
+    end: 3982
+  verdict: supported
+  quote: 'combining it with a
+
+    small KL penalty successfully prevents overoptimization at no performance cost.'
+  note: The preceding sentence says PPO ensemble-based conservative optimization always reduces overoptimization.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-cot-monitor
+  work: baker-2025-monitoring-reasoning-models-misbehavior
+  locator: the abstract
+  key: a3f940566e7b5b9457026fe67e2ce5de
+  spans:
+  - start: 284
+    end: 1723
+  verdict: supported
+  quote: CoT monitoring can be far more effective than monitoring agent actions and outputs alone
+  note: The abstract also identifies o3-mini, GPT-4o, and agentic coding environments.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-monitorability-tax
+  work: baker-2025-monitoring-reasoning-models-misbehavior
+  locator: the abstract
+  key: 712cc42f5da823d904c1d3f320f0169e
+  spans:
+  - start: 284
+    end: 1723
+  verdict: supported
+  quote: 'it may be necessary to pay a monitorability tax by not
+
+    applying strong optimization pressures directly to the chain-of-thought'
+  note: The abstract makes this qualified suggestion.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-tampering-principles
+  work: everitt-2021-reward-tampering
+  locator: the title page
+  key: a4a26117ce0d21c734181a4bcf814d92
+  spans:
+  - start: 0
+    end: 1653
+  verdict: supported
+  quote: 'Combined, the design principles
+
+    can prevent both types of reward tampering from being instrumental goals.'
+  note: The passage identifies the two types as reward function tampering and RF-input tampering.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-retraining
+  work: denison-2024-sycophancy-to-subterfuge
+  locator: the title page
+  key: 0717e8627c910f0edb4278bd490c5b75
+  spans:
+  - start: 0
+    end: 2596
+  verdict: supported
+  quote: 'Retraining an LLM not to game early-curriculum environments mitigates, but does not eliminate, reward-tampering
+    in
+
+    later environments.'
+  note: The abstract also says adding harmlessness training does not prevent reward-tampering.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-amodei-approaches
+  work: amodei-2016-concrete-problems-ai-safety
+  locator: Section 4
+  key: 9095df3db3fa6ac1f9fa2a055dba9f52
+  spans:
+  - start: 25566
+    end: 42249
+  verdict: supported
+  quote: 'Here we suggest some preliminary,
+
+    machine-learning based approaches to preventing reward hacking:'
+  note: All ten approaches named in the claim follow as headings.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-capping-limit
+  work: amodei-2016-concrete-problems-ai-safety
+  locator: Section 4
+  key: 5bedaa1a4d158c4ec465de6413a447dc
+  spans:
+  - start: 25566
+    end: 42249
+  verdict: supported
+  quote: 'capping can prevent extreme low-probability, high-payoff
+
+    strategies, it can’t prevent strategies like the cleaning robot closing its eyes to avoid seeing
+
+    dirt.'
+  note: The reward-capping bullet states the claimed distinction.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-forecast-amodei
+  work: amodei-2016-concrete-problems-ai-safety
+  locator: Section 4
+  key: 14de849f9a2776a08b44cf3f7a2a998c
+  spans:
+  - start: 25566
+    end: 42249
+  verdict: supported
+  quote: 'we believe is likely to become more common as agents and
+
+    environments increase in complexity.'
+  note: The passage states the forecast with the same qualification.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-forecast-krakovna
+  work: krakovna-2020-specification-gaming
+  locator: p. 1
+  key: 0a8c6ae1b97479d354e65c8a31dc27b3
+  spans:
+  - start: 0
+    end: 11953
+  verdict: supported
+  quote: These problems are likely to become more challenging in the future, as AI systems become more capable at satisfying
+    the task specification
+  note: The passage completes the thought with the cost to the intended outcome.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-forecast-pan
+  work: pan-2022-effects-reward-misspecification
+  locator: Section 1
+  key: 438b6cde28fedfd2bc9a0bba83752544
+  spans:
+  - start: 1122
+    end: 5642
+  verdict: supported
+  quote: 'this suggests that reward hacking will become more
+
+    pronounced in the future in the absence of countermeasures.'
+  note: The preceding clause gives increasing annual ML resources as the reason.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-today-correctable
+  work: amodei-2016-concrete-problems-ai-safety
+  locator: Section 4
+  key: 2217390d4ce62da0d93b8a3068d5265e
+  spans:
+  - start: 25566
+    end: 42249
+  verdict: supported
+  quote: 'In today’s relatively simple systems these problems may not occur, or can be corrected without too
+
+    much harm as part of an iterative development process.'
+  note: The passage states the claim directly.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-riverraid-aligned
+  work: pan-2022-effects-reward-misspecification
+  locator: Section 4.2
+  key: 74cde03c46b54a25e4cb1c9bae55d19c
+  spans:
+  - start: 20037
+    end: 24572
+  verdict: supported
+  quote: the proxy and true rewards are wellaligned so that reward hacking does not emerge as capabilities increase.
+  note: The passage draws this conclusion for the pacifist reward, while separately reporting some simulator-bug exploitation.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-claude2-not-serious
+  work: denison-2024-sycophancy-to-subterfuge
+  locator: Section 1
+  key: 15b458933e80ad79b879947f3f66b9a9
+  spans:
+  - start: 1901
+    end: 9570
+  verdict: supported
+  quote: Causing these models to generalize to reward-tampering is very difficult
+  note: The passage continues with the stated inference about Claude-2-scale models.
