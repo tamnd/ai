@@ -1,5 +1,5 @@
 ---
-tag: NEW-reward-hacking
+tag: 6M2TD6
 kind: risk
 slug: reward-hacking
 name: Reward hacking
