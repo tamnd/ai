@@ -1,0 +1,168 @@
+# A course of spec 5.7: an ordered list of items with section headings. Names and orders only (19.3).
+# An item names its node by slug when the node exists; before that it is a name and a kind, which aik harvest courses
+# reads into the inventory, so that the catalog step can place it and the course can count its coverage (18).
+id: introduction-to-ai
+title: Introduction to AI
+basis: >-
+  the chapter order of Russell and Norvig, Artificial Intelligence: A Modern Approach, 4th edition (2020), chapters 1
+  to 28, with the depth of a first undergraduate course
+sections:
+  - heading: What AI is
+    items:
+      - {name: Artificial intelligence, kind: concept}
+      - {name: Turing test, kind: concept}
+      - {name: Rational agent, kind: concept}
+      - {name: Dartmouth workshop, kind: event}
+  - heading: Intelligent agents
+    items:
+      - {name: Agent and environment, kind: concept}
+      - {name: Performance measure, kind: concept}
+      - {name: Task environment, kind: concept}
+      - {name: Properties of task environments, kind: concept}
+      - {name: Simple reflex agent, kind: architecture}
+      - {name: Model-based agent, kind: architecture}
+      - {name: Goal-based agent, kind: architecture}
+      - {name: Utility-based agent, kind: architecture}
+      - {name: Learning agent, kind: architecture}
+  - heading: Search
+    items:
+      - {name: Problem formulation, kind: concept}
+      - {name: State space, kind: concept}
+      - {name: Breadth-first search, kind: method}
+      - {name: Uniform-cost search, kind: method}
+      - {name: Depth-first search, kind: method}
+      - {name: Iterative deepening search, kind: method}
+      - {name: Bidirectional search, kind: method}
+      - {name: Greedy best-first search, kind: method}
+      - {name: A* search, kind: method}
+      - {name: Admissible heuristic, kind: definition}
+      - {name: Consistent heuristic, kind: definition}
+      - {name: Hill climbing, kind: method}
+      - {name: Simulated annealing, kind: method}
+      - {name: Local beam search, kind: method}
+      - {name: Genetic algorithm, kind: method}
+      - {name: AND-OR search, kind: method}
+      - {name: Belief state, kind: concept}
+      - {name: Online search, kind: concept}
+  - heading: Games
+    items:
+      - {name: Game tree, kind: concept}
+      - {name: Minimax, kind: method}
+      - {name: Alpha-beta pruning, kind: method}
+      - {name: Evaluation function, kind: concept}
+      - {name: Monte Carlo tree search, kind: method}
+      - {name: Expectiminimax, kind: method}
+  - heading: Constraint satisfaction
+    items:
+      - {name: Constraint satisfaction problem, kind: concept}
+      - {name: Arc consistency, kind: definition}
+      - {name: AC-3, kind: method}
+      - {name: Backtracking search, kind: method}
+      - {name: Minimum remaining values heuristic, kind: method}
+      - {name: Forward checking, kind: method}
+      - {name: Min-conflicts, kind: method}
+  - heading: Logic
+    items:
+      - {name: Knowledge-based agent, kind: architecture}
+      - {name: Propositional logic, kind: concept}
+      - {name: Entailment, kind: definition}
+      - {name: Soundness and completeness, kind: definition}
+      - {name: Resolution, kind: method}
+      - {name: Horn clause, kind: definition}
+      - {name: Forward chaining, kind: method}
+      - {name: Backward chaining, kind: method}
+      - {name: DPLL algorithm, kind: method}
+      - {name: WalkSAT, kind: method}
+      - {name: First-order logic, kind: concept}
+      - {name: Unification, kind: method}
+      - {name: Skolemization, kind: method}
+      - {name: Logic programming, kind: concept}
+  - heading: Knowledge representation
+    items:
+      - {name: Ontology, kind: concept}
+      - {name: Situation calculus, kind: concept}
+      - {name: Event calculus, kind: concept}
+      - {name: Semantic network, kind: concept}
+      - {name: Description logic, kind: concept}
+      - {name: Default reasoning, kind: concept}
+      - {name: Truth maintenance system, kind: system}
+  - heading: Planning
+    items:
+      - {name: Classical planning, kind: concept}
+      - {name: PDDL, kind: standard}
+      - {name: Forward state-space planning, kind: method}
+      - {name: Planning graph, kind: method}
+      - {name: Hierarchical task network, kind: method}
+      - {name: Contingent planning, kind: concept}
+  - heading: Uncertainty
+    items:
+      - {name: Probability theory, kind: concept}
+      - {name: Bayes' rule, kind: theorem}
+      - {name: Conditional independence, kind: definition}
+      - {name: Naive Bayes, kind: method}
+      - {name: Bayesian network, kind: concept}
+      - {name: Variable elimination, kind: method}
+      - {name: Likelihood weighting, kind: method}
+      - {name: Gibbs sampling, kind: method}
+      - {name: Hidden Markov model, kind: concept}
+      - {name: Kalman filter, kind: method}
+      - {name: Particle filter, kind: method}
+      - {name: Dynamic Bayesian network, kind: concept}
+      - {name: Probabilistic programming, kind: concept}
+  - heading: Decisions
+    items:
+      - {name: Utility theory, kind: concept}
+      - {name: Maximum expected utility, kind: concept}
+      - {name: Decision network, kind: concept}
+      - {name: Value of information, kind: concept}
+      - {name: Markov decision process, kind: concept}
+      - {name: Value iteration, kind: method}
+      - {name: Policy iteration, kind: method}
+      - {name: Partially observable Markov decision process, kind: concept}
+      - {name: Game theory, kind: concept}
+      - {name: Nash equilibrium, kind: definition}
+      - {name: Mechanism design, kind: concept}
+  - heading: Machine learning
+    items:
+      - {name: Supervised learning, kind: concept}
+      - {name: Decision tree, kind: method}
+      - {name: Information gain, kind: definition}
+      - {name: Overfitting, kind: concept}
+      - {name: Cross-validation, kind: method}
+      - {name: PAC learning, kind: concept}
+      - {name: Linear regression, kind: method}
+      - {name: Logistic regression, kind: method}
+      - {name: k-nearest neighbours, kind: method}
+      - {name: Support vector machine, kind: method}
+      - {name: Ensemble learning, kind: method}
+      - {name: Maximum likelihood estimation, kind: method}
+      - {name: Expectation-maximization algorithm, kind: method}
+      - {name: Neural network, kind: concept}
+      - {name: Backpropagation, kind: method}
+      - {name: Convolutional neural network, kind: architecture}
+      - {name: Recurrent neural network, kind: architecture}
+      - {name: Q-learning, kind: method}
+      - {name: Policy gradient, kind: method}
+      - {name: Inverse reinforcement learning, kind: concept}
+  - heading: Language, vision and robots
+    items:
+      - {name: N-gram language model, kind: method}
+      - {name: Part-of-speech tagging, kind: task}
+      - {name: Context-free grammar, kind: concept}
+      - {name: Word embedding, kind: concept}
+      - {name: Transformer, kind: architecture}
+      - {name: Machine translation, kind: task}
+      - {name: Image formation, kind: concept}
+      - {name: Edge detection, kind: method}
+      - {name: Image classification, kind: task}
+      - {name: Object detection, kind: task}
+      - {name: Robot localization, kind: task}
+      - {name: Simultaneous localization and mapping, kind: task}
+      - {name: Motion planning, kind: task}
+  - heading: Philosophy, ethics and the future
+    items:
+      - {name: Chinese room argument, kind: argument}
+      - {name: Strong and weak AI, kind: concept}
+      - {name: Algorithmic fairness, kind: concept}
+      - {name: Value alignment problem, kind: concept}
+      - {name: Lethal autonomous weapons, kind: risk}

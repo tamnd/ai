@@ -1,0 +1,25 @@
+run: v-20261114-032224-55233
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-functional-forms
+  work: gao-2023-scaling-laws-reward-model-overoptimization
+  locator: Section 1
+  key: 45830f7237f120009fc6d28154d91071
+  spans:
+  - start: 1430
+    end: 6208
+  verdict: supported
+  quote: 'Rbon (d) = d (αbon − βbon d) ,
+
+    and for reinforcement learning,1
+
+    RRL (d) = d (αRL − βRL log d) ,'
+  note: The passage reports both empirical formulas and defines d from the KL divergence between the optimized and initial
+    policies.
