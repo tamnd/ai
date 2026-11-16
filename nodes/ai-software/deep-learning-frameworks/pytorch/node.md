@@ -1,5 +1,5 @@
 ---
-tag: NEW-pytorch
+tag: QPG7ZN
 kind: software
 slug: pytorch
 name: PyTorch

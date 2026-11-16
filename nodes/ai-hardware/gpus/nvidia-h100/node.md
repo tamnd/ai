@@ -1,5 +1,5 @@
 ---
-tag: NEW-nvidia-h100
+tag: R8RBHC
 kind: hardware
 slug: nvidia-h100
 name: NVIDIA H100
