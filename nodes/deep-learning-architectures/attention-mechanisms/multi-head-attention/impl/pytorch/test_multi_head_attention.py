@@ -110,3 +110,56 @@ def test_matches_scaled_dot_product_attention():
 def test_param_count():
     cfg = config(12, 3, 5, 7)
     assert param_count(cfg) == sum(p.numel() for p in MultiHeadAttention(cfg).parameters())
+
+
+def test_config_defaults_and_errors():
+    assert config() == {"d_model": 512, "n_heads": 8, "d_k": 64, "d_v": 64}
+    assert config(8, 2, d_k=3, d_v=5) == {"d_model": 8, "n_heads": 2, "d_k": 3, "d_v": 5}
+    for bad in ({"d_k": 0, "d_v": 4}, {"d_k": 4, "d_v": 0}):
+        with pytest.raises(ValueError):
+            config(8, 2, **bad)
+    with pytest.raises(ValueError):
+        config(10, 3)
+
+
+def test_padding_mask_values():
+    got = padding_mask([2, 0, 3], 3)
+    assert got.shape == (3, 1, 1, 3)
+    want = torch.tensor([[True, True, False], [False, False, False], [True, True, True]])
+    assert torch.equal(got[:, 0, 0, :], want)
+
+
+def test_shapes_and_init_scale_when_d_k_and_d_v_differ_from_d_model_over_h():
+    cfg = config(16, 2, d_k=3, d_v=5)
+    m = MultiHeadAttention(cfg, generator=torch.Generator().manual_seed(0))
+    assert m.W_q.shape == m.W_k.shape == (16, 6)
+    assert m.W_v.shape == (16, 10) and m.W_o.shape == (10, 16)
+    big = MultiHeadAttention(config(256, 4), generator=torch.Generator().manual_seed(1))
+    std = big.W_q.detach().std().item()
+    assert abs(std - 256**-0.5) < 0.1 * 256**-0.5
+    x = torch.randn(2, 4, 16)
+    y, a = m(x, memory=torch.randn(2, 7, 16))
+    assert y.shape == (2, 4, 16) and a.shape == (2, 2, 4, 7)
+
+
+def test_numpy_mask_and_a_huge_masked_score_are_handled():
+    # The masked key has a dot product far above the others: it must get zero weight, and the rest must still sum to 1.
+    q = torch.tensor([[[[1.0, 0.0]]]], dtype=torch.float64)  # (1, 1, 1, 2)
+    k = torch.tensor([[[[1.0, 0.0], [2.0, 0.0], [1e4, 0.0]]]], dtype=torch.float64)  # (1, 1, 3, 2)
+    v = torch.eye(3, dtype=torch.float64)[None, None]  # (1, 1, 3, 3)
+    mask = np.array([True, True, False])
+    o, a = attention(q, k, v, mask)
+    s = np.array([1.0, 2.0]) / np.sqrt(2.0)
+    want = np.exp(s - s.max()) / np.exp(s - s.max()).sum()
+    np.testing.assert_allclose(a[0, 0, 0].numpy(), [want[0], want[1], 0.0], rtol=1e-12, atol=0)
+    np.testing.assert_allclose(o[0, 0, 0].numpy(), [want[0], want[1], 0.0], rtol=1e-12, atol=0)
+
+
+def test_large_scores_with_a_mask_stay_finite():
+    q = torch.full((1, 1, 2, 4), 30.0)  # scores of 30 * 30 * 4 / 2 = 1800, above the float64 exp limit of about 709
+    k = torch.full((1, 1, 3, 4), 30.0)
+    v = torch.randn(1, 1, 3, 2)
+    o, a = attention(q, k, v, causal_mask(2, 3))
+    assert torch.isfinite(o).all() and torch.isfinite(a).all()
+    torch.testing.assert_close(a.sum(-1), torch.ones(1, 1, 2))
+    torch.testing.assert_close(a[0, 0, 0], torch.tensor([0.5, 0.5, 0.0]))

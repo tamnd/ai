@@ -89,3 +89,21 @@ def test_padding_and_all_masked_rows():
 def test_param_count():
     cfg = config(12, 3, 5, 7)
     assert param_count(cfg) == sum(p.size for p in init(jax.random.PRNGKey(0), cfg).values())
+
+
+def test_config_defaults_and_errors():
+    assert config() == {"d_model": 512, "n_heads": 8, "d_k": 64, "d_v": 64}
+    assert config(12, 3)["d_k"] == 4 and config(12, 3)["d_v"] == 4
+    with pytest.raises(ValueError):
+        config(8, 2, d_k=0, d_v=4)
+    with pytest.raises(ValueError):
+        config(10, 3)
+
+
+def test_init_shapes_and_scale():
+    p = init(jax.random.PRNGKey(0), config(256, 4, d_k=32, d_v=48))
+    assert p["W_q"].shape == p["W_k"].shape == (256, 128)
+    assert p["W_v"].shape == (256, 192) and p["W_o"].shape == (192, 256)
+    for name, fan_in in (("W_q", 256), ("W_k", 256), ("W_v", 256), ("W_o", 192)):
+        std = float(jnp.std(p[name]))
+        assert abs(std - fan_in**-0.5) < 0.1 * fan_in**-0.5, name
