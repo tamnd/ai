@@ -1,0 +1,59 @@
+run: v-20261114-131833-74880
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-wmt-bleu
+  work: vaswani-2017-attention
+  locator: the abstract, Table 2, Section 5.2
+  key: d1852581cd7f3a1f91de1d48f5dcd23a
+  spans:
+  - start: 661
+    end: 2899
+  - start: 20653
+    end: 21080
+  - start: 21645
+    end: 24876
+  verdict: supported
+  quote: 'our model establishes a new single-model state-of-the-art BLEU score of 41.8 after
+
+    training for 3.5 days on eight GPUs'
+  note: The abstract and Table 2 give 28.4 and 41.8 for the big Transformer and describe lower training costs, though Section
+    6.1 gives 41.0 for English to French.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-wmt-fr-41
+  work: vaswani-2017-attention
+  locator: Section 6.1, the abstract, Table 2
+  key: 1b15ed73a77c1c6a435777c92a8a4c23
+  spans:
+  - start: 661
+    end: 2899
+  - start: 21645
+    end: 24876
+  verdict: supported
+  quote: our big model achieves a BLEU score of 41.0
+  note: Section 6.1 says 41.0 for English to French, while the abstract and Table 2 say 41.8.
+- slug: transformer
+  verifier: codex:gpt-6-sol
+  tag: 4W3NTQ
+  claim: c-wmt-bleu-base
+  work: vaswani-2017-attention
+  locator: Table 2, Section 5.2
+  key: 1465297d46129293b8acd1f86fc7985e
+  spans:
+  - start: 20653
+    end: 21080
+  - start: 21645
+    end: 24876
+  verdict: supported
+  quote: '38.1
+
+    41.8'
+  note: Table 2 places 27.3 and 38.1 in the base Transformer row for English to German and English to French, respectively.
