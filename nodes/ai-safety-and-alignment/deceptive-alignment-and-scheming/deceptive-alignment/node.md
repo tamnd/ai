@@ -1,5 +1,5 @@
 ---
-tag: NEW-deceptive-alignment
+tag: G2CD1A
 kind: risk
 slug: deceptive-alignment
 name: Deceptive alignment
