@@ -5767,3 +5767,14 @@ BSPAJ4 fineweb
 EF35B9 gymnasium/frozen-lake-v1
 J8PD9E logit
 14SD97 penedo-2024-fineweb
+TD3H76 batch-normalization
+6ZGQB6 brock-2021-image-recognition-without-normalization
+D57GGN hoffer-2017-train-longer-generalize-better
+XM0642 ioffe-2017-batch-renormalization
+DM511M salimans-2016-weight-normalization
+M3G472 santurkar-2018-how-does-batchnorm-help-optimization
+5X01BQ ulyanov-2016-instance-normalization
+ZJTYK4 van-laarhoven-2017-l2-regularization-normalization
+B1Q1CK wu-2018-group-normalization
+R31G5A wu-2021-rethinking-batch-in-batchnorm
+PR9HDF yang-2019-mean-field-theory-batch-normalization

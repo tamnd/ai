@@ -1,5 +1,5 @@
 ---
-tag: NEW-batch-normalization
+tag: TD3H76
 kind: method
 slug: batch-normalization
 name: Batch normalization
