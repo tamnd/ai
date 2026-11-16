@@ -1,0 +1,48 @@
+# SPDX-License-Identifier: MIT
+# The shape contract of the message-passing network of this page (spec 08.6): L layers with sum aggregation,
+# h' = relu(h W_self + A h W_nbr + b), then the sum of the node states and a linear head. The graphs of a batch are
+# padded to N nodes and given by dense adjacency matrices, so the aggregation is counted as a dense product.
+config:
+  d_in:     {meaning: "number of input features of each node", symbol: "F", example: 3, sample: [1, 5]}
+  d_hidden: {meaning: "width of the node states", symbol: "D", example: 8, sample: [2, 8]}
+  n_layers: {meaning: "number of message-passing layers", symbol: "L", example: 2, sample: [1, 3]}
+  classes:  {meaning: "number of outputs of the graph-level head", symbol: "K", example: 4, sample: [1, 5]}
+axes:
+  B: {meaning: "batch of graphs", example: 2}
+  N: {meaning: "number of nodes of each graph", example: 6}
+  F: d_in
+  D: d_hidden
+  K: classes
+blocks:
+  - id: layer_first
+    meaning: "the first message-passing layer, from the F input features to D"
+    eq: [message, update]
+    inputs: {x: "(B, N, F)", adj: "(B, N, N)"}
+    outputs: {h: "(B, N, D)"}
+    params: "2 * F * D + D"
+    flops_forward: "4 * B * N * F * D + 2 * B * N * N * D"
+  - id: layer_rest
+    meaning: "each of the other L - 1 layers, from D to D"
+    eq: [message, update]
+    inputs: {h: "(B, N, D)", adj: "(B, N, N)"}
+    outputs: {h: "(B, N, D)"}
+    params: "2 * D * D + D"
+    flops_forward: "4 * B * N * D * D + 2 * B * N * N * D"
+  - id: readout
+    meaning: "the sum of the node states of each graph"
+    eq: [readout]
+    inputs: {h: "(B, N, D)"}
+    outputs: {graph: "(B, D)"}
+    params: "0"
+  - id: head
+    meaning: "a linear map of the graph vector to K outputs"
+    inputs: {graph: "(B, D)"}
+    outputs: {logits: "(B, K)"}
+    params: "D * K + K"
+    flops_forward: "2 * B * D * K"
+model:
+  params: {formula: "layer_first.params + (n_layers - 1) * layer_rest.params + head.params", meaning: "the weights W_self and W_nbr and the bias b of each layer, and the weight and bias of the head"}
+  flops_forward: {formula: "layer_first.flops_forward + (n_layers - 1) * layer_rest.flops_forward + head.flops_forward", symbol: "C_{\\text{fwd}}", meaning: "FLOPs of one forward pass over the batch, a multiply-add counted as 2; the biases, the ReLU and the sums of the readout are left out"}
+configs:
+  cora: {meaning: "the model of this page, not the GCN of Kipf and Welling, at the sizes of Cora: one graph of 2,708 nodes with 1,433 features, 7 outputs and 2 layers of 16 hidden units", d_in: 1433, d_hidden: 16, n_layers: 2, classes: 7, B: 1, N: 2708, source: {work: kipf-2017-semi-supervised-classification, locator: "Table 1"}}
+  citeseer: {meaning: "the model of this page, not the GCN of Kipf and Welling, at the sizes of Citeseer: one graph of 3,327 nodes with 3,703 features, 6 outputs and 2 layers of 16 hidden units", d_in: 3703, d_hidden: 16, n_layers: 2, classes: 6, B: 1, N: 3327, source: {work: kipf-2017-semi-supervised-classification, locator: "Table 1"}}
