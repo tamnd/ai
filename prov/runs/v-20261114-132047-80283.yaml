@@ -1,0 +1,48 @@
+run: v-20261114-132047-80283
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-mit-subdomain
+  work: slattery-2024-ai-risk-repository
+  locator: p. 10
+  key: ec79041fab36e9389434c0da787e45c0
+  spans:
+  - start: 23639
+    end: 27107
+  verdict: supported
+  quote: behaviors may be introduced by humans during design and development, such as through reward hacking and goal misgeneralisation
+  note: The passage gives these examples in its description of subdomain 7.1.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-mit-domains
+  work: slattery-2024-ai-risk-repository
+  locator: p. 10
+  key: bb01f6a966b6956172e6c8786592c99f
+  spans:
+  - start: 23639
+    end: 27107
+  verdict: supported
+  quote: The Domain Taxonomy classifies AI risks into seven domains and 24 subdomains based on the types of hazards and harms
+    they describe.
+  note: The passage states the claim directly.
+- slug: reward-hacking
+  verifier: codex:gpt-6-sol
+  tag: NEW-reward-hacking
+  claim: c-claude2-not-serious
+  work: denison-2024-sycophancy-to-subterfuge
+  locator: Section 1
+  key: 096c894b5553a42a66a05793c7770fe1
+  spans:
+  - start: 1901
+    end: 10230
+  verdict: supported
+  quote: which is evidence that Claude-2-scale models do not pose a serious risk due to reward-seeking behavior.
+  note: The passage attributes this conclusion to the difficulty of inducing reward-tampering, even in environments constructed
+    to encourage it.
