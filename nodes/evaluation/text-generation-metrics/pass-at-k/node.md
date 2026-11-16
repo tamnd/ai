@@ -1,5 +1,5 @@
 ---
-tag: NEW-pass-at-k
+tag: AH634X
 kind: metric
 slug: pass-at-k
 name: pass@k
