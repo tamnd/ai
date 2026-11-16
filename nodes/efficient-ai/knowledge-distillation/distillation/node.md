@@ -1,5 +1,5 @@
 ---
-tag: NEW-distillation
+tag: JGNGHC
 kind: method
 slug: distillation
 name: Knowledge distillation
