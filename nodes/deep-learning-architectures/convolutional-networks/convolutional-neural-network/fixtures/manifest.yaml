@@ -1,0 +1,11 @@
+# Written by fixtures/make.py; do not edit.
+seed: 19981101
+config: {channels: 1, c1: 2, c2: 3, f1: 5, f2: 4, classes: 3, size: 16}
+inputs: {B: 2, x: "standard Gaussian pixels"}
+layer: {B: 2, C: 3, D: 4, H: 7, k: 3, stride: 2, pad: 1}
+dtype: float64
+numpy: "2.5.4"
+files:
+  params-small.npz: {sha256: 6bf4857ab40eee3e9c547773cc8f37389f52fa799890aa25321ebfdeadcf0346}
+  input-small.npz: {sha256: 395f29f3b2f41d41d342c062abb4dfe7ebbd923ba378c7f705a6db4c6f83b97e}
+  expected-small.npz: {sha256: 07aad3714b1f08568da48b402b2d6b3003df11ff1319de984632f5421ee78da5}

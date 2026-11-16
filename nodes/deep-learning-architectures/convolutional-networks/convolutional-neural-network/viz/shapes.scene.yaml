@@ -1,0 +1,34 @@
+# The architecture scene (spec 12.6), first written by aik viz shapes from shapes.yaml.
+# It sets the layout and the controls only; every shape and count comes from shapes.yaml.
+title: Convolutional neural network
+controls:
+  - name: channels
+    choices: [1, 3]
+  - name: c1
+    choices: [2, 6]
+  - name: c2
+    choices: [3, 16]
+  - name: f1
+    choices: [5, 120]
+  - name: f2
+    choices: [4, 84]
+  - name: classes
+    choices: [3, 10]
+  - name: size
+    choices: [16, 32]
+  - name: B
+    choices: [1, 2]
+presets:
+  - example
+  - lenet5
+  - lenet5_rgb
+stack:
+  - conv1
+  - pool1
+  - conv2
+  - pool2
+  - fc1
+  - fc2
+  - fc3
+links:
+  fc3: softmax-regression@al
