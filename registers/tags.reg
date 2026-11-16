@@ -5831,3 +5831,5 @@ DD5QVM weight-decay
 WH0JRN gradient-clipping
 4NZZ8Q pascanu-2013-difficulty-training-recurrent
 Y0CH16 zhang-2020-why-gradient-clipping-accelerates
+MA8ACN learning-rate-warmup
+S3H6MG liu-2020-variance-adaptive-learning-rate

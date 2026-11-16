@@ -1,5 +1,5 @@
 ---
-tag: NEW-learning-rate-warmup
+tag: MA8ACN
 kind: method
 slug: learning-rate-warmup
 name: Learning rate warmup
