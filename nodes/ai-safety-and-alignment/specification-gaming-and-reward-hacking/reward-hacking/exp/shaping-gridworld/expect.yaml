@@ -1,0 +1,11 @@
+claim: c-coast-runners
+primary:
+  metric: hacked
+  at: final
+  arm: bonus
+  test: rate
+  rate: 0.5
+  alpha: 0.05
+secondary:
+  - {metric: goal_rate, at: final, compare: {treatment: potential, control: bonus}, direction: higher, test: mann-whitney, note: "the potential-based bonus should keep the goal-reaching policy"}
+report: {ci: 0.95}
