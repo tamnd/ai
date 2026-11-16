@@ -1,0 +1,600 @@
+# The claims of the ResNet page (spec 07). The build computes the labels.
+
+# The architecture
+
+- id: c-resnet
+  type: definitional
+  text: "A residual network lets a few stacked layers fit a residual mapping F(x) := H(x) - x instead of the desired mapping H(x), and recasts the output as F(x) + x, which a shortcut connection that performs the identity mapping adds to the output of the stacked layers."
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Section 1", stance: for}
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-block
+  type: definitional
+  text: "He et al. define the building block as y = F(x, {W_i}) + x; for two layers F = W_2 σ(W_1 x), with σ the ReLU and the biases omitted. The operation F + x is performed by a shortcut connection and element-wise addition, on two feature maps channel by channel, and the second nonlinearity is applied after the addition."
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "p. 3", stance: for}
+
+
+- id: c-projection
+  type: definitional
+  text: "The dimensions of x and F must be equal in the identity block; if they are not, as when the input and output channels change, a linear projection W_s by the shortcut connections matches the dimensions, y = F(x, {W_i}) + W_s x. The identity mapping is sufficient for addressing the degradation problem, so W_s is only used when matching dimensions."
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "p. 3", stance: for}
+
+
+- id: c-single-layer
+  type: attributive
+  text: "He et al. use a residual function F of two or three layers; if F has only a single layer, the block is similar to a linear layer y = W_1 x + x, for which they have not observed advantages."
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "p. 3", stance: for}
+
+
+- id: c-design-rules
+  type: definitional
+  text: "The plain baselines of He et al. follow two rules inspired by VGG nets: layers with the same output feature map size have the same number of filters, and when the feature map size is halved the number of filters is doubled so as to preserve the time complexity per layer; downsampling is done by convolutions with a stride of 2, and the network ends with global average pooling and a 1000-way fully connected layer."
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Section 3.3", stance: for}
+
+- id: c-bottleneck
+  type: definitional
+  text: "For ResNet-50, -101 and -152, each residual function is a stack of three layers, 1x1, 3x3 and 1x1 convolutions, where the 1x1 layers reduce and then restore the dimensions and leave the 3x3 layer a bottleneck with smaller input and output dimensions; He et al. adopt it because of concerns on the training time they can afford."
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-table1
+  type: definitional
+  text: "ResNet-50, ResNet-101 and ResNet-152 have a 7x7 convolution with stride 2 and a 3x3 max pooling with stride 2, then four stages of 3, 4, 6 and 3; 3, 4, 23 and 3; and 3, 8, 36 and 3 bottleneck blocks with 256, 512, 1024 and 2048 output channels, then average pooling and a 1000-way fully connected layer with softmax."
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Table 1", stance: for}
+
+- id: c-options
+  type: definitional
+  text: "He et al. compare three kinds of shortcut: (A) zero-padding for increasing dimensions, with all shortcuts parameter-free; (B) projections for increasing dimensions and identity elsewhere; (C) projections everywhere. ResNet-50, -101 and -152 use option B."
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-training-recipe
+  type: definitional
+  text: "On ImageNet, He et al. adopt batch normalization right after each convolution and before activation, initialize the weights as in their earlier work on rectifiers, and train from scratch with SGD, a mini-batch size of 256, a learning rate that starts from 0.1 and is divided by 10 when the error plateaus, a weight decay of 0.0001 and a momentum of 0.9, without dropout."
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Section 3.4", stance: for}
+
+
+- id: c-he-init
+  type: definitional
+  text: "The initialization of He et al. for rectifier networks draws each weight from a zero-mean Gaussian with standard deviation sqrt(2 / n_l), where n_l = k^2 c is the number of connections of a response, and initializes the biases to 0."
+  evidence:
+    - {work: "he-2015-delving-deep-rectifiers", role: original, locator: "Section 2.2", stance: for}
+
+
+- id: c-cifar-arch
+  type: definitional
+  text: "The CIFAR-10 networks of He et al. take 32x32 images; the first layer is 3x3 convolutions, then a stack of 6n layers with 3x3 convolutions on the feature maps of sizes 32, 16 and 8, with 2n layers for each feature map size and 16, 32 and 64 filters, and the network ends with a global average pooling, a 10-way fully-connected layer and softmax, so there are 6n + 2 stacked weighted layers; identity shortcuts are used in all cases, so the residual models have exactly the same depth, width and number of parameters as the plain ones."
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "p. 7", stance: for}
+
+# The degradation problem and its fix
+
+
+- id: c-degradation
+  type: empirical
+  text: "As the depth of a plain network increases, accuracy saturates and then degrades, and the degradation is not caused by overfitting: adding more layers to a suitably deep plain model leads to a higher training error."
+  scope:
+    models: "plain convolutional networks with batch normalization: 18 and 34 layers on ImageNet, 20 to 56 layers on CIFAR-10"
+    data: [imagenet, cifar-10]
+    scale: "18 to 56 layers"
+    setting: "image classification trained from scratch with SGD and momentum"
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Section 1", stance: for}
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Section 4.1", stance: for}
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Section 4.2", stance: for}
+    - {work: "srivastava-2015-highway-networks", role: replication, locator: "Section 3.1", stance: for}
+  exp: [mnist-depth-22, mnist-depth-32]
+  small_scale: "yes"
+  small_scale_note: "He et al. themselves point to the same effect on MNIST: fully connected plain networks of a few dozen layers with batch normalization show it on a CPU in seconds."
+
+- id: c-shortcuts-fix-degradation
+  type: empirical
+  text: "Adding identity shortcuts removes the degradation: the 34-layer residual network has a considerably lower training error than the 34-layer plain network with the same parameters, and reduces the top-1 error by 3.5%."
+  scope:
+    models: "plain and residual convolutional networks of 18 and 34 layers with batch normalization and option A shortcuts"
+    data: [imagenet]
+    scale: "18 and 34 layers, 1.8 and 3.6 billion FLOPs"
+    setting: "ImageNet 2012 classification from scratch, 10-crop testing on the validation set"
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Section 4.1", stance: for}
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Section 4.2", stance: for}
+  exp: [mnist-depth-22, mnist-depth-32]
+  small_scale: "yes"
+  small_scale_note: "The comparison needs only a plain and a residual network of the same depth and width; fully connected networks on MNIST show it, as the highway networks of Srivastava et al. did."
+
+- id: c-depth-gains
+  type: empirical
+  text: "With residual learning the situation is reversed: the 34-layer ResNet is better than the 18-layer ResNet by 2.8% top-1 and has a lower training error, so accuracy is gained from increased depth."
+  scope:
+    models: "residual convolutional networks of 18 and 34 layers with option A shortcuts"
+    data: [imagenet]
+    scale: "18 and 34 layers"
+    setting: "ImageNet 2012 classification from scratch, 10-crop testing on the validation set"
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Section 4.1", stance: for}
+  small_scale: "partial"
+  small_scale_note: "The MNIST experiments of this page report it as a secondary test; at their budget of a few hundred steps the deep residual network is not expected to beat the shallow one."
+
+- id: c-table2
+  type: empirical
+  text: "The top-1 errors on the ImageNet validation set with 10-crop testing are 27.94% for plain-18, 28.54% for plain-34, 27.88% for ResNet-18 and 25.03% for ResNet-34."
+  scope:
+    models: "plain and residual convolutional networks of 18 and 34 layers with option A shortcuts"
+    data: [imagenet]
+    scale: "18 and 34 layers"
+    setting: "ImageNet 2012 classification from scratch, 10-crop testing on the validation set"
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Table 2", stance: for}
+
+- id: c-faster-convergence
+  type: empirical
+  text: "The 18-layer plain and residual networks are comparably accurate, but the 18-layer ResNet converges faster: when the network is not overly deep, SGD still finds good solutions for the plain network, and the residual one eases the optimization early in training."
+  scope:
+    models: "plain and residual convolutional networks of 18 layers"
+    data: [imagenet]
+    scale: "18 layers"
+    setting: "ImageNet 2012 classification from scratch"
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-more-iterations
+  type: empirical
+  text: "He et al. trained the plain networks for three times more iterations and still observed the degradation, so it cannot be feasibly addressed by simply training longer."
+  scope:
+    models: "plain convolutional networks of 18 and 34 layers"
+    data: [imagenet]
+    scale: "18 and 34 layers"
+    setting: "ImageNet 2012 classification from scratch"
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-not-vanishing
+  type: attributive
+  text: "He et al. argue that the degradation of their plain networks is unlikely to be caused by vanishing gradients, since batch normalization keeps the forward signals at non-zero variance and they verified that the backward gradients have healthy norms; they conjecture that deep plain networks may have exponentially low convergence rates."
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-construction-argument
+  type: attributive
+  text: "He et al. note that there exists a solution by construction to a deeper model: the added layers are identity mapping and the other layers are copied from the learned shallower model, so a deeper model should produce no higher training error than its shallower counterpart; the degradation suggests that solvers might have difficulties in approximating identity mappings by multiple nonlinear layers."
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Section 1", stance: for}
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Section 3.1", stance: for}
+
+
+- id: c-identity-construction
+  type: mathematical
+  text: "A residual block whose last batch normalization has scale 0 and shift 0 computes the identity on non-negative inputs, such as the output of a ReLU, so a residual network with more blocks of the same width can compute every function that a shallower one computes."
+  assumes: ["the block computes relu(BN(F(x)) + x) with the identity shortcut", "the input x of the block is the output of a ReLU, so x >= 0", "the added blocks keep the width of the stage"]
+  derivation: identity-construction
+
+- id: c-hypothesis
+  type: attributive
+  text: "He et al. hypothesize that it is easier to optimize the residual mapping than the original, unreferenced mapping: if an identity mapping were optimal, it would be easier to push the residual to zero than to fit an identity by a stack of nonlinear layers."
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Section 1", stance: for}
+
+- id: c-small-responses
+  type: empirical
+  text: "The outputs of the 3x3 layers of ResNets, after batch normalization and before the nonlinearity, have generally smaller standard deviations than those of their plain counterparts, and deeper ResNets have smaller responses, so each layer tends to modify the signal less."
+  scope:
+    models: "plain and residual networks of 20, 56 and 110 layers"
+    data: [cifar-10]
+    scale: "20 to 110 layers"
+    setting: "CIFAR-10 classification"
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Section 4.2", stance: for}
+
+# Counts
+
+- id: c-no-extra-parameters
+  type: mathematical
+  text: "An identity shortcut adds no parameter and no multiply-add, only an element-wise addition, so a residual network has the same parameters, depth, width and cost as its plain counterpart."
+  assumes: ["the shortcut is the identity: the dimensions of x and F(x) are equal"]
+  derivation: parameter-count
+
+- id: c-params
+  type: mathematical
+  text: "ResNet-50, ResNet-101 and ResNet-152 for 1000 classes have 25,557,032, 44,549,160 and 60,192,808 parameters, counting the weights of the convolutions, the scale and shift of each batch normalization and the weights and biases of the fully connected layer."
+  assumes: ["option B shortcuts: a 1x1 projection with batch normalization in the first block of each stage", "the convolutions have no bias", "the running statistics of batch normalization are not counted", "1000 classes"]
+  derivation: parameter-count
+
+- id: c-bottleneck-projection-doubles
+  type: mathematical
+  text: "Replacing the identity shortcut of a 256-64-256 bottleneck block with a projection nearly doubles its size and cost: the three convolutions have 69,632 weights and the projection would add 65,536, because it connects the two 256-dimensional ends."
+  assumes: ["the block of Figure 5 of He et al. (2016): 1x1 from 256 to 64, 3x3 at 64, 1x1 from 64 to 256", "the projection is a 1x1 convolution from 256 to 256 channels"]
+  derivation: parameter-count
+
+- id: c-cifar-params
+  type: mathematical
+  text: "The CIFAR-10 network of 6n + 2 layers has 464 + 4,672 n + 13,952 + 18,560 (n - 1) + 55,552 + 73,984 (n - 1) + 650 parameters: 269,722 for the 20 layers of n = 3 and 19,421,274 for the 1202 layers of n = 200, the 0.27M and 19.4M of Table 6 of He et al. (2016)."
+  assumes: ["option A shortcuts with no parameters", "3x3 convolutions without bias, each followed by batch normalization with a scale and a shift", "a fully connected layer with a bias to 10 classes"]
+  derivation: parameter-count
+
+- id: c-flops
+  type: mathematical
+  text: "A bottleneck ResNet of base width w with N blocks, on an R by R image and with K classes, takes (w^2 R^2 / 16)(17 N + 19) + 147 w R^2 / 4 + 32 w K multiply-adds: 3.86, 7.57 and 11.28 billion for ResNet-50, -101 and -152 at 224 by 224, against the 3.8, 7.6 and 11.3 billion of Table 1 of He et al. (2016)."
+  assumes: ["the stride of 2 of stages 2 to 4 is in the first 1x1 convolution, as in the paper", "the projections are counted; batch normalization, ReLU, poolings and additions are not", "R is a multiple of 32"]
+  derivation: flop-count
+
+- id: c-stage-invariance
+  type: mathematical
+  text: "Every bottleneck block but the first of a stage costs the same 17 w^2 R^2 / 16 multiply-adds in all four stages, because doubling the channels squares to four times the cost per position while halving the feature map gives four times fewer positions; so the cost of a ResNet grows linearly in the number of blocks, whichever stage they are added to."
+  assumes: ["the design rule of He et al. (2016): the number of filters doubles when the feature map size halves", "the mid width of stage s is w 2^s and its output width 4 w 2^s"]
+  derivation: flop-count
+
+- id: c-stride-cost
+  type: mathematical
+  text: "Moving the stride of 2 from the first 1x1 convolution to the 3x3 convolution of each downsampling block, as in the ResNet-50 of Goyal et al. (2017) and ResNet-B of He et al. (2019), keeps the parameters and raises the cost of ResNet-50 from 3.86 to 4.09 billion multiply-adds at 224 by 224, because the first 1x1 convolution then runs on four times more positions; a 1x1 convolution with stride 2 reads only one position in four."
+  assumes: ["ResNet-50 at 224 by 224 as in c-flops", "the stride is moved in the three downsampling blocks of stages 2 to 4"]
+  derivation: flop-count
+
+- id: c-complexity
+  type: attributive
+  text: "He et al. count 3.6 billion FLOPs (multiply-adds) for their 34-layer plain and residual networks, 18% of the 19.6 billion of VGG-19, and 11.3 billion for ResNet-152, which is 8 times deeper than VGG nets but still lower in complexity than VGG-16 and VGG-19 (15.3 and 19.6 billion)."
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Section 3.3", stance: for}
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Section 4.1", stance: for}
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "the abstract", stance: for}
+
+# Results of the paper
+
+- id: c-options-result
+  type: empirical
+  text: "All three kinds of shortcut are considerably better than the plain network; B is slightly better than A (24.52% against 25.03% top-1 for ResNet-34) and C marginally better than B (24.19%), and the small differences show that projection shortcuts are not essential for addressing the degradation problem."
+  scope:
+    models: "ResNet-34 with option A, B and C shortcuts, and plain-34"
+    data: [imagenet]
+    scale: "34 layers"
+    setting: "ImageNet 2012 classification, 10-crop testing on the validation set"
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Table 3", stance: for}
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-deeper-better
+  type: empirical
+  text: "ResNet-50, -101 and -152 are more accurate than ResNet-34 by considerable margins and show no degradation: their top-5 errors with 10-crop testing are 6.71%, 6.05% and 5.71%, and ResNet-152 reaches a single-model top-5 validation error of 4.49%."
+  scope:
+    models: "ResNet-34, -50, -101 and -152 with option B shortcuts"
+    data: [imagenet]
+    scale: "34 to 152 layers, 3.6 to 11.3 billion FLOPs"
+    setting: "ImageNet 2012 classification; 10-crop testing (Table 3) and multi-scale fully convolutional testing (Table 4) on the validation set"
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Table 3", stance: for}
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Table 4", stance: for}
+
+- id: c-ilsvrc
+  type: historical
+  text: "An ensemble of residual networks has 3.57% top-5 error on the ImageNet test set and won the 1st place in the ILSVRC 2015 classification competition; deep residual nets also won the 1st places in ImageNet detection, ImageNet localization, COCO detection and COCO segmentation in the ILSVRC and COCO 2015 competitions."
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Section 1", stance: for}
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "p. 8", stance: for}
+
+
+- id: c-coco
+  type: empirical
+  text: "Replacing VGG-16 with ResNet-101 in Faster R-CNN, with the detection system otherwise the same, raises the COCO mAP@[.5, .95] from 21.2% to 27.2%, a 6.0% increase and a 28% relative improvement."
+  scope:
+    models: "Faster R-CNN with VGG-16 and with ResNet-101"
+    data: [coco]
+    scale: "16 and 101 layers"
+    setting: "object detection, COCO validation set"
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Table 8", stance: for}
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Section 4.3", stance: for}
+
+- id: c-cifar-110
+  type: empirical
+  text: "On CIFAR-10, ResNet-110, trained with a learning rate of 0.01 until the training error is below 80% and then 0.1, has a test error of 6.43% at best and 6.61% ± 0.16 over 5 runs, with fewer parameters than other deep and thin networks."
+  scope:
+    models: "residual networks of 20 to 110 layers with option A shortcuts"
+    data: [cifar-10]
+    scale: "0.27M to 1.7M parameters"
+    setting: "training on the 50k training images with 4-pixel padding, random crops and flips; testing on the 10k test images"
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Table 6", stance: for}
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-cifar-1202
+  type: empirical
+  text: "A 1202-layer residual network on CIFAR-10 shows no optimization difficulty and achieves a training error below 0.1%, but its test error of 7.93% is worse than that of the 110-layer network, which He et al. argue is because of overfitting: the 1202-layer network, with 19.4M parameters, may be unnecessarily large for this small dataset."
+  scope:
+    models: "residual networks of 110 and 1202 layers with option A shortcuts"
+    data: [cifar-10]
+    scale: "1.7M and 19.4M parameters"
+    setting: "training on the 50k training images without dropout or maxout; testing on the 10k test images"
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "p. 8", stance: for}
+
+
+- id: c-highway-contrast
+  type: attributive
+  text: "He et al. contrast their shortcuts with those of highway networks, whose gates are data-dependent and have parameters: when a gated shortcut is closed, a highway layer represents a non-residual function, while an identity shortcut is never closed and always passes all information."
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Section 2", stance: for}
+
+- id: c-highway-mnist
+  type: empirical
+  text: "On MNIST, fully connected plain networks perform well at 10 layers but their training cross-entropy degrades significantly as depth increases to 100 layers, while highway networks do not seem to suffer from depth and converge faster."
+  scope:
+    models: "fully connected plain networks of 71 units and highway networks of 50 units per layer"
+    data: [mnist]
+    scale: "10 to 100 layers"
+    setting: "training cross-entropy, best of a random search of 40 runs per depth"
+  evidence:
+    - {work: "srivastava-2015-highway-networks", role: original, locator: "Section 3.1", stance: for}
+
+# Why it works
+
+- id: c-propagation
+  type: mathematical
+  text: "If both the shortcut and the function after the addition are identities, so that x_{l+1} = x_l + F(x_l), then x_L = x_l + Σ_{i=l}^{L-1} F(x_i) for any deeper unit L, and ∂E/∂x_l = ∂E/∂x_L (1 + ∂/∂x_l Σ_{i=l}^{L-1} F(x_i)): the gradient of the deeper unit reaches the shallower one directly, added to the terms through the residual functions."
+  assumes: ["x_{l+1} = x_l + F(x_l, W_l) for every unit between l and L", "F is differentiable", "the gradient is written for a scalar loss E, with vectors treated by Jacobians"]
+  derivation: residual-gradient
+
+- id: c-scaled-shortcut
+  type: mathematical
+  text: "If each shortcut is scaled, x_{l+1} = λ_l x_l + F(x_l), the direct term of the gradient becomes the product of the λ_i from l to L - 1, which grows or shrinks exponentially with depth when all λ_i are above or below 1."
+  assumes: ["x_{l+1} = λ_l x_l + F(x_l, W_l) with scalar λ_l", "the same assumptions as c-propagation"]
+  derivation: residual-gradient
+
+- id: c-paths
+  type: mathematical
+  text: "Unrolled, a stack of n residual units with identity shortcuts is a sum over 2^n paths, one for each subset of the residual functions it goes through, and C(n, k) of them go through exactly k residual functions."
+  assumes: ["x_{i+1} = x_i + F_i(x_i) for n units", "the expansion is of the product of the Jacobians (I + J_i), or of linear residual functions"]
+  derivation: residual-gradient
+
+- id: c-preact
+  type: empirical
+  text: "The pre-activation residual unit, with the identity mappings as the skip connections and after-addition activation, makes training easier and improves generalization: a 1001-layer ResNet reaches 4.62% error on CIFAR-10, with improved results on CIFAR-100 and with a 200-layer ResNet on ImageNet."
+  scope:
+    models: "residual networks of up to 1001 layers with pre-activation units, and a 200-layer ResNet on ImageNet"
+    data: [cifar-10, cifar-100, imagenet]
+    scale: "up to 1001 layers"
+    setting: "image classification"
+  evidence:
+    - {work: "he-2016-identity-mappings", role: original, locator: "p. 1", stance: for}
+
+- id: c-preact-fig1
+  type: empirical
+  text: "Trained on CIFAR-10, the 1001-layer ResNet with the original unit reaches 7.61% test error and the one with the proposed pre-activation unit 4.92%, and the proposed one also reaches a lower training loss."
+  scope:
+    models: "ResNet-1001 with the original and with the pre-activation unit"
+    data: [cifar-10]
+    scale: "1001 layers, 10.2M parameters"
+    setting: "CIFAR-10 classification, test error"
+  evidence:
+    - {work: "he-2016-identity-mappings", role: original, locator: "Figure 1", stance: for}
+
+
+- id: c-ensembles
+  type: empirical
+  text: "Residual networks can be seen as a collection of many paths of differing length that show ensemble-like behavior, and most of the gradient in a residual network with 110 layers comes from paths that are only 10 to 34 layers deep."
+  scope:
+    models: "a 110-layer residual network"
+    data: [cifar-10]
+    scale: "110 layers"
+    setting: "gradient magnitude by path length during training"
+  evidence:
+    - {work: "veit-2016-residual-networks-ensembles", role: original, locator: "the abstract", stance: for}
+
+- id: c-lesion
+  type: empirical
+  text: "Deleting any layer of a trained VGG network reduces its performance to chance levels, while removing the residual module of a single block of a trained residual network leads to no noticeable change except for the downsampling blocks, which have a modest impact."
+  scope:
+    models: "a 15-layer VGG network and a 110-layer pre-activation residual network on CIFAR-10, and a 200-layer residual network on ImageNet"
+    data: [cifar-10, imagenet]
+    scale: "15 to 200 layers"
+    setting: "deleting individual layers or modules at test time"
+  evidence:
+    - {work: "veit-2016-residual-networks-ensembles", role: original, locator: "Section 4.1", stance: for}
+
+
+- id: c-shattered
+  type: empirical
+  text: "The correlation between the gradients of a feedforward network at nearby inputs decays exponentially with depth, so the gradients resemble white noise, while with skip connections it decays sublinearly."
+  scope:
+    models: "feedforward rectifier networks with and without batch normalization, and residual networks"
+    data: [synthetic]
+    scale: "up to about 200 layers"
+    setting: "gradients of networks at initialization with respect to their inputs, by analysis and measurement on a grid of inputs"
+  evidence:
+    - {work: "balduzzi-2017-shattered-gradients", role: original, locator: "the abstract", stance: for}
+
+- id: c-loss-landscape
+  type: empirical
+  text: "Without skip connections, the loss surface of CIFAR-10 networks goes from nearly convex at 20 layers to chaotic at 56 and 110 layers; with skip connections it does not, and the 0.1-level contour is almost the same at 20 and 110 layers."
+  scope:
+    models: "ResNet-20, -56 and -110 with and without shortcut connections"
+    data: [cifar-10]
+    scale: "20 to 110 layers"
+    setting: "filter-normalized random two-dimensional slices of the training loss around the minimizer"
+  evidence:
+    - {work: "li-2018-visualizing-loss-landscape", role: original, locator: "Section 6", stance: for}
+
+- id: c-linear-no-spurious
+  type: attributive
+  text: "Hardt and Ma prove that arbitrarily deep linear residual networks have no spurious local optima, a result that is substantially more delicate for linear feedforward networks in their standard parameterization."
+  evidence:
+    - {work: "hardt-2017-identity-matters", role: original, locator: "the abstract", stance: for}
+
+# Training tricks and descendants
+
+- id: c-zero-gamma
+  type: attributive
+  text: "Goyal et al. initialize the scale γ of the last batch normalization of each residual block to 0, so that the signals initially propagate through the identity shortcuts; they found it eases optimization at the start of training and improves all their models, most for large minibatches."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "Section 5.1", stance: for}
+
+- id: c-one-hour
+  type: empirical
+  text: "With a learning rate scaled linearly in the minibatch size and a warmup, ResNet-50 trains with a minibatch of 8192 on 256 GPUs in one hour and matches the accuracy of small-minibatch training."
+  scope:
+    models: "ResNet-50 with the stride on the 3x3 convolutions"
+    data: [imagenet]
+    scale: "minibatches of 256 to 8192, 90 epochs"
+    setting: "distributed synchronous SGD on 256 GPUs"
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "the abstract", stance: for}
+
+- id: c-v15
+  type: definitional
+  text: "The ResNet-50 variant used by Goyal et al. has the stride-2 convolutions on the 3x3 layers instead of on the 1x1 layers as in the original."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "Section 5.1", stance: for}
+
+- id: c-resnet-b
+  type: definitional
+  text: "ResNet-B, a tweak that first appeared in a Torch implementation of ResNet, switches the strides of the first two convolutions of the downsampling block, because the 1x1 convolution with a stride of 2 ignores three-quarters of the input feature map."
+  evidence:
+    - {work: "he-2019-bag-of-tricks", role: original, locator: "Section 4.2", stance: for}
+
+
+- id: c-bag-of-tricks
+  type: empirical
+  text: "A set of training refinements and small model tweaks raises the top-1 validation accuracy of ResNet-50 on ImageNet from 75.3% to 79.29%."
+  scope:
+    models: "ResNet-50 and the tweaks ResNet-B, -C and -D"
+    data: [imagenet]
+    scale: "ResNet-50"
+    setting: "ImageNet 2012 classification with cosine learning rate decay, label smoothing, distillation and mixup"
+  evidence:
+    - {work: "he-2019-bag-of-tricks", role: original, locator: "the abstract", stance: for}
+
+- id: c-strikes-back
+  type: empirical
+  text: "Trained with a procedure that integrates later advances in optimization and data augmentation, a vanilla ResNet-50 reaches 80.4% top-1 accuracy at resolution 224 by 224 on ImageNet without extra data or distillation."
+  scope:
+    models: "ResNet-50"
+    data: [imagenet]
+    scale: "ResNet-50 at 224 by 224"
+    setting: "ImageNet 2012 classification, evaluation on the validation set"
+  evidence:
+    - {work: "wightman-2021-resnet-strikes-back", role: original, locator: "the abstract", stance: for}
+
+- id: c-training-matters
+  type: empirical
+  text: "Training and scaling strategies may matter more than architectural changes: improved training alone raises a canonical ResNet from 79.0% to 82.2% top-1 on ImageNet, and the resulting ResNet-RS models are 1.7 to 2.7 times faster than EfficientNets on TPUs at similar accuracy."
+  scope:
+    models: "ResNet and ResNet-RS of 50 to 420 layers, against EfficientNets"
+    data: [imagenet]
+    scale: "up to 192M parameters"
+    setting: "ImageNet 2012 classification, training time per step on TPUs"
+  evidence:
+    - {work: "bello-2021-revisiting-resnets", role: original, locator: "the abstract", stance: for}
+
+- id: c-convnext
+  type: empirical
+  text: "Gradually modernizing a standard ResNet toward the design of a vision Transformer gives a family of pure ConvNet models, ConvNeXt, which achieves 87.8% ImageNet top-1 accuracy."
+  scope:
+    models: "the ConvNeXt family, derived from ResNet-50 and ResNet-200"
+    data: [imagenet]
+    scale: "ConvNeXt-T to ConvNeXt-XL"
+    setting: "ImageNet classification; the 87.8% is after pre-training on ImageNet-22K"
+  evidence:
+    - {work: "liu-2022-convnet-2020s", role: original, locator: "the abstract", stance: for}
+
+- id: c-convnext-recipe
+  type: empirical
+  text: "A modern training recipe by itself increases the ImageNet top-1 accuracy of ResNet-50 from 76.1% to 78.8%."
+  scope:
+    models: "ResNet-50"
+    data: [imagenet]
+    scale: "ResNet-50"
+    setting: "ImageNet-1K classification with 300 epochs, AdamW and modern data augmentation"
+  evidence:
+    - {work: "liu-2022-convnet-2020s", role: original, locator: "Section 2.1", stance: for}
+
+
+- id: c-fixup
+  type: empirical
+  text: "Fixup, an initialization that solves the exploding and vanishing gradient problem at the beginning of training by properly rescaling a standard initialization, makes training residual networks as stable as training with normalization, even for networks with 10,000 layers."
+  scope:
+    models: "residual networks without normalization, of up to 10,000 layers"
+    data: [cifar-10, imagenet]
+    scale: "up to 10,000 layers"
+    setting: "image classification and machine translation"
+  evidence:
+    - {work: "zhang-2019-fixup", role: original, locator: "the abstract", stance: for}
+
+
+- id: c-stochastic-depth
+  type: empirical
+  text: "Stochastic depth trains short networks and uses deep ones at test time: for each mini-batch it drops a random subset of residual blocks and bypasses them with the identity, which reduces training time and lets residual networks grow beyond 1200 layers with better test error (4.91% on CIFAR-10)."
+  scope:
+    models: "residual networks of 110 to 1202 layers trained with stochastic depth"
+    data: [cifar-10, cifar-100, svhn, imagenet]
+    scale: "110 to 1202 layers"
+    setting: "image classification"
+  evidence:
+    - {work: "huang-2016-stochastic-depth", role: original, locator: "the abstract", stance: for}
+
+- id: c-wide
+  type: empirical
+  text: "Decreasing depth and increasing width works better: a 16-layer wide residual network outperforms in accuracy and efficiency all previous deep residual networks, including thousand-layer ones."
+  scope:
+    models: "wide residual networks against thin and deep ResNets"
+    data: [cifar-10, cifar-100, svhn, imagenet]
+    scale: "16 to 1001 layers"
+    setting: "image classification"
+  evidence:
+    - {work: "zagoruyko-2016-wide-residual-networks", role: original, locator: "the abstract", stance: for}
+
+- id: c-resnext
+  type: empirical
+  text: "Aggregating a set of transformations of the same topology in each block exposes cardinality, the size of the set, as a dimension besides depth and width; at equal complexity, increasing cardinality improves accuracy, and it is more effective than going deeper or wider when capacity grows."
+  scope:
+    models: "ResNeXt against ResNet of 50 and 101 layers"
+    data: [imagenet]
+    scale: "50 and 101 layers, at the complexity of the ResNet counterparts"
+    setting: "ImageNet-1K classification"
+  evidence:
+    - {work: "xie-2017-aggregated-residual-transformations", role: original, locator: "the abstract", stance: for}
+
+- id: c-densenet
+  type: definitional
+  text: "DenseNet connects each layer to every other layer in a feed-forward fashion, so a block of L layers has L(L + 1)/2 direct connections, and each layer takes the feature maps of all preceding layers as its input."
+  evidence:
+    - {work: "huang-2017-densely-connected-convolutional-networks", role: original, locator: "the abstract", stance: for}
+
+- id: c-vgg
+  type: historical
+  text: "Before ResNet, VGG nets showed that pushing the depth to 16 to 19 weight layers with very small 3x3 convolution filters gives a significant improvement on the prior configurations."
+  evidence:
+    - {work: "simonyan-2015-very-deep-convolutional-networks", role: original, locator: "the abstract", stance: for}
+
+- id: c-bn
+  type: definitional
+  text: "Batch normalization normalizes each activation over the mini-batch and then applies a learned scale and shift; with it, an image classifier reaches the same accuracy with 14 times fewer training steps."
+  evidence:
+    - {work: "ioffe-2015-batch-normalization", role: original, locator: "the abstract", stance: for}
+
+# History
+
+- id: c-hist-highway
+  type: historical
+  text: "Srivastava, Greff and Schmidhuber, of the Swiss AI Lab IDSIA, posted version 2 of Highway Networks as arXiv 1505.00387v2 on 3 Nov 2015."
+  evidence:
+    - {work: "srivastava-2015-highway-networks", role: original, locator: "the title page", stance: for}
+
+
+- id: c-hist-resnet
+  type: historical
+  text: "He, Zhang, Ren and Sun, of Microsoft Research, posted version 1 of Deep Residual Learning for Image Recognition as arXiv 1512.03385v1 on 10 Dec 2015."
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "the title page", stance: for}
+
+
+- id: c-hist-preact
+  type: historical
+  text: "He, Zhang, Ren and Sun posted version 3 of Identity Mappings in Deep Residual Networks as arXiv 1603.05027v3 on 25 Jul 2016."
+  evidence:
+    - {work: "he-2016-identity-mappings", role: original, locator: "the title page", stance: for}
+

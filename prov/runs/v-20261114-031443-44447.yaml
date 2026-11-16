@@ -1,0 +1,28 @@
+run: v-20261114-031443-44447
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-room-axiom3
+  work: searle-1990-brains-mind-computer-program-sciam
+  locator: p. 27
+  key: e8344b59dac2ef609a569031c942bf87
+  spans:
+  - start: 6349
+    end: 11972
+  verdict: supported
+  quote: 'Chinese room demonstrated. Having
+
+
+    the symbols by themselves-just hav­
+
+    ing the syntax-is not sufficient for
+
+
+    having the semantics.'
+  note: Searle explicitly attributes this point to the Chinese room.

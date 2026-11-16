@@ -1,0 +1,29 @@
+# The versions of the MMLU benchmark (spec 10.3). MMLU-Redux re-annotates a sample of the test set; MMLU-Pro filters,
+# extends and adds to its questions. A result belongs to one of them.
+- id: test
+  name: MMLU (test set)
+  metric: accuracy
+  date: {v: "2020-09-07", src: "https://arxiv.org/abs/2009.03300", loc: "Submission history, [v1]"}
+  size: {v: 14079, unit: items, src: "hendrycks-2020-measuring-massive-multitask", loc: "Section 3"}
+  data: {location: "data.tar linked from the README of github.com/hendrycks/test; cais/mmlu on Hugging Face", hash: "sha256:bec563ba4bac1d6aaf04141cd7d1605d7a5ca833e38f994051e818489592989b", licence: "MIT"}
+  protocol: {scorer: "accuracy over all questions of all 57 subjects (Section 4.1); a mean of the 57 subject accuracies is the metric macro-accuracy, not this one", unit: "correct questions / all questions"}
+  human_baseline: {v: 0.898, note: "the authors' estimate of expert-level accuracy (Section 3); unspecialized Amazon Mechanical Turk workers 0.345"}
+  known_issues: "the released files hold 14,042 test and 1,531 validation questions (cais/mmlu, config all), not the 14,079 and 1,540 of Section 3; an estimated 6.49% of questions contain errors (Gema et al., 2024, p. 1)"
+- id: redux
+  name: MMLU-Redux 2.0
+  metric: accuracy
+  date: {v: "2024-06-06", src: "https://arxiv.org/abs/2406.04127", loc: "Submission history, [v1]"}
+  derived_from: {version: test, rule: "100 randomly selected questions of each of the 57 subjects, re-annotated by experts with an error type; the MMLU labels are kept, so a score can use all questions or only those without errors"}
+  size: {v: 5700, unit: items, src: "gema-2024-are-we-done-mmlu", loc: "p. 2"}
+  data: {location: "edinburgh-dawg/mmlu-redux-2.0 on Hugging Face, revision 372ea425445d51e1ba1188c56e5e893f8138621f", hash: null, licence: "CC BY 4.0"}
+  protocol: {scorer: "accuracy, on all re-annotated questions or on those the annotators found correct; the paper uses both", unit: "correct questions / all questions"}
+  known_issues: "the first release, edinburgh-dawg/mmlu-redux, covered 3,000 questions of 30 subjects; the annotation may carry the annotators' biases (Gema et al., 2024, Limitations)"
+- id: pro
+  name: MMLU-Pro
+  metric: accuracy
+  date: {v: "2024-06-03", src: "https://arxiv.org/abs/2406.01574", loc: "Submission history, [v1]"}
+  derived_from: {version: test, rule: "MMLU questions that more than four of eight small models answer correctly are removed, the 57 subjects are merged into 14 disciplines, questions from a STEM website, TheoremQA and SciBench are added, and GPT-4-Turbo extends the options from four to ten, with expert review"}
+  size: {v: 12032, unit: items, src: "wang-2024-mmlu-pro", loc: "Section 3.1"}
+  data: {location: "data/test-00000-of-00001.parquet of TIGER-Lab/MMLU-Pro on Hugging Face, revision b189ec765aa7ed75c8acfea42df31fdae71f97be (2026-05-02)", hash: "sha256:0e24a191921c2f453518a537a8b2117bd137e7714d4ef1565e9ba06c1ecb9ad8", licence: "MIT"}
+  protocol: {scorer: "accuracy over up to ten options, 5-shot chain of thought with the answer taken by a regular expression (Wang et al., 2024, Section 4)", unit: "correct questions / all questions"}
+  known_issues: "the authors keep correcting answers and options after release (the dataset card), so a score depends on the revision of the data"

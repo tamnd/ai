@@ -1,0 +1,102 @@
+run: v-20261114-031331-42297
+date: '2026-11-14'
+role: verifier
+prompt: verify/v1
+models_version: m-2026.11
+harness: ai-agent/work/verify.py
+items:
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-never-sufficient
+  work: searle-1980-minds-brains-programs-bbs
+  locator: p. 417
+  key: dd4f7f35343d604fda0f354a33ba2f4b
+  spans:
+  - start: 0
+    end: 6347
+  verdict: supported
+  quote: Instantiating a computer program is never by itself a sufficient condition of intentionality.
+  note: The abstract states this as a proposition Searle's paper aims to establish.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-causal-powers
+  work: searle-1980-minds-brains-programs-bbs
+  locator: p. 417
+  key: cbeb4aeeaeb9c64e4c7deea475db8719
+  spans:
+  - start: 0
+    end: 6347
+  verdict: supported
+  quote: Any mechanism capable of producing intentionality must have causal powers equal to those of the brain.
+  note: The abstract states the claim directly.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-machines-can-think
+  work: searle-1980-minds-brains-programs-bbs
+  locator: p. 417
+  key: 1b23d257dde75ccbcfb3145718494ea9
+  spans:
+  - start: 0
+    end: 6347
+  verdict: supported
+  quote: only a machine could think, and only very special kinds of machines, namely brains and machines with internal causal
+    powers equivalent to those of brains.
+  note: This is Searle's stated answer to whether a machine could think.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-strong-weak
+  work: searle-1980-minds-brains-programs-bbs
+  locator: p. 417
+  key: 3e1ae20a16bf8cf56c2a0277b7ce0cca
+  spans:
+  - start: 0
+    end: 6347
+  verdict: supported
+  quote: I have no objection to the claims of weak AI, &t least as far as this article is concerned.
+  note: The passage also defines weak AI as treating the computer as a tool and strong AI as treating an appropriately programmed
+    computer as a mind.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-combination
+  work: searle-1980-minds-brains-programs-bbs
+  locator: p. 421
+  key: e9067611709fc92f2fb3cdbc09f0cfd3
+  spans:
+  - start: 30965
+    end: 39007
+  verdict: supported
+  quote: Surely in such a case we would have to ascribe intentionality to the system.
+  note: Searle presents this as the combination reply, following the robot description and the proposal to take the previous
+    three replies together.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-combination-withdraw
+  work: searle-1980-minds-brains-programs-bbs
+  locator: p. 421
+  key: 4ec614a494c809d41c7bb5576c8fce30
+  spans:
+  - start: 30965
+    end: 39007
+  verdict: supported
+  quote: as soon as we knew that the behavior was the result of a formal program, and that the actual causal properties of
+    the physical substance were irrelevant we would abandon the assumption of intentionality.
+  note: Searle says this directly in his discussion of the robot.
+- slug: chinese-room
+  verifier: codex:gpt-6-sol
+  tag: NEW-chinese-room
+  claim: c-ph-reply
+  work: piantadosi-2022-meaning-without-reference
+  locator: p. 1
+  key: 084d3f22b1b3f5e83097591f18b4d253
+  spans:
+  - start: 0
+    end: 4108
+  verdict: unsupported
+  quote: The octopus test assumes that reference determines meaning, but in fact cognitive scientists and philosophers have
+  note: The passage states the assumption but cuts off before saying what cognitive scientists and philosophers have found.
