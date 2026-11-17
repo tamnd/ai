@@ -1,5 +1,5 @@
 ---
-tag: NEW-cosine-learning-rate-schedule
+tag: FG7K47
 kind: method
 slug: cosine-learning-rate-schedule
 name: Cosine learning-rate schedule

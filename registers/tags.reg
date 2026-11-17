@@ -5932,3 +5932,8 @@ V26JSZ smith-2018-dont-decay-learning-rate
 96KQSX jastrzebski-2020-break-even-point
 KVMQVH lewkowycz-2020-large-learning-rate-phase
 3FZB17 rms-normalization
+FG7K47 cosine-learning-rate-schedule
+WNYA6E hagele-2024-scaling-laws-beyond-fixed-durations
+CKZ5ES hu-2024-minicpm
+9KA9Q3 loshchilov-2017-sgdr
+TG0CBR smith-2017-cyclical-learning-rates
