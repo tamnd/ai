@@ -1,5 +1,5 @@
 ---
-tag: NEW-structured-state-space-model
+tag: MDN3YW
 kind: architecture
 slug: structured-state-space-model
 name: Structured state space model
