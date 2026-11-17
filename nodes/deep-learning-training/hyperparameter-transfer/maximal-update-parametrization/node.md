@@ -1,5 +1,5 @@
 ---
-tag: NEW-maximal-update-parametrization
+tag: 4VJECR
 kind: method
 slug: maximal-update-parametrization
 name: Maximal update parametrization
