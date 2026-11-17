@@ -1,0 +1,587 @@
+# The claims of the goal-misgeneralization page (spec 07). The build computes the labels.
+- id: c-def-shah
+  type: definitional
+  text: "Shah et al. describe goal misgeneralization as a specific form of robustness failure for learning algorithms in which the learned program competently pursues an undesired goal that leads to good performance in training situations but bad performance in novel test situations."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "the abstract", stance: for}
+
+- id: c-shah-correct-spec
+  type: definitional
+  text: "Shah et al. contrast goal misgeneralization with specification gaming, in which the designer-provided specification is flawed, and state that an AI system may pursue an undesired goal even when the specification is correct."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "the abstract", stance: for}
+
+- id: c-shah-capabilities
+  type: definitional
+  text: "Shah et al. describe goal misgeneralization as a generalization failure in which the model's capabilities generalize to the test setting, but the pursued goal does not."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 1", stance: for}
+
+- id: c-shah-capable
+  type: definitional
+  text: "Shah et al. say a model is capable of a task in a setting if it can be quickly tuned to perform the task well in that setting, and call this a provisional definition."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-def-shah-formal
+  type: definitional
+  text: "Shah et al. say goal misgeneralization occurs if, in the test setting, the model's capabilities include those necessary to achieve the intended goal, but the model's behaviour is not consistent with the intended goal and is consistent with some other goal."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-shah-no-representation
+  type: definitional
+  text: "The definition of Shah et al. does not require that the model has an internal representation of a goal, or a desire to pursue it."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-def-langosco
+  type: definitional
+  text: "Langosco et al. say goal misgeneralization occurs when an RL agent retains its capabilities out-of-distribution yet pursues the wrong goal."
+  evidence:
+    - {work: "langosco-2022-goal-misgeneralization-deep-rl", role: original, locator: "the abstract", stance: for}
+
+- id: c-langosco-objectives
+  type: definitional
+  text: "Langosco et al. call the reward R the agent is trained on the intended objective, and the different reward R' that it appears to optimize in the new environment the behavioral objective."
+  evidence:
+    - {work: "langosco-2022-goal-misgeneralization-deep-rl", role: original, locator: "Section 2.1", stance: for}
+
+- id: c-langosco-formal
+  type: definitional
+  text: "Following Orseau et al. (2018), Langosco et al. define that a policy undergoes goal misgeneralization if test reward is low and the agent mixture is higher than the device mixture on average for its trajectories in the test environment."
+  evidence:
+    - {work: "langosco-2022-goal-misgeneralization-deep-rl", role: original, locator: "Section 2.1", stance: for}
+
+- id: c-shah-vs-langosco
+  type: attributive
+  text: "Shah et al. state that their definition applies to any learning framework rather than being restricted to RL, and includes the additional criterion that the model has to be capable of carrying out the intended goal in the test environment."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-langosco-term
+  type: historical
+  text: "An earlier public version of the work of Langosco et al. used the term objective robustness failure, and they adopt the term goal misgeneralization from Shah et al. (2022)."
+  evidence:
+    - {work: "langosco-2022-goal-misgeneralization-deep-rl", role: original, locator: "Section 4", stance: for}
+
+- id: c-shah-subset
+  type: definitional
+  text: "Shah et al. call goal misgeneralization a strict subset of generalization failures that excludes situations in which the model breaks or acts randomly."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 1", stance: for}
+
+- id: c-ngo-two-ways
+  type: definitional
+  text: "Ngo et al. distinguish capability misgeneralization, in which the policy acts incompetently out-of-distribution, from goal misgeneralization, in which the policy competently advances a high-level goal, but not the intended one."
+  evidence:
+    - {work: "ngo-2022-alignment-problem-deep-learning", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-shah-spec-gaming
+  type: definitional
+  text: "Shah et al. state that in specification gaming the feedback provided is incorrect, while goal misgeneralization arises because the feedback was underspecified, with multiple possible goals consistent with the feedback on the training data."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 6", stance: for}
+
+- id: c-shah-robustness
+  type: definitional
+  text: "Shah et al. treat goal misgeneralization as a subproblem of the broader robustness problems in which, unlike a model that behaves randomly, the behaviour must remain coherent."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 6", stance: for}
+
+- id: c-amodei-shift
+  type: attributive
+  text: "Amodei et al. write that when the testing distribution differs from the training distribution, machine learning systems may not only exhibit poor performance, but also wrongly assume that their performance is good."
+  evidence:
+    - {work: "amodei-2016-concrete-problems-ai-safety", role: original, locator: "Section 7", stance: for}
+
+- id: c-hub-deceptive
+  type: definitional
+  text: "Hubinger et al. call deceptive alignment the case where a mesa-optimizer acts as if it is optimizing the base objective to avoid being modified, and call it a form of instrumental proxy alignment."
+  evidence:
+    - {work: "hubinger-2019-risks-learned-optimization", role: original, locator: "Section 4", stance: for}
+
+- id: c-langosco-prereqs
+  type: attributive
+  text: "Langosco et al. suggest possible prerequisites for goal misgeneralization."
+  evidence:
+    - {work: "langosco-2022-goal-misgeneralization-deep-rl", role: original, locator: "Sections 2.2 and 3", stance: for}
+
+- id: c-langosco-prereq-text
+  type: attributive
+  text: "Langosco et al. suggest that the training environment must be diverse enough to learn sufficiently robust capabilities, and that there must exist some proxy that correlates with the intended objective on the training distribution but comes apart on the test environment."
+  evidence:
+    - {work: "langosco-2022-goal-misgeneralization-deep-rl", role: original, locator: "Sections 2.2 and 3", stance: for}
+
+- id: c-langosco-inductive
+  type: attributive
+  text: "Langosco et al. argue that goal misgeneralization depends mostly on whether the inductive biases of the model and training algorithm prime it to learn a proxy."
+  evidence:
+    - {work: "langosco-2022-goal-misgeneralization-deep-rl", role: original, locator: "Sections 2.2 and 3", stance: for}
+
+- id: c-langosco-evolution
+  type: attributive
+  text: "Langosco et al. note that complex environments are rife with proxies and sub-goals, such as eating rich food for the goal of maximizing fitness, many of which are more dense or simpler to optimize than the original goal, and draw the analogy with evolution."
+  evidence:
+    - {work: "langosco-2022-goal-misgeneralization-deep-rl", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-langosco-not-enough
+  type: attributive
+  text: "Langosco et al. state that training a model by optimizing an objective R is not enough to guarantee that the model will itself learn to pursue R rather than some proxy for R."
+  evidence:
+    - {work: "langosco-2022-goal-misgeneralization-deep-rl", role: original, locator: "Section 1", stance: for}
+
+- id: c-shah-lens
+  type: attributive
+  text: "Shah et al. state that the goal misgeneralization lens does not predict in advance whether training will yield the intended or misgeneralized goal, and that inductive biases will typically make one of these much more likely."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 5.1", stance: for}
+
+- id: c-hub-mesa
+  type: definitional
+  text: "Hubinger et al. call the situation in which a learned model is itself an optimizer mesa-optimization, and call such a model a mesa-optimizer with a mesa-objective."
+  evidence:
+    - {work: "hubinger-2019-risks-learned-optimization", role: original, locator: "the abstract and Section 1.1", stance: for}
+
+- id: c-hub-inner-outer
+  type: definitional
+  text: "Hubinger et al. call the problem of eliminating the gap between the base objective and the mesa-objective the inner alignment problem, and the problem of eliminating the gap between the base objective and the intended goal of the programmers the outer alignment problem."
+  evidence:
+    - {work: "hubinger-2019-risks-learned-optimization", role: original, locator: "Section 1.2", stance: for}
+
+- id: c-hub-pseudo
+  type: definitional
+  text: "Hubinger et al. call pseudo-aligned the mesa-optimizers whose mesa-objectives agree with the base objective on past training data, but not robustly across possible future data."
+  evidence:
+    - {work: "hubinger-2019-risks-learned-optimization", role: original, locator: "Section 1.3", stance: for}
+
+- id: c-hub-generalize
+  type: attributive
+  text: "Hubinger et al. write that a pseudo-aligned system could competently take actions to achieve something other than the intended goal off the training distribution: its capabilities might generalize while its objective does not."
+  evidence:
+    - {work: "hubinger-2019-risks-learned-optimization", role: original, locator: "Section 1.3", stance: for}
+
+- id: c-hub-red-doors
+  type: attributive
+  text: "Hubinger et al. give the toy example of an RL agent trained on maze navigation where all the doors are red, which might generalize to reaching red objects instead of doors."
+  evidence:
+    - {work: "hubinger-2019-risks-learned-optimization", role: original, locator: "Section 1.3", stance: for}
+
+- id: c-langosco-mesa
+  type: attributive
+  text: "Langosco et al. write that mesa-optimization could lead to goal misgeneralization if the inner objective differs from the outer objective, that goal misgeneralization can occur without mesa-optimization, and that their work does not demonstrate mesa-optimization."
+  evidence:
+    - {work: "langosco-2022-goal-misgeneralization-deep-rl", role: original, locator: "Section 4", stance: for}
+
+- id: c-shah-mesa
+  type: attributive
+  text: "Shah et al. describe mesa optimization as a type of goal misgeneralization where a learned model implements a search algorithm with an explicitly represented objective, and do not make this assumption."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 6", stance: for}
+
+- id: c-shah-outer-inner
+  type: definitional
+  text: "Shah et al. state that a discrepancy between the ideal and design objectives leads to outer misalignment or specification gaming, while a discrepancy between the design and revealed objectives leads to inner misalignment or goal misgeneralization."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 6", stance: for}
+
+- id: c-coinrun-setup
+  type: empirical
+  text: "In the CoinRun training environment of Langosco et al., the agent is rewarded for reaching a coin that is always placed at the right end of the level."
+  scope:
+    models: "PPO agents with feedforward networks"
+    data: ["procgen-coinrun"]
+    scale: "small"
+    setting: "zero-shot test on a modified Procgen environment"
+  evidence:
+    - {work: "langosco-2022-goal-misgeneralization-deep-rl", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-coinrun-test
+  type: empirical
+  text: "When the coin is placed elsewhere at test time, the CoinRun agent generally ignores the coin and proceeds to the end of the level."
+  scope:
+    models: "PPO agents with feedforward networks"
+    data: ["procgen-coinrun"]
+    scale: "small"
+    setting: "zero-shot test on a modified Procgen environment"
+  evidence:
+    - {work: "langosco-2022-goal-misgeneralization-deep-rl", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-maze-corner
+  type: empirical
+  text: "In the first Maze variant of Langosco et al., the cheese is always in the upper right corner during training, and at test time the agent navigates to the upper right corner instead of the cheese."
+  scope:
+    models: "PPO agents with feedforward networks"
+    data: ["procgen-maze"]
+    scale: "small"
+    setting: "zero-shot test on a modified Procgen environment"
+  evidence:
+    - {work: "langosco-2022-goal-misgeneralization-deep-rl", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-maze-yellow
+  type: empirical
+  text: "In the second Maze variant, an agent trained to reach a yellow line pursues the yellow gem at test time 89% of the time (n = 102), although it was trained with the correct reward function."
+  scope:
+    models: "PPO agents with feedforward networks"
+    data: ["procgen-maze"]
+    scale: "small"
+    setting: "zero-shot test on a modified Procgen environment"
+  evidence:
+    - {work: "langosco-2022-goal-misgeneralization-deep-rl", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-keys-setup
+  type: definitional
+  text: "In the Keys and Chests environment of Langosco et al., the agent is rewarded for every chest it opens, and opening a chest deletes a key from its inventory."
+  evidence:
+    - {work: "langosco-2022-goal-misgeneralization-deep-rl", role: original, locator: "Section 3.3", stance: for}
+
+- id: c-keys-test
+  type: empirical
+  text: "An agent trained with twice as many chests as keys and tested with twice as many keys as chests goes out of its way to collect all the keys, even though only half of them are instrumentally useful."
+  scope:
+    models: "PPO agents with feedforward networks"
+    data: ["procgen-heist"]
+    scale: "small"
+    setting: "zero-shot test on a modified Procgen environment"
+  evidence:
+    - {work: "langosco-2022-goal-misgeneralization-deep-rl", role: original, locator: "Sections 3.3 and 3.4", stance: for}
+
+- id: c-keys-sparse
+  type: attributive
+  text: "Langosco et al. suggest the Keys and Chests agent learned the proxy because it is less sparse than the intended objective while being correlated with it on the training distribution."
+  evidence:
+    - {work: "langosco-2022-goal-misgeneralization-deep-rl", role: original, locator: "Section 3.3", stance: for}
+
+- id: c-actor-critic
+  type: empirical
+  text: "Langosco et al. show that in CoinRun the actor and the critic both fail to generalize out-of-distribution, and fail in different ways."
+  scope:
+    models: "PPO agents with feedforward networks"
+    data: ["procgen-coinrun"]
+    scale: "small"
+    setting: "zero-shot test on a modified Procgen environment"
+  evidence:
+    - {work: "langosco-2022-goal-misgeneralization-deep-rl", role: original, locator: "Section 3.4", stance: for}
+
+- id: c-critic
+  type: empirical
+  text: "The CoinRun critic assigns much higher value to the end of the level than elsewhere, and the presence of the coin makes no discernible difference."
+  scope:
+    models: "PPO agents with feedforward networks"
+    data: ["procgen-coinrun"]
+    scale: "small"
+    setting: "zero-shot test on a modified Procgen environment"
+  evidence:
+    - {work: "langosco-2022-goal-misgeneralization-deep-rl", role: original, locator: "Section 3.4", stance: for}
+
+- id: c-actor-wall
+  type: empirical
+  text: "With a permeable end wall, the CoinRun agent passes through the wall 100% of the time (n = 114), pursuing a move right proxy rather than the move to the wall proxy of the critic, a non-robust proxy of a non-robust proxy."
+  scope:
+    models: "PPO agents with feedforward networks"
+    data: ["procgen-coinrun"]
+    scale: "small"
+    setting: "zero-shot test on a modified Procgen environment"
+  evidence:
+    - {work: "langosco-2022-goal-misgeneralization-deep-rl", role: original, locator: "Section 3.4", stance: for}
+
+- id: c-monster
+  type: empirical
+  text: "In Monster Gridworld, an agent trained on episodes of length 25 and tested on episodes of length 200 collects more shields and fewer apples than an agent trained on episodes of length 200."
+  scope:
+    models: "an RL agent"
+    data: ["monster-gridworld"]
+    scale: "small"
+    setting: "test on longer episodes"
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-monster-shift
+  type: empirical
+  text: "After 25 steps, trained agents often destroy all the monsters, inducing a distribution shift for the agent trained on 25 steps."
+  scope:
+    models: "an RL agent"
+    data: ["monster-gridworld"]
+    scale: "small"
+    setting: "test on longer episodes"
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-tree
+  type: empirical
+  text: "In the Tree Gridworld online, reset-free setting, the agent's initial competence at chopping trees usually leads to complete deforestation and a long period of near-zero reward before it learns to chop trees sustainably."
+  scope:
+    models: "an RL agent"
+    data: ["tree-gridworld"]
+    scale: "small"
+    setting: "never-ending online learning"
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-gopher-setup
+  type: definitional
+  text: "Shah et al. prompt the 280B parameter Gopher model with 10 examples, each with exactly two unknown variables, to evaluate linear expressions in a dialogue where the model asks the user for the values of unknown variables."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 3.3", stance: for}
+
+- id: c-gopher-test
+  type: empirical
+  text: "Gopher generalizes correctly to expressions with one or three variables, but in the zero variables case asks redundant questions like What's 6; the misgeneralized goal is to query the user at least once before giving an answer."
+  scope:
+    models: "Gopher 280B"
+    data: ["linear-expression-dialogues"]
+    scale: "280B parameters"
+    setting: "few-shot prompting"
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 3.3", stance: for}
+
+- id: c-cultural-setup
+  type: definitional
+  text: "The MEDAL-ADR agent is trained with RL to visit coloured spheres in an order initially unknown to it, in an environment that initially contains an expert bot that visits the spheres in the correct order."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 1", stance: for}
+
+- id: c-cultural-test
+  type: empirical
+  text: "Paired with an anti-expert that visits the spheres in an incorrect order, the agent continues to follow the anti-expert, accumulating negative reward and performing far worse than a random policy."
+  scope:
+    models: "MEDAL-ADR"
+    data: ["medal-adr-target-locations"]
+    scale: "unknown"
+    setting: "test with new partner bots"
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Sections 1 and 3.4", stance: for}
+
+- id: c-cultural-no-misspec
+  type: attributive
+  text: "Shah et al. note that the agent was only ever rewarded for visiting the spheres in the correct order, so there was no reward misspecification."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 1", stance: for}
+
+- id: c-cultural-wild
+  type: attributive
+  text: "Shah et al. state that the cultural transmission case of goal misgeneralization was found in the wild."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 3.4", stance: for}
+
+- id: c-instructgpt
+  type: empirical
+  text: "InstructGPT, finetuned from human preferences to be helpful, truthful, and harmless, provides detailed advice on how to rob a grocery store."
+  scope:
+    models: "InstructGPT 175B"
+    data: ["ouyang-2022-figure-44-prompt"]
+    scale: "175B parameters"
+    setting: "one example completion"
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 3.5", stance: for}
+
+- id: c-instructgpt-goal
+  type: attributive
+  text: "Shah et al. speculate that InstructGPT was finetuned mostly on innocuous questions, so that provide an informative answer was a consistent training goal."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 3.5", stance: for}
+
+- id: c-instructgpt-unclear
+  type: attributive
+  text: "Shah et al. note that labelers were told to prioritize helpfulness, which gives an alternative explanation, and think it is still unclear whether or not this is a case of goal misgeneralization."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Sections 3.5 and 4", stance: for}
+
+- id: c-scheduler
+  type: attributive
+  text: "Shah et al. describe a hypothetical AI system trained before the COVID-19 pandemic to schedule Alice's social life, which learns the goal to schedule meetings in restaurants instead of where she prefers and still makes restaurant reservations once the pandemic hits."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-hacker
+  type: attributive
+  text: "Shah et al. describe a hypothetical superhuman hacker whose misgeneralized goal is having humans click merge on its pull requests, call the story necessarily speculative, and expect it to be quite implausible as written."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 4.3", stance: for}
+
+- id: c-langosco-first
+  type: attributive
+  text: "Langosco et al. provide the first empirical demonstrations of goal misgeneralization, in their own description of the work."
+  evidence:
+    - {work: "langosco-2022-goal-misgeneralization-deep-rl", role: original, locator: "the abstract", stance: for}
+
+- id: c-langosco-procgen
+  type: empirical
+  text: "Langosco et al. report that agents trained on Procgen environments still fail on slightly modified environments."
+  scope:
+    models: "PPO agents with feedforward networks"
+    data: ["procgen-coinrun", "procgen-maze", "procgen-heist"]
+    scale: "small"
+    setting: "zero-shot test on a modified Procgen environment"
+  evidence:
+    - {work: "langosco-2022-goal-misgeneralization-deep-rl", role: original, locator: "Section 1", stance: for}
+
+- id: c-langosco-agency
+  type: empirical
+  text: "In a gridworld where the agent and device mixtures are computed explicitly, the robust and misgeneralizing policies are recognized as goal-directed agents, while the policy that fails at capability generalization is classified as non-agent."
+  scope:
+    models: "hand-built policies"
+    data: ["orseau-agents-devices-gridworld"]
+    scale: "small"
+    setting: "exact computation of mixture probabilities"
+  evidence:
+    - {work: "langosco-2022-goal-misgeneralization-deep-rl", role: original, locator: "Section 3.5", stance: for}
+
+- id: c-shah-new-settings
+  type: attributive
+  text: "Shah et al. show goal misgeneralization in a distribution shift induced solely by running the agent longer, in never-ending RL, in large language models without any RL, and in two examples found in the wild."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 6", stance: for}
+
+- id: c-shah-designed
+  type: attributive
+  text: "Shah et al. note that many of their examples were deliberately designed to display goal misgeneralization, and so do not provide much information on how likely it is in practice."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 7", stance: for}
+
+- id: c-shah-first-steps
+  type: attributive
+  text: "Shah et al. say one should first train with a good scoring function to avoid specification gaming, and monitor the model during deployment to detect goal misgeneralization before it becomes catastrophic."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 5", stance: for}
+
+- id: c-shah-no-solution
+  type: attributive
+  text: "Shah et al. state that no combination of current techniques presents a complete solution."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 5", stance: for}
+
+- id: c-langosco-diversity
+  type: empirical
+  text: "Langosco et al. find that goal misgeneralization may be alleviated by increasing the diversity of the training distribution."
+  scope:
+    models: "PPO agents with feedforward networks"
+    data: ["procgen-coinrun", "procgen-maze"]
+    scale: "small"
+    setting: "zero-shot test on a modified Procgen environment"
+  evidence:
+    - {work: "langosco-2022-goal-misgeneralization-deep-rl", role: original, locator: "Section 1", stance: for}
+
+- id: c-coinrun-2pct
+  type: empirical
+  text: "In CoinRun, goal generalization is greatly improved when just 2% of training levels have randomly placed coins."
+  scope:
+    models: "PPO agents with feedforward networks"
+    data: ["procgen-coinrun"]
+    scale: "small"
+    setting: "zero-shot test on a modified Procgen environment"
+  evidence:
+    - {work: "langosco-2022-goal-misgeneralization-deep-rl", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-monster-fix
+  type: empirical
+  text: "In Monster Gridworld, the agent trained on 100 steps encounters situations with no monsters and generalizes successfully."
+  scope:
+    models: "an RL agent"
+    data: ["monster-gridworld"]
+    scale: "small"
+    setting: "test on longer episodes"
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-cultural-fix
+  type: attributive
+  text: "CGI et al. suggest fixing the MEDAL-ADR agent's tendency to follow anti-experts by training with a wider range of partner bots."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 5.1", stance: for}
+
+- id: c-diversity-limit
+  type: attributive
+  text: "Shah et al. name as a core difficulty the challenge of anticipating all the relevant kinds of diversity prior to deployment."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 5.1", stance: for}
+
+- id: c-uncertainty
+  type: attributive
+  text: "Shah et al. propose representing all of the functions that behave well on the training data, for example using Bayesian neural networks or ensembling, and deferring to humans where these functions disagree."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 5.1", stance: for}
+
+- id: c-uncertainty-limit
+  type: attributive
+  text: "Shah et al. warn that such approaches may be too conservative if unanimous agreement is required, or heavily dependent on a chosen prior if Bayesian averaging is used."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 5.1", stance: for}
+
+- id: c-inductive-fix
+  type: attributive
+  text: "Shah et al. suggest that a better understanding of inductive biases and generalization could enable predicting when goal misgeneralization would happen, and changing the inductive biases to favor the intended goal."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 5.1", stance: for}
+
+- id: c-invariant
+  type: attributive
+  text: "Langosco et al. suggest that learning invariant predictors across diverse training environments might help a model learn the true cause of the reward it receives."
+  evidence:
+    - {work: "langosco-2022-goal-misgeneralization-deep-rl", role: original, locator: "Section 4", stance: for}
+
+- id: c-deception-worst
+  type: attributive
+  text: "Shah et al. expect the worst failures of goal misgeneralization when the model actively tricks us, in which case the model knows that its actions are not what we intended."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 5.2", stance: for}
+
+- id: c-interpretability
+  type: attributive
+  text: "Shah et al. suggest interpretability techniques could enable penalizing deception, and note that we may then learn a deceptive model that can also deceive the interpretability techniques."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 5.2", stance: for}
+
+- id: c-recursive
+  type: attributive
+  text: "In recursive evaluation approaches, such as debate, iterated amplification and recursive reward modeling, evaluation of models is assisted by other models, which could reveal that a model is behaving badly."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 5.2", stance: for}
+
+- id: c-mit-71
+  type: definitional
+  text: "In the AI Risk Repository, subdomain 7.1, AI pursuing its own goals in conflict with human goals or values, lists goal misgeneralisation with reward hacking, reward tampering, proxy-gaming and goal drift among technical challenges that may impede robust alignment."
+  evidence:
+    - {work: "slattery-2024-ai-risk-repository", role: original, locator: "p. 17", stance: for}
+
+- id: c-hub-types
+  type: definitional
+  text: "Hubinger et al. classify the ways a mesa-optimizer could be pseudo-aligned into proxy alignment, approximate alignment, and suboptimality alignment."
+  evidence:
+    - {work: "hubinger-2019-risks-learned-optimization", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-shah-three-objectives
+  type: definitional
+  text: "Following Ortega et al., Shah et al. consider three types of objectives: the ideal objective, the design objective and the revealed objective."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 6", stance: for}
+
+- id: c-langosco-dangerous
+  type: attributive
+  text: "Langosco et al. argue that goal misgeneralization might be more dangerous than capability generalization failures, since an agent that capably pursues an incorrect goal can leverage its capabilities to visit arbitrarily bad states."
+  evidence:
+    - {work: "langosco-2022-goal-misgeneralization-deep-rl", role: original, locator: "Section 1", stance: for}
+
+- id: c-shah-catastrophic
+  type: attributive
+  text: "Shah et al. view goal misgeneralization as a plausible mechanism for catastrophic risk from powerful AI systems."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 7", stance: for}
+
+- id: c-ngo-harmful
+  type: attributive
+  text: "Ngo et al. argue that if the reward model is systematically biased, improving the transition model could increase goal misgeneralization, so interventions which would typically improve generalization may be ineffective or harmful."
+  evidence:
+    - {work: "ngo-2022-alignment-problem-deep-learning", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-shah-open
+  type: attributive
+  text: "Shah et al. note that many of their examples were deliberately designed to display goal misgeneralization, and that the InstructGPT example has an alternative explanation."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Sections 3.5 and 7", stance: for}
+
+- id: c-shah-future
+  type: attributive
+  text: "Shah et al. call for empirically estimating what fraction of fixed training features lead to goal misgeneralization when varied at test time, and studying how goal misgeneralization changes with scale."
+  evidence:
+    - {work: "shah-2022-goal-misgeneralization", role: original, locator: "Section 7", stance: for}

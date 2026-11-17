@@ -1,0 +1,587 @@
+# The claims of the label smoothing page (spec 07). The build computes the labels.
+
+# Setting
+
+- id: c-sz-softmax
+  type: definitional
+  text: "For each training example x, the model of Szegedy et al. computes the probability of each label k in {1 ... K} as p(k|x) = exp(z_k) / Σ_i exp(z_i), where z_i are the logits or unnormalized log-probabilities."
+  evidence:
+    - {work: "szegedy-2016-rethinking-inception", role: original, locator: "p. 6", stance: for}
+
+- id: c-sz-loss
+  type: definitional
+  text: "Szegedy et al. define the loss for an example as the cross entropy ℓ = −Σ_k log(p(k)) q(k) with the ground-truth distribution over labels q(k|x); minimizing it is equivalent to maximizing the expected log-likelihood of a label selected according to its ground-truth distribution."
+  evidence:
+    - {work: "szegedy-2016-rethinking-inception", role: original, locator: "p. 6", stance: for}
+
+- id: c-sz-gradient
+  type: attributive
+  text: "Szegedy et al. note that the gradient of the cross-entropy loss with respect to the logits has the simple form ∂ℓ/∂z_k = p(k) − q(k), which is bounded between −1 and 1."
+  evidence:
+    - {work: "szegedy-2016-rethinking-inception", role: original, locator: "p. 6", stance: for}
+
+- id: c-sz-unreachable
+  type: attributive
+  text: "For a single ground-truth label y the log-likelihood is maximized for q(k) = δ_{k,y}; this maximum is not achievable for finite logits but is approached if the logit of the ground-truth label is much greater than all other logits."
+  evidence:
+    - {work: "szegedy-2016-rethinking-inception", role: original, locator: "p. 7", stance: for}
+
+- id: c-sz-two-problems
+  type: attributive
+  text: "Szegedy et al. state that this can cause two problems: over-fitting, since a model that assigns full probability to the ground-truth label of each training example is not guaranteed to generalize, and large differences between the largest logit and all others, which combined with the bounded gradient reduce the ability of the model to adapt."
+  evidence:
+    - {work: "szegedy-2016-rethinking-inception", role: original, locator: "p. 7", stance: for}
+
+- id: c-sz-too-confident
+  type: attributive
+  text: "Szegedy et al. say that intuitively this happens because the model becomes too confident about its predictions, and propose a mechanism for encouraging the model to be less confident, which may not be desired if the goal is to maximize the log-likelihood of training labels but does regularize the model and makes it more adaptable."
+  evidence:
+    - {work: "szegedy-2016-rethinking-inception", role: original, locator: "p. 7", stance: for}
+
+# The method
+
+- id: c-sz-mixture
+  type: definitional
+  text: "For a training example with ground-truth label y, label smoothing replaces the label distribution q(k|x) = δ_{k,y} with q'(k|x) = (1 − ε)δ_{k,y} + εu(k), a mixture of the original ground-truth distribution and a fixed distribution u(k), independent of the training example, with weights 1 − ε and ε."
+  evidence:
+    - {work: "szegedy-2016-rethinking-inception", role: original, locator: "p. 7", stance: for}
+
+- id: c-sz-sampling
+  type: attributive
+  text: "Szegedy et al. note that q' can be seen as the distribution of the label obtained by first setting it to the ground-truth label k = y and then, with probability ε, replacing k with a sample drawn from the distribution u(k)."
+  evidence:
+    - {work: "szegedy-2016-rethinking-inception", role: original, locator: "p. 7", stance: for}
+
+- id: c-sz-uniform
+  type: definitional
+  text: "Szegedy et al. propose to use the prior distribution over labels as u(k), and in their experiments used the uniform distribution u(k) = 1/K, so that q'(k) = (1 − ε)δ_{k,y} + ε/K; they refer to this change in the ground-truth label distribution as label-smoothing regularization, or LSR."
+  evidence:
+    - {work: "szegedy-2016-rethinking-inception", role: original, locator: "p. 7", stance: for}
+
+- id: c-sz-label-dropout
+  type: attributive
+  text: "Szegedy et al. propose label smoothing as a mechanism to regularize the classifier layer by estimating the marginalized effect of label-dropout during training."
+  evidence:
+    - {work: "szegedy-2016-rethinking-inception", role: original, locator: "p. 6", stance: for}
+
+- id: c-mu-ls-definition
+  type: definitional
+  text: "Müller et al. write the targets of label smoothing with parameter α as y_k^LS = y_k(1 − α) + α/K, where y_k is 1 for the correct class and 0 for the rest, and minimize the cross-entropy between these modified targets and the network's outputs p_k instead of the cross-entropy with the hard targets."
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "Section 1.1", stance: for}
+
+- id: c-sz-lower-bound
+  type: attributive
+  text: "Szegedy et al. note that LSR prevents the largest logit from becoming much larger than all others: if it did, a single probability would approach 1 while all others approach 0, which would result in a large cross-entropy with q', because unlike the hard target all q'(k) have a positive lower bound."
+  evidence:
+    - {work: "szegedy-2016-rethinking-inception", role: original, locator: "p. 7", stance: for}
+
+- id: c-pe-overconfident
+  type: attributive
+  text: "Pereyra et al. write that confident predictions correspond to output distributions with low entropy, and that a network is overconfident when it places all probability on a single class in the training set, which is often a symptom of overfitting."
+  evidence:
+    - {work: "pereyra-2017-penalizing-confident-outputs", role: original, locator: "Section 3", stance: for}
+
+# Derivation: the pair of losses
+
+- id: c-sz-pair
+  type: attributive
+  text: "Szegedy et al. write the cross entropy with the smoothed labels as H(q', p) = −Σ_k log p(k) q'(k) = (1 − ε)H(q, p) + εH(u, p), so that LSR is equivalent to replacing a single cross-entropy loss H(q, p) with a pair of such losses H(q, p) and H(u, p)."
+  evidence:
+    - {work: "szegedy-2016-rethinking-inception", role: original, locator: "p. 7", stance: for}
+
+- id: c-sz-kl
+  type: attributive
+  text: "Szegedy et al. note that the second loss penalizes the deviation of the predicted label distribution p from the prior u, and that this deviation could be equivalently captured by the KL divergence, since H(u, p) = D_KL(u‖p) + H(u) and H(u) is fixed."
+  evidence:
+    - {work: "szegedy-2016-rethinking-inception", role: original, locator: "p. 7", stance: for}
+
+- id: c-sz-negentropy
+  type: attributive
+  text: "Szegedy et al. note that when u is the uniform distribution, H(u, p) measures how dissimilar the predicted distribution p is to uniform, which could also be measured, but not equivalently, by the negative entropy −H(p), and that they did not experiment with this approach."
+  evidence:
+    - {work: "szegedy-2016-rethinking-inception", role: original, locator: "p. 7", stance: for}
+
+- id: c-decomposition
+  type: mathematical
+  text: "For any distribution u over the K classes and any ε in [0, 1], the cross-entropy of the predicted distribution p against the smoothed target (1 − ε)δ_y + εu equals (1 − ε)(−log p_y) + εH(u, p), where H(u, p) = −Σ_k u_k log p_k."
+  assumes: ["p is a distribution with p_k > 0 for every k, as a softmax gives", "u is a distribution over the K classes", "0 ≤ ε ≤ 1"]
+  derivation: smoothed-cross-entropy
+
+- id: c-kl-form
+  type: mathematical
+  text: "With the uniform distribution u = 1/K, the smoothed cross-entropy equals (1 − ε)(−log p_y) + ε D_KL(u‖p) + ε log K, so up to a constant label smoothing adds ε D_KL(u‖p) to (1 − ε) times the negative log-likelihood."
+  assumes: ["u is uniform over K classes", "p_k > 0 for every k", "0 ≤ ε ≤ 1"]
+  derivation: smoothed-cross-entropy
+
+- id: c-confidence-relation
+  type: mathematical
+  text: "For the uniform distribution u over K classes, the negative entropy satisfies −H(p) = D_KL(p‖u) − log K, so the confidence penalty −βH(p) equals β D_KL(p‖u) up to a constant, while label smoothing penalizes D_KL(u‖p): the two penalize the two directions of the same divergence."
+  assumes: ["u is uniform over K classes", "p_k > 0 for every k"]
+  derivation: smoothed-cross-entropy
+
+- id: c-marginalized
+  type: mathematical
+  text: "If the label is kept with probability 1 − ε and otherwise replaced by a draw from u, the expected cross-entropy over this label noise equals the cross-entropy with the smoothed target q' = (1 − ε)δ_y + εu, because the cross-entropy is linear in the target."
+  assumes: ["the replacement is drawn independently of the input given the label", "the prediction p does not depend on the drawn label"]
+  derivation: smoothed-cross-entropy
+
+- id: c-gradient
+  type: mathematical
+  text: "The gradient of the smoothed cross-entropy with respect to the logits is p − q', whose entries lie in [−1, 1] and sum to 0; with ε = 0 this is the p − q of hard targets."
+  assumes: ["p is the softmax of the logits", "q' is a distribution that does not depend on the logits"]
+  derivation: smoothed-cross-entropy
+
+- id: c-pe-ls-kl
+  type: attributive
+  text: "Pereyra et al. state that label smoothing estimates the marginalized effect of label noise during training, and that when the prior label distribution is uniform it is equivalent to adding the KL divergence between the uniform distribution u and the network's predicted distribution to the negative log-likelihood."
+  evidence:
+    - {work: "pereyra-2017-penalizing-confident-outputs", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-pe-reverse
+  type: attributive
+  text: "Pereyra et al. state that by reversing the direction of the KL divergence, D_KL(p_θ(y|x)‖u), one recovers the confidence penalty, and that this interpretation suggests further confidence regularizers with target distributions other than the uniform one."
+  evidence:
+    - {work: "pereyra-2017-penalizing-confident-outputs", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-pe-penalty
+  type: definitional
+  text: "The confidence penalty of Pereyra et al. adds the negative entropy to the negative log-likelihood during training, L(θ) = −Σ log p_θ(y|x) − βH(p_θ(y|x)), where β controls the strength of the confidence penalty."
+  evidence:
+    - {work: "pereyra-2017-penalizing-confident-outputs", role: original, locator: "Section 3", stance: for}
+
+- id: c-pe-entropy-grad
+  type: attributive
+  text: "Pereyra et al. note that the gradient of the entropy term with respect to the i-th logit is p_θ(y_i|x)(−log p_θ(y_i|x) − H(p_θ)), which is the weighted deviation from the mean."
+  evidence:
+    - {work: "pereyra-2017-penalizing-confident-outputs", role: original, locator: "Section 3", stance: for}
+
+- id: c-mu-distill-loss
+  type: definitional
+  text: "In knowledge distillation as Müller et al. describe it, the cross-entropy H(y, p) is replaced by the weighted sum (1 − β)H(y, p) + βH(p^t(T), p(T)), where p(T) and p^t(T) are the outputs of the student and the teacher after temperature scaling with temperature T."
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "Section 4", stance: for}
+
+# Derivation: the optimal logits
+
+- id: c-optimum
+  type: mathematical
+  text: "For a fixed smoothed target q', the smoothed cross-entropy of one example is smallest exactly when p = q', by Gibbs' inequality, and its minimum is the entropy H(q'), which is positive for ε > 0."
+  assumes: ["the softmax can produce any distribution with positive entries", "0 < ε ≤ 1 so that every entry of q' is positive"]
+  derivation: optimal-logits
+
+- id: c-logit-gap
+  type: mathematical
+  text: "With uniform smoothing, the logits that minimize the loss put every incorrect logit below the correct one by the same gap log((1 − ε + ε/K)/(ε/K)) = log(1 + K(1 − ε)/ε), while with ε = 0 the loss has no minimizer with finite logits and the gap grows without bound under gradient descent."
+  assumes: ["u is uniform over K ≥ 2 classes", "0 < ε < 1 for the finite gap", "the logits are free parameters"]
+  derivation: optimal-logits
+
+- id: c-gap-imagenet
+  type: mathematical
+  text: "For K = 1000 and ε = 0.1, the setting of Szegedy et al. on ImageNet, the optimal logit gap is log 9001, about 9.105, and the largest probability the loss rewards is 0.9001."
+  assumes: ["u is uniform over K = 1000 classes", "ε = 0.1"]
+  derivation: optimal-logits
+
+- id: c-convention
+  type: mathematical
+  text: "Spreading ε over the K − 1 incorrect classes, ε/(K − 1) each with 1 − ε on the correct class, gives the same target as uniform smoothing over all K classes with ε' = εK/(K − 1)."
+  assumes: ["K ≥ 2", "0 ≤ ε ≤ (K − 1)/K so that ε' ≤ 1"]
+  derivation: optimal-logits
+
+# Evidence: the introduction of the method
+
+- id: c-sz-imagenet
+  type: empirical
+  text: "In their ImageNet experiments with K = 1000 classes, Szegedy et al. used u(k) = 1/1000 and ε = 0.1, and found on ILSVRC 2012 a consistent improvement of about 0.2% absolute both for the top-1 error and the top-5 error."
+  scope:
+    models: "Inception-v2"
+    data: [imagenet]
+    scale: "ILSVRC 2012, single crop"
+    setting: "image classification, label smoothing added to a cumulative series of changes"
+  evidence:
+    - {work: "szegedy-2016-rethinking-inception", role: original, locator: "p. 7", stance: for}
+
+- id: c-mu-table1
+  type: empirical
+  text: "The survey of label smoothing results in Table 1 of Müller et al. gives, without and with label smoothing, errors of 23.1 and 22.8 (top-1) and 6.3 and 6.1 (top-5) for the Inception architecture on ImageNet, a BLEU score of 25.3 and 25.8 and a perplexity of 4.67 and 4.92 on EN-DE translation, and a WER of 8.9 and 7.0/6.7 on WSJ speech recognition."
+  scope:
+    models: "Inception-v2, Transformer, BiLSTM with attention"
+    data: [imagenet, wmt-2014-en-de, wsj]
+    scale: "results of Szegedy et al., Vaswani et al. and Chorowski and Jaitly"
+    setting: "image classification, machine translation and speech recognition"
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "Section 1", stance: for}
+
+- id: c-vaswani
+  type: empirical
+  text: "Vaswani et al. employed label smoothing of value ε_ls = 0.1 during training of the Transformer, and report that this hurts perplexity, as the model learns to be more unsure, but improves accuracy and BLEU score."
+  scope:
+    models: "Transformer"
+    data: [wmt-2014-en-de, wmt-2014-en-fr]
+    scale: "base and big models"
+    setting: "machine translation"
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 5.4", stance: for}
+
+- id: c-mu-used
+  type: attributive
+  text: "Müller et al. write that label smoothing has been used successfully to improve the accuracy of deep learning models across image classification, speech recognition and machine translation, and that many state-of-the-art image classification models have incorporated it into training since Szegedy et al. proposed it for the Inception architecture."
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "Section 1", stance: for}
+
+- id: c-mu-chorowski
+  type: attributive
+  text: "Müller et al. note that in speech recognition Chorowski and Jaitly used label smoothing to reduce the word error rate on the WSJ dataset, and that in machine translation Vaswani et al. attained a small but important improvement in BLEU score."
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "Section 1", stance: for}
+
+- id: c-mu-poorly-understood
+  type: attributive
+  text: "Müller et al. note that despite its widespread use label smoothing is still poorly understood."
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "the abstract", stance: for}
+
+# Evidence: the confidence penalty comparison
+
+- id: c-pe-abstract
+  type: attributive
+  text: "Pereyra et al. evaluate the confidence penalty and label smoothing on 6 common benchmarks in image classification, language modeling, machine translation and speech recognition, and find that both improve state-of-the-art models without modifying existing hyperparameters."
+  evidence:
+    - {work: "pereyra-2017-penalizing-confident-outputs", role: original, locator: "the abstract", stance: for}
+
+- id: c-pe-fig1
+  type: empirical
+  text: "On the MNIST validation set, a fully-connected 2-layer network with 1024 units trained with dropout gives softmax probabilities that are either 0 or 1, while label smoothing and the confidence penalty both lead to smoother output distributions."
+  scope:
+    models: "fully-connected network, 2 layers of 1024 units"
+    data: [mnist]
+    scale: "the validation set"
+    setting: "the distribution of the magnitude of the softmax probabilities"
+  evidence:
+    - {work: "pereyra-2017-penalizing-confident-outputs", role: original, locator: "Section 3", stance: for}
+
+- id: c-pe-mnist
+  type: empirical
+  text: "On permutation-invariant MNIST, Pereyra et al. varied the smoothing parameter over 0.05 to 0.5 and found 0.1 to work best, and report test errors of 1.28 ± 0.06% with dropout, 1.23 ± 0.06% with label smoothing and 1.17 ± 0.06% with the confidence penalty."
+  scope:
+    models: "fully-connected ReLU network, 2 hidden layers of 1024 units"
+    data: [mnist]
+    scale: "60k training and 10k test images"
+    setting: "image classification, SGD with a constant learning rate"
+  evidence:
+    - {work: "pereyra-2017-penalizing-confident-outputs", role: original, locator: "Section 4.1.1", stance: for}
+
+- id: c-pe-gradnorm
+  type: empirical
+  text: "Pereyra et al. observed that label smoothing and the confidence penalty had smaller gradient norms and converged more quickly than models regularized with dropout, and suggest that this is because a model whose output is peaked on a misclassified example receives a large gradient."
+  scope:
+    models: "fully-connected ReLU network, 2 hidden layers of 1024 units"
+    data: [mnist]
+    scale: "one training run per method"
+    setting: "the norm of the gradient during training"
+  evidence:
+    - {work: "pereyra-2017-penalizing-confident-outputs", role: original, locator: "Section 4.1.1", stance: for}
+
+- id: c-pe-cifar
+  type: empirical
+  text: "On CIFAR-10 without data augmentation, a 40-layer densely connected CNN had test errors of 7.04% with dropout, 6.89% with dropout and label smoothing, for which 0.1 worked best, and 6.77% with dropout and the confidence penalty; with data augmentation the confidence penalty did not improve performance, and neither did dropout."
+  scope:
+    models: "DenseNet with 40 layers and growth rate 12"
+    data: [cifar-10]
+    scale: "300 epochs"
+    setting: "image classification without data augmentation"
+  evidence:
+    - {work: "pereyra-2017-penalizing-confident-outputs", role: original, locator: "p. 5", stance: for}
+
+- id: c-pe-ptb
+  type: empirical
+  text: "On word-level Penn Treebank the confidence penalty significantly outperformed label noise and label smoothing, with test perplexities of 77.7 with label noise, 76.6 with label smoothing, 76.3 with unigram smoothing and 74.7 with the confidence penalty; 0.1 worked best for label smoothing."
+  scope:
+    models: "2-layer LSTM with 1500 units and 65% dropout"
+    data: [penn-treebank]
+    scale: "55 epochs"
+    setting: "word-level language modeling"
+  evidence:
+    - {work: "pereyra-2017-penalizing-confident-outputs", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-pe-wmt
+  type: empirical
+  text: "On WMT'14 English-to-German, 0.1 worked best for uniform and unigram smoothing and label smoothing slightly outperformed the confidence penalty; without dropout each gave an improvement of just over 1 BLEU point, and combined with dropout the effect of both regularizers was diminished, the test BLEU moving from 23.41 with dropout to 23.52 with dropout and label smoothing."
+  scope:
+    models: "8-layer sequence-to-sequence LSTM with attention, 512 units"
+    data: [wmt-2014-en-de]
+    scale: "5M sentence pairs, 5 random initializations for the dropout runs"
+    setting: "machine translation with beam size 12"
+  evidence:
+    - {work: "pereyra-2017-penalizing-confident-outputs", role: original, locator: "Section 4.3", stance: for}
+
+- id: c-pe-wsj
+  type: empirical
+  text: "On WSJ, uniform label smoothing, unigram label smoothing and the confidence penalty all improved the word error rate, unigram smoothing the most and with the least sensitivity to its smoothing value; the test WER fell from 14.2 for the baseline to 11.3 with uniform and 11.0 with unigram label smoothing."
+  scope:
+    models: "attention-based sequence-to-sequence network predicting characters"
+    data: [wsj]
+    scale: "SI284 for training, EVAL92 for testing"
+    setting: "speech recognition without a separate language model"
+  evidence:
+    - {work: "pereyra-2017-penalizing-confident-outputs", role: original, locator: "Section 4.4.2", stance: for}
+
+- id: c-pe-masking
+  type: attributive
+  text: "Pereyra et al. report that uniform smoothing and the confidence penalty required masking network outputs corresponding to tokens that never appeared as labels, such as the start-of-sequence token."
+  evidence:
+    - {work: "pereyra-2017-penalizing-confident-outputs", role: original, locator: "Section 4.4.2", stance: for}
+
+# Evidence: representations
+
+- id: c-mu-constant-gap
+  type: attributive
+  text: "Müller et al. state that training with label smoothing encourages the differences between the logit of the correct class and the logits of the incorrect classes to be a constant dependent on α, while training with hard targets typically makes the correct logit much larger than any incorrect logit and allows the incorrect logits to be very different from one another."
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "Section 2", stance: for}
+
+- id: c-mu-template
+  type: attributive
+  text: "Müller et al. read the logit x^T w_k as a measure of the squared Euclidean distance between the penultimate-layer activations x and a template w_k, since ||x − w_k||^2 = x^T x − 2x^T w_k + w_k^T w_k, where x^T x is factored out when calculating the softmax and w_k^T w_k is usually constant across classes."
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "Section 2", stance: for}
+
+- id: c-mu-equidistant
+  type: attributive
+  text: "Müller et al. conclude that label smoothing encourages the activations of the penultimate layer to be close to the template of the correct class and equally distant to the templates of the incorrect classes."
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "Section 2", stance: for}
+
+- id: c-mu-visualization
+  type: definitional
+  text: "The visualization of Müller et al. picks three classes, finds an orthonormal basis of the plane crossing the templates of these three classes, and projects the penultimate layer activations of examples from these three classes onto this plane."
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "Section 2", stance: for}
+
+- id: c-mu-tight
+  type: empirical
+  text: "For AlexNet on CIFAR-10, the projections of a network trained without label smoothing spread into defined but broad clusters, while with a label smoothing factor of 0.1 the clusters are much tighter and organize in regular triangles, although the two networks have similar accuracies."
+  scope:
+    models: "AlexNet"
+    data: [cifar-10]
+    scale: "the classes airplane, automobile and bird"
+    setting: "projection of the penultimate layer activations of training and validation examples"
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "Section 2", stance: for}
+
+- id: c-mu-table2
+  type: empirical
+  text: "The networks of the visualizations had top-1 accuracies, without and with label smoothing of 0.1, of 86.8 ± 0.2 and 86.7 ± 0.3 for AlexNet on CIFAR-10, 72.1 ± 0.3 and 72.7 ± 0.3 for ResNet-56 on CIFAR-100, and 80.9 and 80.9 for Inception-v4 on ImageNet."
+  scope:
+    models: "AlexNet, ResNet-56, Inception-v4"
+    data: [cifar-10, cifar-100, imagenet]
+    scale: "the networks used in the visualizations"
+    setting: "image classification, α = 0.0 against α = 0.1"
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "table 2", stance: for}
+
+- id: c-mu-scale
+  type: attributive
+  text: "Müller et al. note that with label smoothing the difference between the logits of two classes has to be limited in absolute value to get the desired soft target, while without it the projection can take much higher absolute values, which represent over-confident predictions."
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "Section 2", stance: for}
+
+- id: c-mu-poodles
+  type: empirical
+  text: "For two semantically similar ImageNet classes, toy poodle and miniature poodle, hard targets give clusters close to each other with an isotropic spread, while with label smoothing the similar classes lie in an arc."
+  scope:
+    models: "Inception-v4"
+    data: [imagenet]
+    scale: "two similar classes and the class tench"
+    setting: "projection of the penultimate layer activations"
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "Section 2", stance: for}
+
+- id: c-mu-erased
+  type: attributive
+  text: "Müller et al. observe that without label smoothing there is a continuous degree of change between the tench cluster and the poodles cluster, so that one could measure how much a poodle is a particular tench, but that with label smoothing this information is virtually erased."
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "Section 2", stance: for}
+
+# Evidence: calibration
+
+- id: c-mu-guo
+  type: attributive
+  text: "Müller et al. recall that Guo et al. showed modern neural networks to be poorly calibrated and over-confident, measured calibration by the expected calibration error (ECE), and reduced it with temperature scaling, which multiplies the logits by a scalar before applying the softmax."
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "Section 3", stance: for}
+
+- id: c-mu-calibrates
+  type: attributive
+  text: "Müller et al. show that label smoothing also reduces ECE and can be used to calibrate a network without the need for temperature scaling."
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "Section 3", stance: for}
+
+- id: c-mu-ece
+  type: empirical
+  text: "Table 3 of Müller et al. gives an ECE of 0.150 for ResNet-56 on CIFAR-100 with hard targets, 0.021 after temperature scaling at T = 1.9 and 0.024 with label smoothing of 0.05; for Inception-v4 on ImageNet 0.071, 0.022 at T = 1.4 and 0.035 with 0.1; and for the Transformer on EN-DE 0.056, 0.018 at T = 1.13 and 0.019 with 0.1."
+  scope:
+    models: "ResNet-56, Inception-v4, Transformer"
+    data: [cifar-100, imagenet, wmt-2014-en-de]
+    scale: "15-bin reliability diagrams"
+    setting: "expected calibration error of the baseline, of temperature scaling, and of label smoothing at T = 1.0"
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "table 3", stance: for}
+
+- id: c-mu-imagenet-untuned
+  type: attributive
+  text: "Müller et al. did not tune α extensively on ImageNet, and found that label smoothing of 0.1 improves ECE to 0.035, better calibrated than the unscaled network trained with hard targets."
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "Section 3", stance: for}
+
+- id: c-mu-surprising
+  type: attributive
+  text: "Müller et al. find this somewhat surprising: despite trying to collapse the training examples to tiny clusters, these networks generalize and are calibrated, and in the validation set the tight training cluster spreads towards the center, representing the full range of confidences."
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "Section 3", stance: for}
+
+- id: c-mu-beam
+  type: attributive
+  text: "Müller et al. argue that in translation the network's soft outputs are inputs to beam search, which approximates a maximum likelihood sequence detection algorithm and is affected by calibration, so a better calibrated model is expected to perform better."
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "Section 3", stance: for}
+
+- id: c-mu-nll
+  type: empirical
+  text: "For the Transformer on English-to-German, label smoothing gives better calibration and better BLEU scores but worse negative log-likelihood than hard targets at all temperature scaling settings, and temperature scaling with hard targets is insufficient to recover the BLEU improvement of label smoothing."
+  scope:
+    models: "Transformer"
+    data: [wmt-2014-en-de]
+    scale: "next-token predictions with a correct prefix on the validation set"
+    setting: "machine translation, α = 0.1 against hard targets with temperature scaling"
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "Section 3", stance: for}
+
+- id: c-mu-partly
+  type: attributive
+  text: "Müller et al. conclude that label smoothing improves translation quality measured by BLEU despite worse NLL, that the difference in BLEU is only partly explained by calibration, and that changing the temperature of the network trained with label smoothing degrades both calibration and BLEU score."
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "Section 3", stance: for}
+
+# Evidence: distillation
+
+- id: c-mu-mnist-distill
+  type: empirical
+  text: "A non-convolutional teacher trained on translated MNIST with hard targets and dropout gets 0.67% test error and distills into a student with 0.74%; with label smoothing instead of dropout the teacher trains much faster and does slightly better, 0.59%, but distillation produces a much worse student with 0.91% test error."
+  scope:
+    models: "non-convolutional teacher, narrower unregularized student"
+    data: [mnist]
+    scale: "one teacher of each kind"
+    setting: "knowledge distillation"
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "Section 4", stance: for}
+
+- id: c-mu-distill-useful
+  type: attributive
+  text: "Müller et al. note that both label smoothing and knowledge distillation fit a model using soft targets, so distillation is only useful if it gives the student an additional gain over training it with label smoothing, which is simpler because it does not require training a teacher."
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "Section 4", stance: for}
+
+- id: c-mu-cifar-distill
+  type: empirical
+  text: "Distilling a ResNet-56 teacher into an AlexNet student on CIFAR-10 with β = 1, increasing α improves the teacher's accuracy up to α = 0.6 and slightly degrades the student baseline; all students distilled from a teacher trained with hard targets outperform the student trained with label smoothing, while teachers trained with label smoothing are no better, and sometimes worse, than training the student directly with label smoothing."
+  scope:
+    models: "ResNet-56 teacher, AlexNet student"
+    data: [cifar-10]
+    scale: "a sweep of the label smoothing factor and of the distillation temperature"
+    setting: "knowledge distillation with the true labels ignored"
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "Section 4", stance: for}
+
+- id: c-mu-better-teacher
+  type: attributive
+  text: "Müller et al. explain that label smoothing encourages examples to lie in tight equally separated clusters, so every example of one class has very similar proximities to examples of the other classes, and a teacher with better accuracy is not necessarily the one that distills better."
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "Section 4", stance: for}
+
+- id: c-mu-mi
+  type: empirical
+  text: "The estimated mutual information between the index of N = 600 training examples from two classes and the difference of the two logits first increases rapidly during training and then slowly decreases, especially for the network trained with label smoothing, and later in training stays slightly above log(2), the case where all training examples collapse to two separate clusters."
+  scope:
+    models: "the teacher networks of the distillation experiment"
+    data: [cifar-10]
+    scale: "600 training examples from two classes"
+    setting: "mutual information under data augmentation with a Gaussian approximation"
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "Section 4", stance: for}
+
+- id: c-mu-conclusion
+  type: attributive
+  text: "Müller et al. conclude that with label smoothing the model is encouraged to treat each incorrect class as equally probable, while hard targets enforce less structure in later representations and allow more logit variation across predicted class and across examples, and that label smoothing reduces the mutual information between input example and output logit."
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "Section 6", stance: for}
+
+# Variants and related work
+
+- id: c-mu-disturblabel
+  type: attributive
+  text: "Müller et al. relate label smoothing to DisturbLabel, which can be seen as label dropout, whereas label smoothing is the marginalized version of label dropout."
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "Section 5", stance: for}
+
+- id: c-mu-unigram
+  type: attributive
+  text: "Müller et al. note that Pereyra et al. also propose distributions other than uniform, giving unigram label smoothing, which is advantageous when the distribution of the output labels is not balanced."
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "Section 5", stance: for}
+
+- id: c-mu-kornblith
+  type: attributive
+  text: "Müller et al. cite Kornblith et al. as having demonstrated that label smoothing impairs the accuracy of transfer learning, which similarly depends on the presence of non-class-relevant information in the final layers of the network."
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "Section 5", stance: for}
+
+- id: c-mu-chorowski-beam
+  type: attributive
+  text: "Müller et al. report that Chorowski and Jaitly concluded that both temperature scaling and label smoothing improve word error rates after beam search, with label smoothing performing best."
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "Section 5", stance: for}
+
+- id: c-pe-anneal
+  type: attributive
+  text: "Pereyra et al. note that in supervised learning one wants quick convergence while preventing overfitting near the end of training, which suggests annealing the confidence penalty, or applying it only when the entropy of the output is below a threshold through a hinge loss."
+  evidence:
+    - {work: "pereyra-2017-penalizing-confident-outputs", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-pe-functional
+  type: attributive
+  text: "Pereyra et al. view the knowledge of a model as the conditional distribution it produces over outputs given an input, so the probabilities assigned to incorrect class labels are part of the knowledge of the network and an indication of how it generalizes."
+  evidence:
+    - {work: "pereyra-2017-penalizing-confident-outputs", role: original, locator: "Section 1", stance: for}
+
+- id: c-pe-invariant
+  type: attributive
+  text: "Pereyra et al. note that by operating on the output distribution, which has a natural scale, rather than on internal weights, output regularization is invariant to the parameterization of the underlying neural network."
+  evidence:
+    - {work: "pereyra-2017-penalizing-confident-outputs", role: original, locator: "Section 1", stance: for}
+
+# History
+
+- id: c-hist-szegedy
+  type: historical
+  text: "Christian Szegedy, Vincent Vanhoucke, Sergey Ioffe and Jonathon Shlens of Google Inc. and Zbigniew Wojna of University College London wrote Rethinking the Inception Architecture for Computer Vision, posted as arXiv 1512.00567."
+  evidence:
+    - {work: "szegedy-2016-rethinking-inception", role: original, locator: "the title page", stance: for}
+
+- id: c-mu-intro
+  type: historical
+  text: "Müller et al. write that Szegedy et al. introduced label smoothing, which improves accuracy by computing cross entropy not with the hard targets from the dataset but with a weighted mixture of these targets with the uniform distribution."
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "Section 1", stance: for}
+
+- id: c-hist-muller
+  type: historical
+  text: "Rafael Müller, Simon Kornblith and Geoffrey Hinton of Google Brain in Toronto wrote When Does Label Smoothing Help?, published at the 33rd Conference on Neural Information Processing Systems (NeurIPS 2019) in Vancouver."
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-pereyra
+  type: historical
+  text: "Gabriel Pereyra, George Tucker, Jan Chorowski and Łukasz Kaiser of Google Brain and Geoffrey Hinton of the University of Toronto and Google Brain posted Regularizing Neural Networks by Penalizing Confident Output Distributions as arXiv 1701.06548 in January 2017, under review as a conference paper at ICLR 2017."
+  evidence:
+    - {work: "pereyra-2017-penalizing-confident-outputs", role: original, locator: "the title page", stance: for}
