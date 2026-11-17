@@ -1,5 +1,5 @@
 ---
-tag: NEW-long-short-term-memory
+tag: YVW8D3
 kind: architecture
 slug: long-short-term-memory
 name: Long short-term memory
