@@ -1,5 +1,5 @@
 ---
-tag: NEW-qk-layernorm
+tag: B6PWZA
 kind: method
 slug: qk-layernorm
 name: QK-layernorm
