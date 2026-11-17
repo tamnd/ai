@@ -1,5 +1,5 @@
 ---
-tag: NEW-sharpness-aware-minimization
+tag: 8BNWST
 kind: method
 slug: sharpness-aware-minimization
 name: Sharpness-aware minimization
