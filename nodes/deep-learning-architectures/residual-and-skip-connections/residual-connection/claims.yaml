@@ -1,0 +1,314 @@
+# The claims of the residual connection page (spec 07). The build computes the labels.
+
+# The residual form
+
+- id: c-residual-form
+  type: definitional
+  text: "Residual learning lets a few stacked layers approximate a residual function F(x) := H(x) - x instead of the desired mapping H(x), so that the original function becomes F(x) + x, with the input and output of the same dimensions."
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-precondition
+  type: attributive
+  text: "He et al. argue that if identity mappings are optimal, the solver may simply drive the weights of the nonlinear layers toward zero, and that if the optimal function is closer to an identity than to a zero mapping, finding perturbations with reference to the identity should be easier; they report that the learned residual functions in general have small responses."
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-no-extra-params
+  type: definitional
+  text: "The identity shortcut connection introduces neither extra parameters nor computational complexity beyond a negligible element-wise addition, so plain and residual networks with the same number of parameters, depth, width and cost can be compared."
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "p. 3", stance: for}
+
+- id: c-early-shortcuts
+  type: attributive
+  text: "He et al. note that shortcut connections have been studied for a long time; an early practice in training multi-layer perceptrons was to add a linear layer connected from the network input to the output."
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Section 2", stance: for}
+
+- id: c-zero-branch-identity
+  type: mathematical
+  text: "If the last layer of the residual branch has zero weights and zero bias, then F(x) = 0 for every x, the block x + F(x) is the identity, and its Jacobian is the identity matrix."
+  assumes: ["the branch ends with an affine layer W2 h + b2", "the block has no function after the addition"]
+  derivation: "node.md#derivation"
+
+# Highway networks
+
+- id: c-highway
+  type: definitional
+  text: "A highway layer computes y = H(x, W_H) T(x, W_T) + x C(x, W_C), with T the transform gate and C the carry gate; Srivastava et al. set C = 1 - T, and x, y, H(x) and T(x) must have the same dimensionality."
+  evidence:
+    - {work: "srivastava-2015-highway-networks", role: original, locator: "Section 2", stance: for}
+
+- id: c-highway-limits
+  type: definitional
+  text: "With C = 1 - T, a highway layer gives y = x and Jacobian I when T(x) = 0, and y = H(x) with Jacobian H'(x) when T(x) = 1, so it varies smoothly between a plain layer and a layer that passes its input through."
+  evidence:
+    - {work: "srivastava-2015-highway-networks", role: original, locator: "Section 2", stance: for}
+
+- id: c-highway-bias
+  type: attributive
+  text: "Srivastava et al. use the transform gate T(x) = sigmoid(W_T x + b_T) and initialize b_T to a negative value such as -1 or -3, so that the network is first biased toward carry behavior, a scheme inspired by the initial gate bias of LSTMs; they found this sufficient for learning to proceed in very deep networks."
+  evidence:
+    - {work: "srivastava-2015-highway-networks", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-highway-contrast
+  type: attributive
+  text: "He et al. contrast their shortcuts with those of highway networks, whose gates are data-dependent and have parameters: when a gated shortcut is closed, a highway layer represents a non-residual function, while an identity shortcut is never closed."
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Section 2", stance: for}
+
+- id: c-highway-reduces
+  type: mathematical
+  text: "The general highway layer y = H(x) T(x) + x C(x) with T = 1 and C = 1 is the residual block y = x + H(x); with the coupled carry gate C = 1 - T it can never be, since T = 1 forces C = 0."
+  assumes: ["the highway layer of Srivastava et al., Eq. 2", "H plays the role of the residual branch F"]
+  derivation: "node.md#derivation"
+
+# Gradient flow
+
+- id: c-unroll
+  type: mathematical
+  text: "If x_{i+1} = x_i + F_i(x_i) for every unit from l to L - 1, then x_L = x_l + Σ_{i=l}^{L-1} F_i(x_i)."
+  assumes: ["identity shortcuts", "no function after the addition"]
+  derivation: gradient-flow
+  evidence:
+    - {work: "he-2016-identity-mappings", role: original, locator: "Section 2", stance: for}
+
+- id: c-gradient
+  type: mathematical
+  text: "Under the same form, ∂x_L/∂x_l is the ordered product of the (I + J_i), and ∂E/∂x_l = ∂E/∂x_L (I + ∂/∂x_l Σ_{i=l}^{L-1} F_i(x_i)): the gradient at the deeper unit reaches the shallower one unchanged, plus a term through the branches."
+  assumes: ["identity shortcuts", "no function after the addition", "each F_i is differentiable", "E is a scalar loss"]
+  derivation: gradient-flow
+  evidence:
+    - {work: "he-2016-identity-mappings", role: original, locator: "Section 2", stance: for}
+
+- id: c-not-cancel
+  type: attributive
+  text: "He et al. argue that the gradient at a shallower unit is unlikely to be canceled out for a mini-batch, because the term through the residual functions cannot always be -1 for all samples, so the gradient of a layer does not vanish even when the weights are arbitrarily small."
+  evidence:
+    - {work: "he-2016-identity-mappings", role: original, locator: "Section 2", stance: for}
+
+- id: c-gradient-bounds
+  type: mathematical
+  text: "If every branch Jacobian has spectral norm at most ε < 1, the gradient norm through n residual units stays between (1 - ε)^n and (1 + ε)^n times its norm at the output, while through a plain stack it is at most the product of the spectral norms of the block Jacobians."
+  assumes: ["identity shortcuts with no function after the addition", "the norms are spectral norms of the Jacobians along the forward path"]
+  derivation: gradient-flow
+
+- id: c-scaled-shortcut
+  type: mathematical
+  text: "If each shortcut is scaled, x_{i+1} = λ_i x_i + F_i(x_i), the term of the gradient that goes through no branch is the product of the λ_i, which grows or shrinks exponentially with depth when all λ_i are above or all below 1."
+  assumes: ["scalar λ_i", "each F_i is differentiable"]
+  derivation: gradient-flow
+  evidence:
+    - {work: "he-2016-identity-mappings", role: original, locator: "Section 3", stance: for}
+
+- id: c-shortcut-ablation
+  type: empirical
+  text: "On CIFAR-10 with ResNet-110, the identity shortcut gives 6.61% test error; scaling the shortcut by 0.5 fails to converge well or, with F also scaled by 0.5, gives 12.35%; exclusive gating gives at best 8.70%; shortcut-only gating gives 12.86% with the gate bias initialized at 0 and 6.91% at -6; a 1x1 convolutional shortcut gives 12.22%; and dropout on the shortcut fails."
+  scope:
+    models: "ResNet-110 with 54 two-layer residual units, with f = ReLU after the addition"
+    data: [cifar-10]
+    scale: "110 layers"
+    setting: "test error, median of 5 runs"
+  evidence:
+    - {work: "he-2016-identity-mappings", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-identity-essential
+  type: attributive
+  text: "He et al. conclude that their derivations imply that identity shortcut connections and identity after-addition activation are essential for making information propagation smooth, and that their ablation experiments are consistent with the derivations."
+  evidence:
+    - {work: "he-2016-identity-mappings", role: original, locator: "Section 6", stance: for}
+
+# Pre-activation and the place of the normalization
+
+- id: c-preact-form
+  type: mathematical
+  text: "A unit x_{i+1} = x_i + F_i(f̂(x_i)), where the activation is applied only to the branch, has the form x_{i+1} = x_i + G_i(x_i) with G_i = F_i ∘ f̂, so the unrolled sum and the gradient formula hold with G_i in place of F_i; the pre-LN unit is the case f̂ = LN."
+  assumes: ["identity shortcuts", "f̂ and F_i differentiable"]
+  derivation: gradient-flow
+  evidence:
+    - {work: "he-2016-identity-mappings", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-after-addition
+  type: empirical
+  text: "On CIFAR-10, putting batch normalization after the addition gives considerably worse results than the original unit, and moving the ReLU before the addition, which makes the residual function non-negative, gives 7.84% error, worse than the baseline."
+  scope:
+    models: "ResNet-110 and ResNet-164"
+    data: [cifar-10]
+    scale: "110 and 164 layers"
+    setting: "test error, median of 5 runs"
+  evidence:
+    - {work: "he-2016-identity-mappings", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-preact-results
+  type: empirical
+  text: "On CIFAR-10, the pre-activation unit lowers the test error from 6.61% to 6.37% for ResNet-110, from 5.93% to 5.46% for ResNet-164, and from 7.61% to 4.92% for ResNet-1001."
+  scope:
+    models: "ResNet-110, ResNet-164 and ResNet-1001 with original and pre-activation units"
+    data: [cifar-10]
+    scale: "110 to 1001 layers"
+    setting: "test error, median of 5 runs"
+  evidence:
+    - {work: "he-2016-identity-mappings", role: original, locator: "Table 3", stance: for}
+
+- id: c-preact-why
+  type: attributive
+  text: "He et al. find the impact of pre-activation twofold: optimization is eased because the after-addition function is an identity, most visibly at 1001 layers, and batch normalization as pre-activation improves regularization; with f = ReLU the impact is not severe at 164 layers, where the truncation is less frequent than at 1000 layers."
+  evidence:
+    - {work: "he-2016-identity-mappings", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-ln-placement
+  type: definitional
+  text: "The Post-LN Transformer puts the layer normalization between the residual blocks, while the Pre-LN Transformer puts it inside the residual connection, before all other non-linear transformations, and adds a final layer normalization before the prediction."
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "Section 3.3", stance: for}
+
+- id: c-postln-jacobian
+  type: mathematical
+  text: "For the post-LN unit x_{i+1} = LN(x_i + F_i(x_i)), the Jacobian of one unit is J_LN (I + J_i), so the term of the stack Jacobian that goes through no branch is the product of the layer-normalization Jacobians rather than the identity."
+  assumes: ["layer normalization is differentiable at the points where it is evaluated", "each F_i is differentiable"]
+  derivation: gradient-flow
+
+- id: c-xiong
+  type: attributive
+  text: "Xiong et al. prove with mean field theory that at initialization the expected gradients of the parameters near the output layer of a Post-LN Transformer are large, which makes a learning-rate warm-up stage helpful, while those of a Pre-LN Transformer are well-behaved; in their experiments Pre-LN Transformers without warm-up reach comparable results with less training time and hyper-parameter tuning."
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "the abstract", stance: for}
+
+# Paths and ensembles
+
+- id: c-path-count
+  type: mathematical
+  text: "Unrolled, a stack of n residual units is a sum over 2^n paths, one for each subset of the branches it goes through, and C(n, k) of them go through exactly k branches, so the path length is binomial with mean n/2."
+  assumes: ["x_{i+1} = x_i + F_i(x_i) for n units", "the expansion is of the product of the Jacobians (I + J_i), or of linear branches"]
+  derivation: path-count
+  evidence:
+    - {work: "veit-2016-residual-networks-ensembles", role: original, locator: "Section 3", stance: for}
+
+- id: c-path-share
+  type: mathematical
+  text: "For 54 units, 98.0% of the 2^54 paths go through 19 to 35 units, and 0.45% go through 5 to 17 units, the paths 10 to 34 layers deep of a network of two-layer units."
+  assumes: ["n = 54 units of two weight layers each", "paths counted uniformly over the subsets"]
+  derivation: path-count
+  evidence:
+    - {work: "veit-2016-residual-networks-ensembles", role: original, locator: "Section 5", stance: for}
+
+- id: c-ensemble
+  type: empirical
+  text: "Residual networks can be seen as a collection of many paths of differing length; a lesion study shows that the paths behave like an ensemble in that they do not strongly depend on each other, and most of the gradient of a 110-layer residual network comes from paths only 10 to 34 layers deep."
+  scope:
+    models: "residual networks on CIFAR-10 and ImageNet, among them a 110-layer network with 54 units"
+    data: [cifar-10, imagenet]
+    scale: "up to 200 layers"
+    setting: "lesion studies at test time, and the gradient magnitude per sampled path length"
+  evidence:
+    - {work: "veit-2016-residual-networks-ensembles", role: original, locator: "the abstract", stance: for}
+
+# Loss landscape
+
+- id: c-loss-landscape
+  type: empirical
+  text: "Without skip connections, the loss surface of CIFAR-10 networks goes from nearly convex at 20 layers to chaotic at 56 and 110 layers; skip connections prevent this transition, the 0.1-level contour is almost identical at 20 and 110 layers, and at 20 layers the effect of skip connections is fairly unnoticeable."
+  scope:
+    models: "ResNet-20, -56 and -110 with and without shortcut connections"
+    data: [cifar-10]
+    scale: "20 to 110 layers"
+    setting: "filter-normalized random two-dimensional slices of the training loss around the minimizer"
+  evidence:
+    - {work: "li-2018-visualizing-loss-landscape", role: original, locator: "Section 6", stance: for}
+
+- id: c-loss-densenet
+  type: empirical
+  text: "The effect of skip connections on the loss surface seems to apply to other kinds of skip connections: the loss surface of a 121-layer DenseNet shows no noticeable non-convexity."
+  scope:
+    models: "DenseNet-121"
+    data: [cifar-10]
+    scale: "121 layers"
+    setting: "filter-normalized random two-dimensional slices of the training loss"
+  evidence:
+    - {work: "li-2018-visualizing-loss-landscape", role: original, locator: "Section 6", stance: for}
+
+# Other skip patterns
+
+- id: c-dense
+  type: definitional
+  text: "In a DenseNet, layer ℓ receives the concatenation of the feature maps of all preceding layers of its block, x_ℓ = H_ℓ([x_0, ..., x_{ℓ-1}]); Huang et al. propose it because summing the identity and the output of H_ℓ, as ResNets do, may impede the information flow."
+  evidence:
+    - {work: "huang-2017-densely-connected-convolutional-networks", role: original, locator: "Section 3", stance: for}
+
+- id: c-dense-connections
+  type: mathematical
+  text: "A dense block of L layers has L(L + 1)/2 direct connections, where a traditional network of L layers has L."
+  assumes: ["layer ℓ takes the outputs x_0 to x_{ℓ-1}"]
+  derivation: path-count
+  evidence:
+    - {work: "huang-2017-densely-connected-convolutional-networks", role: original, locator: "the abstract", stance: for}
+
+- id: c-dense-claims
+  type: attributive
+  text: "Huang et al. state that DenseNets alleviate the vanishing-gradient problem, strengthen feature propagation, encourage feature reuse and substantially reduce the number of parameters."
+  evidence:
+    - {work: "huang-2017-densely-connected-convolutional-networks", role: original, locator: "the abstract", stance: for}
+
+- id: c-unet
+  type: definitional
+  text: "U-Net has a contracting path and an expansive path; each step of the expansive path upsamples the feature map, halves the channels with a 2x2 up-convolution, and concatenates the correspondingly cropped feature map from the contracting path before two 3x3 convolutions."
+  evidence:
+    - {work: "ronneberger-2015-u-net", role: original, locator: "Section 2", stance: for}
+
+- id: c-unet-why
+  type: attributive
+  text: "Ronneberger et al. combine high resolution features from the contracting path with the upsampled output in order to localize."
+  evidence:
+    - {work: "ronneberger-2015-u-net", role: original, locator: "Section 1", stance: for}
+
+# Initialization of the branches
+
+- id: c-fixup
+  type: definitional
+  text: "Fixup initializes the classification layer and the last layer of each residual branch to 0, initializes the other layers by a standard method and scales the weight layers inside the residual branches by L^{-1/(2m-2)}, and adds a scalar multiplier and scalar biases; Zhang et al. find rule 2, the rescaling, sufficient and necessary for training extremely deep residual networks."
+  evidence:
+    - {work: "zhang-2019-fixup", role: original, locator: "p. 5", stance: for}
+
+- id: c-fixup-result
+  type: empirical
+  text: "Training residual networks with Fixup, without normalization, is as stable as training with normalization, even for networks with 10,000 layers."
+  scope:
+    models: "residual networks without normalization layers"
+    data: [cifar-10, imagenet]
+    scale: "up to 10,000 layers"
+    setting: "image classification and machine translation"
+  evidence:
+    - {work: "zhang-2019-fixup", role: original, locator: "the abstract", stance: for}
+
+- id: c-zero-gamma
+  type: attributive
+  text: "Goyal et al. initialize the scale γ of the last batch normalization of each residual block to 0, so that the forward and backward signal initially propagates through the identity shortcut, which they found eases optimization at the start of training and helps most for large minibatches."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "Section 5.1", stance: for}
+
+# History
+
+- id: c-hist-highway
+  type: historical
+  text: "Srivastava, Greff and Schmidhuber posted version 2 of Highway Networks as arXiv 1505.00387v2 on 3 Nov 2015."
+  evidence:
+    - {work: "srivastava-2015-highway-networks", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-unet
+  type: historical
+  text: "Ronneberger, Fischer and Brox, of the University of Freiburg, posted U-Net as arXiv 1505.04597v1 on 18 May 2015."
+  evidence:
+    - {work: "ronneberger-2015-u-net", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-resnet
+  type: historical
+  text: "He, Zhang, Ren and Sun posted Deep Residual Learning for Image Recognition as arXiv 1512.03385v1 on 10 Dec 2015."
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-xiong
+  type: historical
+  text: "Xiong et al. posted version 2 of On Layer Normalization in the Transformer Architecture as arXiv 2002.04745v2 on 29 Jun 2020."
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "the title page", stance: for}
