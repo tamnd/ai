@@ -1,5 +1,5 @@
 ---
-tag: NEW-multi-head-attention
+tag: ND4EXH
 kind: method
 slug: multi-head-attention
 name: Multi-head attention
