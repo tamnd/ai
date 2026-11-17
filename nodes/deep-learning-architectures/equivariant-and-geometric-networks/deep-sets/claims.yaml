@@ -1,0 +1,394 @@
+# The claims of the Deep Sets page (spec 07). The build computes the labels.
+- id: c-def
+  type: attributive
+  text: "Zaheer et al. introduce Deep Sets with a theorem that characterizes the permutation invariant functions on sets, and a lemma that gives the necessary and sufficient conditions for a layer to be permutation equivariant."
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "pp. 1 to 2", stance: for}
+
+- id: c-property
+  type: definitional
+  text: "A function f acting on sets must be invariant to the order of the objects in the set: for any permutation pi, f({x_1, ..., x_M}) = f({x_pi(1), ..., x_pi(M)})."
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "p. 2", stance: for}
+
+- id: c-equivariant-def
+  type: definitional
+  text: "When each element of a set has its own label, the target is a permutation equivariant function, one that permutes its outputs when its inputs are permuted."
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "p. 2", stance: for}
+
+- id: c-theorem2
+  type: attributive
+  text: "Theorem 2 of Zaheer et al. states that a function f(X) on a set X with elements from a countable universe is a valid set function, invariant to the permutation of the instances in X, if and only if it can be decomposed in the form rho(sum over x in X of phi(x)) for suitable transformations phi and rho."
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "p. 2", stance: for}
+
+- id: c-uncountable
+  type: attributive
+  text: "For an uncountable universe such as [0, 1], Zaheer et al. could prove the decomposition only for sets of a fixed size, and conjecture that it holds for sets of all sizes."
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "pp. 12 and 15", stance: for}
+
+- id: c-lemma3
+  type: attributive
+  text: "Lemma 3 of Zaheer et al. states that the function f_Θ(x) = σ(Θx) from R^M to R^M is permutation equivariant iff all the off-diagonal elements of Θ are tied together and all the diagonal elements are equal as well, Θ = λI + γ 1 1^T, with 1 the vector of ones."
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "p. 2", stance: for}
+
+- id: c-invariant-model
+  type: definitional
+  text: "In the invariant model of Deep Sets each instance x_m is transformed, possibly by several layers, into a representation phi(x_m); the representations are added up and the output is processed by the network rho as in any deep network; the key is to add up all representations and then apply nonlinear transformations."
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "p. 3", stance: for}
+
+- id: c-stacking
+  type: attributive
+  text: "Since the composition of permutation equivariant functions is also permutation equivariant, Deep Sets can be built by stacking equivariant layers."
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "p. 3", stance: for}
+
+- id: c-contributions
+  type: attributive
+  text: "Zaheer et al. name as their novel contributions the universality result of Theorem 2, the permutation equivariant layer, which identifies the necessary and sufficient form of parameter sharing in a standard neural layer, and the applications of their experiments."
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "p. 3", stance: for}
+
+- id: c-universal-approximators
+  type: attributive
+  text: "Replacing phi and rho by universal approximators leaves matters unchanged, since phi and rho can be used to approximate arbitrary polynomials."
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "p. 3", stance: for}
+
+- id: c-gradient
+  type: attributive
+  text: "The derivative with respect to the weights of φ of ρ(Σ φ(x)) is ρ'(Σ φ(x)) Σ ∂φ(x); this result reinforces the common knowledge of parameter tying in deep networks when ordering is irrelevant, and Zaheer et al. back the practice with theory and strengthen it by proving that it is the only way to do it."
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "p. 18", stance: for}
+
+- id: c-conditioning
+  type: definitional
+  text: "With additional meta-information z, such as an image whose tags form the set, the networks of Deep Sets can be conditioned to obtain the conditioning mapping phi(x_m | z)."
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "pp. 3 and 6", stance: for}
+
+- id: c-lemma3-reading
+  type: mathematical
+  text: "For Theta = lambda I + gamma 1 1^T, sigma(Theta x) = sigma(lambda x + gamma (sum_m x_m) 1): a nonlinearity applied to a weighted combination of the input and of the sum of the inputs."
+  assumes: ["x in R^M, a single feature per element", "sigma applied elementwise"]
+  derivation: equivariant-layers
+
+- id: c-lemma3-proof
+  type: attributive
+  text: "The proof of Lemma 3 shows that Theta must commute with every permutation matrix: commuting with a transposition forces two diagonal elements to be equal, and commuting with products of transpositions forces any two off-diagonal elements to be equal."
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "p. 17", stance: for}
+
+- id: c-multichannel
+  type: definitional
+  text: "For multiple input and output channels, x ∈ R^{M×D}, the equivariant layer is σ(xΛ − 1 1^T xΓ) with Λ, Γ ∈ R^{D×D'}."
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "p. 19", stance: for}
+
+- id: c-commutant
+  type: mathematical
+  text: "For M >= 2 elements, the linear maps from R^{M x D} to R^{M x D'} that commute with every permutation of the elements are exactly the maps x -> x Lambda + 1 1^T x Gamma, a space of dimension 2 D D'; with a bias and a sum, mean or maximum in place of 1 1^T x, the layer h Lambda - 1 pool(h) Gamma + 1 beta is permutation equivariant."
+  assumes: ["the permutations act on the rows, the elements, and leave the features in place", "the pools are taken feature by feature over the elements"]
+  derivation: equivariant-layers
+
+- id: c-maxpool
+  type: attributive
+  text: "The variation σ(λIx + γ maxpool(x)1) performs better in some applications, which Zaheer et al. say may be due to the fact that for λ = γ the input to the non-linearity is max-normalized."
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "p. 3", stance: for}
+
+- id: c-tied
+  type: definitional
+  text: "To reduce the number of parameters, Zaheer et al. use a single Γ in the layer σ(β + (x − 1 maxpool(x))Γ)."
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "p. 19", stance: for}
+
+- id: c-pool-invariant
+  type: attributive
+  text: "Applying any commutative pooling operation, such as max-pooling, over the set instances of the output of equivariant layers produces a permutation invariant function."
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "p. 19", stance: for}
+
+- id: c-examples-intro
+  type: attributive
+  text: "Zaheer et al. end the section on the uncountable case by providing some examples of decompositions of symmetric functions."
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "pp. 15 to 16", stance: for}
+
+- id: c-examples
+  type: mathematical
+  text: "With phi(x) = (x, x^2, x^3) and rho(u, v, w) = uv - w + 3(u^2 - v)/2, rho(phi(x_1) + phi(x_2)) = x_1 x_2 (x_1 + x_2 + 3); with phi(x) = (1, x) and rho(u, v) = v/u, rho(sum phi) is the mean; with phi(x) = (e^{alpha x}, x e^{alpha x}) and the same rho it tends to the maximum as alpha -> infinity."
+  assumes: ["sets of real numbers", "for the maximum, a finite set with a unique largest element"]
+  derivation: decompositions
+
+- id: c-second-largest
+  type: mathematical
+  text: "The expression rho(u, v) = (v - (v/u) e^{alpha v/u}) / (u - e^{alpha v/u}) that the appendix of Zaheer et al. gives for the second largest element equals v/u wherever it is defined, since v - (v/u) e^{alpha v/u} = (v/u)(u - e^{alpha v/u}); with phi(x) = (e^{alpha x}, x e^{alpha x}) it tends to the largest element, not the second."
+  assumes: ["u > 0 and u != e^{alpha v/u}", "the phi of the maximum example of c-examples"]
+  derivation: decompositions
+
+- id: c-padding
+  type: mathematical
+  text: "If padded rows of zeros enter a sum pool, the sum changes by M - |X| copies of phi(0), which is not zero for a network with biases; a pool that skips the masked rows gives the same output for a set alone and padded."
+  assumes: ["sets padded to a common size M with zero rows and a mask"]
+  derivation: equivariant-layers
+
+- id: c-params
+  type: mathematical
+  text: "A Deep Sets network with L equivariant layers of width H on elements of D features, a hidden layer of rho of width H and a linear layer to K classes has 2DH + H + (L - 1)(2H^2 + H) + H^2 + H + HK + K parameters, independent of the set size."
+  assumes: ["equivariant layers h Lambda - 1 pool(h) Gamma + 1 beta, with a bias", "a readout pool with no parameters"]
+  derivation: parameter-and-flop-count
+
+- id: c-pointcloud-arch
+  type: definitional
+  text: "The point-cloud classifier of Zaheer et al. has 3 permutation-equivariant layers with 256 channels followed by max-pooling over the set, a fully connected layer with 256 units and a 40-way softmax, tanh activations at all layers and 50% dropout on the layers after the pooling; with 5000 points it uses 512 units in all layers."
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "p. 26", stance: for}
+
+- id: c-params-models
+  type: mathematical
+  text: "With equivariant layers of the form h Lambda - 1 pool(h) Gamma + 1 beta, the point-cloud classifier has 340,520 parameters with 256 channels and 1,336,360 with 512."
+  assumes: ["the count of c-params with D = 3, L = 3, K = 40", "H = 256 and H = 512"]
+  derivation: parameter-and-flop-count
+
+- id: c-flops
+  type: mathematical
+  text: "A forward pass of the network of c-params over a set of M elements costs 2(M + 1)DH + (L - 1) 2(M + 1)H^2 + 2H^2 + 2HK FLOPs in its matrix products, linear in M."
+  assumes: ["the network of c-params", "a multiply-add counts as 2 FLOPs; the pools, the activations and the additions are not counted"]
+  derivation: parameter-and-flop-count
+
+- id: c-flops-models
+  type: mathematical
+  text: "The point-cloud classifier with 256 channels costs 264,095,232 FLOPs per cloud of 1,000 points, of which the products with Gamma are 263,680, about 0.1%."
+  assumes: ["the count of c-flops with M = 1000, D = 3, H = 256, L = 3, K = 40"]
+  derivation: parameter-and-flop-count
+
+- id: c-attention-compare
+  type: mathematical
+  text: "One layer of self-attention of width 256 over 1,000 elements spends 4 M^2 H = 1,024,000,000 FLOPs in the products Q K^T and A V, about 3.9 times the FLOPs of the whole point-cloud classifier of c-flops-models."
+  assumes: ["Q, K and V of width H = 256 for M = 1000 elements", "a multiply-add counts as 2 FLOPs"]
+  derivation: parameter-and-flop-count
+
+- id: c-normalize
+  type: definitional
+  text: "In the point-cloud experiments, each set is normalized by the initial layer of the network to have zero mean along individual axes and unit global variance."
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "p. 5", stance: for}
+
+- id: c-dropout
+  type: empirical
+  text: "Applying dropout to the permutation-equivariant layers deteriorated the performance on point clouds; in the outlier detector dropout is applied to the first two set layers, and the selected feature is dropped simultaneously in all the members of a set."
+  scope:
+    models: "Deep Sets point-cloud classifier; Deep Sets outlier detector"
+    data: ["ModelNet40", "CelebA"]
+    setting: "the training setups of Appendices H and I"
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "pp. 26 to 27", stance: for}
+
+- id: c-robust-width
+  type: empirical
+  text: "Using different types of permutation-equivariant layers, and as few as 64 channels for the set layers, changed the point-cloud classification accuracy by less than 5%."
+  scope:
+    models: "Deep Sets point-cloud classifier"
+    data: ["ModelNet40"]
+    setting: "point clouds of 1000 points"
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "p. 26", stance: for}
+
+- id: c-pointcloud-train
+  type: definitional
+  text: "For 5000 points the input is rotated at random around the z-axis and scaled by s ~ U(0.8, 1/0.8), and Adamax with a learning rate of 0.0005 replaces Adam with 0.001."
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "p. 26", stance: for}
+
+- id: c-margin
+  type: definitional
+  text: "For set expansion the score s(x | X) is learned with the large-margin objective max(0, s(x' | X) - s(x | X) + Delta(x, x')), so that s(x | X) >= s(x' | X) + Delta(x, x') when x should be added to X and x' should not."
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "p. 6", stance: for}
+
+- id: c-set-transformer-motivation
+  type: attributive
+  text: "Lee et al. argue that since every element in a set is processed independently in a set pooling operation, some information regarding interactions between elements has to be discarded, which can make some problems, such as amortized clustering, unnecessarily difficult to solve."
+  evidence:
+    - {work: "lee-2019-set-transformer-framework-attention", role: original, locator: "p. 2", stance: for}
+
+- id: c-wagstaff-lower
+  type: attributive
+  text: "Wagstaff et al. prove that for M > N there exist permutation invariant continuous functions f from R^M to R which are not continuously sum-decomposable via R^N, so that a sum-decomposition model capable of representing arbitrary continuous functions on sets of size M needs a latent space of dimension at least M."
+  evidence:
+    - {work: "wagstaff-2019-limitations-representing-functions-sets", role: original, locator: "p. 4", stance: for}
+
+- id: c-wagstaff-upper
+  type: attributive
+  text: "Wagstaff et al. prove that a continuous function on sets of exactly M real numbers, or of at most M, is permutation invariant if and only if it is continuously sum-decomposable via R^M."
+  evidence:
+    - {work: "wagstaff-2019-limitations-representing-functions-sets", role: original, locator: "p. 5", stance: for}
+
+- id: c-power-sums
+  type: mathematical
+  text: "For a set of M real numbers, the sum of phi(x) = (1, x, x^2, ..., x^M) gives the size of the set and its first M power sums, which determine the elementary symmetric polynomials by the Newton-Girard formulae and so the set itself."
+  assumes: ["sets of exactly M real numbers"]
+  derivation: power-sums
+
+- id: c-power-sums-collision
+  type: mathematical
+  text: "The sets {1, 5, 6} and {2, 3, 7} have the same sum, 12, and the same sum of squares, 62, so the first M - 1 power sums do not determine a set of M numbers."
+  assumes: ["M = 3"]
+  derivation: power-sums
+
+- id: c-applications
+  type: attributive
+  text: "Zaheer et al. evaluate Deep Sets on estimating population statistics, summing digits, classifying point clouds, estimating red-shift, retrieving text concept sets, tagging images and detecting set anomalies."
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "pp. 4 to 8", stance: for}
+
+- id: c-digits
+  type: empirical
+  text: "Trained on sets of at most 10 digits and tested on sets of up to 100, Deep Sets generalized much better than LSTMs and GRUs with a similar number of layers and parameters, measured by exact equality of the rounded sum."
+  scope:
+    models: "Deep Sets, LSTM, GRU"
+    data: ["MNIST8m"]
+    setting: "sums of sets of digits given as text or as images"
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "pp. 4 to 5", stance: for}
+
+- id: c-digits-mnist
+  type: attributive
+  text: "With the best single-digit classification error around p = 0.01 on MNIST8m, at least one image of a set of N is misclassified with probability 1 - (1 - p)^N, 40% for N = 50, which Zaheer et al. find matches closely the observed value."
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "p. 5", stance: for}
+
+- id: c-modelnet
+  type: empirical
+  text: "On ModelNet40, Deep Sets reached 90 ± 0.3% accuracy with point clouds of 5000 points and 82 ± 2% with 100, against 90.1% for MVCNN on multi-view images and 95.54% for the VRN ensemble on voxels."
+  scope:
+    models: "Deep Sets, MVCNN, VRN Ensemble"
+    data: ["ModelNet40"]
+    setting: "classification of 40 classes of objects"
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "p. 5", stance: for}
+
+- id: c-modelnet-appendix
+  type: empirical
+  text: "With 1000 points Deep Sets reached 87 ± 1%, the same network with pooling only 83 ± 1%, and graph convolution on a K-nearest-neighbour graph 58 ± 2%; the error bars come from the choice of points at test time, over three trials."
+  scope:
+    models: "Deep Sets, pooling only, KNN graph convolution"
+    data: ["ModelNet40"]
+    setting: "point clouds of 1000 points"
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "pp. 26 to 27", stance: for}
+
+- id: c-pointnet
+  type: empirical
+  text: "PointNet reported 89.2% overall accuracy and 86.2% average class accuracy on ModelNet40."
+  scope:
+    models: "PointNet"
+    data: ["ModelNet40"]
+    setting: "classification from point clouds"
+  evidence:
+    - {work: "qi-2017-pointnet-deep-learning-point", role: original, locator: "p. 5", stance: for}
+
+- id: c-redshift
+  type: empirical
+  text: "On estimating the red-shift of each galaxy of a cluster, a permutation equivariant task, Deep Sets had a scatter of 0.023, against 0.025 for redMaPPer and 0.026 for an MLP."
+  scope:
+    models: "Deep Sets, redMaPPer, MLP"
+    data: ["redMaPPer galaxy cluster catalog"]
+    setting: "photometric red-shift estimation of the galaxies of each cluster, treated as a set"
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "p. 5", stance: for}
+
+- id: c-lda
+  type: empirical
+  text: "In text concept set retrieval, where each set is the 50 top words of a topic of latent Dirichlet allocation on Wikipedia text, Deep Sets outperformed all other approaches on LDA-3k and LDA-5k by any metric; on LDA-1k it did not perform as well as w2v-Near and was 0.5% lower by Recall@10."
+  scope:
+    models: "Deep Sets, w2v-Near and other baselines"
+    data: ["LDA-1k", "LDA-3k", "LDA-5k"]
+    setting: "set expansion from topics of an LDA model"
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "pp. 7 and 22", stance: for}
+
+- id: c-celeba
+  type: empirical
+  text: "On 18,000 sets of 16 CelebA images, all but one sharing at least two attributes, the equivariant network found the anomalous face in 75% of test sets; a baseline with set pooling and fully connected layers instead of equivariant layers reached about 6.3%, the same as random selection."
+  scope:
+    models: "Deep Sets outlier detector, non-equivariant baseline"
+    data: ["CelebA"]
+    setting: "set anomaly detection without access to the attributes"
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "p. 8", stance: for}
+
+- id: c-median
+  type: empirical
+  text: "For a network trained to predict the median of a set, increasing the latent dimension reduces the error up to a critical point, and the critical point grows roughly linearly with the set size and occurs at a latent dimension smaller than the set size."
+  scope:
+    models: "sum-decomposition network with MLP phi and rho"
+    data: ["sets drawn from uniform, Gaussian and Gamma distributions"]
+    setting: "regression of the median"
+  evidence:
+    - {work: "wagstaff-2019-limitations-representing-functions-sets", role: original, locator: "p. 6", stance: for}
+
+- id: c-countable-proof
+  type: definitional
+  text: "For a countable universe, the proof of Theorem 2 takes a mapping c from the elements to the natural numbers and phi(x) = 4^{-c(x)}, so that the sum of phi over a set is a unique representation of the set."
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "p. 12", stance: for}
+
+- id: c-wagstaff-discontinuous
+  type: attributive
+  text: "Wagstaff et al. prove that there exist functions f on sets of rational numbers such that, whenever (rho, phi) is a sum-decomposition of f via R, phi is discontinuous at every rational number."
+  evidence:
+    - {work: "wagstaff-2019-limitations-representing-functions-sets", role: original, locator: "p. 4", stance: for}
+
+- id: c-topology
+  type: attributive
+  text: "For sets of all sizes even what a continuous function means is not clear, Zaheer et al. write, as the space 2^[0,1] does not have any natural topology."
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "p. 15", stance: for}
+
+- id: c-pointnet-theorem
+  type: attributive
+  text: "PointNet's Theorem 1 states that a set function continuous with respect to the Hausdorff distance can be approximated arbitrarily well by gamma(MAX of h(x_i)), with h and gamma continuous and MAX the elementwise maximum of vectors."
+  evidence:
+    - {work: "qi-2017-pointnet-deep-learning-point", role: original, locator: "p. 5", stance: for}
+
+- id: c-set-transformer
+  type: definitional
+  text: "The Set Transformer applies self-attention between the elements of a set; its induced set attention block with m trainable inducing points reduces the cost from O(n^2) to O(nm), and pooling by multihead attention uses learnable seed vectors."
+  evidence:
+    - {work: "lee-2019-set-transformer-framework-attention", role: original, locator: "pp. 3 to 4", stance: for}
+
+- id: c-batchnorm
+  type: definitional
+  text: "The outlier detector of Zaheer et al. uses batch normalization only in the convolutional layers."
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "p. 27", stance: for}
+
+- id: c-hist-pooling
+  type: historical
+  text: "Before Deep Sets, pooling across set members had been used for causality classification on a set of samples, across a panoramic projection and multiple views of 3D objects, and over the rows and columns of the payoff matrix of normal form games."
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "p. 3", stance: for}
+
+- id: c-hist-multiagent
+  type: historical
+  text: "A special case of Lemma 3 had been used as the architecture of deep networks over sensor networks and in multi-agent settings."
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "p. 3", stance: for}
+
+- id: c-de-finetti
+  type: attributive
+  text: "Zaheer et al. relate Theorem 2 to de Finetti's theorem, by which any exchangeable model factors through a latent feature, and show that for exponential families with conjugate priors the marginal likelihood of a set depends on it only through the sum of the sufficient statistics of its elements."
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "pp. 2 to 3", stance: for}
+
+- id: c-hist-nips
+  type: historical
+  text: "Deep Sets, arXiv 1703.06114, was published at the 31st Conference on Neural Information Processing Systems (NIPS 2017)."
+  evidence:
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "p. 1", stance: for}

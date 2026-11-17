@@ -1,0 +1,53 @@
+# SPDX-License-Identifier: MIT
+# The shape contract of Deep Sets (spec 08.6), the network of Zaheer et al. (2017) as the page implements it: sets of
+# M elements of D numbers, L permutation-equivariant layers of width H of the form of the paper's eq. 22 with a bias,
+# a readout pool over the set, one hidden layer of rho and a linear layer to K classes. The FLOPs count the matrix
+# products only, a multiply-add as 2; the pools, the activations and the additions are left out.
+config:
+  set_size:  {meaning: "number of elements of each set", symbol: "M", example: 6, sample: [1, 9]}
+  d_in:      {meaning: "number of features of an input element", symbol: "D", example: 3, sample: [1, 4]}
+  width:     {meaning: "width of the equivariant layers and of the hidden layer of rho", symbol: "H", example: 8, sample: [1, 8]}
+  n_layers:  {meaning: "number of equivariant layers", symbol: "L", example: 2, sample: [1, 3]}
+  n_classes: {meaning: "number of classes", symbol: "K", example: 5, sample: [2, 4]}
+axes:
+  B: {meaning: "batch of sets", example: 2}
+  M: set_size
+  D: d_in
+  H: width
+  L: n_layers
+  K: n_classes
+blocks:
+  - id: first
+    meaning: "the first equivariant layer, from the D input features to H: x Lambda - 1 pool(x) Gamma + 1 beta, then the activation"
+    eq: [equivariant]
+    inputs: {x: "(B, M, D)"}
+    outputs: {h: "(B, M, H)"}
+    internals: {pooled: "(B, D)"}
+    params: "2 * D * H + H"
+    flops_forward: "2 * B * M * D * H + 2 * B * D * H"
+  - id: equivariant
+    meaning: "a later equivariant layer, from H features to H"
+    eq: [equivariant]
+    inputs: {h: "(B, M, H)"}
+    outputs: {h: "(B, M, H)"}
+    internals: {pooled: "(B, H)"}
+    params: "2 * H * H + H"
+    flops_forward: "2 * B * M * H * H + 2 * B * H * H"
+  - id: readout
+    meaning: "the pool over the elements that makes the network invariant, and rho: one hidden layer and the linear layer to the class scores"
+    eq: [invariant]
+    inputs: {h: "(B, M, H)"}
+    outputs: {logits: "(B, K)"}
+    internals: {s: "(B, H)", r: "(B, H)"}
+    params: "H * H + H + H * K + K"
+    flops_forward: "2 * B * H * H + 2 * B * H * K"
+model:
+  params: {formula: "first.params + (n_layers - 1) * equivariant.params + readout.params", symbol: "N", meaning: "all the parameters of the network, independent of the set size"}
+  flops_forward: {formula: "first.flops_forward + (n_layers - 1) * equivariant.flops_forward + readout.flops_forward", symbol: "C", meaning: "FLOPs of one forward pass over the batch, a multiply-add counted as 2"}
+  flops_pool_terms: {formula: "2 * B * D * H + (n_layers - 1) * 2 * B * H * H", meaning: "the FLOPs of the products pool(h) Gamma, computed once per set rather than once per element"}
+  sources:
+    - {work: zaheer-2017-deep-sets, locator: "pp. 18 to 19", note: "eq. 21 to 23, the equivariant layer with D input and D' output channels"}
+    - {work: zaheer-2017-deep-sets, locator: "p. 26", note: "Appendix H, the point-cloud classifier"}
+configs:
+  pointcloud_1000: {meaning: "the point-cloud classifier of Appendix H on ModelNet40 with 1,000 points: 3 equivariant layers of 256 channels, a max readout, a hidden layer of 256 and 40 classes", B: 1, set_size: 1000, d_in: 3, width: 256, n_layers: 3, n_classes: 40, source: {work: zaheer-2017-deep-sets, locator: "p. 26", note: "Appendix H; the paper does not say which of its equivariant layers it used, and this config takes the form of eq. 22"}}
+  pointcloud_5000: {meaning: "the same classifier on 5,000 points with 512 units in every layer", B: 1, set_size: 5000, d_in: 3, width: 512, n_layers: 3, n_classes: 40, source: {work: zaheer-2017-deep-sets, locator: "p. 26", note: "Appendix H, the setting with 5000 particles"}}
