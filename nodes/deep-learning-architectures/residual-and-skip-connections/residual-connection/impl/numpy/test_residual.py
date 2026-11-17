@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/residual-connection/ (ai://NEW-residual-connection).
+# Part of https://ai.tamnd.com/residual-connection/ (ai://F5K1AF).
 """Tests of the NumPy reference: the worked example, the identity at F = 0, the Jacobian product, the gradient norm, the paths and the highway gate."""
 
 import math

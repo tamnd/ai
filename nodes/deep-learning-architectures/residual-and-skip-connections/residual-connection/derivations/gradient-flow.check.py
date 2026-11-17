@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/residual-connection/ (ai://NEW-residual-connection).
+# Part of https://ai.tamnd.com/residual-connection/ (ai://F5K1AF).
 """Numeric check of the derivation gradient-flow: the unrolled sum, the Jacobian product, the bounds, the scaled shortcut, pre-LN and post-LN."""
 
 import itertools

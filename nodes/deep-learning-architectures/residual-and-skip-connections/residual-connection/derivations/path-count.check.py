@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/residual-connection/ (ai://NEW-residual-connection).
+# Part of https://ai.tamnd.com/residual-connection/ (ai://F5K1AF).
 """Numeric check of the derivation path-count: 2^n paths, C(n, k) of length k, the shares for n = 54, and the dense connections."""
 
 import itertools

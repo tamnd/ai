@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/residual-connection/ (ai://NEW-residual-connection).
+# Part of https://ai.tamnd.com/residual-connection/ (ai://F5K1AF).
 """Tests of the PyTorch reference: the worked example of the NumPy tests, the identity at F = 0, the Jacobian, the gradient norm and the highway gate."""
 
 import pytest

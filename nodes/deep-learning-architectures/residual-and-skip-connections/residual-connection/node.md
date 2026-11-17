@@ -25,8 +25,7 @@ history:
   note: "Identity shortcuts in He et al., arXiv 1512.03385 (10 Dec 2015); gated shortcuts before them in Highway Networks, Srivastava et al., arXiv 1505.00387; the propagation analysis in He et al., arXiv 1603.05027."
 prereqs: [backpropagation@al, vanishing-gradient-problem@al, matrix-multiplication@m2]
 same_as:
-  wikipedia: Residual_neural_network
-  arxiv: ["1512.03385", "1603.05027"]
+  arxiv: ["1603.05027"]
 sources:
   - {paper: "He, Zhang, Ren and Sun (2016)", title: "Deep Residual Learning for Image Recognition", locator: "arXiv 1512.03385v1, Sections 2 and 3.1, p. 3", note: "the residual form and the identity shortcut"}
   - {paper: "He, Zhang, Ren and Sun (2016)", title: "Identity Mappings in Deep Residual Networks", locator: "arXiv 1603.05027v3, Sections 2 to 4 and 6, Tables 1 and 3", note: "the propagation analysis, the shortcut ablation and the pre-activation unit"}

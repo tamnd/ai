@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/residual-connection/ (ai://NEW-residual-connection).
+# Part of https://ai.tamnd.com/residual-connection/ (ai://F5K1AF).
 """A stack of residual MLP blocks as pure functions, the JAX reference.
 
 Each block computes x + F(x) with F(x) = W2 act(W1 x + b1) + b2 (eq-residual, eq-branch). jax.grad and jax.jacfwd
