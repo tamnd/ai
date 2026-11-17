@@ -1,0 +1,501 @@
+{
+  "note": "Written by aik shapes sample -w from shapes.yaml; do not edit. The tests of each implementation check shapes, param_count and flops against these values (spec 08.6, rule X09).",
+  "configs": [
+    {
+      "name": "example",
+      "kind": "example",
+      "config": {
+        "B": 2,
+        "E": 3,
+        "H": 4,
+        "L": 2,
+        "S": 5,
+        "T": 4,
+        "V": 6,
+        "embed_size": 3,
+        "hidden_size": 4,
+        "n_layers": 2,
+        "src_vocab": 7,
+        "tgt_vocab": 6
+      },
+      "blocks": {
+        "decoder": {
+          "params": 272,
+          "flops_forward": 3840,
+          "inputs": {
+            "v_c": [
+              2,
+              2,
+              4
+            ],
+            "v_h": [
+              2,
+              2,
+              4
+            ],
+            "ys": [
+              2,
+              4,
+              3
+            ]
+          },
+          "outputs": {
+            "top": [
+              2,
+              4,
+              4
+            ]
+          }
+        },
+        "embed": {
+          "params": 39,
+          "flops_forward": 0,
+          "inputs": {
+            "dec_in": [
+              2,
+              4
+            ],
+            "src": [
+              2,
+              5
+            ]
+          },
+          "outputs": {
+            "xs": [
+              2,
+              5,
+              3
+            ],
+            "ys": [
+              2,
+              4,
+              3
+            ]
+          }
+        },
+        "encoder": {
+          "params": 272,
+          "flops_forward": 4800,
+          "inputs": {
+            "xs": [
+              2,
+              5,
+              3
+            ]
+          },
+          "outputs": {
+            "v_c": [
+              2,
+              2,
+              4
+            ],
+            "v_h": [
+              2,
+              2,
+              4
+            ]
+          }
+        },
+        "softmax": {
+          "params": 30,
+          "flops_forward": 384,
+          "inputs": {
+            "top": [
+              2,
+              4,
+              4
+            ]
+          },
+          "outputs": {
+            "logits": [
+              2,
+              4,
+              6
+            ]
+          }
+        }
+      },
+      "model": {
+        "embedding_weights": 39,
+        "flops_forward": 9024,
+        "params": 613,
+        "recurrent_weights": 480,
+        "softmax_weights": 24,
+        "state": 16,
+        "weights": 543
+      }
+    },
+    {
+      "name": "sample-1",
+      "kind": "sample",
+      "config": {
+        "B": 2,
+        "E": 3,
+        "H": 1,
+        "L": 1,
+        "S": 2,
+        "T": 3,
+        "V": 5,
+        "embed_size": 3,
+        "hidden_size": 1,
+        "n_layers": 1,
+        "src_vocab": 5,
+        "tgt_vocab": 5
+      },
+      "blocks": {
+        "decoder": {
+          "params": 20,
+          "flops_forward": 192,
+          "inputs": {
+            "v_c": [
+              1,
+              2,
+              1
+            ],
+            "v_h": [
+              1,
+              2,
+              1
+            ],
+            "ys": [
+              2,
+              3,
+              3
+            ]
+          },
+          "outputs": {
+            "top": [
+              2,
+              3,
+              1
+            ]
+          }
+        },
+        "embed": {
+          "params": 30,
+          "flops_forward": 0,
+          "inputs": {
+            "dec_in": [
+              2,
+              3
+            ],
+            "src": [
+              2,
+              2
+            ]
+          },
+          "outputs": {
+            "xs": [
+              2,
+              2,
+              3
+            ],
+            "ys": [
+              2,
+              3,
+              3
+            ]
+          }
+        },
+        "encoder": {
+          "params": 20,
+          "flops_forward": 128,
+          "inputs": {
+            "xs": [
+              2,
+              2,
+              3
+            ]
+          },
+          "outputs": {
+            "v_c": [
+              1,
+              2,
+              1
+            ],
+            "v_h": [
+              1,
+              2,
+              1
+            ]
+          }
+        },
+        "softmax": {
+          "params": 10,
+          "flops_forward": 60,
+          "inputs": {
+            "top": [
+              2,
+              3,
+              1
+            ]
+          },
+          "outputs": {
+            "logits": [
+              2,
+              3,
+              5
+            ]
+          }
+        }
+      },
+      "model": {
+        "embedding_weights": 30,
+        "flops_forward": 380,
+        "params": 80,
+        "recurrent_weights": 32,
+        "softmax_weights": 5,
+        "state": 2,
+        "weights": 67
+      }
+    },
+    {
+      "name": "sample-2",
+      "kind": "sample",
+      "config": {
+        "B": 2,
+        "E": 4,
+        "H": 5,
+        "L": 2,
+        "S": 2,
+        "T": 2,
+        "V": 4,
+        "embed_size": 4,
+        "hidden_size": 5,
+        "n_layers": 2,
+        "src_vocab": 8,
+        "tgt_vocab": 4
+      },
+      "blocks": {
+        "decoder": {
+          "params": 420,
+          "flops_forward": 3040,
+          "inputs": {
+            "v_c": [
+              2,
+              2,
+              5
+            ],
+            "v_h": [
+              2,
+              2,
+              5
+            ],
+            "ys": [
+              2,
+              2,
+              4
+            ]
+          },
+          "outputs": {
+            "top": [
+              2,
+              2,
+              5
+            ]
+          }
+        },
+        "embed": {
+          "params": 48,
+          "flops_forward": 0,
+          "inputs": {
+            "dec_in": [
+              2,
+              2
+            ],
+            "src": [
+              2,
+              2
+            ]
+          },
+          "outputs": {
+            "xs": [
+              2,
+              2,
+              4
+            ],
+            "ys": [
+              2,
+              2,
+              4
+            ]
+          }
+        },
+        "encoder": {
+          "params": 420,
+          "flops_forward": 3040,
+          "inputs": {
+            "xs": [
+              2,
+              2,
+              4
+            ]
+          },
+          "outputs": {
+            "v_c": [
+              2,
+              2,
+              5
+            ],
+            "v_h": [
+              2,
+              2,
+              5
+            ]
+          }
+        },
+        "softmax": {
+          "params": 24,
+          "flops_forward": 160,
+          "inputs": {
+            "top": [
+              2,
+              2,
+              5
+            ]
+          },
+          "outputs": {
+            "logits": [
+              2,
+              2,
+              4
+            ]
+          }
+        }
+      },
+      "model": {
+        "embedding_weights": 48,
+        "flops_forward": 6240,
+        "params": 912,
+        "recurrent_weights": 760,
+        "softmax_weights": 20,
+        "state": 20,
+        "weights": 828
+      }
+    },
+    {
+      "name": "sutskever",
+      "kind": "named",
+      "config": {
+        "B": 2,
+        "E": 1000,
+        "H": 1000,
+        "L": 4,
+        "S": 5,
+        "T": 4,
+        "V": 80000,
+        "embed_size": 1000,
+        "hidden_size": 1000,
+        "n_layers": 4,
+        "src_vocab": 160000,
+        "tgt_vocab": 80000
+      },
+      "blocks": {
+        "decoder": {
+          "params": 32016000,
+          "flops_forward": 512000000,
+          "inputs": {
+            "v_c": [
+              4,
+              2,
+              1000
+            ],
+            "v_h": [
+              4,
+              2,
+              1000
+            ],
+            "ys": [
+              2,
+              4,
+              1000
+            ]
+          },
+          "outputs": {
+            "top": [
+              2,
+              4,
+              1000
+            ]
+          }
+        },
+        "embed": {
+          "params": 240000000,
+          "flops_forward": 0,
+          "inputs": {
+            "dec_in": [
+              2,
+              4
+            ],
+            "src": [
+              2,
+              5
+            ]
+          },
+          "outputs": {
+            "xs": [
+              2,
+              5,
+              1000
+            ],
+            "ys": [
+              2,
+              4,
+              1000
+            ]
+          }
+        },
+        "encoder": {
+          "params": 32016000,
+          "flops_forward": 640000000,
+          "inputs": {
+            "xs": [
+              2,
+              5,
+              1000
+            ]
+          },
+          "outputs": {
+            "v_c": [
+              4,
+              2,
+              1000
+            ],
+            "v_h": [
+              4,
+              2,
+              1000
+            ]
+          }
+        },
+        "softmax": {
+          "params": 80080000,
+          "flops_forward": 1280000000,
+          "inputs": {
+            "top": [
+              2,
+              4,
+              1000
+            ]
+          },
+          "outputs": {
+            "logits": [
+              2,
+              4,
+              80000
+            ]
+          }
+        }
+      },
+      "model": {
+        "embedding_weights": 240000000,
+        "flops_forward": 2432000000,
+        "params": 384112000,
+        "recurrent_weights": 64000000,
+        "softmax_weights": 80000000,
+        "state": 8000,
+        "weights": 384000000
+      }
+    }
+  ]
+}
