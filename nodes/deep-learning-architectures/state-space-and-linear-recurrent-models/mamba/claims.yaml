@@ -1,0 +1,504 @@
+# The claims of the Mamba page (spec 07). The build computes the labels.
+- id: c-def
+  type: attributive
+  text: "Gu and Dao let the parameters of a structured state space model be functions of the input, design a hardware-aware parallel algorithm in recurrent mode, and integrate these selective SSMs into a simplified end-to-end neural network architecture without attention or even MLP blocks, which they call Mamba."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 1", stance: for}
+
+- id: c-weakness
+  type: attributive
+  text: "Gu and Dao identify as a key weakness of subquadratic-time architectures such as linear attention, gated convolution, recurrent models and structured state space models their inability to perform content-based reasoning."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 1", stance: for}
+
+- id: c-abstract
+  type: empirical
+  text: "The authors report that Mamba has 5× higher throughput than Transformers at inference, scales linearly in sequence length, and that their Mamba-3B model outperforms Transformers of the same size and matches Transformers twice its size, both in pretraining and downstream evaluation."
+  scope:
+    models: "Mamba-3B and open Transformer language models of similar and twice its size"
+    data: ["the Pile"]
+    setting: "pretraining on 300B tokens, zero-shot downstream evaluation and inference throughput"
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 1", stance: for}
+
+- id: c-properties
+  type: attributive
+  text: "Selective SSMs, and Mamba, are fully recurrent models: computation and memory scale linearly in sequence length during training, and unrolling the model autoregressively during inference requires only constant time per step since it does not require a cache of previous elements."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 2", stance: for}
+
+- id: c-ssm
+  type: definitional
+  text: "S4 models are defined with four parameters (Δ, A, B, C) that define a sequence-to-sequence transformation in two stages: discretization, which transforms the continuous parameters (Δ, A, B) to discrete parameters by a rule such as the zero-order hold, and computation, as a linear recurrence or a global convolution."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 3", stance: for}
+
+- id: c-modes
+  type: attributive
+  text: "Commonly the model uses the convolutional mode for efficient parallelizable training, where the whole input sequence is seen ahead of time, and switches into recurrent mode for efficient autoregressive inference."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 3", stance: for}
+
+- id: c-lti
+  type: definitional
+  text: "In linear time invariance (LTI) the model's dynamics are constant through time: (Δ, A, B, C) are fixed for all time-steps; all structured SSMs before Mamba had been LTI because of fundamental efficiency constraints."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "pp. 3 to 4", stance: for}
+
+- id: c-diagonal
+  type: definitional
+  text: "Mamba uses a diagonal state matrix, so that A, B and C can each be represented by N numbers; the SSM is applied independently to each of the D channels, the total hidden state has dimension DN per input, and computing it over the sequence length requires O(BLDN) time and memory."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 4", stance: for}
+
+- id: c-compression
+  type: attributive
+  text: "The authors argue that a fundamental problem of sequence modeling is compressing context into a smaller state: attention does not compress context at all, so autoregressive inference stores the entire context in the KV cache, while recurrent models have a finite state, constant-time inference and linear-time training, but are limited by how well this state has compressed the context."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 5", stance: for}
+
+- id: c-tasks
+  type: definitional
+  text: "The Selective Copying task modifies the Copying task by varying the position of the tokens to memorize; the Induction Heads task requires context-aware reasoning to know when to produce the correct output in the appropriate context."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 5", stance: for}
+
+- id: c-lti-fail
+  type: attributive
+  text: "Global convolutions can solve the vanilla Copying task because it only requires time-awareness, but have difficulty with the Selective Copying task because of lack of content-awareness: the spacing between inputs and outputs is varying and cannot be modeled by static convolution kernels."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 5", stance: for}
+
+- id: c-selection
+  type: definitional
+  text: "The selection mechanism makes the parameters Δ, B and C functions of the input; they then have a length dimension L, the model changes from time-invariant to time-varying, and it loses the equivalence to convolutions."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 5", stance: for}
+
+- id: c-choices
+  type: definitional
+  text: "Mamba chooses s_B(x) = Linear_N(x), s_C(x) = Linear_N(x), s_Δ(x) = Broadcast_D(Linear_1(x)) and τ_Δ = softplus, where Linear_d is a parameterized projection to dimension d."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 5", stance: for}
+
+- id: c-algorithm
+  type: definitional
+  text: "In Algorithm 2 (S6), B and C of shape (B, L, N) are computed from the input x of shape (B, L, D), Δ of shape (B, L, D) is τ_Δ of a parameter plus s_Δ(x), the discretized parameters have shape (B, L, D, N), and the time-varying SSM is computed by a recurrence (scan) only."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 6", stance: for}
+
+- id: c-materialize
+  type: attributive
+  text: "The recurrent mode would require computing and materializing the latent state h with shape (B, L, D, N), larger by a factor of N than the input and output of shape (B, L, D); the convolution mode of LTI models bypasses the state computation."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 6", stance: for}
+
+- id: c-recurrent-flops
+  type: attributive
+  text: "The naive recurrent computation uses O(BLDN) FLOPs while the convolutional computation uses O(BLD log(L)) FLOPs, and the former has a lower constant factor, so for long sequences and not-too-large state dimension N the recurrent mode can use fewer FLOPs."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 7", stance: for}
+
+- id: c-fusion
+  type: attributive
+  text: "Instead of preparing the scan input of size (B, L, D, N) in GPU HBM, the selective scan loads the SSM parameters (Δ, A, B, C) from HBM to fast SRAM, performs the discretization and recurrence in SRAM, and writes the final outputs of size (B, L, D) back to HBM."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 7", stance: for}
+
+- id: c-scan
+  type: attributive
+  text: "The recurrence is parallelized with a work-efficient parallel scan algorithm (Blelloch 1990)."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 7", stance: for}
+
+- id: c-recompute
+  type: attributive
+  text: "The intermediate states are not stored but recomputed in the backward pass when the inputs are loaded from HBM to SRAM, so the fused selective scan layer has the same memory requirements as an optimized transformer implementation with FlashAttention."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 7", stance: for}
+
+- id: c-block
+  type: definitional
+  text: "The Mamba block combines the H3 block, the basis of most SSM architectures, with the MLP block of Transformers into one block that is stacked homogenously, inspired by the gated attention unit (GAU); the block is repeated, interleaved with standard normalization and residual connections."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 7", stance: for}
+
+- id: c-block-params
+  type: definitional
+  text: "The block expands the model dimension D by a factor E; most of its parameters, 3ED^2, are in the linear projections, 2ED^2 for the input projections and ED^2 for the output projection; the authors fix E = 2 and use two stacks of the block to match the 12D^2 parameters of a Transformer's interleaved MHA and MLP blocks."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 7", stance: for}
+
+- id: c-silu
+  type: definitional
+  text: "Mamba uses the SiLU / Swish activation function, so that the Gated MLP becomes the SwiGLU variant, and an optional normalization layer, LayerNorm, motivated by RetNet."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 7", stance: for}
+
+- id: c-h3-compare
+  type: definitional
+  text: "Compared to the H3 block, Mamba replaces the first multiplicative gate with an activation function; compared to the MLP block, Mamba adds an SSM to the main branch."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 8", stance: for}
+
+- id: c-theorem1
+  type: attributive
+  text: "Theorem 1 of Gu and Dao states that when N = 1, A = −1, B = 1, s_Δ = Linear(x) and τ_Δ = softplus, the selective SSM recurrence takes the form g_t = σ(Linear(x_t)), h_t = (1 − g_t) h_{t−1} + g_t x_t."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 8", stance: for}
+
+- id: c-broadcast
+  type: attributive
+  text: "If an input should be completely ignored, all D channels should ignore it, which is why Mamba projects the input down to 1 dimension before broadcasting it to Δ."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 8", stance: for}
+
+- id: c-spacing
+  type: attributive
+  text: "Selectivity allows filtering out irrelevant noise tokens that may occur between inputs of interest, such as language fillers like um, because the model can filter out any particular input, for example in the gated case of Theorem 1 when g_t → 0."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 8", stance: for}
+
+- id: c-context
+  type: attributive
+  text: "Many sequence models do not improve with longer context because they cannot effectively ignore irrelevant context; selective models can reset their state at any time to remove extraneous history, so their performance in principle improves monotonicly with context length."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 8", stance: for}
+
+- id: c-reset
+  type: attributive
+  text: "Where independent sequences are stitched together, LTI models bleed information between the sequences, while selective SSMs can reset their state at boundaries, for example when Δ_t → ∞ or, in Theorem 1, when g_t → 1."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 9", stance: for}
+
+- id: c-delta
+  type: attributive
+  text: "Δ controls the balance between how much to focus or ignore the current input: a large Δ resets the state h and focuses on the current input x, while a small Δ persists the state and ignores the current input."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 9", stance: for}
+
+- id: c-a
+  type: attributive
+  text: "A could also be selective, but it affects the model only through its interaction with Δ in exp(ΔA), so selectivity in Δ is enough to ensure selectivity in the discrete parameters; the authors leave a selective A out for simplicity."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 9", stance: for}
+
+- id: c-bc
+  type: attributive
+  text: "Making B and C selective allows finer-grained control over whether to let an input x_t into the state h_t, or the state into the output y_t."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 9", stance: for}
+
+- id: c-real
+  type: attributive
+  text: "Mamba uses real values by default, which work well for all but one of the paper's tasks; the authors hypothesize that complex numbers are helpful for continuous modalities such as audio and video but not discrete ones such as text and DNA."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 9", stance: for}
+
+- id: c-init
+  type: definitional
+  text: "The default initialization is S4D-Lin for the complex case and S4D-Real for the real case, which define the n-th element of A as −1/2 + ni and −(n + 1) respectively."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 9", stance: for}
+
+- id: c-dt-rank
+  type: definitional
+  text: "The projection of s_Δ can be generalized from dimension 1 to a larger dimension R, a small fraction of D, giving the low-rank projection s_Δ(x) = Linear_D(Linear_R(x)); the bias of Δ is initialized to τ_Δ^{-1}(Uniform([0.001, 0.1]))."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 9", stance: for}
+
+- id: c-s6
+  type: definitional
+  text: "The paper abbreviates selective SSMs as S6 models, because they are S4 models with a selection mechanism and computed with a scan."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 9", stance: for}
+
+- id: c-gating-not-selection
+  type: attributive
+  text: "Gu and Dao find insufficient the explanation that architecture gating gives data-dependence, because such gating does not interact along the sequence axis and cannot affect the spacing between tokens."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 10", stance: for}
+
+- id: c-table1
+  type: empirical
+  text: "On Selective Copying, S4 with no gate reached 18.3% accuracy and S6 with no gate 97.0%; in the H3 architecture S4 reached 57.0%, Hyena 30.1% and S6 99.7%; in the Mamba architecture S4 reached 56.4%, Hyena 28.4% and S6 99.8%."
+  scope:
+    models: "S4, Hyena and S6 layers in no-gate, H3 and Mamba architectures"
+    data: ["Selective Copying (synthetic)"]
+    setting: "the synthetic setup of Section 4.1 and Appendix E.1"
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-induction
+  type: empirical
+  text: "On Induction Heads, 2-layer models trained at sequence length 256 with a vocab size of 16 were tested on lengths from 64 to 1048576; Mamba solved the task perfectly and generalized to million-length sequences, 4000× longer than it saw during training, while no other method went beyond 2×."
+  scope:
+    models: "Mamba, MHA with absolute, RoPE and xPos positions, H3, Hyena"
+    data: ["Induction Heads (synthetic)"]
+    setting: "2-layer models trained at length 256, tested at lengths 64 to 1048576"
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 10", stance: for}
+
+- id: c-induction-dims
+  type: definitional
+  text: "The induction heads models use a model dimension D of 64 for Mamba and 128 for the other models, and multi-head attention with 8 heads and various positional encodings."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 10", stance: for}
+
+- id: c-induction-params
+  type: empirical
+  text: "In the full table of the induction heads results, Mamba has 74K parameters and the attention models MHA-Abs, MHA-RoPE and MHA-xPos 137K each."
+  scope:
+    models: "Mamba, MHA-Abs, MHA-RoPE, MHA-xPos, H3, Hyena"
+    data: ["Induction Heads (synthetic)"]
+    setting: "the models of the induction heads experiment"
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "Table 11", stance: for}
+
+- id: c-scaling
+  type: empirical
+  text: "Under the Chinchilla protocol, on models trained on the Pile, Mamba is the first attention-free model to match the performance of a very strong Transformer recipe (Transformer++), particularly as the sequence length grows."
+  scope:
+    models: "Mamba, Transformer, Transformer++, H3++, Hyena, RWKV, RetNet"
+    data: ["the Pile"]
+    setting: "models of about 125M to 1.3B parameters, the Chinchilla protocol, lengths 2048 and 8192"
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 11", stance: for}
+
+- id: c-transformer-pp
+  type: definitional
+  text: "Transformer++ is the strongest Transformer recipe the authors know of, based on the PaLM and LLaMa architectures: rotary embedding, SwiGLU MLP, RMSNorm instead of LayerNorm, no linear bias, and higher learning rates."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 11", stance: for}
+
+- id: c-pythia-setting
+  type: definitional
+  text: "Pythia and RWKV were trained with the same tokenizer, dataset, and training length (300B tokens) as the Mamba models; Mamba and Pythia are trained with context length 2048."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "Table 3", stance: for}
+
+- id: c-zero-shot
+  type: empirical
+  text: "In the zero-shot evaluations, Mamba-2.8B averaged 63.3 against 59.1 for Pythia-2.8B and 61.7 for Pythia-6.9B, and Mamba-1.4B averaged 59.7 against 55.2 for Pythia-1.4B."
+  scope:
+    models: "Mamba-1.4B, Mamba-2.8B, Pythia-1.4B, Pythia-2.8B, Pythia-6.9B"
+    data: ["LAMBADA", "HellaSwag", "PIQA", "ARC-E", "ARC-C", "WinoGrande"]
+    setting: "zero-shot, 300B training tokens"
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "Table 3", stance: for}
+
+- id: c-dna-size
+  type: empirical
+  text: "On the HG38 human genome, by the scaling curve of the paper, Mamba can match the Transformer++ and HyenaDNA models with roughly 3× to 4× fewer parameters."
+  scope:
+    models: "Mamba, HyenaDNA, Transformer++"
+    data: ["HG38"]
+    setting: "pretraining at length 1024, models up to about 40M parameters"
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 13", stance: for}
+
+- id: c-dna-length
+  type: empirical
+  text: "Pretrained on DNA sequences of lengths from 1024 to 1048576, Mamba's pretraining perplexity improves as the context increases up to sequences of length 1M, while the HyenaDNA model gets worse with sequence length."
+  scope:
+    models: "Mamba, HyenaDNA"
+    data: ["HG38"]
+    setting: "pretraining at lengths 2^10 to 2^20, a model of 6 layers of width 128"
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 13", stance: for}
+
+- id: c-efficiency
+  type: empirical
+  text: "The authors' efficient scan is 40× faster than a standard implementation in training, and as a recurrent model Mamba can achieve 5× higher throughput than Transformers at inference."
+  scope:
+    models: "the selective scan kernel, Mamba, Transformers"
+    data: ["unknown"]
+    setting: "the speed and memory benchmarks of Section 4.5"
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 15", stance: for}
+
+- id: c-ablation-arch
+  type: empirical
+  text: "In the ablations of architecture and SSM layer at about 350M parameters, among previous non-selective (LTI) SSMs, which are equivalent to global convolutions, performance is very similar, and replacing any of them with a selective SSM (S6) significantly improves performance."
+  scope:
+    models: "Mamba and H3 architectures with S4, Hyena, S4D and S6 layers"
+    data: ["the Pile"]
+    setting: "models of about 350M parameters"
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 15", stance: for}
+
+- id: c-ablation-table6
+  type: empirical
+  text: "In Table 6, the Mamba architecture with S6 reached a perplexity of 8.69 and the H3 architecture with S6 8.95, while H3 with S4 (complex) reached 10.30 and with S4 (real) 10.34."
+  scope:
+    models: "Mamba and H3 architectures with S4 and S6 layers"
+    data: ["the Pile"]
+    setting: "models of about 350M parameters"
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "Table 6", stance: for}
+
+- id: c-ablation-table7
+  type: empirical
+  text: "With no selective parameter the perplexity was 10.93; with selective B it was 10.15, with selective C 9.98, with selective Δ 9.81, and with all three selective 8.71."
+  scope:
+    models: "Mamba"
+    data: ["the Pile"]
+    setting: "models of about 350M parameters"
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "Table 7", stance: for}
+
+- id: c-ablation-table8
+  type: empirical
+  text: "With the complex S4D-Lin initialization the perplexity was 9.16; with real A_n = −1/2 it was 8.85, and with real A_n = −(n + 1) and with a random real initialization 8.71."
+  scope:
+    models: "Mamba"
+    data: ["the Pile"]
+    setting: "models of about 350M parameters"
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "Table 8", stance: for}
+
+- id: c-ablation-table9
+  type: empirical
+  text: "In Table 9 the parameters (M) are 358.9 with no projection for Δ, with a perplexity of 9.12, 359.1 with a projection of size 1, and 371.5 with size 64, with a perplexity of 8.71."
+  scope:
+    models: "Mamba"
+    data: ["the Pile"]
+    setting: "models of about 350M parameters"
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "Table 9", stance: for}
+
+- id: c-ablation-table10
+  type: empirical
+  text: "With the state dimension N increased from 1 to 16, the perplexity went from 9.88 to 9.81 with constant B and C and from 9.73 to 8.71 with selective B and C, and the parameters (M) from 367.1 to 371.5."
+  scope:
+    models: "Mamba"
+    data: ["the Pile"]
+    setting: "models of about 350M parameters"
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "Table 10", stance: for}
+
+- id: c-limitations
+  type: attributive
+  text: "The authors name as limitations a continuous-discrete spectrum, on which the selection mechanism can impede performance on data that LTI SSMs excel on, the open question of downstream affordances such as fine-tuning and quantization, and an empirical evaluation limited to small model sizes below 7B parameters."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "p. 17", stance: for}
+
+- id: c-history
+  type: historical
+  text: "Albert Gu of Carnegie Mellon University and Tri Dao of Princeton University introduced Mamba in arXiv 2312.00752, and open-sourced the model code and pre-trained checkpoints at github.com/state-spaces/mamba."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "pp. 1 to 2", stance: for}
+
+- id: c-code-defaults
+  type: definitional
+  text: "The class Mamba of mamba_simple.py takes d_state=16, d_conv=4, expand=2, dt_rank=auto, which is math.ceil(self.d_model / 16), dt_min=0.001 and dt_max=0.1."
+  evidence:
+    - {work: "state-spaces-mamba-simple-v2-3-2", role: original, locator: "p. 1", stance: for}
+
+- id: c-code-init
+  type: definitional
+  text: "The reference code initializes A_log as the logarithm of 1 to d_state for every channel, D as ones, and the bias of dt_proj as the inverse of softplus of a step drawn between dt_min and dt_max, inv_dt = dt + torch.log(-torch.expm1(-dt)); A = -torch.exp(self.A_log)."
+  evidence:
+    - {work: "state-spaces-mamba-simple-v2-3-2", role: original, locator: "p. 1", stance: for}
+
+- id: c-code-disc
+  type: definitional
+  text: "In selective_scan_ref, deltaA = torch.exp(torch.einsum('bdl,dn->bdln', delta, A)) and deltaB_u = torch.einsum('bdl,bnl,bdl->bdln', delta, B, u), and the state is updated as x = deltaA[:, :, i] * x + deltaB_u[:, :, i]."
+  evidence:
+    - {work: "state-spaces-mamba-selective-scan-v2-3-2", role: original, locator: "p. 1", stance: for}
+
+- id: c-code-lm
+  type: definitional
+  text: "The language model of the reference code pads vocab_size to a multiple of pad_vocab_size_multiple, uses RMSNorm when rms_norm is set, and ties the weights of lm_head to the embedding."
+  evidence:
+    - {work: "state-spaces-mamba-mixer-seq-v2-3-2", role: original, locator: "p. 1", stance: for}
+
+- id: c-config-130m
+  type: definitional
+  text: "d_model is 768 and n_layer is 24, with vocab_size 50277 and pad_vocab_size_multiple 8."
+  evidence:
+    - {work: "state-spaces-2023-mamba-130m-config", role: original, locator: "p. 1", stance: for}
+
+- id: c-config-370m
+  type: definitional
+  text: "d_model is 1024 and n_layer is 48."
+  evidence:
+    - {work: "state-spaces-2023-mamba-370m-config", role: original, locator: "p. 1", stance: for}
+
+- id: c-config-790m
+  type: definitional
+  text: "d_model is 1536 and n_layer is 48."
+  evidence:
+    - {work: "state-spaces-2023-mamba-790m-config", role: original, locator: "p. 1", stance: for}
+
+- id: c-config-1-4b
+  type: definitional
+  text: "d_model is 2048 and n_layer is 48."
+  evidence:
+    - {work: "state-spaces-2023-mamba-1-4b-config", role: original, locator: "p. 1", stance: for}
+
+- id: c-config-2-8b
+  type: definitional
+  text: "d_model is 2560 and n_layer is 64."
+  evidence:
+    - {work: "state-spaces-2023-mamba-2-8b-config", role: original, locator: "p. 1", stance: for}
+
+- id: c-params
+  type: mathematical
+  text: "A Mamba language model with L blocks of width D, inner width I = ED, state size N, convolution width K, Δ rank R and a vocabulary of V tokens, with the output layer tied to the embedding, has VD + D + L(3ID + I(K + 1) + I(R + 2N) + (R + 1)I + IN + I + D) parameters."
+  assumes: ["the block of the reference code: in_proj and out_proj without bias, a depthwise convolution with bias, x_proj without bias, dt_proj with bias, A_log, D and a pre-RMSNorm", "an output layer tied to the embedding"]
+  derivation: parameter-and-flop-count
+
+- id: c-params-models
+  type: mathematical
+  text: "With the vocabulary of 50,277 padded to 50,280 and the default sizes of the reference code, the released models have 129,135,360 (Mamba-130M), 371,516,416 (Mamba-370M), 793,204,224 (Mamba-790M), 1,372,178,432 (Mamba-1.4B) and 2,768,345,600 (Mamba-2.8B) parameters."
+  assumes: ["the count of c-params", "N = 16, K = 4, E = 2 and R = ceil(D / 16)"]
+  derivation: parameter-and-flop-count
+
+- id: c-params-ablations
+  type: mathematical
+  text: "The count of c-params reproduces the sizes of the paper's ablations on the 48 blocks of width 1024: 371.5M with N = 16 and R = 64, 367.1M with N = 1, 359.1M with R = 1 and 358.9M with no projection for Δ."
+  assumes: ["the count of c-params with V = 50,280, D = 1024, L = 48"]
+  derivation: parameter-and-flop-count
+
+- id: c-flops
+  type: mathematical
+  text: "A forward pass over B sequences of T tokens costs 2BT(L(2DI + IK + I(R + 2N) + RI + 2IN + ID) + DV) FLOPs in the products, the convolution and the scan, linear in T, of which the scan itself is 4BTLIN."
+  assumes: ["a multiply-add counts as 2 FLOPs", "the norms, the activations, the exponentials and the softmax are not counted"]
+  derivation: parameter-and-flop-count
+
+- id: c-disc-gap
+  type: mathematical
+  text: "The reference code discretizes B as ΔB rather than by the zero-order hold of the paper's eq. 4; with a diagonal A the two differ by the factor (exp(ΔA) − 1)/(ΔA) = 1 + ΔA/2 + O(Δ^2), so they agree for small steps, and for a large step the zero-order hold tends to −B/A while ΔB grows without bound."
+  assumes: ["a diagonal A with negative entries", "Ā = exp(ΔA) in both rules"]
+  derivation: discretization
+
+- id: c-disc-gate
+  type: mathematical
+  text: "In the setting of Theorem 1 with the rule of the reference code, the recurrence is h_t = (1 − g_t) h_{t−1} + Δ_t x_t with Δ_t = −log(1 − g_t), a weight on the input of at least g_t that grows without bound as g_t → 1."
+  assumes: ["N = 1, A = −1, B = 1, Δ_t = softplus(z_t), g_t = σ(z_t)", "B̄ = ΔB"]
+  derivation: discretization
+
+- id: c-quadratic
+  type: mathematical
+  text: "Because exp(Δ_t A) multiply along the sequence into exp(A(S_t − S_s)) with S the running sum of Δ, the selective SSM equals y_t = Σ_{s ≤ t} C_t exp(A(S_t − S_s)) B̄_s x_s, a lower-triangular T × T matrix per channel applied to the input, computed in O(T^2 N) per channel instead of O(TN) for the scan."
+  assumes: ["a diagonal A", "Ā_t = exp(Δ_t A)", "h_0 = 0"]
+  derivation: quadratic-form
+
+- id: c-state
+  type: mathematical
+  text: "In generation each Mamba block carries I(K − 1 + N) numbers per sequence from one token to the next, the last K − 1 inputs of the convolution and the I × N state of the SSM, whatever the length; Mamba-2.8B carries 6,225,920."
+  assumes: ["the block of the reference code"]
+  derivation: recurrent-state
+
+- id: c-state-compare
+  type: mathematical
+  text: "A Transformer with L/2 layers of width D, the parameter match of the paper, caches LDT keys and values for T tokens, which exceeds the 2LD(K − 1 + N) numbers of L Mamba blocks with E = 2 once T > 2(K − 1 + N), 38 tokens with the default K = 4 and N = 16."
+  assumes: ["the count of c-state with I = 2D", "a Transformer layer caches a key and a value of width D per token"]
+  derivation: recurrent-state
+
+- id: c-flops-models
+  type: mathematical
+  text: "For Mamba-2.8B a forward pass over 2048 tokens costs 11,355,910,307,840 FLOPs by the count of c-flops, 5,544,878,080 per token, within 0.15% of twice the parameters; the scan is 42,949,672,960 of them, about 0.38%."
+  assumes: ["the count of c-flops with B = 1, T = 2048 and the config of Mamba-2.8B"]
+  derivation: parameter-and-flop-count
