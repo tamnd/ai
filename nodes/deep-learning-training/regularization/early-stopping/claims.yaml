@@ -1,0 +1,329 @@
+# The claims of the early stopping page (spec 07). The build computes the labels.
+
+# Setting
+
+- id: c-zy-unusual
+  type: attributive
+  text: "Zhang and Yu write that boosting employs an unusual regularization technique, early stopping, based on CV or a test set."
+  evidence:
+    - {work: "zhang-2005-boosting-early-stopping", role: original, locator: "the abstract", stance: for}
+
+- id: c-yao-bias-variance
+  type: attributive
+  text: "Yao, Rosasco and Caponnetto describe a bias-variance phenomenon in which stopping too early may reduce variance but enlarge bias, and stopping too late may enlarge variance though reduce bias; solving this trade-off leads to an early stopping rule."
+  evidence:
+    - {work: "yao-2005-early-stopping-gradient-descent", role: original, locator: "Section 1", stance: for}
+
+- id: c-yao-paths
+  type: attributive
+  text: "Yao, Rosasco and Caponnetto note that the sample iteration often converges to an overfitting function, so keeping it close to the population iteration may play a role of regularization."
+  evidence:
+    - {work: "yao-2005-early-stopping-gradient-descent", role: original, locator: "Section 1", stance: for}
+
+- id: c-ali-ridge
+  type: definitional
+  text: "Ali, Kolter and Tibshirani consider the l2 regularized version of least squares, called ridge regression, minimize (1/n)||y − Xβ||² + λ||β||² where λ > 0 is a tuning parameter, whose explicit ridge solution is (X^T X + nλI)^{-1} X^T y."
+  evidence:
+    - {work: "ali-2019-continuous-time-early-stopping", role: original, locator: "Section 2", stance: for}
+
+# The method: the patience rule
+
+- id: c-patience-overshoot
+  type: mathematical
+  text: "The patience rule with patience p stops exactly p evaluations after its last improving evaluation b, so every run trains p evaluations past the weights it returns."
+  assumes: ["patience p >= 1", "the first evaluation that is not NaN improves"]
+  derivation: patience
+
+- id: c-patience-best
+  type: mathematical
+  text: "Under the patience rule with threshold delta, every evaluation before the returned epoch b is strictly worse than e_b and every one after it is at least e_b - delta, so e_b is at most the lowest value seen plus delta, and equal to it when delta = 0."
+  assumes: ["lower is better", "min_delta delta >= 0"]
+  derivation: patience
+
+- id: c-patience-unimodal
+  type: mathematical
+  text: "If the validation loss decreases strictly up to epoch m and never decreases after it, the patience rule with delta = 0 returns epoch m and stops at epoch m + p."
+  assumes: ["delta = 0", "the run has at least m + p evaluations"]
+  derivation: patience
+
+# Derivation: spectral filters
+
+- id: c-gd-filter
+  type: mathematical
+  text: "On least squares (1/2n)|y - Xw|^2, t steps of gradient descent with step eta from w = 0 give w_t = sum over s_i > 0 of (1 - (1 - eta s_i)^t) (v_i^T b / s_i) v_i, where X^T X / n = V S V^T and b = X^T y / n."
+  assumes: ["least squares loss", "gradient descent from w = 0 with a constant step"]
+  derivation: spectral-filters
+
+- id: c-ridge-filter
+  type: mathematical
+  text: "Ridge regression with penalty lambda, the solution of (X^T X / n + lambda I) w = X^T y / n, is the same eigen-sum with the filter s / (s + lambda)."
+  assumes: ["least squares loss", "lambda > 0"]
+  derivation: spectral-filters
+
+- id: c-ali-maps
+  type: attributive
+  text: "Ali, Kolter and Tibshirani write ridge and gradient flow as linear smoothers with spectral shrinkage maps g_ridge(s, lambda) = s/(s + lambda) and g_gf(s, t) = 1 - exp(-ts), and note that both apply more shrinkage to smaller s, the lower-variance directions of X^T X / n."
+  evidence:
+    - {work: "ali-2019-continuous-time-early-stopping", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-yao-filters
+  type: attributive
+  text: "Yao, Rosasco and Caponnetto decompose the Tikhonov solution as fλ = Σ µi/(µi + λ) ⟨fρ, φi⟩ φi and the population iteration as ft = Σ (1 − (1 − µi)^t) ⟨fρ, φi⟩ φi, and regard both early stopping and Tikhonov regularization as low pass filters."
+  evidence:
+    - {work: "yao-2005-early-stopping-gradient-descent", role: original, locator: "page 8", stance: for}
+
+- id: c-matched-slope
+  type: mathematical
+  text: "The gradient descent filter 1 - (1 - eta s)^t and the ridge filter s/(s + lambda) both vanish at s = 0 with slopes eta t and 1/lambda, so they agree to first order in s exactly when lambda = 1/(eta t)."
+  assumes: ["eta > 0", "t >= 1"]
+  derivation: spectral-filters
+
+- id: c-not-identical
+  type: mathematical
+  text: "At lambda = 1/(eta t) the second-order coefficients of the two filters in s are -eta^2 t(t-1)/2 and -eta^2 t^2, so no lambda makes the gradient descent filter equal to the ridge filter."
+  assumes: ["t >= 1"]
+  derivation: spectral-filters
+
+- id: c-ali-no-param
+  type: attributive
+  text: "Ali, Kolter and Tibshirani note that there is no single parametrization of lambda as a function of t that equates the ridge and gradient flow shrinkage maps for all t >= 0, but that phi(t) = 1/t gives the two maps grossly similar behaviors."
+  evidence:
+    - {work: "ali-2019-continuous-time-early-stopping", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-yao-lambda-t
+  type: attributive
+  text: "Yao, Rosasco and Caponnetto roughly regard the relationship between the regularization parameters of Tikhonov regularization and early stopping as lambda ~ 1/t."
+  evidence:
+    - {work: "yao-2005-early-stopping-gradient-descent", role: original, locator: "page 9", stance: for}
+
+- id: c-sandwich
+  type: mathematical
+  text: "For 0 <= eta s <= 1 and lambda = 1/(eta t), r_lambda(s) <= 1 - (1 - eta s)^t <= min(1, eta t s) <= 2 r_lambda(s), so the norm of the stopped weights lies between the norm of the matched ridge solution and twice it."
+  assumes: ["eta s_max <= 1", "gradient descent from w = 0"]
+  derivation: spectral-filters
+
+# Derivation: gradient flow
+
+- id: c-ali-lemma1
+  type: attributive
+  text: "Lemma 1 of Ali, Kolter and Tibshirani gives the exact solution of gradient flow from beta(0) = 0 as (X^T X)^+ (I - exp(-t X^T X / n)) X^T y."
+  evidence:
+    - {work: "ali-2019-continuous-time-early-stopping", role: original, locator: "Lemma 1", stance: for}
+
+- id: c-flow-filter
+  type: mathematical
+  text: "Gradient flow dw/dtau = X^T (y - X w)/n from w(0) = 0 gives the eigen-sum with the filter 1 - exp(-s tau)."
+  assumes: ["least squares loss", "w(0) = 0"]
+  derivation: gradient-flow
+
+- id: c-flow-limit
+  type: mathematical
+  text: "If eta s_max <= 1, then for every k the gradient descent iterate w_k is within (eta/2) |X^T y / n| of the gradient flow at time k eta, an error of order eta that does not grow with time."
+  assumes: ["eta s_max <= 1", "both paths start at w = 0"]
+  derivation: gradient-flow
+
+- id: c-ali-lemma2
+  type: attributive
+  text: "Lemma 2 of Ali, Kolter and Tibshirani states that for least squares, with gradient descent and gradient flow initialized at 0, for any step size below 1/smax and any K ≥ 1, the maximum distance between the iterates over k = 1, ..., K is bounded by a multiple of ||X^T y||/(2n) (exp(K smax) − 1)."
+  evidence:
+    - {work: "ali-2019-continuous-time-early-stopping", role: original, locator: "Lemma 2", stance: for}
+
+- id: c-flow-ridge-ratio
+  type: mathematical
+  text: "For every s >= 0 and tau > 0, s/(s + 1/tau) <= 1 - exp(-s tau) <= 1.2985 s/(s + 1/tau)."
+  assumes: ["s >= 0", "tau > 0"]
+  derivation: gradient-flow
+
+- id: c-ali-lemma7
+  type: attributive
+  text: "Lemma 7 of Ali, Kolter and Tibshirani states that for all x >= 0, exp(-x) <= 1/(1 + x) and 1 - exp(-x) <= 1.2985 x/(1 + x)."
+  evidence:
+    - {work: "ali-2019-continuous-time-early-stopping", role: original, locator: "Lemma 7", stance: for}
+
+- id: c-ali-lemma3
+  type: attributive
+  text: "Lemma 3 of Ali, Kolter and Tibshirani states that if gradient descent is initialized at β(0) = 0 with a step size below 1/smax, then each iterate β(k) uniquely solves the optimization problem minimize (1/n)||y − Xβ||² + β^T Q_k β, with Q_k = V S((I − εS)^{-k} − I)^{-1} V^T."
+  evidence:
+    - {work: "ali-2019-continuous-time-early-stopping", role: original, locator: "Lemma 3", stance: for}
+
+- id: c-ali-theorem1
+  type: attributive
+  text: "Theorem 1 of Ali, Kolter and Tibshirani states that under the data model (9), for all β0 and all t ≥ 0, Risk(β̂gf(t); β0) ≤ 1.6862 · Risk(β̂ridge(1/t); β0), the risk of gradient flow at time t against ridge at λ = 1/t."
+  evidence:
+    - {work: "ali-2019-continuous-time-early-stopping", role: original, locator: "Theorem 1", stance: for}
+
+- id: c-ali-theorem1-bc
+  type: attributive
+  text: "Theorem 1 of Ali, Kolter and Tibshirani also states that the inequality holds for the Bayes risk with respect to any prior on beta0, and for in-sample prediction risk."
+  evidence:
+    - {work: "ali-2019-continuous-time-early-stopping", role: original, locator: "Theorem 1", stance: for}
+
+- id: c-ali-admissible
+  type: attributive
+  text: "Ali, Kolter and Tibshirani note that for any t > 0 gradient flow is a unique Bayes estimator and therefore admissible, so the result of Theorem 1 cannot hold for any universal constant strictly less than 1."
+  evidence:
+    - {work: "ali-2019-continuous-time-early-stopping", role: original, locator: "Section 5", stance: for}
+
+- id: c-ali-theorem3
+  type: attributive
+  text: "Theorem 3 of Ali, Kolter and Tibshirani states that the ratio of the optimally tuned Bayes risk of gradient flow to that of ridge regression lies between 1 and 1.2147."
+  evidence:
+    - {work: "ali-2019-continuous-time-early-stopping", role: original, locator: "Theorem 3", stance: for}
+
+- id: c-yao-saturation
+  type: attributive
+  text: "Yao, Rosasco and Caponnetto write that early stopping does not incur the saturation phenomenon that the rate no longer improves when the regression function goes beyond a certain level of regularity, unlike Tikhonov regularization."
+  evidence:
+    - {work: "yao-2005-early-stopping-gradient-descent", role: original, locator: "page 2", stance: for}
+
+- id: c-yao-rates
+  type: attributive
+  text: "Yao, Rosasco and Caponnetto compare upper bounds of O(t^{-r}) for early stopping with Tikhonov regularization, whose upper bound cannot go faster than t^{-1} for large r."
+  evidence:
+    - {work: "yao-2005-early-stopping-gradient-descent", role: original, locator: "page 8", stance: for}
+
+- id: c-yao-minimax
+  type: attributive
+  text: "Yao, Rosasco and Caponnetto obtain an early stopping rule by solving a bias-variance trade-off, with upper bounds that achieve the minimax optimal rate O(m^{-1/2}) in some cases."
+  evidence:
+    - {work: "yao-2005-early-stopping-gradient-descent", role: original, locator: "the abstract", stance: for}
+
+# Evidence
+
+- id: c-ali-experiment
+  type: empirical
+  text: "In the numerical examples of Ali, Kolter and Tibshirani with Gaussian features, Sigma = I, n = 500 and p = 1000, the maximum ratio of gradient flow to ridge risk over the path under lambda = 1/t was 1.2164, and the ratio of the minimums was 1.0036."
+  scope:
+    models: "gradient flow and ridge regression on linear least squares"
+    data: ["synthetic Gaussian features"]
+    scale: "n = 500, p = 1000, 200 tuning parameters"
+    setting: "Bayes risk, calibrated by lambda = 1/t"
+  evidence:
+    - {work: "ali-2019-continuous-time-early-stopping", role: original, locator: "page 8", stance: for}
+
+- id: c-ali-norm
+  type: empirical
+  text: "When the risks were parametrized by the l2 norms of the estimators, Ali, Kolter and Tibshirani saw remarkable agreement over the whole path, with a maximum ratio of 1.0050."
+  scope:
+    models: "gradient flow and ridge regression on linear least squares"
+    data: ["synthetic Gaussian features"]
+    scale: "n = 500, p = 1000"
+    setting: "Bayes risk, calibrated by the l2 norm of the estimators"
+  evidence:
+    - {work: "ali-2019-continuous-time-early-stopping", role: original, locator: "page 8", stance: for}
+
+- id: c-caruana-setup
+  type: empirical
+  text: "Caruana, Lawrence and Giles trained fully connected MLPs with one hidden layer of 2 to 800 hidden units on seven problems with backprop, stochastic updates, learning rate 0.1 and momentum 0.9, using early stopping for regularization."
+  scope:
+    models: "one-hidden-layer MLPs, 2 to 800 hidden units (about 500 to 100,000 parameters)"
+    data: ["NETtalk", "7 and 12 bit parity", "inverse kinematics", "Base 1", "Base 2", "ALVINN"]
+    scale: "training sets of 100 to 1000 points"
+    setting: "backpropagation with early stopping"
+  evidence:
+    - {work: "caruana-2000-overfitting-neural-nets", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-caruana-three
+  type: empirical
+  text: "Caruana, Lawrence and Giles observe that on only three of the seven problems did nets that are too large yield worse generalization than smaller networks, and that the loss was surprisingly small."
+  scope:
+    models: "one-hidden-layer MLPs, 2 to 800 hidden units"
+    data: ["Base 1", "Base 2", "ALVINN"]
+    scale: "training sets of 100 to 1000 points"
+    setting: "backpropagation with early stopping"
+  evidence:
+    - {work: "caruana-2000-overfitting-neural-nets", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-caruana-small
+  type: empirical
+  text: "Caruana, Lawrence and Giles found that on some tasks small nets overtrained considerably, and conclude that regularization such as early stopping is critical for nets of all sizes."
+  scope:
+    models: "one-hidden-layer MLPs, 2 to 800 hidden units"
+    data: ["NETtalk"]
+    scale: "training sets of 100 to 1000 points"
+    setting: "backpropagation, trained well past the peak of generalization"
+  evidence:
+    - {work: "caruana-2000-overfitting-neural-nets", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-caruana-cg
+  type: empirical
+  text: "Caruana, Lawrence and Giles show that conjugate gradient can yield worse generalization than backprop because it overfits regions of low non-linearity when learning to fit regions of high non-linearity."
+  scope:
+    models: "multilayer perceptrons"
+    data: ["synthetic one-dimensional function of Equation 1"]
+    scale: "20 training points, 10 trials"
+    setting: "conjugate gradient against backpropagation"
+  evidence:
+    - {work: "caruana-2000-overfitting-neural-nets", role: original, locator: "the abstract", stance: for}
+
+# Limitations
+
+- id: c-ali-open
+  type: attributive
+  text: "Ali, Kolter and Tibshirani name as future directions analyzing the risk of a continuum version of stochastic gradient descent, and studying gradient flow beyond least squares, for example for logistic regression."
+  evidence:
+    - {work: "ali-2019-continuous-time-early-stopping", role: original, locator: "Section 8", stance: for}
+
+- id: c-patience-plateau
+  type: mathematical
+  text: "For every patience p, a validation curve that stays flat for p evaluations and then drops makes the patience rule stop before the drop."
+  assumes: ["ties do not improve"]
+  derivation: patience
+
+- id: c-patience-bias
+  type: mathematical
+  text: "The validation loss kept by the patience rule is the minimum of noisy values and is biased low as an estimate of the error at the kept epoch; on a flat curve with Gaussian noise of standard deviation 0.05 and p = 10 the mean bias in our run was -0.09."
+  assumes: ["evaluations are a fixed value plus independent zero-mean noise", "delta = 0"]
+  derivation: patience
+
+# Variants
+
+- id: c-zy-consistent
+  type: attributive
+  text: "Zhang and Yu find early-stopping strategies under which boosting over the linear span of a family of basis functions is consistent based on i.i.d. samples, and obtain bounds on the rates of convergence."
+  evidence:
+    - {work: "zhang-2005-boosting-early-stopping", role: original, locator: "the abstract", stance: for}
+
+- id: c-zy-adaboost
+  type: attributive
+  text: "Zhang and Yu prove that for a linearly separable problem, AdaBoost with step size going to 0 becomes an L1-margin maximizer when left to run to convergence."
+  evidence:
+    - {work: "zhang-2005-boosting-early-stopping", role: original, locator: "the abstract", stance: for}
+
+# History
+
+- id: c-hist-morgan
+  type: historical
+  text: "Ali, Kolter and Tibshirani write that early-stopped gradient descent was found effective in training neural networks by Morgan and Bourlard (1989)."
+  evidence:
+    - {work: "ali-2019-continuous-time-early-stopping", role: review, locator: "Section 1", stance: for}
+
+- id: c-hist-strand
+  type: historical
+  text: "Ali, Kolter and Tibshirani write that the same idea, known as early-stopped Landweber iterations, was found in ill-posed linear inverse problems by Strand (1974)."
+  evidence:
+    - {work: "ali-2019-continuous-time-early-stopping", role: review, locator: "Section 1", stance: for}
+
+- id: c-hist-wahba
+  type: historical
+  text: "Yao, Rosasco and Caponnetto trace the low pass filter observation in statistical estimation to Wahba (1987), which derives generalized cross-validation criteria for data-dependent early stopping rules."
+  evidence:
+    - {work: "yao-2005-early-stopping-gradient-descent", role: review, locator: "page 8", stance: for}
+
+- id: c-hist-boosting
+  type: historical
+  text: "Yao, Rosasco and Caponnetto list systematic studies of early stopping regularization: Jiang (2004) for AdaBoost, Bühlmann and Yu (2002) for L2 Boost, and Zhang and Yu (2003) for boosting with general convex loss functions."
+  evidence:
+    - {work: "yao-2005-early-stopping-gradient-descent", role: review, locator: "page 2", stance: for}
+
+- id: c-caruana-sequence
+  type: attributive
+  text: "Caruana, Lawrence and Giles find that regardless of size nets learn task subcomponents in similar sequence, big nets pass through stages similar to those learned by smaller nets, and early stopping can stop training the large net when it generalizes comparably to a smaller net."
+  evidence:
+    - {work: "caruana-2000-overfitting-neural-nets", role: original, locator: "the abstract", stance: for}
+
+- id: c-hist-ali
+  type: historical
+  text: "Alnur Ali, J. Zico Kolter and Ryan J. Tibshirani published A Continuous-Time View of Early Stopping for Least Squares Regression in the Proceedings of AISTATS 2019."
+  evidence:
+    - {work: "ali-2019-continuous-time-early-stopping", role: original, locator: "Section 1", stance: for}

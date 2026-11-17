@@ -1,0 +1,152 @@
+# A course of spec 5.7: an ordered list of items with section headings. Names and orders only (19.3).
+# An item names its node by slug when the node exists; before that it is a name and a kind, which aik harvest courses
+# reads into the inventory, so that the catalog step can place it and the course can count its coverage (18).
+id: history-of-ai
+title: History of AI
+basis: >-
+  the eras of history-of-ai (5.2) in time order, cross-checked with Nilsson, The Quest for Artificial Intelligence
+  (2010), McCorduck, Machines Who Think (2nd edition, 2004), and Russell and Norvig, 4th edition, section 1.3; each
+  item is an event, a work, a system or a person whose public role the record states (P01)
+sections:
+  - heading: Precursors and automata
+    items:
+      - {name: Mechanical automata, kind: concept}
+      - {name: Ramon Llull's Ars Magna, kind: work}
+      - {name: Leibniz's calculus ratiocinator, kind: concept}
+      - {name: Analytical Engine, kind: system}
+      - {name: Ada Lovelace's notes on the Analytical Engine, kind: work}
+      - {name: Boolean logic, kind: concept}
+      - {name: Frege's Begriffsschrift, kind: work}
+      - {name: Godel's incompleteness theorems, kind: theorem}
+  - heading: Cybernetics and early computing
+    items:
+      - {name: Turing machine, kind: concept}
+      - {name: On Computable Numbers, kind: work}
+      - {name: McCulloch-Pitts neuron, kind: method}
+      - {name: Cybernetics, kind: area}
+      - {name: Shannon's information theory, kind: work}
+      - {name: Hebbian learning, kind: method}
+      - {name: Computing Machinery and Intelligence, kind: work}
+      - {name: Turing test, kind: concept}
+      - {name: SNARC, kind: system}
+      - {name: Programming a computer for playing chess, kind: work}
+  - heading: The birth of AI
+    items:
+      - {name: Dartmouth workshop, kind: event}
+      - {name: A Proposal for the Dartmouth Summer Research Project, kind: work}
+      - {name: Logic Theorist, kind: system}
+      - {name: General Problem Solver, kind: system}
+      - {name: Samuel's checkers player, kind: system}
+      - {name: Perceptron, kind: method}
+      - {name: Mark I Perceptron, kind: hardware}
+      - {name: Lisp, kind: software}
+      - {name: Physical symbol system hypothesis, kind: argument}
+  - heading: Early symbolic AI
+    items:
+      - {name: Advice Taker, kind: system}
+      - {name: Geometry Theorem Prover, kind: system}
+      - {name: ELIZA, kind: system}
+      - {name: SHRDLU, kind: system}
+      - {name: Shakey the robot, kind: system}
+      - {name: STRIPS, kind: method}
+      - {name: A* search, kind: method}
+      - {name: Resolution principle, kind: method}
+      - {name: DENDRAL, kind: system}
+      - {name: Frames, kind: concept}
+      - {name: Perceptrons (book), kind: work}
+  - heading: The first AI winter
+    items:
+      - {name: ALPAC report, kind: work}
+      - {name: Lighthill report, kind: work}
+      - {name: First AI winter, kind: event}
+      - {name: Combinatorial explosion, kind: concept}
+      - {name: Moravec's paradox, kind: concept}
+  - heading: Knowledge-based systems
+    items:
+      - {name: Expert system, kind: concept}
+      - {name: MYCIN, kind: system}
+      - {name: XCON, kind: system}
+      - {name: Prolog, kind: software}
+      - {name: Fifth Generation Computer Systems project, kind: event}
+      - {name: Strategic Computing Initiative, kind: event}
+      - {name: Cyc, kind: system}
+      - {name: Lisp machine, kind: hardware}
+      - {name: Chinese room, kind: argument}
+  - heading: The second AI winter
+    items:
+      - {name: Collapse of the Lisp machine market, kind: event}
+      - {name: Second AI winter, kind: event}
+      - {name: Behavior-based robotics, kind: concept}
+      - {name: Subsumption architecture, kind: architecture}
+  - heading: The statistical and probabilistic turn
+    items:
+      - {name: Probabilistic Reasoning in Intelligent Systems, kind: work}
+      - {name: Bayesian network, kind: concept}
+      - {name: Hidden Markov models in speech recognition, kind: method}
+      - {name: IBM statistical machine translation, kind: method}
+      - {name: Support vector machine, kind: method}
+      - {name: TD-Gammon, kind: system}
+      - {name: Deep Blue versus Garry Kasparov, kind: event}
+      - {name: DARPA Grand Challenge, kind: event}
+      - {name: Netflix Prize, kind: event}
+      - {name: Watson on Jeopardy!, kind: event}
+  - heading: The connectionist revival
+    items:
+      - {name: Hopfield network, kind: architecture}
+      - {name: Boltzmann machine, kind: architecture}
+      - {name: Learning representations by back-propagating errors, kind: work}
+      - {name: Parallel Distributed Processing, kind: work}
+      - {name: Neocognitron, kind: architecture}
+      - {name: LeNet, kind: model}
+      - {name: Long short-term memory, kind: architecture}
+      - {name: Deep belief network, kind: architecture}
+  - heading: The deep learning revolution
+    items:
+      - {name: ImageNet, kind: dataset}
+      - {name: AlexNet, kind: model}
+      - {name: GPU training of neural networks, kind: concept}
+      - {name: Word2vec, kind: method}
+      - {name: Deep Q-network, kind: method}
+      - {name: Generative adversarial network, kind: architecture}
+      - {name: ResNet, kind: architecture}
+      - {name: AlphaGo versus Lee Sedol, kind: event}
+      - {name: Turing Award 2018, kind: event}
+  - heading: The transformer and foundation model era
+    items:
+      - {name: Attention Is All You Need, kind: work}
+      - {name: BERT, kind: model}
+      - {name: GPT-2, kind: model}
+      - {name: GPT-3, kind: model}
+      - {name: Scaling laws, kind: finding}
+      - {name: AlphaFold 2, kind: system}
+      - {name: On the Opportunities and Risks of Foundation Models, kind: work}
+      - {name: DALL-E, kind: model}
+      - {name: Stable Diffusion, kind: model}
+      - {name: ChatGPT, kind: system}
+      - {name: GPT-4, kind: model}
+      - {name: LLaMA, kind: model}
+      - {name: Bletchley Park AI Safety Summit, kind: event}
+      - {name: EU AI Act, kind: policy}
+      - {name: Nobel Prizes for AI research in 2024, kind: event}
+      - {name: Reasoning models, kind: concept}
+  - heading: Histories by country
+    items:
+      - {name: History of AI in the United Kingdom, kind: concept}
+      - {name: History of AI in Japan, kind: concept}
+      - {name: History of AI in the Soviet Union, kind: concept}
+      - {name: History of AI in China, kind: concept}
+      - {name: History of AI in France, kind: concept}
+  - heading: People
+    items:
+      - {name: Alan Turing, kind: person}
+      - {name: John McCarthy, kind: person}
+      - {name: Marvin Minsky, kind: person}
+      - {name: Herbert A. Simon, kind: person}
+      - {name: Allen Newell, kind: person}
+      - {name: Claude Shannon, kind: person}
+      - {name: Frank Rosenblatt, kind: person}
+      - {name: Edward Feigenbaum, kind: person}
+      - {name: Judea Pearl, kind: person}
+      - {name: Geoffrey Hinton, kind: person}
+      - {name: Yann LeCun, kind: person}
+      - {name: Yoshua Bengio, kind: person}

@@ -1,0 +1,124 @@
+# A course of spec 5.7: an ordered list of items with section headings. Names and orders only (19.3).
+# An item names its node by slug when the node exists; before that it is a name and a kind, which aik harvest courses
+# reads into the inventory, so that the catalog step can place it and the course can count its coverage (18).
+id: ai-policy-and-law
+title: AI policy and law
+basis: >-
+  the sub-areas of ai-governance-and-law (5.2), in the order of a reading path from principles to national law to
+  international governance, with the provisions that a reader needs; the instruments are named as their official texts
+  name them, cross-checked with the OECD.AI policy database and public AI policy syllabi
+sections:
+  - heading: Principles and frameworks
+    items:
+      - {name: AI governance, kind: area}
+      - {name: OECD AI Principles, kind: policy}
+      - {name: UNESCO Recommendation on the Ethics of Artificial Intelligence, kind: policy}
+      - {name: Asilomar AI Principles, kind: work}
+      - {name: Ethics Guidelines for Trustworthy AI, kind: policy}
+      - {name: Risk-based regulation, kind: concept}
+      - {name: Definition of an AI system, kind: definition}
+  - heading: The European Union
+    items:
+      - {name: EU AI Act, kind: policy}
+      - {name: Prohibited AI practices, kind: provision}
+      - {name: High-risk AI system, kind: provision}
+      - {name: Transparency obligations for certain AI systems, kind: provision}
+      - {name: General-purpose AI model, kind: provision}
+      - {name: General-purpose AI model with systemic risk, kind: provision}
+      - {name: Conformity assessment, kind: provision}
+      - {name: Fundamental rights impact assessment, kind: provision}
+      - {name: AI regulatory sandbox, kind: provision}
+      - {name: European AI Office, kind: organization}
+      - {name: General-Purpose AI Code of Practice, kind: policy}
+      - {name: Harmonised standards for the AI Act, kind: standard}
+      - {name: General Data Protection Regulation, kind: policy}
+      - {name: Automated individual decision-making, kind: provision}
+      - {name: Digital Services Act, kind: policy}
+      - {name: Product Liability Directive, kind: policy}
+  - heading: The United States
+    items:
+      - {name: Executive Order 14110, kind: policy}
+      - {name: Executive Order 14179, kind: policy}
+      - {name: Blueprint for an AI Bill of Rights, kind: policy}
+      - {name: NIST AI Risk Management Framework, kind: standard}
+      - {name: NIST Generative AI Profile, kind: standard}
+      - {name: OMB memorandum M-24-10, kind: policy}
+      - {name: National AI Initiative Act of 2020, kind: policy}
+      - {name: Colorado AI Act, kind: policy}
+      - {name: California SB 1047, kind: policy}
+      - {name: California SB 53, kind: policy}
+      - {name: New York City Local Law 144, kind: policy}
+      - {name: Federal Trade Commission enforcement on AI, kind: concept}
+  - heading: China
+    items:
+      - {name: Provisions on the Management of Algorithmic Recommendations, kind: policy}
+      - {name: Provisions on the Administration of Deep Synthesis, kind: policy}
+      - {name: Interim Measures for the Management of Generative AI Services, kind: policy}
+      - {name: Algorithm registry, kind: concept}
+      - {name: New Generation Artificial Intelligence Development Plan, kind: policy}
+  - heading: The United Kingdom and other countries
+    items:
+      - {name: UK pro-innovation approach to AI regulation, kind: policy}
+      - {name: AI Security Institute, kind: organization}
+      - {name: Canada's Artificial Intelligence and Data Act, kind: policy}
+      - {name: Japan's AI Promotion Act, kind: policy}
+      - {name: Korea's AI Basic Act, kind: policy}
+      - {name: Brazil's AI bill, kind: policy}
+      - {name: Singapore Model AI Governance Framework, kind: policy}
+  - heading: International governance
+    items:
+      - {name: International AI governance, kind: area}
+      - {name: Council of Europe Framework Convention on Artificial Intelligence, kind: policy}
+      - {name: Hiroshima AI Process, kind: policy}
+      - {name: Bletchley Declaration, kind: policy}
+      - {name: Seoul AI Summit, kind: event}
+      - {name: AI Action Summit, kind: event}
+      - {name: International AI Safety Report, kind: work}
+      - {name: UN High-level Advisory Body on AI, kind: organization}
+      - {name: Global Partnership on AI, kind: organization}
+      - {name: Lethal autonomous weapons systems, kind: risk}
+  - heading: Standards
+    items:
+      - {name: AI standards, kind: area}
+      - {name: ISO/IEC 42001, kind: standard}
+      - {name: ISO/IEC 23894, kind: standard}
+      - {name: ISO/IEC 22989, kind: standard}
+      - {name: IEEE 7000, kind: standard}
+      - {name: CEN-CENELEC JTC 21, kind: organization}
+  - heading: Frontier AI policy
+    items:
+      - {name: Frontier AI, kind: concept}
+      - {name: Frontier AI Safety Commitments, kind: policy}
+      - {name: Responsible scaling policy, kind: policy}
+      - {name: Compute threshold, kind: concept}
+      - {name: Model evaluation by government, kind: method}
+      - {name: AI safety institutes, kind: concept}
+  - heading: Compute and export controls
+    items:
+      - {name: Compute governance, kind: concept}
+      - {name: US export controls on advanced computing items, kind: policy}
+      - {name: Framework for Artificial Intelligence Diffusion, kind: policy}
+      - {name: CHIPS and Science Act, kind: policy}
+      - {name: Know-your-customer for compute, kind: concept}
+  - heading: Copyright, data and liability
+    items:
+      - {name: Copyright and generative AI, kind: concept}
+      - {name: Text and data mining exception, kind: provision}
+      - {name: Fair use and AI training, kind: argument}
+      - {name: Authorship of AI-generated works, kind: concept}
+      - {name: Liability for AI harms, kind: concept}
+      - {name: Data protection and AI, kind: concept}
+      - {name: Right to explanation, kind: concept}
+  - heading: Sectors
+    items:
+      - {name: AI in medical devices, kind: concept}
+      - {name: Algorithmic discrimination in hiring, kind: risk}
+      - {name: Credit scoring and AI, kind: concept}
+      - {name: Facial recognition regulation, kind: concept}
+      - {name: Autonomous vehicle regulation, kind: concept}
+  - heading: Incidents and reporting
+    items:
+      - {name: AI incident, kind: definition}
+      - {name: AI Incident Database, kind: dataset}
+      - {name: Serious incident reporting, kind: provision}
+      - {name: OECD AI Incidents Monitor, kind: dataset}
