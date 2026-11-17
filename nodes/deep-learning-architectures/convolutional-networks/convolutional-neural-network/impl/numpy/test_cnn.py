@@ -42,6 +42,15 @@ def cfg_of(c):
     return config(k["channels"], k["c1"], k["c2"], k["f1"], k["f2"], k["classes"], k["size"])
 
 
+def flop_case(c):
+    """The forward call of a config of shapes.json, for aik flopcount."""
+    cfg, k = cfg_of(c), c["config"]
+    rng = np.random.default_rng(0)
+    params = init(rng, cfg)
+    x = rng.normal(size=(k["B"], k["channels"], k["size"], k["size"]))  # (B, C, R, R)
+    return forward, (params, x, cfg)
+
+
 def test_worked_example():
     np.testing.assert_array_equal(conv2d(X3, W2)[0, 0], [[27.0, 37.0], [57.0, 67.0]])
     # True convolution flips the kernel; it gives other numbers on the same input.
