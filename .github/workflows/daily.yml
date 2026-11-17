@@ -1,0 +1,158 @@
+# SPDX-License-Identifier: CC0-1.0
+#
+# This workflow is the daily freshness job of spec 14.9 and 20.5. At 06:00 UTC it harvests the daily sources (aik
+# harvest -due daily), and for each one runs aik universe merge and aik card sync -source. When the inventory, the
+# universe or the cards change, it opens one pull request per source and runs CI on that branch. The job merges the
+# pull request itself only when aik check passes and aik card drift finds no fact of an existing card that moved beyond
+# its tolerance or was dropped; otherwise a person merges it.
+#
+# The job runs no code from the content. It runs aik, which fetches the sources under the rate and the robots rules of
+# each (13.4). The raw snapshots stay in the runner's temporary directory; the manifests name them by their hashes.
+name: Daily
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+    inputs:
+      source:
+        description: "One daily source to harvest (aik harvest -due daily -list lists them); empty for all"
+        required: false
+        default: ""
+
+permissions: {}
+
+concurrency:
+  group: daily
+  cancel-in-progress: false
+
+env:
+  AIK_VERSION: v0.1.64
+  GO_VERSION: "1.27.x"
+
+jobs:
+  daily:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    defaults:
+      run:
+        # pipefail, so that a harvest that fails is not hidden by the tee after it.
+        shell: bash
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: false
+      - name: Install aik
+        run: go install "github.com/tamnd/ai-agent/cmd/aik@${AIK_VERSION}"
+      - name: Choose the sources
+        env:
+          SOURCE: ${{ inputs.source }}
+        run: |
+          aik harvest -due daily -list > "$RUNNER_TEMP/daily.txt"
+          if [ -z "$SOURCE" ]; then
+            cp "$RUNNER_TEMP/daily.txt" "$RUNNER_TEMP/sources.txt"
+          elif grep -qxF -- "$SOURCE" "$RUNNER_TEMP/daily.txt"; then
+            # Only an id from aik's own list reaches the shell below.
+            printf '%s\n' "$SOURCE" > "$RUNNER_TEMP/sources.txt"
+          else
+            echo "::error::$SOURCE is not a daily source"
+            exit 2
+          fi
+          cat "$RUNNER_TEMP/sources.txt"
+      - name: Keep the cards of main
+        # aik card drift compares the cards of each branch with these.
+        run: git worktree add -q --detach "$RUNNER_TEMP/base" "$GITHUB_SHA"
+      - name: Harvest each source, open a pull request, and merge it when nothing drifted
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          day="$(date -u +%Y-%m-%d)"
+          failed=""
+          while read -r src; do
+            [ -n "$src" ] || continue
+            git switch -q --detach "$GITHUB_SHA"
+            git reset -q --hard
+            git clean -q -fd -- registers manifests reports cards
+            echo "::group::$src"
+            if ! aik harvest -root . -store "$RUNNER_TEMP/raw" "$src" | tee "$RUNNER_TEMP/run.txt"; then
+              failed="$failed $src"
+              echo "::endgroup::"
+              continue
+            fi
+            aik universe merge -root . | tee -a "$RUNNER_TEMP/run.txt"
+            aik card sync -root . -source "$src" | tee -a "$RUNNER_TEMP/run.txt"
+            echo "::endgroup::"
+            if [ -z "$(git status --porcelain -- registers manifests reports cards)" ]; then
+              echo "$src did not change."
+              continue
+            fi
+            auto=yes
+            # aik check -main is the audit that ci.yml runs outside a pull request; aik card drift is the tolerance test of 14.9.
+            if ! aik fmt -check > "$RUNNER_TEMP/check.txt" 2>&1 || ! aik check -main >> "$RUNNER_TEMP/check.txt" 2>&1; then
+              auto=no
+            fi
+            if ! aik card drift -root . -base "$RUNNER_TEMP/base" > "$RUNNER_TEMP/drift.txt" 2>&1; then
+              auto=no
+            fi
+            branch="daily/$src/$day"
+            git switch -q -c "$branch"
+            git add -A -- registers manifests reports cards
+            git commit -s -q -m "Daily harvest of $src ($day)"
+            git push -q --force "https://x-access-token:${GH_TOKEN}@github.com/${REPO}.git" "HEAD:refs/heads/${branch}"
+            {
+              echo "This pull request is the daily harvest of \`$src\` on $day (spec 14.9): its inventory, the manifest of its snapshots, its run record, the universe and the cards of its items."
+              echo
+              if [ "$auto" = yes ]; then
+                echo "\`aik check\` passed and no fact of an existing card moved beyond its tolerance, so the job merges it when CI passes."
+              else
+                echo "A check failed or a fact of an existing card moved beyond its tolerance, so a person reviews and merges it."
+              fi
+              echo
+              echo '```'
+              cat "$RUNNER_TEMP/run.txt"
+              echo
+              tail -n 40 "$RUNNER_TEMP/check.txt"
+              tail -n 60 "$RUNNER_TEMP/drift.txt"
+              echo '```'
+            } > "$RUNNER_TEMP/body.md"
+            if [ -z "$(gh pr list -R "$REPO" --head "$branch" --json number -q '.[].number')" ]; then
+              gh pr create -R "$REPO" --base main --head "$branch" --title "Daily harvest of $src ($day)" --body-file "$RUNNER_TEMP/body.md" --label "area: harvest" --label "type: chore"
+            fi
+            # A pull request that the workflow token opens does not start CI, so the job starts it on the branch.
+            sha="$(git rev-parse HEAD)"
+            gh workflow run ci.yml -R "$REPO" --ref "$branch"
+            if [ "$auto" != yes ]; then
+              continue
+            fi
+            # The required checks of main come from ci.yml, so the job waits for the run on this commit before it merges.
+            run=""
+            for _ in $(seq 30); do
+              run="$(gh run list -R "$REPO" -w ci.yml -b "$branch" -c "$sha" -e workflow_dispatch -L 1 --json databaseId -q '.[].databaseId')"
+              [ -n "$run" ] && break
+              sleep 10
+            done
+            if [ -z "$run" ]; then
+              echo "::warning::no CI run started for $branch; a person merges it"
+              continue
+            fi
+            if gh run watch -R "$REPO" "$run" --exit-status > /dev/null; then
+              gh pr merge -R "$REPO" "$branch" --squash --delete-branch --match-head-commit "$sha"
+            else
+              gh pr comment -R "$REPO" "$branch" --body "CI failed on this branch (run $run), so the job did not merge it."
+            fi
+          done < "$RUNNER_TEMP/sources.txt"
+          if [ -n "$failed" ]; then
+            echo "::error::the harvest failed for:$failed"
+            exit 1
+          fi
