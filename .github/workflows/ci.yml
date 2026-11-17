@@ -83,9 +83,11 @@ jobs:
         run: aik test -sandbox docker -lang "$LANG_ID" -cache build/test-cache -out build/results
       # The mutation score is part of I2 and X3 (spec 08.8). A score under the threshold lowers the rung and is not a
       # failure of the build, so the step may fail; the cache keeps the runs that reach the threshold. A pull request
-      # runs it on the implementations that it changes; main runs it on all of them and saves the cache.
+      # runs it on the implementations that it changes; main runs it on all of them and saves the cache. The step has
+      # its own timeout under the job's, so a pull request that touches many implementations ends the step, not the job.
       - name: Run the mutation tests
         continue-on-error: true
+        timeout-minutes: 75
         env:
           LANG_ID: ${{ matrix.lang }}
           BASE: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || '' }}
