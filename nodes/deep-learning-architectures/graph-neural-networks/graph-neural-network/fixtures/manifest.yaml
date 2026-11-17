@@ -1,0 +1,10 @@
+# Written by fixtures/make.py; do not edit.
+seed: 20170404
+config: {d_in: 3, d_hidden: 8, n_layers: 2, classes: 4}
+inputs: {B: 2, N: 6, graphs: "a 6-cycle with one chord; a 5-path and an isolated node"}
+dtype: float64
+numpy: "2.5.4"
+files:
+  params-small.npz: {sha256: 04a0156e40ba048808c3338984879bd7f5be9a98c8c4212b7228026d8960cbcd}
+  input-small.npz: {sha256: 6f00ee775b77244c95c459c8717b63fb53c0d6d6d8653102f2c3eee94e85960c}
+  expected-small.npz: {sha256: 07c7b5af1388630630b8b828502d284dcc73e189ca072e2426f7380ed62c29dd}

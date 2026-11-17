@@ -1,0 +1,25 @@
+# The architecture scene (spec 12.6), first written by aik viz shapes from shapes.yaml.
+# It sets the layout and the controls only; every shape and count comes from shapes.yaml.
+title: Graph neural network
+controls:
+  - name: d_in
+    choices: [1, 3, 5, 1433, 3703]
+  - name: d_hidden
+    choices: [2, 8, 16]
+  - name: n_layers
+    choices: [1, 2, 3]
+  - name: classes
+    choices: [1, 4, 5, 6, 7]
+  - name: B
+    choices: [1, 2]
+  - name: "N"
+    choices: [6, 2708, 3327]
+presets:
+  - example
+  - cora
+  - citeseer
+stack:
+  - layer_first
+  - layer_rest
+  - readout
+  - head

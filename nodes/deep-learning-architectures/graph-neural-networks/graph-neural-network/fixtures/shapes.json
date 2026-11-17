@@ -1,0 +1,505 @@
+{
+  "note": "Written by aik shapes sample -w from shapes.yaml; do not edit. The tests of each implementation check shapes, param_count and flops against these values (spec 08.6, rule X09).",
+  "configs": [
+    {
+      "name": "example",
+      "kind": "example",
+      "config": {
+        "B": 2,
+        "D": 8,
+        "F": 3,
+        "K": 4,
+        "N": 6,
+        "classes": 4,
+        "d_hidden": 8,
+        "d_in": 3,
+        "n_layers": 2
+      },
+      "blocks": {
+        "head": {
+          "params": 36,
+          "flops_forward": 128,
+          "inputs": {
+            "graph": [
+              2,
+              8
+            ]
+          },
+          "outputs": {
+            "logits": [
+              2,
+              4
+            ]
+          }
+        },
+        "layer_first": {
+          "params": 56,
+          "flops_forward": 2304,
+          "inputs": {
+            "adj": [
+              2,
+              6,
+              6
+            ],
+            "x": [
+              2,
+              6,
+              3
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              6,
+              8
+            ]
+          }
+        },
+        "layer_rest": {
+          "params": 136,
+          "flops_forward": 4224,
+          "inputs": {
+            "adj": [
+              2,
+              6,
+              6
+            ],
+            "h": [
+              2,
+              6,
+              8
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              6,
+              8
+            ]
+          }
+        },
+        "readout": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "h": [
+              2,
+              6,
+              8
+            ]
+          },
+          "outputs": {
+            "graph": [
+              2,
+              8
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 6656,
+        "params": 228
+      }
+    },
+    {
+      "name": "sample-1",
+      "kind": "sample",
+      "config": {
+        "B": 2,
+        "D": 3,
+        "F": 2,
+        "K": 4,
+        "N": 4,
+        "classes": 4,
+        "d_hidden": 3,
+        "d_in": 2,
+        "n_layers": 2
+      },
+      "blocks": {
+        "head": {
+          "params": 16,
+          "flops_forward": 48,
+          "inputs": {
+            "graph": [
+              2,
+              3
+            ]
+          },
+          "outputs": {
+            "logits": [
+              2,
+              4
+            ]
+          }
+        },
+        "layer_first": {
+          "params": 15,
+          "flops_forward": 384,
+          "inputs": {
+            "adj": [
+              2,
+              4,
+              4
+            ],
+            "x": [
+              2,
+              4,
+              2
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              4,
+              3
+            ]
+          }
+        },
+        "layer_rest": {
+          "params": 21,
+          "flops_forward": 480,
+          "inputs": {
+            "adj": [
+              2,
+              4,
+              4
+            ],
+            "h": [
+              2,
+              4,
+              3
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              4,
+              3
+            ]
+          }
+        },
+        "readout": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "h": [
+              2,
+              4,
+              3
+            ]
+          },
+          "outputs": {
+            "graph": [
+              2,
+              3
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 912,
+        "params": 52
+      }
+    },
+    {
+      "name": "sample-2",
+      "kind": "sample",
+      "config": {
+        "B": 2,
+        "D": 5,
+        "F": 5,
+        "K": 2,
+        "N": 4,
+        "classes": 2,
+        "d_hidden": 5,
+        "d_in": 5,
+        "n_layers": 2
+      },
+      "blocks": {
+        "head": {
+          "params": 12,
+          "flops_forward": 40,
+          "inputs": {
+            "graph": [
+              2,
+              5
+            ]
+          },
+          "outputs": {
+            "logits": [
+              2,
+              2
+            ]
+          }
+        },
+        "layer_first": {
+          "params": 55,
+          "flops_forward": 1120,
+          "inputs": {
+            "adj": [
+              2,
+              4,
+              4
+            ],
+            "x": [
+              2,
+              4,
+              5
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              4,
+              5
+            ]
+          }
+        },
+        "layer_rest": {
+          "params": 55,
+          "flops_forward": 1120,
+          "inputs": {
+            "adj": [
+              2,
+              4,
+              4
+            ],
+            "h": [
+              2,
+              4,
+              5
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              4,
+              5
+            ]
+          }
+        },
+        "readout": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "h": [
+              2,
+              4,
+              5
+            ]
+          },
+          "outputs": {
+            "graph": [
+              2,
+              5
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 2280,
+        "params": 122
+      }
+    },
+    {
+      "name": "cora",
+      "kind": "named",
+      "config": {
+        "B": 1,
+        "D": 16,
+        "F": 1433,
+        "K": 7,
+        "N": 2708,
+        "classes": 7,
+        "d_hidden": 16,
+        "d_in": 1433,
+        "n_layers": 2
+      },
+      "blocks": {
+        "head": {
+          "params": 119,
+          "flops_forward": 224,
+          "inputs": {
+            "graph": [
+              1,
+              16
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1,
+              7
+            ]
+          }
+        },
+        "layer_first": {
+          "params": 45872,
+          "flops_forward": 483020544,
+          "inputs": {
+            "adj": [
+              1,
+              2708,
+              2708
+            ],
+            "x": [
+              1,
+              2708,
+              1433
+            ]
+          },
+          "outputs": {
+            "h": [
+              1,
+              2708,
+              16
+            ]
+          }
+        },
+        "layer_rest": {
+          "params": 528,
+          "flops_forward": 237437440,
+          "inputs": {
+            "adj": [
+              1,
+              2708,
+              2708
+            ],
+            "h": [
+              1,
+              2708,
+              16
+            ]
+          },
+          "outputs": {
+            "h": [
+              1,
+              2708,
+              16
+            ]
+          }
+        },
+        "readout": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "h": [
+              1,
+              2708,
+              16
+            ]
+          },
+          "outputs": {
+            "graph": [
+              1,
+              16
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 720458208,
+        "params": 46519
+      }
+    },
+    {
+      "name": "citeseer",
+      "kind": "named",
+      "config": {
+        "B": 1,
+        "D": 16,
+        "F": 3703,
+        "K": 6,
+        "N": 3327,
+        "classes": 6,
+        "d_hidden": 16,
+        "d_in": 3703,
+        "n_layers": 2
+      },
+      "blocks": {
+        "head": {
+          "params": 102,
+          "flops_forward": 192,
+          "inputs": {
+            "graph": [
+              1,
+              16
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1,
+              6
+            ]
+          }
+        },
+        "layer_first": {
+          "params": 118512,
+          "flops_forward": 1142678112,
+          "inputs": {
+            "adj": [
+              1,
+              3327,
+              3327
+            ],
+            "x": [
+              1,
+              3327,
+              3703
+            ]
+          },
+          "outputs": {
+            "h": [
+              1,
+              3327,
+              16
+            ]
+          }
+        },
+        "layer_rest": {
+          "params": 528,
+          "flops_forward": 357612576,
+          "inputs": {
+            "adj": [
+              1,
+              3327,
+              3327
+            ],
+            "h": [
+              1,
+              3327,
+              16
+            ]
+          },
+          "outputs": {
+            "h": [
+              1,
+              3327,
+              16
+            ]
+          }
+        },
+        "readout": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "h": [
+              1,
+              3327,
+              16
+            ]
+          },
+          "outputs": {
+            "graph": [
+              1,
+              16
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 1500290880,
+        "params": 119142
+      }
+    }
+  ]
+}
