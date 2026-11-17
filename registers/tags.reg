@@ -5971,3 +5971,6 @@ SZY8XC korthikanti-2022-reducing-activation-recomputation
 88YEPR randaugment
 ETESVP miyato-2018-spectral-normalization
 5PC0VR weight-normalization
+X29NFT critical-batch-size
+4P2MGS shallue-2019-measuring-effects-data-parallelism
+03N66Q smith-2018-bayesian-perspective-generalization-sgd

@@ -1,5 +1,5 @@
 ---
-tag: NEW-critical-batch-size
+tag: X29NFT
 kind: concept
 slug: critical-batch-size
 name: Critical batch size
