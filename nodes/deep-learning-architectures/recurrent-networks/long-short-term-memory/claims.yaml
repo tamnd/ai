@@ -1,0 +1,262 @@
+# The claims of the long short-term memory page (spec 07). The build computes the labels.
+- id: c-applications
+  type: attributive
+  text: "LSTMs have been used to advance the state of the art for handwriting recognition and generation, language modeling and translation, and acoustic modeling of speech."
+  evidence:
+    - {work: "greff-2017-lstm-search-space-odyssey", role: original, locator: "p. 1", stance: for}
+
+- id: c-h-bounded
+  type: mathematical
+  text: "Every entry of the hidden state h_t = o_t ⊙ tanh(c_t) of an LSTM is in (-1, 1), while the cell state c_t is not bounded."
+  assumes: ["the output gate is a logistic sigmoid, with values in (0, 1)", "the output activation is tanh"]
+  derivation: "node.md#components"
+
+- id: c-torch-equations
+  type: definitional
+  text: "torch.nn.LSTM computes the input, forget, cell and output gates i_t, f_t, g_t, o_t from x_t and h_{t-1} with the sigmoid and tanh, then c_t = f_t ⊙ c_{t-1} + i_t ⊙ g_t and h_t = o_t ⊙ tanh(c_t), with two bias vectors b_ih and b_hh."
+  evidence:
+    - {work: "pytorch-torch-nn-lstm", role: original, locator: "the title page", stance: for}
+
+- id: c-vanilla-peepholes
+  type: definitional
+  text: "The vanilla LSTM layer has input weights, recurrent weights, bias weights and peephole weights p_i, p_f, p_o, which connect the cell to the input gate, the forget gate and the output gate."
+  evidence:
+    - {work: "greff-2017-lstm-search-space-odyssey", role: original, locator: "p. 2", stance: for}
+
+- id: c-copy
+  type: mathematical
+  text: "If the forget gate is 1 and the input gate is 0 at every step, the LSTM cell update gives c_t = c_0 exactly, whatever the inputs."
+  assumes: ["the cell update c_t = f_t ⊙ c_{t-1} + i_t ⊙ g_t", "f_t = 1 and i_t = 0 for every t"]
+  derivation: "node.md#components"
+
+- id: c-param-count
+  type: mathematical
+  text: "An LSTM layer with input size d_x, hidden size d_h and one bias vector per gate has 4 d_h (d_x + d_h + 1) parameters."
+  assumes: ["four gates, each with input weights, recurrent weights and one bias", "no peephole connections and no projection"]
+  derivation: "node.md#shapes-and-parameters"
+
+- id: c-flops
+  type: mathematical
+  text: "The matrix products of one LSTM step cost 8 d_h (d_x + d_h) FLOPs per sequence, counting a multiply-add as 2."
+  assumes: ["the four gates are computed by dense matrix products", "the activations and elementwise products are not counted"]
+  derivation: "node.md#computation-and-cost"
+
+- id: c-sequential
+  type: attributive
+  text: "Recurrent models generate a sequence of hidden states h_t as a function of the previous hidden state h_{t-1} and the input for position t, and this inherently sequential nature precludes parallelization within training examples."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 1", stance: for}
+
+- id: c-full-gradient
+  type: historical
+  text: "Graves and Schmidhuber presented full backpropagation through time (BPTT) training for LSTM networks, and with full BPTT the LSTM gradients could be checked using finite differences."
+  evidence:
+    - {work: "greff-2017-lstm-search-space-odyssey", role: original, locator: "p. 3", stance: for}
+
+- id: c-greff-hyperparameters
+  type: empirical
+  text: "In the study of Greff et al., the learning rate was the most crucial hyperparameter, followed by the network size, momentum was unimportant in their setting of online gradient descent, and the hyperparameters can be treated as approximately independent, so the learning rate can be tuned first using a fairly small network."
+  scope:
+    models: "LSTM variants with 20 to 200 blocks per hidden layer"
+    data: [timit, iam-online, jsb-chorales]
+    scale: "unknown"
+    setting: "random search over hyperparameters, online gradient descent with momentum, fANOVA analysis"
+  evidence:
+    - {work: "greff-2017-lstm-search-space-odyssey", role: original, locator: "p. 10", stance: for}
+
+- id: c-rnn-vanish
+  type: mathematical
+  text: "In a recurrent network whose activation has a derivative bounded by γ, with γ = 1 for tanh and γ = 1/4 for the sigmoid, if the recurrent weight matrix is small enough that each Jacobian factor has norm at most η < 1, the long term contributions to the gradient go to 0 exponentially fast with t - k."
+  assumes: ["h_t = σ(W_rec h_{t-1} + W_in x_t + b)", "|σ'| ≤ γ", "the norm of each Jacobian factor W_rec^T diag(σ') is at most η < 1"]
+  derivation: "node.md#the-gradient-through-the-cell"
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "Section 2.1", stance: for}
+
+- id: c-exploding
+  type: definitional
+  text: "As introduced in Bengio et al. (1994), the exploding gradients problem refers to the large increase in the norm of the gradient during training, caused by the explosion of the long term components, which can grow exponentially more than short term ones."
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "Section 2", stance: for}
+
+- id: c-cell-jacobian
+  type: mathematical
+  text: "In an LSTM, the Jacobian of the cell state c_t with respect to c_{t-1} is diag(f_t) plus terms that pass through h_{t-1} and the recurrent weights U, so it equals diag(f_t) when U = 0, and along the cell path the gradient is multiplied only by products of forget gates."
+  assumes: ["the cell update c_t = f_t ⊙ c_{t-1} + i_t ⊙ g_t", "the gates are functions of x_t and h_{t-1} only (no peepholes)"]
+  derivation: "node.md#the-gradient-through-the-cell"
+
+- id: c-greff-setup
+  type: historical
+  text: "Greff et al. analysed eight LSTM variants on three representative tasks, speech recognition, handwriting recognition and polyphonic music modeling, optimized the hyperparameters of each variant separately using random search, and summarized 5400 experimental runs of about 15 years of CPU time."
+  evidence:
+    - {work: "greff-2017-lstm-search-space-odyssey", role: original, locator: "p. 1", stance: for}
+
+- id: c-greff-none-better
+  type: empirical
+  text: "None of the eight LSTM variants studied by Greff et al. improved upon the standard LSTM architecture significantly, and the forget gate and the output activation function were its most critical components."
+  scope:
+    models: "LSTM variants with 20 to 200 blocks per hidden layer"
+    data: [timit, iam-online, jsb-chorales]
+    scale: "unknown"
+    setting: "speech recognition, handwriting recognition and polyphonic music modeling, hyperparameters tuned by random search for each variant"
+  evidence:
+    - {work: "greff-2017-lstm-search-space-odyssey", role: original, locator: "p. 1", stance: for}
+
+- id: c-greff-noaf-nfg
+  type: empirical
+  text: "Removing the output activation function (NOAF) or the forget gate (NFG) significantly hurt performance on all three datasets."
+  scope:
+    models: "LSTM variants with 20 to 200 blocks per hidden layer"
+    data: [timit, iam-online, jsb-chorales]
+    scale: "unknown"
+    setting: "hyperparameters tuned by random search for each variant"
+  evidence:
+    - {work: "greff-2017-lstm-search-space-odyssey", role: original, locator: "p. 6", stance: for}
+
+- id: c-greff-cifg-np
+  type: empirical
+  text: "Coupling the input and forget gates (CIFG) or removing peephole connections (NP) simplified LSTMs without significantly decreasing performance, and these two variants reduce the number of parameters and the computational cost of the LSTM."
+  scope:
+    models: "LSTM variants with 20 to 200 blocks per hidden layer"
+    data: [timit, iam-online, jsb-chorales]
+    scale: "unknown"
+    setting: "hyperparameters tuned by random search for each variant"
+  evidence:
+    - {work: "greff-2017-lstm-search-space-odyssey", role: original, locator: "p. 10", stance: for}
+
+- id: c-limit-counting
+  type: attributive
+  text: "All gradient-based approaches, LSTM among them, suffer from a practical inability to precisely count discrete time steps, so if it makes a difference whether a signal occurred 99 or 100 steps ago, an additional counting mechanism seems necessary."
+  evidence:
+    - {work: "hochreiter-1997-long-short-term-memory", role: original, locator: "Section 6", stance: for}
+
+- id: c-greff-unbounded
+  type: attributive
+  text: "Greff et al. hypothesize that the output activation function is needed to prevent the unbounded cell state from propagating through the network and destabilizing learning."
+  evidence:
+    - {work: "greff-2017-lstm-search-space-odyssey", role: original, locator: "p. 10", stance: for}
+
+- id: c-peephole
+  type: definitional
+  text: "In traditional LSTM a gate observes only the cell output, which is close to zero while the output gate is closed; weighted peephole connections from the CEC to the gates of the same memory block allow all gates to inspect the current cell state even when the output gate is closed."
+  evidence:
+    - {work: "gers-2002-learning-precise-timing-lstm", role: original, locator: "Section 3", stance: for}
+
+- id: c-peephole-timing
+  type: attributive
+  text: "LSTM augmented by peephole connections from its internal cells to its multiplicative gates learned the distinction between sequences of spikes spaced either 50 or 49 time steps apart."
+  evidence:
+    - {work: "gers-2002-learning-precise-timing-lstm", role: original, locator: "the abstract", stance: for}
+
+- id: c-gru
+  type: definitional
+  text: "Cho et al. propose a hidden unit motivated by the LSTM unit but much simpler to compute and implement, with a reset gate r and an update gate z computed by the logistic sigmoid, and the activation h_j = z_j h_{t-1} + (1 - z_j) h̃_j."
+  evidence:
+    - {work: "cho-2014-learning-phrase-representations-rnn", role: original, locator: "Section 2.3", stance: for}
+
+- id: c-gru-coupled
+  type: definitional
+  text: "The Gated Recurrent Unit (GRU) of Cho et al. is a simplified variant of the LSTM that uses neither peephole connections nor output activation functions and couples the input and the forget gate into an update gate."
+  evidence:
+    - {work: "greff-2017-lstm-search-space-odyssey", role: original, locator: "p. 3", stance: for}
+
+- id: c-chung-mixed
+  type: attributive
+  text: "Chung et al. performed an initial comparison between GRU and vanilla LSTM and reported mixed results."
+  evidence:
+    - {work: "greff-2017-lstm-search-space-odyssey", role: original, locator: "p. 3", stance: for}
+
+- id: c-blow-up-or-vanish
+  type: historical
+  text: "With BPTT or RTRL, error signals going backwards in time tend to either blow up or vanish, because the temporal evolution of the backpropagated error exponentially depends on the size of the weights (Hochreiter 1991)."
+  evidence:
+    - {work: "hochreiter-1997-long-short-term-memory", role: original, locator: "Section 1", stance: for}
+
+- id: c-sigmoid-decay
+  type: attributive
+  text: "With conventional logistic sigmoid activation functions, whose derivative has a maximal value of 0.25, the error tends to vanish as long as the weights have absolute values below 4.0."
+  evidence:
+    - {work: "hochreiter-1997-long-short-term-memory", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-bengio-1994
+  type: historical
+  text: "Hochreiter and Schmidhuber note that a very similar, more recent analysis was presented by Bengio et al. 1994."
+  evidence:
+    - {work: "hochreiter-1997-long-short-term-memory", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-cec
+  type: definitional
+  text: "To enforce constant error through a self-connected unit j, Hochreiter and Schmidhuber require the product f_j'(net_j(t)) w_jj to equal one, ensured by the identity function f_j and a self-connection weight w_jj of one, and call this the constant error carrousel (CEC)."
+  evidence:
+    - {work: "hochreiter-1997-long-short-term-memory", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-gates-1997
+  type: definitional
+  text: "LSTM extends the constant error carrousel with a multiplicative input gate unit, which protects the memory contents from perturbation by irrelevant inputs, and a multiplicative output gate unit, which protects other units from perturbation by currently irrelevant memory contents."
+  evidence:
+    - {work: "hochreiter-1997-long-short-term-memory", role: original, locator: "Section 4", stance: for}
+
+- id: c-state-1997
+  type: definitional
+  text: "In the original LSTM the internal state of memory cell c_j is s_cj(0) = 0 and s_cj(t) = s_cj(t - 1) + y_inj(t) g(net_cj(t)) for t > 0."
+  evidence:
+    - {work: "hochreiter-1997-long-short-term-memory", role: original, locator: "Section 4", stance: for}
+
+- id: c-truncated
+  type: attributive
+  text: "Once an error signal arrives at a memory cell output, it is scaled by the output gate activation, then within the memory cell's CEC it can go back without ever being scaled, and it is truncated after it leaves the memory cell through the input gate."
+  evidence:
+    - {work: "hochreiter-1997-long-short-term-memory", role: original, locator: "Section 4", stance: for}
+
+- id: c-complexity
+  type: attributive
+  text: "LSTM has an update complexity of O(W) per time step, where W is the number of weights, the same as BPTT for fully recurrent nets, and unlike full BPTT, LSTM is local in space and time."
+  evidence:
+    - {work: "hochreiter-1997-long-short-term-memory", role: original, locator: "Section 4", stance: for}
+
+- id: c-drift
+  type: attributive
+  text: "If the inputs of a memory cell are mostly positive or mostly negative, its internal state will tend to drift away over time, h' will adopt very small values and the gradient will vanish; the remedy at the beginning of learning is to initially bias the input gate towards zero."
+  evidence:
+    - {work: "hochreiter-1997-long-short-term-memory", role: original, locator: "Section 4", stance: for}
+
+- id: c-output-bias
+  type: attributive
+  text: "Against the abuse problem, in which the network abuses memory cells as bias cells at the beginning of learning, each output gate gets a negative initial bias."
+  evidence:
+    - {work: "hochreiter-1997-long-short-term-memory", role: original, locator: "Section 4", stance: for}
+
+- id: c-1000-steps
+  type: attributive
+  text: "Truncating the gradient where this does not do harm, LSTM can learn to bridge minimal time lags in excess of 1000 discrete time steps."
+  evidence:
+    - {work: "hochreiter-1997-long-short-term-memory", role: original, locator: "the abstract", stance: for}
+
+- id: c-tech-report-1995
+  type: historical
+  text: "Long Short Term Memory by Hochreiter and Schmidhuber appeared as Technical Report FKI-207-95 of the Technische Universität München in 1995, and in Neural Computation 9(8) in 1997."
+  evidence:
+    - {work: "greff-2017-lstm-search-space-odyssey", role: original, locator: "p. 10", stance: for}
+
+- id: c-history-1997
+  type: historical
+  text: "The initial version of the LSTM block included cells, input and output gates, but no forget gate and no peephole connections, and only the gradient of the cell was propagated back through time."
+  evidence:
+    - {work: "greff-2017-lstm-search-space-odyssey", role: original, locator: "p. 3", stance: for}
+
+- id: c-forget-gate
+  type: historical
+  text: "The first paper to suggest a modification of the LSTM architecture introduced the forget gate, enabling the LSTM to reset its own state, which allowed learning of continual tasks such as embedded Reber grammar."
+  evidence:
+    - {work: "greff-2017-lstm-search-space-odyssey", role: original, locator: "p. 3", stance: for}
+
+- id: c-forget-reset
+  type: definitional
+  text: "The forget gate learns for how long to retain the information and, once it is outdated, to erase it by resetting the cell state to zero, which prevents the cell state from growing to infinity."
+  evidence:
+    - {work: "gers-2002-learning-precise-timing-lstm", role: original, locator: "Section 2.1", stance: for}
+
+- id: c-torch-dropout
+  type: definitional
+  text: "In a multilayer torch.nn.LSTM, the input of the l-th layer (l ≥ 2) is the hidden state of the previous layer multiplied by dropout, where each δ is a Bernoulli random variable which is 0 with probability dropout."
+  evidence:
+    - {work: "pytorch-torch-nn-lstm", role: original, locator: "the title page", stance: for}

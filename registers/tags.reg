@@ -5984,3 +5984,9 @@ P050SC lee-2019-wide-networks-linear-models
 0V8E5T rotary-position-embedding
 VA6VZF luong-2015-effective-approaches
 ND4EXH multi-head-attention
+06KCYK cho-2014-learning-phrase-representations-rnn
+S5GXC7 gers-2002-learning-precise-timing-lstm
+9Q9XAP greff-2017-lstm-search-space-odyssey
+72NP9C hochreiter-1997-long-short-term-memory
+YVW8D3 long-short-term-memory
+4EAE2K pytorch-torch-nn-lstm
