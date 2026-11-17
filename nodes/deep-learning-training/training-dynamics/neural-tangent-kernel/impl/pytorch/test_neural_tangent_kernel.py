@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/neural-tangent-kernel/ (ai://NEW-neural-tangent-kernel).
+# Part of https://ai.tamnd.com/neural-tangent-kernel/ (ai://3SJCNH).
 """Tests of the PyTorch version: the worked example, autograd against the hand Jacobian, the limit and the dynamics."""
 
 import math

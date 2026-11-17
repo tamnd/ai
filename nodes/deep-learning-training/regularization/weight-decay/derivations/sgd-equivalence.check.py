@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/weight-decay/ (ai://NEW-weight-decay).
+# Part of https://ai.tamnd.com/weight-decay/ (ai://DD5QVM).
 # Check of derivations/sgd-equivalence.md: for plain SGD an L2 coefficient lam is a decay of delta = lr * lam per
 # step; with no gradient the weights decay geometrically; with heavy-ball momentum the two forms leave step 1 equal
 # and differ from step 2 by lr * mu * lam * theta_0; their fixed points agree when delta = lr * lam / (1 - mu).

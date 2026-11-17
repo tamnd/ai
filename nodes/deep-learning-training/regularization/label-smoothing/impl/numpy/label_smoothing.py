@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/label-smoothing/ (ai://NEW-label-smoothing).
+# Part of https://ai.tamnd.com/label-smoothing/ (ai://98TJG9).
 """Label smoothing in NumPy.
 
 smooth_labels builds the target q' = (1 - eps) one_hot(y) + eps u of eq-smoothed-target, with u uniform unless a prior

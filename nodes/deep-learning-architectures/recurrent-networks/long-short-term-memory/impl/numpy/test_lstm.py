@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/long-short-term-memory/ (ai://NEW-long-short-term-memory).
+# Part of https://ai.tamnd.com/long-short-term-memory/ (ai://YVW8D3).
 """Tests of the NumPy reference: the worked example, the shape contract, the shared fixture and the properties."""
 
 import json

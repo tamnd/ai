@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/speculative-decoding/ (ai://NEW-speculative-decoding).
+# Part of https://ai.tamnd.com/speculative-decoding/ (ai://JKWQF4).
 # Check of derivations/expected-tokens.md: under i.i.d. acceptance the tokens per run are a geometric count capped at
 # gamma + 1 with mean (1 - alpha^(gamma+1)) / (1 - alpha), bounded by gamma + 1 and 1 / (1 - alpha); the walltime and
 # arithmetic factors reproduce Tables 1 and 4 of Leviathan et al.

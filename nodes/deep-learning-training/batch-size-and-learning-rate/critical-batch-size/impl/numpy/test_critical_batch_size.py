@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/critical-batch-size/ (ai://NEW-critical-batch-size).
+# Part of https://ai.tamnd.com/critical-batch-size/ (ai://X29NFT).
 """Tests of the NumPy reference: the per-example and two-batch noise-scale estimators against known moments and for
 bias by Monte Carlo; the moving-average ratio; the one-step gain of a quadratic, its optimum and its regimes; the
 trade-off hyperbola, its fit and the factor of two at B_crit; one-run conversion to S_min and E_min; and the Kaplan

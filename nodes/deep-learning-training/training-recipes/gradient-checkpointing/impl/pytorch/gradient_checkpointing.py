@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/gradient-checkpointing/ (ai://NEW-gradient-checkpointing).
+# Part of https://ai.tamnd.com/gradient-checkpointing/ (ai://C4TQW1).
 """Gradient checkpointing on a chain of tanh layers, the PyTorch version.
 
 The chain is eq-layer of the page. With segments = k, each of the k segments runs under torch.utils.checkpoint, which

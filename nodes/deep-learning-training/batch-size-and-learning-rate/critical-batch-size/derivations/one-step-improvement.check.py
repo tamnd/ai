@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/critical-batch-size/ (ai://NEW-critical-batch-size).
+# Part of https://ai.tamnd.com/critical-batch-size/ (ai://X29NFT).
 # Check of derivations/one-step-improvement.md. A finite data set of N examples has the per-example losses
 # L_i(theta) = (theta - c_i).H(theta - c_i) / 2, so the full loss is an exact quadratic. We take real SGD steps
 # theta - eps * G_B, where G_B is the mean gradient of B examples drawn with replacement, and average the loss after the

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/grokking/ (ai://NEW-grokking).
+# Part of https://ai.tamnd.com/grokking/ (ai://52PVZH).
 # Check of derivations/weight-decay-shrinkage.md: AdamW with zero gradient from zero moments gives
 # theta_t = (1 - lr * wd)^t theta_0; (1 - x)^t <= exp(-x t); the steps to shrink the norm from w0 to wc are
 # ceil(ln(w0/wc) / -ln(1 - x)) <= ceil(ln(w0/wc) / x); at lr = 1e-3 and wd = 1, 1,000 steps give 0.3677 and 693 halve.

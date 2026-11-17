@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/neural-tangent-kernel/ (ai://NEW-neural-tangent-kernel).
+# Part of https://ai.tamnd.com/neural-tangent-kernel/ (ai://3SJCNH).
 """Tests of the NumPy reference: the worked example, the Jacobian, the limit kernel, the flow and the lazy regime."""
 
 import numpy as np

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/edge-of-stability/ (ai://NEW-edge-of-stability).
+# Part of https://ai.tamnd.com/edge-of-stability/ (ai://17Q1PD).
 """The edge of stability in PyTorch: the sharpness of the training loss by power iteration on Hessian-vector
 products from autograd, full-batch gradient descent that logs it, and gradient descent on a quadratic.
 

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/layer-normalization/ (ai://NEW-layer-normalization).
+# Part of https://ai.tamnd.com/layer-normalization/ (ai://RA5R92).
 """Layer normalization and RMSNorm as pure functions, the JAX reference.
 
 The statistics are taken over the last len(shape) axes, separately for each position of the leading axes. layer_norm

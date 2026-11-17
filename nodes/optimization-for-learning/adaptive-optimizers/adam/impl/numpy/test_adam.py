@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/adam/ (ai://NEW-adam).
+# Part of https://ai.tamnd.com/adam/ (ai://88GHGT).
 """Tests of the NumPy reference: the worked example, the fixture shared with the PyTorch and JAX tests, the bias
 correction, the bound on the step, the invariance to the scale of the gradients, epsilon hat, weight decay, AMSGrad,
 the counterexample of Reddi et al., and agreement with torch.optim.Adam and torch.optim.AdamW when PyTorch is

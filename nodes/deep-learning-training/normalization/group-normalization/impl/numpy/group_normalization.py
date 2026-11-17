@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/group-normalization/ (ai://NEW-group-normalization).
+# Part of https://ai.tamnd.com/group-normalization/ (ai://QFEJMP).
 """Group normalization, the NumPy reference.
 
 The input has the layout (N, C, *S): a batch axis, a channel axis and any number of spatial axes, (H, W) for images

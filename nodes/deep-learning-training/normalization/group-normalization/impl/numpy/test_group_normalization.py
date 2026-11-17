@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/group-normalization/ (ai://NEW-group-normalization).
+# Part of https://ai.tamnd.com/group-normalization/ (ai://QFEJMP).
 """Tests of the NumPy reference: the worked example, a loop over the sets of the definitions, the special cases
 G = 1 (layer normalization) and G = C (instance normalization), independence from the batch, the group moments, the
 gradient against finite differences, and agreement with torch.nn.functional.group_norm when PyTorch is installed."""

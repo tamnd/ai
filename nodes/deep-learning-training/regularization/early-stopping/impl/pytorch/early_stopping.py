@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/early-stopping/ (ai://NEW-early-stopping).
+# Part of https://ai.tamnd.com/early-stopping/ (ai://VR3ZRP).
 """Early stopping, the PyTorch reference.
 
 The same functions as the NumPy reference, on tensors: the filters of gradient descent, gradient flow and ridge on

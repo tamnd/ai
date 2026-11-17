@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/cosine-learning-rate-schedule/ (ai://NEW-cosine-learning-rate-schedule).
+# Part of https://ai.tamnd.com/cosine-learning-rate-schedule/ (ai://FG7K47).
 # Check of derivations/mean-rate.md: the mean of one cosine cycle is (eta_max + eta_min) / 2 by integration and by the
 # sum over the T + 1 points t = 0..T; over the T points t = 0..T-1 it is larger by (eta_max - eta_min) / (2 T).
 import numpy as np

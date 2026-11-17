@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/critical-batch-size/ (ai://NEW-critical-batch-size).
+# Part of https://ai.tamnd.com/critical-batch-size/ (ai://X29NFT).
 # Check of derivations/unbiased-norm-estimators.md. Per-example gradients come from a finite, skewed population; a
 # batch draws from it with replacement. With B_small < B_big,
 #   G2 = (B_big |G_big|^2 - B_small |G_small|^2) / (B_big - B_small),

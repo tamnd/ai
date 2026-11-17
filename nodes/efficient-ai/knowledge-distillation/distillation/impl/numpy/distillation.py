@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/distillation/ (ai://NEW-distillation).
+# Part of https://ai.tamnd.com/distillation/ (ai://JGNGHC).
 """Knowledge distillation in NumPy.
 
 soft_targets is the softmax at temperature T of eq-softmax-temperature. distillation_loss is eq-kd-loss: alpha times

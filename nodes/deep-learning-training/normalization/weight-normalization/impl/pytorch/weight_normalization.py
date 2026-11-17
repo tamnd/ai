@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/weight-normalization/ (ai://NEW-weight-normalization).
+# Part of https://ai.tamnd.com/weight-normalization/ (ai://5PC0VR).
 """Weight normalization as a torch.nn.Module, the PyTorch reference.
 
 WeightNormLinear keeps a direction v of shape (out, in), a length g of shape (out,) and a bias b, and computes

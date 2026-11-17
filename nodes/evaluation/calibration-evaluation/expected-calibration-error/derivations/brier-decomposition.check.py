@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/expected-calibration-error/ (ai://NEW-expected-calibration-error).
+# Part of https://ai.tamnd.com/expected-calibration-error/ (ai://01R1CF).
 # Check of derivations/brier-decomposition.md, in exact rational arithmetic: the population identity
 # E[(C - A)^2] = E[(C - r(C))^2] + E[r(C)(1 - r(C))]; the exact binned identity of the sample top-label Brier score;
 # and ECE <= RMS calibration error, both with the same bins.

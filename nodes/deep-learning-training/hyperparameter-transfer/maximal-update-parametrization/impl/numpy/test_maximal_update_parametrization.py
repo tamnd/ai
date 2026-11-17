@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/maximal-update-parametrization/ (ai://NEW-maximal-update-parametrization).
+# Part of https://ai.tamnd.com/maximal-update-parametrization/ (ai://4VJECR).
 """Tests of the NumPy reference: the per-layer initialization std and learning rates of muP for SGD and Adam against
 Table 3 of Yang et al. (2022) with the base-width constants of their Eq. 4, SP for contrast, the agreement of the two
 at the base width, the 1/d attention scale, the gradients and the SGD and Adam steps of the MLP, the feature-update

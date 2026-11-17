@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/sharpness-aware-minimization/ (ai://NEW-sharpness-aware-minimization).
+# Part of https://ai.tamnd.com/sharpness-aware-minimization/ (ai://8BNWST).
 """Sharpness-aware minimization (SAM) in NumPy.
 
 sam_perturbation is eq-eps-hat, the dual-norm solution of the linearized inner maximization, over one array or over a

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/edge-of-stability/ (ai://NEW-edge-of-stability).
+# Part of https://ai.tamnd.com/edge-of-stability/ (ai://17Q1PD).
 # Check of derivations/self-stabilization-ode.md: along X' = X Y, Y' = alpha - beta X^2 / 2 the quantity
 # g = h(beta X^2 / (2 alpha)) + Y^2 / alpha with h(z) = z - log z - 1 is conserved; g >= 0 with equality only at the
 # fixed point (sqrt(2 alpha / beta), 0); and Y changes sign along every other orbit.

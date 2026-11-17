@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/multi-head-attention/ (ai://NEW-multi-head-attention).
+# Part of https://ai.tamnd.com/multi-head-attention/ (ai://ND4EXH).
 # Check of derivations/scale.md: the variance of q.k is d_k and the scaled score has variance 1; the softmax
 # Jacobian is diag(a) - a a^T and its entries are at most (n - 1) exp(-Delta) when one score leads by Delta.
 import numpy as np

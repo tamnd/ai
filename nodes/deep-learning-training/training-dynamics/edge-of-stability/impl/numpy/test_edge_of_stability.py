@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/edge-of-stability/ (ai://NEW-edge-of-stability).
+# Part of https://ai.tamnd.com/edge-of-stability/ (ai://17Q1PD).
 """Tests of the NumPy reference: gradient descent on a quadratic converges just below 2 / lambda_max and diverges
 just above, with each eigen-coordinate multiplied by 1 - eta lambda_i; the momentum thresholds; the central
 difference HVP and power iteration against eigvalsh; the hand-written gradient of the tanh MLP against finite

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/cosine-learning-rate-schedule/ (ai://NEW-cosine-learning-rate-schedule).
+# Part of https://ai.tamnd.com/cosine-learning-rate-schedule/ (ai://FG7K47).
 """Learning-rate schedules, the NumPy reference.
 
 Each schedule is a pure function of the step t (from 0) and returns one learning rate. step_decay is eq-step,

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/sparse-autoencoders/ (ai://NEW-sparse-autoencoders).
+# Part of https://ai.tamnd.com/sparse-autoencoders/ (ai://ZTPNXN).
 # Check of derivations/topk-l0.md: ReLU(TopK(a)) has at most k nonzeros, is a nearest nonnegative k-sparse vector to a,
 # and for an orthonormal decoder W with encoder W^T it is the best nonnegative k-sparse code of x.
 import itertools

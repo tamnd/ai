@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/byte-pair-encoding/ (ai://NEW-byte-pair-encoding).
+# Part of https://ai.tamnd.com/byte-pair-encoding/ (ai://ZRQW82).
 """Numeric check of encode-reproduces: replaying the learned merges on a training word gives its training
 segmentation, priority encoding equals sequential encoding when every merge result is new, and the two
 counterexamples where the conditions fail."""

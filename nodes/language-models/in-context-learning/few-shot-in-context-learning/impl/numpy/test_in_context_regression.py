@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/few-shot-in-context-learning/ (ai://NEW-few-shot-in-context-learning).
+# Part of https://ai.tamnd.com/few-shot-in-context-learning/ (ai://JNEP9D).
 """Tests of the NumPy reference: the worked example of the page, the matrices of the construction, one linear
 self-attention layer against one gradient step, stacked layers against several steps, the rescaling of the
 weights, the averaging estimate, ridge against the posterior mean, the lam -> 0 limit, and input validation."""

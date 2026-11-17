@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/cosine-learning-rate-schedule/ (ai://NEW-cosine-learning-rate-schedule).
+# Part of https://ai.tamnd.com/cosine-learning-rate-schedule/ (ai://FG7K47).
 # Check of derivations/slope.md: the slope of eq-cosine is -(pi / 2T)(eta_max - eta_min) sin(pi t / T), zero at both ends
 # and steepest at T / 2, where it is pi / 2 times the slope of a linear decay; near the ends it moves to second order.
 import numpy as np

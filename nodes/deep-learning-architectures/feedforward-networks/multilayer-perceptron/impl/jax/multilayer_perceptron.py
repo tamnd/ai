@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/multilayer-perceptron/ (ai://NEW-multilayer-perceptron).
+# Part of https://ai.tamnd.com/multilayer-perceptron/ (ai://YA59M7).
 """The multilayer perceptron, the JAX reference: pure init and apply for eq-layer and eq-output, jax.grad for the backward pass.
 
 The parameter tree is {"W": [...], "b": [...]}, with W_l of shape (n_out, n_in), the tree of the NumPy reference.

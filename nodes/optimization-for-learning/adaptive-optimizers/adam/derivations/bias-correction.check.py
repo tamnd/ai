@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/adam/ (ai://NEW-adam).
+# Part of https://ai.tamnd.com/adam/ (ai://88GHGT).
 # Check of derivations/bias-correction.md: the moving averages unrolled, their expectations under stationary
 # gradients, the step of a constant gradient, the first step without the correction, and the efficient form with
 # epsilon hat.

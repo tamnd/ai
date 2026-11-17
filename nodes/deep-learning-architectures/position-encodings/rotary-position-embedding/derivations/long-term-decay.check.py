@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/rotary-position-embedding/ (ai://NEW-rotary-position-embedding).
+# Part of https://ai.tamnd.com/rotary-position-embedding/ (ai://0V8E5T).
 # Check of derivations/long-term-decay.md: the Abel identity, the bound on the score and the averages of |S_j|.
 import numpy as np
 

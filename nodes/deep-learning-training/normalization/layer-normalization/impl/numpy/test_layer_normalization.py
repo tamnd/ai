@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/layer-normalization/ (ai://NEW-layer-normalization).
+# Part of https://ai.tamnd.com/layer-normalization/ (ai://RA5R92).
 """Tests of the NumPy reference: the worked example, the gradients, the Jacobian, the invariances of Section 5 of Ba
 et al., independence from the batch, RMSNorm, the two placements in a residual block, and agreement with
 torch.nn.LayerNorm, torch.nn.RMSNorm and torch.nn.functional.group_norm when PyTorch is installed."""

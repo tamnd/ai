@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/rotary-position-embedding/ (ai://NEW-rotary-position-embedding).
+# Part of https://ai.tamnd.com/rotary-position-embedding/ (ai://0V8E5T).
 # Check of derivations/context-extension.md: position interpolation, the NTK-aware base, the NTK-by-parts ends,
 # the YaRN length-scaling trick and its recommended values.
 import numpy as np

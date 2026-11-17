@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/weight-decay/ (ai://NEW-weight-decay).
+# Part of https://ai.tamnd.com/weight-decay/ (ai://DD5QVM).
 """Tests of the PyTorch code: the shared fixture against torch.optim.SGD, agreement with torch.optim.SGD (weight_decay,
 momentum, dampening, Nesterov) and torch.optim.AdamW on a small model, the explicit penalty, the decay of torch.optim.AdamW
 per step, the parameter groups, and the scale invariance of a layer followed by batch normalization."""

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/group-normalization/ (ai://NEW-group-normalization).
+# Part of https://ai.tamnd.com/group-normalization/ (ai://QFEJMP).
 # Check of derivations/special-cases.md: group normalization with G = 1 is layer normalization over (C, H, W), with
 # G = C it is instance normalization over (H, W), and batch normalization of one example is instance normalization.
 import numpy as np
