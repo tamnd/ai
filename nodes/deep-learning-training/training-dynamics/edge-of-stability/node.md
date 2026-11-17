@@ -1,5 +1,5 @@
 ---
-tag: NEW-edge-of-stability
+tag: 17Q1PD
 kind: finding
 slug: edge-of-stability
 name: Edge of stability
