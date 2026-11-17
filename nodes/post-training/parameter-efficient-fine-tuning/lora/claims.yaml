@@ -1,0 +1,406 @@
+# The claims of the LoRA page (spec 07). The build computes the labels.
+
+# The method
+
+- id: c-lora
+  type: definitional
+  text: "LoRA freezes the pretrained weights and represents the update of a pretrained weight matrix W0 of size d by k with a low-rank decomposition W0 + BA, where B is d by r, A is r by k and the rank r is much smaller than min(d, k); only A and B are trained."
+  evidence:
+    - {work: "hu-2021-lora-low-rank-adaptation", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-init
+  type: definitional
+  text: "Hu et al. initialize A with random Gaussian values and B with zero, so that the update BA is zero at the beginning of training."
+  evidence:
+    - {work: "hu-2021-lora-low-rank-adaptation", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-scale
+  type: definitional
+  text: "The update is scaled by alpha / r, where alpha is a constant in r; Hu et al. set alpha to the first r they try and do not tune it, which reduces the need to retune hyperparameters when r changes."
+  evidence:
+    - {work: "hu-2021-lora-low-rank-adaptation", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-attention-only
+  type: definitional
+  text: "In their Transformer experiments Hu et al. adapt only the attention weights and freeze the MLP modules, treating each of Wq, Wk and Wv as a single d_model by d_model matrix."
+  evidence:
+    - {work: "hu-2021-lora-low-rank-adaptation", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-hypothesis
+  type: attributive
+  text: "Inspired by the finding of Aghajanyan et al. that pretrained language models have a low intrinsic dimension, Hu et al. hypothesize that the updates to the weights also have a low intrinsic rank during adaptation."
+  evidence:
+    - {work: "hu-2021-lora-low-rank-adaptation", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-generalizes-ft
+  type: attributive
+  text: "Hu et al. argue that applying LoRA to all weight matrices and training all biases roughly recovers the expressiveness of full fine-tuning when the rank r is set to the rank of the pretrained weight matrices."
+  evidence:
+    - {work: "hu-2021-lora-low-rank-adaptation", role: original, locator: "Section 4.1", stance: for}
+
+# Mathematics
+
+- id: c-zero-init-start
+  type: mathematical
+  text: "With B = 0 the update s B A is the zero matrix, so at the start of training the adapted layer computes the same function as the pretrained layer."
+  assumes: ["B is initialized to the zero matrix", "the scale s is finite"]
+  derivation: lora-gradients
+
+- id: c-merge
+  type: mathematical
+  text: "For every input x, W0 x + s B A x = (W0 + s B A) x, so a trained adapter can be merged into a single matrix of the shape of W0 that has the inference cost of the original layer, and subtracting s B A recovers W0."
+  assumes: ["the adapted layer is linear in its input", "exact arithmetic; in floating point the merge and the unmerge hold up to rounding"]
+  derivation: merge-and-rank
+
+- id: c-rank-bound
+  type: mathematical
+  text: "The update s B A has rank at most r, because the rank of a product is at most the rank of each factor and B has r columns."
+  assumes: ["B has r columns and A has r rows"]
+  derivation: merge-and-rank
+
+- id: c-count
+  type: mathematical
+  text: "An adapter of rank r on a d by k weight matrix has r(d + k) trainable entries, a fraction r(1/d + 1/k) of the dk entries of the matrix."
+  assumes: ["one adapter, a pair B of size d by r and A of size r by k, on a d by k matrix", "nothing else is trained"]
+  derivation: parameter-count
+
+- id: c-gpt3-counts
+  type: mathematical
+  text: "With adapters on Wq and Wv of all 96 layers of GPT-3 175B, where d_model = 12,288, the number of trainable parameters is 4,718,592 r: about 4.7M for r = 1, 18.9M for r = 4 and 37.7M for r = 8."
+  assumes: ["adapters on Wq and Wv of all 96 layers", "each adapted matrix is 12,288 by 12,288"]
+  derivation: parameter-count
+
+- id: c-checkpoint-size
+  type: mathematical
+  text: "The adapter of GPT-3 175B with r = 4 on Wq and Wv has 18,874,368 entries, which take 37,748,736 bytes, about 36 MiB, in FP16, about one in 9,300 of the 175 billion parameters."
+  assumes: ["adapters on Wq and Wv of all 96 layers with r = 4", "each adapted matrix is 12,288 by 12,288", "an FP16 entry takes 2 bytes"]
+  derivation: parameter-count
+
+- id: c-grads
+  type: mathematical
+  text: "For a layer Y = X W0^T + s X A^T B^T with output gradient G, the gradients are dL/dB = s G^T X A^T, dL/dA = s B^T G^T X and dL/dX = G (W0 + s B A)."
+  assumes: ["the layer is Y = X W0^T + 1 b0^T + s X A^T B^T", "the loss is a differentiable scalar function of Y", "W0 and b0 are constants"]
+  derivation: lora-gradients
+  evidence:
+    - {work: "hu-2021-lora-low-rank-adaptation", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-grad-projection
+  type: mathematical
+  text: "The adapter sees the gradient G_W = G^T X that full fine-tuning would give for the weight only through two products: G_W A^T for B and B^T G_W for A."
+  assumes: ["the layer is Y = X W0^T + 1 b0^T + s X A^T B^T", "the loss is a differentiable scalar function of Y"]
+  derivation: lora-gradients
+  evidence:
+    - {work: "hu-2021-lora-low-rank-adaptation", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-first-step
+  type: mathematical
+  text: "Because B = 0 at initialization, the gradient with respect to A is zero at the first step, so the first gradient step changes only B, and A starts to move from the second step on."
+  assumes: ["B is initialized to the zero matrix", "plain gradient descent, or any optimizer whose step is zero for a zero gradient at the first step"]
+  derivation: lora-gradients
+
+- id: c-double-quant
+  type: mathematical
+  text: "With a blocksize of 64, QLoRA's double quantization reduces the memory of quantization constants from 32/64 = 0.5 bits to 8/64 + 32/(64 x 256) = 0.127 bits per parameter, a reduction of 0.373 bits per parameter."
+  assumes: ["first-level constants are 32-bit, one per block of 64 weights", "second-level quantization stores them in 8 bits, with one 32-bit constant per block of 256 first-level constants"]
+  evidence:
+    - {work: "dettmers-2023-qlora", role: original, locator: "Section 3", stance: for}
+
+# Evidence
+
+- id: c-abstract-10000
+  type: empirical
+  text: "Compared with GPT-3 175B fine-tuned with Adam, LoRA can reduce the number of trainable parameters by 10,000 times and the GPU memory requirement by 3 times."
+  scope:
+    models: "GPT-3 175B with LoRA on the query and value projections, against full fine-tuning, BitFit, prefix tuning and adapters"
+    data: [wikisql, multinli, samsum]
+    scale: "175B parameters, 96 layers, d_model = 12,288"
+    setting: "fine-tuning on each task, validation accuracy and ROUGE"
+  evidence:
+    - {work: "hu-2021-lora-low-rank-adaptation", role: original, locator: "the abstract", stance: for}
+
+- id: c-on-par
+  type: empirical
+  text: "LoRA performs on par with or better than fine-tuning in model quality on RoBERTa, DeBERTa, GPT-2 and GPT-3, despite having fewer trainable parameters, a higher training throughput and, unlike adapters, no additional inference latency."
+  scope:
+    models: "RoBERTa base and large, DeBERTa XXL, GPT-2 medium and large, GPT-3 175B"
+    data: [glue, e2e-nlg, webnlg, dart, wikisql, multinli, samsum]
+    scale: "125M to 175B parameters"
+    setting: "fine-tuning on each task"
+  evidence:
+    - {work: "hu-2021-lora-low-rank-adaptation", role: original, locator: "the abstract", stance: for}
+
+- id: c-gpt3-table4
+  type: empirical
+  text: "On GPT-3 175B, LoRA with 4.7M trainable parameters reaches 73.4% on WikiSQL and 91.7% on MultiNLI-matched, and with 37.7M reaches 74.0% and 91.6%, against 73.8% and 89.5% for full fine-tuning of 175,255.8M parameters."
+  scope:
+    models: "GPT-3 175B with LoRA on the query and value projections, against full fine-tuning, BitFit, prefix tuning and adapters"
+    data: [wikisql, multinli, samsum]
+    scale: "175B parameters, 96 layers, d_model = 12,288"
+    setting: "fine-tuning on each task, validation accuracy and ROUGE"
+  evidence:
+    - {work: "hu-2021-lora-low-rank-adaptation", role: original, locator: "Table 4", stance: for}
+
+- id: c-vram
+  type: empirical
+  text: "On GPT-3 175B, LoRA reduces the VRAM consumption during training from 1.2TB to 350GB, and with r = 4 on the query and value projections the checkpoint size drops by roughly 10,000 times, from 350GB to 35MB."
+  scope:
+    models: "GPT-3 175B with LoRA on the query and value projections, against full fine-tuning, BitFit, prefix tuning and adapters"
+    data: [wikisql, multinli, samsum]
+    scale: "175B parameters, 96 layers, d_model = 12,288"
+    setting: "fine-tuning on each task, validation accuracy and ROUGE"
+  evidence:
+    - {work: "hu-2021-lora-low-rank-adaptation", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-speedup
+  type: empirical
+  text: "Hu et al. observe a 25% speedup during training on GPT-3 175B compared with full fine-tuning, as they do not need to calculate the gradient for the vast majority of the parameters."
+  scope:
+    models: "GPT-3 175B with LoRA on the query and value projections, against full fine-tuning, BitFit, prefix tuning and adapters"
+    data: [wikisql, multinli, samsum]
+    scale: "175B parameters, 96 layers, d_model = 12,288"
+    setting: "fine-tuning on each task, validation accuracy and ROUGE"
+  evidence:
+    - {work: "hu-2021-lora-low-rank-adaptation", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-adapter-latency
+  type: empirical
+  text: "In GPT-2 medium with batch size 1 and sequence length 128, adapter layers add 20.7% (AdapterL) and 30.3% (AdapterH) to the latency of a forward pass, which is 19.8 ms for fine-tuning or LoRA."
+  scope:
+    models: "GPT-2 medium with LoRA, AdapterL and AdapterH"
+    data: [unknown]
+    scale: "355M parameters; one NVIDIA Quadro RTX8000, 100 trials"
+    setting: "inference latency of a single forward pass"
+  evidence:
+    - {work: "hu-2021-lora-low-rank-adaptation", role: original, locator: "Table 1", stance: for}
+
+- id: c-which-weights
+  type: empirical
+  text: "With a budget of 18M trainable parameters on GPT-3 175B, adapting both Wq and Wv with r = 4 gives 73.7% on WikiSQL and 91.3% on MultiNLI, while putting all the parameters in Wq or Wk with r = 8 gives significantly lower performance."
+  scope:
+    models: "GPT-3 175B with LoRA on chosen attention weight matrices"
+    data: [wikisql, multinli]
+    scale: "175B parameters; 18M trainable parameters"
+    setting: "fine-tuning, validation accuracy"
+  evidence:
+    - {work: "hu-2021-lora-low-rank-adaptation", role: original, locator: "Section 7.1", stance: for}
+    - {work: "hu-2021-lora-low-rank-adaptation", role: original, locator: "Table 5", stance: for}
+
+- id: c-rank-one
+  type: empirical
+  text: "A rank as small as one suffices for adapting both Wq and Wv of GPT-3 175B on WikiSQL and MultiNLI, while training Wq alone needs a larger r."
+  scope:
+    models: "GPT-3 175B with LoRA on chosen attention weight matrices"
+    data: [wikisql, multinli]
+    scale: "175B parameters; 18M trainable parameters"
+    setting: "fine-tuning, validation accuracy"
+  evidence:
+    - {work: "hu-2021-lora-low-rank-adaptation", role: original, locator: "Table 6", stance: for}
+
+- id: c-amplify
+  type: empirical
+  text: "In layer 48 of GPT-3, the update has a stronger correlation with W than a random matrix has, amplifies directions that are not emphasized in W rather than its top singular directions, and the amplification factor is about 21.5 = 6.91/0.32 for r = 4."
+  scope:
+    models: "GPT-3 175B adapted with LoRA"
+    data: [unknown]
+    scale: "layer 48 of 96; r = 4 and r = 64"
+    setting: "analysis of the learned update by singular value decomposition"
+  evidence:
+    - {work: "hu-2021-lora-low-rank-adaptation", role: original, locator: "Section 7.3", stance: for}
+
+- id: c-houlsby
+  type: empirical
+  text: "On the GLUE benchmark, adapter tuning almost matches the performance of fully fine-tuned BERT while using only 3% task-specific parameters, against 100% for fine-tuning."
+  scope:
+    models: "BERT with bottleneck adapter modules"
+    data: [glue]
+    scale: "unknown"
+    setting: "text classification, one adapter per task"
+  evidence:
+    - {work: "houlsby-2019-parameter-efficient-transfer-nlp", role: original, locator: "p. 1", stance: for}
+
+- id: c-intrinsic-200
+  type: empirical
+  text: "By optimizing only 200 trainable parameters randomly projected back into the full parameter space, RoBERTa can be tuned to 90% of the full-parameter performance on MRPC."
+  scope:
+    models: "RoBERTa"
+    data: [mrpc]
+    scale: "200 trainable parameters"
+    setting: "fine-tuning in a random subspace"
+  evidence:
+    - {work: "aghajanyan-2020-intrinsic-dimensionality-fine-tuning", role: original, locator: "the abstract", stance: for}
+
+- id: c-larger-lower
+  type: empirical
+  text: "Pretraining implicitly minimizes intrinsic dimension, and larger models tend to have lower intrinsic dimension after a fixed number of pretraining updates."
+  scope:
+    models: "pretrained language models of several sizes"
+    data: [unknown]
+    scale: "unknown"
+    setting: "fine-tuning in a random subspace"
+  evidence:
+    - {work: "aghajanyan-2020-intrinsic-dimensionality-fine-tuning", role: original, locator: "the abstract", stance: for}
+
+- id: c-li-intrinsic
+  type: empirical
+  text: "Training networks in a random subspace of slowly increasing dimension, Li et al. define the intrinsic dimension as the dimension at which solutions first appear, and find that many problems have smaller intrinsic dimensions than one might suspect."
+  scope:
+    models: "fully connected networks, convolutional networks and reinforcement learning policies"
+    data: [mnist, cifar-10]
+    scale: "unknown"
+    setting: "training in a random subspace"
+  evidence:
+    - {work: "li-2018-intrinsic-dimension-objective-landscapes", role: original, locator: "the abstract", stance: for}
+
+# Variants
+
+- id: c-qlora
+  type: empirical
+  text: "QLoRA backpropagates gradients through a frozen 4-bit quantized pretrained model into LoRA adapters and reduces memory enough to fine-tune a 65B-parameter model on a single 48GB GPU while preserving full 16-bit fine-tuning task performance."
+  scope:
+    models: "LLaMA and T5 models"
+    data: [unknown]
+    scale: "up to 65B parameters, one 48GB GPU"
+    setting: "instruction fine-tuning"
+  evidence:
+    - {work: "dettmers-2023-qlora", role: original, locator: "the abstract", stance: for}
+
+- id: c-dora
+  type: empirical
+  text: "DoRA decomposes the pretrained weight into a magnitude and a direction, uses LoRA for the directional update, and consistently outperforms LoRA on fine-tuning LLaMA, LLaVA and VL-BART on commonsense reasoning, visual instruction tuning and image and video-text understanding."
+  scope:
+    models: "LLaMA, LLaVA and VL-BART"
+    data: [unknown]
+    scale: "unknown"
+    setting: "fine-tuning on downstream tasks"
+  evidence:
+    - {work: "liu-2024-dora-weight-decomposed-low-rank-adaptation", role: original, locator: "the abstract", stance: for}
+
+- id: c-lora-plus
+  type: empirical
+  text: "Updating A and B with the same learning rate does not allow efficient feature learning in models of large width; setting different learning rates for A and B with a fixed ratio, LoRA+, improves performance by 1% to 2% and fine-tuning speed by up to about 2 times at the same cost."
+  scope:
+    models: "GPT-2, RoBERTa and Llama models"
+    data: [glue, mnli, flan-v2]
+    scale: "unknown"
+    setting: "fine-tuning with Adam"
+  evidence:
+    - {work: "hayou-2024-lora-plus", role: original, locator: "p. 1", stance: for}
+
+- id: c-rslora
+  type: attributive
+  text: "Kalajdzievski states a proof that LoRA adapters should be divided by the square root of the rank, and reports that dividing by the rank slows learning and stunts the performance of higher-rank adapters."
+  evidence:
+    - {work: "kalajdzievski-2023-rank-stabilization-lora", role: original, locator: "the abstract", stance: for}
+
+# Learning and forgetting
+
+- id: c-learns-less-forgets-less
+  type: empirical
+  text: "In the standard low-rank settings, LoRA substantially underperforms full fine-tuning on the target domain, programming or mathematics, but better maintains the base model's performance on tasks outside the target domain."
+  scope:
+    models: "Llama-2-7B with LoRA and with full fine-tuning"
+    data: [starcoder-python, openwebmath, magicoder-evol-instruct, metamathqa]
+    scale: "7B parameters; about 20B tokens of continued pretraining or about 100K prompt-response pairs"
+    setting: "continued pretraining and instruction fine-tuning on code and math, with forgetting measured on HellaSwag, WinoGrande and ARC-Challenge"
+  evidence:
+    - {work: "biderman-2024-lora-learns-less-forgets-less", role: original, locator: "the abstract", stance: for}
+  exp: [mnist-split-1k, mnist-split-5k]
+  small_scale: "yes"
+  small_scale_note: "The trade-off does not need a large language model: an MLP pretrained on MNIST digits 0 to 4 and fine-tuned on digits 5 to 9 shows it on a CPU in minutes, with LoRA, full fine-tuning and a retrained head as arms."
+
+- id: c-forgets-less-than-reg
+  type: empirical
+  text: "LoRA mitigates forgetting more than common regularization techniques such as weight decay and dropout, and it helps maintain more diverse generations."
+  scope:
+    models: "Llama-2-7B with LoRA and with full fine-tuning"
+    data: [starcoder-python, openwebmath, magicoder-evol-instruct, metamathqa]
+    scale: "7B parameters; about 20B tokens of continued pretraining or about 100K prompt-response pairs"
+    setting: "continued pretraining and instruction fine-tuning on code and math, with forgetting measured on HellaSwag, WinoGrande and ARC-Challenge"
+  evidence:
+    - {work: "biderman-2024-lora-learns-less-forgets-less", role: original, locator: "the abstract", stance: for}
+
+- id: c-full-rank
+  type: empirical
+  text: "Full fine-tuning learns perturbations with a rank that is 10 to 100 times greater than typical LoRA configurations, which possibly explains some of the reported gaps."
+  scope:
+    models: "Llama-2-7B with LoRA and with full fine-tuning"
+    data: [starcoder-python, openwebmath, magicoder-evol-instruct, metamathqa]
+    scale: "7B parameters; about 20B tokens of continued pretraining or about 100K prompt-response pairs"
+    setting: "continued pretraining and instruction fine-tuning on code and math, with forgetting measured on HellaSwag, WinoGrande and ARC-Challenge"
+  evidence:
+    - {work: "biderman-2024-lora-learns-less-forgets-less", role: original, locator: "the abstract", stance: for}
+
+- id: c-alpha-2r
+  type: empirical
+  text: "The choice alpha = 2r is crucial for high ranks: for a LoRA of rank 256 trained on Magicoder for 4 epochs, alpha = 512 does much better than 256 or 32 across all learning rates."
+  scope:
+    models: "Llama-2-7B with LoRA and with full fine-tuning"
+    data: [starcoder-python, openwebmath, magicoder-evol-instruct, metamathqa]
+    scale: "7B parameters; about 20B tokens of continued pretraining or about 100K prompt-response pairs"
+    setting: "continued pretraining and instruction fine-tuning on code and math, with forgetting measured on HellaSwag, WinoGrande and ARC-Challenge"
+  evidence:
+    - {work: "biderman-2024-lora-learns-less-forgets-less", role: original, locator: "Section 4.7", stance: for}
+
+- id: c-lr-higher
+  type: empirical
+  text: "For instruction fine-tuning, LoRA is more sensitive to learning rates than full fine-tuning, and its best learning rates are one order of magnitude higher, often between 5e-5 and 5e-4."
+  scope:
+    models: "Llama-2-7B with LoRA and with full fine-tuning"
+    data: [starcoder-python, openwebmath, magicoder-evol-instruct, metamathqa]
+    scale: "7B parameters; about 20B tokens of continued pretraining or about 100K prompt-response pairs"
+    setting: "continued pretraining and instruction fine-tuning on code and math, with forgetting measured on HellaSwag, WinoGrande and ARC-Challenge"
+  evidence:
+    - {work: "biderman-2024-lora-learns-less-forgets-less", role: original, locator: "Section 4.7", stance: for}
+
+- id: c-mlp-targets
+  type: empirical
+  text: "Targeting only the attention modules underperforms targeting the MLP modules or all modules, and in the latter case most gains are driven by the MLP modules."
+  scope:
+    models: "Llama-2-7B with LoRA and with full fine-tuning"
+    data: [starcoder-python, openwebmath, magicoder-evol-instruct, metamathqa]
+    scale: "7B parameters; about 20B tokens of continued pretraining or about 100K prompt-response pairs"
+    setting: "continued pretraining and instruction fine-tuning on code and math, with forgetting measured on HellaSwag, WinoGrande and ARC-Challenge"
+  evidence:
+    - {work: "biderman-2024-lora-learns-less-forgets-less", role: original, locator: "Section 4.7", stance: for}
+
+- id: c-slower
+  type: empirical
+  text: "For standard implementations and a fixed batch size, LoRA tends to train slower than full fine-tuning."
+  scope:
+    models: "Llama-2-7B with LoRA and with full fine-tuning"
+    data: [starcoder-python, openwebmath, magicoder-evol-instruct, metamathqa]
+    scale: "7B parameters; about 20B tokens of continued pretraining or about 100K prompt-response pairs"
+    setting: "continued pretraining and instruction fine-tuning on code and math, with forgetting measured on HellaSwag, WinoGrande and ARC-Challenge"
+  evidence:
+    - {work: "biderman-2024-lora-learns-less-forgets-less", role: original, locator: "Section 4.7", stance: for}
+
+- id: c-intruder
+  type: empirical
+  text: "Weight matrices trained with LoRA have new high-ranking singular vectors, intruder dimensions, that full fine-tuning does not produce, and scaling them down improves modeling of the pretraining distribution with a minimal drop in downstream task performance."
+  scope:
+    models: "RoBERTa and LLaMA models fine-tuned with LoRA and with full fine-tuning"
+    data: [unknown]
+    scale: "unknown"
+    setting: "fine-tuning and continual learning, with a spectral analysis of the weights"
+  evidence:
+    - {work: "shuttleworth-2024-lora-vs-full-fine-tuning-illusion", role: original, locator: "the abstract", stance: for}
+
+# History
+
+- id: c-hist-lora
+  type: historical
+  text: "Hu, Shen, Wallis, Allen-Zhu, Li, Wang, Wang and Chen, of Microsoft, posted version 2 of LoRA: Low-Rank Adaptation of Large Language Models as arXiv 2106.09685v2 on 16 Oct 2021."
+  evidence:
+    - {work: "hu-2021-lora-low-rank-adaptation", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-houlsby
+  type: historical
+  text: "Houlsby et al. posted version 2 of Parameter-Efficient Transfer Learning for NLP, which introduced adapter modules, as arXiv 1902.00751v2 on 13 Jun 2019."
+  evidence:
+    - {work: "houlsby-2019-parameter-efficient-transfer-nlp", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-qlora
+  type: historical
+  text: "Dettmers, Pagnoni, Holtzman and Zettlemoyer posted QLoRA: Efficient Finetuning of Quantized LLMs as arXiv 2305.14314 on 23 May 2023."
+  evidence:
+    - {work: "dettmers-2023-qlora", role: original, locator: "the title page", stance: for}

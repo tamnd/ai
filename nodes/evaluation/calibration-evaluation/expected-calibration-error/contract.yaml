@@ -1,0 +1,20 @@
+# SPDX-License-Identifier: MIT
+# The contract of the expected calibration error page (spec 04.4 and 08.7.5). The inputs are the predicted probability
+# vectors and the true labels, so the metric runs no model. Every framework version's score reproduces every row of
+# vectors/ within the tolerance. The rows are exact rationals of the float64 inputs, computed by hand with
+# fractions.Fraction and rounded once to float64; no row comes from a published package yet.
+entry: score
+inputs:
+  predictions: {type: "list[list[float]]", meaning: "an n x K matrix: row i is the probability vector the classifier gives example i, entries in [0, 1] summing to 1 within 1e-6"}
+  references: {type: "list[int]", meaning: "the true class of each example, in 0..K-1"}
+options:
+  n_bins: {type: int, default: 15, meaning: "the number M of equal-width bins; bin m holds the confidences in (edges[m-1], edges[m]] with edges[m] = m / M in float64, and bin 1 also holds 0; the default 15 is the M of Table 1 of Guo et al. (2017)"}
+output:
+  ece: {type: float, meaning: "sum over bins of |B_m| / n * |acc(B_m) - conf(B_m)|, between 0 and 1; the confidence is the largest probability of a row and the prediction the first index that reaches it"}
+  mce: {type: float, meaning: "the largest |acc(B_m) - conf(B_m)| over the non-empty bins, between 0 and 1"}
+  accuracy: {type: float, meaning: "the fraction of examples whose predicted class is the true class"}
+  confidence: {type: float, meaning: "the mean confidence over all examples"}
+  bin_count: {type: "list[int]", meaning: "the number of examples in each bin, M entries"}
+  bin_accuracy: {type: "list[float]", meaning: "acc(B_m) for each bin, 0.0 for an empty bin: the bars of the reliability diagram"}
+  bin_confidence: {type: "list[float]", meaning: "conf(B_m) for each bin, 0.0 for an empty bin"}
+tolerance: {rtol: 1.0e-9, atol: 1.0e-12}

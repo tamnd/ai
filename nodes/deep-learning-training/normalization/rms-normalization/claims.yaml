@@ -1,0 +1,415 @@
+# The claims of the RMSNorm page (spec 07). The build computes the labels.
+
+# Setting
+
+- id: c-ln-overhead
+  type: attributive
+  text: "Zhang and Sennrich observe that layer normalization adds computational overhead, so that the gain of faster and more stable training, counted in training steps, is counter-balanced by a higher cost per training step."
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 1", stance: for}
+
+- id: c-overhead-figure
+  type: empirical
+  text: "In a GRU-based RNNSearch, when the training loss of the model without normalization reaches 7.0, the loss with LayerNorm is 5.4 after the same number of training steps but only 5.9 after the same training time."
+  scope: &rnnsearch
+    models: "GRU-based RNNSearch, without normalization, with LayerNorm and with RMSNorm"
+    data: [wmt14-en-de]
+    scale: "the model size of the paper"
+    setting: "English-German translation; the first 10k training steps"
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "Figure 1", stance: for}
+
+- id: c-hypothesis
+  type: attributive
+  text: "Zhang and Sennrich hypothesize that the re-centering invariance of LayerNorm is dispensable, and that its re-scaling invariance, not its re-centering invariance, is the reason for its success."
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "the abstract", stance: for}
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 3", stance: for}
+
+- id: c-mean-argument
+  type: attributive
+  text: "Zhang and Sennrich argue that the mean normalization of LayerNorm does not reduce the variance of hidden states or model gradients."
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 1", stance: for}
+
+- id: c-ln-shared
+  type: definitional
+  text: "Under layer normalization all the hidden units in a layer share the same normalization terms, the mean and the standard deviation, but different training cases have different normalization terms."
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "p. 2", stance: for}
+
+- id: c-ln-train-test
+  type: attributive
+  text: "Ba, Kiros and Hinton note that layer normalization performs exactly the same computation at training and test times."
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "the abstract", stance: for}
+
+# The method
+
+- id: c-rms-def
+  type: definitional
+  text: "RMSNorm regularizes the summed inputs of a layer according to the root mean square (RMS) statistic alone, giving the normalized input a_i / RMS(a) times the gain g_i, where the RMS is the square root of the mean of the squared inputs."
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 3", stance: for}
+
+- id: c-gain-init
+  type: attributive
+  text: "In the notation of Zhang and Sennrich the gain g re-scales the normalized summed inputs and is set to 1 at the beginning."
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 3", stance: for}
+
+- id: c-sphere
+  type: attributive
+  text: "In RMSNorm the RMS, which measures the quadratic mean of the inputs, forces the summed inputs into a √n-scaled unit sphere, so that the output distribution remains regardless of the scaling of the input and weight distributions."
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 4", stance: for}
+
+- id: c-l2-fails
+  type: empirical
+  text: "The Euclidean norm, which differs from the RMS by a factor of sqrt(n), did not work for layer normalization in the experiments of Zhang and Sennrich, who hypothesize that scaling the sphere with the size of the input vector is important."
+  scope: *rnnsearch
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 4", stance: for}
+
+- id: c-prms-def
+  type: definitional
+  text: "Partial RMSNorm, or pRMSNorm, estimates the RMS from the first p% of the summed inputs, using k = ceil(n p) elements."
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 5", stance: for}
+
+- id: c-prms-iid
+  type: attributive
+  text: "Zhang and Sennrich motivate pRMSNorm by assuming that the summed inputs, or the neurons of one layer, have an independent identically distributed structure."
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 2", stance: for}
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 5", stance: for}
+
+- id: c-llama
+  type: attributive
+  text: "To improve the training stability, LLaMA normalizes the input of each transformer sub-layer instead of the output, and uses the RMSNorm normalizing function of Zhang and Sennrich (2019)."
+  evidence:
+    - {work: "touvron-2023-llama", role: original, locator: "p. 3", stance: for}
+
+- id: c-preln
+  type: definitional
+  text: "The Pre-LN Transformer puts the layer normalization inside the residual connection, before all other non-linear transformations, and uses a final layer normalization right before the prediction."
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "Section 2", stance: for}
+
+# Derivation: invariances
+
+- id: c-scale-invariance
+  type: mathematical
+  text: "With eps = 0 and delta > 0, RMSNorm of delta a equals RMSNorm of a, so scaling the weight matrix or the input by delta does not change the output."
+  assumes: ["eps = 0", "delta > 0", "the RMS is computed from the vector that is normalized"]
+  derivation: invariances
+
+- id: c-scale-invariance-eps
+  type: mathematical
+  text: "With eps > 0, the squared denominator at delta a is delta^2 m + eps, so scaling changes the output unless delta = 1 or a = 0."
+  assumes: ["eps > 0", "the mean square m is positive"]
+  derivation: invariances
+
+- id: c-row-not-invariant
+  type: mathematical
+  text: "Scaling one row of the weight matrix alone can change the output of RMSNorm; with W the 2 by 2 identity and x = (1, 1), doubling the first row moves the second output from 1 to sqrt(2/5)."
+  assumes: ["eps = 0", "gain 1"]
+  derivation: invariances
+
+- id: c-not-recentering
+  type: mathematical
+  text: "RMSNorm is not invariant to re-centering: (1, -1) maps to (1, -1) but (2, 0) maps to (sqrt(2), 0), while layer normalization maps both to (1, -1)."
+  assumes: ["eps = 0", "gain 1"]
+  derivation: invariances
+
+- id: c-ln-is-rms-of-centred
+  type: mathematical
+  text: "With the same eps and gain and no bias, layer normalization of a equals RMSNorm of a minus its mean, for every eps >= 0."
+  assumes: ["the same eps and gain in both layers", "no bias"]
+  derivation: invariances
+
+- id: c-prms-invariance
+  type: mathematical
+  text: "With eps = 0, pRMSNorm is invariant to scaling its input by any delta > 0, because the RMS of the first k entries scales by delta."
+  assumes: ["eps = 0", "delta > 0", "the first k entries are not all zero"]
+  derivation: invariances
+
+- id: c-zhang-invariance
+  type: attributive
+  text: "Zhang and Sennrich state that RMSNorm is invariant to both weight matrix and input re-scaling, and that the property does not hold when only individual weight vectors are scaled."
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 4", stance: for}
+
+- id: c-zhang-not-recentering
+  type: attributive
+  text: "Zhang and Sennrich note that RMSNorm is not re-centered and is not invariant to all re-centering operations."
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 4", stance: for}
+
+- id: c-zhang-prms-invariance
+  type: attributive
+  text: "Zhang and Sennrich state that pRMSNorm shares the invariance properties of RMSNorm, because the linearity of the RMS still holds."
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 5", stance: for}
+
+# Derivation: the gradient
+
+- id: c-jacobian
+  type: mathematical
+  text: "The Jacobian of RMSNorm with respect to its input a is (diag(g) / r)(I - a a^T / (n r^2)), with r = sqrt(mean(a^2) + eps)."
+  assumes: ["the backward pass differentiates through r", "r > 0"]
+  derivation: gradient
+
+- id: c-grad-orthogonal
+  type: mathematical
+  text: "With eps = 0, the input gradient of RMSNorm is orthogonal to the input a, and the Jacobian maps a to zero."
+  assumes: ["eps = 0", "a is not zero"]
+  derivation: gradient
+
+- id: c-grad-eps-leak
+  type: mathematical
+  text: "With eps > 0, the dot product of a with the input gradient is (a^T u / r) times eps / (m + eps), where u is the gain times the output gradient and m the mean square of a."
+  assumes: ["eps >= 0", "r > 0"]
+  derivation: gradient
+
+- id: c-gain-grad
+  type: mathematical
+  text: "The gradient of the loss with respect to the gain is the output gradient times the normalized input a / r."
+  assumes: ["the output is the gain times a / r"]
+  derivation: gradient
+
+- id: c-grad-inverse-scale
+  type: mathematical
+  text: "With eps = 0, the input gradient at delta a is 1/delta times the input gradient at a, so the weight gradient does not change when the input is scaled and is divided by delta when the weight matrix is scaled by delta."
+  assumes: ["eps = 0", "delta > 0", "a = W x"]
+  derivation: gradient
+
+- id: c-prms-grad
+  type: mathematical
+  text: "For pRMSNorm the input gradient is (1/r)(u - (a^T u) s * a / (k r^2)), with s the indicator of the first k entries, and with eps = 0 it is also orthogonal to a."
+  assumes: ["the backward pass differentiates through r", "eps = 0 for the orthogonality"]
+  derivation: gradient
+
+- id: c-zhang-grad-g
+  type: attributive
+  text: "Zhang and Sennrich prove that the gradients of the gain and the bias are invariant to the scaling of the inputs and of the weight matrix, and that the gradient of the gain is proportional to the normalized summed inputs."
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 5", stance: for}
+
+- id: c-zhang-weight-grad
+  type: attributive
+  text: "Zhang and Sennrich prove that the gradient of the weight matrix is invariant to input scaling but negatively correlated with weight matrix scaling, which acts as an implicit learning rate adaptor."
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 5", stance: for}
+
+# Derivation: mean zero
+
+- id: c-zero-mean-equal
+  type: mathematical
+  text: "If the input has mean zero, RMSNorm and layer normalization with the same eps and gain give the same output, for every eps."
+  assumes: ["the same eps and gain", "no bias"]
+  derivation: zero-mean
+
+- id: c-zhang-equal
+  type: attributive
+  text: "Zhang and Sennrich note that when the mean of the summed inputs is zero, RMSNorm is exactly equal to LayerNorm."
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 3", stance: for}
+
+- id: c-mean-mix
+  type: mathematical
+  text: "With eps = 0 and rho the mean divided by the standard deviation of the input, RMSNorm equals layer normalization plus rho times the gain, divided by sqrt(1 + rho^2)."
+  assumes: ["eps = 0", "the standard deviation is positive", "the same gain and no bias"]
+  derivation: zero-mean
+
+- id: c-gap-formula
+  type: mathematical
+  text: "With eps = 0 and gain 1, the root mean square of the difference between RMSNorm and layer normalization is sqrt(2 - 2 / sqrt(1 + rho^2)), which is at most |rho|, close to |rho| for small rho, and tends to sqrt(2) as |rho| grows."
+  assumes: ["eps = 0", "gain 1", "the standard deviation is positive"]
+  derivation: zero-mean
+
+- id: c-output-mean
+  type: mathematical
+  text: "With eps = 0 and gain 1, the mean of the RMSNorm output is rho / sqrt(1 + rho^2), while the mean of the layer normalization output is zero."
+  assumes: ["eps = 0", "gain 1", "the standard deviation is positive"]
+  derivation: zero-mean
+
+# Evidence
+
+- id: c-speed-range
+  type: empirical
+  text: "In experiments on several tasks with diverse architectures, RMSNorm achieves comparable performance against LayerNorm but reduces the running time by 7% to 64% on different models."
+  scope: &all
+    models: "RNNSearch, Transformer, attentive reader, order-embedding and ConvPool-CNN-C models with LayerNorm and with RMSNorm"
+    data: [wmt14-en-de, cnn-question-answering, mscoco, cifar-10]
+    scale: "the model sizes of the paper"
+    setting: "TensorFlow, Theano and PyTorch implementations"
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "the abstract", stance: for}
+
+- id: c-rnnsearch-steps
+  type: empirical
+  text: "In the RNNSearch, both LayerNorm and RMSNorm reduce the number of training steps until convergence by about 50% compared with the model without normalization, and improve test accuracy, with RMSNorm comparable to LayerNorm."
+  scope: *rnnsearch
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 6", stance: for}
+
+- id: c-rnnsearch-speed
+  type: empirical
+  text: "In the TensorFlow RNNSearch, LayerNorm is slower than the model without normalization by about 67%, and RMSNorm improves upon LayerNorm by about 25%."
+  scope: *rnnsearch
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 6", stance: for}
+
+- id: c-theano-pytorch
+  type: empirical
+  text: "In RNNSearch models implemented in Theano and PyTorch, RMSNorm gives translation quality comparable to LayerNorm with speedups from 11% to 34%."
+  scope: *rnnsearch
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 6", stance: for}
+
+- id: c-transformer
+  type: empirical
+  text: "In a base Transformer trained for 300K steps, training fails without normalization, and RMSNorm gives BLEU scores comparable to LayerNorm with a speedup of 7% to 9%."
+  scope:
+    models: "Transformer base, an in-house TensorFlow implementation"
+    data: [wmt14-en-de]
+    scale: "the base setting of Vaswani et al."
+    setting: "300K training steps"
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 6", stance: for}
+
+- id: c-mean-stable
+  type: empirical
+  text: "Although the mean in RMSNorm is not normalized, in practice it is more stable than the mean of the model without normalization, and both RMSNorm and LayerNorm stabilize the standard deviation."
+  scope: *rnnsearch
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 7", stance: for}
+
+- id: c-init-robust
+  type: empirical
+  text: "When the center of the weight initialization is changed to 0.2, LayerNorm becomes very unstable, while RMSNorm is more robust, though both are worse than with the original initialization."
+  scope: *rnnsearch
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 7", stance: for}
+
+- id: c-reader
+  type: empirical
+  text: "On a bidirectional attentive reader on the CNN corpus, LayerNorm and RMSNorm converge faster than BatchNorm and reach a lower validation error rate, and pRMSNorm is slightly worse than RMSNorm."
+  scope: &reader
+    models: "bidirectional attentive reader with LSTMs, with BatchNorm, LayerNorm, RMSNorm and pRMSNorm"
+    data: [cnn-question-answering]
+    scale: "the model size of the paper"
+    setting: "cloze-style question answering"
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 7", stance: for}
+
+- id: c-reader-speed
+  type: empirical
+  text: "On the attentive reader, RMSNorm is around 15% faster than LayerNorm."
+  scope: *reader
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 8", stance: for}
+
+- id: c-oe-speed
+  type: empirical
+  text: "On an order-embedding model for image-caption retrieval, RMSNorm accelerates training by 40% to 64% compared with LayerNorm."
+  scope:
+    models: "order-embedding model of Vendrov et al., in Theano"
+    data: [mscoco]
+    scale: "the model size of the paper"
+    setting: "image-caption retrieval"
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 8", stance: for}
+
+- id: c-cifar
+  type: empirical
+  text: "On CIFAR-10 with a ConvPool-CNN-C model, LayerNorm increases the test error of the model without normalization by 1.53%, while RMSNorm reduces it by 0.013% and is about 20.5% faster than LayerNorm."
+  scope: &cifar
+    models: "a modified ConvPool-CNN-C, with BatchNorm, WeightNorm, LayerNorm, RMSNorm and pRMSNorm"
+    data: [cifar-10]
+    scale: "the model size of the paper"
+    setting: "image classification, the protocol of Salimans and Kingma"
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 9", stance: for}
+
+- id: c-cifar-bn
+  type: empirical
+  text: "On CIFAR-10 with a ConvPool-CNN-C model, BatchNorm performs the best among the normalization methods compared."
+  scope: *cifar
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 8", stance: for}
+
+- id: c-preln-warmup
+  type: empirical
+  text: "Pre-LN Transformers without the learning rate warm-up stage reach results comparable with the baselines while requiring significantly less training time and hyper-parameter tuning."
+  scope:
+    models: "Pre-LN and Post-LN Transformers with layer normalization"
+    data: [iwslt14-de-en, wmt14-en-de]
+    scale: "the model sizes of the paper"
+    setting: "translation and BERT pre-training"
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "the abstract", stance: for}
+
+# Limitations
+
+- id: c-prms-unstable
+  type: empirical
+  text: "With pRMSNorm, Zhang and Sennrich observe gradient instability, with gradients that tend to explode when few inputs are used, but models with pRMSNorm still converge satisfactorily with a partial ratio of 6.25%."
+  scope: *rnnsearch
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 5", stance: for}
+
+- id: c-p-little-influence
+  type: empirical
+  text: "In the RNNSearch, the partial ratio p has little influence on the final translation quality, and a small ratio does not significantly degrade the BLEU score."
+  scope: *rnnsearch
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 6", stance: for}
+
+- id: c-prms-slow
+  type: empirical
+  text: "Though pRMSNorm in theory needs less computation than RMSNorm, with p = 6.25% it is sometimes slower, which Zhang and Sennrich ascribe to a non-optimal implementation of tensor slicing in the frameworks."
+  scope: *rnnsearch
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 6", stance: for}
+
+- id: c-prms-no-speed
+  type: empirical
+  text: "Zhang and Sennrich did not consistently observe empirical speed improvements for pRMSNorm."
+  scope: *all
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 9", stance: for}
+
+- id: c-prms-cifar
+  type: empirical
+  text: "On CIFAR-10, pRMSNorm gains a further speedup of 2.6% over RMSNorm at the cost of test accuracy."
+  scope: *cifar
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 9", stance: for}
+
+- id: c-speed-depends
+  type: attributive
+  text: "Zhang and Sennrich note that the actual speed improvements depend on the framework, the hardware, the architecture and the relative cost of the other components, and expect them to be orthogonal to low-precision arithmetic and GPU kernel fusion."
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 9", stance: for}
+
+# History
+
+- id: c-drop-in
+  type: attributive
+  text: "Zhang and Sennrich present RMSNorm as simple and as a drop-in replacement of LayerNorm."
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 3", stance: for}
+
+- id: c-first-rms
+  type: historical
+  text: "As far as Zhang and Sennrich knew, the idea of employing the RMS for neural network normalization had not been investigated before their paper."
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 4", stance: for}
+
+- id: c-future-norms
+  type: attributive
+  text: "Zhang and Sennrich planned to explore different norms for RMSNorm and to simplify other normalization techniques such as BatchNorm."
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 9", stance: for}
