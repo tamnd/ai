@@ -5960,3 +5960,7 @@ Y6MTWB caruana-2000-overfitting-neural-nets
 VR3ZRP early-stopping
 G6M238 yao-2005-early-stopping-gradient-descent
 T3JMTM zhang-2005-boosting-early-stopping
+MEE1KH chen-2016-sublinear-memory-cost
+C4TQW1 gradient-checkpointing
+320Z0E gruslys-2016-memory-efficient-bptt
+SZY8XC korthikanti-2022-reducing-activation-recomputation

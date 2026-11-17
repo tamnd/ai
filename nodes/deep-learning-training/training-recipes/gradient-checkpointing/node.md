@@ -1,5 +1,5 @@
 ---
-tag: NEW-gradient-checkpointing
+tag: C4TQW1
 kind: method
 slug: gradient-checkpointing
 name: Gradient checkpointing
