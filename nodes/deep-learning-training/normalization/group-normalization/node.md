@@ -1,5 +1,5 @@
 ---
-tag: NEW-group-normalization
+tag: QFEJMP
 kind: method
 slug: group-normalization
 name: Group normalization
