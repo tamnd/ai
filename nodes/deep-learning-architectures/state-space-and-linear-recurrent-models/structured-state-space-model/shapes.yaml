@@ -1,0 +1,58 @@
+# SPDX-License-Identifier: MIT
+# The shape contract of the diagonal state space layer of the references (spec 08.6). Each of the H features has its
+# own SSM with P complex diagonal entries kept in conjugate pairs, so its real state has N = 2P entries and its output
+# is twice a real part (eq-diagonal-kernel). A real parameter counts 1 and a complex one 2: per feature, log Delta and
+# D are 1 each, the real and imaginary parts of A are P each, and B and C are 2P each, so 3N + 2 in all. The
+# convolutional mode builds the kernel (H, L) and convolves it with the input by an FFT of length 2L; the FLOPs count
+# the products of the kernel as multiply-adds of 2, and leave out the FFT, the powers and the elementwise work, as the
+# rest of the corpus does. The recurrent mode is the step block, run L times. The example config is small, so that the
+# tests can run it.
+config:
+  h:       {meaning: "features of the input, each with its own SSM", symbol: "H", example: 2, sample: [1, 4]}
+  n:       {meaning: "complex diagonal entries kept per feature, one of each conjugate pair", symbol: "P", example: 4, sample: [1, 8]}
+  n_state: {meaning: "the real state size per feature, both halves of the conjugate pairs", symbol: "N", formula: "2 * n"}
+axes:
+  B: {meaning: "batch", example: 2, sample: [1, 3]}
+  L: {meaning: "length of the sequence", example: 8, sample: [1, 16]}
+  H: h
+  P: n
+  N: n_state
+blocks:
+  - id: kernel
+    meaning: "discretize each entry by zero-order hold or the bilinear rule, then sum the P geometric sequences of each feature into its kernel"
+    eq: [zoh, diagonal-kernel]
+    inputs: {log_dt: "(H)"}
+    outputs: {k: "(H, L)"}
+    internals: {a_bar: "(H, P)", b_bar: "(H, P)", powers: "(H, P, L)"}
+    params: "H * (1 + 3 * N)"
+    flops_forward: "2 * H * P * L"
+  - id: conv
+    meaning: "the causal convolution of each feature of the input with its kernel, by an FFT of length 2L padded with zeros"
+    eq: [kernel]
+    inputs: {u: "(B, L, H)", k: "(H, L)"}
+    outputs: {y_conv: "(B, L, H)"}
+    internals: {u_spectrum: "(B, L + 1, H)", k_spectrum: "(L + 1, H)"}
+    params: "0"
+    flops_forward: "0"
+  - id: skip
+    meaning: "the direct term D u of each feature, added to the convolution"
+    eq: [ssm]
+    inputs: {u: "(B, L, H)", y_conv: "(B, L, H)"}
+    outputs: {y: "(B, L, H)"}
+    params: "H"
+    flops_forward: "0"
+  - id: step
+    meaning: "one step of the recurrent mode for generation: the new state from the old one and one input, then the output"
+    eq: [recurrence]
+    inputs: {x: "(B, H, P)", u_t: "(B, H)"}
+    outputs: {x_next: "(B, H, P)", y_t: "(B, H)"}
+    params: "0"
+    flops_forward: "2 * B * H * P"
+model:
+  params: {formula: "kernel.params + conv.params + skip.params", symbol: "P_{\\text{layer}}", meaning: "real numbers of the layer, 3N + 2 per feature; the step block reads the same parameters"}
+  flops_forward: {formula: "kernel.flops_forward + conv.flops_forward + skip.flops_forward", symbol: "C_{\\text{fwd}}", meaning: "FLOPs of the products of the convolutional mode over the batch, a multiply-add counted as 2; the FFT is left out"}
+  flops_scan: {formula: "L * step.flops_forward", meaning: "FLOPs of the products of the recurrent mode over the whole sequence: grows with the batch, while the kernel of the convolutional mode does not"}
+  state_floats: {formula: "B * H * N", meaning: "real numbers of the state that the recurrent mode keeps, the same at every length"}
+configs:
+  long: {meaning: "one feature with a long state", h: 1, n: 8}
+  wide: {meaning: "more features with a short state", h: 4, n: 2}

@@ -130,6 +130,8 @@ An S4 layer applies $H$ independent SSMs, one per feature, and mixes the feature
 Each SSM of S4 has $5N$ parameters, $\Lambda$, $P$, $Q$, $B$ and $C$ (Section 3.4), plus its step size.
 A diagonal SSM keeps $N/2$ complex entries of $A$, $B$ and $C$ per feature, so about $3N$ real numbers, plus $\log \Delta$ and $D$.
 Input and output both have shape $(B, L, H)$; the state has shape $(B, H, N)$, and the kernel has shape $(H, L)$.
+The reference layer counts a complex number as two reals, so each feature has $3N + 2$ parameters: {shape:params@example} for the example config of `shapes.yaml`, with $H = 2$ features and $N = 8$.
+Its convolutional mode spends {shape:flops_forward@example} FLOPs in the products of the kernel at $L = 8$, whatever the batch, while the recurrent mode spends {shape:flops_scan@example} on a batch of 2 and keeps a state of {shape:state_floats@example} real numbers.
 S4 notes that follow-up work found its $\Lambda - PQ^*$ form can be unstable when $A$ has eigenvalues in the right half-plane, and changed it to $\Lambda - PP^*$ (Section 3.4). {#c-s4-pp-fix}
 
 ## Computation and cost
@@ -217,6 +219,7 @@ It also has dense helpers for a general $A$ (a matrix exponential, the dense ker
 The tests check that the recurrence equals the convolution on random layers, that the impulse response is the kernel, and that changing a later input never changes an earlier output.
 They check zero-order hold against the exact exponential for a scalar, and that the bilinear rule keeps a stable $A$ inside the unit circle for steps from $10^{-3}$ to $10^4$.
 The PyTorch and JAX tests compare against a plain loop and check that gradients agree between the two modes.
+The NumPy tests also check every shape, the parameter count and the FLOP count of `shapes.yaml` against the code.
 
 ### Worked example
 
