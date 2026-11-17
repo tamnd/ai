@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/byte-pair-encoding/ (ai://NEW-byte-pair-encoding).
+# Part of https://ai.tamnd.com/byte-pair-encoding/ (ai://ZRQW82).
 """Numeric check of merge-count: each merge lowers the token count by the number of non-overlapping occurrences
 it replaces, between 1 and the pair count, and k merges add k symbols to the initial ones."""
 

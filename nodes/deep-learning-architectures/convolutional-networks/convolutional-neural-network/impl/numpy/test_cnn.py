@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/convolutional-neural-network/ (ai://NEW-convolutional-neural-network).
+# Part of https://ai.tamnd.com/convolutional-neural-network/ (ai://GNXZCP).
 """Tests of the NumPy reference: the worked example, the loop oracle, the size formula, equivariance, the
 receptive field, a numeric gradient check, the shape contract and the shared fixture."""
 

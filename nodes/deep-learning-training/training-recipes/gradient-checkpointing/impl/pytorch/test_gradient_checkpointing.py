@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/gradient-checkpointing/ (ai://NEW-gradient-checkpointing).
+# Part of https://ai.tamnd.com/gradient-checkpointing/ (ai://C4TQW1).
 """Tests of the PyTorch version: the shared fixture of the NumPy reference, exact agreement with full storage, the
 counts of forwards and saved activations, and agreement with torch.utils.checkpoint.checkpoint_sequential."""
 

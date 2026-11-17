@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/long-short-term-memory/ (ai://NEW-long-short-term-memory).
+# Part of https://ai.tamnd.com/long-short-term-memory/ (ai://YVW8D3).
 """One LSTM layer with a forget gate and no peepholes as a torch.nn.Module, the PyTorch reference.
 
 It computes eq-gates, eq-cell and eq-hidden of the page with torch operations, as the NumPy reference does, and

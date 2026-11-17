@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/rms-normalization/ (ai://NEW-rms-normalization).
+# Part of https://ai.tamnd.com/rms-normalization/ (ai://3FZB17).
 """Tests of the NumPy reference: the worked example, the gradient against finite differences, its orthogonality to
 the input, the scaling invariance, the link to layer normalization, pRMSNorm, and agreement with
 torch.nn.functional.rms_norm when PyTorch is installed."""

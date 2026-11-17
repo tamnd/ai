@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/mode-connectivity/ (ai://NEW-mode-connectivity).
+# Part of https://ai.tamnd.com/mode-connectivity/ (ai://MDXMTA).
 """Mode connectivity in PyTorch: the same objects as the NumPy reference, on tensors, with gradients from autograd.
 
 linear_path, bezier_path and polychain_path are the paths of the page (eq-linear, eq-bezier); loss_barrier gives the

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/expected-calibration-error/ (ai://NEW-expected-calibration-error).
+# Part of https://ai.tamnd.com/expected-calibration-error/ (ai://01R1CF).
 """Expected calibration error with equal-width bins, the bin statistics of a reliability diagram, and temperature
 scaling fitted by negative log-likelihood (Guo et al., 2017), in NumPy.
 

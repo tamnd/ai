@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/randaugment/ (ai://NEW-randaugment).
+# Part of https://ai.tamnd.com/randaugment/ (ai://88YEPR).
 # Check of derivations/cutout-area.md: a clipped s x s Cutout patch with a uniform pixel centre on an L x L image masks
 # (s - s^2 / (4L))^2 pixels on average, exactly on the pixel grid, for even s with 0 <= s <= 2L.
 from fractions import Fraction

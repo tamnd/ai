@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/convolutional-neural-network/ (ai://NEW-convolutional-neural-network).
+# Part of https://ai.tamnd.com/convolutional-neural-network/ (ai://GNXZCP).
 """Write the shared fixtures of the convolutional network from the NumPy reference (spec 08.7.2).
 
 Run it from anywhere: python fixtures/make.py. It writes params-small.npz, input-small.npz, expected-small.npz

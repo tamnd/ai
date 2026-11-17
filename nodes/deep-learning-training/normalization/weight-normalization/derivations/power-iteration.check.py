@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/weight-normalization/ (ai://NEW-weight-normalization).
+# Part of https://ai.tamnd.com/weight-normalization/ (ai://5PC0VR).
 # Check of derivations/power-iteration.md: the estimate sigma_k = u_k^T W v_k after k rounds of v <- W^T u / ||.||,
 # u <- W v / ||.|| satisfies 0 <= sigma_1^2 - sigma_k^2 <= sigma_1^2 (sigma_2 / sigma_1)^(4k - 2) tan^2(theta_0), and
 # converges to the largest singular value of numpy.linalg.svd.

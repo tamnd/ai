@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/qk-layernorm/ (ai://NEW-qk-layernorm).
+# Part of https://ai.tamnd.com/qk-layernorm/ (ai://B6PWZA).
 # Check of derivations/entropy-collapse.md: dH/dc = -c Var_p(z), the softmax of c z tends to the one-hot
 # vector of the argmax, H tends to 0 within the bound h(eps) + eps log(n - 1), and ties give log k.
 import numpy as np

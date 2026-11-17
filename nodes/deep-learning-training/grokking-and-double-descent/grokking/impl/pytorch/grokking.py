@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/grokking/ (ai://NEW-grokking).
+# Part of https://ai.tamnd.com/grokking/ (ai://52PVZH).
 """Grokking in PyTorch: the modular-addition split, the Fourier algorithm, and a small embedding-plus-MLP model trained
 with torch.optim.AdamW.
 

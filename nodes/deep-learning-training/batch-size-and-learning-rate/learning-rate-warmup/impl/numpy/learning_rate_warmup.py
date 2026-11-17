@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/learning-rate-warmup/ (ai://NEW-learning-rate-warmup).
+# Part of https://ai.tamnd.com/learning-rate-warmup/ (ai://MA8ACN).
 """Learning rate warmup, the NumPy reference.
 
 gradual_warmup is the ramp of Goyal et al. (eq-gradual), linear_warmup the ramp from zero (eq-linear), and noam the

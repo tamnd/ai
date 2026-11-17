@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/adam/ (ai://NEW-adam).
+# Part of https://ai.tamnd.com/adam/ (ai://88GHGT).
 # Check of derivations/decoupled-weight-decay.md: weight decay and L2 agree for SGD with lambda' = lambda / lr, they
 # disagree for Adam when the preconditioner is not a multiple of the identity, an L2 term is normalized away at the
 # first step, and the PyTorch AdamW step is Algorithm 2 of Loshchilov and Hutter with lambda = lr * weight_decay.

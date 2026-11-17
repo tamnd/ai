@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/direct-preference-optimization/ (ai://NEW-direct-preference-optimization).
+# Part of https://ai.tamnd.com/direct-preference-optimization/ (ai://CZW0BQ).
 # Check of derivations/dpo-gradient.md: for l = -log sigmoid(beta (a_w - a_l)) with a = log pi - log pi_ref, the
 # derivatives in log pi(y_w) and log pi(y_l) are -beta sigmoid(r_l - r_w) and +beta sigmoid(r_l - r_w), with
 # r = beta a; and through a softmax policy over a finite response set this is the chain rule of the log-probabilities.

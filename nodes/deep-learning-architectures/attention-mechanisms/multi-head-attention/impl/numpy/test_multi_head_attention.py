@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/multi-head-attention/ (ai://NEW-multi-head-attention).
+# Part of https://ai.tamnd.com/multi-head-attention/ (ai://ND4EXH).
 """Tests of the NumPy reference: the worked example, the masks, the loop over heads, the invariances,
 the gradient against finite differences, the counts, and the shared fixture."""
 

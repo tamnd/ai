@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/layer-normalization/ (ai://NEW-layer-normalization).
+# Part of https://ai.tamnd.com/layer-normalization/ (ai://RA5R92).
 # Check of derivations/ln-backward.md: the gradient of layer normalization, its sum and its orthogonality, the
 # Jacobian as a scaled projection, and its spectral norm 1/sqrt(v + eps).
 import numpy as np

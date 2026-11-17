@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/layer-normalization/ (ai://NEW-layer-normalization).
+# Part of https://ai.tamnd.com/layer-normalization/ (ai://RA5R92).
 """Tests of the PyTorch modules: the worked example, autograd against eq-ln-backward, the Jacobian, agreement with
 torch.nn.LayerNorm, torch.nn.functional.layer_norm, torch.nn.RMSNorm and torch.nn.functional.group_norm in outputs and
 gradients, the same output in training and evaluation mode, independence from the batch, and the two placements."""

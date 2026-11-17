@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/few-shot-in-context-learning/ (ai://NEW-few-shot-in-context-learning).
+# Part of https://ai.tamnd.com/few-shot-in-context-learning/ (ai://JNEP9D).
 # Check of derivations/bayes-optimal-in-context-regression.md: under a Gaussian prior ridge with lambda =
 # sigma^2 / tau^2 is the posterior mean and the Bayes-optimal in-context predictor, minimum-norm least squares is
 # the noiseless limit and a projection, and the noiseless error curve is (d - k)/d.

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/linear-scaling-rule/ (ai://NEW-linear-scaling-rule).
+# Part of https://ai.tamnd.com/linear-scaling-rule/ (ai://JDMWH4).
 """The linear scaling rule and the gradient noise scale in PyTorch.
 
 per_example_grads computes one flattened gradient per example with torch.func; b_simple turns them into the simple

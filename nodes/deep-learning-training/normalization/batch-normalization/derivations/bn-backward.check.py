@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/batch-normalization/ (ai://NEW-batch-normalization).
+# Part of https://ai.tamnd.com/batch-normalization/ (ai://TD3H76).
 # Check of derivations/bn-backward.md: the gradients of batch normalization against finite differences, against the
 # separate chain-rule equations of Ioffe and Szegedy (2015), and the sum and orthogonality properties.
 import numpy as np

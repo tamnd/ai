@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/reinforcement-learning-from-human-feedback/ (ai://NEW-reinforcement-learning-from-human-feedback).
+# Part of https://ai.tamnd.com/reinforcement-learning-from-human-feedback/ (ai://6XVY3X).
 """The losses and objectives of RLHF as pure JAX functions, so they can be jitted and differentiated.
 
 bt_loss and ranked_loss are the reward-model losses (eq-bt, eq-rm-loss); kl_shaped_rewards and ppo_clip_loss train

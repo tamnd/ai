@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/rms-normalization/ (ai://NEW-rms-normalization).
+# Part of https://ai.tamnd.com/rms-normalization/ (ai://3FZB17).
 # Check of derivations/gradient.md: the Jacobian of RMSNorm, (diag g / r)(I - a a^T / (n r^2)), against central
 # finite differences; the input gradient is orthogonal to a when eps = 0 and leaks eps / (m + eps) otherwise; the gain
 # gradient; the 1/delta scaling of the gradient (Eq. 10 of Zhang and Sennrich); and the same facts for pRMSNorm.

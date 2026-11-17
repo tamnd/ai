@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/convolutional-neural-network/ (ai://NEW-convolutional-neural-network).
+# Part of https://ai.tamnd.com/convolutional-neural-network/ (ai://GNXZCP).
 """The convolutional layer and the small network of the page in PyTorch; the NumPy reference is the oracle.
 
 conv2d forms the windows with torch.nn.functional.unfold (im2col) and contracts them with the kernel, so that the

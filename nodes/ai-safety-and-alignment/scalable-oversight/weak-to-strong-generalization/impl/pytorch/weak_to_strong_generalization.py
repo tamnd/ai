@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/weak-to-strong-generalization/ (ai://NEW-weak-to-strong-generalization).
+# Part of https://ai.tamnd.com/weak-to-strong-generalization/ (ai://G0ZGHC).
 """Weak-to-strong generalization in PyTorch, for binary tasks. The student gives one logit per example; the weak
 supervisor gives the probability of the positive class.
 

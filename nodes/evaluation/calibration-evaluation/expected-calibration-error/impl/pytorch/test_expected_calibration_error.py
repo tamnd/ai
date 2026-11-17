@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/expected-calibration-error/ (ai://NEW-expected-calibration-error).
+# Part of https://ai.tamnd.com/expected-calibration-error/ (ai://01R1CF).
 """Tests of expected_calibration_error.py in PyTorch: the vectors, the worked example of the page, the properties of
 the derivations, temperature scaling, the edge cases and the errors. Random cases use a seeded torch.Generator."""
 

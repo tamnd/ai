@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/sparse-mixture-of-experts/ (ai://NEW-sparse-mixture-of-experts).
+# Part of https://ai.tamnd.com/sparse-mixture-of-experts/ (ai://1H67K0).
 # Check of derivations/sparse-cost.md: a layer of N two-layer experts d -> h -> d with a d x N router has 2 N d h + d N
 # weights and costs 4 k d h + 2 d N FLOPs per token when only the chosen experts run, 4 k c d h + 2 d N on average when
 # every padded slot is computed, against 2 d h weights and 4 d h FLOPs for a dense layer; numbers for d = 768, h = 3072.

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/chain-of-thought-prompting/ (ai://NEW-chain-of-thought-prompting).
+# Part of https://ai.tamnd.com/chain-of-thought-prompting/ (ai://WFY2QB).
 """Self-consistency over chain-of-thought samples, in pure Python and in NumPy.
 
 The model is not here: the functions take the text or the parsed answers of m sampled chains of thought for one

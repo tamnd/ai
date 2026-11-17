@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/constitutional-ai/ (ai://NEW-constitutional-ai).
+# Part of https://ai.tamnd.com/constitutional-ai/ (ai://20KVDN).
 # Check of derivations/ai-preference-label.md: the AI preference label as a logistic function of the log-odds, the
 # soft-label loss and its minimizer, hard labels, clamping, the average over principles, the average over the two
 # orders of the options, and the numbers of the worked example.

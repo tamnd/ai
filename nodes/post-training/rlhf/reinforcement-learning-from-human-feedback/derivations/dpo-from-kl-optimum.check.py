@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/reinforcement-learning-from-human-feedback/ (ai://NEW-reinforcement-learning-from-human-feedback).
+# Part of https://ai.tamnd.com/reinforcement-learning-from-human-feedback/ (ai://6XVY3X).
 # Check of derivations/dpo-from-kl-optimum.md: the KL-regularized objective as beta log Z less beta KL(pi || pi_star),
 # its maximizer, the reward written through the optimal policy, the cancellation of Z in the Bradley-Terry model, the
 # DPO loss and its gradient, the KL-shaped reward as an unbiased estimate of the objective, and the per-token penalty.

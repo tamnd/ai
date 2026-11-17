@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/randaugment/ (ai://NEW-randaugment).
+# Part of https://ai.tamnd.com/randaugment/ (ai://88YEPR).
 # Check of derivations/hit-probability.md: with N uniform draws with replacement from K operations, a given one is drawn
 # at least once with probability 1 - (1 - 1/K) ** N; exact enumeration and Monte Carlo.
 import itertools

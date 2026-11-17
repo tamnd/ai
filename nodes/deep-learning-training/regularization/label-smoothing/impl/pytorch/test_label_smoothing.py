@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/label-smoothing/ (ai://NEW-label-smoothing).
+# Part of https://ai.tamnd.com/label-smoothing/ (ai://98TJG9).
 """Tests of the PyTorch code: the shared fixture, agreement with torch.nn.functional.cross_entropy and
 nn.CrossEntropyLoss with label_smoothing (class weights, ignore_index, reductions, extra axes and soft targets), the
 convention that spreads eps over all K classes, the pair of losses, the gradient p - q', the logit gap that training

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/reinforcement-learning-from-human-feedback/ (ai://NEW-reinforcement-learning-from-human-feedback).
+# Part of https://ai.tamnd.com/reinforcement-learning-from-human-feedback/ (ai://6XVY3X).
 """The losses and objectives of RLHF in PyTorch, for training with autograd.
 
 bt_loss and ranked_loss fit a reward model (eq-bt, eq-rm-loss); kl_shaped_rewards, ppo_clip_loss and ptx_loss train

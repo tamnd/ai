@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/batch-normalization/ (ai://NEW-batch-normalization).
+# Part of https://ai.tamnd.com/batch-normalization/ (ai://TD3H76).
 # Check of derivations/scale-invariance.md: batch normalization with eps = 0 is invariant to the scale of the weights
 # before it, the gradient scales as 1/a, it is orthogonal to each row of the weights, and a plain step grows the norm.
 import numpy as np

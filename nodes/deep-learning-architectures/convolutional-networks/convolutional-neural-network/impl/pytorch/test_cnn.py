@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/convolutional-neural-network/ (ai://NEW-convolutional-neural-network).
+# Part of https://ai.tamnd.com/convolutional-neural-network/ (ai://GNXZCP).
 """Tests of the PyTorch version: agreement with torch.nn.functional.conv2d, the shared fixture, autograd against
 a numeric gradient, equivariance and the shape contract."""
 

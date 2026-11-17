@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/linear-scaling-rule/ (ai://NEW-linear-scaling-rule).
+# Part of https://ai.tamnd.com/linear-scaling-rule/ (ai://JDMWH4).
 """Tests of the PyTorch code: per-example gradients against a loop of single-example backward passes; B_simple and
 the two-batch estimator against their closed forms and the NumPy-style fixtures; the two-batch estimate from a real
 model's small- and big-batch gradients; the tracker; and the scaled LambdaLR with step decay and gradual warmup."""

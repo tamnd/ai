@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/reinforcement-learning-from-human-feedback/ (ai://NEW-reinforcement-learning-from-human-feedback).
+# Part of https://ai.tamnd.com/reinforcement-learning-from-human-feedback/ (ai://6XVY3X).
 """Tests of the JAX functions: the shared fixture, the gradients of jax.grad against the closed forms, jit, the
 KL-regularized optimum and the gradient that vanishes there, and DPO. The numbers are those of the NumPy reference,
 which the PyTorch tests check against torch.nn.functional."""

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/speculative-decoding/ (ai://NEW-speculative-decoding).
+# Part of https://ai.tamnd.com/speculative-decoding/ (ai://JKWQF4).
 """Tests of the NumPy reference: input checks; the acceptance rule, the residual and the acceptance rate on the worked
 example of the page; that the exact law of one verify step is p for random, equal and disjoint p and q; that sampled
 outputs of one step and of whole speculative steps follow the target distribution; greedy decoding with a one-hot

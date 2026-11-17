@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/batch-normalization/ (ai://NEW-batch-normalization).
+# Part of https://ai.tamnd.com/batch-normalization/ (ai://TD3H76).
 # Check of derivations/inference-fold.md: batch normalization in inference mode is an affine map, it folds into the
 # linear layer before it, and the two momentum conventions give the same running average.
 import numpy as np

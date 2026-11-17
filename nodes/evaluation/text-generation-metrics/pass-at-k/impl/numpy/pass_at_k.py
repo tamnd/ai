@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/pass-at-k/ (ai://NEW-pass-at-k).
+# Part of https://ai.tamnd.com/pass-at-k/ (ai://AH634X).
 """pass@k (Kulal et al., 2019; Chen et al., 2021) estimated from n samples per problem, in NumPy.
 
 The inputs are counts: for each problem, c samples out of n pass all of its unit tests. The unbiased estimate of one

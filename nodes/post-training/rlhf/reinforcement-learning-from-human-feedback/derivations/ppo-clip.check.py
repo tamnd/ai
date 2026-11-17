@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/reinforcement-learning-from-human-feedback/ (ai://NEW-reinforcement-learning-from-human-feedback).
+# Part of https://ai.tamnd.com/reinforcement-learning-from-human-feedback/ (ai://6XVY3X).
 # Check of derivations/ppo-clip.md: the clipped surrogate is a lower bound on the unclipped one and equal to it inside
 # [1 - eps, 1 + eps], it is flat beyond the interval on the side that would raise it, and at rho = 1 its gradient is
 # the policy gradient A grad log pi.

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/early-stopping/ (ai://NEW-early-stopping).
+# Part of https://ai.tamnd.com/early-stopping/ (ai://VR3ZRP).
 # Check of derivations/spectral-filters.md: gradient descent from zero on least squares is the spectral filter
 # 1 - (1 - eta s)^t, ridge is s / (s + lam), the two have the same slope at s = 0 when lam = 1 / (eta t), and for
 # 0 <= eta s <= 1 the ridge filter at that lam is below the gradient descent filter, which is below twice it.
