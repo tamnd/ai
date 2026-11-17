@@ -16,7 +16,11 @@ benchmarks:
   LMArena text_to_video: lmarena@text-to-video
   LMArena image_to_video: lmarena@image-to-video
   LMArena video_edit: lmarena@video-edit
+  GSM8K: gsm8k@test
+  MATH level 5: math@level-5
 metrics:
   "GPQA diamond: Best score (across scorers)": accuracy
+  "GSM8K: EM": accuracy
+  "MATH level 5: Best score (across scorers)": accuracy
 models:
   "Mistral Large (2411)": mistral-large-2-1

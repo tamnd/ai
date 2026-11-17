@@ -1,0 +1,449 @@
+# The claims of the direct preference optimization page (spec 07). The build computes the labels.
+
+# Setting
+
+- id: c-ra-three-phases
+  type: attributive
+  text: "Rafailov et al. describe the RLHF pipeline as three phases: supervised fine-tuning (SFT), preference sampling and reward learning, and RL optimization."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 3", stance: for}
+
+- id: c-ra-pairs
+  type: definitional
+  text: "The SFT model is prompted with $x$ to produce a pair of answers, human labelers express a preference for one of them, the preferred completion $y_w$ over the dispreferred $y_l$, and the preferences are assumed to come from a latent reward model $r^*(x, y)$ to which there is no access."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 3", stance: for}
+
+- id: c-ra-reward-nll
+  type: definitional
+  text: "and a reward model $r_\\phi$ is fit to a static dataset of comparisons by minimizing the negative log-likelihood $-\\mathbb E \\log\\sigma(r_\\phi(x, y_w) - r_\\phi(x, y_l))$, a binary classification problem."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 3", stance: for}
+
+- id: c-ra-reward-init
+  type: attributive
+  text: "The reward model is typically initialized from the SFT model, adding a linear layer on the final transformer layer that gives a single scalar prediction of the reward."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 3", stance: for}
+
+- id: c-ra-objective
+  type: definitional
+  text: "where $\\beta$ is a parameter that controls how far the policy deviates from the base reference policy $\\pi_{\\mathrm{ref}}$, in practice the initial SFT model."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 3", stance: for}
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 4", stance: for}
+
+- id: c-ra-constraint-why
+  type: attributive
+  text: "They explain the constraint as important because it prevents the model deviating too far from where the reward model is accurate, maintains generation diversity, and prevents mode collapse onto single high-reward answers."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 4", stance: for}
+
+- id: c-ra-ppo-reward
+  type: attributive
+  text: "Sampling text is a discrete operation, so this objective cannot be differentiated through, and the standard approach optimizes it with PPO, using $r_\\phi(x, y) - \\beta(\\log\\pi_\\theta(y\\mid x) - \\log\\pi_{\\mathrm{ref}}(y\\mid x))$ as the reward."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 4", stance: for}
+
+- id: c-ra-rlhf-complex
+  type: attributive
+  text: "They call RLHF a complex and often unstable procedure: it first fits a reward model to the human preferences, then fine-tunes the language model with reinforcement learning to maximize that estimated reward while not drifting far from the original model."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 1", stance: for}
+
+# The method
+
+- id: c-ra-implicit-reward
+  type: attributive
+  text: "The authors read this as fitting an implicit reward model, $\\hat r_\\theta(x, y) = \\beta\\log(\\pi_\\theta(y\\mid x)/\\pi_{\\mathrm{ref}}(y\\mid x))$, whose optimal policy is $\\pi_\\theta$ itself."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 4", stance: for}
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 5", stance: for}
+
+- id: c-ra-pipeline
+  type: definitional
+  text: "The pipeline is to sample completions from $\\pi_{\\mathrm{ref}}$ for every prompt, label them with human preferences to build the dataset, and optimize $\\pi_\\theta$ to minimize the loss for the given $\\pi_{\\mathrm{ref}}$, $\\mathcal D$ and $\\beta$."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 5", stance: for}
+
+- id: c-ra-ref-init
+  type: attributive
+  text: "For public preference datasets, which were sampled from some SFT model, the authors set $\\pi_{\\mathrm{ref}} = \\pi^{\\mathrm{SFT}}$ when that model is available; when it is not, they train $\\pi_{\\mathrm{ref}}$ by maximum likelihood on the preferred completions, so that it is closer to the unknown distribution that produced the data."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 5", stance: for}
+
+- id: c-ra-code
+  type: attributive
+  text: "The PyTorch code for the DPO loss provided in the paper takes the policy and reference model logprobs with the indices of the preferred and dispreferred completions, computes the losses as `-F.logsigmoid(beta * (pi_logratios - ref_logratios))`, and returns them with the rewards `beta * (pi_logps - ref_logps).detach()`."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 19", stance: for}
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 20", stance: for}
+
+# Derivation
+
+- id: c-ra-gibbs
+  type: attributive
+  text: "Rafailov et al. derive it by reorganizing the objective as the minimization of $\\mathbb D_{\\mathrm{KL}}(\\pi\\,\\Vert\\,\\pi^*) - \\log Z(x)$, where the partition function does not depend on $\\pi$, and use Gibbs' inequality: the KL divergence is minimized at 0 if and only if the two distributions are identical."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 16", stance: for}
+
+- id: c-optimal-policy
+  type: mathematical
+  text: "For a finite set of responses, $\\pi^* \\propto \\pi_{\\mathrm{ref}}\\exp(r/\\beta)$ maximizes $\\mathbb E_\\pi[r] - \\beta\\,\\mathbb D_{\\mathrm{KL}}(\\pi\\Vert\\pi_{\\mathrm{ref}})$, the maximum is $\\beta\\log Z(x)$, and any other policy falls short of it by exactly $\\beta\\,\\mathbb D_{\\mathrm{KL}}(\\pi\\Vert\\pi^*)$."
+  assumes: ["for each prompt the responses range over a finite set", "pi_ref(y|x) > 0 for every response", "the reward is finite", "beta > 0", "the policy class is unrestricted"]
+  derivation: kl-constrained-optimum
+
+- id: c-ra-z-expensive
+  type: attributive
+  text: "Even with the true reward, $Z(x)$ is expensive to estimate, which makes the closed form hard to use directly."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 4", stance: for}
+
+- id: c-reward-reparam
+  type: mathematical
+  text: "Every reward is thus a scaled log-ratio of its optimal policy to the reference plus a term that depends only on the prompt."
+  assumes: ["for each prompt the responses range over a finite set", "pi_ref(y|x) > 0 for every response", "the reward is finite", "beta > 0", "the policy class is unrestricted"]
+  derivation: kl-constrained-optimum
+
+- id: c-ra-cancels
+  type: attributive
+  text: "Because a Bradley-Terry probability depends only on the reward difference between the two completions, substituting eq-reward-reparam into eq-bradley-terry makes the partition function cancel, so the human preference probability can be expressed with only the optimal policy $\\pi^*$ and the reference policy."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 4", stance: for}
+
+- id: c-dpo-is-nll
+  type: mathematical
+  text: "Explicitly, $p^*(y_1\\succ y_2\\mid x) = \\sigma\\big(\\beta\\log\\frac{\\pi^*(y_1\\mid x)}{\\pi_{\\mathrm{ref}}(y_1\\mid x)} - \\beta\\log\\frac{\\pi^*(y_2\\mid x)}{\\pi_{\\mathrm{ref}}(y_2\\mid x)}\\big)$, and the maximum-likelihood objective for a parametrized policy $\\pi_\\theta$ under this model is eq-dpo-loss."
+  assumes: ["preferences follow the Bradley-Terry model with a finite latent reward", "pi* is the optimal policy of the KL-constrained objective for that reward", "beta > 0"]
+  derivation: partition-cancels
+
+- id: c-shift-invariance
+  type: mathematical
+  text: "Rewards that differ by any function of the prompt alone give the same Bradley-Terry preferences and the same optimal policy, so the loss cannot tell them apart and does not need to."
+  assumes: ["preferences follow the Bradley-Terry model with a finite latent reward", "pi* is the optimal policy of the KL-constrained objective for that reward", "beta > 0"]
+  derivation: partition-cancels
+
+- id: c-ra-lemmas
+  type: attributive
+  text: "Rafailov et al. call two rewards equivalent when their difference is a function of $x$ alone, and prove two lemmas: equivalent rewards give identical preference distributions under Plackett-Luce, Bradley-Terry included, and identical optimal policies for the KL-constrained problem."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 5", stance: for}
+
+- id: c-ra-theorem1
+  type: attributive
+  text: "Their Theorem 1 states that, under mild assumptions, every reward class consistent with the Plackett-Luce and Bradley-Terry models can be represented with the reparameterization $r(x, y) = \\beta\\log(\\pi(y\\mid x)/\\pi_{\\mathrm{ref}}(y\\mid x))$ for some model $\\pi$ and a given reference model."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 6", stance: for}
+
+- id: c-ra-plackett-luce
+  type: attributive
+  text: "The same substitution works for the Plackett-Luce model over rankings of $K$ responses, where $Z(x)$ again cancels."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 16", stance: for}
+
+- id: c-ra-gradient
+  type: attributive
+  text: "The gradient increases the likelihood of $y_w$ and decreases that of $y_l$, and weights each example by how much higher the implicit reward rates the dispreferred completion, that is, by how incorrectly it orders the pair, scaled by $\\beta$."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 5", stance: for}
+
+- id: c-gradient-form
+  type: mathematical
+  text: "For one pair, the derivative of the loss in $\\log\\pi_\\theta(y_w\\mid x)$ is $-\\beta\\,\\sigma(\\hat r_l - \\hat r_w)$ and in $\\log\\pi_\\theta(y_l\\mid x)$ is $+\\beta\\,\\sigma(\\hat r_l - \\hat r_w)$; the weight lies between 0 and 1, is $\\tfrac12$ when the two implicit rewards are equal and goes to 0 as the margin $\\hat r_w - \\hat r_l$ grows."
+  assumes: ["log pi_theta(y|x) is differentiable in theta", "the reference log-probabilities do not depend on theta", "beta > 0"]
+  derivation: dpo-gradient
+
+- id: c-ra-naive-degenerate
+  type: empirical
+  text: "The authors found the weighting important: without the coefficient, a naive version of the method can make the language model degenerate."
+  scope:
+    models: "GPT-J and Pythia-2.8B language models"
+    data: [reddit-tldr]
+    scale: "up to 6B parameters"
+    setting: "unlikelihood, a probability-ratio objective without the DPO weight, on summarization"
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 5", stance: for}
+
+- id: c-ra-no-baseline
+  type: attributive
+  text: "They relate this to actor-critic RLHF, where a normalization term, interpretable as a soft value function of $\\pi_{\\mathrm{ref}}$, must be estimated with a learned value function or a baseline to keep the policy gradient's variance down, whereas the DPO reward needs no baseline at all."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 6", stance: for}
+
+# Worked example
+
+- id: c-we-pair
+  type: mathematical
+  text: "With these log-probabilities and $\\beta = 0.1$, the DPO loss is $\\log(1 + e^{-0.2}) = 0.598139$, and the derivative in the policy log-probability of the chosen response is $-0.1\\,\\sigma(-0.2) = -0.045017$."
+  assumes: ["log pi_theta(y|x) is differentiable in theta", "the reference log-probabilities do not depend on theta", "beta > 0"]
+  derivation: dpo-gradient
+
+- id: c-we-optimal
+  type: mathematical
+  text: "With three responses, $\\pi_{\\mathrm{ref}} = (0.5, 0.3, 0.2)$, rewards $r = (1, 0, -1)$ and $\\beta = 0.5$, eq-optimal-policy gives $Z = 0.5e^2 + 0.3 + 0.2e^{-2} = 4.021595$ and $\\pi^* = (0.918672, 0.074597, 0.006730)$; with $\\beta = 10$ it gives $(0.534647, 0.290261, 0.175093)$, close to the reference."
+  assumes: ["for each prompt the responses range over a finite set", "pi_ref(y|x) > 0 for every response", "the reward is finite", "beta > 0", "the policy class is unrestricted"]
+  derivation: kl-constrained-optimum
+
+- id: c-we-bt
+  type: mathematical
+  text: "The Bradley-Terry probability that the first response beats the second is $\\sigma(1) = 0.731059$, both from the rewards and from the log-ratios $0.5\\log(\\pi^*/\\pi_{\\mathrm{ref}})$, which equal $r - 0.5\\log Z$."
+  assumes: ["preferences follow the Bradley-Terry model with a finite latent reward", "pi* is the optimal policy of the KL-constrained objective for that reward", "beta > 0"]
+  derivation: partition-cancels
+
+# Hyperparameters
+
+- id: c-ra-hparams
+  type: attributive
+  text: "By default the authors train with $\\beta = 0.1$, 64 pairs per batch and RMSprop at a learning rate of 1e-6, reached by a linear warm-up over the first 150 steps; their TL;DR summarization runs raise $\\beta$ to 0.5 and keep the rest."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 20", stance: for}
+
+- id: c-ra-sweep
+  type: attributive
+  text: "In the sentiment experiments they swept $\\beta \\in \\{0.05, 0.1, 1, 5\\}$ and, for PPO, a target KL in $\\{3, 6, 9, 12\\}$."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 8", stance: for}
+
+- id: c-ra-beta-untuned
+  type: attributive
+  text: "They note that they did not meaningfully tune $\\beta$ in the summarization experiments, so the results there may underestimate DPO's potential."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 9", stance: for}
+
+# Cost
+
+- id: c-ra-lightweight
+  type: attributive
+  text: "Rafailov et al. describe DPO as stable, performant and computationally lightweight, since it needs neither sampling from the language model while fine-tuning nor significant hyperparameter tuning."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 1", stance: for}
+
+# Evidence
+
+- id: c-ra-imdb-setup
+  type: definitional
+  text: "In the IMDb task the prompt is a prefix of a movie review and the policy must continue it with positive sentiment; preference pairs are labeled with a pre-trained sentiment classifier, and the SFT model is GPT-2-large fine-tuned on IMDb reviews."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 7", stance: for}
+
+- id: c-ra-reward-kl
+  type: empirical
+  text: "Across 22 training runs with different conservativeness settings, the authors measured the true reward and the sequence-level KL to the reference, and found that DPO reached more reward than the other methods at each level of KL."
+  scope:
+    models: "GPT-2-large policies; DPO, PPO, PPO-GT, unlikelihood and preferred-FT"
+    data: [imdb]
+    scale: "22 training runs"
+    setting: "controlled positive-sentiment generation with a sentiment classifier as the ground-truth reward"
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 8", stance: for}
+
+- id: c-ra-dominates-ppo-gt
+  type: empirical
+  text: "Its reward-KL trade-off strictly dominated PPO's, even when PPO had access to the ground-truth reward."
+  scope:
+    models: "GPT-2-large policies"
+    data: [imdb]
+    scale: "22 training runs"
+    setting: "reward against sequence-level KL, PPO with the ground-truth reward"
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 8", stance: for}
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 9", stance: for}
+
+- id: c-ra-tldr
+  type: empirical
+  text: "On Reddit TL;DR, with GPT-4 judging against the human reference summaries, DPO reached a win rate of about 61% at temperature 0, against 57% for PPO at its best temperature, also 0, and was much more robust to the sampling temperature."
+  scope:
+    models: "GPT-J SFT model fine-tuned with DPO and PPO"
+    data: [reddit-tldr]
+    scale: "6B parameters"
+    setting: "GPT-4 win rate against reference summaries, sampling temperatures 0 to 1"
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 9", stance: for}
+
+- id: c-ra-tldr-human
+  type: empirical
+  text: "In a human evaluation, DPO samples at temperature 0.25 were preferred 58% of the time over PPO samples at temperature 0."
+  scope:
+    models: "GPT-J fine-tuned with DPO and PPO"
+    data: [reddit-tldr]
+    scale: "6B parameters"
+    setting: "human pairwise evaluation, DPO at temperature 0.25 against PPO at temperature 0"
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 9", stance: for}
+
+- id: c-ra-hh
+  type: empirical
+  text: "On single-turn dialogue from the Anthropic Helpful and Harmless dataset, with Pythia-2.8B fine-tuned on the preferred completions as the reference, DPO was the only computationally efficient method that improved over the preferred completions in the test set, and performed similarly to or better than the computationally demanding Best of 128 baseline."
+  scope:
+    models: "Pythia-2.8B"
+    data: [anthropic-hh]
+    scale: "2.8B parameters"
+    setting: "single-turn dialogue, GPT-4 win rate against the preferred completions"
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 9", stance: for}
+
+- id: c-ra-hh-ppo
+  type: empirical
+  text: "The authors could not find a prompt or sampling temperature with which a publicly available PPO model trained on the same dataset beat the base Pythia-2.8B, and so took Best of 128 as a rough proxy for PPO-level performance."
+  scope:
+    models: "a public PPO model trained on Anthropic HH and Pythia-2.8B"
+    data: [anthropic-hh]
+    scale: "2.8B to 6B parameters"
+    setting: "single-turn dialogue, GPT-4 win rate"
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 9", stance: for}
+
+- id: c-ra-cnn
+  type: empirical
+  text: "Applied to CNN/DailyMail news articles, the TL;DR policies had GPT-4 win rates against the ground-truth summaries of 0.36 for DPO and 0.26 for PPO at temperature 0."
+  scope:
+    models: "GPT-J policies trained on Reddit TL;DR with DPO and PPO"
+    data: [cnn-dailymail]
+    scale: "6B parameters"
+    setting: "out-of-distribution summarization, GPT-4 win rate against ground-truth summaries"
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 9", stance: for}
+
+- id: c-ra-gpt4-agree
+  type: empirical
+  text: "In a human study on TL;DR samples, GPT-4 agreed with humans about as often as humans agreed with each other, which the authors take as support for GPT-4 as a proxy for human evaluation."
+  scope:
+    models: "GPT-4 as judge"
+    data: [reddit-tldr]
+    scale: "122 to 272 respondents per comparison"
+    setting: "agreement of GPT-4 and human judgments on summaries"
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 10", stance: for}
+
+- id: c-ra-gpt4-length
+  type: empirical
+  text: "They also found that the win rates computed by GPT-4 are affected by the prompt, and that GPT-4 with a simple prompt prefers longer, more repetitive summaries than humans do."
+  scope:
+    models: "GPT-4 as judge"
+    data: [reddit-tldr]
+    scale: "two prompts"
+    setting: "GPT-4 judgments of summary quality"
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 10", stance: for}
+
+- id: c-xu-ppo-wins
+  type: empirical
+  text: "Xu et al. benchmarked DPO and PPO on dialogue and code generation and report that PPO surpassed the other alignment methods in all cases, including challenging code competitions."
+  scope:
+    models: "language models fine-tuned with DPO, PPO and other alignment methods"
+    data: [dialogue-benchmarks, code-generation-benchmarks]
+    scale: "several RLHF testbeds"
+    setting: "comparison of alignment methods"
+  evidence:
+    - {work: "xu-2024-is-dpo-superior-to-ppo", role: original, locator: "p. 1", stance: for}
+    - {work: "xu-2024-is-dpo-superior-to-ppo", role: original, locator: "p. 2", stance: for}
+
+- id: c-xu-ppo-factors
+  type: empirical
+  text: "They identify advantage normalization, a large batch size and an exponential moving average update of the reference model as critical factors for PPO's best performance in fine-tuning language models."
+  scope:
+    models: "language models fine-tuned with PPO"
+    data: [dialogue-benchmarks, code-generation-benchmarks]
+    scale: "ablation studies"
+    setting: "algorithmic components of PPO"
+  evidence:
+    - {work: "xu-2024-is-dpo-superior-to-ppo", role: original, locator: "p. 2", stance: for}
+
+# Limitations and failure modes
+
+- id: c-az-deterministic
+  type: attributive
+  text: "Azar et al. consider two actions $y$ and $y'$ where $y$ is always preferred: the Bradley-Terry model would then require $r(y) - r(y')$ to go to $+\\infty$, and the optimal policy would give $\\pi^*(y') = 0$ irrespective of the constant $\\tau$ used for the KL regularisation, so the regularisation becomes weaker and weaker the more deterministic the preferences."
+  evidence:
+    - {work: "azar-2023-general-theoretical-paradigm", role: original, locator: "p. 4", stance: for}
+
+- id: c-az-finite-data
+  type: attributive
+  text: "In the finite-data regime this becomes overfitting: even when the true preference probability is 0.8, a few samples can give an empirical estimate of 1, and the empirical optimal policy then sets the probability of the dispreferred response to 0 for any regularization strength."
+  evidence:
+    - {work: "azar-2023-general-theoretical-paradigm", role: original, locator: "p. 4", stance: for}
+
+- id: c-az-rlhf-robust
+  type: attributive
+  text: "They argue that standard RLHF is more robust here because the reward model is underfit and regularized in practice, and that DPO, in avoiding the training of a reward function, loses the regularization toward the reference that the underfit reward provides."
+  evidence:
+    - {work: "azar-2023-general-theoretical-paradigm", role: original, locator: "p. 4", stance: for}
+
+- id: c-xu-subset
+  type: attributive
+  text: "Xu et al. prove that the policies PPO can reach from a reward model trained on a preference dataset form a proper subset of the policies that minimize the DPO loss on the same dataset."
+  evidence:
+    - {work: "xu-2024-is-dpo-superior-to-ppo", role: original, locator: "p. 3", stance: for}
+    - {work: "xu-2024-is-dpo-superior-to-ppo", role: original, locator: "p. 4", stance: for}
+
+- id: c-xu-counterexample
+  type: attributive
+  text: "Their counter-example has three actions, a reference policy that gives the third no probability and a dataset with a single comparison of the first two; DPO can minimize the loss with a policy that puts 0.9 on the third action, which PPO cannot produce because the reference forces it to give that action zero probability."
+  evidence:
+    - {work: "xu-2024-is-dpo-superior-to-ppo", role: original, locator: "p. 3", stance: for}
+    - {work: "xu-2024-is-dpo-superior-to-ppo", role: original, locator: "p. 4", stance: for}
+
+- id: c-xu-shift
+  type: empirical
+  text: "They report that DPO's performance is significantly affected by the distribution shift between the model's outputs and the preference dataset."
+  scope:
+    models: "language models fine-tuned with DPO"
+    data: [synthetic-preferences, preference-datasets]
+    scale: "synthetic and real preference data"
+    setting: "distribution shift between model outputs and preference data"
+  evidence:
+    - {work: "xu-2024-is-dpo-superior-to-ppo", role: original, locator: "p. 2", stance: for}
+
+- id: c-ra-limits
+  type: attributive
+  text: "Rafailov et al. evaluated models of up to 6B parameters, and list scaling to much larger models, out-of-distribution generalization and reward over-optimization in the direct setting as open questions."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 10", stance: for}
+
+# Variants
+
+- id: c-az-psipo
+  type: attributive
+  text: "Azar et al. derive a general objective, $\\Psi$PO, written in terms of pairwise preferences, of which RLHF and DPO are special cases, and take $\\Psi$ to be the identity to obtain IPO."
+  evidence:
+    - {work: "azar-2023-general-theoretical-paradigm", role: original, locator: "p. 1", stance: for}
+
+- id: c-az-ipo-loss
+  type: definitional
+  text: "which regresses the gap between the log-likelihood ratios of policy and reference to $1/(2\\tau)$, so it always regularizes toward $\\pi_{\\mathrm{ref}}$."
+  evidence:
+    - {work: "azar-2023-general-theoretical-paradigm", role: original, locator: "p. 5", stance: for}
+    - {work: "azar-2023-general-theoretical-paradigm", role: original, locator: "p. 7", stance: for}
+
+- id: c-az-two-action
+  type: attributive
+  text: "In their two-action example with a deterministic preference, DPO converges to the deterministic policy whatever $\\tau$, while for IPO $\\tau$ controls how close the solution stays to the reference."
+  evidence:
+    - {work: "azar-2023-general-theoretical-paradigm", role: original, locator: "p. 7", stance: for}
+
+- id: c-ra-unlikelihood
+  type: attributive
+  text: "The paper's unlikelihood baseline simply maximizes the probability of $y_w$ and minimizes that of $y_l$; the authors found that it fails to generate meaningful responses for complex problems such as summarization and dialogue."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 8", stance: for}
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 22", stance: for}
+
+# History
+
+- id: c-hist-dpo
+  type: historical
+  text: "Rafael Rafailov, Archit Sharma, Eric Mitchell, Stefano Ermon, Christopher D. Manning and Chelsea Finn of Stanford University and CZ Biohub published \"Direct Preference Optimization: Your Language Model is Secretly a Reward Model\" at the 37th Conference on Neural Information Processing Systems, NeurIPS 2023."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 1", stance: for}
+
+- id: c-hist-ipo
+  type: historical
+  text: "Mohammad Gheshlaghi Azar, Mark Rowland, Bilal Piot, Daniel Guo, Daniele Calandriello, Michal Valko and Rémi Munos of Google DeepMind posted \"A General Theoretical Paradigm to Understand Learning from Human Preferences\" as arXiv 2310.12036, marked as under review."
+  evidence:
+    - {work: "azar-2023-general-theoretical-paradigm", role: original, locator: "p. 1", stance: for}
+
+- id: c-hist-xu
+  type: historical
+  text: "Shusheng Xu, Wei Fu, Jiaxuan Gao, Wenjie Ye, Weilin Liu, Zhiyu Mei, Guangju Wang, Chao Yu and Yi Wu posted \"Is DPO Superior to PPO for LLM Alignment? A Comprehensive Study\" as arXiv 2404.10719 in 2024."
+  evidence:
+    - {work: "xu-2024-is-dpo-superior-to-ppo", role: original, locator: "p. 1", stance: for}
