@@ -1,0 +1,9 @@
+claim: c-reinit-worse
+primary:
+  - {metric: test_acc, at: final, compare: {treatment: ticket, control: reinit}, direction: higher, test: welch-t, alpha: 0.01, min_effect: {kind: absolute, value: 0.005}, note: "the same mask trained from a fresh initialization is less accurate than the ticket"}
+  - {metric: test_acc, at: final, compare: {treatment: ticket, control: dense}, test: tost, alpha: 0.01, margin: {kind: absolute, value: 0.02}, note: "the ticket, with 24.5% of the weights, is within 2 points of the dense network"}
+secondary:
+  - {metric: test_acc, compare: {treatment: reinit, control: dense}, direction: lower, test: bootstrap-diff, note: "the reinitialized subnetwork falls below the dense network"}
+  - {metric: train_acc, compare: {treatment: ticket, control: reinit}, direction: higher, test: bootstrap-diff}
+correction: holm
+report: {ci: 0.95, bootstrap: {resamples: 10000, method: bca}}

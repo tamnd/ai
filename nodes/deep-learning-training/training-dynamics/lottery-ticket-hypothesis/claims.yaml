@@ -1,0 +1,290 @@
+# The claims of the lottery-ticket-hypothesis page (spec 07). The build computes the labels.
+
+# The finding
+
+- id: c-prune-90
+  type: empirical
+  text: "Pruning techniques can cut the parameter counts of trained networks by over 90% without compromising accuracy."
+  scope: {models: "trained feed-forward networks", data: [unknown], scale: "unknown", setting: "pruning after training, as summarized by Frankle and Carbin"}
+  evidence:
+    - {work: "frankle-2018-lottery-ticket-hypothesis", role: original, locator: "p. 1", stance: for}
+
+- id: c-hard-to-train
+  type: empirical
+  text: "The sparse architectures produced by pruning are difficult to train from the start."
+  scope: {models: "pruned feed-forward networks", data: [unknown], scale: "unknown", setting: "training a pruned architecture from a fresh random initialization"}
+  evidence:
+    - {work: "frankle-2018-lottery-ticket-hypothesis", role: original, locator: "p. 1", stance: for}
+
+- id: c-hypothesis
+  type: definitional
+  text: "The lottery ticket hypothesis: a randomly initialized dense network contains a subnetwork that, trained in isolation from its initial weights, can match the test accuracy of the original network after training for at most the same number of iterations."
+  evidence:
+    - {work: "frankle-2018-lottery-ticket-hypothesis", role: original, locator: "p. 1", stance: for}
+
+- id: c-formal
+  type: definitional
+  text: "Formally, a mask m applied to the initial weights gives a subnetwork that reaches its minimum validation loss no later than the dense network, with test accuracy at least as high, and with far fewer parameters."
+  evidence:
+    - {work: "frankle-2018-lottery-ticket-hypothesis", role: original, locator: "p. 2", stance: for}
+
+- id: c-procedure
+  type: definitional
+  text: "A winning ticket is identified by training a randomly initialized network, pruning a share of its parameters to create a mask, and resetting the remaining parameters to their values from the initialization."
+  evidence:
+    - {work: "frankle-2018-lottery-ticket-hypothesis", role: original, locator: "p. 2", stance: for}
+
+- id: c-iterative
+  type: definitional
+  text: "Iterative pruning repeats the train, prune and reset cycle over several rounds, each pruning a share of the weights that survive the previous round, while one-shot pruning trains and prunes once."
+  evidence:
+    - {work: "frankle-2018-lottery-ticket-hypothesis", role: original, locator: "p. 2", stance: for}
+
+- id: c-ticket-size
+  type: empirical
+  text: "Frankle and Carbin consistently found winning tickets less than 10-20% of the size of several fully-connected and convolutional feed-forward architectures for MNIST and CIFAR10."
+  scope: {models: "Lenet 300-100 and the convolutional networks Conv-2, Conv-4 and Conv-6, among others", data: [mnist, cifar-10], scale: "up to about 20 million parameters", setting: "iterative magnitude pruning with reset to the initialization"}
+  evidence:
+    - {work: "frankle-2018-lottery-ticket-hypothesis", role: original, locator: "p. 1", stance: for}
+
+- id: c-faster-higher
+  type: empirical
+  text: "Above that size, the winning tickets learned faster than the original network and reached higher test accuracy."
+  scope: {models: "fully-connected and convolutional feed-forward networks", data: [mnist, cifar-10], scale: "up to about 20 million parameters", setting: "iterative magnitude pruning with reset to the initialization"}
+  evidence:
+    - {work: "frankle-2018-lottery-ticket-hypothesis", role: original, locator: "p. 1", stance: for}
+
+# Evidence
+
+- id: c-lenet-faster
+  type: empirical
+  text: "For Lenet, the winning tickets learn faster as Pm decreases from 100% to 21%, where early-stopping occurs 38% earlier than for the original network, and further pruning slows learning back to the original network at Pm = 3.6%."
+  scope: {models: "Lenet 300-100", data: [mnist], scale: "266K weights", setting: "Adam, iterative pruning at 20% per round"}
+  evidence:
+    - {work: "frankle-2018-lottery-ticket-hypothesis", role: original, locator: "p. 4", stance: for}
+
+- id: c-lenet-accuracy
+  type: empirical
+  text: "Lenet test accuracy increases with pruning, by more than 0.3 percentage points when Pm = 13.5%, and returns to the level of the original network when Pm = 3.6%."
+  scope: {models: "Lenet 300-100", data: [mnist], scale: "266K weights", setting: "Adam, iterative pruning at 20% per round"}
+  evidence:
+    - {work: "frankle-2018-lottery-ticket-hypothesis", role: original, locator: "p. 4", stance: for}
+
+- id: c-reinit-worse
+  type: empirical
+  text: "Randomly reinitialized Lenet tickets drop off from the original test accuracy when Pm = 21.1%, against 2.9% for the winning tickets, and at Pm = 21% the winning ticket reaches minimum validation loss 2.51x faster than when reinitialized."
+  scope: {models: "Lenet 300-100", data: [mnist], scale: "266K weights", setting: "Adam, iterative pruning at 20% per round, the same mask with a new random initialization"}
+  evidence:
+    - {work: "frankle-2018-lottery-ticket-hypothesis", role: original, locator: "p. 4", stance: for}
+  exp: [imp-mlp-synthetic]
+  small_scale: "yes"
+  small_scale_note: "Lenet on MNIST already shows the gap; this page shows it for a 20-100-100-2 MLP on synthetic data on a CPU in about a minute."
+
+- id: c-one-shot
+  type: empirical
+  text: "One-shot pruning also finds winning tickets, but iterative pruning extracts smaller ones, and repeated training makes them costly to find."
+  scope: {models: "Lenet 300-100", data: [mnist], scale: "266K weights", setting: "one-shot against iterative magnitude pruning"}
+  evidence:
+    - {work: "frankle-2018-lottery-ticket-hypothesis", role: original, locator: "p. 5", stance: for}
+
+- id: c-dropout
+  type: empirical
+  text: "Trained with a dropout rate of 0.5, Conv-2, Conv-4 and Conv-6 still have winning tickets, and iterative pruning raises their test accuracy by up to an additional 2.3, 4.6 and 4.7 percentage points."
+  scope: {models: "Conv-2, Conv-4 and Conv-6", data: [cifar-10], scale: "unknown", setting: "dropout at rate 0.5, iterative magnitude pruning with reset"}
+  evidence:
+    - {work: "frankle-2018-lottery-ticket-hypothesis", role: original, locator: "p. 6", stance: for}
+
+- id: c-global
+  type: empirical
+  text: "For the deeper Resnet-18 and VGG-19, Frankle and Carbin prune globally, removing the lowest-magnitude weights across all convolutional layers together instead of layer by layer."
+  scope: {models: "Resnet-18 and VGG-19", data: [cifar-10], scale: "about 0.27 to 20 million parameters", setting: "global magnitude pruning"}
+  evidence:
+    - {work: "frankle-2018-lottery-ticket-hypothesis", role: original, locator: "p. 7", stance: for}
+
+- id: c-warmup
+  type: empirical
+  text: "Training VGG-19 with warmup (k = 10000) at learning rate 0.1 makes it possible to find winning tickets that exceed the initial accuracy when Pm >= 1.5%."
+  scope: {models: "VGG-19", data: [cifar-10], scale: "20.0M parameters", setting: "SGD with momentum, linear learning rate warmup, global pruning"}
+  evidence:
+    - {work: "frankle-2018-lottery-ticket-hypothesis", role: original, locator: "p. 8", stance: for}
+
+- id: c-resnet-lr
+  type: empirical
+  text: "For Resnet-18, winning tickets trained with warmup reach 90.5% test accuracy at learning rate 0.03 (k = 20000) and Pm = 27.1%, but no hyperparameters gave winning tickets at the original learning rate, 0.1."
+  scope: {models: "Resnet-18", data: [cifar-10], scale: "271,000 parameters", setting: "SGD with momentum, warmup, global pruning"}
+  evidence:
+    - {work: "frankle-2018-lottery-ticket-hypothesis", role: original, locator: "p. 8", stance: for}
+
+- id: c-vgg-985
+  type: empirical
+  text: "VGG-19 networks pruned by up to 80% and randomly reinitialized match the original accuracy, but winning tickets exist down to 98.5% pruning, and reinitialized they reach much lower accuracy."
+  scope: {models: "VGG-19", data: [cifar-10], scale: "20.0M parameters", setting: "global pruning, winning tickets against random reinitialization"}
+  evidence:
+    - {work: "frankle-2018-lottery-ticket-hypothesis", role: original, locator: "p. 9", stance: for}
+
+- id: c-weights-move
+  type: empirical
+  text: "The winning ticket weights move further during training than the other weights."
+  scope: {models: "the networks of the study", data: [mnist, cifar-10], scale: "unknown", setting: "comparison of weight changes in training"}
+  evidence:
+    - {work: "frankle-2018-lottery-ticket-hypothesis", role: original, locator: "p. 9", stance: for}
+
+# Scope and conditions
+
+- id: c-cost-15
+  type: empirical
+  text: "Iterative pruning is computationally intensive, requiring training a network 15 or more times consecutively for multiple trials, and Frankle and Carbin did not investigate Imagenet."
+  scope: {models: "the networks of the study", data: [mnist, cifar-10], scale: "unknown", setting: "the authors' statement of limitations"}
+  evidence:
+    - {work: "frankle-2018-lottery-ticket-hypothesis", role: original, locator: "p. 9", stance: for}
+
+- id: c-hardware
+  type: empirical
+  text: "The sparse architectures that magnitude pruning produces are not optimized for modern libraries or hardware."
+  scope: {models: "unstructured sparse networks", data: [unknown], scale: "unknown", setting: "the authors' statement of limitations"}
+  evidence:
+    - {work: "frankle-2018-lottery-ticket-hypothesis", role: original, locator: "p. 9", stance: for}
+
+- id: c-liu-lr
+  type: empirical
+  text: "Liu et al. found that with the optimal learning rate, the winning ticket initialization brings no improvement over random initialization."
+  scope: {models: "VGG and ResNet networks", data: [cifar-10], scale: "unknown", setting: "unstructured and structured pruning, learning rate 0.1 against 0.01"}
+  evidence:
+    - {work: "liu-2018-rethinking-value-network-pruning", role: replication, locator: "p. 1", stance: against}
+
+- id: c-liu-small-lr
+  type: empirical
+  text: "In Liu et al.'s experiments the winning ticket helps only at the small learning rate 0.01, which gives lower accuracy than the learning rate 0.1."
+  scope: {models: "VGG-16 and ResNet-50", data: [cifar-10], scale: "unknown", setting: "unstructured magnitude pruning"}
+  evidence:
+    - {work: "liu-2018-rethinking-value-network-pruning", role: replication, locator: "p. 11", stance: against}
+
+- id: c-lmc-abstract
+  type: empirical
+  text: "IMP subnetworks reach full accuracy only when they are stable to SGD noise, which happens at initialization only in small settings such as MNIST and otherwise early in training, for ResNet-50 and Inception-v3 on ImageNet."
+  scope: {models: "LeNet, ResNet-20, VGG-16, ResNet-50 and Inception-v3", data: [mnist, cifar-10, imagenet], scale: "up to ImageNet networks", setting: "iterative magnitude pruning with rewinding, instability analysis"}
+  evidence:
+    - {work: "frankle-2019-linear-mode-connectivity-lottery", role: replication, locator: "p. 1", stance: for}
+
+- id: c-stability-onset
+  type: empirical
+  text: "Dense networks become stable to SGD noise early in training: ResNet-20 on CIFAR-10 at 3% of training and ResNet-50 on ImageNet at 20%."
+  scope: {models: "ResNet-20 and ResNet-50", data: [cifar-10, imagenet], scale: "up to ResNet-50", setting: "two copies trained with different SGD noise from the same point"}
+  evidence:
+    - {work: "frankle-2019-linear-mode-connectivity-lottery", role: original, locator: "p. 2", stance: for}
+
+- id: c-not-matching-k0
+  type: empirical
+  text: "Reset to iteration 0, the IMP subnetwork of LeNet reaches 98.2% against 98.3% for the full network, while those of ResNet-20 and ResNet-50 reach 88.5% and 73.7% against 91.7% and 76.1%."
+  scope: {models: "LeNet, ResNet-20 and ResNet-50", data: [mnist, cifar-10, imagenet], scale: "up to ResNet-50", setting: "IMP with reset to initialization, at the extreme sparsity of each network"}
+  evidence:
+    - {work: "frankle-2019-linear-mode-connectivity-lottery", role: replication, locator: "p. 4", stance: against}
+
+- id: c-matching-when-stable
+  type: empirical
+  text: "With rewinding to an early iteration, IMP subnetworks are matching when they are stable, while randomly pruned and randomly reinitialized subnetworks are unstable and not matching, except for LeNet."
+  scope: {models: "LeNet, ResNet-20, VGG-16, ResNet-50 and Inception-v3", data: [mnist, cifar-10, imagenet], scale: "up to ImageNet networks", setting: "IMP with rewinding to iteration k, instability analysis"}
+  evidence:
+    - {work: "frankle-2019-linear-mode-connectivity-lottery", role: original, locator: "p. 7", stance: for}
+
+# Explanations
+
+- id: c-conjecture
+  type: attributive
+  text: "Frankle and Carbin conjecture, without showing it empirically, that SGD seeks out and trains a well-initialized subnetwork, so overparameterized networks are easier to train because they have more combinations of subnetworks that are potential winning tickets."
+  evidence:
+    - {work: "frankle-2018-lottery-ticket-hypothesis", role: original, locator: "p. 9", stance: for}
+
+- id: c-zhou-sign
+  type: empirical
+  text: "Zhou et al. found that reinitialized tickets work when they keep the sign of the original initial weights, and that even a constant with the right sign performs well."
+  scope: {models: "fully connected and convolutional networks", data: [mnist, cifar-10], scale: "unknown", setting: "ablations of the lottery ticket procedure"}
+  evidence:
+    - {work: "zhou-2019-deconstructing-lottery-tickets", role: replication, locator: "p. 4", stance: for}
+
+- id: c-zhou-zero
+  type: empirical
+  text: "Setting pruned weights to zero matters: freezing them at zero works better than freezing them at their initial values."
+  scope: {models: "fully connected and convolutional networks", data: [mnist, cifar-10], scale: "unknown", setting: "ablations of the lottery ticket procedure"}
+  evidence:
+    - {work: "zhou-2019-deconstructing-lottery-tickets", role: replication, locator: "p. 5", stance: for}
+
+- id: c-supermask
+  type: empirical
+  text: "Masks applied to untrained networks, which Zhou et al. call supermasks, give test accuracy of up to 86% on MNIST and 41% on CIFAR-10."
+  scope: {models: "fully connected and convolutional networks", data: [mnist, cifar-10], scale: "unknown", setting: "masks applied to the initial weights without training"}
+  evidence:
+    - {work: "zhou-2019-deconstructing-lottery-tickets", role: original, locator: "p. 1", stance: for}
+
+- id: c-ramanujan
+  type: empirical
+  text: "Hidden in a randomly weighted Wide ResNet-50 is a subnetwork, with random weights, that is smaller than a trained ResNet-34 and matches its performance on ImageNet."
+  scope: {models: "Wide ResNet-50 and ResNet-34", data: [imagenet], scale: "ImageNet networks", setting: "edge-popup, with the weights never trained"}
+  evidence:
+    - {work: "ramanujan-2019-hidden-randomly-weighted-network", role: original, locator: "p. 1", stance: for}
+
+# Mathematics on this page
+
+- id: c-schedule
+  type: mathematical
+  text: "If each round removes the fraction p of the weights still alive, the fraction left after n rounds is (1 - p)^n."
+  assumes: ["each round removes the same fraction p of the alive weights", "0 < p < 1", "a removed weight stays removed"]
+  derivation: "derivations/pruning-schedule.md"
+
+- id: c-rounds
+  type: mathematical
+  text: "Reaching a remaining fraction s takes ceil(ln s / ln(1 - p)) rounds; at p = 0.2, reaching 10% takes 11 rounds and reaching 3.6% takes 15."
+  assumes: ["each round removes the same fraction p of the alive weights", "0 < p < 1", "0 < s < 1"]
+  derivation: "derivations/pruning-schedule.md"
+
+- id: c-per-round
+  type: mathematical
+  text: "Pruning the total fraction P in n equal rounds takes the rate 1 - (1 - P)^(1/n) per round, which is 20.6% for 90% in 10 rounds."
+  assumes: ["each round removes the same fraction of the alive weights", "0 < P < 1"]
+  derivation: "derivations/pruning-schedule.md"
+
+- id: c-lenet-schedule
+  type: mathematical
+  text: "With 20% per round on the hidden layers of Lenet 300-100-10 and 10% on its output layer, 7, 9, 15 and 16 rounds leave 21.1%, 13.5%, 3.6% and 2.9% of its 266,200 weights."
+  assumes: ["each layer is pruned at its own fixed rate", "the layer sizes are 784 x 300, 300 x 100 and 100 x 10"]
+  derivation: "derivations/pruning-schedule.md"
+
+- id: c-barrier-def
+  type: definitional
+  text: "The error barrier height between two networks is the highest error on the linear path between them minus the mean of the errors at its two ends, and a network is stable to SGD noise when the barrier between two trained copies is below 2%."
+  evidence:
+    - {work: "frankle-2019-linear-mode-connectivity-lottery", role: original, locator: "p. 3", stance: for}
+
+- id: c-barrier-bounds
+  type: mathematical
+  text: "The error barrier is at least half the gap between the two end errors, so it is never negative, and it equals that half gap when the error is convex along the path."
+  assumes: ["E maps a network to a real error", "the grid of alphas includes 0 and 1"]
+  derivation: "derivations/error-barrier.md"
+
+- id: c-barrier-grid
+  type: mathematical
+  text: "If the error is L-Lipschitz in alpha along the path, a grid of m evenly spaced alphas underestimates the barrier by at most L / (2 (m - 1)), which is L / 58 for 30 points."
+  assumes: ["the error along the path is L-Lipschitz in alpha", "the grid includes 0 and 1 and is evenly spaced"]
+  derivation: "derivations/error-barrier.md"
+
+- id: c-barrier-permutation
+  type: mathematical
+  text: "Two networks that differ only by a permutation of their hidden units have the same error, and the linear path between them can still have a positive barrier."
+  assumes: ["a feed-forward network with hidden units that can be permuted", "the error is computed on a fixed dataset"]
+  derivation: "derivations/error-barrier.md"
+
+# History
+
+- id: c-hist-frankle
+  type: empirical
+  text: "The Lottery Ticket Hypothesis: Finding Sparse, Trainable Neural Networks, by Jonathan Frankle and Michael Carbin of MIT CSAIL, published as a conference paper at ICLR 2019."
+  scope: {models: "not applicable", data: [], scale: "not applicable", setting: "publication record"}
+  evidence:
+    - {work: "frankle-2018-lottery-ticket-hypothesis", role: original, locator: "p. 1", stance: for}
+
+- id: c-hist-lmc
+  type: empirical
+  text: "Linear Mode Connectivity and the Lottery Ticket Hypothesis, by Frankle, Dziugaite, Roy and Carbin, appeared in the Proceedings of the 37th International Conference on Machine Learning in 2020."
+  scope: {models: "not applicable", data: [], scale: "not applicable", setting: "publication record"}
+  evidence:
+    - {work: "frankle-2019-linear-mode-connectivity-lottery", role: original, locator: "p. 1", stance: for}
