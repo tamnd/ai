@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/grokking/ (ai://NEW-grokking).
+# Part of https://ai.tamnd.com/grokking/ (ai://52PVZH).
 """Grokking in NumPy: the modular-addition task, the Fourier algorithm that solves it, and a small model to train on it.
 
 modular_addition_split builds the table a + b mod p and splits its p * p rows at random into a training and a test

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/rms-normalization/ (ai://NEW-rms-normalization).
+# Part of https://ai.tamnd.com/rms-normalization/ (ai://3FZB17).
 """RMSNorm and pRMSNorm as a torch.nn.Module, the PyTorch reference.
 
 The forward pass is eq-rms, or eq-prms when p < 1, over the last axis. Autograd gives the backward pass, and the

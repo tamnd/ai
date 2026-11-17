@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/multilayer-perceptron/ (ai://NEW-multilayer-perceptron).
+# Part of https://ai.tamnd.com/multilayer-perceptron/ (ai://YA59M7).
 """Tests of the PyTorch reference: the shared fixture, the shape contract, gradcheck, XOR and training."""
 
 import json

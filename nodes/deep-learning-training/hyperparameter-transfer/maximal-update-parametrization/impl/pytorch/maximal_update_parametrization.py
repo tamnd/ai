@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/maximal-update-parametrization/ (ai://NEW-maximal-update-parametrization).
+# Part of https://ai.tamnd.com/maximal-update-parametrization/ (ai://4VJECR).
 """The maximal update parametrization (muP) of an MLP in PyTorch, with the standard parametrization (SP) for contrast.
 
 layer_hparams is the same map as the NumPy reference (eq-mup-sgd, eq-mup-adam); attention_logits is eq-attn;

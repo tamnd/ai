@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/batch-normalization/ (ai://NEW-batch-normalization).
+# Part of https://ai.tamnd.com/batch-normalization/ (ai://TD3H76).
 """Tests of the NumPy reference: the worked example, the gradient, the running statistics, evaluation mode, the
 convolutional case and agreement with torch.nn.BatchNorm1d and torch.nn.BatchNorm2d when PyTorch is installed."""
 

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/speculative-decoding/ (ai://NEW-speculative-decoding).
+# Part of https://ai.tamnd.com/speculative-decoding/ (ai://JKWQF4).
 """Speculative decoding in NumPy, over a vocabulary of V tokens. A distribution is a 1-D array of V probabilities;
 p is the target model's next-token distribution and q the draft model's, in the notation of Leviathan et al.
 

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/sparse-mixture-of-experts/ (ai://NEW-sparse-mixture-of-experts).
+# Part of https://ai.tamnd.com/sparse-mixture-of-experts/ (ai://1H67K0).
 """Sparse mixture of experts in PyTorch.
 
 top_k_route picks each token's k experts and their gates: the router probability for k = 1, as in Switch Transformers,

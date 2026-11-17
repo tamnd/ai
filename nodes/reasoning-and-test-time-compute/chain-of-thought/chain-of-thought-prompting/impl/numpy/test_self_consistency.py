@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/chain-of-thought-prompting/ (ai://NEW-chain-of-thought-prompting).
+# Part of https://ai.tamnd.com/chain-of-thought-prompting/ (ai://WFY2QB).
 """Tests of the reference: answer extraction, the pure-Python vote against the NumPy vote, the tie rule, the weighted
 votes of Wang et al., the exact vote accuracy against enumeration and simulation, the step identity and the limits of
 derivations/majority-vote.md, the benchmark where voting lowers accuracy, and the worked example of the page."""

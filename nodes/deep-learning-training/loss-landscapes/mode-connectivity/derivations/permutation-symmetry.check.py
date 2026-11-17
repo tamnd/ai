@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/mode-connectivity/ (ai://NEW-mode-connectivity).
+# Part of https://ai.tamnd.com/mode-connectivity/ (ai://MDXMTA).
 # Check of derivations/permutation-symmetry.md: a hidden-unit permutation leaves a one-hidden-layer network
 # unchanged; the segment between the |x| network and its swapped copy has barrier 1 at alpha = 1/2; and weight
 # matching by one linear assignment on C finds the permutation of least distance, against brute force.

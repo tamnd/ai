@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/direct-preference-optimization/ (ai://NEW-direct-preference-optimization).
+# Part of https://ai.tamnd.com/direct-preference-optimization/ (ai://CZW0BQ).
 """Tests of the PyTorch code: the worked example and the shared fixture, agreement with a hand-built reference written
 with F.logsigmoid in the indexed form of the paper's appendix, the gradient weight sigmoid(r_l - r_w) from autograd,
 the detached reference and rewards, stability, the IPO loss, sequence log-probabilities with the one-token shift,

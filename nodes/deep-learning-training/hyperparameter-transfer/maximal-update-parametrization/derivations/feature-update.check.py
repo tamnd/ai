@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/maximal-update-parametrization/ (ai://NEW-maximal-update-parametrization).
+# Part of https://ai.tamnd.com/maximal-update-parametrization/ (ai://4VJECR).
 # Check of derivations/feature-update.md: an update aligned with its input moves W x by n times its entry size (law
 # of large numbers), a random matrix only by sqrt(n) times (central limit); after one SGD step SP moves the output by
 # Theta(n eta), the last hidden preactivations by Theta(sqrt(n) eta) and the first by Theta(eta / sqrt(n)); after one

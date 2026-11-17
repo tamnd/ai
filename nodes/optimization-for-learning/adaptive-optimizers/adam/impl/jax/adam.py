@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/adam/ (ai://NEW-adam).
+# Part of https://ai.tamnd.com/adam/ (ai://88GHGT).
 """Adam, AdamW and AMSGrad as pure functions on pytrees, the JAX reference.
 
 init returns the state and update returns the new parameters and state, so a training step can be jitted. The update

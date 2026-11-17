@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/gradient-checkpointing/ (ai://NEW-gradient-checkpointing).
+# Part of https://ai.tamnd.com/gradient-checkpointing/ (ai://C4TQW1).
 # Check of derivations/segment-memory.md: a step-by-step simulation of the segment schedule gives the peak
 # k + floor(n / k) and 2n - k layer forwards; enumeration over k finds the minimum 2q at k = q when n = q^2.
 import math

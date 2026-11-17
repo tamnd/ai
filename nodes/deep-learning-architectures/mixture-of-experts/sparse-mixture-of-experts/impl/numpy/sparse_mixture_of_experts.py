@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/sparse-mixture-of-experts/ (ai://NEW-sparse-mixture-of-experts).
+# Part of https://ai.tamnd.com/sparse-mixture-of-experts/ (ai://1H67K0).
 """Sparse mixture of experts in NumPy. Tokens are rows, experts columns.
 
 top_k_gates is eq-noisy-top-k and noisy_logits eq-noisy-logits; expert_capacity is eq-capacity and dispatch fills

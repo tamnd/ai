@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/gradient-checkpointing/ (ai://NEW-gradient-checkpointing).
+# Part of https://ai.tamnd.com/gradient-checkpointing/ (ai://C4TQW1).
 # Check of derivations/transformer-memory.md: the term-by-term bytes of one transformer layer add up to
 # sbh(34 + 5as/h), and the attention-score share is 70% for GPT-3 and 65% for MT-NLG.
 from fractions import Fraction

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/distillation/ (ai://NEW-distillation).
+# Part of https://ai.tamnd.com/distillation/ (ai://JGNGHC).
 # Check of derivations/soft-target-gradient.md: the soft cross-entropy C = -sum p log q with p = softmax(v/T) and
 # q = softmax(z/T) has gradient (q - p)/T in the student logits z; the KL divergence differs from C by the teacher
 # entropy and has the same gradient; the gradient sums to zero and the loss is shift invariant; and the combined loss

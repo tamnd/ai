@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/edge-of-stability/ (ai://NEW-edge-of-stability).
+# Part of https://ai.tamnd.com/edge-of-stability/ (ai://17Q1PD).
 # Check of derivations/catapult-update.md: for f = v.u / sqrt(n) and L = f^2 / 2, one gradient step gives exactly
 # f' = (1 - eta lam + eta^2 f^2 / n) f and lam' = lam + eta f^2 / n (eta lam - 4); and the lazy, catapult and divergent
 # phases at eta below 2 / lam0, between 2 / lam0 and 4 / lam0, and above 4 / lam0.

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/critical-batch-size/ (ai://NEW-critical-batch-size).
+# Part of https://ai.tamnd.com/critical-batch-size/ (ai://X29NFT).
 """Tests of the PyTorch code: per-example gradients against single-example backward passes; the estimators, the
 quadratic model and the trade-off fit against values of the NumPy reference (impl/numpy) on the same fixed inputs; the
 two-batch estimate from a real model's local and averaged gradients; and the moving-average module, its buffers and

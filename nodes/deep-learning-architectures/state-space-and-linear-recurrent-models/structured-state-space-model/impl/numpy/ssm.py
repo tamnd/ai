@@ -26,6 +26,21 @@ def config(h=2, n=4, method="zoh", dt_min=1e-3, dt_max=1e-1):
     return {"h": int(h), "n": int(n), "method": method, "dt_min": float(dt_min), "dt_max": float(dt_max)}
 
 
+def param_count(cfg):
+    """Real numbers of the layer: per feature log dt and D, then A, B and C with a complex entry counted as 2."""
+    h, n = cfg["h"], cfg["n"]
+    return h * (6 * n + 2)  # 3N + 2 per feature, with N = 2n
+
+
+def flops(cfg, batch, length):
+    """FLOPs of the products of forward_conv, a multiply-add counted as 2: the sum over the state in the kernel.
+
+    The FFT, the powers and the skip term are left out. The kernel does not depend on the batch.
+    """
+    del batch
+    return 2 * cfg["h"] * cfg["n"] * length
+
+
 def s4d_lin(n):
     """The S4D-Lin initialization: A_k = -1/2 + i pi k."""
     k = np.arange(n)

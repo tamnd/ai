@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/maximal-update-parametrization/ (ai://NEW-maximal-update-parametrization).
+# Part of https://ai.tamnd.com/maximal-update-parametrization/ (ai://4VJECR).
 # Check of derivations/multiplier-equivalence.md: a layer A W x with W ~ N(0, B^2) and learning rate C computes the
 # same function at every step after (A, B, C) -> (A t, B / t, C / t^2) under SGD and (A t, B / t, C / t) under Adam
 # with epsilon 0; so the readout of Table 3 (A = 1, B^2 = 1/n^2, C = eta/n) equals the readout with multiplier 1/n,

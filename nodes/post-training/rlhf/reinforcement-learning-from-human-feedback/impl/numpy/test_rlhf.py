@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/reinforcement-learning-from-human-feedback/ (ai://NEW-reinforcement-learning-from-human-feedback).
+# Part of https://ai.tamnd.com/reinforcement-learning-from-human-feedback/ (ai://6XVY3X).
 """Tests of the NumPy reference: the worked example, the fixture shared with the PyTorch and JAX tests, the gradient
 and the shift invariance of the Bradley-Terry loss, rankings of K responses, the KL-shaped reward and its masking,
 the clipped surrogate of PPO, PPO-ptx, the KL-regularized optimum, and DPO."""

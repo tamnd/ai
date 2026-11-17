@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/qk-layernorm/ (ai://NEW-qk-layernorm).
+# Part of https://ai.tamnd.com/qk-layernorm/ (ai://B6PWZA).
 """QK-layernorm attention, the z-loss and the attention-entropy diagnostic, the PyTorch reference.
 
 The functions mirror the NumPy reference. Autograd gives the gradients; the tests compare the z-loss

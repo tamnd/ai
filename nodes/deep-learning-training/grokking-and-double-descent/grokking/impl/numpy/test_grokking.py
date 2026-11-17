@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/grokking/ (ai://NEW-grokking).
+# Part of https://ai.tamnd.com/grokking/ (ai://52PVZH).
 """Tests of the NumPy reference: the modular-addition split; the Fourier algorithm, exact at p = 113 with the five
 key frequencies, equal to the direct cosine sum, peaked at a + b mod p, and at -1/2 on every wrong answer when all
 frequencies are used; a composite modulus that breaks it; pure weight decay; the hand-written gradient against finite

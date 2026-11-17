@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/distillation/ (ai://NEW-distillation).
+# Part of https://ai.tamnd.com/distillation/ (ai://JGNGHC).
 # Check of derivations/high-temperature-limit.md: as T grows, softmax(x/T) = 1/N + (x - mean x)/(N T) + O(1/T^2); the
 # soft gradient (q - p)/T is O(1/T^2); T^2 times it tends to (centred z - centred v)/N with error O(1/T), which is the
 # gradient of logit matching (1/2N) sum (z - v)^2 for zero-mean logits; and T^2 KL(p || q) tends to (1/2N) sum delta^2.

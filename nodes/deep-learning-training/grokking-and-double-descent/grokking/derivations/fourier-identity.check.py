@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/grokking/ (ai://NEW-grokking).
+# Part of https://ai.tamnd.com/grokking/ (ai://52PVZH).
 # Check of derivations/fourier-identity.md: sum_k alpha_k cos(w_k (a + b - c)), w_k = 2 pi k / p, computed through the
 # angle-sum identities, is largest at c = a + b mod p and only there for a prime p and positive weights; with all
 # frequencies 1..(p-1)/2 it is (p-1)/2 at the answer and -1/2 elsewhere; at p = 113 with k in {14, 35, 41, 42, 52} the

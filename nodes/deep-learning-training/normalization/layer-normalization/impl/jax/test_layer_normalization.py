@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/layer-normalization/ (ai://NEW-layer-normalization).
+# Part of https://ai.tamnd.com/layer-normalization/ (ai://RA5R92).
 """Tests of the JAX reference: the worked example, jax.grad against eq-ln-backward and eq-rms-backward, finite
 differences, the Jacobian, the invariances, independence from the batch, and the two placements."""
 

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/speculative-decoding/ (ai://NEW-speculative-decoding).
+# Part of https://ai.tamnd.com/speculative-decoding/ (ai://JKWQF4).
 # Check of derivations/speculative-sampling.md: accepting x ~ q with probability min(1, p(x)/q(x)) and otherwise
 # resampling from norm(max(0, p - q)) outputs exactly p, the acceptance probability is sum min(p, q) = 1 - TV(p, q),
 # it is 1 iff p = q and 0 iff the supports are disjoint, and a one-hot p always outputs its token.

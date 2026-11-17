@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/early-stopping/ (ai://NEW-early-stopping).
+# Part of https://ai.tamnd.com/early-stopping/ (ai://VR3ZRP).
 # Check of derivations/patience.md: the patience rule stops exactly p evaluations after its last improvement b;
 # every evaluation before b is worse than the value at b, every one after is at least that value minus min_delta;
 # on a curve that falls to m and then does not fall it returns m and stops at m + p; a flat stretch of p evaluations

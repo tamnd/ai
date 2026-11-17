@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/layer-normalization/ (ai://NEW-layer-normalization).
+# Part of https://ai.tamnd.com/layer-normalization/ (ai://RA5R92).
 # Check of derivations/invariances.md: the invariances of layer normalization to weight matrix re-scaling and
 # re-centering and to single case re-scaling, the two counterexamples, and the gradient with respect to the weights.
 import numpy as np

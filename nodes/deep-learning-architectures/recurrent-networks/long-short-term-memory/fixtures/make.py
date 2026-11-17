@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/long-short-term-memory/ (ai://NEW-long-short-term-memory).
+# Part of https://ai.tamnd.com/long-short-term-memory/ (ai://YVW8D3).
 """Write the shared fixtures of the LSTM layer from the NumPy reference (spec 08.7.2).
 
 Run it from anywhere: python fixtures/make.py. It writes params-small.npz, input-small.npz, expected-small.npz

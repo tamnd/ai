@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/mode-connectivity/ (ai://NEW-mode-connectivity).
+# Part of https://ai.tamnd.com/mode-connectivity/ (ai://MDXMTA).
 # Check of derivations/loss-barrier.md: both barriers are non-negative; for a convex loss B_lin = 0 and
 # B_mean = |L0 - L1| / 2; and |B_mean - B_lin| <= |L0 - L1| / 2, with equal gaps at t = 1/2.
 import numpy as np

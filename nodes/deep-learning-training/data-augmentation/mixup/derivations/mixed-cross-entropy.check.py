@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/mixup/ (ai://NEW-mixup).
+# Part of https://ai.tamnd.com/mixup/ (ai://8X8XEV).
 # Check of derivations/mixed-cross-entropy.md: the cross-entropy against the mixed target lam e_i + (1 - lam) e_j is
 # lam CE(y_i) + (1 - lam) CE(y_j); its gradient in the logits is p minus the mixed target; mixing a minibatch with a
 # permutation of itself gives the same loss and weight gradient in the soft-target and two-label forms.

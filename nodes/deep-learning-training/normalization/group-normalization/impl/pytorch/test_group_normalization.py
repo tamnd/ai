@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/group-normalization/ (ai://NEW-group-normalization).
+# Part of https://ai.tamnd.com/group-normalization/ (ai://QFEJMP).
 """Tests of the PyTorch reference: the worked example and the shared fixture of the NumPy tests, autograd against the
 closed-form gradient, the special cases G = 1 and G = C, batch normalization with one example, independence from the
 batch, and agreement with torch.nn.GroupNorm, torch.nn.InstanceNorm2d and torch.nn.LayerNorm."""

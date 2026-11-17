@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/weak-to-strong-generalization/ (ai://NEW-weak-to-strong-generalization).
+# Part of https://ai.tamnd.com/weak-to-strong-generalization/ (ai://G0ZGHC).
 # Check of derivations/pgr.md: PGR = (w2s - weak) / (ceiling - weak) is 0 at the weak performance and 1 at the
 # ceiling, undefined at a zero gap and unbounded near it, invariant under P -> aP + b with a != 0, outside [0, 1]
 # when the student is worse than the supervisor or better than the ceiling, and 0 when the student copies the supervisor.

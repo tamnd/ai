@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/multi-head-attention/ (ai://NEW-multi-head-attention).
+# Part of https://ai.tamnd.com/multi-head-attention/ (ai://ND4EXH).
 # Check of derivations/backward.md: the gradients of multi-head attention against finite differences, the zero
 # row sums of the score gradient, and the zero gradient of the masked scores.
 import numpy as np

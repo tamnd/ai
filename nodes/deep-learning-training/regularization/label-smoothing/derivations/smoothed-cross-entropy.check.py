@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/label-smoothing/ (ai://NEW-label-smoothing).
+# Part of https://ai.tamnd.com/label-smoothing/ (ai://98TJG9).
 # Check of derivations/smoothed-cross-entropy.md: the cross-entropy with the smoothed target (1 - eps) delta_y + eps u
 # is (1 - eps) NLL + eps H(u, p); for uniform u it is (1 - eps) NLL + eps KL(u || p) + eps log K; -H(p) is
 # KL(p || u) - log K; label dropout averages to the smoothed target; and the gradient in the logits is p - q'.

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/distillation/ (ai://NEW-distillation).
+# Part of https://ai.tamnd.com/distillation/ (ai://JGNGHC).
 """Knowledge distillation in PyTorch.
 
 distillation_loss is eq-kd-loss: alpha * T^2 * KL(softmax(teacher / T) || softmax(student / T)), averaged over the

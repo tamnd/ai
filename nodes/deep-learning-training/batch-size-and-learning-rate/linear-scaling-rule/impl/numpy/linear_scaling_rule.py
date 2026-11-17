@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/linear-scaling-rule/ (ai://NEW-linear-scaling-rule).
+# Part of https://ai.tamnd.com/linear-scaling-rule/ (ai://JDMWH4).
 """The linear scaling rule and the gradient noise scale in NumPy.
 
 scale_learning_rate applies the linear rule of Goyal et al. (eq-linear-rule), or the square-root rule, to move a learning

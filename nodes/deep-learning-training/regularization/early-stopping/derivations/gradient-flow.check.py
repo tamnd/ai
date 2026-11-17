@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/early-stopping/ (ai://NEW-early-stopping).
+# Part of https://ai.tamnd.com/early-stopping/ (ai://VR3ZRP).
 # Check of derivations/gradient-flow.md: gradient flow from zero on least squares is the filter 1 - exp(-s tau); k
 # steps of gradient descent with step eta, eta s_max <= 1, are within (eta / 2) |X^T y / n| of the flow at tau = k eta
 # for every k; and the flow filter lies between the ridge filter at lam = 1 / tau and 1.2985 times it.

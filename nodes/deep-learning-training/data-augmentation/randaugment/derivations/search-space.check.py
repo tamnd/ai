@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/randaugment/ (ai://NEW-randaugment).
+# Part of https://ai.tamnd.com/randaugment/ (ai://88YEPR).
 # Check of derivations/search-space.md: AutoAugment has (16 * 10 * 11) ** 10 policies, about 2.9e32, and a RandAugment
 # grid search tries |N values| * |M values| settings.
 import itertools

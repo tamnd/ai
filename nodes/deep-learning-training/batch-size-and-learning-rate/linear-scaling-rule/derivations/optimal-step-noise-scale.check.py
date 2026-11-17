@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/linear-scaling-rule/ (ai://NEW-linear-scaling-rule).
+# Part of https://ai.tamnd.com/linear-scaling-rule/ (ai://JDMWH4).
 # Check of derivations/optimal-step-noise-scale.md: on a quadratic L(theta) = theta.H theta / 2 + c with per-example
 # gradients of mean G and covariance Sigma, the expected loss after the step theta - eps G_est with a batch of B is
 # L - eps |G|^2 + eps^2 (G.HG + tr(H Sigma) / B) / 2; its minimizer is eps_max / (1 + B_noise / B) with

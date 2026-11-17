@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/learning-rate-warmup/ (ai://NEW-learning-rate-warmup).
+# Part of https://ai.tamnd.com/learning-rate-warmup/ (ai://MA8ACN).
 """Tests of the NumPy reference: the worked example of the page (Goyal et al.'s ramp, the Transformer schedule and
 RAdam's rectification), the algebra of the derivation, and the shared RAdam fixture."""
 

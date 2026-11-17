@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/weight-decay/ (ai://NEW-weight-decay).
+# Part of https://ai.tamnd.com/weight-decay/ (ai://DD5QVM).
 # Check of derivations/map-gaussian-prior.md: the MAP estimate under a Gaussian prior N(0, s_p^2 I) minimizes the
 # negative log likelihood plus |theta|^2 / (2 s_p^2); for a linear model with Gaussian noise of variance s^2 it is
 # ridge regression with lam = s^2 / s_p^2; that lam minimizes the expected squared error of the weights (the optimal

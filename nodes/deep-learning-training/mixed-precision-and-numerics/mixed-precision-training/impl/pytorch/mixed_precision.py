@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/mixed-precision-training/ (ai://NEW-mixed-precision-training).
+# Part of https://ai.tamnd.com/mixed-precision-training/ (ai://EPEFQ9).
 """Mixed precision training in PyTorch, written out by hand.
 
 DynamicLossScaler keeps a loss scale S as torch.amp.GradScaler does: scale multiplies the loss by S, unscale_ divides
