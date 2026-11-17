@@ -1,0 +1,378 @@
+# The claims of the RandAugment page (spec 07). The build computes the labels.
+
+# Setting: AutoAugment
+
+- id: c-aa-policy
+  type: definitional
+  text: "In AutoAugment, a policy consists of 5 sub-policies, each sub-policy consists of two image operations applied in sequence, and each operation is associated with two hyperparameters: the probability of applying the operation and the magnitude of the operation."
+  evidence:
+    - {work: "cubuk-2018-autoaugment", role: original, locator: "Section 3", stance: for}
+
+- id: c-aa-ops
+  type: definitional
+  text: "The AutoAugment search space has 16 operations, ShearX/Y, TranslateX/Y, Rotate, AutoContrast, Invert, Equalize, Solarize, Posterize, Contrast, Color, Brightness, Sharpness, Cutout and Sample Pairing; the range of magnitudes is discretized into 10 values and the probability of applying an operation into 11 values."
+  evidence:
+    - {work: "cubuk-2018-autoaugment", role: original, locator: "Section 3", stance: for}
+
+- id: c-aa-space-count
+  type: mathematical
+  text: "The AutoAugment search space with 5 sub-policies has (16×10×11)^10 ≈ 2.9×10^32 possibilities."
+  assumes: ["each operation slot picks an operation, a magnitude and a probability independently", "5 sub-policies of 2 operations each"]
+  derivation: "derivations/search-space.md"
+  evidence:
+    - {work: "cubuk-2018-autoaugment", role: original, locator: "Section 3", stance: for}
+
+- id: c-aa-controller
+  type: attributive
+  text: "The AutoAugment search uses a controller recurrent neural network trained with the Proximal Policy Optimization algorithm; the controller has 30 softmax predictions to predict 5 sub-policies, each with 2 operations, and on each dataset it samples about 15,000 policies."
+  evidence:
+    - {work: "cubuk-2018-autoaugment", role: original, locator: "Section 3", stance: for}
+
+- id: c-aa-final
+  type: attributive
+  text: "AutoAugment concatenates the sub-policies of the best 5 policies into a single policy with 25 sub-policies, which is used to train the models for each dataset."
+  evidence:
+    - {work: "cubuk-2018-autoaugment", role: original, locator: "Section 3", stance: for}
+
+- id: c-aa-reduced
+  type: attributive
+  text: "AutoAugment searches for CIFAR-10 policies on reduced CIFAR-10, which consists of 4,000 randomly chosen examples, to save time for training child models."
+  evidence:
+    - {work: "cubuk-2018-autoaugment", role: original, locator: "p. 4", stance: for}
+
+- id: c-aa-reduced-imagenet
+  type: attributive
+  text: "AutoAugment searches for ImageNet policies on a reduced subset of the ImageNet training set, with 120 classes and 6,000 samples."
+  evidence:
+    - {work: "cubuk-2018-autoaugment", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-aa-results
+  type: empirical
+  text: "AutoAugment reduced the CIFAR-10 test error of Wide-ResNet-28-10 from 3.9 with the baseline and 3.1 with Cutout to 2.6, and of PyramidNet+ShakeDrop from 2.7 and 2.3 to 1.5."
+  scope:
+    models: "Wide-ResNet-28-10 and PyramidNet+ShakeDrop"
+    data: [cifar-10]
+    scale: "50,000 training images"
+    setting: "the policy searched on reduced CIFAR-10, applied after flips and pad-and-crop and before Cutout"
+  evidence:
+    - {work: "cubuk-2018-autoaugment", role: original, locator: "Table 2", stance: for}
+
+- id: c-aa-imagenet
+  type: empirical
+  text: "On ImageNet, AutoAugment raised the Top-1 / Top-5 accuracy of ResNet-50 from 76.3 / 93.1 to 77.6 / 93.8."
+  scope:
+    models: "ResNet-50"
+    data: [imagenet]
+    scale: "the full ImageNet training set"
+    setting: "the policy searched on 120 classes and 6,000 samples"
+  evidence:
+    - {work: "cubuk-2018-autoaugment", role: original, locator: "Section 4.2", stance: for}
+
+# The method: RandAugment
+
+- id: c-ra-ops
+  type: definitional
+  text: "RandAugment chooses which transformations to apply out of K=14 available transformations: identity, autoContrast, equalize, rotate, solarize, color, posterize, contrast, brightness, sharpness, shear-x, shear-y, translate-x and translate-y."
+  evidence:
+    - {work: "cubuk-2019-randaugment", role: original, locator: "Section 3", stance: for}
+
+- id: c-ra-uniform
+  type: definitional
+  text: "RandAugment selects each of the K transformations with uniform probability, so given N transformations for a training image it may express K^N potential policies."
+  evidence:
+    - {work: "cubuk-2019-randaugment", role: original, locator: "Section 3", stance: for}
+
+- id: c-ra-magnitude
+  type: definitional
+  text: "Each transformation resides on an integer scale from 0 to 10 where a value of 10 indicates the maximum scale, and RandAugment uses a single global distortion M for all transformations."
+  evidence:
+    - {work: "cubuk-2019-randaugment", role: original, locator: "Section 3", stance: for}
+
+- id: c-ra-code
+  type: definitional
+  text: "In the Python code of RandAugment, sampled_ops = np.random.choice(transforms, N) and the function returns the pairs (op, M) for op in sampled_ops, where N is the number of augmentation transformations to apply sequentially and M the magnitude for all the transformations."
+  evidence:
+    - {work: "cubuk-2019-randaugment", role: original, locator: "Figure 2", stance: for}
+
+- id: c-ra-30params
+  type: attributive
+  text: "Cubuk et al. write that previous learned augmentation methods contained 30+ parameters, and focus on vastly reducing the parameter space for data augmentation."
+  evidence:
+    - {work: "cubuk-2019-randaugment", role: original, locator: "Section 3", stance: for}
+
+- id: c-ra-schedules
+  type: empirical
+  text: "Four schedules of the magnitude M, constant magnitude, random magnitude, a linearly increasing magnitude and a random magnitude with increasing upper bound, gave CIFAR-10 accuracies between 97.2 and 97.3 with Wide-ResNet-28-10."
+  scope:
+    models: "Wide-ResNet-28-10"
+    data: [cifar-10]
+    scale: "200 epochs, average of 10 runs"
+    setting: "the validation set"
+  evidence:
+    - {work: "cubuk-2019-randaugment", role: original, locator: "p. 12", stance: for}
+
+- id: c-ra-tied
+  type: empirical
+  text: "The difference in accuracy between the tied magnitude and the optimal one found for a single transformation was 0.19% ± 0.18% for the rotation experiments and 0.07% ± 0.05% for the TranslateX experiments."
+  scope:
+    models: "Wide-ResNet-28-2 and Wide-ResNet-28-10"
+    data: [cifar-10]
+    scale: "unknown"
+    setting: "one transformation's magnitude searched while the others are tied"
+  evidence:
+    - {work: "cubuk-2019-randaugment", role: original, locator: "p. 13", stance: for}
+
+- id: c-ra-space
+  type: attributive
+  text: "Cubuk et al. give the search space of AutoAugment and Fast AutoAugment as 10^32, of PBA as 10^61 and of RandAugment as 10^2."
+  evidence:
+    - {work: "cubuk-2019-randaugment", role: original, locator: "Table 1", stance: for}
+
+- id: c-ra-grid-count
+  type: mathematical
+  text: "A grid search over N in {1, 2, 3} and M in {5, 7, 9, 11, 13, 15} tries 18 settings, and the whole range N in {1, 2, 3}, M in {0, ..., 10} has 33."
+  assumes: ["a RandAugment policy is fixed by the pair (N, M)"]
+  derivation: "derivations/search-space.md"
+
+- id: c-hit-probability
+  type: mathematical
+  text: "With N operations drawn uniformly with replacement from K, a given operation is drawn at least once with probability 1 − (1 − 1/K)^N; for K = 14 this is 27/196 ≈ 0.138 at N = 2 and 547/2744 ≈ 0.199 at N = 3."
+  assumes: ["the draws are independent and uniform on the K operations, with replacement"]
+  derivation: "derivations/hit-probability.md"
+
+- id: c-distinct-ops
+  type: mathematical
+  text: "With N = 2 draws from K = 14 operations, the list repeats an operation with probability 1/14 and holds 27/14 ≈ 1.93 distinct operations on average."
+  assumes: ["the draws are independent and uniform on the K operations, with replacement"]
+  derivation: "derivations/hit-probability.md"
+
+# Evidence: RandAugment
+
+- id: c-ra-proxy-size
+  type: empirical
+  text: "The optimal distortion magnitude grows with network size, larger networks demand larger data distortions for regularization, and it is larger for models trained on larger training sets; models trained on smaller training sets may gain more improvement from data augmentation (3.0% versus 1.5%)."
+  scope:
+    models: "Wide-ResNet-28 of several widths"
+    data: [cifar-10]
+    scale: "training sets of several sizes"
+    setting: "a sweep of the global distortion magnitude"
+  evidence:
+    - {work: "cubuk-2019-randaugment", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-ra-cifar
+  type: empirical
+  text: "On CIFAR-10, RandAugment gave 97.3% test accuracy with Wide-ResNet-28-10 against 97.4% for AutoAugment and 96.1% for the baseline, and 98.5% with PyramidNet, the same as AutoAugment; on CIFAR-100 it gave 83.3% with Wide-ResNet-28-10 against 82.9% for AutoAugment."
+  scope:
+    models: "Wide-ResNet-28-10, PyramidNet"
+    data: [cifar-10, cifar-100]
+    scale: "50,000 training images"
+    setting: "default augmentations of flips, pad-and-crop and Cutout in every column"
+  evidence:
+    - {work: "cubuk-2019-randaugment", role: original, locator: "Table 2", stance: for}
+
+- id: c-ra-cifar-grid
+  type: attributive
+  text: "On CIFAR-100, Cubuk et al. sampled 2 and 4 settings for N and M, N = {1, 2} and M = {2, 6, 10, 14}; for Wide-ResNet-28-2 and Wide-ResNet-28-10, N = 1, M = 2 and N = 2, M = 14 achieve the best results, respectively."
+  evidence:
+    - {work: "cubuk-2019-randaugment", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-ra-svhn
+  type: empirical
+  text: "On the SVHN core set, RandAugment applied to Wide-ResNet-28-2 improved performance more than augmenting with 531K additional training images."
+  scope:
+    models: "Wide-ResNet-28-2"
+    data: [svhn]
+    scale: "the core training set of 73K images against 531K extra images"
+    setting: "test accuracy, Table 2"
+  evidence:
+    - {work: "cubuk-2019-randaugment", role: original, locator: "Section 4.3", stance: for}
+
+- id: c-ra-imagenet
+  type: empirical
+  text: "On ImageNet, RandAugment matched AutoAugment and Fast AutoAugment on ResNet-50 at 77.6% top-1, and gave 85.0% top-1 with EfficientNet-B7, against 84.4% for AutoAugment and 84.0% for the baseline."
+  scope:
+    models: "ResNet-50, EfficientNet-B5, EfficientNet-B7"
+    data: [imagenet]
+    scale: "the full ImageNet training set"
+    setting: "N and M tuned on a held-out set"
+  evidence:
+    - {work: "cubuk-2019-randaugment", role: original, locator: "Table 3", stance: for}
+
+- id: c-ra-imagenet-grid
+  type: attributive
+  text: "For ResNet-50 on ImageNet, the distortion magnitudes tried were 5, 7, 9, 11, 13, 15 and the values of N tried were 1, 2 and 3, and the optimal distortion magnitude was 9 with N = 2."
+  evidence:
+    - {work: "cubuk-2019-randaugment", role: original, locator: "p. 13", stance: for}
+
+- id: c-ra-proxy-imagenet
+  type: attributive
+  text: "Cubuk et al. note that Cutout substantially improves CIFAR and SVHN performance but fails to improve ImageNet, and that the AutoAugment proxy task for ImageNet was restricted to about 10% of the 1000 ImageNet classes."
+  evidence:
+    - {work: "cubuk-2019-randaugment", role: original, locator: "Section 4.4", stance: for}
+
+- id: c-ra-coco
+  type: empirical
+  text: "On COCO object detection, RandAugment gave 40.1 mAP with ResNet-101 against 40.4 for AutoAugment and 38.8 for the baseline."
+  scope:
+    models: "RetinaNet with a ResNet-101 backbone"
+    data: [coco]
+    scale: "300 epochs from random initialization"
+    setting: "object detection"
+  evidence:
+    - {work: "cubuk-2019-randaugment", role: original, locator: "Table 4", stance: for}
+
+- id: c-ra-search-cost
+  type: attributive
+  text: "Cubuk et al. note that AutoAugment expended about 15K GPU hours for search, whereas RandAugment was tuned on merely 6 values of the hyperparameters."
+  evidence:
+    - {work: "cubuk-2019-randaugment", role: original, locator: "Section 4.5", stance: for}
+
+- id: c-ra-ablation
+  type: empirical
+  text: "Adding rotate to a randomly sampled set of transformations improved validation accuracy by 1.3% on average, and adding posterize changed it by -0.3%."
+  scope:
+    models: "Wide-ResNet-28-2"
+    data: [cifar-10]
+    scale: "unknown"
+    setting: "RandAugment with N = 3, M = 4 on random subsets of the 14 transformations"
+  evidence:
+    - {work: "cubuk-2019-randaugment", role: original, locator: "Table 5", stance: for}
+
+- id: c-ra-learned-probs
+  type: empirical
+  text: "Learning the probabilities of the transformations by density matching gave 87.4% accuracy on reduced CIFAR-10 with Wide-ResNet-28-10, against 86.8% for uniform RandAugment."
+  scope:
+    models: "Wide-ResNet-28-10"
+    data: [cifar-10]
+    scale: "reduced CIFAR-10"
+    setting: "first-order differentiable optimization of the probabilities"
+  evidence:
+    - {work: "cubuk-2019-randaugment", role: original, locator: "Section 4.7", stance: for}
+
+# Variants: TrivialAugment
+
+- id: c-ta-def
+  type: definitional
+  text: "TrivialAugment samples an augmentation a from A and a strength m from {0, ..., 30}, and returns a(x, m)."
+  evidence:
+    - {work: "muller-2021-trivialaugment", role: original, locator: "p. 4", stance: for}
+
+- id: c-ta-not-ra
+  type: attributive
+  text: "Müller and Hutter emphasize that TrivialAugment is not a special case of RandAugment, since RandAugment uses a fixed optimized strength for all images while TrivialAugment samples this strength anew for each image."
+  evidence:
+    - {work: "muller-2021-trivialaugment", role: original, locator: "Section 3", stance: for}
+
+- id: c-ta-overhead
+  type: attributive
+  text: "Müller and Hutter give the search overhead of AA as 40 - 800×, of RA as 4 - 80×, of Fast AA as 1× and of TA as 0×."
+  evidence:
+    - {work: "muller-2021-trivialaugment", role: original, locator: "Table 1", stance: for}
+
+- id: c-ta-results
+  type: empirical
+  text: "TrivialAugment (Wide) reached 97.46% on CIFAR-10 and 84.33% on CIFAR-100 with Wide-ResNet-28-10, and 78.07% on ImageNet with ResNet-50, where RandAugment is listed at 97.3, 83.3 and 77.6."
+  scope:
+    models: "Wide-ResNet-28-10, ResNet-50"
+    data: [cifar-10, cifar-100, imagenet]
+    scale: "mean of ten runs, five on ImageNet"
+    setting: "the wide augmentation space; the other methods' numbers are from their papers"
+  evidence:
+    - {work: "muller-2021-trivialaugment", role: original, locator: "Table 2", stance: for}
+
+- id: c-ta-ranges
+  type: definitional
+  text: "In the RandAugment augmentation space of Müller and Hutter, rotate ranges over −30° to +30°, solarize over 0 - 256, posterize over 4-8 bits, translate x and translate y over 0 - 10 and cutout over 0 - 0.2; the wide space uses −135° to +135°, 0 - 32 and 2 - 8."
+  evidence:
+    - {work: "muller-2021-trivialaugment", role: original, locator: "Table 8", stance: for}
+
+- id: c-ta-drop
+  type: empirical
+  text: "With TA one can throw away 4 of 14 augmentations and still obtain performance close to the original performance."
+  scope:
+    models: "Wide-ResNet-28-10"
+    data: [cifar-10]
+    scale: "unknown"
+    setting: "random subsets of the augmentation space"
+  evidence:
+    - {work: "muller-2021-trivialaugment", role: original, locator: "Section 4.2.2", stance: for}
+
+# Cutout
+
+- id: c-co-def
+  type: definitional
+  text: "Cutout applies a fixed-size zero-mask to a random location of each input image during each epoch of training; a pixel coordinate within the image is selected at random as the center point, so not all parts of the cutout mask need be contained within the image."
+  evidence:
+    - {work: "devries-2017-cutout", role: original, locator: "p. 4", stance: for}
+
+- id: c-co-border
+  type: empirical
+  text: "DeVries and Taylor found that allowing portions of the patches to lay outside the borders of the image, rather than constraining the entire patch to be within the image, was critical to achieving good performance."
+  scope:
+    models: "the CIFAR models of the paper"
+    data: [cifar-10]
+    scale: "unknown"
+    setting: "Cutout with a square patch"
+  evidence:
+    - {work: "devries-2017-cutout", role: original, locator: "p. 4", stance: for}
+
+- id: c-co-size
+  type: empirical
+  text: "Accuracy follows a parabolic trend in the cutout size, increasing until an optimal point after which it decreases and drops below the baseline; DeVries and Taylor select 16 × 16 pixels on CIFAR-10 and 8 × 8 pixels on CIFAR-100."
+  scope:
+    models: "ResNet18"
+    data: [cifar-10, cifar-100]
+    scale: "validation sets, five runs"
+    setting: "a grid search over the patch length"
+  evidence:
+    - {work: "devries-2017-cutout", role: original, locator: "p. 4", stance: for}
+    - {work: "devries-2017-cutout", role: original, locator: "p. 5", stance: for}
+
+- id: c-co-results
+  type: empirical
+  text: "Cutout reduced the test error of WideResNet from 3.87 to 3.08 on CIFAR-10 and from 18.8 to 18.41 on CIFAR-100, and on SVHN from 1.60 to 1.30."
+  scope:
+    models: "WideResNet"
+    data: [cifar-10, cifar-100, svhn]
+    scale: "mean of five runs"
+    setting: "with standard mirror and crop augmentation on CIFAR"
+  evidence:
+    - {work: "devries-2017-cutout", role: original, locator: "Table 1", stance: for}
+
+- id: c-cutout-area
+  type: mathematical
+  text: "With a uniform pixel centre and clipping at the border, an s × s Cutout patch with s even and 0 ≤ s ≤ 2L masks (s − s²/(4L))² pixels of an L × L image on average."
+  assumes: ["the centre is uniform on the L^2 pixels", "the mask is the half-open square of side s about the centre, clipped to the image"]
+  derivation: "derivations/cutout-area.md"
+
+- id: c-cutout-16
+  type: mathematical
+  text: "A 16 × 16 Cutout patch on a 32 × 32 image masks 196 pixels on average, 0.191 of the image, against 256 pixels without clipping."
+  assumes: ["the centre is uniform on the pixels"]
+  derivation: "derivations/cutout-area.md"
+
+# History
+
+- id: c-hist-aa
+  type: historical
+  text: "Ekin D. Cubuk, Barret Zoph, Dandelion Mané, Vijay Vasudevan and Quoc V. Le of Google Brain wrote AutoAugment: Learning Augmentation Strategies from Data."
+  evidence:
+    - {work: "cubuk-2018-autoaugment", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-ra
+  type: historical
+  text: "Ekin D. Cubuk, Barret Zoph, Jonathon Shlens and Quoc V. Le of Google Research, Brain Team wrote RandAugment: Practical automated data augmentation with a reduced search space."
+  evidence:
+    - {work: "cubuk-2019-randaugment", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-co
+  type: historical
+  text: "Terrance DeVries and Graham W. Taylor of the University of Guelph wrote Improved Regularization of Convolutional Neural Networks with Cutout."
+  evidence:
+    - {work: "devries-2017-cutout", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-ta
+  type: historical
+  text: "Samuel G. Müller and Frank Hutter of the University of Freiburg wrote TrivialAugment: Tuning-free Yet State-of-the-Art Data Augmentation."
+  evidence:
+    - {work: "muller-2021-trivialaugment", role: original, locator: "the title page", stance: for}

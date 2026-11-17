@@ -1,0 +1,377 @@
+# The claims of the structured state space model page (spec 07). The build computes the labels.
+
+# The model and its two views
+
+- id: c-ssm-definition
+  type: definitional
+  text: "The state space model x'(t) = A x(t) + B u(t), y(t) = C x(t) + D u(t) maps a 1-D input signal u(t) to an N-D latent state x(t) before projecting to a 1-D output signal y(t), and in a deep SSM A, B, C and D are parameters learned by gradient descent."
+  evidence:
+    - {work: "gu-2021-structured-state-spaces-s4", role: original, locator: "Section 2.1", stance: for}
+
+- id: c-d-skip
+  type: attributive
+  text: "Gu, Goel and Ré omit the parameter D in their exposition, because the term D u can be viewed as a skip connection and is easy to compute."
+  evidence:
+    - {work: "gu-2021-structured-state-spaces-s4", role: original, locator: "Section 2.1", stance: for}
+
+- id: c-zoh
+  type: mathematical
+  text: "Zero-order hold computes the right-hand side in closed form, assuming a constant input over each step Δ, and gives the discrete model x_k = Ā x_{k-1} + B̄ u_k with Ā = e^{Δ A} and B̄ = A^{-1}(e^{Δ A} - I) B for invertible A."
+  assumes: ["A and B are constant in time", "the input is constant on each step", "A is invertible for the closed form of B̄"]
+  derivation: discretization
+  evidence:
+    - {work: "gu-2020-hippo", role: original, locator: "page 21", stance: for}
+
+- id: c-bilinear
+  type: mathematical
+  text: "The bilinear method converts the state matrix A into an approximation Ā = (I - Δ/2 · A)^{-1}(I + Δ/2 · A), with B̄ = (I - Δ/2 · A)^{-1} Δ B."
+  assumes: ["A and B are constant in time", "I - Δ/2 A is invertible"]
+  derivation: discretization
+  evidence:
+    - {work: "gu-2021-structured-state-spaces-s4", role: original, locator: "Section 2.3", stance: for}
+
+- id: c-stability
+  type: mathematical
+  text: "If every eigenvalue of A has a negative real part, then every eigenvalue of Ā has modulus less than 1 under both zero-order hold and the bilinear rule, for every step size Δ > 0; the bilinear rule maps the imaginary axis to the unit circle and the right half-plane outside it."
+  assumes: ["Δ > 0", "A is constant in time"]
+  derivation: discretization
+
+- id: c-rules-agree
+  type: mathematical
+  text: "For a scalar a, the bilinear Ā minus the zero-order-hold Ā is (Δ a)^3 / 12 plus terms of order Δ^4, so the two rules agree to second order in the step size."
+  assumes: ["a is a fixed scalar", "Δ tends to 0"]
+  derivation: discretization
+
+- id: c-convolution-view
+  type: mathematical
+  text: "With the initial state x_{-1} = 0 and time-invariant Ā, B̄, C, unrolling the recurrence x_k = Ā x_{k-1} + B̄ u_k, y_k = C x_k writes it as a discrete convolution y = K * u with the convolution kernel K = (C B̄, C Ā B̄, ..., C Ā^{L-1} B̄)."
+  assumes: ["x_{-1} = 0", "Ā, B̄ and C do not depend on the position or on the input"]
+  derivation: recurrence-convolution
+  evidence:
+    - {work: "gu-2021-structured-state-spaces-s4", role: original, locator: "Section 2.4", stance: for}
+
+- id: c-causal
+  type: mathematical
+  text: "The output of the discrete SSM at position k does not depend on the inputs after position k."
+  assumes: ["x_{-1} = 0", "the recurrence runs forward in time"]
+  derivation: recurrence-convolution
+
+- id: c-impulse
+  type: mathematical
+  text: "The response of the discrete SSM to a unit impulse at position 0 is the kernel K, plus D at position 0."
+  assumes: ["x_{-1} = 0", "time-invariant parameters"]
+  derivation: recurrence-convolution
+
+- id: c-diagonal-kernel
+  type: mathematical
+  text: "When Ā is diagonal with entries ā_n, the kernel is K_l = sum_n C_n B̄_n ā_n^l, the product of the vector C ∘ B̄ with a Vandermonde matrix."
+  assumes: ["Ā is diagonal"]
+  derivation: recurrence-convolution
+  evidence:
+    - {work: "gu-2022-diagonal-state-space-models-s4d", role: original, locator: "equation 7", stance: for}
+
+- id: c-conjugation
+  type: mathematical
+  text: "Conjugation is an equivalence relation on SSMs: (A, B, C) ∼ (V^{-1} A V, V^{-1} B, C V)."
+  assumes: ["V is invertible"]
+  derivation: recurrence-convolution
+  evidence:
+    - {work: "gu-2021-structured-state-spaces-s4", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-mode-costs
+  type: mathematical
+  text: "For a diagonal state matrix with N entries, one step of the recurrence costs O(N) operations and O(N) state per channel; the kernel of length L costs O(N L) by direct summation, and the causal convolution of length L by the FFT costs O(L log L)."
+  assumes: ["Ā is diagonal", "the convolution is computed with an FFT of length 2L"]
+  derivation: recurrence-convolution
+
+# HiPPO and S4
+
+- id: c-hippo-framework
+  type: attributive
+  text: "Gu, Dao, Ermon, Rudra and Ré introduce HiPPO as a framework for the online compression of continuous signals and discrete time series by projection onto polynomial bases, which, given a measure of the importance of each time in the past, produces an optimal solution to an online function approximation problem."
+  evidence:
+    - {work: "gu-2020-hippo", role: original, locator: "the abstract", stance: for}
+
+- id: c-hippo-legs
+  type: definitional
+  text: "The scaled Legendre measure LegS of HiPPO assigns uniform weight to all of the history [0, t], and its continuous-time dynamics are d/dt c(t) = -(1/t) A c(t) + (1/t) B f(t) with A_nk = (2n+1)^{1/2}(2k+1)^{1/2} if n > k, n + 1 if n = k, 0 if n < k, and B_n = (2n+1)^{1/2}."
+  evidence:
+    - {work: "gu-2020-hippo", role: original, locator: "Section 3", stance: for}
+
+- id: c-hippo-timescale
+  type: mathematical
+  text: "The HiPPO-LegS operator is timescale-equivariant: for any scalar α > 0, if h(t) = f(α t), then hippo(h)(t) = hippo(f)(α t)."
+  assumes: ["the LegS measure"]
+  evidence:
+    - {work: "gu-2020-hippo", role: original, locator: "Section 3", stance: for}
+
+- id: c-hippo-in-s4
+  type: definitional
+  text: "S4 calls the matrix A_nk = -(2n+1)^{1/2}(2k+1)^{1/2} if n > k, -(n+1) if n = k, 0 if n < k the HiPPO matrix."
+  evidence:
+    - {work: "gu-2021-structured-state-spaces-s4", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-s4-init
+  type: definitional
+  text: "An S4 layer is parameterized by first initializing an SSM with A set to the HiPPO matrix."
+  evidence:
+    - {work: "gu-2021-structured-state-spaces-s4", role: original, locator: "Section 3.4", stance: for}
+
+- id: c-hippo-smnist
+  type: attributive
+  text: "Gu, Goel and Ré report that the LSSL found that changing an SSM from a random matrix A to the HiPPO matrix improved its performance on sequential MNIST from 60% to 98%."
+  evidence:
+    - {work: "gu-2021-structured-state-spaces-s4", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-lssl-cost
+  type: attributive
+  text: "Gu, Goel and Ré state that computing the latent state of the LSSL takes O(N^2 L) operations and O(N L) space for state dimension N and length L."
+  evidence:
+    - {work: "gu-2021-structured-state-spaces-s4", role: original, locator: "Section 1", stance: for}
+
+- id: c-hippo-nplr
+  type: mathematical
+  text: "The HiPPO matrix of S4 equals S - P P^T with P_n = (n + 1/2)^{1/2} and S = -I/2 + J for a skew-symmetric J, so it is a normal matrix plus a rank-one matrix, and the eigenvalues of the normal part all have real part -1/2."
+  assumes: ["the HiPPO matrix of equation (2) of S4"]
+  derivation: hippo-nplr
+
+- id: c-s4-nplr
+  type: mathematical
+  text: "All HiPPO matrices have a normal plus low-rank (NPLR) representation A = V Λ V^* - P Q^T for unitary V, diagonal Λ and low-rank P, Q, and the HiPPO matrix of equation (2) is NPLR with r = 1."
+  assumes: ["the HiPPO matrices of Gu et al. (2020): LegS, LegT and LagT"]
+  evidence:
+    - {work: "gu-2021-structured-state-spaces-s4", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-hippo-eigs
+  type: mathematical
+  text: "The N by N HiPPO matrix of S4 is lower triangular with eigenvalues -1, -2, ..., -N."
+  assumes: ["the HiPPO matrix of equation (2) of S4"]
+  derivation: hippo-nplr
+
+- id: c-hippo-conditioning
+  type: mathematical
+  text: "In our computation with numpy.linalg.eig, the matrix of unit-norm eigenvectors of the HiPPO matrix has condition number about 7.7e4 for N = 8 and 8.3e10 for N = 16."
+  assumes: ["the HiPPO matrix of equation (2) of S4", "eigenvectors normalized to unit length", "double precision"]
+  derivation: hippo-nplr
+
+- id: c-hippo-diag-unstable
+  type: attributive
+  text: "Gu, Goel and Ré show that the HiPPO matrix is diagonalized by a matrix with entries of magnitude up to about 2^{4N/3}, which makes the naive diagonalization numerically infeasible."
+  evidence:
+    - {work: "gu-2021-structured-state-spaces-s4", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-s4-recurrence-cost
+  type: mathematical
+  text: "For a state matrix in diagonal plus low-rank form, one step of the bilinear recurrence of S4 can be computed in O(N) operations, for any step size."
+  assumes: ["A is diagonal plus low rank", "the bilinear discretization"]
+  evidence:
+    - {work: "gu-2021-structured-state-spaces-s4", role: original, locator: "Section 3.3", stance: for}
+
+- id: c-s4-kernel-cost
+  type: mathematical
+  text: "For a state matrix in diagonal plus low-rank form, computing the S4 convolution kernel reduces to 4 Cauchy multiplies, which take Õ(N + L) operations and O(N + L) space."
+  assumes: ["A is diagonal plus low rank", "the kernel is computed through its truncated generating function at the roots of unity"]
+  evidence:
+    - {work: "gu-2021-structured-state-spaces-s4", role: original, locator: "Section 3.3", stance: for}
+
+- id: c-s4-layer
+  type: definitional
+  text: "An S4 layer has 5N trainable parameters Λ, P, Q, B and C for a diagonal Λ, handles H features with H independent copies of itself, and mixes them with a position-wise linear layer, with nonlinear activations between layers."
+  evidence:
+    - {work: "gu-2021-structured-state-spaces-s4", role: original, locator: "Section 3.4", stance: for}
+
+- id: c-s4-pp-fix
+  type: attributive
+  text: "Gu, Goel and Ré note that follow-up work found this version of S4 can suffer numerical instabilities when A has eigenvalues in the right half-plane, and changed the parameterization from Λ - P Q^* to Λ - P P^*."
+  evidence:
+    - {work: "gu-2021-structured-state-spaces-s4", role: original, locator: "Section 3.4", stance: for}
+
+- id: c-s4-lra
+  type: empirical
+  text: "In Table 4, S4 scores 59.60 on ListOps, 86.82 on Text, 90.90 on Retrieval, 88.65 on Image, 94.20 on Pathfinder and 96.35 on Path-X, an Avg of 86.09, against an Avg of at most 59.37 for the Transformer variants and other models in the table."
+  scope:
+    models: "S4 and the efficient Transformers of the Long Range Arena paper and later work"
+    data: [long-range-arena]
+    scale: "unknown"
+    setting: "the updated results of arXiv 2111.00396v3, Table 4"
+  evidence:
+    - {work: "gu-2021-structured-state-spaces-s4", role: original, locator: "Table 4", stance: for}
+
+- id: c-s4-lra-original
+  type: empirical
+  text: "S4 (original) in Table 10 scores 58.35 on ListOps, 76.02 on Text, 87.09 on Retrieval, 87.26 on Image, 86.05 on Pathfinder and 88.10 on Path-X, an Avg of 80.48."
+  scope:
+    models: "S4"
+    data: [long-range-arena]
+    scale: "unknown"
+    setting: "the original results of arXiv 2111.00396v3, Table 10"
+  evidence:
+    - {work: "gu-2021-structured-state-spaces-s4", role: original, locator: "Table 10", stance: for}
+
+- id: c-s4-lra-update
+  type: attributive
+  text: "Since the first version of the S4 paper several experiments have been updated, and the Long Range Arena results of Table 4 have been updated to results from follow-up papers."
+  evidence:
+    - {work: "gu-2021-structured-state-spaces-s4", role: original, locator: "page 30", stance: for}
+
+- id: c-path-x
+  type: empirical
+  text: "S4 is the first model to solve the Path-X task of length 16384, with 88% accuracy compared to 50% random guessing for all prior work."
+  scope:
+    models: "S4 and the models of the Long Range Arena paper and its follow-ups"
+    data: [long-range-arena]
+    scale: "unknown"
+    setting: "the first version of the S4 results"
+  evidence:
+    - {work: "gu-2021-structured-state-spaces-s4", role: original, locator: "Section 1", stance: for}
+
+- id: c-s4-vs-lssl
+  type: empirical
+  text: "Compared with the LSSL, S4 is up to 30 times faster with 400 times less memory."
+  scope:
+    models: "S4 and the LSSL"
+    data: [unknown]
+    scale: "state dimensions 128 to 512"
+    setting: "training step time and memory allocation, Table 2"
+  evidence:
+    - {work: "gu-2021-structured-state-spaces-s4", role: original, locator: "Section 1", stance: for}
+
+- id: c-s4-wikitext
+  type: empirical
+  text: "On WikiText-103, an S4 model of 249M parameters reaches a test perplexity of 20.95 against 20.51 for the Transformer of 247M parameters it is based on, and generates 60 times more tokens per second."
+  scope:
+    models: "the Transformer baseline with attention replaced by S4"
+    data: [wikitext-103]
+    scale: "about 250M parameters"
+    setting: "language modeling"
+  evidence:
+    - {work: "gu-2021-structured-state-spaces-s4", role: original, locator: "page 10", stance: for}
+
+# Diagonal variants and linear RNNs
+
+- id: c-dss
+  type: empirical
+  text: "The Diagonal State Space model, with a diagonal state matrix and no low-rank correction, matches the performance of S4 on Long Range Arena and on speech classification on Speech Commands."
+  scope:
+    models: "DSS and S4"
+    data: [long-range-arena, speech-commands]
+    scale: "unknown"
+    setting: "the benchmarks of the S4 paper"
+  evidence:
+    - {work: "gupta-2022-diagonal-state-spaces", role: original, locator: "the abstract", stance: for}
+
+- id: c-s4d-limit
+  type: attributive
+  text: "Gu, Gupta, Goel and Ré explain why DSS works by showing that the diagonal restriction of the S4 matrix recovers the same kernel in the limit of infinite state dimension."
+  evidence:
+    - {work: "gu-2022-diagonal-state-space-models-s4d", role: original, locator: "the abstract", stance: for}
+
+- id: c-s4d
+  type: empirical
+  text: "S4D, a diagonal version of S4 whose kernel computation takes two lines of code, performs comparably to S4 in almost all settings and averages 85% on Long Range Arena."
+  scope:
+    models: "S4D and S4"
+    data: [long-range-arena]
+    scale: "unknown"
+    setting: "the controlled study of the S4D paper"
+  evidence:
+    - {work: "gu-2022-diagonal-state-space-models-s4d", role: original, locator: "the abstract", stance: for}
+
+- id: c-s4d-lin
+  type: definitional
+  text: "The S4D-Lin initialization sets A_n = -1/2 + i π n."
+  evidence:
+    - {work: "gu-2022-diagonal-state-space-models-s4d", role: original, locator: "Section 4", stance: for}
+
+- id: c-lru
+  type: empirical
+  text: "A deep RNN with a linear recurrence, complex diagonal recurrent matrices, an exponential parameterization and a normalization of the hidden activations, the Linear Recurrent Unit, matches deep SSMs on all tasks of Long Range Arena."
+  scope:
+    models: "the Linear Recurrent Unit and deep SSMs"
+    data: [long-range-arena]
+    scale: "unknown"
+    setting: "the deep architecture of Orvieto et al. (2023) with MLP blocks between recurrent layers"
+  evidence:
+    - {work: "orvieto-2023-resurrecting-recurrent-neural-networks", role: original, locator: "Section 1", stance: for}
+
+- id: c-lru-linear
+  type: empirical
+  text: "Replacing SSM layers with vanilla RNN layers with tanh or ReLU lowers the performance on Long Range Arena, and removing the nonlinearity in the recurrence gives a substantial gain in test accuracy."
+  scope:
+    models: "deep RNNs in the architecture of deep SSMs"
+    data: [long-range-arena]
+    scale: "unknown"
+    setting: "the ablations of Section 3.1"
+  evidence:
+    - {work: "orvieto-2023-resurrecting-recurrent-neural-networks", role: original, locator: "Section 1", stance: for}
+
+- id: c-lru-discretization
+  type: attributive
+  text: "Orvieto et al. conclude that the success of diagonal SSMs comes from linear recurrences and complex diagonal exponential matrices with the normalization and initialization induced by discretization, while the parameter sharing and the continuous-time interpretation of discretization do not necessarily contribute."
+  evidence:
+    - {work: "orvieto-2023-resurrecting-recurrent-neural-networks", role: original, locator: "Section 4", stance: for}
+
+# Selection
+
+- id: c-mamba-selection
+  type: definitional
+  text: "The selective SSM of Mamba makes Δ, B and C functions of the input, so the model changes from time-invariant to time-varying and loses the equivalence to convolutions."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-selective-gate
+  type: mathematical
+  text: "With N = 1, A = -1, B = 1, s_Δ = Linear(x) and τ_Δ = softplus, the selective SSM recurrence takes the form h_t = (1 - g_t) h_{t-1} + g_t x_t with g_t = σ(Linear(x_t))."
+  assumes: ["zero-order hold", "Δ_t = softplus(z_t)"]
+  derivation: selective-scan
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "Section 3.5.1", stance: for}
+
+- id: c-selective-no-kernel
+  type: mathematical
+  text: "When the step size depends on the input, the map from u to y is not linear in u, so no convolution kernel K gives y = K * u."
+  assumes: ["Δ_k is a non-affine function of u_k, such as softplus of a linear map"]
+  derivation: selective-scan
+
+- id: c-scan-associative
+  type: mathematical
+  text: "The steps x_k = a_k x_{k-1} + b_k of a diagonal time-varying recurrence compose under the associative operator (a_1, b_1) • (a_2, b_2) = (a_2 a_1, a_2 b_1 + b_2), so a parallel prefix scan computes all states in O(log L) depth."
+  assumes: ["the a_k are diagonal", "x_{-1} = 0"]
+  derivation: selective-scan
+
+- id: c-mamba-scan
+  type: attributive
+  text: "Gu and Dao compute the selective SSM with a parallel scan and kernel fusion that keeps the expanded state in fast GPU memory instead of materializing it in high-bandwidth memory, and recompute the intermediate states in the backward pass."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "Section 3.3.2", stance: for}
+
+- id: c-lti-selective-copying
+  type: attributive
+  text: "Gu and Dao note that global convolutions can solve the standard Copying task, which only needs awareness of time, but have difficulty with the Selective Copying task, which varies the positions of the tokens to memorize and so needs awareness of content."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-mamba-lm
+  type: empirical
+  text: "Mamba has 5 times higher inference throughput than Transformers and linear scaling in sequence length, and on language modeling Mamba-3B outperforms Transformers of the same size and matches Transformers twice its size, in pretraining and downstream evaluation."
+  scope:
+    models: "Mamba and Transformer language models up to a few billion parameters"
+    data: [the-pile]
+    scale: "up to about 3B parameters"
+    setting: "autoregressive language modeling"
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "the abstract", stance: for}
+
+# History
+
+- id: c-s4-history
+  type: historical
+  text: "Albert Gu, Karan Goel and Christopher Ré of Stanford University introduced S4 in the preprint arXiv 2111.00396, Efficiently Modeling Long Sequences with Structured State Spaces."
+  evidence:
+    - {work: "gu-2021-structured-state-spaces-s4", role: original, locator: "the title page", stance: for}
+
+- id: c-mamba-history
+  type: historical
+  text: "Albert Gu of Carnegie Mellon University and Tri Dao of Princeton University introduced Mamba in the preprint arXiv 2312.00752."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "the title page", stance: for}
