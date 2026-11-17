@@ -1,0 +1,831 @@
+{
+  "note": "Written by aik shapes sample -w from shapes.yaml; do not edit. The tests of each implementation check shapes, param_count and flops against these values (spec 08.6, rule X09).",
+  "configs": [
+    {
+      "name": "example",
+      "kind": "example",
+      "config": {
+        "B": 2,
+        "H": 4,
+        "I": 3,
+        "T": 5,
+        "hidden_size": 4,
+        "input_size": 3
+      },
+      "blocks": {
+        "cell": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "a": [
+              2,
+              5,
+              12
+            ],
+            "m": [
+              2,
+              5,
+              12
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              5,
+              4
+            ]
+          },
+          "internals": {
+            "n": [
+              2,
+              5,
+              4
+            ],
+            "r": [
+              2,
+              5,
+              4
+            ],
+            "z": [
+              2,
+              5,
+              4
+            ]
+          }
+        },
+        "gates": {
+          "params": 108,
+          "flops_forward": 1680,
+          "inputs": {
+            "h0": [
+              2,
+              4
+            ],
+            "x": [
+              2,
+              5,
+              3
+            ]
+          },
+          "outputs": {
+            "a": [
+              2,
+              5,
+              12
+            ],
+            "m": [
+              2,
+              5,
+              12
+            ]
+          }
+        },
+        "layer": {
+          "params": 108,
+          "flops_forward": 1680,
+          "inputs": {
+            "h0": [
+              2,
+              4
+            ],
+            "x": [
+              2,
+              5,
+              3
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              5,
+              4
+            ],
+            "h_T": [
+              2,
+              4
+            ]
+          }
+        }
+      },
+      "model": {
+        "distinct_params": 100,
+        "flops_forward": 1680,
+        "lstm_flops": 2240,
+        "lstm_params": 128,
+        "lstm_peephole_params": 140,
+        "one_bias_params": 96,
+        "params": 108,
+        "state": 4,
+        "tanh_params": 32
+      }
+    },
+    {
+      "name": "sample-1",
+      "kind": "sample",
+      "config": {
+        "B": 2,
+        "H": 6,
+        "I": 2,
+        "T": 3,
+        "hidden_size": 6,
+        "input_size": 2
+      },
+      "blocks": {
+        "cell": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "a": [
+              2,
+              3,
+              18
+            ],
+            "m": [
+              2,
+              3,
+              18
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              3,
+              6
+            ]
+          },
+          "internals": {
+            "n": [
+              2,
+              3,
+              6
+            ],
+            "r": [
+              2,
+              3,
+              6
+            ],
+            "z": [
+              2,
+              3,
+              6
+            ]
+          }
+        },
+        "gates": {
+          "params": 180,
+          "flops_forward": 1728,
+          "inputs": {
+            "h0": [
+              2,
+              6
+            ],
+            "x": [
+              2,
+              3,
+              2
+            ]
+          },
+          "outputs": {
+            "a": [
+              2,
+              3,
+              18
+            ],
+            "m": [
+              2,
+              3,
+              18
+            ]
+          }
+        },
+        "layer": {
+          "params": 180,
+          "flops_forward": 1728,
+          "inputs": {
+            "h0": [
+              2,
+              6
+            ],
+            "x": [
+              2,
+              3,
+              2
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              3,
+              6
+            ],
+            "h_T": [
+              2,
+              6
+            ]
+          }
+        }
+      },
+      "model": {
+        "distinct_params": 168,
+        "flops_forward": 1728,
+        "lstm_flops": 2304,
+        "lstm_params": 216,
+        "lstm_peephole_params": 234,
+        "one_bias_params": 162,
+        "params": 180,
+        "state": 6,
+        "tanh_params": 54
+      }
+    },
+    {
+      "name": "sample-2",
+      "kind": "sample",
+      "config": {
+        "B": 2,
+        "H": 2,
+        "I": 5,
+        "T": 3,
+        "hidden_size": 2,
+        "input_size": 5
+      },
+      "blocks": {
+        "cell": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "a": [
+              2,
+              3,
+              6
+            ],
+            "m": [
+              2,
+              3,
+              6
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              3,
+              2
+            ]
+          },
+          "internals": {
+            "n": [
+              2,
+              3,
+              2
+            ],
+            "r": [
+              2,
+              3,
+              2
+            ],
+            "z": [
+              2,
+              3,
+              2
+            ]
+          }
+        },
+        "gates": {
+          "params": 54,
+          "flops_forward": 504,
+          "inputs": {
+            "h0": [
+              2,
+              2
+            ],
+            "x": [
+              2,
+              3,
+              5
+            ]
+          },
+          "outputs": {
+            "a": [
+              2,
+              3,
+              6
+            ],
+            "m": [
+              2,
+              3,
+              6
+            ]
+          }
+        },
+        "layer": {
+          "params": 54,
+          "flops_forward": 504,
+          "inputs": {
+            "h0": [
+              2,
+              2
+            ],
+            "x": [
+              2,
+              3,
+              5
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              3,
+              2
+            ],
+            "h_T": [
+              2,
+              2
+            ]
+          }
+        }
+      },
+      "model": {
+        "distinct_params": 50,
+        "flops_forward": 504,
+        "lstm_flops": 672,
+        "lstm_params": 64,
+        "lstm_peephole_params": 70,
+        "one_bias_params": 48,
+        "params": 54,
+        "state": 2,
+        "tanh_params": 16
+      }
+    },
+    {
+      "name": "speechgru",
+      "kind": "named",
+      "config": {
+        "B": 2,
+        "H": 227,
+        "I": 20,
+        "T": 5,
+        "hidden_size": 227,
+        "input_size": 20
+      },
+      "blocks": {
+        "cell": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "a": [
+              2,
+              5,
+              681
+            ],
+            "m": [
+              2,
+              5,
+              681
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              5,
+              227
+            ]
+          },
+          "internals": {
+            "n": [
+              2,
+              5,
+              227
+            ],
+            "r": [
+              2,
+              5,
+              227
+            ],
+            "z": [
+              2,
+              5,
+              227
+            ]
+          }
+        },
+        "gates": {
+          "params": 169569,
+          "flops_forward": 3364140,
+          "inputs": {
+            "h0": [
+              2,
+              227
+            ],
+            "x": [
+              2,
+              5,
+              20
+            ]
+          },
+          "outputs": {
+            "a": [
+              2,
+              5,
+              681
+            ],
+            "m": [
+              2,
+              5,
+              681
+            ]
+          }
+        },
+        "layer": {
+          "params": 169569,
+          "flops_forward": 3364140,
+          "inputs": {
+            "h0": [
+              2,
+              227
+            ],
+            "x": [
+              2,
+              5,
+              20
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              5,
+              227
+            ],
+            "h_T": [
+              2,
+              227
+            ]
+          }
+        }
+      },
+      "model": {
+        "distinct_params": 169115,
+        "flops_forward": 3364140,
+        "lstm_flops": 4485520,
+        "lstm_params": 225184,
+        "lstm_peephole_params": 225865,
+        "one_bias_params": 168888,
+        "params": 169569,
+        "state": 227,
+        "tanh_params": 56296
+      }
+    },
+    {
+      "name": "speechlstm",
+      "kind": "named",
+      "config": {
+        "B": 2,
+        "H": 195,
+        "I": 20,
+        "T": 5,
+        "hidden_size": 195,
+        "input_size": 20
+      },
+      "blocks": {
+        "cell": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "a": [
+              2,
+              5,
+              585
+            ],
+            "m": [
+              2,
+              5,
+              585
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              5,
+              195
+            ]
+          },
+          "internals": {
+            "n": [
+              2,
+              5,
+              195
+            ],
+            "r": [
+              2,
+              5,
+              195
+            ],
+            "z": [
+              2,
+              5,
+              195
+            ]
+          }
+        },
+        "gates": {
+          "params": 126945,
+          "flops_forward": 2515500,
+          "inputs": {
+            "h0": [
+              2,
+              195
+            ],
+            "x": [
+              2,
+              5,
+              20
+            ]
+          },
+          "outputs": {
+            "a": [
+              2,
+              5,
+              585
+            ],
+            "m": [
+              2,
+              5,
+              585
+            ]
+          }
+        },
+        "layer": {
+          "params": 126945,
+          "flops_forward": 2515500,
+          "inputs": {
+            "h0": [
+              2,
+              195
+            ],
+            "x": [
+              2,
+              5,
+              20
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              5,
+              195
+            ],
+            "h_T": [
+              2,
+              195
+            ]
+          }
+        }
+      },
+      "model": {
+        "distinct_params": 126555,
+        "flops_forward": 2515500,
+        "lstm_flops": 3354000,
+        "lstm_params": 168480,
+        "lstm_peephole_params": 169065,
+        "one_bias_params": 126360,
+        "params": 126945,
+        "state": 195,
+        "tanh_params": 42120
+      }
+    },
+    {
+      "name": "speechtanh",
+      "kind": "named",
+      "config": {
+        "B": 2,
+        "H": 400,
+        "I": 20,
+        "T": 5,
+        "hidden_size": 400,
+        "input_size": 20
+      },
+      "blocks": {
+        "cell": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "a": [
+              2,
+              5,
+              1200
+            ],
+            "m": [
+              2,
+              5,
+              1200
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              5,
+              400
+            ]
+          },
+          "internals": {
+            "n": [
+              2,
+              5,
+              400
+            ],
+            "r": [
+              2,
+              5,
+              400
+            ],
+            "z": [
+              2,
+              5,
+              400
+            ]
+          }
+        },
+        "gates": {
+          "params": 506400,
+          "flops_forward": 10080000,
+          "inputs": {
+            "h0": [
+              2,
+              400
+            ],
+            "x": [
+              2,
+              5,
+              20
+            ]
+          },
+          "outputs": {
+            "a": [
+              2,
+              5,
+              1200
+            ],
+            "m": [
+              2,
+              5,
+              1200
+            ]
+          }
+        },
+        "layer": {
+          "params": 506400,
+          "flops_forward": 10080000,
+          "inputs": {
+            "h0": [
+              2,
+              400
+            ],
+            "x": [
+              2,
+              5,
+              20
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              5,
+              400
+            ],
+            "h_T": [
+              2,
+              400
+            ]
+          }
+        }
+      },
+      "model": {
+        "distinct_params": 505600,
+        "flops_forward": 10080000,
+        "lstm_flops": 13440000,
+        "lstm_params": 673600,
+        "lstm_peephole_params": 674800,
+        "one_bias_params": 505200,
+        "params": 506400,
+        "state": 400,
+        "tanh_params": 168400
+      }
+    },
+    {
+      "name": "wide",
+      "kind": "named",
+      "config": {
+        "B": 2,
+        "H": 1024,
+        "I": 1024,
+        "T": 5,
+        "hidden_size": 1024,
+        "input_size": 1024
+      },
+      "blocks": {
+        "cell": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "a": [
+              2,
+              5,
+              3072
+            ],
+            "m": [
+              2,
+              5,
+              3072
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              5,
+              1024
+            ]
+          },
+          "internals": {
+            "n": [
+              2,
+              5,
+              1024
+            ],
+            "r": [
+              2,
+              5,
+              1024
+            ],
+            "z": [
+              2,
+              5,
+              1024
+            ]
+          }
+        },
+        "gates": {
+          "params": 6297600,
+          "flops_forward": 125829120,
+          "inputs": {
+            "h0": [
+              2,
+              1024
+            ],
+            "x": [
+              2,
+              5,
+              1024
+            ]
+          },
+          "outputs": {
+            "a": [
+              2,
+              5,
+              3072
+            ],
+            "m": [
+              2,
+              5,
+              3072
+            ]
+          }
+        },
+        "layer": {
+          "params": 6297600,
+          "flops_forward": 125829120,
+          "inputs": {
+            "h0": [
+              2,
+              1024
+            ],
+            "x": [
+              2,
+              5,
+              1024
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              5,
+              1024
+            ],
+            "h_T": [
+              2,
+              1024
+            ]
+          }
+        }
+      },
+      "model": {
+        "distinct_params": 6295552,
+        "flops_forward": 125829120,
+        "lstm_flops": 167772160,
+        "lstm_params": 8392704,
+        "lstm_peephole_params": 8395776,
+        "one_bias_params": 6294528,
+        "params": 6297600,
+        "state": 1024,
+        "tanh_params": 2098176
+      }
+    }
+  ]
+}

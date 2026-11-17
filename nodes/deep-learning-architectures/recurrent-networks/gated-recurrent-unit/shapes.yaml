@@ -1,0 +1,53 @@
+# SPDX-License-Identifier: MIT
+# The shape contract of one GRU layer (spec 08.6), in the form of torch.nn.GRU with its two bias vectors: the three
+# blocks of the stacked weights are in the order reset, update, candidate, and the update keeps the old state when
+# z = 1, h_t = (1 - z_t) n_t + z_t h_{t-1}. Both placements of the reset gate, before and after the recurrent matrix of
+# the candidate, have these shapes, these parameters and these FLOPs.
+# The FLOPs count the products of the two projections only, a multiply-add as 2; the gate activations and the
+# elementwise products are left out, as on the page of the LSTM.
+config:
+  input_size:  {meaning: "number of features of each input vector x_t", symbol: "d_x", example: 3, sample: [1, 5]}
+  hidden_size: {meaning: "number of units, the width of h_t", symbol: "d_h", example: 4, sample: [1, 6]}
+axes:
+  B: {meaning: "batch", example: 2}
+  T: {meaning: "length of the sequence", example: 5}
+  I: input_size
+  H: hidden_size
+blocks:
+  - id: gates
+    meaning: "the input projection x_t W + b_i and the recurrent projection h_{t-1} U + b_h of every step, three blocks of H each"
+    eq: [gates, candidate]
+    inputs: {x: "(B, T, I)", h0: "(B, H)"}
+    outputs: {a: "(B, T, 3 * H)", m: "(B, T, 3 * H)"}
+    params: "3 * H * I + 3 * H * H + 6 * H"
+    flops_forward: "6 * B * T * H * I + 6 * B * T * H * H"
+  - id: cell
+    meaning: "the reset and update gates, the candidate, and the interpolation between the old state and the candidate, elementwise"
+    eq: [update]
+    inputs: {a: "(B, T, 3 * H)", m: "(B, T, 3 * H)"}
+    outputs: {h: "(B, T, H)"}
+    internals: {r: "(B, T, H)", z: "(B, T, H)", n: "(B, T, H)"}
+    params: "0"
+  - id: layer
+    of: [gates, cell]
+    inputs: {x: "(B, T, I)", h0: "(B, H)"}
+    outputs: {h: "(B, T, H)", h_T: "(B, H)"}
+    params: "3 * H * I + 3 * H * H + 6 * H"
+model:
+  params: {formula: "layer.params", symbol: "N", meaning: "the parameters of one layer as torch.nn.GRU stores them: the input weights, the recurrent weights and two biases, for three blocks"}
+  flops_forward: {formula: "gates.flops_forward", symbol: "C", meaning: "FLOPs of one forward pass over the batch, a multiply-add counted as 2; the gate activations and the elementwise products are left out"}
+  state: {formula: "H", meaning: "numbers that the layer carries from one step to the next for one sequence: h_t alone"}
+  distinct_params: {formula: "3 * H * I + 3 * H * H + 4 * H", meaning: "the parameters that change the function when the reset gate is applied after the recurrent matrix: the two biases of the reset and of the update gate only enter as a sum"}
+  one_bias_params: {formula: "3 * H * I + 3 * H * H + 3 * H", meaning: "a GRU layer with one bias per block, as in the equations of Chung et al. with a bias added; with the reset gate before the matrix the two biases of the candidate also only enter as a sum"}
+  lstm_params: {formula: "4 * H * I + 4 * H * H + 4 * H", meaning: "an LSTM layer of the same width with one bias per gate, for comparison"}
+  lstm_peephole_params: {formula: "4 * H * I + 4 * H * H + 4 * H + 3 * H", meaning: "the same LSTM with the three diagonal peephole matrices of the LSTM that Chung et al. compare with"}
+  lstm_flops: {formula: "8 * B * T * H * I + 8 * B * T * H * H", meaning: "FLOPs of the projections of an LSTM layer of the same width, counted the same way"}
+  tanh_params: {formula: "H * I + H * H + H", meaning: "a tanh recurrent layer h_t = tanh(x_t W + h_{t-1} U + b) of the same width"}
+  sources:
+    - {work: pytorch-torch-nn-gru, locator: "the equations and the parameters", note: "the equations, the two biases and the order of the blocks"}
+    - {work: chung-2014-empirical-evaluation-gated-recurrent, locator: "Table 1", note: "the widths and the parameter counts of the compared models"}
+configs:
+  speechgru: {meaning: "the GRU of the speech experiments of Chung et al., Table 1: 227 units reading 20 samples per step", input_size: 20, hidden_size: 227}
+  speechlstm: {meaning: "the LSTM of the same experiments: 195 units reading 20 samples per step", input_size: 20, hidden_size: 195}
+  speechtanh: {meaning: "the tanh network of the same experiments: 400 units reading 20 samples per step", input_size: 20, hidden_size: 400}
+  wide: {meaning: "a layer of 1024 units on inputs of 1024 features, to compare the cost with an LSTM of the same width", input_size: 1024, hidden_size: 1024}

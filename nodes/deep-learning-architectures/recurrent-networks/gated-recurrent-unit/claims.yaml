@@ -1,0 +1,350 @@
+# The claims of the gated recurrent unit page (spec 07). The build computes the labels.
+- id: c-def
+  type: attributive
+  text: "Cho et al. proposed a hidden unit with a reset gate and an update gate that adaptively control how much each hidden unit remembers or forgets."
+  evidence:
+    - {work: "cho-2014-learning-phrase-representations-rnn", role: original, locator: "Section 5", stance: for}
+
+- id: c-name
+  type: historical
+  text: "Chung, Gulcehre, Cho and Bengio named the unit of Cho et al. the gated recurrent unit (GRU) and compared it with the LSTM unit."
+  evidence:
+    - {work: "chung-2014-empirical-evaluation-gated-recurrent", role: original, locator: "Section 1", stance: for}
+
+- id: c-motivated
+  type: attributive
+  text: "Cho et al. describe their hidden unit as motivated by the LSTM unit but much simpler to compute and implement."
+  evidence:
+    - {work: "cho-2014-learning-phrase-representations-rnn", role: original, locator: "Section 2.3", stance: for}
+
+- id: c-no-cell
+  type: attributive
+  text: "Like the LSTM unit, the GRU has gating units that modulate the flow of information inside the unit, but without a separate memory cell."
+  evidence:
+    - {work: "chung-2014-empirical-evaluation-gated-recurrent", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-torch-equations
+  type: definitional
+  text: "torch.nn.GRU computes the reset, update and new gates r_t, z_t and n_t with the sigmoid and the tanh, with the reset gate applied after the recurrent product of the new gate, and h_t = (1 - z_t) ⊙ n_t + z_t ⊙ h_{t-1}, with an input-hidden and a hidden-hidden bias for each gate."
+  evidence:
+    - {work: "pytorch-torch-nn-gru", role: original, locator: "the title page", stance: for}
+
+- id: c-torch-layout
+  type: definitional
+  text: "torch.nn.GRU stores the input weights of the three blocks stacked as (W_ir|W_iz|W_in) of shape (3*hidden_size, input_size), and initializes all weights and biases from U(-sqrt(k), sqrt(k)) with k = 1/hidden_size."
+  evidence:
+    - {work: "pytorch-torch-nn-gru", role: original, locator: "the title page", stance: for}
+
+- id: c-reset-role
+  type: attributive
+  text: "When the reset gate is close to 0, the hidden state is forced to ignore the previous hidden state and reset with the current input only."
+  evidence:
+    - {work: "cho-2014-learning-phrase-representations-rnn", role: original, locator: "Section 2.3", stance: for}
+
+- id: c-update-role
+  type: attributive
+  text: "The update gate controls how much information from the previous hidden state carries over to the current hidden state, which Cho et al. compare to the memory cell of the LSTM and to an adaptive variant of a leaky-integration unit."
+  evidence:
+    - {work: "cho-2014-learning-phrase-representations-rnn", role: original, locator: "Section 2.3", stance: for}
+
+- id: c-timescales
+  type: attributive
+  text: "Cho et al. expect units that capture short-term dependencies to have reset gates that are frequently active, and units that capture longer-term dependencies to have update gates that are mostly active."
+  evidence:
+    - {work: "cho-2014-learning-phrase-representations-rnn", role: original, locator: "Section 2.3", stance: for}
+
+- id: c-exposes
+  type: attributive
+  text: "The GRU does not have any mechanism to control the degree to which its state is exposed, but exposes the whole state each time."
+  evidence:
+    - {work: "chung-2014-empirical-evaluation-gated-recurrent", role: original, locator: "Section 3.3", stance: for}
+
+- id: c-greff-gru
+  type: attributive
+  text: "Greff et al. describe the GRU as a simplified LSTM that uses neither peephole connections nor output activation functions, and couples the input and the forget gate into an update gate."
+  evidence:
+    - {work: "greff-2017-lstm-search-space-odyssey", role: original, locator: "p. 3", stance: for}
+
+- id: c-cho-eq8
+  type: definitional
+  text: "In eq. (8) of Cho et al. the reset gate multiplies the previous state before the recurrent matrix of the candidate."
+  evidence:
+    - {work: "cho-2014-learning-phrase-representations-rnn", role: original, locator: "Section 2.3, Eq. 8", stance: for}
+
+- id: c-cho-decoder
+  type: definitional
+  text: "In the decoder of Appendix A.1.1 of Cho et al., the reset gate multiplies the product U' h'_{t-1}, after the recurrent matrix."
+  evidence:
+    - {work: "cho-2014-learning-phrase-representations-rnn", role: original, locator: "Appendix A.1.1", stance: for}
+
+- id: c-chung-footnote
+  type: attributive
+  text: "Chung et al. apply the reset gate before the recurrent matrix, call the placement after it the original one, and report that in their preliminary experiments both formulations performed as well as each other."
+  evidence:
+    - {work: "chung-2014-empirical-evaluation-gated-recurrent", role: original, locator: "Section 3.2, footnote 1", stance: for}
+
+- id: c-torch-note
+  type: attributive
+  text: "The PyTorch documentation states that the calculation of the new gate in torch.nn.GRU differs from the original paper, applying the reset gate after W_hn h_(t-1), on purpose for efficiency."
+  evidence:
+    - {work: "pytorch-torch-nn-gru", role: original, locator: "the title page", stance: for}
+
+- id: c-reset-agree
+  type: mathematical
+  text: "The candidates with the reset gate before and after the recurrent matrix agree for every input and state if and only if U_n is diagonal and b_hn = 0."
+  assumes: ["the two candidates tanh(x W_n + b_in + r ⊙ (h U_n + b_hn)) and tanh(x W_n + b_in + (r ⊙ h) U_n + b_hn)", "r ranges over the open interval (0, 1) in every coordinate and h over all of R^H"]
+  derivation: reset-placement
+
+- id: c-reset-cost
+  type: mathematical
+  text: "With the reset gate after the recurrent matrix, the recurrent products of the three blocks form one (B, d_h) by (d_h, 3 d_h) product per step, while the reset before the matrix needs two products in sequence with the same number of FLOPs."
+  assumes: ["the three blocks are computed by dense matrix products", "a multiply-add counts as 2 FLOPs and the elementwise products are not counted"]
+  derivation: reset-placement
+
+- id: c-flip
+  type: mathematical
+  text: "Negating the weights and the biases of the update gate maps the convention h_t = (1 - z) n + z h_{t-1} onto the convention h_t = (1 - z') h_{t-1} + z' n, so the two describe the same family of functions."
+  assumes: ["the update gate is a logistic sigmoid of an affine map of x_t and h_{t-1}", "1 - σ(u) = σ(-u)"]
+  derivation: reset-placement
+
+- id: c-params
+  type: mathematical
+  text: "A GRU layer with input width I and H units has 3 H I + 3 H^2 + 6 H parameters in the form of torch.nn.GRU, whatever the length of the sequence."
+  assumes: ["three blocks, each with input weights, recurrent weights and two biases", "one layer, no projection"]
+  derivation: parameter-and-flop-count
+
+- id: c-distinct-params
+  type: mathematical
+  text: "With the reset gate after the recurrent matrix a GRU layer has 3 H I + 3 H^2 + 4 H free parameters, because the two biases of the reset and of the update gate only enter as sums, and with the reset gate before the matrix it has 3 H I + 3 H^2 + 3 H."
+  assumes: ["the layer of c-params", "a parameter is free if changing it alone can change the function"]
+  derivation: parameter-and-flop-count
+
+- id: c-lstm-ratio
+  type: mathematical
+  text: "An LSTM layer of the same widths with one bias per block has exactly 4/3 of the parameters and of the FLOPs of a GRU layer with one bias per block."
+  assumes: ["the LSTM has four blocks and the GRU three, each with input weights, recurrent weights and one bias", "no peepholes and no projection"]
+  derivation: parameter-and-flop-count
+
+- id: c-chung-sizes
+  type: mathematical
+  text: "A GRU layer of 227 units, an LSTM layer of 195 units with three peephole vectors and a tanh layer of 400 units, each reading 20 inputs per step with one bias per block, have 168,888, 169,065 and 168,400 parameters."
+  assumes: ["the recurrent layer alone, without the readout", "one bias per block and three diagonal peephole vectors for the LSTM"]
+  derivation: parameter-and-flop-count
+
+- id: c-flops
+  type: mathematical
+  text: "A forward pass of a GRU layer over a batch of B sequences of length T costs 6 B T H I + 6 B T H^2 FLOPs, counting a multiply-add as two and leaving out the nonlinearities and the elementwise products."
+  assumes: ["the input product x_t W of B by I and I by 3H and the recurrent product of B by H and H by 3H at every step"]
+  derivation: parameter-and-flop-count
+
+- id: c-sequential
+  type: attributive
+  text: "Recurrent models generate a sequence of hidden states h_t as a function of the previous hidden state h_{t-1} and the input for position t, and this inherently sequential nature precludes parallelization within training examples."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 1", stance: for}
+
+- id: c-jacobian
+  type: mathematical
+  text: "The Jacobian of one GRU step with respect to the previous state is diag(z_t) + diag(1 - z_t) ∂n_t/∂h_{t-1} + diag(h_{t-1} - n_t) ∂z_t/∂h_{t-1}, for both placements of the reset gate."
+  assumes: ["the update h_t = (1 - z_t) ⊙ n_t + z_t ⊙ h_{t-1}", "z_t and n_t are differentiable functions of h_{t-1}"]
+  derivation: update-gate-path
+
+- id: c-copy-path
+  type: mathematical
+  text: "When the gates and the candidate do not depend on the state (U = 0), the Jacobian of a GRU step is diag(z_t), and the gradient that reaches a state k steps back is the product of the k update gates, unit by unit."
+  assumes: ["the GRU step of c-jacobian with U = 0"]
+  derivation: update-gate-path
+
+- id: c-chung-shortcut
+  type: attributive
+  text: "Chung et al. argue that the additive update creates shortcut paths that bypass multiple temporal steps and let the error be back-propagated easily without too quickly vanishing, if the gating unit is nearly saturated at 1."
+  evidence:
+    - {work: "chung-2014-empirical-evaluation-gated-recurrent", role: original, locator: "Section 3.3", stance: for}
+
+- id: c-chung-training
+  type: historical
+  text: "Chung et al. trained their models with RMSProp and weight noise of standard deviation 0.075, rescaling the norm of the gradient to 1 whenever it was larger, to prevent exploding gradients."
+  evidence:
+    - {work: "chung-2014-empirical-evaluation-gated-recurrent", role: original, locator: "Section 4", stance: for}
+
+- id: c-leaky
+  type: mathematical
+  text: "With a constant update gate z = σ(b) and a constant candidate, the GRU state is an exponential moving average whose weights on past candidates decay as z^k, with a mean lag of z / (1 - z) = e^b steps."
+  assumes: ["U = 0, so that the gates and the candidate do not depend on the state", "the input is constant"]
+  derivation: update-gate-path
+
+- id: c-joz-init
+  type: attributive
+  text: "Jozefowicz et al. point out that small random initialization effectively sets the forget gate of an LSTM to 0.5, which introduces a vanishing gradient with a factor of 0.5 per timestep, and recommend initializing the forget gate bias to a large value such as 1 or 2."
+  evidence:
+    - {work: "jozefowicz-2015-empirical-exploration-recurrent", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-bounded
+  type: mathematical
+  text: "If the state of a GRU starts in [-1, 1]^H, every coordinate stays in the open interval (-1, 1) at every later step, whatever the inputs and the parameters."
+  assumes: ["the update is a convex combination of the old state and a tanh candidate", "the gates are in (0, 1)"]
+  derivation: bounded-state
+
+- id: c-special-cases
+  type: mathematical
+  text: "In the limits z → 0 and r → 1 the GRU is the tanh recurrent network, in the limit z → 1 it copies its state, and in the limit r → 0 its candidate ignores the state."
+  assumes: ["the GRU of eq-gates, eq-candidate and eq-update, with either placement of the reset gate"]
+  derivation: bounded-state
+
+- id: c-weiss-srnn
+  type: attributive
+  text: "The GRU is at least as strong as the SRNN: by setting the gates of the GRU to z_t = 0 and r_t = 1 we obtain the SRNN computation."
+  evidence:
+    - {work: "weiss-2018-practical-computational-power-finite", role: original, locator: "Section 2", stance: for}
+
+- id: c-weiss-cannot
+  type: attributive
+  text: "Weiss et al. argue that finite-precision GRUs cannot implement unbounded counting on a given dimension, because the tanh of the candidate combined with the tying of z_t and 1 - z_t restricts the values of h to between -1 and 1."
+  evidence:
+    - {work: "weiss-2018-practical-computational-power-finite", role: original, locator: "Section 4", stance: for}
+
+- id: c-cho-tanh
+  type: empirical
+  text: "In preliminary experiments, Cho et al. found it crucial to use the gated unit and could not get meaningful results with a tanh unit without any gating."
+  scope:
+    models: "RNN Encoder-Decoder"
+    data: ["English to French phrase pairs"]
+    setting: "phrase scoring for statistical machine translation"
+  evidence:
+    - {work: "cho-2014-learning-phrase-representations-rnn", role: original, locator: "Section 2.3", stance: for}
+
+- id: c-chung-results
+  type: empirical
+  text: "On four polyphonic music datasets the GRU, LSTM and tanh networks performed closely to each other, and on two raw speech datasets the two gated networks outperformed the tanh network."
+  scope:
+    models: "one-layer GRU, LSTM and tanh recurrent networks of about equal parameter counts"
+    data: ["Nottingham", "JSB Chorales", "MuseData", "Piano-midi", "Ubisoft A", "Ubisoft B"]
+    setting: "sequence modelling, trained with RMSProp"
+  evidence:
+    - {work: "chung-2014-empirical-evaluation-gated-recurrent", role: original, locator: "Section 5", stance: for}
+
+- id: c-chung-table2
+  type: empirical
+  text: "The test negative log-probabilities of the tanh, GRU and LSTM networks are 6.44, 3.59 and 2.70 on Ubisoft A, and 7.62, 0.88 and 1.26 on Ubisoft B."
+  scope:
+    models: "one-layer GRU, LSTM and tanh recurrent networks of about equal parameter counts"
+    data: ["Ubisoft A", "Ubisoft B"]
+    setting: "raw speech signal modelling"
+  evidence:
+    - {work: "chung-2014-empirical-evaluation-gated-recurrent", role: original, locator: "Table 2", stance: for}
+
+- id: c-chung-inconclusive
+  type: attributive
+  text: "Chung et al. conclude that their results are not conclusive in comparing the LSTM and the GRU, and that the choice between them may depend heavily on the dataset and the task."
+  evidence:
+    - {work: "chung-2014-empirical-evaluation-gated-recurrent", role: original, locator: "Section 5", stance: for}
+
+- id: c-joz-search
+  type: historical
+  text: "Jozefowicz et al. evaluated over ten thousand recurrent architectures in an evolutionary search, with the LSTM and the GRU as references."
+  evidence:
+    - {work: "jozefowicz-2015-empirical-exploration-recurrent", role: original, locator: "Abstract and Section 3.4", stance: for}
+
+- id: c-joz-matched
+  type: empirical
+  text: "The GRU outperformed the LSTM on all tasks of Jozefowicz et al. except language modelling, and the LSTM nearly matched the GRU once its forget gate bias was initialized to 1."
+  scope:
+    models: "GRU and LSTM, with the hyperparameters searched for each architecture"
+    data: ["arithmetic", "XML modelling", "Penn Treebank", "music"]
+    setting: "next-step prediction"
+  evidence:
+    - {work: "jozefowicz-2015-empirical-exploration-recurrent", role: original, locator: "Section 4", stance: for}
+    - {work: "jozefowicz-2015-empirical-exploration-recurrent", role: original, locator: "p. 2", stance: for}
+
+- id: c-joz-table1
+  type: empirical
+  text: "The next-step prediction accuracies of the GRU, the LSTM and the LSTM with a forget bias of 1 are 0.89565, 0.89228 and 0.90163 on the arithmetic task, and 0.45963, 0.42470 and 0.44434 on the XML task."
+  scope:
+    models: "GRU, LSTM and LSTM-b, with the hyperparameters searched for each architecture"
+    data: ["arithmetic", "XML modelling"]
+    setting: "next-step prediction"
+  evidence:
+    - {work: "jozefowicz-2015-empirical-exploration-recurrent", role: original, locator: "Table 1", stance: for}
+
+- id: c-joz-ptb
+  type: empirical
+  text: "On Penn Treebank with 20M parameters and dropout, the test perplexities are 91.7 for the GRU, 81.4 for the LSTM and 79.83 for the LSTM with a forget bias of 1."
+  scope:
+    models: "GRU, LSTM and LSTM-b"
+    data: ["Penn Treebank"]
+    setting: "word-level language modelling with dropout"
+    scale: "20M parameters"
+  evidence:
+    - {work: "jozefowicz-2015-empirical-exploration-recurrent", role: original, locator: "Table 3", stance: for}
+
+- id: c-weiss-anbn
+  type: empirical
+  text: "Trained on a^n b^n with n up to 100, the LSTM generalized well up to n = 256, while the GRU accepted a^n b^(n+1) for n > 38, within its training domain."
+  scope:
+    models: "10-dimensional one-layer LSTM and GRU networks"
+    data: ["a^n b^n"]
+    setting: "language recognition"
+  evidence:
+    - {work: "weiss-2018-practical-computational-power-finite", role: original, locator: "Section 5", stance: for}
+
+- id: c-weiss-acc
+  type: empirical
+  text: "On 1000-sample test sets the LSTM's accuracy was 100% and 98.6% on a^n b^n and a^n b^n c^n, against 87.0% and 86.9% for the GRU."
+  scope:
+    models: "10-dimensional one-layer LSTM and GRU networks"
+    data: ["a^n b^n", "a^n b^n c^n"]
+    setting: "language recognition"
+  evidence:
+    - {work: "weiss-2018-practical-computational-power-finite", role: original, locator: "Section 5", stance: for}
+
+- id: c-greff-cifg
+  type: empirical
+  text: "Coupling the input and the forget gate of an LSTM (CIFG) did not significantly change mean performance on any of the datasets of Greff et al."
+  scope:
+    models: "LSTM variants"
+    data: ["TIMIT", "IAM Online", "JSB Chorales"]
+    setting: "speech recognition, handwriting recognition and polyphonic music modelling"
+  evidence:
+    - {work: "greff-2017-lstm-search-space-odyssey", role: original, locator: "p. 6", stance: for}
+
+- id: c-joz-mut1
+  type: definitional
+  text: "The architecture MUT1 found by the search of Jozefowicz et al. computes its update gate from the input alone, z = sigm(W_xz x_t + b_z)."
+  evidence:
+    - {work: "jozefowicz-2015-empirical-exploration-recurrent", role: original, locator: "Section 4", stance: for}
+
+- id: c-mamba-thm
+  type: attributive
+  text: "Gu and Dao state that with N = 1, A = -1, B = 1, s_Δ = Linear(x) and τ_Δ = softplus, the selective SSM recurrence takes the form g_t = σ(Linear(x_t)) and h_t = (1 - g_t) h_{t-1} + g_t x_t."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "Section 3.5.1, Theorem 1", stance: for}
+
+- id: c-mamba-view
+  type: attributive
+  text: "Gu and Dao adopt the view that discretization of SSMs is the principled foundation of heuristic gating mechanisms."
+  evidence:
+    - {work: "gu-2023-mamba", role: original, locator: "Section 3.5.1", stance: for}
+
+- id: c-bahdanau
+  type: historical
+  text: "The recurrent units of the attention-based translation model of Bahdanau et al. are the gated hidden unit of Cho et al., with 1000 hidden units in the decoder and in each direction of the encoder."
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "p. 5 and Appendix A.1.1", stance: for}
+
+- id: c-hist-cho
+  type: historical
+  text: "Cho et al. introduced the unit in 2014, in arXiv 1406.1078, as the hidden unit of an encoder-decoder for phrase translation."
+  evidence:
+    - {work: "cho-2014-learning-phrase-representations-rnn", role: original, locator: "p. 1", stance: for}
+
+- id: c-hist-chung
+  type: historical
+  text: "In December 2014 Chung et al. wrote that they refer to the unit as a gated recurrent unit (GRU), and evaluated it against the LSTM unit on polyphonic music and speech signal modeling."
+  evidence:
+    - {work: "chung-2014-empirical-evaluation-gated-recurrent", role: original, locator: "Section 1", stance: for}
+
+- id: c-hist-joz
+  type: historical
+  text: "Jozefowicz, Zaremba and Sutskever published their search over recurrent architectures in the Proceedings of the 32nd International Conference on Machine Learning, Lille, France, 2015."
+  evidence:
+    - {work: "jozefowicz-2015-empirical-exploration-recurrent", role: original, locator: "p. 1", stance: for}
