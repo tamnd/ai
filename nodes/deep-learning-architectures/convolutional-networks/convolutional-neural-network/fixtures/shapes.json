@@ -1,0 +1,780 @@
+{
+  "note": "Written by aik shapes sample -w from shapes.yaml; do not edit. The tests of each implementation check shapes, param_count and flops against these values (spec 08.6, rule X09).",
+  "configs": [
+    {
+      "name": "example",
+      "kind": "example",
+      "config": {
+        "B": 2,
+        "C": 1,
+        "C1": 2,
+        "C2": 3,
+        "F1": 5,
+        "F2": 4,
+        "K": 3,
+        "R": 16,
+        "c1": 2,
+        "c2": 3,
+        "channels": 1,
+        "classes": 3,
+        "f1": 5,
+        "f2": 4,
+        "size": 16
+      },
+      "blocks": {
+        "conv1": {
+          "params": 52,
+          "flops_forward": 28800,
+          "inputs": {
+            "x": [
+              2,
+              1,
+              16,
+              16
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              2,
+              12,
+              12
+            ]
+          }
+        },
+        "conv2": {
+          "params": 153,
+          "flops_forward": 2400,
+          "inputs": {
+            "x": [
+              2,
+              2,
+              6,
+              6
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              3,
+              2,
+              2
+            ]
+          }
+        },
+        "fc1": {
+          "params": 20,
+          "flops_forward": 60,
+          "inputs": {
+            "x": [
+              2,
+              3
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              5
+            ]
+          }
+        },
+        "fc2": {
+          "params": 24,
+          "flops_forward": 80,
+          "inputs": {
+            "x": [
+              2,
+              5
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              4
+            ]
+          }
+        },
+        "fc3": {
+          "params": 15,
+          "flops_forward": 48,
+          "inputs": {
+            "x": [
+              2,
+              4
+            ]
+          },
+          "outputs": {
+            "logits": [
+              2,
+              3
+            ]
+          }
+        },
+        "pool1": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "x": [
+              2,
+              2,
+              12,
+              12
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              2,
+              6,
+              6
+            ]
+          }
+        },
+        "pool2": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "x": [
+              2,
+              3,
+              2,
+              2
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              3,
+              1,
+              1
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 31388,
+        "params": 264
+      }
+    },
+    {
+      "name": "sample-1",
+      "kind": "sample",
+      "config": {
+        "B": 2,
+        "C": 1,
+        "C1": 4,
+        "C2": 13,
+        "F1": 59,
+        "F2": 83,
+        "K": 7,
+        "R": 16,
+        "c1": 4,
+        "c2": 13,
+        "channels": 1,
+        "classes": 7,
+        "f1": 59,
+        "f2": 83,
+        "size": 16
+      },
+      "blocks": {
+        "conv1": {
+          "params": 104,
+          "flops_forward": 57600,
+          "inputs": {
+            "x": [
+              2,
+              1,
+              16,
+              16
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              4,
+              12,
+              12
+            ]
+          }
+        },
+        "conv2": {
+          "params": 1313,
+          "flops_forward": 20800,
+          "inputs": {
+            "x": [
+              2,
+              4,
+              6,
+              6
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              13,
+              2,
+              2
+            ]
+          }
+        },
+        "fc1": {
+          "params": 826,
+          "flops_forward": 3068,
+          "inputs": {
+            "x": [
+              2,
+              13
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              59
+            ]
+          }
+        },
+        "fc2": {
+          "params": 4980,
+          "flops_forward": 19588,
+          "inputs": {
+            "x": [
+              2,
+              59
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              83
+            ]
+          }
+        },
+        "fc3": {
+          "params": 588,
+          "flops_forward": 2324,
+          "inputs": {
+            "x": [
+              2,
+              83
+            ]
+          },
+          "outputs": {
+            "logits": [
+              2,
+              7
+            ]
+          }
+        },
+        "pool1": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "x": [
+              2,
+              4,
+              12,
+              12
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              4,
+              6,
+              6
+            ]
+          }
+        },
+        "pool2": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "x": [
+              2,
+              13,
+              2,
+              2
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              13,
+              1,
+              1
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 103380,
+        "params": 7811
+      }
+    },
+    {
+      "name": "sample-2",
+      "kind": "sample",
+      "config": {
+        "B": 2,
+        "C": 3,
+        "C1": 2,
+        "C2": 10,
+        "F1": 75,
+        "F2": 31,
+        "K": 8,
+        "R": 16,
+        "c1": 2,
+        "c2": 10,
+        "channels": 3,
+        "classes": 8,
+        "f1": 75,
+        "f2": 31,
+        "size": 16
+      },
+      "blocks": {
+        "conv1": {
+          "params": 152,
+          "flops_forward": 86400,
+          "inputs": {
+            "x": [
+              2,
+              3,
+              16,
+              16
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              2,
+              12,
+              12
+            ]
+          }
+        },
+        "conv2": {
+          "params": 510,
+          "flops_forward": 8000,
+          "inputs": {
+            "x": [
+              2,
+              2,
+              6,
+              6
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              10,
+              2,
+              2
+            ]
+          }
+        },
+        "fc1": {
+          "params": 825,
+          "flops_forward": 3000,
+          "inputs": {
+            "x": [
+              2,
+              10
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              75
+            ]
+          }
+        },
+        "fc2": {
+          "params": 2356,
+          "flops_forward": 9300,
+          "inputs": {
+            "x": [
+              2,
+              75
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              31
+            ]
+          }
+        },
+        "fc3": {
+          "params": 256,
+          "flops_forward": 992,
+          "inputs": {
+            "x": [
+              2,
+              31
+            ]
+          },
+          "outputs": {
+            "logits": [
+              2,
+              8
+            ]
+          }
+        },
+        "pool1": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "x": [
+              2,
+              2,
+              12,
+              12
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              2,
+              6,
+              6
+            ]
+          }
+        },
+        "pool2": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "x": [
+              2,
+              10,
+              2,
+              2
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              10,
+              1,
+              1
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 107692,
+        "params": 4099
+      }
+    },
+    {
+      "name": "lenet5",
+      "kind": "named",
+      "config": {
+        "B": 1,
+        "C": 1,
+        "C1": 6,
+        "C2": 16,
+        "F1": 120,
+        "F2": 84,
+        "K": 10,
+        "R": 32,
+        "c1": 6,
+        "c2": 16,
+        "channels": 1,
+        "classes": 10,
+        "f1": 120,
+        "f2": 84,
+        "size": 32
+      },
+      "blocks": {
+        "conv1": {
+          "params": 156,
+          "flops_forward": 235200,
+          "inputs": {
+            "x": [
+              1,
+              1,
+              32,
+              32
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              6,
+              28,
+              28
+            ]
+          }
+        },
+        "conv2": {
+          "params": 2416,
+          "flops_forward": 480000,
+          "inputs": {
+            "x": [
+              1,
+              6,
+              14,
+              14
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              16,
+              10,
+              10
+            ]
+          }
+        },
+        "fc1": {
+          "params": 48120,
+          "flops_forward": 96000,
+          "inputs": {
+            "x": [
+              1,
+              400
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              120
+            ]
+          }
+        },
+        "fc2": {
+          "params": 10164,
+          "flops_forward": 20160,
+          "inputs": {
+            "x": [
+              1,
+              120
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              84
+            ]
+          }
+        },
+        "fc3": {
+          "params": 850,
+          "flops_forward": 1680,
+          "inputs": {
+            "x": [
+              1,
+              84
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1,
+              10
+            ]
+          }
+        },
+        "pool1": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "x": [
+              1,
+              6,
+              28,
+              28
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              6,
+              14,
+              14
+            ]
+          }
+        },
+        "pool2": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "x": [
+              1,
+              16,
+              10,
+              10
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              16,
+              5,
+              5
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 833040,
+        "params": 61706
+      }
+    },
+    {
+      "name": "lenet5_rgb",
+      "kind": "named",
+      "config": {
+        "B": 1,
+        "C": 3,
+        "C1": 6,
+        "C2": 16,
+        "F1": 120,
+        "F2": 84,
+        "K": 10,
+        "R": 32,
+        "c1": 6,
+        "c2": 16,
+        "channels": 3,
+        "classes": 10,
+        "f1": 120,
+        "f2": 84,
+        "size": 32
+      },
+      "blocks": {
+        "conv1": {
+          "params": 456,
+          "flops_forward": 705600,
+          "inputs": {
+            "x": [
+              1,
+              3,
+              32,
+              32
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              6,
+              28,
+              28
+            ]
+          }
+        },
+        "conv2": {
+          "params": 2416,
+          "flops_forward": 480000,
+          "inputs": {
+            "x": [
+              1,
+              6,
+              14,
+              14
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              16,
+              10,
+              10
+            ]
+          }
+        },
+        "fc1": {
+          "params": 48120,
+          "flops_forward": 96000,
+          "inputs": {
+            "x": [
+              1,
+              400
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              120
+            ]
+          }
+        },
+        "fc2": {
+          "params": 10164,
+          "flops_forward": 20160,
+          "inputs": {
+            "x": [
+              1,
+              120
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              84
+            ]
+          }
+        },
+        "fc3": {
+          "params": 850,
+          "flops_forward": 1680,
+          "inputs": {
+            "x": [
+              1,
+              84
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1,
+              10
+            ]
+          }
+        },
+        "pool1": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "x": [
+              1,
+              6,
+              28,
+              28
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              6,
+              14,
+              14
+            ]
+          }
+        },
+        "pool2": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "x": [
+              1,
+              16,
+              10,
+              10
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              16,
+              5,
+              5
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 1303440,
+        "params": 62006
+      }
+    }
+  ]
+}
