@@ -1,5 +1,5 @@
 ---
-tag: NEW-rms-normalization
+tag: 3FZB17
 kind: method
 slug: rms-normalization
 name: RMSNorm
