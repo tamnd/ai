@@ -1,5 +1,5 @@
 ---
-tag: NEW-mixup
+tag: 8X8XEV
 kind: method
 slug: mixup
 name: Mixup
