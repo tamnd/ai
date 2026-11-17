@@ -1,0 +1,47 @@
+# SPDX-License-Identifier: MIT
+# The shape contract of a neural ODE block (spec 08.6): the input padded with p = d_state - d zeros (p = 0 is the plain
+# model, p > 0 the augmented one), then n_steps steps of the classical Runge-Kutta method of order 4 on the vector field
+# f(h, t) = W2 tanh(W1 h + t u + b1) + b2, four evaluations of f per step. An adaptive solver picks its own number of
+# evaluations, so the FLOPs below are those of the fixed-step solver; with an adaptive one, replace 4 * n_steps by
+# the number of function evaluations it reports. The example config is small, so that the tests can run it.
+config:
+  d:        {meaning: "width of the input", symbol: "d", example: 2, sample: [1, 5]}
+  d_state:  {meaning: "width of the state h(t): d plus the p zero dimensions of the augmentation, so p = d_state - d", symbol: "D", example: 3, sample: [1, 6]}
+  d_hidden: {meaning: "width of the hidden layer of the vector field", symbol: "H", example: 4, sample: [1, 8]}
+  n_steps:  {meaning: "number of steps of the solver from t = 0 to t = T", symbol: "N", example: 3, sample: [1, 6]}
+axes:
+  B: {meaning: "batch", example: 5, sample: [1, 6]}
+  I: d
+  D: d_state
+  H: d_hidden
+  N: n_steps
+blocks:
+  - id: augment
+    meaning: "append p zeros to each input, so that the state has width d + p"
+    eq: [augment]
+    inputs: {x: "(B, I)"}
+    outputs: {h0: "(B, D)"}
+    params: "0"
+  - id: field
+    meaning: "one evaluation of the vector field: an affine map to H units with the time as an extra input, tanh, and an affine map back to the state"
+    eq: [field]
+    inputs: {h: "(B, D)"}
+    outputs: {dh: "(B, D)"}
+    internals: {s: "(B, H)"}
+    params: "2 * D * H + 2 * H + D"
+    flops_forward: "4 * B * D * H"
+  - id: solve
+    meaning: "n_steps steps of the Runge-Kutta method of order 4 from h(0) to h(T), each with four evaluations of the same field"
+    eq: [ode, rk4]
+    inputs: {h0: "(B, D)"}
+    outputs: {y: "(B, D)"}
+    params: "field.params"
+    flops_forward: "4 * N * field.flops_forward"
+model:
+  params: {formula: "solve.params", symbol: "P_\\theta", meaning: "the weights and biases of the vector field; the number of steps does not change it"}
+  flops_forward: {formula: "solve.flops_forward", symbol: "C_{\\text{fwd}}", meaning: "FLOPs of one forward solve over the batch, a multiply-add counted as 2; the Runge-Kutta combinations, the biases and tanh are left out"}
+  flops_backward: {formula: "3 * flops_forward", symbol: "C_{\\text{bwd}}", meaning: "FLOPs of the adjoint backward solve with the same steps: each evaluation of the augmented system recomputes f and makes four products of the size of the two of f"}
+  memory_adjoint: {formula: "2 * B * D + params", meaning: "numbers that the adjoint backward pass carries, the state, the adjoint and the parameter gradient, whatever the number of steps"}
+  memory_backprop: {formula: "4 * N * B * D", meaning: "numbers that backpropagation through the solver stores: the input of each of the 4 N evaluations of f"}
+configs:
+  plain: {meaning: "the plain neural ODE in two dimensions, with no augmentation (p = 0)", d: 2, d_state: 2, d_hidden: 4, n_steps: 3}
