@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/group-equivariant-convolutional-network/ (ai://NEW-group-equivariant-convolutional-network).
+# Part of https://ai.tamnd.com/group-equivariant-convolutional-network/ (ai://1REXCC).
 """The group equivariant convolutional network for the group p4, the NumPy reference.
 
 p4 is the group of translations of the pixel grid and rotations by multiples of 90 degrees. A feature map on p4 is

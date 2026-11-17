@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/group-equivariant-convolutional-network/ (ai://NEW-group-equivariant-convolutional-network).
+# Part of https://ai.tamnd.com/group-equivariant-convolutional-network/ (ai://1REXCC).
 """Tests of the NumPy reference: the group action, the equivariance of both layers, the filter bank against the
 definition, the invariance of the model, the gradients, the pitfalls, the shapes and the shared fixture."""
 

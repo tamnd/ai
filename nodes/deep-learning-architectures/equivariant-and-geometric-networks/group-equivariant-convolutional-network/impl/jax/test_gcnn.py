@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/group-equivariant-convolutional-network/ (ai://NEW-group-equivariant-convolutional-network).
+# Part of https://ai.tamnd.com/group-equivariant-convolutional-network/ (ai://1REXCC).
 """Tests of the JAX reference: the shared fixture, the shape contract, equivariance, jit and vmap."""
 
 import json

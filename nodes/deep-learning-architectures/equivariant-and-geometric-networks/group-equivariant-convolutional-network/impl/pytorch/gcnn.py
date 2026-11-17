@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/group-equivariant-convolutional-network/ (ai://NEW-group-equivariant-convolutional-network).
+# Part of https://ai.tamnd.com/group-equivariant-convolutional-network/ (ai://1REXCC).
 """The group equivariant convolutional network for the group p4, the PyTorch reference.
 
 The same model as the NumPy reference: a lifting layer, ReLU, a p4 group correlation, ReLU, the maximum over the 4

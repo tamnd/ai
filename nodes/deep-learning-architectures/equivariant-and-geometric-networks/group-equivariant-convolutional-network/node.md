@@ -1,5 +1,5 @@
 ---
-tag: NEW-group-equivariant-convolutional-network
+tag: 1REXCC
 kind: architecture
 slug: group-equivariant-convolutional-network
 name: Group equivariant convolutional network
