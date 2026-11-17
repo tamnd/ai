@@ -1,0 +1,26 @@
+# SPDX-License-Identifier: MIT
+# The options of the expected calibration error that change the score, and the vector rows that pin each value (spec
+# 08.7.5). Every row is in edge.jsonl and was computed by hand as an exact rational (fractions.Fraction) of the float64
+# inputs; official.jsonl waits for a published implementation in the aik-vectors image. The page shows this as the
+# table of its Variants section.
+default:
+  signature: "n_bins:15"
+  used_by: "Guo et al. (2017), Table 1 and Table S1, ECE and MCE with M = 15 equal-width bins"
+options:
+  n_bins:
+    "15":
+      meaning: "fifteen equal-width bins of width 1/15"
+      used_by: "Guo et al. (2017) and much later work on image classifiers"
+      rows: {edge.jsonl: [worked-example-15, perfect-confident, uniform-ties]}
+    "10":
+      meaning: "ten equal-width bins of width 0.1"
+      used_by: "a common choice for reliability diagrams; Kadavath et al. (2022) also use 10 bins, but with an equal number of predictions in each"
+      rows: {edge.jsonl: [confident-wrong, edge-boundaries]}
+    "1":
+      meaning: "one bin: |accuracy - mean confidence|, the average over- or under-confidence"
+      used_by: "a lower bound on the ECE of every binning, by the triangle inequality"
+      rows: {edge.jsonl: [one-bin]}
+    "other M":
+      meaning: "M equal-width bins: more bins lower the binning bias and raise the sampling bias"
+      used_by: "Minderer et al. (2021) compare 15 and 100 bins, with an equal number of points in each"
+      rows: {edge.jsonl: [worked-example, binning-cancels-2, binning-cancels-8, many-bins]}

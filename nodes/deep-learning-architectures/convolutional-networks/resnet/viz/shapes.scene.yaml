@@ -1,0 +1,38 @@
+# The architecture scene (spec 12.6), first written by aik viz shapes from shapes.yaml.
+# It sets the layout and the controls only; every shape and count comes from shapes.yaml.
+title: ResNet
+controls:
+  - name: width
+    choices: [2, 64]
+  - name: n1
+    choices: [1, 2, 3]
+  - name: n2
+    choices: [1, 2, 4, 8]
+  - name: n3
+    choices: [1, 2, 6, 23, 36]
+  - name: n4
+    choices: [1, 2, 3]
+  - name: classes
+    choices: [2, 5, 8, 1000]
+  - name: B
+    choices: [1, 2]
+  - name: R
+    choices: [32, 64, 224]
+presets:
+  - example
+  - resnet50
+  - resnet101
+  - resnet152
+stack:
+  - stem
+  - s1_first
+  - s1_rest
+  - s2_first
+  - s2_rest
+  - s3_first
+  - s3_rest
+  - s4_first
+  - s4_rest
+  - head
+links:
+  head: softmax-regression@al

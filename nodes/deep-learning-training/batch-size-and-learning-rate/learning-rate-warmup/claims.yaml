@@ -1,0 +1,543 @@
+# The claims of the learning rate warmup page (spec 07). The build computes the labels.
+
+- id: c-goyal-def
+  type: definitional
+  text: "To successfully apply the linear scaling rule, Goyal et al. present a new warmup strategy, i.e., a strategy of using lower learning rates at the start of training, to overcome early optimization difficulties."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 2", stance: for}
+
+- id: c-xiong-def
+  type: definitional
+  text: "In the learning rate warm-up stage the optimization starts with an extremely small learning rate, and then gradually increases it to a pre-defined maximum value in a pre-defined number of iterations."
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "Section 1", stance: for}
+
+- id: c-liu-abstract
+  type: attributive
+  text: "The learning rate warmup heuristic achieves remarkable success in stabilizing training, accelerating convergence and improving generalization for adaptive stochastic optimization algorithms like RMSprop and Adam."
+  evidence:
+    - {work: "liu-2020-variance-adaptive-learning-rate", role: original, locator: "p. 1", stance: for}
+
+- id: c-xiong-abstract
+  type: attributive
+  text: "To train a Transformer one usually needs a carefully designed learning rate warm-up stage, which is shown to be crucial to the final performance but will slow down the optimization and bring more hyper-parameter tunings."
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "the abstract", stance: for}
+
+- id: c-liu-not-monotone
+  type: definitional
+  text: "Instead of setting the learning rate as a constant or in a decreasing order, a learning rate warmup strategy sets αt as smaller values in the first few steps, thus not satisfying ∀t αt+1 ≤ αt; for example, linear warmup sets αt = t α0 when t < Tw."
+  evidence:
+    - {work: "liu-2020-variance-adaptive-learning-rate", role: original, locator: "p. 2", stance: for}
+
+- id: c-xiong-cnn-practice
+  type: attributive
+  text: "For convolutional neural networks and recurrent neural networks, a relatively large learning rate is usually set in the beginning, and then decreased along with the optimization process; the learning rate warm-up stage has only been shown essential in dealing with some very specific problems, e.g., the large-batch training."
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "Section 2", stance: for}
+
+- id: c-linear-scaling
+  type: definitional
+  text: "Linear Scaling Rule: When the minibatch size is multiplied by k, multiply the learning rate by k."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 2", stance: for}
+
+- id: c-constant
+  type: attributive
+  text: "The warmup strategy presented in [16] uses a low constant learning rate for the first few epochs of training; Goyal et al. found constant warmup particularly helpful for prototyping object detection and segmentation methods that fine-tune pre-trained layers together with newly initialized layers."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 3", stance: for}
+
+- id: c-gradual
+  type: definitional
+  text: "Gradual warmup gradually ramps up the learning rate from a small to a large value; this ramp avoids a sudden increase of the learning rate, allowing healthy convergence at the start of training."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 3", stance: for}
+
+- id: c-gradual-detail
+  type: definitional
+  text: "With a large minibatch of size kn, Goyal et al. start from a learning rate of η and increment it by a constant amount at each iteration such that it reaches η̂ = kη after 5 epochs (results are robust to the exact duration of warmup); after the warmup, they go back to the original learning rate schedule."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 3", stance: for}
+
+- id: c-xiong-eq
+  type: definitional
+  text: "The learning rate scheduler for the first Twarmup iterations is lr(t) = t/Twarmup · lrmax for t ≤ Twarmup; after this warm-up stage, the learning rate will be set by classical learning rate schedulers, such as the linear decay, the inverse square-root decay, or forced decay at particular iterations."
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-noam-adam
+  type: attributive
+  text: "Vaswani et al. used the Adam optimizer with β1 = 0.9, β2 = 0.98 and ϵ = 10^-9, and varied the learning rate over the course of training according to lrate = d_model^-0.5 · min(step_num^-0.5, step_num · warmup_steps^-1.5)."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "p. 7", stance: for}
+
+- id: c-noam
+  type: definitional
+  text: "This corresponds to increasing the learning rate linearly for the first warmup_steps training steps, and decreasing it thereafter proportionally to the inverse square root of the step number; Vaswani et al. used warmup_steps = 4000."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "p. 7", stance: for}
+
+- id: c-m-noam-peak
+  type: mathematical
+  text: "For 0 < s <= w, s w^-1.5 <= s^-0.5, so the rate of eq-noam is d^-0.5 s w^-1.5; for s >= w it is d^-0.5 s^-0.5; both branches equal (d w)^-0.5 at s = w, which is the maximum over s."
+  assumes: ["d = d_model > 0", "w = warmup_steps > 0", "s = step_num > 0", "the rate is d^-0.5 min(s^-0.5, s w^-1.5) as in eq-noam"]
+  derivation: "node.md#the-method"
+
+- id: c-radam-summary
+  type: attributive
+  text: "RAdam deactivates the adaptive learning rate when its variance is divergent, thus avoiding undesired instability in the first few updates."
+  evidence:
+    - {work: "liu-2020-variance-adaptive-learning-rate", role: original, locator: "p. 6", stance: for}
+
+- id: c-goyal-interpretation
+  type: attributive
+  text: "If we could assume ∇l(x, wt) ≈ ∇l(x, wt+j) for j < k, then setting η̂ = kη would yield ŵt+1 ≈ wt+k, and the updates from small and large minibatch SGD would be similar."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 3", stance: for}
+
+- id: c-goyal-rapid
+  type: attributive
+  text: "The condition ∇l(x, wt) ≈ ∇l(x, wt+j) will clearly not hold in initial training when the network is changing rapidly; Goyal et al. address this by using a warmup phase."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 3", stance: for}
+
+- id: c-constant-spike
+  type: empirical
+  text: "Given a large k, constant warmup is not sufficient to solve the optimization problem, and a transition out of the low learning rate warmup phase can cause the training error to spike."
+  scope:
+    models: "ResNet-50 trained with SGD"
+    data: ["ImageNet"]
+    scale: "minibatch of size kn with large k, low rate η for 5 epochs then kη"
+    setting: "large-minibatch training with the linear scaling rule"
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 3", stance: for}
+
+- id: c-bottou
+  type: attributive
+  text: "Bottou et al. review theoretical tradeoffs of minibatching and suggest the learning rate should not exceed a maximum rate independent of minibatch size (which justifies warmup)."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 3", stance: for}
+
+- id: c-liu-root-cause
+  type: attributive
+  text: "The root cause is that the adaptive learning rate has undesirably large variance in the early stage of model training, due to the limited amount of training samples being used."
+  evidence:
+    - {work: "liu-2020-variance-adaptive-learning-rate", role: original, locator: "p. 2", stance: for}
+
+- id: c-liu-t1
+  type: attributive
+  text: "When t = 1, ψ(g1) = sqrt(1/g1^2); viewing the gradients as i.i.d. Gaussian random variables following N(0, σ^2), 1/g1^2 is subject to the scaled inverse chi-squared distribution and Var[sqrt(1/g1^2)] is divergent."
+  evidence:
+    - {work: "liu-2020-variance-adaptive-learning-rate", role: original, locator: "p. 3", stance: for}
+
+- id: c-m-t1-divergent
+  type: mathematical
+  text: "If g ~ N(0, sigma^2) with sigma > 0, then E[1/g^2] = infinity and E[1/|g|] = infinity, because the density is at least half its value at 0 on some interval [-a, a] and the integrals of g^-2 and of |g|^-1 over [-a, a] diverge."
+  assumes: ["g is a single gradient entry with the density of N(0, sigma^2), sigma > 0", "the density is continuous and positive at 0"]
+  derivation: "node.md#derivation"
+
+- id: c-liu-small-lr
+  type: attributive
+  text: "Setting a small learning rate at the early stage can reduce the variance (Var[αx] = α^2 Var[x]), thus alleviating this problem."
+  evidence:
+    - {work: "liu-2020-variance-adaptive-learning-rate", role: original, locator: "p. 3", stance: for}
+
+- id: c-m-warmup-variance
+  type: mathematical
+  text: "If alpha_t = alpha_0 t / T_w is deterministic, then Var[alpha_t psi_t] = (t / T_w)^2 alpha_0^2 Var[psi_t], so at t = 1 the variance is scaled by 1 / T_w^2."
+  assumes: ["the learning rate alpha_t is a deterministic number at each step", "Var[psi_t] is finite, or both sides are read as infinite"]
+  derivation: "node.md#derivation"
+
+- id: c-liu-theorem1
+  type: attributive
+  text: "Theorem 1. If ψ^2(.) ~ Scale-inv-χ^2(ρ, 1/σ^2), Var[ψ(.)] monotonically decreases as ρ increases."
+  evidence:
+    - {work: "liu-2020-variance-adaptive-learning-rate", role: original, locator: "p. 4", stance: for}
+
+- id: c-liu-100x
+  type: attributive
+  text: "The variance at ρt = 5 is over 100 times larger than the variance at ρt = 500."
+  evidence:
+    - {work: "liu-2020-variance-adaptive-learning-rate", role: original, locator: "p. 5", stance: for}
+
+- id: c-liu-first-order
+  type: attributive
+  text: "By approximating sqrt(ψ^2(.)) to the first order, and since ψ^2(.) ~ Scale-inv-χ^2(ρt, 1/σ^2), Var[ψ(.)] ≈ ρt/[2(ρt − 2)(ρt − 4)σ^2]."
+  evidence:
+    - {work: "liu-2020-variance-adaptive-learning-rate", role: original, locator: "p. 5", stance: for}
+
+- id: c-m-rect
+  type: mathematical
+  text: "With V(rho) = rho / [2 (rho - 2)(rho - 4) sigma^2], sqrt(V(rho_inf) / V(rho_t)) = sqrt((rho_t - 4)(rho_t - 2) rho_inf / ((rho_inf - 4)(rho_inf - 2) rho_t)), and sigma cancels."
+  assumes: ["the first-order approximation V(rho) of Var[psi]", "rho_t > 4 and rho_inf > 4", "the same sigma at step t and in the limit"]
+  derivation: "node.md#derivation"
+
+- id: c-radam-alg
+  type: definitional
+  text: "In Algorithm 2, ρ∞ ← 2/(1 − β2) − 1 and ρt ← ρ∞ − 2tβ2^t/(1 − β2^t); if the variance is tractable, i.e., ρt > 4, the parameters are updated with the adaptive momentum scaled by rt; else they are updated with un-adapted momentum."
+  evidence:
+    - {work: "liu-2020-variance-adaptive-learning-rate", role: original, locator: "p. 5", stance: for}
+
+- id: c-m-rho1
+  type: mathematical
+  text: "At t = 1, rho_1 = 2/(1 - beta2) - 1 - 2 beta2/(1 - beta2) = 2(1 - beta2)/(1 - beta2) - 1 = 1 for every beta2 in (0, 1)."
+  assumes: ["0 < beta2 < 1", "rho_t as in eq-rho"]
+  derivation: "node.md#derivation"
+
+- id: c-m-rho-t
+  type: mathematical
+  text: "With delta = 1 - beta2, expanding beta2^t to second order in delta gives 2 t beta2^t / (1 - beta2^t) = 2/delta - t - 1 + O(t^2 delta), so rho_t = t + O(t^2 delta)."
+  assumes: ["0 < delta = 1 - beta2 < 1", "t delta is small", "rho_t as in eq-rho"]
+  derivation: "node.md#derivation"
+
+- id: c-liu-linear-form
+  type: attributive
+  text: "rt has a similar form to the heuristic linear warmup, which can be viewed as setting the rectification term as min(t, Tw)/Tw; it verifies the intuition that warmup works as a variance reduction technique."
+  evidence:
+    - {work: "liu-2020-variance-adaptive-learning-rate", role: original, locator: "p. 6", stance: for}
+
+- id: c-xiong-post-ln
+  type: attributive
+  text: "Xiong et al. prove with mean field theory that at initialization, for the original-designed Post-LN Transformer, which places the layer normalization between the residual blocks, the expected gradients of the parameters near the output layer are large; therefore, using a large learning rate on those gradients makes the training unstable, and the warm-up stage is practically helpful for avoiding this problem."
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "the abstract", stance: for}
+
+- id: c-xiong-thm1
+  type: attributive
+  text: "Theorem 1: with high probability, for the Post-LN Transformer with L layers the gradient of the parameters of the last layer satisfies ‖∂L̃/∂W^{2,L}‖_F ≤ O(d sqrt(ln d)), and for the Pre-LN Transformer with L layers ‖∂L̃/∂W^{2,L}‖_F ≤ O(d sqrt(ln d / L)); for Post-LN the scale is independent of L."
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "Section 3.3", stance: for}
+
+- id: c-xiong-hypothesis
+  type: attributive
+  text: "Xiong et al. hypothesize that the gradient scale is one of the reasons that the Post-LN Transformer needs a careful learning rate scheduling; since the gradients are large for some layers, using a large learning rate without warm-up may make the training unstable."
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "Section 3.4", stance: for}
+
+- id: c-xiong-sgd
+  type: attributive
+  text: "According to their results, the warm-up stage also helps the training of SGD, which suggests that the benefit of the warm-up stage may be not for a particular optimizer."
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-goyal-sweep-setup
+  type: definitional
+  text: "For all models Goyal et al. used the linear scaling rule and set the reference learning rate as η = 0.1 · kn/256; for models with kn > 256, they used the gradual warmup strategy always starting with η = 0.1 and increasing linearly to the reference learning rate after 5 epochs."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 9", stance: for}
+
+- id: c-imagenet-size
+  type: attributive
+  text: "Goyal et al. train on the ∼1.28 million ImageNet training images and evaluate by top-1 error on the 50,000 validation images."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 6", stance: for}
+
+- id: c-we-goyal
+  type: mathematical
+  text: "At kn = 8192, eta_hat = 0.1 x 8192/256 = 3.2; one epoch of 1.28 million images is 156.25 iterations and 5 epochs are 781.25; the increment is (3.2 - 0.1)/781.25, about 0.00397; the rate is about 0.72 after 156 iterations and about 1.65 after 391."
+  assumes: ["1.28 x 10^6 training images (the paper's approximate count)", "the ramp of eq-gradual from 0.1 to 3.2 over 781.25 iterations", "one iteration per minibatch of 8192"]
+  derivation: "node.md#worked-example"
+
+- id: c-we-noam
+  type: mathematical
+  text: "With d = 512 and w = 4000, the peak is 1/sqrt(512 x 4000), about 6.99e-4; step 1 gives 1/4000 of the peak, about 1.75e-7; step 1000 gives a quarter; after the peak the rate is the peak times sqrt(4000/s), so 0.5 of it at 16,000, 0.2 of it (about 1.40e-4) at 100,000 and about 0.115 of it (about 8.07e-5) at 300,000."
+  assumes: ["eq-noam with d_model = 512 and warmup_steps = 4000", "steps counted from 1"]
+  derivation: "node.md#worked-example"
+
+- id: c-vaswani-dmodel
+  type: definitional
+  text: "All sub-layers in the model, as well as the embedding layers, produce outputs of dimension dmodel = 512."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "p. 3", stance: for}
+
+- id: c-vaswani-base
+  type: attributive
+  text: "Vaswani et al. trained the base models for a total of 100,000 steps or 12 hours on one machine with 8 NVIDIA P100 GPUs."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "p. 7", stance: for}
+
+- id: c-we-radam
+  type: mathematical
+  text: "With beta2 = 0.999, rho_inf = 1999, rho_2 ≈ 1.9995, rho_3 ≈ 2.9987, rho_4 ≈ 3.9975 and rho_5 ≈ 4.9960, so the first step with rho_t > 4 is t = 5; r_5 ≈ 0.017, r_100 ≈ 0.215, r_556 ≈ 0.50, r_1000 ≈ 0.645, r_2000 ≈ 0.828 and r_5000 ≈ 0.983."
+  assumes: ["eq-rho and eq-rect with beta2 = 0.999", "the threshold rho_t > 4 of Algorithm 2", "values rounded to the digits shown"]
+  derivation: "node.md#worked-example"
+
+- id: c-radam-degenerate
+  type: attributive
+  text: "If β2 ≤ 0.6, we have ρ∞ ≤ 4 and RAdam is degenerated to SGD with momentum."
+  evidence:
+    - {work: "liu-2020-variance-adaptive-learning-rate", role: original, locator: "p. 6", stance: for}
+
+- id: c-we-ratio
+  type: mathematical
+  text: "With V(rho) = rho / [2 (rho - 2)(rho - 4) sigma^2], V(5) / V(500) = (5 / 6) / (500 / (2 x 498 x 496)), about 823."
+  assumes: ["the first-order approximation V(rho) of Var[psi]", "the same sigma at both values of rho"]
+  derivation: "node.md#worked-example"
+
+- id: c-popel
+  type: attributive
+  text: "Popel & Bojar (2018) has shown that the final model performance is quite sensitive to the value of the maximum learning rate and the number of warm-up iterations."
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "Section 1", stance: for}
+
+- id: c-xiong-t500
+  type: empirical
+  text: "When setting Twarmup = 500, the learned models with Adam achieve only 31.16 and 2.77 in term of BLEU score for lrmax = 5e−4 and 1e−3 respectively."
+  scope:
+    models: "Post-LN Transformer trained with Adam, β = (0.9, 0.98)"
+    data: ["IWSLT14 De-En"]
+    scale: "Twarmup = 500, lrmax of 5e-4 and 1e-3"
+    setting: "machine translation, BLEU, inverse square root schedule after warmup"
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-bert-warmup
+  type: attributive
+  text: "Xiong et al. train the Post-LN BERT using 10k warmup steps with lrmax = 1e−4; for the Pre-LN BERT, they use linear learning rate decay starting from 3e−4 without the warm-up stage; they tried a larger learning rate (such as 3e−4) for the Post-LN BERT but found the optimization diverged."
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-xiong-bert-lr
+  type: attributive
+  text: "Twarmup (10k) is far less than the acceleration (200k), which suggests the Pre-LN Transformer is easier to optimize using larger learning rates."
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-goyal-table1
+  type: empirical
+  text: "In Table 1, top-1 validation error is 23.60 ±0.12 for kn = 256 with η = 0.1, and for kn = 8k with η = 3.2 it is 24.84 ±0.37 with no warmup, 25.88 ±0.56 with constant warmup and 23.74 ±0.09 with gradual warmup (mean and std over 5 trials)."
+  scope:
+    models: "ResNet-50 trained with SGD"
+    data: ["ImageNet"]
+    scale: "minibatch 256 and 8k, 90 epochs"
+    setting: "top-1 validation error, mean and std over 5 trials"
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 7", stance: for}
+
+- id: c-goyal-table1-setup
+  type: definitional
+  text: "The three warmup strategies tested are no warmup, constant warmup with η = 0.1 for 5 epochs, and gradual warmup which starts with η = 0.1 and is linearly increased to η = 3.2 over 5 epochs."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 7", stance: for}
+
+- id: c-goyal-optimization
+  type: empirical
+  text: "The no-warmup variant has ∼1.2% higher validation error than the baseline, which is likely caused by the ∼2.1% increase in training error; the gradual warmup variant has a validation error within 0.14% of the baseline."
+  scope:
+    models: "ResNet-50 trained with SGD"
+    data: ["ImageNet"]
+    scale: "minibatch 8k against the 256 baseline"
+    setting: "top-1 validation and training error"
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 7", stance: for}
+
+- id: c-goyal-constant-worse
+  type: empirical
+  text: "A constant warmup strategy actually degrades results: although the small constant learning rate can decrease error during warmup, the error spikes immediately after and training never fully recovers."
+  scope:
+    models: "ResNet-50 trained with SGD"
+    data: ["ImageNet"]
+    scale: "minibatch 8k"
+    setting: "training error curves"
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 7", stance: for}
+
+- id: c-goyal-curves
+  type: empirical
+  text: "After about 20 epochs, the small and large minibatch training curves match closely; the comparison between no warmup and gradual warmup suggests that large minibatch sizes are challenged by optimization difficulties in early training."
+  scope:
+    models: "ResNet-50 trained with SGD"
+    data: ["ImageNet"]
+    scale: "minibatch 8k against 256, gradual warmup"
+    setting: "training error curves"
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 7", stance: for}
+
+- id: c-goyal-range
+  type: empirical
+  text: "Validation error remains stable across a broad range of minibatch sizes, from 64 to 8k, after which it begins to increase; beyond 64k training diverges when using the linear learning rate scaling rule."
+  scope:
+    models: "ResNet-50 trained with SGD"
+    data: ["ImageNet"]
+    scale: "minibatch sizes from 64 to 65536"
+    setting: "linear scaling rule with gradual warmup over 5 epochs, top-1 validation error"
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 9", stance: for}
+
+- id: c-goyal-1hour
+  type: historical
+  text: "Goyal et al. train an accurate 8k minibatch ResNet-50 model in 1 hour on 256 GPUs."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 1", stance: for}
+
+- id: c-liu-3-10
+  type: empirical
+  text: "When training typical Transformers based neural machine translation models on the De-En IWSLT'14 dataset, removing the warmup stage increases the training loss from 3 to around 10; similar phenomena are observed in BERT pre-training."
+  scope:
+    models: "Transformer trained with Adam"
+    data: ["IWSLT'14 De-En"]
+    scale: "the models of Liu et al."
+    setting: "neural machine translation, training loss"
+  evidence:
+    - {work: "liu-2020-variance-adaptive-learning-rate", role: original, locator: "p. 1", stance: for}
+
+- id: c-liu-ppl
+  type: empirical
+  text: "The vanilla Adam algorithm leads to suspicious/bad local optima (i.e., converges to a training perplexity around 500), and needs a learning rate warmup stage to stabilize the training."
+  scope:
+    models: "Transformer trained with Adam"
+    data: ["IWSLT'14 De-En", "IWSLT'14 En-De", "WMT'16 En-De"]
+    scale: "the models of Liu et al."
+    setting: "neural machine translation, training perplexity"
+  evidence:
+    - {work: "liu-2020-variance-adaptive-learning-rate", role: original, locator: "p. 8", stance: for}
+
+- id: c-liu-cifar
+  type: empirical
+  text: "Adam with warmup on CIFAR10 reaches a best test accuracy of 91.29, similar to RAdam (91.38); when setting the learning rate as 0.1, Adam with 100 steps of warmup only results in an accuracy of 90.13, while RAdam gets 91.06 with β1 = 0.9, β2 = 0.999."
+  scope:
+    models: "ResNet-20 trained with Adam with warmup and with RAdam"
+    data: ["CIFAR-10"]
+    scale: "learning rate 0.1, 100 warmup steps for the last comparison"
+    setting: "image classification, test accuracy"
+  evidence:
+    - {work: "liu-2020-variance-adaptive-learning-rate", role: original, locator: "p. 8", stance: for}
+
+- id: c-xiong-845
+  type: empirical
+  text: "Without the warm-up stage, the BLEU score of the model trained with Adam can only achieve 8.45, while the model trained using the warm-up stage can achieve around 34; with SGD the BLEU score is just above zero in 15 epochs without using the warm-up stage."
+  scope:
+    models: "Post-LN Transformer trained with Adam and with SGD"
+    data: ["IWSLT14 De-En"]
+    scale: "Twarmup = 4000 when warmup is used"
+    setting: "machine translation, BLEU"
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-xiong-small-lr
+  type: empirical
+  text: "Using a very small and fixed learning rate, 1e−4, can mitigate the problem and optimize the Post-LN Transformer to a certain extent but the convergence is significantly slower."
+  scope:
+    models: "Post-LN Transformer"
+    data: ["IWSLT14 De-En"]
+    scale: "fixed learning rate 1e-4, no warmup"
+    setting: "machine translation, training from scratch"
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "Section 3.4", stance: for}
+
+- id: c-xiong-preln
+  type: empirical
+  text: "Without the warm-up stage, the BLEU score and validation loss of the Pre-LN Transformer can achieve around 34 and 4, which are comparable with the performance of the Post-LN Transformer."
+  scope:
+    models: "Pre-LN Transformer trained with Adam"
+    data: ["IWSLT14 De-En"]
+    scale: "no warmup"
+    setting: "machine translation, BLEU and validation loss"
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-xiong-radam
+  type: empirical
+  text: "The change of the position of layer normalization dominates the change of the optimizer: although RAdam trains the Post-LN Transformer well without the warm-up stage, it has little difference with Adam when training the Pre-LN Transformer."
+  scope:
+    models: "Post-LN and Pre-LN Transformers trained with Adam and RAdam"
+    data: ["IWSLT14 De-En"]
+    scale: "no warmup"
+    setting: "machine translation"
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-xiong-bert
+  type: empirical
+  text: "Similar to the machine translation tasks, the learning rate warm-up stage can be removed for the Pre-LN BERT model, and the Pre-LN model can be trained faster, which suggests there is a 40% speed-up rate."
+  scope:
+    models: "BERT with Post-LN and Pre-LN"
+    data: ["the BERT pre-training corpus"]
+    scale: "BERT base"
+    setting: "unsupervised pre-training, validation loss"
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-liu-no-theory
+  type: attributive
+  text: "Due to the lack of the theoretical underpinnings, there is neither guarantee that warmup would bring consistent improvements for various machine learning settings nor guidance on how we should conduct warmup, so researchers have to take a trial-and-error approach."
+  evidence:
+    - {work: "liu-2020-variance-adaptive-learning-rate", role: original, locator: "p. 1", stance: for}
+    - {work: "liu-2020-variance-adaptive-learning-rate", role: original, locator: "p. 2", stance: for}
+
+- id: c-xiong-disadvantages
+  type: attributive
+  text: "Such a warm-up stage has several disadvantages: first, its configuration significantly affects the final performance and needs careful hyper-parameter tuning, which is computationally expensive for large-scale NLP tasks; second, the warm-up stage could slow down the optimization, since the learning rate has to gradually increase from zero."
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-goyal-sensitive
+  type: empirical
+  text: "With a minibatch of 8k images the optimum error is also achieved with η = 0.1 · 32, but in this case results are more sensitive to changing η; in practice Goyal et al. suggest to use a minibatch size that is not close to the breaking point."
+  scope:
+    models: "ResNet-50 trained with SGD"
+    data: ["ImageNet"]
+    scale: "minibatch 8k"
+    setting: "learning rate sweep, top-1 validation error"
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 9", stance: for}
+
+- id: c-xiong-not-adam
+  type: attributive
+  text: "Liu et al. claimed that the benefit of the warm-up stage comes from reducing the variance for the adaptive learning rate in Adam; however, not only for Adam, the learning rate warm-up stage also helps quite a lot for other optimizers, which may indicate that Adam is not the prerequisite for the necessity of the warm-up stage."
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "Section 2", stance: for}
+
+- id: c-liu-no-tw
+  type: attributive
+  text: "RAdam does not require an additional hyperparameter (i.e., Tw) and can automatically adapt to different moving average rules."
+  evidence:
+    - {work: "liu-2020-variance-adaptive-learning-rate", role: original, locator: "p. 6", stance: for}
+
+- id: c-liu-orthogonal
+  type: attributive
+  text: "The proposed rectification term is orthogonal to other training stabilization techniques such as gradient clipping, smoothing the adaptive learning rate, initialization and normalization, and these techniques can be combined with the variance rectification method."
+  evidence:
+    - {work: "liu-2020-variance-adaptive-learning-rate", role: original, locator: "p. 6", stance: for}
+
+- id: c-nguyen
+  type: attributive
+  text: "In a concurrent and independent work, Nguyen & Salazar (2019) also empirically observed that the Pre-LN Transformer can be trained without learning rate warm-up stage."
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "Section 2", stance: for}
+
+- id: c-liu-other-optimizers
+  type: attributive
+  text: "The analysis focuses on learning rate warmup for Adam, while it can be applied to other algorithms that use similar adaptive learning rate designs, e.g., RMSprop and Nadam."
+  evidence:
+    - {work: "liu-2020-variance-adaptive-learning-rate", role: original, locator: "p. 3", stance: for}
+
+- id: c-goyal-zero-gamma
+  type: attributive
+  text: "For BN layers, the learnable scaling coefficient γ is initialized to be 1, except for each residual block's last BN where γ is initialized to be 0; this causes the signal initially to propagate through the identity shortcut, which eases optimization at the start of training and is particularly helpful for large minibatch training."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 6", stance: for}
+
+- id: c-torch-radam
+  type: mathematical
+  text: "With beta2 = 0.999, rho_5 ≈ 4.996 and rho_6 ≈ 5.994, so under the threshold rho_t > 5 the first adaptive step is t = 6, with r_6 ≈ 0.026, while under rho_t > 4 it is t = 5."
+  assumes: ["torch.optim.RAdam 2.15 takes the adaptive step when rho_t > 5, as in its documented algorithm", "eq-rho and eq-rect with beta2 = 0.999"]
+  derivation: "node.md#worked-example"
+
+- id: c-goyal-sqrt
+  type: empirical
+  text: "Keeping η fixed at 0.1 or using 0.1 · sqrt(32) according to the square root scaling rule, also with gradual warmup for 0.1 · sqrt(32), both policies work poorly in practice."
+  scope:
+    models: "ResNet-50 trained with SGD"
+    data: ["ImageNet"]
+    scale: "minibatch 8k"
+    setting: "alternatives to the linear scaling rule, top-1 validation error"
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 9", stance: for}
+
+- id: c-liu-origin
+  type: historical
+  text: "Warmup is originally proposed to handle training with very large batches for SGD (Goyal et al., 2017; Gotmare et al., 2019; Bernstein et al., 2018; Xiao et al., 2017)."
+  evidence:
+    - {work: "liu-2020-variance-adaptive-learning-rate", role: original, locator: "p. 6", stance: for}
