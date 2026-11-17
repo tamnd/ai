@@ -1,0 +1,127 @@
+# SPDX-License-Identifier: CC0-1.0
+#
+# This workflow is the scheduled harvest of spec 13 and 20.5. It runs the weekly sources each Monday, and the monthly ones as well on the first Monday of the month. It can also be started by hand for one source or one period. For each source it runs aik harvest, aik universe merge and aik card sync -source. When the inventory, the universe or the cards change, it opens one pull request per source and starts CI on that branch.
+#
+# The job runs no code from the content. It runs aik, which fetches the sources under the rate and the robots rules of each (13.4) and writes JSON lines and YAML. The raw snapshots stay in the runner's temporary directory; the manifests in the repository name them by their hashes.
+name: Harvest
+
+on:
+  schedule:
+    - cron: "41 5 * * 1"
+  workflow_dispatch:
+    inputs:
+      source:
+        description: "One source to harvest (aik harvest sources lists them); empty for a period"
+        required: false
+        default: ""
+      period:
+        description: "The period whose sources are harvested, when no source is given"
+        required: false
+        default: weekly
+        type: choice
+        options: [daily, weekly, monthly]
+
+permissions: {}
+
+concurrency:
+  group: harvest
+  cancel-in-progress: false
+
+env:
+  AIK_VERSION: v0.1.62
+  GO_VERSION: "1.27.x"
+
+jobs:
+  harvest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    defaults:
+      run:
+        # pipefail, so that a harvest that fails is not hidden by the tee after it.
+        shell: bash
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: false
+      - name: Install aik
+        run: go install "github.com/tamnd/ai-agent/cmd/aik@${AIK_VERSION}"
+      - name: Choose the sources
+        env:
+          SOURCE: ${{ inputs.source }}
+          PERIOD: ${{ inputs.period }}
+        run: |
+          if [ -n "$SOURCE" ]; then
+            # -list refuses an id that is not a source, so nothing else reaches the shell below.
+            aik harvest -list "$SOURCE" > "$RUNNER_TEMP/sources.txt"
+            exit 0
+          fi
+          periods="${PERIOD:-weekly}"
+          # The schedule runs on Mondays; the first Monday of the month also runs the monthly sources.
+          if [ "$GITHUB_EVENT_NAME" = schedule ] && [ "$(date -u +%d)" -le 7 ]; then
+            periods="weekly monthly"
+          fi
+          : > "$RUNNER_TEMP/sources.txt"
+          # aik knows the schedule of each source (13.2); -list prints the sources of a period, one a line.
+          for p in $periods; do
+            aik harvest -due "$p" -list >> "$RUNNER_TEMP/sources.txt"
+          done
+          cat "$RUNNER_TEMP/sources.txt"
+      - name: Harvest each source and open a pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          day="$(date -u +%Y-%m-%d)"
+          failed=""
+          while read -r src; do
+            [ -n "$src" ] || continue
+            git switch -q --detach "$GITHUB_SHA"
+            git reset -q --hard
+            git clean -q -fd -- registers manifests reports cards
+            echo "::group::$src"
+            if ! aik harvest -root . -store "$RUNNER_TEMP/raw" "$src" | tee "$RUNNER_TEMP/run.txt"; then
+              failed="$failed $src"
+              echo "::endgroup::"
+              continue
+            fi
+            aik universe merge -root . | tee -a "$RUNNER_TEMP/run.txt"
+            aik card sync -root . -source "$src" | tee -a "$RUNNER_TEMP/run.txt"
+            echo "::endgroup::"
+            if [ -z "$(git status --porcelain -- registers manifests reports cards)" ]; then
+              echo "$src did not change."
+              continue
+            fi
+            branch="harvest/$src/$day"
+            git switch -q -c "$branch"
+            git add -A -- registers manifests reports cards
+            git commit -s -q -m "Harvest $src ($day)"
+            git push -q --force "https://x-access-token:${GH_TOKEN}@github.com/${REPO}.git" "HEAD:refs/heads/${branch}"
+            {
+              echo "This pull request is the harvest of \`$src\` on $day (spec 13): its inventory, the manifest of its snapshots, its run record, the universe and the cards of its items."
+              echo
+              echo "A fact of an existing card that moved by more than its tolerance needs a person; the rest is checked by CI (14.9)."
+              echo
+              echo '```'
+              cat "$RUNNER_TEMP/run.txt"
+              echo '```'
+            } > "$RUNNER_TEMP/body.md"
+            if [ -z "$(gh pr list -R "$REPO" --head "$branch" --json number -q '.[].number')" ]; then
+              gh pr create -R "$REPO" --base main --head "$branch" --title "Harvest $src ($day)" --body-file "$RUNNER_TEMP/body.md" --label "area: harvest" --label "type: chore"
+            fi
+            # A pull request that the workflow token opens does not start CI, so the job starts it on the branch.
+            gh workflow run ci.yml -R "$REPO" --ref "$branch"
+          done < "$RUNNER_TEMP/sources.txt"
+          if [ -n "$failed" ]; then
+            echo "::error::the harvest failed for:$failed"
+            exit 1
+          fi

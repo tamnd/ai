@@ -1,0 +1,439 @@
+# The claims of the rotary position embedding page (spec 07). The build computes the labels.
+
+# Background
+
+- id: c-sinusoid
+  type: definitional
+  text: "The original Transformer adds sinusoidal positional encodings to the input embeddings, with wavelengths in a geometric progression from 2 pi to 10000 times 2 pi."
+  evidence:
+    - {work: vaswani-2017-attention, role: original, locator: "Section 3.5", stance: for}
+
+- id: c-sinusoid-hypothesis
+  type: attributive
+  text: "Vaswani et al. chose the sinusoidal encoding on the hypothesis that it would let the model attend by relative positions and extrapolate to sequence lengths longer than those seen in training."
+  evidence:
+    - {work: vaswani-2017-attention, role: original, locator: "Section 3.5", stance: for}
+
+# The method
+
+- id: c-theta-def
+  type: definitional
+  text: "The rotary matrix has the pre-defined parameters theta_i = 10000^(-2(i-1)/d), i in [1, 2, ..., d/2]."
+  evidence:
+    - {work: su-2024-roformer, role: original, locator: "Section 3.2.2", stance: for}
+
+- id: c-relative-score
+  type: mathematical
+  text: "The score of a query rotated to position m and a key rotated to position n equals q^T R_{n-m} k, so it depends on the positions only through n - m."
+  assumes: ["d is even", "the angles are real", "the positions are real numbers"]
+  derivation: relative-position
+
+- id: c-rope-abstract
+  type: attributive
+  text: "RoPE encodes the absolute position with a rotation matrix and incorporates an explicit relative position dependency in the self-attention formulation."
+  evidence:
+    - {work: su-2024-roformer, role: original, locator: "the abstract", stance: for}
+
+- id: c-multiplicative
+  type: attributive
+  text: "Su et al. describe RoPE as multiplicative, in contrast to the additive nature of earlier position embedding methods."
+  evidence:
+    - {work: su-2024-roformer, role: original, locator: "Section 3.2.2", stance: for}
+
+- id: c-matrix-inefficient
+  type: attributive
+  text: "Because of the sparsity of the rotation matrix, applying the matrix multiplication directly is not computationally efficient."
+  evidence:
+    - {work: su-2024-roformer, role: original, locator: "Section 3.2.2", stance: for}
+
+- id: c-eq34
+  type: definitional
+  text: "Taking advantage of the sparsity of the rotary matrix, a more computationally efficient realization of its multiplication with x uses cos m and sin m of each angle."
+  evidence:
+    - {work: su-2024-roformer, role: original, locator: "Section 3.4.2", stance: for}
+
+# Derivation
+
+- id: c-goal
+  type: attributive
+  text: "Su et al. seek an encoding whose query-key inner product is a function of the two word embeddings and of their relative position m - n only."
+  evidence:
+    - {work: su-2024-roformer, role: original, locator: "Section 3.1", stance: for}
+
+- id: c-2d-solution
+  type: attributive
+  text: "In the 2D case, the radial functions are independent from the position information, phi(m) with continuous integer inputs produces an arithmetic progression m theta + gamma, and Su et al. set gamma = 0 in the final solution."
+  evidence:
+    - {work: su-2024-roformer, role: original, locator: "Section 3.4.1", stance: for}
+
+- id: c-orthogonal
+  type: mathematical
+  text: "The RoPE matrix R_m is orthogonal: R_m^T R_m = I."
+  assumes: ["d is even", "the angles are real"]
+  derivation: relative-position
+  evidence:
+    - {work: su-2024-roformer, role: original, locator: "Section 3.2.2", stance: for}
+
+- id: c-norm-preserved
+  type: mathematical
+  text: "RoPE keeps the Euclidean norm of every query and key vector."
+  assumes: ["d is even", "the angles are real"]
+  derivation: relative-position
+
+- id: c-position-zero
+  type: mathematical
+  text: "At position 0 every angle is zero and R_0 is the identity, so RoPE leaves the vector at position 0 unchanged."
+  assumes: ["d is even"]
+  derivation: relative-position
+
+- id: c-composition
+  type: mathematical
+  text: "R_m R_n = R_{m+n} and R_m^T = R_{-m} for all real m and n."
+  assumes: ["d is even", "the angles are real"]
+  derivation: relative-position
+
+- id: c-complex-real
+  type: mathematical
+  text: "Multiplying the complex number x_{2j} + i x_{2j+1} by e^{i m theta_j} gives the same pair as the 2x2 rotation block of R_m, so the complex and the real forms of RoPE agree."
+  assumes: ["d is even", "the angles are real"]
+  derivation: relative-position
+  evidence:
+
+- id: c-efficient-form
+  type: mathematical
+  text: "The elementwise form x * c_m + x~ * s_m gives the same vector as the block-diagonal matrix product R_m x."
+  assumes: ["d is even", "c_m and s_m repeat cos m theta_j and sin m theta_j in places 2j and 2j+1"]
+  derivation: relative-position
+
+- id: c-efficient-count
+  type: mathematical
+  text: "Given the cosine and sine tables, the elementwise form takes 2d multiplications and d additions per vector, while R_m has 2d non-zero entries out of d^2."
+  assumes: ["d is even", "sign changes are not counted"]
+  derivation: relative-position
+
+- id: c-half-pairing
+  type: mathematical
+  text: "Rotating dimension j with dimension j + d/2 is the adjacent-pair RoPE conjugated by a fixed permutation, so it has the same norm, identity and relative-position properties, and gives the paired-form scores of permuted queries and keys."
+  assumes: ["d is even"]
+  derivation: relative-position
+
+- id: c-decay-bound
+  type: mathematical
+  text: "By summation by parts, the modulus of sum_j h_j e^{i r theta_j} is at most max_j |h_{j+1} - h_j| times the sum over j of |S_j|, where S_j is the partial sum of e^{i r theta_i}, and the RoPE score is at most this modulus."
+  assumes: ["d is even", "h_{d/2} = 0", "r = m - n"]
+  derivation: long-term-decay
+
+- id: c-decay-su
+  type: attributive
+  text: "The average value of |S_i| decays as the relative distance m - n increases, as shown in Figure 2."
+  evidence:
+    - {work: su-2024-roformer, role: original, locator: "Section 3.4.3", stance: for}
+
+- id: c-decay-property
+  type: attributive
+  text: "Setting theta_i = 10000^(-2i/d) provides a long-term decay property, which means the inner-product will decay when the relative position increases, and this coincides with the intuition that a pair of tokens with a long relative distance should have less connection."
+  evidence:
+    - {work: su-2024-roformer, role: original, locator: "Section 3.3", stance: for}
+
+- id: c-decay-not-monotone
+  type: mathematical
+  text: "For d = 128 and b = 10000, the average of |S_j| over j = 1, ..., 64 is 32.5 at r = 0, 10.227 at r = 100, 4.471 at r = 1000 and 5.047 at r = 2000, so it is not monotone in r (own computation)."
+  assumes: ["d = 128", "b = 10000", "double precision"]
+  derivation: long-term-decay
+
+# Hyperparameters and cost
+
+- id: c-codellama
+  type: historical
+  text: "Code Llama uses NTK-aware scaling by manually raising the RoPE base b to 1M."
+  evidence:
+    - {work: peng-2023-yarn, role: review, locator: "Section 3.1", stance: for}
+
+- id: c-linear-attention
+  type: attributive
+  text: "Because RoPE keeps the norm of hidden representations, it can be combined with linear attention by multiplying the rotation matrix with the outputs of the non-negative feature maps, leaving the denominator unchanged."
+  evidence:
+    - {work: su-2024-roformer, role: original, locator: "Section 3.3", stance: for}
+
+# Evidence
+
+- id: c-wmt
+  type: empirical
+  text: "On WMT 2014 English to German, RoFormer reached a BLEU score of 27.5 against 27.3 for Transformer-base."
+  scope:
+    models: "Transformer-base with RoPE in place of the sinusoidal encoding"
+    data: [wmt14-en-de]
+    scale: "Transformer-base"
+    setting: "machine translation, one reported run"
+  evidence:
+    - {work: su-2024-roformer, role: original, locator: "Table 1", stance: for}
+
+- id: c-mlm-faster
+  type: empirical
+  text: "In masked language model pre-training, RoFormer converged faster than BERT."
+  scope:
+    models: "bert-base-uncased and the same model with RoPE"
+    data: [bookcorpus, wikipedia]
+    scale: "batch size 64, maximum length 512, 100k steps"
+    setting: "masked language model pre-training with AdamW"
+  evidence:
+    - {work: su-2024-roformer, role: original, locator: "Section 4.2.3", stance: for}
+
+- id: c-glue
+  type: empirical
+  text: "Fine-tuned on GLUE, RoFormer outperformed BERT on three of the six tasks reported."
+  scope:
+    models: "BERT and RoFormer at base size"
+    data: [glue]
+    scale: "base"
+    setting: "fine-tuning on MRPC, SST-2, QNLI, STS-B, QQP and MNLI"
+  evidence:
+    - {work: su-2024-roformer, role: original, locator: "Table 2", stance: for}
+
+- id: c-performer
+  type: empirical
+  text: "Substituting RoPE into the Performer, a linear attention model, leads to rapid convergence and lower loss under the same amount of training steps on Enwik8."
+  scope:
+    models: "a 12-layer character-level Performer with 768 dimensions and 12 heads"
+    data: [enwik8]
+    scale: "small"
+    setting: "language modeling"
+  evidence:
+    - {work: su-2024-roformer, role: original, locator: "Section 4.4.2", stance: for}
+
+- id: c-cail
+  type: empirical
+  text: "On CAIL2019-SCM, RoFormer with a maximum length of 1024 scored 69.79% on the test set, against 68.10% for WoBERT with 512 and 68.29% for RoFormer with 512."
+  scope:
+    models: "Chinese RoFormer, BERT and WoBERT"
+    data: [cail2019-scm]
+    scale: "base"
+    setting: "long-text semantic matching"
+  evidence:
+    - {work: su-2024-roformer, role: original, locator: "Table 5", stance: for}
+
+- id: c-llama-uses
+  type: historical
+  text: "Rotary position embedding is the position encoding used in the LLaMA models."
+  evidence:
+    - {work: chen-2023-position-interpolation, role: review, locator: "Section 2.1", stance: for}
+
+# Limitations
+
+- id: c-limitations
+  type: attributive
+  text: "Su et al. state that they lack a thorough explanation of why RoFormer converges faster than baselines and of why it performs better on long texts."
+  evidence:
+    - {work: su-2024-roformer, role: original, locator: "Section 4.5.5", stance: for}
+
+- id: c-extrapolation-fails
+  type: empirical
+  text: "Evaluated directly beyond its trained context window, a RoPE-based LLaMA model can reach perplexities above 10^3."
+  scope:
+    models: "LLaMA 7B to 65B"
+    data: [pg19, proof-pile]
+    scale: "7B to 65B parameters"
+    setting: "direct extrapolation without position interpolation"
+  evidence:
+    - {work: chen-2023-position-interpolation, role: original, locator: "Section 2.2", stance: for}
+
+- id: c-bound-loose
+  type: attributive
+  text: "Chen et al. argue that the long-term decay bound of RoPE may be too loose, so it does not prevent very large attention scores at unseen relative positions."
+  evidence:
+    - {work: chen-2023-position-interpolation, role: original, locator: "Section 2.2", stance: for}
+
+- id: c-ft-slow
+  type: empirical
+  text: "Fine-tuning LLaMA 7B directly on longer sequences for more than 10000 steps moved its effective context window only from 2048 to 2560."
+  scope:
+    models: "LLaMA 7B"
+    data: [pile]
+    scale: "7B parameters"
+    setting: "direct fine-tuning to an 8192 window, passkey retrieval"
+  evidence:
+    - {work: chen-2023-position-interpolation, role: original, locator: "Table 4", stance: for}
+
+- id: c-kv-cache
+  type: attributive
+  text: "With dynamic scaling the RoPE embedding of every token changes when s changes, so the key-value cache should hold keys before RoPE is applied."
+  evidence:
+    - {work: peng-2023-yarn, role: original, locator: "Section 3.3", stance: for}
+
+# Variants
+
+- id: c-pi-def
+  type: definitional
+  text: "Position interpolation replaces the RoPE encoding at position m by the encoding at position m L / L', down-scaling the position indices to the original window."
+  evidence:
+    - {work: chen-2023-position-interpolation, role: original, locator: "Section 2.3", stance: for}
+
+- id: c-pi-fractional
+  type: mathematical
+  text: "Position interpolation with scale s equals RoPE with every angle theta_j divided by s, the score depends on (n - m)/s, and every position below L' maps into [0, L)."
+  assumes: ["s = L'/L", "positions are non-negative"]
+  derivation: context-extension
+
+- id: c-pi-bound
+  type: attributive
+  text: "Chen et al. show that the interpolation bound is at least 2 x 294.73, about 600 times, smaller than the extrapolation bound."
+  evidence:
+    - {work: chen-2023-position-interpolation, role: original, locator: "Section 2.3", stance: for}
+
+- id: c-pi-result
+  type: empirical
+  text: "Position interpolation extends the context window of LLaMA models from 7B to 65B to up to 32768 tokens with fine-tuning within 1000 steps."
+  scope:
+    models: "LLaMA 7B, 13B, 33B and 65B"
+    data: [pile, pg19, proof-pile]
+    scale: "7B to 65B parameters"
+    setting: "context extension from 2048 by fine-tuning"
+  evidence:
+    - {work: chen-2023-position-interpolation, role: original, locator: "the abstract", stance: for}
+
+- id: c-pi-short-cost
+  type: empirical
+  text: "On Proof-pile, the perplexity of models extended with position interpolation degraded by 0.01 to 0.05 at the original context window of 2048."
+  scope:
+    models: "LLaMA 7B to 65B extended with position interpolation"
+    data: [proof-pile]
+    scale: "7B to 65B parameters"
+    setting: "perplexity at a 2048 window after extension"
+  evidence:
+    - {work: chen-2023-position-interpolation, role: original, locator: "Section 3.2", stance: for}
+
+- id: c-ntk-def
+  type: definitional
+  text: "The NTK-aware interpolation is a modification of RoPE with g(m) = m and a base change from b to b' = b s^(|D|/(|D|-2))."
+  evidence:
+    - {work: peng-2023-yarn, role: original, locator: "Definition 1", stance: for}
+
+- id: c-ntk-ratio
+  type: mathematical
+  text: "Under the NTK-aware base, theta'_j = theta_j s^(-2j/(d-2)): the highest frequency is unchanged and the lowest is divided by s."
+  assumes: ["d > 2 and even", "theta_j = b^(-2j/d)", "s >= 1"]
+  derivation: context-extension
+
+- id: c-ntk-tradeoff
+  type: attributive
+  text: "NTK-aware interpolation does much better than position interpolation for models without fine-tuning, but fine-tuned with it a model does worse than with position interpolation, because some dimensions are extrapolated to out-of-bound values."
+  evidence:
+    - {work: peng-2023-yarn, role: original, locator: "Section 3.1", stance: for}
+
+- id: c-ntk-s-higher
+  type: attributive
+  text: "Because of the out-of-bound values, the scale s of NTK-aware interpolation has to be set higher than the expected scale of the extension."
+  evidence:
+    - {work: peng-2023-yarn, role: original, locator: "Section 3.1", stance: for}
+
+- id: c-by-parts-def
+  type: definitional
+  text: "The NTK-by-parts interpolation uses the ratio r of the context size L to the wavelength: dimensions with a small ratio are interpolated by the scale s like PI, dimensions with a large ratio are not interpolated, and a ramp function blends the two."
+  evidence:
+    - {work: peng-2023-yarn, role: original, locator: "Section 3.2", stance: for}
+
+- id: c-by-parts-ends
+  type: mathematical
+  text: "Under NTK-by-parts, a pair with gamma = 1 keeps its angle theta_j and a pair with gamma = 0 gets theta_j / s, as in position interpolation."
+  assumes: ["gamma takes values in [0, 1]"]
+  derivation: context-extension
+
+- id: c-by-parts-values
+  type: empirical
+  text: "For the Llama family, alpha = 1 and beta = 32 were found experimentally to be good values for NTK-by-parts."
+  scope:
+    models: "LLaMA and Llama 2"
+    data: []
+    scale: "7B to 70B parameters"
+    setting: "context extension by NTK-by-parts"
+  evidence:
+    - {work: peng-2023-yarn, role: original, locator: "Section 3.2", stance: for}
+
+- id: c-dynamic
+  type: definitional
+  text: "Dynamic scaling sets the scale factor at each forward pass to s = max(1, l'/L), with l' the current sequence length, so the model degrades gracefully instead of breaking past the trained limit."
+  evidence:
+    - {work: peng-2023-yarn, role: original, locator: "Section 3.3", stance: for}
+
+- id: c-yarn-def
+  type: definitional
+  text: "YaRN combines NTK-by-parts interpolation with a temperature t on the attention logits, softmax(q^T k / (t sqrt(|D|)))."
+  evidence:
+    - {work: peng-2023-yarn, role: original, locator: "Section 3.4", stance: for}
+
+- id: c-yarn-fit
+  type: empirical
+  text: "The rule sqrt(1/t) = 0.1 ln(s) + 1 was found by fitting 1/t at the lowest perplexity on LLaMA models without fine-tuning, and the same values of t also apply fairly well to Llama 2 models."
+  scope:
+    models: "LLaMA 7B, 13B, 33B and 65B; Llama 2 7B, 13B and 70B"
+    data: []
+    scale: "7B to 70B parameters"
+    setting: "NTK-by-parts without fine-tuning, the t at the lowest perplexity"
+  evidence:
+    - {work: peng-2023-yarn, role: original, locator: "Section 3.4", stance: for}
+
+- id: c-yarn-scaling-trick
+  type: mathematical
+  text: "Scaling both the rotated query and the rotated key by sqrt(1/t) divides every attention score by t, so the temperature needs no change to the attention code."
+  assumes: ["t > 0"]
+  derivation: context-extension
+
+- id: c-yarn-numbers
+  type: mathematical
+  text: "The rule sqrt(1/t) = 0.1 ln s + 1 gives 1.2079 at s = 8 and 1.2773 at s = 16, to four decimals (own computation)."
+  assumes: ["natural logarithm"]
+  derivation: context-extension
+
+- id: c-yarn-efficiency
+  type: empirical
+  text: "YaRN extends the context window with 10x fewer tokens and 2.5x fewer training steps than previous methods."
+  scope:
+    models: "LLaMA and Llama 2"
+    data: [pg19]
+    scale: "7B and 13B parameters"
+    setting: "context extension by fine-tuning"
+  evidence:
+    - {work: peng-2023-yarn, role: original, locator: "the abstract", stance: for}
+
+- id: c-yarn-128k
+  type: empirical
+  text: "The YaRN model with s = 32 successfully extrapolates up to 128k context using only 64k context during training."
+  scope:
+    models: "Llama 2 7B and 13B with YaRN"
+    data: [pg19]
+    scale: "7B and 13B parameters"
+    setting: "fine-tuning on 64k segments, evaluation up to 128k"
+  evidence:
+    - {work: peng-2023-yarn, role: original, locator: "Section 4.2", stance: for}
+
+# History
+
+- id: c-hist-su
+  type: historical
+  text: "RoFormer is by Su, Lu, Pan, Murtadha, Wen and Liu of Zhuiyi Technology, and arXiv:2104.09864v5 is dated 8 Nov 2023."
+  evidence:
+    - {work: su-2024-roformer, role: original, locator: "p. 1", stance: for}
+
+- id: c-hist-hf
+  type: historical
+  text: "RoFormer is already integrated into Huggingface Transformers."
+  evidence:
+    - {work: su-2024-roformer, role: original, locator: "the abstract", stance: for}
+
+- id: c-hist-superhot
+  type: historical
+  text: "Chen et al. note concurrent work, SuperHOT by kaiokendev, that also interpolates the positional encoding in RoPE to extend the context window."
+  evidence:
+    - {work: chen-2023-position-interpolation, role: original, locator: "Section 1", stance: for}
+
+- id: c-hist-yarn
+  type: historical
+  text: "Peng et al. give a complete account of the previously unpublished NTK-aware, Dynamic NTK and NTK-by-parts interpolations, and add YaRN."
+  evidence:
+    - {work: peng-2023-yarn, role: original, locator: "Section 1", stance: for}
+
+- id: c-hist-adoption
+  type: historical
+  text: "Code Llama uses NTK-aware interpolation and Qwen 7B uses Dynamic NTK."
+  evidence:
+    - {work: peng-2023-yarn, role: review, locator: "Section 1", stance: for}

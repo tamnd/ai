@@ -1,0 +1,32 @@
+id: imp-mlp-synthetic
+claims: [c-reinit-worse]
+question: "On a small MLP trained on a synthetic task, does iterative magnitude pruning with reset to theta_0 give a subnetwork with 24.5% of the weights that nearly matches the dense network's test accuracy, and does the same mask trained from a fresh random initialization do worse?"
+scale_note:
+  here: "A 20-100-100-2 ReLU MLP without biases, trained with Adam for 500 steps of batch 100 on 3,000 points labelled by a random tanh teacher in 20 dimensions, tested on 4,000 more; 4 rounds of layerwise magnitude pruning at 30% per round (15% for the output layer), leaving 24.5% of the weights; the teacher and the data are fixed by data_seed, and 10 seeds each draw theta_0 and the minibatch order."
+  source: "Frankle and Carbin (2019) report it for Lenet 300-100 on MNIST and for convolutional networks on CIFAR10, with 20% per round on the fully connected layers and down to a few percent of the weights."
+replicates: null
+arms:
+  - {id: dense, config: {procedure: dense}}
+  - {id: ticket, config: {procedure: ticket}}
+  - {id: reinit, config: {procedure: reinit}}
+base_config:
+  dim: 20
+  teacher_hidden: 8
+  classes: 2
+  train: 3000
+  test: 4000
+  hidden: [100, 100]
+  optimizer: adam
+  lr: 0.005
+  batch_size: 100
+  steps: 500
+  rate: 0.3
+  output_rate: 0.15
+  rounds: 4
+  data_seed: 0
+  procedure: dense
+seeds: {n: 10, base: 20261200}
+budget: cpu-small
+framework: numpy
+uses_impl: ../../impl/numpy/lottery_ticket.py
+metrics: [test_acc, train_acc, remaining]

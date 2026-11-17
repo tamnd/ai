@@ -1,0 +1,357 @@
+# The claims of the multi-head attention page (spec 07). The build computes the labels.
+
+# Setting and method
+
+- id: c-three-uses
+  type: attributive
+  text: "The Transformer uses multi-head attention in three ways: in encoder-decoder attention the queries come from the previous decoder layer and the memory keys and values come from the output of the encoder; the encoder contains self-attention layers; and self-attention layers in the decoder allow each position to attend to all positions in the decoder up to and including that position."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 3.2.3", stance: for}
+
+- id: c-attention-eq
+  type: definitional
+  text: "Scaled dot-product attention computes the dot products of the query with all keys, divides each by the square root of d_k, and applies a softmax function to obtain the weights on the values: Attention(Q, K, V) = softmax(Q K^T / sqrt(d_k)) V."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 3.2.1", stance: for}
+
+- id: c-convex
+  type: mathematical
+  text: "Each row of the output of an attention head is a convex combination of the rows of its values that the mask allows, because the weights of a row are nonnegative and sum to 1."
+  assumes: ["masked entries get weight exactly 0", "at least one key of the row is allowed"]
+  derivation: properties
+
+- id: c-multihead-def
+  type: definitional
+  text: "Multi-head attention linearly projects the queries, keys and values h times with different learned projections to d_k, d_k and d_v dimensions, performs the attention function in parallel on each, concatenates the outputs and projects them again: MultiHead(Q, K, V) = Concat(head_1, ..., head_h) W^O with head_i = Attention(Q W_i^Q, K W_i^K, V W_i^V)."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 3.2.2", stance: for}
+
+- id: c-head-sum
+  type: mathematical
+  text: "Splitting W^O into row blocks W^O_r of d_v rows, Concat(head_1, ..., head_h) W^O equals the sum over r of head_r W^O_r."
+  assumes: ["W^O has h d_v rows, in the order of the heads"]
+  derivation: properties
+
+- id: c-subspaces
+  type: attributive
+  text: "Multi-head attention allows the model to jointly attend to information from different representation subspaces at different positions; with a single attention head, averaging inhibits this."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 3.2.2", stance: for}
+
+- id: c-base-heads
+  type: attributive
+  text: "Vaswani et al. employ h = 8 parallel attention heads with d_k = d_v = d_model / h = 64; due to the reduced dimension of each head, the total computational cost is similar to that of single-head attention with full dimensionality."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 3.2.2", stance: for}
+
+- id: c-param-count
+  type: mathematical
+  text: "Multi-head attention without biases has 2 d_model h (d_k + d_v) weights, which is 4 d_model^2 for every h when d_k = d_v = d_model / h."
+  assumes: ["the four projections W^Q, W^K, W^V and W^O have no biases"]
+  derivation: properties
+
+# Masks and order
+
+- id: c-mask-minus-inf
+  type: attributive
+  text: "To prevent leftward information flow in the decoder and preserve the auto-regressive property, Vaswani et al. mask out, by setting to minus infinity, all values in the input of the softmax which correspond to illegal connections."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 3.2.3", stance: for}
+
+- id: c-causal-independence
+  type: mathematical
+  text: "With the causal mask, row t of the output of multi-head self-attention depends only on rows 1 to t of its input."
+  assumes: ["the mask allows key s for query t exactly when s <= t", "masked entries get weight exactly 0"]
+  derivation: properties
+
+- id: c-padding-truncation
+  type: mathematical
+  text: "If a padding mask allows exactly the first L keys of every query, the output of multi-head attention equals its output on the first L rows of the memory with no mask."
+  assumes: ["masked entries get weight exactly 0", "L >= 1"]
+  derivation: properties
+
+- id: c-equivariant
+  type: mathematical
+  text: "Without positional information inside the layer, multi-head self-attention is permutation equivariant: permuting the rows of the input permutes the rows of the output in the same way."
+  assumes: ["no positional encoding or position-dependent bias enters inside the layer", "no mask, or a mask permuted with the input"]
+  derivation: properties
+
+- id: c-cross-invariant
+  type: mathematical
+  text: "Without positional information inside the layer, permuting the rows of the memory leaves the output of multi-head cross-attention unchanged."
+  assumes: ["no positional encoding or position-dependent bias enters inside the layer", "no mask on the memory, or a mask permuted with it"]
+  derivation: properties
+
+# Derivation
+
+- id: c-scale-reason
+  type: attributive
+  text: "Vaswani et al. suspect that for large values of d_k the dot products grow large in magnitude, pushing the softmax function into regions where it has extremely small gradients, and scale the dot products by 1 / sqrt(d_k) to counteract this effect."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 3.2.1", stance: for}
+
+- id: c-footnote
+  type: attributive
+  text: "To illustrate why the dot products get large, Vaswani et al. assume that the components of q and k are independent random variables with mean 0 and variance 1; then their dot product has mean 0 and variance d_k."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "p. 4", stance: for}
+
+- id: c-dot-variance
+  type: mathematical
+  text: "If the 2 d_k entries of a query and a key are independent with mean 0 and variance 1, their dot product has mean 0 and variance d_k, and the dot product divided by sqrt(d_k) has mean 0 and variance 1."
+  assumes: ["the 2 d_k entries are independent", "each entry has mean 0 and variance 1"]
+  derivation: scale
+
+- id: c-softmax-saturation
+  type: mathematical
+  text: "If one of n >= 2 scores of a row exceeds every other score of the row by at least Delta > 0, every other softmax weight is at most exp(-Delta), and every entry of the Jacobian diag(a) - a a^T of the softmax has absolute value at most (n - 1) exp(-Delta)."
+  assumes: ["n >= 2", "a unique largest score with margin Delta > 0"]
+  derivation: scale
+
+- id: c-backward
+  type: mathematical
+  text: "For one head with weights A = softmax(Q K^T / sqrt(d_k)) and output gradient O-bar, the gradients are V-bar = A^T O-bar, A-bar = O-bar V^T, Z-bar = A (A-bar - rowsum(A A-bar)) elementwise, Q-bar = Z-bar K / sqrt(d_k) and K-bar = Z-bar^T Q / sqrt(d_k); W^O gets C^T Y-bar for the concatenation C, and the projections get X^T Q-bar, M^T K-bar and M^T V-bar."
+  assumes: ["masked entries get weight exactly 0", "the loss is differentiable in the output"]
+  derivation: backward
+
+- id: c-score-grad-sum
+  type: mathematical
+  text: "Every row of the gradient of the scores sums to 0, and a masked score gets a zero gradient."
+  assumes: ["masked entries get weight exactly 0"]
+  derivation: backward
+
+# Cost
+
+- id: c-flops
+  type: mathematical
+  text: "Counting a multiply-add as 2 FLOPs and leaving out the softmax, a forward pass of multi-head attention over B sequences costs 2 B T d h d_k + 2 B S d h (d_k + d_v) + 2 B T d h d_v + 2 B h T S (d_k + d_v) FLOPs, which is 8 B T d^2 + 4 B T^2 d for self-attention with d_k = d_v = d / h."
+  assumes: ["a multiply-add counts as 2 FLOPs", "the softmax, the scale and the mask are not counted", "no biases"]
+  derivation: properties
+
+- id: c-table1
+  type: attributive
+  text: "In Table 1 of Vaswani et al., a self-attention layer has complexity O(n^2 d) per layer, O(1) sequential operations and maximum path length O(1), and a recurrent layer has O(n d^2), O(n) and O(n)."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Table 1, p. 6", stance: for}
+
+- id: c-faster-than-rnn
+  type: attributive
+  text: "In terms of computational complexity, self-attention layers are faster than recurrent layers when the sequence length n is smaller than the representation dimensionality d."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 4", stance: for}
+
+- id: c-quadratic
+  type: attributive
+  text: "The time and memory complexity of self-attention are quadratic in sequence length, and standard attention implementations materialize the matrices S and P to HBM, which takes O(N^2) memory."
+  evidence:
+    - {work: "dao-2022-flashattention", role: original, locator: "the abstract", stance: for}
+    - {work: "dao-2022-flashattention", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-flash
+  type: attributive
+  text: "FlashAttention returns O = softmax(Q K^T) V with O(N^2 d) FLOPs and requires O(N) additional memory beyond inputs and output."
+  evidence:
+    - {work: "dao-2022-flashattention", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-kv-cache
+  type: mathematical
+  text: "In incremental decoding with d_v = d_k, each cached position of a layer stores 2 h d_k numbers for multi-head attention, 2 d_k for multi-query attention and 2 G d_k for grouped-query attention with G groups."
+  assumes: ["d_v = d_k", "the keys and values of every earlier position are cached"]
+  derivation: properties
+
+- id: c-mha-ratio
+  type: attributive
+  text: "For incremental multi-head attention, dividing the memory by the computations, the ratio of memory access to arithmetic operations is Theta(n/d + 1/b); when n is close to d or b is close to 1, memory bandwidth is a major performance bottleneck."
+  evidence:
+    - {work: "shazeer-2019-fast-transformer-decoding", role: original, locator: "Section 2.4.1", stance: for}
+
+- id: c-mqa-ratio
+  type: attributive
+  text: "With multi-query attention, the ratio of memory access to arithmetic operations is Theta(1/d + n/(dh) + 1/b), which reduces the offensive n/d term by a factor of h."
+  evidence:
+    - {work: "shazeer-2019-fast-transformer-decoding", role: original, locator: "Section 3.1", stance: for}
+
+# Evidence
+
+- id: c-table3-heads
+  type: empirical
+  text: "Varying the number of attention heads and the attention key and value dimensions while keeping the amount of computation constant, (h, d_k) of (1, 512), (4, 128), (8, 64), (16, 32) and (32, 16) gave development BLEU 24.9, 25.5, 25.8, 25.8 and 25.4."
+  scope:
+    models: "the base Transformer"
+    data: [wmt-2014-en-de, newstest2013]
+    scale: "about 65 million parameters"
+    setting: "English to German translation, development set newstest2013, Table 3 rows (A)"
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 6.2, Table 3, p. 9", stance: for}
+
+- id: c-single-head-worse
+  type: empirical
+  text: "While single-head attention is 0.9 BLEU worse than the best setting, quality also drops off with too many heads."
+  scope:
+    models: "the base Transformer"
+    data: [wmt-2014-en-de, newstest2013]
+    scale: "about 65 million parameters"
+    setting: "English to German translation, development set newstest2013, computation held constant"
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 6.2, Table 3, p. 9", stance: for}
+
+- id: c-dk-reduction
+  type: empirical
+  text: "Reducing the attention key size d_k hurts model quality, which suggests that determining compatibility is not easy."
+  scope:
+    models: "the base Transformer"
+    data: [wmt-2014-en-de, newstest2013]
+    scale: "about 60 million parameters"
+    setting: "English to German translation, development set newstest2013, Table 3 rows (B)"
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 6.2, Table 3, p. 9", stance: for}
+
+- id: c-luong-dot-general
+  type: empirical
+  text: "Dot works well for the global attention and general is better for the local attention."
+  scope:
+    models: "stacking LSTM encoder-decoder models with global and local attention"
+    data: [wmt-2014-en-de]
+    scale: "4.5 million sentence pairs of training data"
+    setting: "English to German translation, the attention models of Section 5.3"
+  evidence:
+    - {work: "luong-2015-effective-approaches", role: original, locator: "Section 5.3", stance: for}
+
+- id: c-mqa-quality
+  type: empirical
+  text: "The multi-query attention model seems to be slightly worse than the multi-head baseline, but much closer than any of the alternatives involving decreasing h, d_k and d_v."
+  scope:
+    models: "an encoder-decoder Transformer with multi-head and with multi-query attention"
+    data: [wmt-2014-en-de]
+    scale: "a base-size Transformer"
+    setting: "English to German translation, dev set BLEU and per-subword-token perplexity with greedy decoding"
+  evidence:
+    - {work: "shazeer-2019-fast-transformer-decoding", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-mqa-beam
+  type: empirical
+  text: "Decoding the test set with beam search (beam 4, alpha = 0.6), the multi-query model performed similarly to the baseline, and had the highest BLEU score (28.5) with beam-4 decoding."
+  scope:
+    models: "an encoder-decoder Transformer with multi-head and with multi-query attention"
+    data: [wmt-2014-en-de]
+    scale: "a base-size Transformer"
+    setting: "English to German translation, WMT14 test set, sacrebleu"
+  evidence:
+    - {work: "shazeer-2019-fast-transformer-decoding", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-mqa-speed
+  type: empirical
+  text: "On one TPUv2 (8 cores), the amortized inference time of the decoder was 46 microseconds per token for the baseline model and 3.8 microseconds for the multi-query model, and a training step took 433 ms and 425 ms."
+  scope:
+    models: "the multi-head baseline and the multi-query model of Shazeer (2019)"
+    data: [wmt-2014-en-de]
+    scale: "a batch of 1024 sequences, source and target length 128"
+    setting: "incremental greedy inference on one TPUv2 with 8 cores"
+  evidence:
+    - {work: "shazeer-2019-fast-transformer-decoding", role: original, locator: "Section 4.3", stance: for}
+
+- id: c-gqa-result
+  type: attributive
+  text: "Ainslie et al. show that uptrained grouped-query attention achieves quality close to multi-head attention with speed comparable to multi-query attention."
+  evidence:
+    - {work: "ainslie-2023-gqa", role: original, locator: "the abstract", stance: for}
+
+# Variants
+
+- id: c-bahdanau-additive
+  type: definitional
+  text: "In the model of Bahdanau et al., the alignment model is a(s_{i-1}, h_j) = v_a^T tanh(W_a s_{i-1} + U_a h_j), a single-layer multilayer perceptron."
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "p. 12", stance: for}
+
+- id: c-additive-vs-dot
+  type: attributive
+  text: "The two most commonly used attention functions are additive attention and dot-product (multiplicative) attention; dot-product attention is identical to scaled dot-product attention except for the scaling factor of 1 / sqrt(d_k), and additive attention computes the compatibility function using a feed-forward network with a single hidden layer."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 3.2.1", stance: for}
+
+- id: c-dot-faster
+  type: attributive
+  text: "Dot-product attention is much faster and more space-efficient in practice than additive attention, since it can be implemented using highly optimized matrix multiplication code."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 3.2.1", stance: for}
+
+- id: c-additive-large-dk
+  type: attributive
+  text: "While for small values of d_k the two mechanisms perform similarly, additive attention outperforms dot product attention without scaling for larger values of d_k."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 3.2.1", stance: for}
+
+- id: c-luong-scores
+  type: definitional
+  text: "Luong et al. consider three content-based functions of the current target hidden state h_t and a source hidden state h-bar_s: dot, h_t^T h-bar_s; general, h_t^T W_a h-bar_s; and concat, v_a^T tanh(W_a [h_t; h-bar_s])."
+  evidence:
+    - {work: "luong-2015-effective-approaches", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-mqa-def
+  type: definitional
+  text: "Multi-query attention is identical to multi-head attention except that the different heads share a single set of keys and values."
+  evidence:
+    - {work: "shazeer-2019-fast-transformer-decoding", role: original, locator: "Section 3", stance: for}
+
+- id: c-gqa-def
+  type: definitional
+  text: "Grouped-query attention divides query heads into G groups, each of which shares a single key head and value head; GQA-1 is equivalent to multi-query attention and GQA-H, with groups equal to the number of heads, is equivalent to multi-head attention."
+  evidence:
+    - {work: "ainslie-2023-gqa", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-gqa-cache
+  type: attributive
+  text: "Going from multi-head to multi-query attention reduces H key and value heads to a single key and value head, reducing the size of the key-value cache by a factor of H."
+  evidence:
+    - {work: "ainslie-2023-gqa", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-gqa-meanpool
+  type: attributive
+  text: "To convert a multi-head checkpoint into a multi-query checkpoint, the projection matrices for key and value heads are mean pooled into single projection matrices."
+  evidence:
+    - {work: "ainslie-2023-gqa", role: original, locator: "Section 2.1", stance: for}
+
+- id: c-gqa-uptrain
+  type: attributive
+  text: "Ainslie et al. propose a recipe for uptraining existing multi-head language model checkpoints into models with multi-query attention using 5% of original pre-training compute."
+  evidence:
+    - {work: "ainslie-2023-gqa", role: original, locator: "the abstract", stance: for}
+
+- id: c-gqa-not-encoder
+  type: attributive
+  text: "GQA is not applied to the encoder self-attention layers; encoder representations are computed in parallel, and memory bandwidth is therefore generally not the primary bottleneck."
+  evidence:
+    - {work: "ainslie-2023-gqa", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-restricted
+  type: attributive
+  text: "Self-attention restricted to a neighborhood of size r in the input sequence has complexity O(r n d) per layer and increases the maximum path length to O(n/r)."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 4", stance: for}
+
+# History
+
+- id: c-bahdanau-context
+  type: definitional
+  text: "In Bahdanau et al., the context vector c_i is a weighted sum of the annotations h_j, with weights alpha_ij given by a softmax of the scores e_ij = a(s_{i-1}, h_j) of an alignment model, a feedforward neural network jointly trained with all the other components of the system."
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-bahdanau-fixed
+  type: attributive
+  text: "With the attention mechanism in the decoder, the encoder is relieved from the burden of having to encode all information in the source sentence into a fixed-length vector."
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-luong-vs-bahdanau
+  type: attributive
+  text: "Luong et al. go from the current hidden state h_t to the alignment, while Bahdanau et al. build from the previous hidden state h_{t-1}, and Bahdanau et al. only experimented with one alignment function, the concat product."
+  evidence:
+    - {work: "luong-2015-effective-approaches", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-heads-tasks
+  type: attributive
+  text: "Not only do individual attention heads clearly learn to perform different tasks, many appear to exhibit behavior related to the syntactic and semantic structure of the sentences."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 4", stance: for}

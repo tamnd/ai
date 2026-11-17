@@ -1,0 +1,703 @@
+# The claims of the mmlu page (spec 07). The build computes the labels.
+
+- id: c-57
+  type: definitional
+  text: The test covers 57 tasks including elementary mathematics, US history, computer science, law, and more.
+  evidence:
+  - work: hendrycks-2020-measuring-massive-multitask
+    role: original
+    locator: p. 1
+    stance: for
+
+- id: c-knowledge
+  type: attributive
+  text: Hendrycks et al. propose a test to measure a text model's multitask accuracy, and write that to attain high accuracy on this test, models must possess extensive world knowledge and problem solving ability.
+  evidence:
+  - work: hendrycks-2020-measuring-massive-multitask
+    role: original
+    locator: p. 1
+    stance: for
+
+- id: c-iclr
+  type: historical
+  text: Measuring Massive Multitask Language Understanding was published as a conference paper at ICLR 2021.
+  evidence:
+  - work: hendrycks-2020-measuring-massive-multitask
+    role: original
+    locator: p. 1
+    stance: for
+
+- id: c-groups
+  type: definitional
+  text: The test spans subjects in the humanities, social sciences, hard sciences, and other areas that are important for some people to learn.
+  evidence:
+  - work: hendrycks-2020-measuring-massive-multitask
+    role: original
+    locator: Section 3
+    stance: for
+
+- id: c-levels
+  type: definitional
+  text: Some tasks cover a subject, like psychology, but at a specific level of difficulty, such as Elementary, High School, College, or Professional.
+  evidence:
+  - work: hendrycks-2020-measuring-massive-multitask
+    role: original
+    locator: Section 3
+    stance: for
+
+- id: c-disciplines
+  type: definitional
+  text: Table 1 reports the average weighted accuracy of each model on all four broad disciplines, Humanities, Social Science, STEM and Other.
+  evidence:
+  - work: hendrycks-2020-measuring-massive-multitask
+    role: original
+    locator: Table 1
+    stance: for
+
+- id: c-pretraining
+  type: attributive
+  text: Hendrycks et al. do not require large training sets; they assume that models have acquired the requisite knowledge from reading vast quantities of diverse text from the Internet, and they assess pretrained models in a zero-shot, few-shot, or transfer setting.
+  evidence:
+  - work: hendrycks-2020-measuring-massive-multitask
+    role: original
+    locator: Section 5
+    stance: for
+
+- id: c-text-only
+  type: attributive
+  text: Hendrycks et al. write that existing large-scale NLP models such as GPT-3 do not incorporate multimodal information, so they designed the benchmark to capture a diverse array of tasks in a text-only format.
+  evidence:
+  - work: hendrycks-2020-measuring-massive-multitask
+    role: original
+    locator: Section 5
+    stance: for
+
+- id: c-goalpost
+  type: attributive
+  text: Hendrycks et al. write that to succeed at the test, future models should be well-rounded, possess extensive world knowledge, and develop expert-level problem solving ability, properties that make the test likely to be an enduring and informative goalpost.
+  evidence:
+  - work: hendrycks-2020-measuring-massive-multitask
+    role: original
+    locator: Section 3
+    stance: for
+
+- id: c-collected
+  type: historical
+  text: The questions were manually collected by graduate and undergraduate students from freely available sources online, including practice questions for the Graduate Record Examination and the United States Medical Licensing Examination, questions designed for undergraduate courses, and questions designed for readers of Oxford University Press books.
+  evidence:
+  - work: hendrycks-2020-measuring-massive-multitask
+    role: original
+    locator: Section 3
+    stance: for
+
+- id: c-under-documented
+  type: attributive
+  text: Gema et al. write that despite the manual effort, MMLU still contains errors that are difficult to trace due to its under-documented annotation procedure.
+  evidence:
+  - work: gema-2024-are-we-done-mmlu
+    role: original
+    locator: p. 2
+    stance: for
+
+- id: c-splits
+  type: definitional
+  text: The authors collected 15908 questions in total, split into a few-shot development set with 5 questions per subject, a validation set of 1540 questions for selecting hyperparameters, and a test set of 14079 questions.
+  evidence:
+  - work: hendrycks-2020-measuring-massive-multitask
+    role: original
+    locator: Section 3
+    stance: for
+
+- id: c-100
+  type: definitional
+  text: Each subject contains 100 test examples at the minimum, which is longer than most exams designed to assess people.
+  evidence:
+  - work: hendrycks-2020-measuring-massive-multitask
+    role: original
+    locator: Section 3
+    stance: for
+
+- id: c-accuracy
+  type: definitional
+  text: To measure performance on the multitask test, the authors compute the classification accuracy across all examples and tasks.
+  evidence:
+  - work: hendrycks-2020-measuring-massive-multitask
+    role: original
+    locator: Section 4.1
+    stance: for
+
+- id: c-prompt
+  type: definitional
+  text: Each prompt begins with "The following are multiple choice questions (with answers) about [subject]."; for zero-shot evaluation the question is appended to the prompt, and for few-shot evaluation up to 5 demonstration examples with answers are added before the question.
+  evidence:
+  - work: hendrycks-2020-measuring-massive-multitask
+    role: original
+    locator: Section 4.1
+    stance: for
+
+- id: c-dev5
+  type: definitional
+  text: For consistent evaluation, the authors create a dev set with 5 fixed few-shot examples for each subject.
+  evidence:
+  - work: hendrycks-2020-measuring-massive-multitask
+    role: original
+    locator: Section 4.1
+    stance: for
+
+- id: c-answer
+  type: definitional
+  text: All prompts end with "Answer:"; the model then produces probabilities for the tokens A, B, C and D, and the highest probability option is treated as the prediction.
+  evidence:
+  - work: hendrycks-2020-measuring-massive-multitask
+    role: original
+    locator: Section 4.1
+    stance: for
+
+- id: c-random
+  type: empirical
+  text: The random baseline has an accuracy of 25.0% on each of the four broad disciplines and on average.
+  scope:
+    models: a random baseline
+    data:
+    - mmlu
+    scale: the test set of MMLU
+    setting: four answer choices per question
+  evidence:
+  - work: hendrycks-2020-measuring-massive-multitask
+    role: original
+    locator: Table 1
+    stance: for
+
+- id: c-llama-macro
+  type: definitional
+  text: For MMLU, the Llama 3 report gives the macro average of subtask accuracy under the 5-shot standard setting without CoT, with all tasks formatted as generation tasks, similar to simple-evals.
+  evidence:
+  - work: llama-team-2024-llama-3-herd
+    role: original
+    locator: Section 5.2.1
+    stance: for
+
+- id: c-24-prompts
+  type: empirical
+  text: Evaluated with 24 different but reasonable prompts, the influence of the prompts on MMLU scores generally ranges between 4-5%, with peaks up to 10.98%, while on MMLU-Pro the impact of prompt changes is generally around 2%, with a maximum of 3.74%.
+  scope:
+    models: the models of Figure 5 of Wang et al., among them Llama-2-7B, Mistral-7B, Gemma-7B and Llama-3-8B
+    data:
+    - mmlu
+    scale: the full MMLU and MMLU-Pro
+    setting: 24 prompt styles
+  evidence:
+  - work: wang-2024-mmlu-pro
+    role: original
+    locator: Section 6.3
+    stance: for
+
+- id: c-shuffle
+  type: empirical
+  text: In a zero-shot experiment on a subset of MMLU subjects (college chemistry, college mathematics, and global facts), randomly shuffling the order of the answer choices changes the ranking of 5 out of 11 models, and Kendall's tau drops to 0.564.
+  scope:
+    models: 11 open models from phi-2 to Llama2-70b-chat
+    data:
+    - mmlu
+    scale: three MMLU subjects
+    setting: zero-shot, answer choices shuffled
+  evidence:
+  - work: alzahrani-2024-when-benchmarks-are-targets
+    role: original
+    locator: Section 5
+    stance: for
+
+- id: c-position
+  type: empirical
+  text: When the correct answer is placed at each possible position on zero-shot MMLU, all the LLMs tested show a clear preference for specific positions or answer choice symbols, although the position varies among models.
+  scope:
+    models: 11 open models from phi-2 to Llama2-70b-chat
+    data:
+    - mmlu
+    scale: MMLU
+    setting: zero-shot, the correct answer fixed to A, B, C or D
+  evidence:
+  - work: alzahrani-2024-when-benchmarks-are-targets
+    role: original
+    locator: Table 2
+    stance: for
+
+- id: c-8-positions
+  type: empirical
+  text: For popular multiple-choice question benchmarks such as MMLU, minor perturbations to the benchmark, such as changing the order of choices or the method of answer selection, result in changes in rankings up to 8 positions.
+  scope:
+    models: 11 open models from phi-2 to Llama2-70b-chat
+    data:
+    - mmlu
+    scale: MMLU
+    setting: perturbed answer order, choice symbols and scoring
+  evidence:
+  - work: alzahrani-2024-when-benchmarks-are-targets
+    role: original
+    locator: p. 1
+    stance: for
+
+- id: c-scoring
+  type: empirical
+  text: Symbol scoring, the dominant method for evaluating LLMs on multiple-choice questions, gives high accuracy at the cost of high selection bias; cloze scoring can essentially eliminate bias but LLMs tend to score poorly with it, and the authors recommend replacing symbol scoring with hybrid scoring.
+  scope:
+    models: 11 open models from phi-2 to Llama2-70b-chat
+    data:
+    - mmlu
+    scale: MMLU and ARC-Challenge
+    setting: symbol, cloze and hybrid scoring
+  evidence:
+  - work: alzahrani-2024-when-benchmarks-are-targets
+    role: original
+    locator: Section 5
+    stance: for
+
+- id: c-fewshot
+  type: empirical
+  text: Changing the informativeness of in-context examples, or the instruction, slightly changes performance across models but does not change rankings drastically; adding few-shot examples can help reduce, but not eliminate, leaderboard sensitivity.
+  scope:
+    models: 11 open models from phi-2 to Llama2-70b-chat
+    data:
+    - mmlu
+    scale: MMLU
+    setting: trivial or other-subject in-context examples; changed instructions
+  evidence:
+  - work: alzahrani-2024-when-benchmarks-are-targets
+    role: original
+    locator: Section 5
+    stance: for
+
+- id: c-cot
+  type: empirical
+  text: GPT-4o improves by 1.5% using Chain of Thought compared to direct answering on MMLU, while on MMLU-Pro its improvement reaches 19.1%; GPT-4-Turbo shows a 15.3% increase on MMLU-Pro, although its performance slightly decreases by 0.2% on MMLU.
+  scope:
+    models: GPT-4o and GPT-4-Turbo
+    data:
+    - mmlu
+    scale: the full MMLU and MMLU-Pro
+    setting: chain of thought against direct answering
+  evidence:
+  - work: wang-2024-mmlu-pro
+    role: original
+    locator: Section 6.2
+    stance: for
+
+- id: c-redux
+  type: historical
+  text: To construct MMLU-Redux, 14 human experts manually assessed and re-annotated 5,700 questions across all subsets of MMLU, a manual annotation of all 57 subsets of MMLU, each containing 100 randomly selected samples.
+  evidence:
+  - work: gema-2024-are-we-done-mmlu
+    role: original
+    locator: p. 2
+    stance: for
+
+- id: c-taxonomy
+  type: definitional
+  text: 'The annotation protocol sorts errors into two groups: errors in the clarity of the questions (bad question clarity, bad options clarity) and errors in the ground truth answer (no correct answer, multiple correct answers, wrong ground truth).'
+  evidence:
+  - work: gema-2024-are-we-done-mmlu
+    role: original
+    locator: p. 2
+    stance: for
+
+- id: c-6-49
+  type: empirical
+  text: Gema et al. estimate that 6.49% of MMLU questions contain errors.
+  scope:
+    models: human expert annotators
+    data:
+    - mmlu
+    scale: 5,700 annotated questions, extrapolated to all of MMLU
+    setting: stratified sampling
+  evidence:
+  - work: gema-2024-are-we-done-mmlu
+    role: original
+    locator: p. 1
+    stance: for
+
+- id: c-virology
+  type: empirical
+  text: 57% of the analysed questions in the Virology subset contain errors.
+  scope:
+    models: human expert annotators
+    data:
+    - mmlu
+    scale: 100 sampled questions of the Virology subject
+    setting: the MMLU-Redux annotation protocol
+  evidence:
+  - work: gema-2024-are-we-done-mmlu
+    role: original
+    locator: p. 1
+    stance: for
+
+- id: c-subjects
+  type: empirical
+  text: More than 20% of the examples in Logical Fallacies and College Chemistry are wrong, and more than 10% of the examples in Professional Law, Business Ethics, Formal Logic, Human Aging, Global Facts, Machine Learning, Miscellaneous and Public Relations are wrong.
+  scope:
+    models: human expert annotators
+    data:
+    - mmlu
+    scale: 100 sampled questions per subject
+    setting: the MMLU-Redux annotation protocol
+  evidence:
+  - work: gema-2024-are-we-done-mmlu
+    role: original
+    locator: p. 4
+    stance: for
+
+- id: c-parsing
+  type: empirical
+  text: In College Chemistry, questions spanning multiple lines in the original source were often parsed incorrectly, leading to a part of the question being presented as the first option (Option A) and the exclusion of Option D.
+  scope:
+    models: human expert annotators
+    data:
+    - mmlu
+    scale: the College Chemistry subject
+    setting: the MMLU-Redux annotation protocol
+  evidence:
+  - work: gema-2024-are-we-done-mmlu
+    role: original
+    locator: p. 3
+    stance: for
+
+- id: c-virology-cause
+  type: attributive
+  text: Gema et al. write that many of the incorrect Virology labels are for relatively simple questions, which suggests the errors may stem from problems parsing the original datasets, in most cases the Human Virology textbook.
+  evidence:
+  - work: gema-2024-are-we-done-mmlu
+    role: original
+    locator: p. 3
+    stance: for
+
+- id: c-law
+  type: empirical
+  text: The Professional Law benchmark does not clearly distinguish between different jurisdictions, despite focusing on U.S. law.
+  scope:
+    models: human expert annotators
+    data:
+    - mmlu
+    scale: the Professional Law subject
+    setting: the MMLU-Redux annotation protocol
+  evidence:
+  - work: gema-2024-are-we-done-mmlu
+    role: original
+    locator: p. 3
+    stance: for
+
+- id: c-western
+  type: attributive
+  text: 'Gema et al. find that many subjects also display a US and Western bias: the Virology dataset refers to the Latino population in a US context, and the Human Aging dataset mentions an unspecified survey of older adults.'
+  evidence:
+  - work: gema-2024-are-we-done-mmlu
+    role: original
+    locator: p. 4
+    stance: for
+
+- id: c-not-replaced
+  type: definitional
+  text: At present, the correct answers suggested by the MMLU-Redux annotators are not used to replace the existing MMLU labels.
+  evidence:
+  - work: gema-2024-are-we-done-mmlu
+    role: original
+    locator: p. 4
+    stance: for
+
+- id: c-ranking
+  type: empirical
+  text: In the Virology subset, Llama 3.1 Instruct Turbo (405B) ranked 16th when considering all Virology instances, but ranked first when only correct instances were used.
+  scope:
+    models: Llama 3.1 Instruct Turbo (405B) among the models of Table 2 of Gema et al.
+    data:
+    - mmlu
+    scale: the Virology subject of MMLU-Redux
+    setting: all instances against the instances without errors
+  evidence:
+  - work: gema-2024-are-we-done-mmlu
+    role: original
+    locator: p. 5
+    stance: for
+
+- id: c-memorisation
+  type: empirical
+  text: In Professional Law and Formal Logic, performance was similar or even higher on erroneous instances, where LLMs should be unable to yield answers correct with respect to the original MMLU ground truth, which may be evidence of memorisation of these instances during pretraining.
+  scope:
+    models: the ten best-performing LLMs on MMLU as ranked by HELM
+    data:
+    - mmlu
+    scale: the Professional Law and Formal Logic subjects of MMLU-Redux
+    setting: erroneous against correct instances
+  evidence:
+  - work: gema-2024-are-we-done-mmlu
+    role: original
+    locator: p. 4
+    stance: for
+
+- id: c-defacto
+  type: attributive
+  text: Wang et al. write that MMLU emerged as the de facto standard for evaluating LLMs due to its broad coverage and high quality.
+  evidence:
+  - work: wang-2024-mmlu-pro
+    role: original
+    locator: p. 2
+    stance: for
+
+- id: c-plateau
+  type: empirical
+  text: Since GPT-4 achieved 86.4% on MMLU in March 2023, frontier models published in early-mid 2024, such as GPT-4-Turbo, Gemini-1.5-Pro, Claude and LLaMA-3-400B, settle at an accuracy between 86% and 87%, and GPT-4o obtains 87.4%.
+  scope:
+    models: GPT-4, GPT-4-Turbo, Gemini-1.5-Pro, Claude, LLaMA-3-400B and GPT-4o
+    data:
+    - mmlu
+    scale: reported MMLU scores up to mid 2024
+    setting: the scores as their developers report them
+  evidence:
+  - work: wang-2024-mmlu-pro
+    role: original
+    locator: p. 2
+    stance: for
+
+- id: c-cluster
+  type: empirical
+  text: Models like Gemini-1.5-Flash, Llama-3-70B-Instruct, Phi-3-medium-4k-instruct, and Qwen1.5-110B all score between 78% and 82% on MMLU, a narrow range that MMLU-Pro expands to approximately 10%.
+  scope:
+    models: Gemini-1.5-Flash, Llama-3-70B-Instruct, Phi-3-medium-4k-instruct and Qwen1.5-110B
+    data:
+    - mmlu
+    scale: the full MMLU and MMLU-Pro
+    setting: Figure 4 of Wang et al.
+  evidence:
+  - work: wang-2024-mmlu-pro
+    role: original
+    locator: Section 6.1
+    stance: for
+
+- id: c-llama-405
+  type: empirical
+  text: The finetuned Llama 3 405B model scores 87.3 on MMLU (5-shot).
+  scope:
+    models: Llama 3 405B, finetuned
+    data:
+    - mmlu
+    scale: MMLU
+    setting: 5-shot, no chain of thought, macro average of subtask accuracy
+  evidence:
+  - work: llama-team-2024-llama-3-herd
+    role: original
+    locator: Table 2
+    stance: for
+
+- id: c-causes
+  type: attributive
+  text: Wang et al. conjecture that the questions in MMLU only have three distractor options, are mostly knowledge-driven without requiring much reasoning, and include a portion that are either unanswerable or mistakenly annotated, a noise that leads to a lower ceiling.
+  evidence:
+  - work: wang-2024-mmlu-pro
+    role: original
+    locator: p. 2
+    stance: for
+
+- id: c-pro-size
+  type: definitional
+  text: MMLU-Pro comprises 14 discipline subsets totaling 12,032 questions from original MMLU questions with trivial and erroneous questions removed, the STEM Website, TheoremQA, and SciBench.
+  evidence:
+  - work: wang-2024-mmlu-pro
+    role: original
+    locator: Section 3.1
+    stance: for
+
+- id: c-pro-filter
+  type: historical
+  text: Eight models were evaluated on MMLU, questions answered correctly by more than four models were considered too easy and excluded, and a total of 5,886 questions were filtered out.
+  evidence:
+  - work: wang-2024-mmlu-pro
+    role: original
+    locator: Section 3.2
+    stance: for
+
+- id: c-pro-ten
+  type: definitional
+  text: GPT-4-Turbo enhanced the options from four to ten, human experts removed each false negative option, and in MMLU-Pro 83% of questions have ten options and the average options count per question is 9.47.
+  evidence:
+  - work: wang-2024-mmlu-pro
+    role: original
+    locator: Section 3.2
+    stance: for
+
+- id: c-pro-drop
+  type: empirical
+  text: MMLU-Pro raises the challenge, causing a significant drop in accuracy by 16% to 33% compared to MMLU.
+  scope:
+    models: the models evaluated by Wang et al.
+    data:
+    - mmlu
+    scale: the full MMLU and MMLU-Pro
+    setting: the paper's evaluation
+  evidence:
+  - work: wang-2024-mmlu-pro
+    role: original
+    locator: p. 1
+    stance: for
+
+- id: c-pro-gpt4o
+  type: empirical
+  text: The best-performing model, GPT-4o, scores 72.6% on MMLU-Pro.
+  scope:
+    models: GPT-4o
+    data:
+    - mmlu
+    scale: MMLU-Pro
+    setting: 5-shot chain of thought
+  evidence:
+  - work: wang-2024-mmlu-pro
+    role: original
+    locator: Section 6.1
+    stance: for
+
+- id: c-pro-corrections
+  type: historical
+  text: The MMLU-Pro dataset card logs corrections after release, among them 15 answers corrected in the medical domain on 2025.04.06, and on 2026.01.18 a fixed leading space issue in answer options that could have been exploited as a shortcut.
+  evidence:
+  - work: tiger-lab-2024-mmlu-pro-dataset-card
+    role: original
+    locator: p. 1
+    stance: for
+
+- id: c-llama-pro
+  type: definitional
+  text: The Llama 3 report evaluates knowledge-based question answering on MMLU and MMLU-Pro, and given its focus on complex reasoning, reports 5-shot CoT for MMLU-Pro.
+  evidence:
+  - work: llama-team-2024-llama-3-herd
+    role: original
+    locator: Section 5.2.1
+    stance: for
+
+- id: c-redux-data
+  type: definitional
+  text: The MMLU-Redux dataset is available at huggingface.co/datasets/edinburgh-dawg/mmlu-redux-2.0 with a CC-BY-4.0 licence.
+  evidence:
+  - work: gema-2024-are-we-done-mmlu
+    role: original
+    locator: p. 14
+    stance: for
+
+- id: c-mturk
+  type: empirical
+  text: Unspecialized humans from Amazon Mechanical Turk obtain 34.5% accuracy on the test.
+  scope:
+    models: Amazon Mechanical Turk workers
+    data:
+    - mmlu
+    scale: MMLU
+    setting: unspecialized humans
+  evidence:
+  - work: hendrycks-2020-measuring-massive-multitask
+    role: original
+    locator: Section 3
+    stance: for
+
+- id: c-expert
+  type: attributive
+  text: Taking the 95th percentile human test-taker accuracy for the exams that build up the test, and making an educated guess when such information is unavailable, Hendrycks et al. estimate that expert-level accuracy is approximately 89.8%.
+  evidence:
+  - work: hendrycks-2020-measuring-massive-multitask
+    role: original
+    locator: Section 3
+    stance: for
+
+- id: c-gpt3
+  type: empirical
+  text: The three smaller GPT-3 models have near random accuracy (around 25%), while the X-Large 175 billion parameter GPT-3 model reaches an accuracy of 43.9% few-shot.
+  scope:
+    models: GPT-3 Small, Medium, Large and X-Large
+    data:
+    - mmlu
+    scale: 2.7 to 175 billion parameters
+    setting: few-shot through the OpenAI API
+  evidence:
+  - work: hendrycks-2020-measuring-massive-multitask
+    role: original
+    locator: Section 4.2
+    stance: for
+
+- id: c-zero-shot
+  type: empirical
+  text: The largest GPT-3 model has a zero-shot accuracy of about 37.7%.
+  scope:
+    models: GPT-3 X-Large
+    data:
+    - mmlu
+    scale: 175 billion parameters
+    setting: zero-shot
+  evidence:
+  - work: hendrycks-2020-measuring-massive-multitask
+    role: original
+    locator: Section 4.2
+    stance: for
+
+- id: c-unifiedqa
+  type: empirical
+  text: The largest UnifiedQA model, with 11 billion parameters and evaluated for transfer without additional fine-tuning, attains 48.9% accuracy, better than the few-shot GPT-3 X-Large model.
+  scope:
+    models: UnifiedQA (T5 backbone)
+    data:
+    - mmlu
+    scale: 11 billion parameters
+    setting: transfer, no fine-tuning on MMLU
+  evidence:
+  - work: hendrycks-2020-measuring-massive-multitask
+    role: original
+    locator: Section 4.2
+    stance: for
+
+- id: c-lopsided
+  type: empirical
+  text: GPT-3's accuracy ranges from 69% for US Foreign Policy to 26% for College Chemistry, and both GPT-3 and UnifiedQA are below expert-level performance for all 57 tasks.
+  scope:
+    models: GPT-3 X-Large and UnifiedQA
+    data:
+    - mmlu
+    scale: the 57 subjects
+    setting: GPT-3 few-shot
+  evidence:
+  - work: hendrycks-2020-measuring-massive-multitask
+    role: original
+    locator: Section 4.2
+    stance: for
+
+- id: c-procedural
+  type: empirical
+  text: For GPT-3, 9 out of the 10 lowest-accuracy tasks are STEM subjects that emphasize mathematics or calculations.
+  scope:
+    models: GPT-3 X-Large
+    data:
+    - mmlu
+    scale: the 57 subjects
+    setting: few-shot
+  evidence:
+  - work: hendrycks-2020-measuring-massive-multitask
+    role: original
+    locator: Section 4.2
+    stance: for
+
+- id: c-calibration
+  type: empirical
+  text: GPT-3 is uncalibrated; its confidence is only weakly related to its actual accuracy in the zero-shot setting, with the difference between its accuracy and confidence reaching up to 24% for some subjects.
+  scope:
+    models: GPT-3 X-Large
+    data:
+    - mmlu
+    scale: the 57 subjects
+    setting: zero-shot
+  evidence:
+  - work: hendrycks-2020-measuring-massive-multitask
+    role: original
+    locator: Section 4.2
+    stance: for
+
+- id: c-no-subject
+  type: attributive
+  text: Hendrycks et al. write that the models do not match expert-level performance (90%) on any subject, and on average are only now starting to move beyond random-chance accuracy levels.
+  evidence:
+  - work: hendrycks-2020-measuring-massive-multitask
+    role: original
+    locator: Section 5
+    stance: for
