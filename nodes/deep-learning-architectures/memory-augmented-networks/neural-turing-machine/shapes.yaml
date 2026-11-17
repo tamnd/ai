@@ -1,0 +1,74 @@
+# SPDX-License-Identifier: MIT
+# The shape contract of a Neural Turing Machine with a feedforward controller (spec 08.6). The memory is an N by M
+# matrix for each sequence; R read heads and W write heads each keep a weighting over the N locations. At every step
+# the controller maps the input and the R read vectors of the previous step to a hidden vector and to the P raw head
+# outputs; the write heads address and change the memory, then the read heads address it and read; the output layer
+# sees the hidden vector and the new read vectors. The blocks are per step and the model multiplies by the T steps.
+# The FLOPs count the products only, a multiply-add as 2: the three linear maps, the cosine products and the shift of
+# every head, the weighted sum of every read head. The erase and add of a write are elementwise and are not counted.
+config:
+  x_dim:   {meaning: "width of the input at each step", symbol: "X", example: 4, sample: [1, 6]}
+  y_dim:   {meaning: "width of the output at each step, one logit per bit", symbol: "Y", example: 3, sample: [1, 6]}
+  hidden:  {meaning: "tanh units of the feedforward controller", symbol: "H", example: 8, sample: [1, 12]}
+  n_loc:   {meaning: "locations of the memory, its rows", symbol: "N", example: 6, sample: [3, 9]}
+  width:   {meaning: "width of a memory row, of a key and of a read vector", symbol: "M", example: 4, sample: [1, 6]}
+  n_read:  {meaning: "read heads", symbol: "R", example: 1, sample: [1, 3]}
+  n_write: {meaning: "write heads", symbol: "W", example: 1, sample: [1, 2]}
+  shift:   {meaning: "the largest shift of the location addressing, in either direction", symbol: "S", example: 1, sample: [1, 1]}
+  k:       {meaning: "the allowed shifts -S to S, the length of the shift weighting s", symbol: "K", formula: "2 * shift + 1"}
+  p:       {meaning: "raw outputs of the controller for the heads: key, beta, g, s and gamma for every head, and an erase and an add vector for a write head", symbol: "P", formula: "n_read * (width + 3 + k) + n_write * (3 * width + 3 + k)"}
+axes:
+  B: {meaning: "batch", example: 2, sample: [1, 4]}
+  T: {meaning: "steps of the sequence", example: 7, sample: [1, 9]}
+  X: x_dim
+  Y: y_dim
+  H: hidden
+  N: n_loc
+  M: width
+  R: n_read
+  W: n_write
+  K: k
+  P: p
+blocks:
+  - id: controller
+    meaning: "the feedforward controller: a tanh layer on the input and the read vectors of the previous step, then the linear map to the raw head outputs"
+    inputs: {x_t: "(B, X)", reads_prev: "(B, R * M)"}
+    outputs: {h: "(B, H)", o: "(B, P)"}
+    params: "H * (X + R * M) + H + P * (H + 1)"
+    flops_forward: "2 * B * H * (X + R * M) + 2 * B * P * H"
+  - id: address
+    meaning: "one head turns its outputs and its weighting of the previous step into a new weighting: content, interpolation, shift, sharpening"
+    eq: [cosine, content, interpolate, shift, sharpen]
+    inputs: {memory: "(B, N, M)", w_prev: "(B, N)", key: "(B, M)"}
+    outputs: {w: "(B, N)"}
+    internals: {similarity: "(B, N)", shifted_copies: "(B, K, N)"}
+    params: "0"
+    flops_forward: "2 * B * N * (M + K)"
+  - id: write
+    meaning: "the write heads erase and then add, each with its own weighting, erase vector and add vector"
+    eq: [erase, add]
+    inputs: {memory: "(B, N, M)", w: "(B, N)", erase: "(B, M)", add: "(B, M)"}
+    outputs: {memory: "(B, N, M)"}
+    params: "0"
+    flops_forward: "0"
+  - id: read
+    meaning: "one read head returns the sum of the rows weighted by its weighting"
+    eq: [read]
+    inputs: {memory: "(B, N, M)", w: "(B, N)"}
+    outputs: {r: "(B, M)"}
+    params: "0"
+    flops_forward: "2 * B * N * M"
+  - id: output
+    meaning: "the linear output layer on the hidden vector and the read vectors of this step, one logit per output bit"
+    inputs: {h: "(B, H)", reads: "(B, R * M)"}
+    outputs: {y_t: "(B, Y)"}
+    params: "Y * (H + R * M) + Y"
+    flops_forward: "2 * B * Y * (H + R * M)"
+model:
+  params: {formula: "controller.params + address.params + write.params + read.params + output.params", symbol: "P_{\\text{model}}", meaning: "weights and biases; none depends on N, since the memory, the weightings and the read vectors start at fixed values"}
+  flops_forward: {formula: "T * (controller.flops_forward + (R + W) * address.flops_forward + R * read.flops_forward + output.flops_forward)", symbol: "C_{\\text{fwd}}", meaning: "FLOPs of one forward pass over T steps of the batch, a multiply-add counted as 2"}
+  memory_floats: {formula: "B * N * M", meaning: "numbers in the memory of the batch, carried from step to step"}
+  learned_init_params: {formula: "N * M + R * M + (R + W) * N", meaning: "the parameters a learned initial memory, initial read vectors and initial weightings would add; they grow with N"}
+configs:
+  wide: {meaning: "more and wider locations, two read heads, a larger shift", x_dim: 4, y_dim: 3, hidden: 8, n_loc: 9, width: 6, n_read: 2, n_write: 1, shift: 1}
+  paper: {meaning: "the sizes of the copy task of Graves et al. with a feedforward controller: 8 bits and a delimiter in, 8 bits out, 100 units, 128 locations of width 20, one head of each kind", x_dim: 9, y_dim: 8, hidden: 100, n_loc: 128, width: 20, n_read: 1, n_write: 1, shift: 1}

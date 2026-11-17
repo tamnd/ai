@@ -1,0 +1,12 @@
+# Written by fixtures/make.py; do not edit.
+seed: 20141020
+config: {x_dim: 4, y_dim: 3, hidden: 8, n_loc: 6, width: 4, n_read: 1, n_write: 1, shift: 1, controller: feedforward, memory_init: 1e-06}
+inputs: {B: 2, T: 7, x: "a copy task of 3 random 3-bit items, a delimiter, then blanks"}
+expected: "logits (B, T, Y), the weightings of every head at every step (T, R + W, B, N), the last memory (B, N, M)"
+loss: "bits per sequence of the sigmoid outputs over the steps after the delimiter, mean over the batch"
+dtype: float64
+numpy: "2.5.4"
+files:
+  params-small.npz: {sha256: 4aa5db4d27fefdede554b7fcd7762007e761eeed7c804ce19b0b2841b21e5009}
+  input-small.npz: {sha256: d4c92d15c7392a084f7234d1ae482321bcc0aaea829f47f815692809fd350ed6}
+  expected-small.npz: {sha256: d7cb27017b5e6ef0dcc099d76a82e532f1e4b55715a3154dac39650361a85a88}

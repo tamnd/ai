@@ -1,0 +1,362 @@
+# The claims of the neural-turing-machine page (spec 07). The build computes the labels.
+
+# The aim and the memory
+
+- id: c-graves-infer-algorithms
+  type: attributive
+  text: "Graves et al. report preliminary results in which Neural Turing Machines infer simple algorithms such as copying, sorting, and associative recall from input and output examples."
+  evidence:
+    - {work: "graves-2014-neural-turing-machines", role: original, locator: "the abstract", stance: for}
+
+- id: c-graves-turing-analogy
+  type: attributive
+  text: "Graves et al. named the model by analogy to Turing's enrichment of finite-state machines by an infinite memory tape."
+  evidence:
+    - {work: "graves-2014-neural-turing-machines", role: original, locator: "Section 1", stance: for}
+
+- id: c-blurry-ops
+  type: attributive
+  text: "Graves et al. describe the reads and writes of the NTM as blurry operations that interact to a greater or lesser degree with all the elements in memory."
+  evidence:
+    - {work: "graves-2014-neural-turing-machines", role: original, locator: "Section 3", stance: for}
+
+- id: c-read-convex
+  type: definitional
+  text: "The read vector of a head is the convex combination of the rows of the memory weighted by the head's weighting, which is differentiable with respect to both the weighting and the memory."
+  evidence:
+    - {work: "graves-2014-neural-turing-machines", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-write-from-lstm
+  type: attributive
+  text: "Graves et al. took the decomposition of a write into an erase followed by an add from the input and forget gates of the LSTM."
+  evidence:
+    - {work: "graves-2014-neural-turing-machines", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-reset-needs-both
+  type: mathematical
+  text: "An entry of the memory is reset to zero by the erase only if both the weight of its row and the matching entry of the erase vector are one; then the add replaces the row with the add vector."
+  assumes: ["every write weighting is a weighting and every erase vector has entries in [0, 1]", "one write head"]
+  derivation: write-erase-and-add
+
+- id: c-write-commutes
+  type: mathematical
+  text: "With several write heads, all erases acting before all adds, the memory after a step does not depend on the order of the heads, since the erases multiply and the adds sum."
+  assumes: ["all the erases of a step act before all the adds"]
+  derivation: write-erase-and-add
+
+- id: c-blurry-erase
+  type: mathematical
+  text: "A row with write weight p under a full erase keeps the fraction 1 - p of its old value, so a weighting spread over several rows erases each of them only in part."
+  assumes: ["the erase vector is all ones", "0 <= p <= 1"]
+  derivation: write-erase-and-add
+
+# The addressing
+
+- id: c-content-beta-limits
+  type: mathematical
+  text: "With key strength 0 the content weighting is uniform over the rows; as the key strength grows it puts all its weight, in equal parts, on the rows with the largest cosine similarity to the key."
+  assumes: ["the content weighting is the softmax of beta times the cosine similarities"]
+  derivation: addressing-keeps-a-weighting
+
+- id: c-content-more-general
+  type: attributive
+  text: "Graves et al. call content-based addressing strictly more general than location-based addressing, since the content of a memory location could include location information, yet found location addressing essential for some forms of generalisation and employ both."
+  evidence:
+    - {work: "graves-2014-neural-turing-machines", role: original, locator: "Section 3.3", stance: for}
+
+- id: c-gate-extremes
+  type: mathematical
+  text: "With interpolation gate 1 the head uses the content weighting and ignores its previous weighting; with gate 0 it ignores the content and keeps its previous weighting, which the shift then moves."
+  assumes: ["the interpolation is g w^c + (1 - g) w_prev"]
+  derivation: shift-and-sharpen
+
+- id: c-shift-is-roll
+  type: mathematical
+  text: "A shift weighting with all its weight on the shift d rotates the weighting by d rows, modulo N; a mixture of shifts gives the same mixture of rotated weightings."
+  assumes: ["the shift is the circular convolution of eq-shift over the shifts -S to S, with 2S + 1 <= N"]
+  derivation: shift-and-sharpen
+
+- id: c-graves-shift-scalar
+  type: attributive
+  text: "Graves et al. give the example of the shifts -1, 0 and 1, a softmax of three elements, and also experimented with a single scalar read as the lower bound of a width-one uniform distribution, so that 6.7 gives weight 0.3 to the shift 6 and 0.7 to the shift 7."
+  evidence:
+    - {work: "graves-2014-neural-turing-machines", role: original, locator: "Section 3.3.2", stance: for}
+
+- id: c-graves-dispersion
+  type: attributive
+  text: "Graves et al. warn that the convolutional shift can cause leakage or dispersion of weightings over time if the shift weighting is not sharp, and add the sharpening to combat it."
+  evidence:
+    - {work: "graves-2014-neural-turing-machines", role: original, locator: "Section 3.3.2", stance: for}
+
+- id: c-blur-spreads
+  type: mathematical
+  text: "Without sharpening, k steps of a shift weighting with variance sigma^2 spread a weighting that starts on one row to a variance of k sigma^2, as long as it does not wrap; for the weights 0.1, 0.8 and 0.1 on the shifts -1, 0 and 1, sigma^2 = 0.2."
+  assumes: ["the interpolation gate is 0", "gamma = 1", "the weighting does not reach the ends of the memory"]
+  derivation: shift-and-sharpen
+
+- id: c-sharpen-limits
+  type: mathematical
+  text: "Sharpening with gamma = 1 leaves a weighting unchanged; a larger gamma keeps the order of the weights and moves weight towards the largest, and as gamma tends to infinity the weighting tends to the uniform weighting on the rows of largest weight."
+  assumes: ["gamma >= 1"]
+  derivation: shift-and-sharpen
+
+- id: c-weighting-stays-normalized
+  type: mathematical
+  text: "Each of the four stages of the addressing maps weightings to weightings, so the output of a head is nonnegative and sums to 1 over the rows, whatever the memory and the outputs of the controller."
+  assumes: ["the previous weighting is a weighting", "the shift weighting is a weighting over the shifts -S to S with 2S + 1 <= N", "beta >= 0, 0 <= g <= 1, gamma >= 1"]
+  derivation: addressing-keeps-a-weighting
+
+- id: c-three-modes
+  type: attributive
+  text: "Graves et al. describe three modes of the combined addressing: a content weighting used without modification; a content weighting chosen and then shifted; and a previous weighting rotated without any input from the content."
+  evidence:
+    - {work: "graves-2014-neural-turing-machines", role: original, locator: "Section 3.3.2", stance: for}
+
+# The controller
+
+- id: c-collier-unspecified
+  type: attributive
+  text: "Collier and Beel point out that the similarity measure, the initial weightings, the initial memory, the non-linearities applied to the head outputs and the initial read vector are all undefined in the specification of the NTM."
+  evidence:
+    - {work: "collier-2018-implementing-neural-turing-machines", role: original, locator: "Section 2", stance: for}
+
+- id: c-collier-choices
+  type: attributive
+  text: "Collier and Beel use cosine similarity, feed the controller the concatenation of the input and the previously read vectors, apply the tanh function to the outputs for k_t and a_t, the sigmoid function to the erase vector, the logistic sigmoid function to g_t and the softmax function to the shift vector."
+  evidence:
+    - {work: "collier-2018-implementing-neural-turing-machines", role: original, locator: "p. 4", stance: for}
+
+- id: c-ff-mimics-rnn
+  type: attributive
+  text: "Graves et al. note that a feedforward controller can mimic a recurrent network by reading and writing at the same location in memory at every step, and that feedforward controllers often confer greater transparency to the network's operation."
+  evidence:
+    - {work: "graves-2014-neural-turing-machines", role: original, locator: "Section 3.4", stance: for}
+
+- id: c-ff-heads-limit
+  type: attributive
+  text: "Graves et al. note that the number of concurrent read heads limits a feedforward controller: with one head it can perform only a unary transform on a single memory vector at each step, with two a binary one, while recurrent controllers can internally store read vectors."
+  evidence:
+    - {work: "graves-2014-neural-turing-machines", role: original, locator: "Section 3.4", stance: for}
+
+# Sizes and cost
+
+- id: c-params
+  type: mathematical
+  text: "A one-layer feedforward controller of width H with R read and W write heads, K shifts and memory rows of width M has H(X + RM) + H + P_h(H + 1) + Y(H + RM) + Y parameters, with P_h = R(M + 3 + K) + W(3M + 3 + K)."
+  assumes: ["a feedforward controller with one tanh layer and a linear output layer read from the hidden layer and the new read vectors", "the memory, the weightings and the read vectors start at fixed values"]
+  derivation: parameter-and-flop-count
+
+- id: c-params-independent-of-n
+  type: mathematical
+  text: "The number of parameters does not depend on the number N of memory rows, while the forward cost grows linearly in N."
+  assumes: ["the memory, the weightings and the read vectors start at fixed values"]
+  derivation: parameter-and-flop-count
+
+- id: c-graves-params-independent
+  type: attributive
+  text: "Graves et al. contrast the LSTM, whose number of parameters grows quadratically with the number of hidden units, with the NTM, whose number of parameters does not increase with the number of memory locations."
+  evidence:
+    - {work: "graves-2014-neural-turing-machines", role: original, locator: "Section 4.6", stance: for}
+
+- id: c-learned-init-grows
+  type: mathematical
+  text: "Learning the initial memory, read vectors and weightings adds NM + RM + (R + W)N parameters, which grow with N."
+  assumes: ["one learned initial weighting per head and one learned initial read vector per read head"]
+  derivation: parameter-and-flop-count
+
+- id: c-graves-table1
+  type: attributive
+  text: "Graves et al. report 17,162 parameters for the NTM with a feedforward controller on the copy task, with one head, a controller of 100 units and a memory of 128 by 20."
+  evidence:
+    - {work: "graves-2014-neural-turing-machines", role: original, locator: "Table 1", stance: for}
+
+- id: c-flops
+  type: mathematical
+  text: "A forward pass over T steps of a batch of B costs 2BT[H(X + RM) + P_h H + Y(H + RM) + (R + W)N(M + K) + RNM] FLOPs, counting a multiply-add as 2 and leaving out the elementwise work."
+  assumes: ["a multiply-add counts as 2 FLOPs; elementwise work is left out", "the shift sums over the K allowed shifts only"]
+  derivation: parameter-and-flop-count
+
+# Training
+
+- id: c-graves-training
+  type: attributive
+  text: "Graves et al. trained all networks with RMSProp with a momentum of 0.9 and clipped all gradient components elementwise to the range (-10, 10)."
+  evidence:
+    - {work: "graves-2014-neural-turing-machines", role: original, locator: "Section 4.6", stance: for}
+
+- id: c-collier-unstable
+  type: attributive
+  text: "Collier and Beel report that a number of open source NTM implementations exist but are unstable during training and/or fail to replicate the reported performance of NTMs."
+  evidence:
+    - {work: "collier-2018-implementing-neural-turing-machines", role: original, locator: "the abstract", stance: for}
+
+- id: c-collier-nan
+  type: attributive
+  text: "Collier and Beel note that several open source implementations report that the gradients of their implementation sometimes become NaN during training, causing training to fail."
+  evidence:
+    - {work: "collier-2018-implementing-neural-turing-machines", role: original, locator: "p. 2", stance: for}
+
+- id: c-collier-training
+  type: attributive
+  text: "Collier and Beel trained with Adam at a learning rate of 0.001, clipped the gradient norm at 50 and clipped the controller's outputs elementwise to (-20, 20)."
+  evidence:
+    - {work: "collier-2018-implementing-neural-turing-machines", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-collier-init-schemes
+  type: attributive
+  text: "Collier and Beel compared three initializations of the memory: a constant of 10^-6, learned values, and random values from a truncated normal with standard deviation 0.5."
+  evidence:
+    - {work: "collier-2018-implementing-neural-turing-machines", role: original, locator: "p. 4", stance: for}
+
+- id: c-collier-constant-init
+  type: attributive
+  text: "Collier and Beel report that the constant initialization of the memory converges on average 2 times faster than the next best scheme, 3.5 times faster than the learned initialization on the copy task, where the random initialization failed."
+  evidence:
+    - {work: "collier-2018-implementing-neural-turing-machines", role: original, locator: "the abstract", stance: for}
+    - {work: "collier-2018-implementing-neural-turing-machines", role: original, locator: "p. 6", stance: for}
+
+# Inductive bias
+
+- id: c-graves-sparse-bias
+  type: attributive
+  text: "Graves et al. argue that because interaction with the memory is highly sparse, the NTM is biased towards storing data without interference."
+  evidence:
+    - {work: "graves-2014-neural-turing-machines", role: original, locator: "Section 3", stance: for}
+
+# Evidence
+
+- id: c-graves-architectures
+  type: attributive
+  text: "Graves et al. compared an NTM with a feedforward controller, an NTM with an LSTM controller, and a standard LSTM network, all of whose LSTMs had three stacked hidden layers."
+  evidence:
+    - {work: "graves-2014-neural-turing-machines", role: original, locator: "Section 4", stance: for}
+    - {work: "graves-2014-neural-turing-machines", role: original, locator: "Section 4.6", stance: for}
+
+- id: c-copy-result
+  type: attributive
+  text: "On the copy task with sequences of 8-bit vectors of lengths 1 to 20, Graves et al. found that the NTM learned much faster than the LSTM, converged to a lower cost, and generalized to longer sequences, while the LSTM degraded beyond length 20."
+  evidence:
+    - {work: "graves-2014-neural-turing-machines", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-copy-procedure
+  type: attributive
+  text: "Graves et al. read from the weightings of the trained copy network that content addressing jumps to the start of the stored sequence and location addressing moves along it."
+  evidence:
+    - {work: "graves-2014-neural-turing-machines", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-repeat-copy-result
+  type: attributive
+  text: "On the repeat copy task the NTM generalized to longer sequences and to more than ten repetitions, but was unable to keep count of the repeats and did not predict the end marker correctly."
+  evidence:
+    - {work: "graves-2014-neural-turing-machines", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-assoc-task
+  type: definitional
+  text: "In the associative recall task of Graves et al., each item is three six-bit vectors, and after a sequence of items and a query item the network must return the item that followed the query."
+  evidence:
+    - {work: "graves-2014-neural-turing-machines", role: original, locator: "Section 4.3", stance: for}
+
+- id: c-assoc-result
+  type: attributive
+  text: "On associative recall the NTM reached near zero cost within about 30,000 episodes, while the LSTM did not reach zero cost after a million, and the NTM with a feedforward controller learned faster than with an LSTM controller."
+  evidence:
+    - {work: "graves-2014-neural-turing-machines", role: original, locator: "Section 4.3", stance: for}
+
+- id: c-assoc-procedure
+  type: attributive
+  text: "Graves et al. found that the trained recall network writes a compressed representation of each item at its delimiter, and answers a query by a content lookup of the compressed query followed by a shift of one location."
+  evidence:
+    - {work: "graves-2014-neural-turing-machines", role: original, locator: "Section 4.3", stance: for}
+
+- id: c-ngram-result
+  type: attributive
+  text: "On binary sequences from random 6-gram distributions, the NTM achieved a small, but significant performance advantage over the LSTM, but never quite reached the optimum cost."
+  evidence:
+    - {work: "graves-2014-neural-turing-machines", role: original, locator: "Section 4.4", stance: for}
+
+- id: c-sort-result
+  type: attributive
+  text: "On priority sort, with 20 input vectors and the 16 of highest priority as the target, the write locations of the NTM were well fitted by a linear function of the priority, and the feedforward controller needed eight parallel read and write heads."
+  evidence:
+    - {work: "graves-2014-neural-turing-machines", role: original, locator: "Section 4.5", stance: for}
+
+- id: c-collier-replication
+  type: attributive
+  text: "Collier and Beel trained their implementation, with one read and one write head, on the copy, repeat copy and associative recall tasks, with ten runs of each configuration."
+  evidence:
+    - {work: "collier-2018-implementing-neural-turing-machines", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-collier-vs-dnc
+  type: attributive
+  text: "Collier and Beel found that the NTM converged on the copy task 1.2 times slower than the DNC, and that both memory-augmented networks learned 4 to 5 times faster than an LSTM."
+  evidence:
+    - {work: "collier-2018-implementing-neural-turing-machines", role: original, locator: "p. 8", stance: for}
+
+- id: c-memn2n-simpler
+  type: attributive
+  text: "Sukhbaatar et al. describe their model as somewhat simpler than the NTM, in part because it always writes each memory sequentially, so it does not require operations like sharpening."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 3", stance: for}
+
+- id: c-memn2n-babi
+  type: attributive
+  text: "On the bAbI tasks with 1,000 training examples, the best end-to-end memory network of Sukhbaatar et al. had a mean error of 12.6%, against 6.7% for strongly supervised memory networks."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 4", stance: for}
+
+- id: c-lrua
+  type: attributive
+  text: "Santoro et al. replaced the NTM's writer with least recently used access, a pure content-based writer to the least used or the most recently used location, since location-based access is not optimal for tasks that emphasize a conjunctive coding of information independent of sequence."
+  evidence:
+    - {work: "santoro-2016-one-shot-learning-memory-augmented-networks", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-santoro-omniglot
+  type: attributive
+  text: "With 15 Omniglot classes per episode, the network of Santoro et al. with least recently used access was correct on 62.6% of second and 95.3% of tenth instances, against 35.4% and 88.4% with the NTM's access and 2.2% and 12.7% for an LSTM."
+  evidence:
+    - {work: "santoro-2016-one-shot-learning-memory-augmented-networks", role: original, locator: "Table 2", stance: for}
+
+# Limitations, variants and history
+
+- id: c-graves-failures
+  type: attributive
+  text: "The figures of Graves et al. include a copy of length 120 in which a single vector is duplicated, and a repeat copy network that emits the end marker after every repetition beyond the eleventh."
+  evidence:
+    - {work: "graves-2014-neural-turing-machines", role: original, locator: "Section 4.1", stance: for}
+    - {work: "graves-2014-neural-turing-machines", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-memnn-components
+  type: attributive
+  text: "Weston et al. define a memory network by a memory and four learned components, an input feature map, a generalization step that updates the memory, an output feature map and a response; in the simplest form the generalization stores each input in a slot of the memory."
+  evidence:
+    - {work: "weston-2015-memory-networks", role: original, locator: "Section 2", stance: for}
+
+- id: c-memn2n-end-to-end
+  type: attributive
+  text: "Sukhbaatar et al. describe their memory network as trained end-to-end, and hence requiring significantly less supervision during training, with multiple computational hops."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "the abstract", stance: for}
+
+- id: c-graves-sizes
+  type: attributive
+  text: "Graves et al. report 17,162 parameters for the feedforward NTM on copy and 508,305 for the feedforward NTM with eight heads on priority sort."
+  evidence:
+    - {work: "graves-2014-neural-turing-machines", role: original, locator: "Table 1", stance: for}
+
+- id: c-graves-lstm-size
+  type: attributive
+  text: "Graves et al. report 1,352,969 parameters for the LSTM network on the copy task, of size 3 × 256."
+  evidence:
+    - {work: "graves-2014-neural-turing-machines", role: original, locator: "Table 3", stance: for}
+
+- id: c-graves-motivation
+  type: attributive
+  text: "Graves et al. draw on working memory in psychology and neuroscience and on the application of approximate rules to rapidly-created variables, and note that RNNs are known to be Turing-Complete."
+  evidence:
+    - {work: "graves-2014-neural-turing-machines", role: original, locator: "Section 1", stance: for}
+
+- id: c-graves-fodor
+  type: attributive
+  text: "Graves et al. recall the argument of Fodor and Pylyshyn that connectionist theories were incapable of variable-binding, the assignment of a particular datum to a particular slot in a data structure."
+  evidence:
+    - {work: "graves-2014-neural-turing-machines", role: original, locator: "Section 2.2", stance: for}
