@@ -1,76 +1,75 @@
 {
-  "date": "2026-11-14",
-  "rows": 9438,
-  "items": 9438,
-  "new": 9438,
+  "date": "2026-11-17",
+  "rows": 18713,
+  "items": 18713,
+  "new": 9275,
   "updated": 0,
-  "unchanged": 0,
-  "decided_by_rule": {
-    "S-H1": 183,
-    "S-M1": 3709
-  },
+  "unchanged": 9438,
   "by_outcome": {
     "card": 3892,
-    "pending": 5546
+    "pending": 14821
   },
   "by_kind": {
     "hardware": 183,
     "model": 3709,
-    "result": 5546
+    "result": 7123,
+    "work": 7698
   },
   "by_source": {
+    "arxiv": 7698,
     "epoch-ai": 3892,
-    "epoch-benchmarks": 5546
+    "epoch-benchmarks": 5546,
+    "lmarena": 1577
   },
   "conflicts": 8,
   "sample": [
     {
       "key": "name=model=commandr",
-      "a": "epoch-ai:Command R",
-      "b": "epoch-ai:Command R+",
-      "why": "the epoch ids differ: Command R and Command R+"
+      "a": "u:epoch:Command R",
+      "b": "u:epoch:Command R+",
+      "why": "both are rows of the register"
     },
     {
       "key": "name=model=deeplabv3",
-      "a": "epoch-ai:DeepLabV3",
-      "b": "epoch-ai:DeepLabV3+",
-      "why": "the epoch ids differ: DeepLabV3 and DeepLabV3+"
+      "a": "u:epoch:DeepLabV3",
+      "b": "u:epoch:DeepLabV3+",
+      "why": "both are rows of the register"
     },
     {
       "key": "name=model=opt13b",
-      "a": "epoch-ai:OPT-1.3B",
-      "b": "epoch-ai:OPT-13B",
-      "why": "the epoch ids differ: OPT-1.3B and OPT-13B"
+      "a": "u:epoch:OPT-1.3B",
+      "b": "u:epoch:OPT-13B",
+      "why": "both are rows of the register"
     },
     {
       "key": "name=model=odyssey12b",
-      "a": "epoch-ai:Odyssey 1.2B",
-      "b": "epoch-ai:Odyssey 12B",
-      "why": "the epoch ids differ: Odyssey 1.2B and Odyssey 12B"
+      "a": "u:epoch:Odyssey 1.2B",
+      "b": "u:epoch:Odyssey 12B",
+      "why": "both are rows of the register"
     },
     {
       "key": "name=model=pixelcnn",
-      "a": "epoch-ai:PixelCNN",
-      "b": "epoch-ai:PixelCNN++",
-      "why": "the epoch ids differ: PixelCNN and PixelCNN++"
+      "a": "u:epoch:PixelCNN",
+      "b": "u:epoch:PixelCNN++",
+      "why": "both are rows of the register"
     },
     {
       "key": "name=model=pointnet",
-      "a": "epoch-ai:PointNet",
-      "b": "epoch-ai:PointNet++",
-      "why": "the epoch ids differ: PointNet and PointNet++"
+      "a": "u:epoch:PointNet",
+      "b": "u:epoch:PointNet++",
+      "why": "both are rows of the register"
     },
     {
       "key": "name=model=qwen3627b",
-      "a": "epoch-ai:Qwen 3.6-27B",
-      "b": "epoch-ai:Qwen3.6 27B",
-      "why": "the epoch ids differ: Qwen 3.6-27B and Qwen3.6 27B"
+      "a": "u:epoch:Qwen 3.6-27B",
+      "b": "u:epoch:Qwen3.6 27B",
+      "why": "both are rows of the register"
     },
     {
       "key": "name=model=swe16",
-      "a": "epoch-ai:SWE 1.6",
-      "b": "epoch-ai:SWE-1.6",
-      "why": "the epoch ids differ: SWE 1.6 and SWE-1.6"
+      "a": "u:epoch:SWE 1.6",
+      "b": "u:epoch:SWE-1.6",
+      "why": "both are rows of the register"
     }
   ]
 }
