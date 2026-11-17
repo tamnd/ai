@@ -1,5 +1,5 @@
 ---
-tag: NEW-multilayer-perceptron
+tag: YA59M7
 kind: architecture
 slug: multilayer-perceptron
 name: Multilayer perceptron
