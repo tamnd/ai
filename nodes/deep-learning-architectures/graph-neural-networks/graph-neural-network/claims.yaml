@@ -1,0 +1,276 @@
+# The claims of the graph neural network page (spec 07). The build computes the labels.
+
+# The message-passing framework
+
+- id: c-mpnn-phases
+  type: definitional
+  text: "In the message passing neural network framework of Gilmer et al., the forward pass has two phases: a message passing phase that runs for T time steps, in which the hidden state of each node is updated by a vertex update function U_t from the sum of the messages M_t computed from its neighbours, and a readout phase that computes a feature vector for the whole graph with a readout function R."
+  evidence:
+    - {work: "gilmer-2017-neural-message-passing", role: original, locator: "Section 2", stance: for}
+
+- id: c-readout-invariance-needed
+  type: attributive
+  text: "Gilmer et al. note that the readout function R operates on the set of node states and must be invariant to permutations of the node states in order for the MPNN to be invariant to graph isomorphism."
+  evidence:
+    - {work: "gilmer-2017-neural-message-passing", role: original, locator: "Section 2", stance: for}
+
+- id: c-mpnn-unifies
+  type: attributive
+  text: "Gilmer et al. describe at least eight notable models from the literature with their MPNN framework; the model of Kipf and Welling, for example, results in a message function c_vw h_w with c_vw = (deg(v) deg(w))^(-1/2) A_vw and a vertex update ReLU(W m_v)."
+  evidence:
+    - {work: "gilmer-2017-neural-message-passing", role: original, locator: "Section 2", stance: for}
+
+- id: c-qm9-chemical-accuracy
+  type: empirical
+  text: "On the QM9 dataset of 130k molecules with 13 properties each, the best MPNN of Gilmer et al. predicts DFT to within chemical accuracy on 11 out of 13 targets, and a model operating on the topology of the molecule alone does so on 5 out of 13 targets."
+  scope:
+    models: "message passing neural networks with edge networks and a set2set readout"
+    data: [qm9]
+    scale: unknown
+    setting: "regression of 13 quantum-chemical properties of small organic molecules"
+  evidence:
+    - {work: "gilmer-2017-neural-message-passing", role: original, locator: "Section 1", stance: for}
+
+# The GCN layer
+
+- id: c-gcn-rule
+  type: definitional
+  text: "Kipf and Welling define the graph convolutional network by the layer-wise propagation rule H^(l+1) = σ(D̃^(-1/2) Ã D̃^(-1/2) H^(l) W^(l)), where Ã = A + I_N is the adjacency matrix of the undirected graph with added self-connections, D̃_ii = Σ_j Ã_ij, W^(l) is a layer-specific trainable weight matrix and σ is an activation function."
+  evidence:
+    - {work: "kipf-2017-semi-supervised-classification", role: original, locator: "Section 2", stance: for}
+
+- id: c-spectral-motivation
+  type: attributive
+  text: "Kipf and Welling motivate the propagation rule via a first-order approximation of localized spectral filters on graphs, starting from spectral convolutions on graphs approximated by a truncated expansion in terms of Chebyshev polynomials T_k up to K-th order, which are K-localized."
+  evidence:
+    - {work: "kipf-2017-semi-supervised-classification", role: original, locator: "Section 2.1", stance: for}
+
+- id: c-gcn-first-order
+  type: mathematical
+  text: "If the layer-wise convolution is limited to K = 1 and λ_max ≈ 2, the Chebyshev filter simplifies to θ'_0 x - θ'_1 D^(-1/2) A D^(-1/2) x, and with a single parameter θ = θ'_0 = -θ'_1 to θ (I_N + D^(-1/2) A D^(-1/2)) x."
+  assumes: ["L = I_N - D^(-1/2) A D^(-1/2) is the normalized graph Laplacian of an undirected graph with no isolated node", "L̃ = 2 L / λ_max - I_N, T_0(y) = 1 and T_1(y) = y"]
+  derivation: gcn-renormalization
+  evidence:
+    - {work: "kipf-2017-semi-supervised-classification", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-renorm-trick
+  type: attributive
+  text: "Kipf and Welling note that I_N + D^(-1/2) A D^(-1/2) has eigenvalues in the range [0, 2], so that repeated application of this operator can lead to numerical instabilities and exploding or vanishing gradients in a deep neural network model, and to alleviate this problem they introduce the renormalization trick I_N + D^(-1/2) A D^(-1/2) → D̃^(-1/2) Ã D̃^(-1/2)."
+  evidence:
+    - {work: "kipf-2017-semi-supervised-classification", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-norm-adj-spectrum
+  type: mathematical
+  text: "The renormalized adjacency D̃^(-1/2) Ã D̃^(-1/2) is symmetric, its eigenvalues lie in [-1, 1], and D̃^(1/2) 1 is an eigenvector with eigenvalue 1, for every undirected graph, including graphs with isolated nodes."
+  assumes: ["A is the symmetric 0/1 adjacency matrix of an undirected graph with no self-loops", "Ã = A + I and D̃ is the diagonal matrix of the row sums of Ã"]
+  derivation: gcn-renormalization
+
+- id: c-gcn-cost
+  type: attributive
+  text: "Kipf and Welling give the filtering operation D̃^(-1/2) Ã D̃^(-1/2) X Θ a complexity of O(|E|FC) with a sparse adjacency, linear in the number of edges, where C is the number of input channels and F the number of filters."
+  evidence:
+    - {work: "kipf-2017-semi-supervised-classification", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-gcn-citation-results
+  type: empirical
+  text: "In semi-supervised node classification, the GCN of Kipf and Welling has a classification accuracy of 70.3% on Citeseer, 81.5% on Cora, 79.0% on Pubmed and 66.0% on NELL."
+  scope:
+    models: "two-layer GCN"
+    data: [citeseer, cora, pubmed, nell]
+    scale: unknown
+    setting: "transductive semi-supervised node classification with few labelled nodes per class"
+  evidence:
+    - {work: "kipf-2017-semi-supervised-classification", role: original, locator: "Table 2", stance: for}
+
+- id: c-gcn-depth
+  type: empirical
+  text: "On the datasets of Kipf and Welling, best results are obtained with a 2- or 3-layer model, and for models deeper than 7 layers training without the use of residual connections can become difficult."
+  scope:
+    models: "GCNs of 1 to 10 layers, with and without residual connections"
+    data: [citeseer, cora, pubmed]
+    scale: "1 to 10 layers"
+    setting: "5-fold cross-validation of semi-supervised node classification"
+  evidence:
+    - {work: "kipf-2017-semi-supervised-classification", role: original, locator: "Figure 5", stance: for}
+
+- id: c-gcn-limits
+  type: attributive
+  text: "Kipf and Welling list as limitations that with full-batch gradient descent the memory requirement grows linearly in the size of the dataset, that their framework does not naturally support edge features and is limited to undirected graphs, and that it implicitly assumes locality and equal importance of self-connections vs. edges to neighboring nodes."
+  evidence:
+    - {work: "kipf-2017-semi-supervised-classification", role: original, locator: "Section 7.2", stance: for}
+
+- id: c-gnn-origin
+  type: historical
+  text: "Neural networks that operate on graphs were introduced by Gori et al. (2005) and Scarselli et al. (2009) as a form of recurrent neural network; their framework requires the repeated application of contraction maps as propagation functions until the node representations reach a stable fixed point."
+  evidence:
+    - {work: "kipf-2017-semi-supervised-classification", role: review, locator: "Section 4.2", stance: for}
+
+- id: c-gnn-origin-recursive
+  type: historical
+  text: "Veličković et al. describe these graph neural networks as a generalization of recursive neural networks that can directly deal with a more general class of graphs, e.g. cyclic, directed and undirected graphs, by an iterative process which propagates the node states until equilibrium."
+  evidence:
+    - {work: "velickovic-2018-graph-attention-networks", role: review, locator: "Section 1", stance: for}
+
+# GraphSAGE and GAT
+
+- id: c-sage-algorithm
+  type: definitional
+  text: "In GraphSAGE, at each iteration k each node aggregates the representations of the nodes in its immediate neighborhood into a single vector, concatenates it with its own current representation, and feeds the result through a fully connected layer with a nonlinear activation function; the representations are then normalized."
+  evidence:
+    - {work: "hamilton-2017-inductive-representation-learning", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-sage-sampling
+  type: attributive
+  text: "Hamilton et al. define the neighborhood N(v) as a fixed-size, uniform draw from the neighbours of v, with different samples at each iteration k, so that the per-batch space and time complexity is fixed; they report high performance with K = 2 and S_1 · S_2 ≤ 500."
+  evidence:
+    - {work: "hamilton-2017-inductive-representation-learning", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-sage-aggregators
+  type: attributive
+  text: "Hamilton et al. argue that an aggregator function would ideally be symmetric, invariant to permutations of its inputs, and examine a mean aggregator, which they call nearly equivalent to the convolutional propagation rule of the transductive GCN, an LSTM aggregator, which is not inherently symmetric, and a pooling aggregator."
+  evidence:
+    - {work: "hamilton-2017-inductive-representation-learning", role: original, locator: "Section 3.3", stance: for}
+
+- id: c-gat-coefficients
+  type: definitional
+  text: "A graph attention layer computes attention coefficients e_ij = a(W h_i, W h_j) only for the first-order neighbours j of i, including i, normalizes them across the neighbours with the softmax function, and in the experiments of Veličković et al. the attention mechanism a is a single-layer feedforward network with a weight vector a ∈ R^(2F') and the LeakyReLU nonlinearity with negative input slope 0.2."
+  evidence:
+    - {work: "velickovic-2018-graph-attention-networks", role: original, locator: "Section 2.1", stance: for}
+
+- id: c-gat-multihead
+  type: definitional
+  text: "Veličković et al. extend the mechanism to multi-head attention: K independent attention mechanisms execute the transformation and their features are concatenated, and in the final prediction layer the heads are averaged and the final nonlinearity is applied afterwards."
+  evidence:
+    - {work: "velickovic-2018-graph-attention-networks", role: original, locator: "Section 2.1", stance: for}
+
+- id: c-gat-cost
+  type: attributive
+  text: "Veličković et al. give a single attention head a time complexity of O(|V|FF' + |E|F'), on par with GCN, and note that multi-head attention multiplies the storage and parameter requirements by a factor of K."
+  evidence:
+    - {work: "velickovic-2018-graph-attention-networks", role: original, locator: "Section 2.2", stance: for}
+
+# Expressive power
+
+- id: c-wl-upper-bound
+  type: attributive
+  text: "Xu et al. prove that if a graph neural network that aggregates neighbour features maps two non-isomorphic graphs to different embeddings, the Weisfeiler-Lehman graph isomorphism test also decides that they are not isomorphic, so any aggregation-based GNN is at most as powerful as the WL test in distinguishing different graphs."
+  evidence:
+    - {work: "xu-2019-how-powerful-are-gnns", role: original, locator: "Section 4", stance: for}
+
+- id: c-wl-equal-conditions
+  type: attributive
+  text: "Xu et al. prove that with a sufficient number of layers a GNN maps any two graphs that the WL test decides as non-isomorphic to different embeddings if its neighbor aggregation, update and graph-level readout functions are injective on multisets."
+  evidence:
+    - {work: "xu-2019-how-powerful-are-gnns", role: original, locator: "Section 4", stance: for}
+
+- id: c-wl-regular-exception
+  type: attributive
+  text: "Xu et al. describe the WL test as known to work well in general, with a few exceptions such as regular graphs."
+  evidence:
+    - {work: "xu-2019-how-powerful-are-gnns", role: original, locator: "Section 4", stance: for}
+
+- id: c-regular-same-readout
+  type: mathematical
+  text: "If two graphs have the same number of nodes, every node has the same degree d and every node starts with the same features, then every message-passing network with sum, mean or max aggregation and any weights gives all their nodes the same state after every layer and the two graphs the same sum readout, and 1-WL gives all their nodes one colour; two disjoint triangles and the 6-cycle are such a pair."
+  assumes: ["both graphs have n nodes and every node has degree d", "every node starts with the same feature vector", "the update and the aggregation are shared by all nodes"]
+  derivation: wl-regular-graphs
+
+- id: c-sum-injective
+  type: attributive
+  text: "Xu et al. prove that for a countable feature space there is a function f such that the sum of f(x) over a multiset is unique for each multiset of bounded size, and that (1 + ε) f(c) + Σ f(x) is unique for each pair of a node feature c and a multiset X for infinitely many choices of ε, including all irrational numbers."
+  evidence:
+    - {work: "xu-2019-how-powerful-are-gnns", role: original, locator: "Section 4", stance: for}
+
+- id: c-gin-update
+  type: definitional
+  text: "The Graph Isomorphism Network (GIN) of Xu et al. updates node representations as h_v^(k) = MLP^(k)((1 + ε^(k)) h_v^(k-1) + Σ_(u ∈ N(v)) h_u^(k-1)), and for graph classification concatenates the summed node representations of all iterations."
+  evidence:
+    - {work: "xu-2019-how-powerful-are-gnns", role: original, locator: "Section 4.1", stance: for}
+    - {work: "xu-2019-how-powerful-are-gnns", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-mean-max-fail
+  type: attributive
+  text: "Xu et al. show that mean and max-pooling aggregators can fail to distinguish simple graph structures that a sum aggregator distinguishes, because they are not injective on multisets."
+  evidence:
+    - {work: "xu-2019-how-powerful-are-gnns", role: original, locator: "Section 5.2", stance: for}
+
+- id: c-mean-learns
+  type: attributive
+  text: "Xu et al. show that any mean aggregator maps a multiset and the multiset with k copies of each of its elements to the same embedding, so the mean captures the distribution (proportions) of elements in a multiset, but not the exact multiset."
+  evidence:
+    - {work: "xu-2019-how-powerful-are-gnns", role: original, locator: "Section 5.3", stance: for}
+
+- id: c-max-learns
+  type: attributive
+  text: "Xu et al. show that the max-pooling aggregator treats a multiset as a set and captures neither the exact structure nor the distribution, but it may suit tasks where identifying representative elements, or the skeleton, matters more than the distribution."
+  evidence:
+    - {work: "xu-2019-how-powerful-are-gnns", role: original, locator: "Section 5.4", stance: for}
+
+- id: c-perceptron-insufficient
+  type: attributive
+  text: "Xu et al. show that 1-layer perceptrons are not sufficient: there exist finite multisets that, summed through a linear mapping followed by a ReLU without a bias term, can never be distinguished, and even with the bias term the 1-layer perceptron is not a universal approximator of multiset functions, unlike models using MLPs."
+  evidence:
+    - {work: "xu-2019-how-powerful-are-gnns", role: original, locator: "Section 5.1", stance: for}
+
+# Oversmoothing
+
+- id: c-gcn-laplacian-smoothing
+  type: attributive
+  text: "Li, Han and Wu derive that the graph convolution of the GCN is a special form of Laplacian smoothing, symmetric Laplacian smoothing, which computes the new features of a vertex as the weighted average of itself and its neighbors."
+  evidence:
+    - {work: "li-2018-deeper-insights-gcn", role: original, locator: "Section 3", stance: for}
+
+- id: c-oversmoothing-karate
+  type: empirical
+  text: "On Zachary's karate club network, Li, Han and Wu find that applying the smoothing of a GCN once leaves the points of the two classes not well separated, applying it twice separates them relatively well, and applying it again and again mixes them."
+  scope:
+    models: "GCNs with 1 to 5 layers"
+    data: [zachary-karate-club]
+    scale: "34 vertices"
+    setting: "vertex embeddings of graph convolutions, visualised"
+  evidence:
+    - {work: "li-2018-deeper-insights-gcn", role: original, locator: "Section 3", stance: for}
+
+- id: c-oversmoothing-theorem
+  type: attributive
+  text: "Li, Han and Wu prove that, for a graph with no bipartite components, repeatedly applying Laplacian smoothing makes the features of the vertices within each connected component converge to the same values, and for symmetric Laplacian smoothing to values proportional to the square root of the vertex degree; they conclude that over-smoothing will make the features indistinguishable and hurt the classification accuracy."
+  evidence:
+    - {work: "li-2018-deeper-insights-gcn", role: original, locator: "Section 3", stance: for}
+
+- id: c-smoothing-limit
+  type: mathematical
+  text: "On a connected graph, Â^k x converges as k grows to s (s^T x) / (s^T s) with s = D̃^(1/2) 1, so every node's value becomes proportional to the square root of its degree plus one, whatever x was."
+  assumes: ["Â = D̃^(-1/2) Ã D̃^(-1/2) with self-loops", "the graph is connected"]
+  derivation: gcn-renormalization
+
+# Symmetry and cost, derived here
+
+- id: c-layer-equivariant
+  type: mathematical
+  text: "A message-passing layer with sum, mean or max aggregation and an update shared by all nodes is permutation equivariant: relabelling the nodes by a permutation matrix P, so that X becomes PX and A becomes PAP^T, permutes its output rows by the same P."
+  assumes: ["the update acts on each node's row with weights shared by all nodes", "the aggregation is the sum, the mean or the maximum over the neighbours"]
+  derivation: permutation-equivariance
+
+- id: c-readout-invariant
+  type: mathematical
+  text: "A sum readout is permutation invariant, so a stack of equivariant layers followed by a sum readout gives the same graph vector for every labelling of a graph."
+  assumes: ["the readout sums the rows of the final node states"]
+  derivation: permutation-equivariance
+
+- id: c-gcn-equivariant
+  type: mathematical
+  text: "The renormalized adjacency transforms as Â → PÂP^T under a relabelling P, so the GCN layer σ(ÂHW) is permutation equivariant."
+  assumes: ["σ acts entrywise"]
+  derivation: permutation-equivariance
+
+- id: c-params
+  type: mathematical
+  text: "The network of the page with input width F, hidden width D, L layers and K classes has (2FD + D) + (L - 1)(2D^2 + D) + DK + K parameters, independent of the number of nodes; the example config has 228."
+  assumes: ["separate self and neighbour weights and a bias in each layer", "a sum readout without parameters and a linear head with a bias"]
+  derivation: parameter-and-flop-count
+
+- id: c-flops
+  type: mathematical
+  text: "With a dense adjacency, its forward pass on B graphs of N nodes costs 4BNFD + 2BN^2D FLOPs in the first layer, 4BND^2 + 2BN^2D in each later layer and 2BDK in the head, counting the matrix products at 2 FLOPs per multiply-add; the example has 6,656."
+  assumes: ["the adjacency is stored dense", "only the matrix products are counted"]
+  derivation: parameter-and-flop-count
