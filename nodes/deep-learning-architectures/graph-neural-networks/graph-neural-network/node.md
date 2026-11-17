@@ -1,5 +1,5 @@
 ---
-tag: NEW-graph-neural-network
+tag: PS4TCX
 kind: architecture
 slug: graph-neural-network
 name: Graph neural network
