@@ -198,14 +198,21 @@ def test_spectral_norm_layer_matches_torch():
         ref.weight.copy_(mine.weight)
         ref.bias.copy_(torch.randn(4, generator=gen))
         mine.bias.copy_(ref.bias)
+    # spectral_norm starts u and v from the global generator, and one torch step updates u from v, then v from u,
+    # where eq-power updates v from u, then u from v. So the two v of one step differ by half a step, by up to 1e-8
+    # after the 15 steps of the registration. Many training steps first make u and v converge, and then one step of
+    # either order gives the same u, v and sigma to rounding.
+    torch.manual_seed(5)
     ref = torch.nn.utils.parametrizations.spectral_norm(ref, n_power_iterations=1)
     with torch.no_grad():
+        for _ in range(100):
+            ref(torch.zeros(1, 6))
         mine.u.copy_(ref.parametrizations.weight[0]._u)
     x = torch.randn(3, 6, generator=gen)
     out_mine, out_ref = mine(x), ref(x)
     assert close(out_mine.detach(), out_ref.detach(), 1e-10)
     assert close(mine.u, ref.parametrizations.weight[0]._u, 1e-10)
-    assert close(mine.v, ref.parametrizations.weight[0]._v, 1e-8)
+    assert close(mine.v, ref.parametrizations.weight[0]._v, 1e-10)
     out_mine.sum().backward()
     out_ref.sum().backward()
     assert close(mine.weight.grad, ref.parametrizations.weight.original.grad, 1e-10)
