@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/byte-pair-encoding/ (ai://NEW-byte-pair-encoding).
+# Part of https://ai.tamnd.com/byte-pair-encoding/ (ai://ZRQW82).
 """Byte-pair encoding in plain Python: training from a word-frequency table, encoding, and BPE-dropout.
 
 A word is split into its characters plus the end-of-word symbol END. train_bpe follows Algorithm 1 of Sennrich et al.:

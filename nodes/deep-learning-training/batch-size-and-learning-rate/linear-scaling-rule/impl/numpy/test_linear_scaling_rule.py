@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/linear-scaling-rule/ (ai://NEW-linear-scaling-rule).
+# Part of https://ai.tamnd.com/linear-scaling-rule/ (ai://JDMWH4).
 """Tests of the NumPy reference: the linear and square-root rules, the warmup hook and the combined schedule; k small
 SGD steps against one scaled step on least squares; B_simple from per-example gradients and the two-batch estimator,
 both checked for bias by Monte Carlo; the moving-average tracker; B_noise and the optimal step against the expected

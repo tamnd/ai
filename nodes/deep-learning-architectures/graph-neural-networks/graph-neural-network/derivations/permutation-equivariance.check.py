@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/graph-neural-network/ (ai://NEW-graph-neural-network).
+# Part of https://ai.tamnd.com/graph-neural-network/ (ai://PS4TCX).
 """Numeric check of the derivation permutation-equivariance: layers equivariant, sum readout invariant."""
 
 import pathlib

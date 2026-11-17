@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/mixup/ (ai://NEW-mixup).
+# Part of https://ai.tamnd.com/mixup/ (ai://8X8XEV).
 """Mixup and CutMix in NumPy.
 
 sample_lambda draws the mixing weight from Beta(alpha, alpha). mixup_batch mixes a minibatch with a permutation of

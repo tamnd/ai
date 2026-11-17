@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/group-normalization/ (ai://NEW-group-normalization).
+# Part of https://ai.tamnd.com/group-normalization/ (ai://QFEJMP).
 # Check of derivations/gradient.md: the input gradient of group normalization, (u - mean(u) - xhat mean(u xhat)) / s
 # per group, against central finite differences; its sum over a group is 0; its inner product with xhat leaks
 # eps / (var + eps); and the gradients of the per-channel gamma and beta.

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/direct-preference-optimization/ (ai://NEW-direct-preference-optimization).
+# Part of https://ai.tamnd.com/direct-preference-optimization/ (ai://CZW0BQ).
 # Check of derivations/partition-cancels.md: substituting r = beta log(pi*/pi_ref) + beta log Z(x) into the
 # Bradley-Terry model gives sigmoid(beta log(pi*(y1)/pi_ref(y1)) - beta log(pi*(y2)/pi_ref(y2))), free of Z; rewards
 # that differ by a function of x give the same preferences and the same optimal policy; and the DPO loss is the

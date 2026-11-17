@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/group-normalization/ (ai://NEW-group-normalization).
+# Part of https://ai.tamnd.com/group-normalization/ (ai://QFEJMP).
 # Check of derivations/batch-independence.md: the group normalization output of one example does not change when the
 # batch size or the other examples change; the batch normalization output does.
 import numpy as np

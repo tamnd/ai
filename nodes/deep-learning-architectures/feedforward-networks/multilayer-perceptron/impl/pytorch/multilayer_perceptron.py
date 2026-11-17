@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/multilayer-perceptron/ (ai://NEW-multilayer-perceptron).
+# Part of https://ai.tamnd.com/multilayer-perceptron/ (ai://YA59M7).
 """The multilayer perceptron, the PyTorch reference: eq-layer and eq-output, with autograd for the backward pass.
 
 The weights have the shape (n_out, n_in), as on the page and in the NumPy reference, so from_params loads the

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/weight-normalization/ (ai://NEW-weight-normalization).
+# Part of https://ai.tamnd.com/weight-normalization/ (ai://5PC0VR).
 """Tests of the PyTorch reference: the shared fixture and the worked examples of the NumPy tests, autograd against
 the closed form of eq-grad, the orthogonality of the gradient in v, the data-dependent initialization, the power
 iteration against torch.linalg, and agreement with torch.nn.utils.parametrizations.weight_norm and spectral_norm."""

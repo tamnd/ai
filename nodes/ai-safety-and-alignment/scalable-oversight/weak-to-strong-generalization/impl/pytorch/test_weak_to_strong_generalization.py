@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/weak-to-strong-generalization/ (ai://NEW-weak-to-strong-generalization).
+# Part of https://ai.tamnd.com/weak-to-strong-generalization/ (ai://G0ZGHC).
 """Tests of the PyTorch code: PGR at its end points and at a zero gap; the adaptive threshold; the confidence loss
 against its two-term form, at alpha = 0 and alpha = 1, with no gradient through the hardened target and the gradient
 (p - target) / B; the warm-up; training free logits, where alpha = 0 imitates the weak labels and alpha = 1 drives the

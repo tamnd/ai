@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/structured-state-space-model/ (ai://NEW-structured-state-space-model).
+# Part of https://ai.tamnd.com/structured-state-space-model/ (ai://MDN3YW).
 """Numeric check of the derivation hippo-nplr: the HiPPO matrix of S4 is normal plus rank one, and its eigenvectors are ill-conditioned."""
 
 import numpy as np

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/weight-normalization/ (ai://NEW-weight-normalization).
+# Part of https://ai.tamnd.com/weight-normalization/ (ai://5PC0VR).
 # Check of derivations/gradient.md: the gradients of a loss in g and v under w = g v / ||v||, against central finite
 # differences; the projection form (g / ||v||) M_w grad_w; and grad_v . v = 0.
 import numpy as np

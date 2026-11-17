@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/expected-calibration-error/ (ai://NEW-expected-calibration-error).
+# Part of https://ai.tamnd.com/expected-calibration-error/ (ai://01R1CF).
 # Check of derivations/ece-estimator.md: binning lowers the population calibration error; refining the bins never
 # lowers the sample ECE; given the confidences, the sample ECE is biased up, and is positive in expectation for a
 # calibrated model; the expected squared gap of a bin is the squared gap plus a variance; de Moivre's formula for the

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/byte-pair-encoding/ (ai://NEW-byte-pair-encoding).
+# Part of https://ai.tamnd.com/byte-pair-encoding/ (ai://ZRQW82).
 """Tests of the NumPy version: the low/lower/newest/widest example of Sennrich et al., agreement with an
 independent regex version of their Algorithm 1 on random tables, the token-count and vocabulary identities of the
 derivation merge-count, encoding of the training words, priority encoding, and BPE-dropout at p = 0, p = 1 and in

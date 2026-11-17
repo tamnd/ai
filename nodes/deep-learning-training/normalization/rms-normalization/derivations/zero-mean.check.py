@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/rms-normalization/ (ai://NEW-rms-normalization).
+# Part of https://ai.tamnd.com/rms-normalization/ (ai://3FZB17).
 # Check of derivations/zero-mean.md: RMSNorm equals layer normalization on an input of mean zero, for every eps;
 # for a mean mu != 0, with rho = mu / sigma and eps = 0, RN(a) = g * (LN_1(a) + rho) / sqrt(1 + rho^2), the
 # root-mean-square gap between the two (gain 1) is sqrt(2 - 2 / sqrt(1 + rho^2)), and the mean of RN(a) is

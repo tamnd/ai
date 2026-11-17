@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/neural-ordinary-differential-equation/ (ai://NEW-neural-ordinary-differential-equation).
+# Part of https://ai.tamnd.com/neural-ordinary-differential-equation/ (ai://WNCNQE).
 """Write the shared fixtures of the neural ODE from the NumPy reference (spec 08.7.2).
 
 Run it from anywhere: python fixtures/make.py. It writes params-small.npz, input-small.npz, expected-small.npz

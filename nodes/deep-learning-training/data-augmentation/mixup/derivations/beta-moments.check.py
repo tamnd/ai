@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/mixup/ (ai://NEW-mixup).
+# Part of https://ai.tamnd.com/mixup/ (ai://8X8XEV).
 # Check of derivations/beta-moments.md: for lam ~ Beta(alpha, alpha), E[lam] = 1/2 and Var[lam] = 1 / (4 (2 alpha + 1));
 # small alpha puts the mass near 0 and 1 (ERM), large alpha near 1/2, and alpha = 1 is uniform. Monte Carlo and
 # numerical integration.

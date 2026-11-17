@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/weight-decay/ (ai://NEW-weight-decay).
+# Part of https://ai.tamnd.com/weight-decay/ (ai://DD5QVM).
 # Check of derivations/preconditioned.md: with a fixed preconditioner P, an L2 term is multiplied by P and decoupled
 # decay is not; they agree for all theta only if P is a multiple of the identity; decoupled decay is preconditioned
 # descent on the loss plus (delta / (2 lr)) theta^T P^-1 theta; and the two forms have different fixed points.

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/label-smoothing/ (ai://NEW-label-smoothing).
+# Part of https://ai.tamnd.com/label-smoothing/ (ai://98TJG9).
 """Label smoothing in PyTorch.
 
 smoothed_cross_entropy writes out what torch.nn.functional.cross_entropy(..., label_smoothing=eps) computes for class

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/sparse-mixture-of-experts/ (ai://NEW-sparse-mixture-of-experts).
+# Part of https://ai.tamnd.com/sparse-mixture-of-experts/ (ai://1H67K0).
 """Tests of the NumPy reference: the top-k gate against its two equal forms, the capacity arithmetic and the worked
 example of the page, dispatch order and dropping, the Switch balance loss at uniform, collapsed and adversarial
 routing and its gradient, the importance and load losses of Shazeer et al. with a Monte Carlo check of P(x, i), the

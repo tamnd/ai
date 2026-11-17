@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/neural-tangent-kernel/ (ai://NEW-neural-tangent-kernel).
+# Part of https://ai.tamnd.com/neural-tangent-kernel/ (ai://3SJCNH).
 # Check of derivations/relu-ntk.md: the empirical NTK of f(x) = (1/sqrt(m)) sum_j a_j relu(w_j . x) at width m tends
 # to the arc-cosine form, the first-layer term x.x' (pi - phi)/(2 pi) plus the second-layer term
 # |x||x'| (sin phi + (pi - phi) cos phi)/(2 pi), with a root-mean-square error proportional to 1/sqrt(m).

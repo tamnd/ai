@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/weight-decay/ (ai://NEW-weight-decay).
+# Part of https://ai.tamnd.com/weight-decay/ (ai://DD5QVM).
 """Tests of the NumPy reference: the worked example, the fixture shared with the PyTorch and JAX tests, L2 against
 decoupled decay under SGD, momentum and Adam, the mask, the MAP estimate, and the scale-invariance formulas."""
 

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/cosine-learning-rate-schedule/ (ai://NEW-cosine-learning-rate-schedule).
+# Part of https://ai.tamnd.com/cosine-learning-rate-schedule/ (ai://FG7K47).
 """Tests of the NumPy reference: the worked example, the ends, mean and slope of the cosine, the warmup joints, the
 cooldown shapes, the restart epochs against a loop, the SGDR rates, the noise-floor numbers and the error cases."""
 

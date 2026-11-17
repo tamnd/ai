@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/direct-preference-optimization/ (ai://NEW-direct-preference-optimization).
+# Part of https://ai.tamnd.com/direct-preference-optimization/ (ai://CZW0BQ).
 """Direct preference optimization in PyTorch.
 
 `dpo_loss` takes the summed log-probabilities of the chosen and rejected completions under the policy and under the

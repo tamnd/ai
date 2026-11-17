@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/adam/ (ai://NEW-adam).
+# Part of https://ai.tamnd.com/adam/ (ai://88GHGT).
 # Check of derivations/step-bound.md: with eps = 0, |m_hat_t| / sqrt(v_hat_t) is at most B_t for every gradient
 # sequence, the sequence g_{t-k} = (b1/b2)^k reaches it, B_1 = 1, the limit of B_t exceeds the bounds of Section 2.1
 # of Kingma and Ba, B_t grows without bound when b1^2 >= b2, and the single spike gives (1 - b1)/sqrt(1 - b2).

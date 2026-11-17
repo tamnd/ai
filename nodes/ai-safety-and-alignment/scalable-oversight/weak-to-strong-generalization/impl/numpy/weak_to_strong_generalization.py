@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/weak-to-strong-generalization/ (ai://NEW-weak-to-strong-generalization).
+# Part of https://ai.tamnd.com/weak-to-strong-generalization/ (ai://G0ZGHC).
 """Weak-to-strong generalization in NumPy, for binary tasks. Probabilities are of the positive class, one per example.
 
 pgr is eq-pgr; adaptive_threshold and harden give the hardened predictions of eq-harden, with the threshold set so

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/early-stopping/ (ai://NEW-early-stopping).
+# Part of https://ai.tamnd.com/early-stopping/ (ai://VR3ZRP).
 """Early stopping, the NumPy reference.
 
 Two parts. The first is least squares from w = 0, where gradient descent stopped after t steps is a spectral filter:

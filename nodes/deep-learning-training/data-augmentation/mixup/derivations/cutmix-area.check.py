@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/mixup/ (ai://NEW-mixup).
+# Part of https://ai.tamnd.com/mixup/ (ai://8X8XEV).
 # Check of derivations/cutmix-area.md: the CutMix label weight 1 - (x2 - x1)(y2 - y1)/(WH) is the share of pixels from
 # x_A, clipping only raises it above the sampled lam, and with uniform lam and centre its mean is 163/240.
 import math

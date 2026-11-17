@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/adam/ (ai://NEW-adam).
+# Part of https://ai.tamnd.com/adam/ (ai://88GHGT).
 """Tests of the JAX reference: the worked example, the shared fixture, jit and pytrees, the constant gradient, the
 bound on the step, and the configuration. optax is not installed, so the tests compare with fixed numbers that the
 PyTorch tests check against torch.optim.Adam and torch.optim.AdamW."""

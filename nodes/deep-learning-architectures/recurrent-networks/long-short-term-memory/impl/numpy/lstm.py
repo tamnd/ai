@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/long-short-term-memory/ (ai://NEW-long-short-term-memory).
+# Part of https://ai.tamnd.com/long-short-term-memory/ (ai://YVW8D3).
 """One LSTM layer with a forget gate and no peepholes, the NumPy reference.
 
 It computes eq-gates, eq-cell and eq-hidden of the page over a sequence, and backpropagates through time.

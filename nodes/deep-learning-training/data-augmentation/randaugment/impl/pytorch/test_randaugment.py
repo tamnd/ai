@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/randaugment/ (ai://NEW-randaugment).
+# Part of https://ai.tamnd.com/randaugment/ (ai://88YEPR).
 """Tests of the PyTorch port: the worked example shared with the NumPy tests, each image operation on (H, W) and
 (C, H, W) tensors, the magnitude map and the RandAugment and TrivialAugment samplers."""
 

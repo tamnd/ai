@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/chain-of-thought-prompting/ (ai://NEW-chain-of-thought-prompting).
+# Part of https://ai.tamnd.com/chain-of-thought-prompting/ (ai://WFY2QB).
 # Check of derivations/majority-vote.md: the binomial formula of the two-answer vote against a sum over all outcomes,
 # the exact step P_{m+2} - P_m, the Hoeffding bounds, the equality of even and odd sample counts under fair ties, the
 # first-seen tie rule against uniform ties, the plurality limit over three answers in exact fractions and by

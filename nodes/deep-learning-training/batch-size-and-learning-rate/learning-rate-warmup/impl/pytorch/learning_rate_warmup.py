@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/learning-rate-warmup/ (ai://NEW-learning-rate-warmup).
+# Part of https://ai.tamnd.com/learning-rate-warmup/ (ai://MA8ACN).
 """Learning rate warmup in PyTorch.
 
 The schedulers are built from torch.optim.lr_scheduler. A scheduler's step() is called once per optimizer update, after

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/grokking/ (ai://NEW-grokking).
+# Part of https://ai.tamnd.com/grokking/ (ai://52PVZH).
 """Tests of the PyTorch code: the modular-addition split; the Fourier algorithm, exact at p = 113 with the five key
 frequencies and equal to the direct cosine sum; AdamW with zero gradient as pure decay by (1 - lr * wd) per step; the
 model's training step against a hand-computed AdamW update; a short run that fits a tiny table; and the worked
