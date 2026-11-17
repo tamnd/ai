@@ -1,0 +1,11 @@
+# Written by fixtures/make.py; do not edit.
+seed: 19861009
+config: {d_in: 3, d_hidden: 4, d_out: 2, n_hidden: 2, activation: tanh}
+inputs: {B: 5, x: "standard Gaussian", t: "standard Gaussian targets"}
+loss: "eq-loss, half the mean squared error"
+dtype: float64
+numpy: "2.5.4"
+files:
+  params-small.npz: {sha256: 24042640bd3a010ed54adc5031fe420d5f2d139c86a2b71ff672acb531f88a39}
+  input-small.npz: {sha256: 71664428b389116e14696e3351c160ef4cc7a74fa60fe11fdce9c09907ef7c1e}
+  expected-small.npz: {sha256: 1b53f9cc39321617cfecf96a9b35009589b3aab3a89fd4b7e0077c86b5cd56fa}
