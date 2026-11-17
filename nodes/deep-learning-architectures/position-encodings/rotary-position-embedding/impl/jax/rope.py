@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/rotary-position-embedding/ (ai://NEW-rotary-position-embedding).
+# Part of https://ai.tamnd.com/rotary-position-embedding/ (ai://0V8E5T).
 """Rotary position embedding (RoPE) as pure functions, the JAX reference.
 
 apply computes eq-rope-efficient with the angles of eq-theta and eq-pi. jax.grad gives the backward pass,

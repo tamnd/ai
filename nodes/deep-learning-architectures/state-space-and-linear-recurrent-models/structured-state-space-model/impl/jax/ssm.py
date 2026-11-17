@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/structured-state-space-model/ (ai://NEW-structured-state-space-model).
+# Part of https://ai.tamnd.com/structured-state-space-model/ (ai://MDN3YW).
 """A diagonal state space layer in JAX: pure functions init and apply, with three ways to compute it.
 
 conv uses the kernel and the FFT, scan uses jax.lax.scan one step at a time, and parallel uses

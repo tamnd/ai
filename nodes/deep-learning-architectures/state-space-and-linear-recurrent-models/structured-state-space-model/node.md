@@ -145,7 +145,7 @@ Attention, by contrast, costs $O(L^2)$ in the length and keeps a cache of all pa
 
 ## Training
 
-The whole layer is differentiable, so it trains by backpropagation through the convolution, which avoids running [[backpropagation-through-time@al|backpropagation through time]] step by step.
+The whole layer is differentiable, so it trains by backpropagation through the convolution, which avoids running [[al:backpropagation-through-time|backpropagation through time]] step by step.
 Our reference code learns the step size in log space, one per feature, and initializes it uniformly in log space between $10^{-3}$ and $10^{-1}$.
 S4D reports that prior work forces the real part of $A$ to be negative by writing $A = -\exp(A_{\mathrm{Re}}) + i A_{\mathrm{Im}}$, and notes that any activation bounded on one side would do (S4D); by [[#c-stability]] this keeps $\bar{A}$ stable for every step size.
 Its S4D-Lin initialization sets $A_n = -\tfrac12 + i\pi n$ (S4D, Section 4). {#c-s4d-lin}

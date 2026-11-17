@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/rotary-position-embedding/ (ai://NEW-rotary-position-embedding).
+# Part of https://ai.tamnd.com/rotary-position-embedding/ (ai://0V8E5T).
 """Rotary position embedding (RoPE), the NumPy reference.
 
 Each pair of dimensions (2i, 2i + 1) of a query or a key at position m is rotated by the angle m theta_i.
