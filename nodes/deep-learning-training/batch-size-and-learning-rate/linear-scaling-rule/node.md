@@ -1,5 +1,5 @@
 ---
-tag: NEW-linear-scaling-rule
+tag: JDMWH4
 kind: method
 slug: linear-scaling-rule
 name: Linear scaling rule
