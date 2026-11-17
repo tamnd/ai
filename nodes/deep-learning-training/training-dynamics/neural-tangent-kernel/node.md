@@ -1,5 +1,5 @@
 ---
-tag: NEW-neural-tangent-kernel
+tag: 3SJCNH
 kind: concept
 slug: neural-tangent-kernel
 name: Neural tangent kernel
