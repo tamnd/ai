@@ -1,0 +1,10 @@
+# Written by fixtures/make.py; do not edit.
+seed: 20140901
+config: {src_vocab: 7, tgt_vocab: 6, embed: 3, hidden: 4, align: 5, maxout: 3, attention: true}
+inputs: {B: 2, S: 5, T: 4, init_scale: 0.5, padded: "source 2 has 3 real words of 5, target 2 has 3 of 4"}
+dtype: float64
+numpy: "2.5.5"
+files:
+  params-small.npz: {sha256: 44fe9115b5f78057493990ed3bace58d7124b92481a207d4d83b12b03784f304}
+  input-small.npz: {sha256: 351d621407c92153ff990d5e578dbccabdc541eb3467f73accbe8d4720736ed8}
+  expected-small.npz: {sha256: 898a039ddafe021a10603fcce56d7cda0ce589c203c890af86f4a774cdd09050}
