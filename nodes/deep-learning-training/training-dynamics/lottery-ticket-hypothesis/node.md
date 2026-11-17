@@ -1,5 +1,5 @@
 ---
-tag: NEW-lottery-ticket-hypothesis
+tag: 2WGJ4M
 kind: finding
 slug: lottery-ticket-hypothesis
 name: Lottery ticket hypothesis
