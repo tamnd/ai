@@ -1,5 +1,5 @@
 ---
-tag: NEW-randaugment
+tag: 88YEPR
 kind: method
 slug: randaugment
 name: RandAugment
