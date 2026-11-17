@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/structured-state-space-model/ (ai://NEW-structured-state-space-model).
+# Part of https://ai.tamnd.com/structured-state-space-model/ (ai://MDN3YW).
 """A diagonal state space layer, the NumPy reference.
 
 Each of the H channels is a single-input single-output SSM with N complex diagonal entries kept in conjugate

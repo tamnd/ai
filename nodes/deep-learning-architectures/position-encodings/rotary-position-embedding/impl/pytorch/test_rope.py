@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/rotary-position-embedding/ (ai://NEW-rotary-position-embedding).
+# Part of https://ai.tamnd.com/rotary-position-embedding/ (ai://0V8E5T).
 """Tests of the PyTorch reference: the worked example, the shared fixture, the complex form and the gradient."""
 
 import math

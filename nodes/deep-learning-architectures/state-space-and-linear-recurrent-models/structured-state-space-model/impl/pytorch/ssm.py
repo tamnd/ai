@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/structured-state-space-model/ (ai://NEW-structured-state-space-model).
+# Part of https://ai.tamnd.com/structured-state-space-model/ (ai://MDN3YW).
 """A diagonal state space layer in PyTorch, with the same parameters and equations as the NumPy reference.
 
 The convolutional mode trains in parallel with the FFT; the recurrent mode and step run one position at a time.

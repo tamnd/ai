@@ -59,7 +59,7 @@ A sequence of tokens with positions $m = 0, 1, \dots$ gives for each token a que
 Attention compares them through the score $\mathbf{q}_m^\top \mathbf{k}_n$ before the softmax.
 Without position information the score is the same wherever the two tokens are.
 
-The original Transformer adds a sinusoidal vector to each input embedding, $[[transformer#eq-pe]]$, with wavelengths in a geometric progression from $2\pi$ to $10000 \cdot 2\pi$ (Vaswani et al. 2017, Section 3.5). {#c-sinusoid}
+The original Transformer adds a sinusoidal vector to each input embedding ([[transformer#eq-pe|the positional encoding]]), with wavelengths in a geometric progression from $2\pi$ to $10000 \cdot 2\pi$ (Vaswani et al. 2017, Section 3.5). {#c-sinusoid}
 Its authors chose it on the hypothesis that it lets the model attend by relative position and extrapolate to longer sequences. {#c-sinusoid-hypothesis}
 That encoding is absolute and additive: the position enters the content before the projections $\mathbf{W}_q$ and $\mathbf{W}_k$.
 

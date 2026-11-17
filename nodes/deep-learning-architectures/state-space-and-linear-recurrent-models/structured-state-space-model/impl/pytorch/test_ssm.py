@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/structured-state-space-model/ (ai://NEW-structured-state-space-model).
+# Part of https://ai.tamnd.com/structured-state-space-model/ (ai://MDN3YW).
 """Tests of the PyTorch layer: the two modes agree, the impulse response, causality, the discretizations and gradients."""
 
 import math
