@@ -1,0 +1,357 @@
+# The claims of the convolutional neural network page (spec 07). The build computes the labels.
+
+# The layer
+
+- id: c-three-ideas
+  type: definitional
+  text: "LeCun et al. describe convolutional networks as combining three architectural ideas to ensure some degree of shift, scale and distortion invariance: local receptive fields, shared weights (or weight replication), and spatial or temporal sub-sampling."
+  evidence:
+    - {work: "lecun-1998-gradient-based-learning", role: original, locator: "p. 6", stance: for}
+
+- id: c-feature-map
+  type: definitional
+  text: "Units in a layer are organized in planes within which all the units share the same set of weights; the set of outputs of the units in such a plane is called a feature map, and a complete convolutional layer is composed of several feature maps with different weight vectors."
+  evidence:
+    - {work: "lecun-1998-gradient-based-learning", role: original, locator: "p. 6", stance: for}
+
+- id: c-equivalent-convolution
+  type: definitional
+  text: "Scanning the input image with a single unit that has a local receptive field and storing its states at corresponding locations in the feature map is equivalent to a convolution, followed by an additive bias and squashing function, hence the name convolutional network; the kernel of the convolution is the set of connection weights used by the units in the feature map."
+  evidence:
+    - {work: "lecun-1998-gradient-based-learning", role: original, locator: "p. 6", stance: for}
+
+- id: c-lenet-c1-unit
+  type: definitional
+  text: "A unit in the first hidden layer of LeNet-5 has 25 inputs connected to a 5 by 5 area of the input, its receptive field, and therefore 25 trainable coefficients plus a trainable bias; all the units in a feature map share the same set of 25 weights and the same bias, so they detect the same feature at all possible locations on the input."
+  evidence:
+    - {work: "lecun-1998-gradient-based-learning", role: original, locator: "p. 6", stance: for}
+
+- id: c-cross-correlation
+  type: mathematical
+  text: "A convolution with a kernel of k entries, computed where it is defined, equals the cross-correlation with the flipped kernel, shifted by k - 1; so learning a cross-correlation or a convolution gives the same family of layers."
+  assumes: ["one spatial axis and one channel; the general case is the same sum for each channel and axis", "the kernel has support {0, ..., k - 1}"]
+  derivation: equivariance
+
+- id: c-out-size
+  type: mathematical
+  text: "A window of size k with stride s on an axis of n positions padded by p on each side has floor((n + 2p - k) / s) + 1 positions."
+  assumes: ["1 <= k <= n + 2p", "s >= 1", "only windows that fit entirely in the padded input give an output"]
+  derivation: output-size
+
+- id: c-same-padding
+  type: mathematical
+  text: "With stride 1 and an odd kernel size k, padding by (k - 1) / 2 on each side keeps the size of the input; for k = 3 the padding is 1."
+  assumes: ["s = 1", "k odd"]
+  derivation: output-size
+
+- id: c-lenet-sizes
+  type: mathematical
+  text: "In LeNet-5, the 5x5 convolutions without padding and the 2x2 sub-samplings with stride 2 take the 32x32 input to maps of 28, 14, 10, 5 and 1 positions on a side."
+  assumes: ["the layer sizes of LeNet-5 as LeCun et al. (1998) give them"]
+  derivation: output-size
+
+- id: c-alexnet-size
+  type: mathematical
+  text: "An 11x11 window with stride 4 and no padding fits 54 times across 224 inputs, with a remainder, and 55 times across 227 inputs or 224 inputs padded by 2."
+  assumes: ["the formula of c-out-size"]
+  derivation: output-size
+
+# Parameter sharing and local connectivity
+
+- id: c-conv-params
+  type: mathematical
+  text: "A k by k convolution from C_in to C_out channels has k^2 C_in C_out + C_out parameters, whatever the size of its input."
+  assumes: ["one kernel for each pair of an input and an output channel, and one bias for each output channel, shared by all positions"]
+  derivation: parameter-count
+
+- id: c-dense-comparison
+  type: mathematical
+  text: "The first layer of LeNet-5, with six 5x5 kernels from a 32x32 input to 28x28 maps, has 156 parameters and 122,304 connections; a fully connected layer between the same input and output would have 4,821,600 parameters."
+  assumes: ["a fully connected layer has one weight for each pair of an input and an output unit and one bias for each output unit"]
+  derivation: parameter-count
+
+- id: c-lenet-params
+  type: mathematical
+  text: "The counting rule gives 156, 1,516, 48,120 and 10,164 parameters for the layers C1, C3, C5 and F6 of LeNet-5, with the partial connection of C3; a C3 connecting every map of S2 would have 2,416."
+  assumes: ["the connection scheme of C3 as LeCun et al. (1998) describe it", "the formula of c-conv-params"]
+  derivation: parameter-count
+
+- id: c-lenet-reported
+  type: definitional
+  text: "LeCun et al. report that C1 contains 156 trainable parameters and 122,304 connections."
+  evidence:
+    - {work: "lecun-1998-gradient-based-learning", role: original, locator: "p. 7", stance: for}
+
+- id: c-lenet-reported-later
+  type: definitional
+  text: "LeCun et al. report 1,516 trainable parameters and 151,600 connections for C3, 48,120 trainable connections for C5 and 10,164 trainable parameters for F6."
+  evidence:
+    - {work: "lecun-1998-gradient-based-learning", role: original, locator: "p. 8", stance: for}
+
+- id: c-weight-sharing-capacity
+  type: attributive
+  text: "LeCun et al. note that weight sharing reduces the number of free parameters, thereby reducing the capacity of the machine and the gap between test error and training error; the network of their Figure 2 contains 340,908 connections, but only 60,000 trainable free parameters because of the weight sharing."
+  evidence:
+    - {work: "lecun-1998-gradient-based-learning", role: original, locator: "p. 7", stance: for}
+
+- id: c-no-builtin-invariance
+  type: attributive
+  text: "LeCun et al. write that unstructured nets for image or speech applications have no built-in invariance with respect to translations, or local distortions of the inputs."
+  evidence:
+    - {work: "lecun-1998-gradient-based-learning", role: original, locator: "p. 5", stance: for}
+
+- id: c-topology
+  type: attributive
+  text: "LeCun et al. write that fully-connected architectures entirely ignore the topology of the input, while images have a strong 2D local structure: pixels that are spatially nearby are highly correlated."
+  evidence:
+    - {work: "lecun-1998-gradient-based-learning", role: original, locator: "p. 6", stance: for}
+
+- id: c-alexnet-priors
+  type: attributive
+  text: "Krizhevsky et al. write that CNNs make strong and mostly correct assumptions about the nature of images, namely stationarity of statistics and locality of pixel dependencies, so that compared to standard feedforward networks with similarly-sized layers they have much fewer connections and parameters and are easier to train."
+  evidence:
+    - {work: "krizhevsky-2012-imagenet-classification", role: original, locator: "Section 1", stance: for}
+
+# Equivariance and pooling
+
+- id: c-shift-feature-map
+  type: attributive
+  text: "LeCun et al. note that if the input image is shifted, the feature map output is shifted by the same amount but left unchanged otherwise, and place this property at the basis of the robustness of convolutional networks to shifts and distortions."
+  evidence:
+    - {work: "lecun-1998-gradient-based-learning", role: original, locator: "p. 6", stance: for}
+
+- id: c-equivariance
+  type: mathematical
+  text: "A convolutional layer with stride 1 and circular padding commutes with every circular shift of its input, and so does any stack of such layers with pointwise nonlinearities."
+  assumes: ["stride 1", "circular padding", "the nonlinearities act entry by entry"]
+  derivation: equivariance
+
+- id: c-crop-equivariance
+  type: mathematical
+  text: "Without padding, every output whose window lies inside the part of the input that was shifted moves with it; with zero padding, the outputs whose window crosses the border do not."
+  assumes: ["stride 1"]
+  derivation: equivariance
+
+- id: c-stride-periodic
+  type: mathematical
+  text: "A convolution or pooling with stride s and circular padding is equivariant only to shifts by multiples of s, and a shift by s t moves the output by t."
+  assumes: ["circular padding", "s divides the size of the input"]
+  derivation: equivariance
+
+- id: c-global-pool-invariance
+  type: mathematical
+  text: "A global maximum or average over positions is invariant to circular shifts, so global pooling after equivariant layers gives a shift-invariant output."
+  assumes: ["circular shifts"]
+  derivation: equivariance
+
+- id: c-subsampling
+  type: attributive
+  text: "LeCun et al. reduce the spatial resolution of the feature maps with sub-sampling layers that perform a local averaging and a sub-sampling, reducing the sensitivity of the output to shifts and distortions."
+  evidence:
+    - {work: "lecun-1998-gradient-based-learning", role: original, locator: "p. 6", stance: for}
+
+- id: c-overlap-pool
+  type: empirical
+  text: "Krizhevsky et al. use overlapping pooling with s = 2 and z = 3, and this scheme reduces the top-1 and top-5 error rates by 0.4% and 0.3% as compared with the non-overlapping scheme s = 2, z = 2, which produces output of equivalent dimensions."
+  scope:
+    models: "the AlexNet network"
+    data: [imagenet]
+    scale: "60 million parameters"
+    setting: "ILSVRC classification, supervised training"
+  evidence:
+    - {work: "krizhevsky-2012-imagenet-classification", role: original, locator: "Section 3.4", stance: for}
+  small_scale: "no"
+  small_scale_note: "A difference of a few tenths of a percent on ImageNet does not show at the scale of a CPU experiment."
+
+- id: c-not-invariant
+  type: empirical
+  text: "Zhang reports that modern convolutional networks are not shift-invariant, as small input shifts or translations can cause drastic changes in the output, and that common downsampling methods such as max-pooling, strided convolution and average pooling ignore the sampling theorem."
+  scope:
+    models: "convolutional networks for image classification of 2012 to 2018"
+    data: [imagenet, cifar-10]
+    scale: "unknown"
+    setting: "classification of shifted inputs"
+  evidence:
+    - {work: "zhang-2019-shift-invariant-again", role: original, locator: "the abstract", stance: for}
+  small_scale: "yes"
+  small_scale_note: "The derivation of this page and its check show the periodic equivariance of strided layers on random inputs."
+
+- id: c-maxpool-decomposition
+  type: attributive
+  text: "Zhang observes that max-pooling is composed of two operations, evaluating the max operator densely and naive subsampling, and proposes to low-pass filter between them as a means of anti-aliasing."
+  evidence:
+    - {work: "zhang-2019-shift-invariant-again", role: original, locator: "Section 1", stance: for}
+
+- id: c-blurpool
+  type: empirical
+  text: "With low-pass filtering before downsampling integrated correctly, Zhang observes increased accuracy in ImageNet classification across several architectures, such as ResNet, DenseNet and MobileNet, and better stability and robustness to input corruptions."
+  scope:
+    models: "ResNet, DenseNet and MobileNet"
+    data: [imagenet]
+    scale: "unknown"
+    setting: "ImageNet classification with anti-aliased downsampling"
+  evidence:
+    - {work: "zhang-2019-shift-invariant-again", role: original, locator: "the abstract", stance: for}
+  small_scale: "no"
+  small_scale_note: "The accuracy gains are measured on ImageNet."
+
+# The receptive field
+
+- id: c-rf-recursion
+  type: mathematical
+  text: "Through a stack of windows of sizes k_l and strides s_l, the receptive field r_l and the jump j_l of a unit satisfy r_l = r_{l-1} + (k_l - 1) j_{l-1} and j_l = j_{l-1} s_l, with r_0 = j_0 = 1; the field has no gaps when s_l <= k_l."
+  assumes: ["no dilation", "each layer reads windows of k_l positions with stride s_l"]
+  derivation: receptive-field
+
+- id: c-rf-linear
+  type: mathematical
+  text: "With stride 1, m layers of size k have a receptive field of 1 + m(k - 1); two 3x3 layers see 5x5 inputs and three see 7x7."
+  assumes: ["stride 1", "no dilation"]
+  derivation: receptive-field
+
+- id: c-rf-lenet
+  type: mathematical
+  text: "In LeNet-5 the receptive fields of C1, S2, C3, S4 and C5 are 5, 6, 14, 16 and 32 inputs on a side, so a unit of C5 sees the whole 32x32 input."
+  assumes: ["the layer sizes of LeNet-5 as LeCun et al. (1998) give them"]
+  derivation: receptive-field
+
+- id: c-vgg-stack
+  type: attributive
+  text: "Simonyan and Zisserman note that a stack of two 3x3 conv. layers without spatial pooling in between has an effective receptive field of 5x5, and three such layers have 7x7; the stack incorporates three non-linear rectification layers instead of one, which makes the decision function more discriminative."
+  evidence:
+    - {work: "simonyan-2015-very-deep-convolutional-networks", role: original, locator: "Section 2.3", stance: for}
+
+- id: c-vgg-params
+  type: mathematical
+  text: "Without biases, two 3x3 convolutions with C channels have 18 C^2 weights against 25 C^2 for one 5x5 convolution, and three have 27 C^2 against 49 C^2 for one 7x7 convolution, 81% more."
+  assumes: ["C channels in and out of every layer", "no biases"]
+  derivation: parameter-count
+
+- id: c-vgg-regularisation
+  type: attributive
+  text: "Simonyan and Zisserman count 27 C^2 weights for three 3x3 layers against 49 C^2 for a single 7x7 layer, 81% more, and see this as imposing a regularisation on the 7x7 filters, forcing them to have a decomposition through the 3x3 filters with non-linearity injected in between."
+  evidence:
+    - {work: "simonyan-2015-very-deep-convolutional-networks", role: original, locator: "Section 2.3", stance: for}
+
+- id: c-erf
+  type: empirical
+  text: "Luo et al. show that the effective receptive field has a Gaussian distribution and occupies only a fraction of the full theoretical receptive field, and observe that common random initializations lead some deep CNNs to start with a small effective receptive field, which then grows during training."
+  scope:
+    models: "deep convolutional networks, with and without nonlinearities, dropout, sub-sampling and skip connections"
+    data: [cifar-10, camvid]
+    scale: "unknown"
+    setting: "gradients of a central output unit with respect to the input"
+  evidence:
+    - {work: "luo-2016-effective-receptive-field", role: original, locator: "the abstract", stance: for}
+    - {work: "luo-2016-effective-receptive-field", role: original, locator: "Section 1", stance: for}
+  small_scale: "yes"
+  small_scale_note: "The gradient of one output unit of a randomly initialized stack shows the Gaussian shape on a CPU."
+
+- id: c-erf-sqrt
+  type: attributive
+  text: "In the analysis of Luo et al., the size of the effective receptive field grows as O(sqrt(n)) with the number n of layers while the theoretical receptive field grows linearly, so relative to the theoretical one it shrinks at a rate of O(1/sqrt(n))."
+  evidence:
+    - {work: "luo-2016-effective-receptive-field", role: original, locator: "p. 4", stance: for}
+
+# The networks and the history
+
+- id: c-neocognitron
+  type: historical
+  text: "Fukushima's neocognitron is a network for visual pattern recognition self-organized by learning without a teacher, a cascade of modules of S-cells, similar to simple cells, and C-cells, similar to complex cells, whose last layer responds to a pattern without being affected by its position."
+  evidence:
+    - {work: "fukushima-1980-neocognitron", role: original, locator: "the abstract", stance: for}
+
+- id: c-neocognitron-planes
+  type: historical
+  text: "In the neocognitron, all the cells in a cell-plane have input synapses of the same spatial distribution, and only the positions of the presynaptic cells are shifted in parallel from cell to cell."
+  evidence:
+    - {work: "fukushima-1980-neocognitron", role: original, locator: "p. 3", stance: for}
+
+- id: c-neocognitron-no-backprop
+  type: historical
+  text: "LeCun et al. write that the convolution/sub-sampling combination, inspired by Hubel and Wiesel's simple and complex cells, was implemented in Fukushima's Neocognitron, though no globally supervised learning procedure such as back-propagation was available then."
+  evidence:
+    - {work: "lecun-1998-gradient-based-learning", role: original, locator: "p. 7", stance: for}
+
+- id: c-lenet1
+  type: historical
+  text: "LeNet-1, an early embodiment of the convolutional network architecture, was developed on the USPS zip code database, and its convolutional nature keeps the number of free parameters to only about 2600."
+  evidence:
+    - {work: "lecun-1998-gradient-based-learning", role: original, locator: "p. 13", stance: for}
+
+- id: c-lenet1-1989
+  type: historical
+  text: "LeCun et al. write that LeNet-1 was appropriate to the available technology in 1989, when a recognizer as complex as LeNet-5 would have required several weeks' training and more data than was available."
+  evidence:
+    - {work: "lecun-1998-gradient-based-learning", role: original, locator: "p. 15", stance: for}
+
+- id: c-lenet5
+  type: definitional
+  text: "LeNet-5 comprises 7 layers with trainable parameters, not counting the input, which is a 32x32 pixel image: C1 has 6 feature maps of 28x28, S2 6 maps of 14x14, C3 16 maps, S4 16 maps of 5x5, C5 120 maps, F6 84 units, and the output layer has one Euclidean radial basis function unit for each class."
+  evidence:
+    - {work: "lecun-1998-gradient-based-learning", role: original, locator: "p. 7", stance: for}
+    - {work: "lecun-1998-gradient-based-learning", role: original, locator: "p. 8", stance: for}
+
+- id: c-lenet5-error
+  type: empirical
+  text: "On MNIST, the test error rate of LeNet-5 stabilized after around 10 passes through the training set at 0.95%, and dropped to 0.8% when distorted data was used for training."
+  scope:
+    models: "LeNet-5"
+    data: [mnist]
+    scale: "60,000 trainable parameters"
+    setting: "handwritten digit classification, gradient-based training"
+  evidence:
+    - {work: "lecun-1998-gradient-based-learning", role: original, locator: "p. 10", stance: for}
+    - {work: "lecun-1998-gradient-based-learning", role: original, locator: "p. 11", stance: for}
+  small_scale: "yes"
+  small_scale_note: "A network of the size of LeNet-5 trains on MNIST on a CPU."
+
+- id: c-alexnet
+  type: historical
+  text: "The network of Krizhevsky et al. has 60 million parameters and 650,000 neurons and consists of five convolutional layers, some of which are followed by max-pooling layers, and three fully-connected layers with a final 1000-way softmax."
+  evidence:
+    - {work: "krizhevsky-2012-imagenet-classification", role: original, locator: "the abstract", stance: for}
+
+- id: c-alexnet-first-layer
+  type: definitional
+  text: "The first convolutional layer of AlexNet filters the 224 x 224 x 3 input image with 96 kernels of size 11 x 11 x 3 with a stride of 4 pixels."
+  evidence:
+    - {work: "krizhevsky-2012-imagenet-classification", role: original, locator: "Section 3.5", stance: for}
+
+- id: c-alexnet-results
+  type: empirical
+  text: "On the ILSVRC-2010 test data AlexNet achieved top-1 and top-5 error rates of 37.5% and 17.0%, and a variant won ILSVRC-2012 with a top-5 test error rate of 15.3%, compared to 26.2% for the second-best entry."
+  scope:
+    models: "AlexNet and a variant"
+    data: [imagenet]
+    scale: "60 million parameters"
+    setting: "ILSVRC-2010 and ILSVRC-2012 classification"
+  evidence:
+    - {work: "krizhevsky-2012-imagenet-classification", role: original, locator: "the abstract", stance: for}
+  small_scale: "no"
+  small_scale_note: "The result is a competition result on ImageNet."
+
+- id: c-alexnet-depth
+  type: empirical
+  text: "Removing any of the middle convolutional layers of AlexNet results in a loss of about 2% for the top-1 performance."
+  scope:
+    models: "AlexNet"
+    data: [imagenet]
+    scale: "60 million parameters"
+    setting: "ILSVRC classification, ablation of one layer"
+  evidence:
+    - {work: "krizhevsky-2012-imagenet-classification", role: original, locator: "Section 7", stance: for}
+  small_scale: "no"
+  small_scale_note: "The ablation is on ImageNet."
+
+- id: c-vgg-design
+  type: definitional
+  text: "The VGG networks use 3x3 convolutions with stride 1 and padding 1 pixel, so that the spatial resolution is preserved, five 2x2 max-pooling layers with stride 2 after some of the conv. layers, and three fully-connected layers."
+  evidence:
+    - {work: "simonyan-2015-very-deep-convolutional-networks", role: original, locator: "Section 2.1", stance: for}
+
+- id: c-vgg-size
+  type: definitional
+  text: "Table 2 of Simonyan and Zisserman gives the number of parameters of the VGG configurations A to E, in millions, as 133, 133, 134, 138 and 144."
+  evidence:
+    - {work: "simonyan-2015-very-deep-convolutional-networks", role: original, locator: "Table 2", stance: for}

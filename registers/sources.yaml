@@ -57,3 +57,17 @@
   facts: CELEX numbers, ELI ids, resource types, English titles, the dates of the document, of entry into force, of application and of end of validity, and the CELEX numbers of the acts amended; never the text
   credit: EUR-Lex, © European Union, https://eur-lex.europa.eu
   note: The EuroVoc index finds the acts about AI, not every act that has an AI provision; a curator adds the others to registers/watch.yaml (S-L1). Corrigenda, case law, national measures, parliamentary questions and notices are skipped.
+- id: arxiv
+  name: arXiv metadata
+  url: https://info.arxiv.org/help/api/
+  owner: Cornell University
+  licence: CC0-1.0
+  checked: "2026-11-14"
+  class: A
+  access: OAI-PMH (oaipmh.arxiv.org), one set per category; the robots.txt of export.arxiv.org, the host of the search API, disallows every path
+  rate: 1 request per 3 s
+  schedule: daily
+  standing: preprint
+  facts: titles, authors, dates, categories, DOIs and journal references; texts keep their own licences
+  credit: Thank you to arXiv for use of its open access interoperability.
+  note: The metadata is CC0; the abstracts are not kept.
