@@ -60,6 +60,7 @@ While the network trains, switch off a random part of its units at each step.
 The network cannot count on any one unit, so it learns features that work even when some are missing.
 At test time all units are on, scaled so that the total signal is the same as in training.
 The effect is close to averaging many smaller networks that share their weights.
+That makes it a cheap form of [[al:ensemble-learning|ensemble learning]], with one difference from [[al:bagging|bagging]]: bagging trains separate models on bootstrap samples of the data, while the thinned networks of dropout share one set of weights and each one trains for a step at most.
 
 ## Setting
 
@@ -196,4 +197,4 @@ In recurrent networks, apply it between layers, or use the same mask at each tim
 Geoffrey Hinton, Nitish Srivastava, Alex Krizhevsky, Ilya Sutskever and Ruslan Salakhutdinov described dropout in 2012, in the preprint arXiv 1207.0580: on each training case they switched off a random half of the feature detectors, and that cut overfitting. {#c-first-2012}
 Krizhevsky, Sutskever and Hinton (2012) used it in the first two fully connected layers of AlexNet, and a variant of AlexNet won the ImageNet challenge of 2012. {#c-alexnet}
 The full study, with the experiments, the theory for linear models and the practical guide, is Srivastava et al. (2014) in the Journal of Machine Learning Research. {#c-canonical-2014}
-The idea is related to older work on training with noise: Bishop (1995) showed that training with small input noise is close to Tikhonov regularization.
+The idea is related to older work on training with noise: Bishop (1995) derived that training with small input noise is close to Tikhonov regularization.

@@ -1,0 +1,530 @@
+# The claims of the sparse autoencoders page (spec 07). The build computes the labels.
+
+# Setting
+
+- id: c-el-polysemantic
+  type: attributive
+  text: "Elhage et al. describe polysemanticity, neural networks packing many unrelated concepts into a single neuron, and provide a toy model where it arises as a result of models storing additional sparse features in superposition."
+  evidence:
+    - {work: "elhage-2022-toy-models-of-superposition", role: original, locator: "p. 1", stance: for}
+
+- id: c-el-almost-orthogonal
+  type: attributive
+  text: "Elhage et al. note that although only n orthogonal vectors fit in an n-dimensional space, it is possible to have exp(n) many almost orthogonal vectors (Johnson-Lindenstrauss), and that compressed sensing can often recover a projected vector when the original vector is known to be sparse."
+  evidence:
+    - {work: "elhage-2022-toy-models-of-superposition", role: original, locator: "p. 7", stance: for}
+
+- id: c-el-interference
+  type: attributive
+  text: "In the superposition hypothesis features are almost-orthogonal directions, so one feature activating looks like other features slightly activating; tolerating this interference has a cost, but for neural networks with highly sparse features it may be outweighed by the benefit of representing more features."
+  evidence:
+    - {work: "elhage-2022-toy-models-of-superposition", role: original, locator: "p. 7", stance: for}
+
+- id: c-el-toy-model
+  type: definitional
+  text: "The ReLU output toy model of Elhage et al. computes h = Wx and x' = ReLU(W^T W x + b), and is trained on a mean squared error weighted by the feature importances I_i."
+  evidence:
+    - {work: "elhage-2022-toy-models-of-superposition", role: original, locator: "p. 10", stance: for}
+
+- id: c-el-pca-vs-superposition
+  type: attributive
+  text: "The linear toy model always learns the top-m most important features, analogous to the top principal components; the ReLU output model does the same on dense features, but as sparsity increases superposition emerges and the model represents more features by having them not be orthogonal, initially arranging them in antipodal pairs."
+  evidence:
+    - {work: "elhage-2022-toy-models-of-superposition", role: original, locator: "p. 12", stance: for}
+
+- id: c-el-three-ways
+  type: attributive
+  text: "Elhage et al. see three potential approaches to resolving superposition: create models without superposition, find an overcomplete basis that describes how features are represented in models with superposition, or hybrid approaches."
+  evidence:
+    - {work: "elhage-2022-toy-models-of-superposition", role: original, locator: "p. 41", stance: for}
+
+- id: c-el-sparse-coding
+  type: attributive
+  text: "Finding an overcomplete basis after the fact appears to Elhage et al. to be a relatively standard sparse coding problem, taking the activations of neural network layers and finding which directions correspond to features."
+  evidence:
+    - {work: "elhage-2022-toy-models-of-superposition", role: original, locator: "p. 42", stance: for}
+    - {work: "elhage-2022-toy-models-of-superposition", role: original, locator: "p. 43", stance: for}
+
+- id: c-cu-dictionary-learning
+  type: attributive
+  text: "Cunningham et al. suggest recovering the network's features by finding a set of directions in activation space such that each activation vector can be reconstructed from a sparse linear combination of these directions, which is equivalent to the problem of sparse dictionary learning."
+  evidence:
+    - {work: "cunningham-2023-sparse-autoencoders", role: original, locator: "p. 2", stance: for}
+
+- id: c-ra-decomposition
+  type: definitional
+  text: "Rajamanoharan et al. write the goal as decomposing an activation x in R^n into x ≈ x0 + Σ_{i=1}^{M} f_i(x) d_i, with M ≫ n unit-norm feature directions d_i and sparse coefficients f_i(x) ≥ 0; the decoder columns are identified with the d_i and the decoder bias with x0."
+  evidence:
+    - {work: "rajamanoharan-2024-gated-sparse-autoencoders", role: original, locator: "p. 3", stance: for}
+
+# The method
+
+- id: c-cu-architecture
+  type: definitional
+  text: "Cunningham et al. train an autoencoder with a single hidden layer of size d_hid = R d_in, a ReLU activation, and tied weights, meaning the encoder and decoder weight matrices are transposes of each other."
+  evidence:
+    - {work: "cunningham-2023-sparse-autoencoders", role: original, locator: "p. 2", stance: for}
+
+- id: c-cu-equations
+  type: definitional
+  text: "The autoencoder of Cunningham et al. computes c = ReLU(Mx + b) and x̂ = M^T c with M normalised row-wise, and is trained to minimise ||x − x̂||_2^2 + α||c||_1."
+  evidence:
+    - {work: "cunningham-2023-sparse-autoencoders", role: original, locator: "p. 3", stance: for}
+
+- id: c-cu-tied
+  type: attributive
+  text: "Cunningham et al. use tied weights because the directions which detect and define a feature should be the same or highly similar, because they halve the memory cost, and because they remove ambiguity about whether to interpret the encoder or decoder direction; they observed some reductions in performance with MLP data."
+  evidence:
+    - {work: "cunningham-2023-sparse-autoencoders", role: original, locator: "p. 2", stance: for}
+    - {work: "cunningham-2023-sparse-autoencoders", role: original, locator: "p. 3", stance: for}
+
+- id: c-ga-relu
+  type: definitional
+  text: "The baseline ReLU autoencoder of Gao et al., from Bricken et al., is z = ReLU(Wenc(x − bpre) + benc) and x̂ = Wdec z + bpre, with Wenc ∈ R^{n×d} and Wdec ∈ R^{d×n}, trained on L = ||x − x̂||_2^2 + λ||z||_1."
+  evidence:
+    - {work: "gao-2024-scaling-sparse-autoencoders", role: original, locator: "p. 2", stance: for}
+    - {work: "gao-2024-scaling-sparse-autoencoders", role: original, locator: "p. 3", stance: for}
+
+- id: c-ra-l0-nondiff
+  type: attributive
+  text: "Rajamanoharan et al. note that the L0 norm, the number of active features, cannot be directly optimized since it is not a differentiable function."
+  evidence:
+    - {work: "rajamanoharan-2024-gated-sparse-autoencoders", role: original, locator: "p. 3", stance: for}
+
+- id: c-ra-norm-constraint
+  type: attributive
+  text: "Since the sparsity loss can be reduced arbitrarily without affecting reconstructions by scaling down encoder outputs and scaling up the norm of the decoder weights, the norms of the columns of W_dec are constrained to exactly unit norm during training."
+  evidence:
+    - {work: "rajamanoharan-2024-gated-sparse-autoencoders", role: original, locator: "p. 3", stance: for}
+    - {work: "rajamanoharan-2024-gated-sparse-autoencoders", role: original, locator: "p. 4", stance: for}
+
+- id: c-ga-topk
+  type: definitional
+  text: "Gao et al. use a k-sparse autoencoder (Makhzani and Frey) whose TopK activation keeps only the k largest latents and zeroes the rest, z = TopK(W_enc(x − b_pre)), with the decoder unchanged and training loss L = ||x − x̂||_2^2."
+  evidence:
+    - {work: "gao-2024-scaling-sparse-autoencoders", role: original, locator: "p. 3", stance: for}
+
+- id: c-ga-topk-relu
+  type: attributive
+  text: "Gao et al. also apply a ReLU in their code to guarantee non-negative activations, and the training curves are indistinguishable because the k largest activations are almost always positive."
+  evidence:
+    - {work: "gao-2024-scaling-sparse-autoencoders", role: original, locator: "p. 3", stance: for}
+
+- id: c-ga-topk-benefits
+  type: attributive
+  text: "Gao et al. list benefits of TopK: it removes the L1 penalty, which introduces a bias of shrinking all positive activations toward zero; it sets L0 directly instead of tuning λ; it outperforms ReLU autoencoders on the sparsity-reconstruction trade-off, with a gap that increases with scale; and it clamps small activations to zero."
+  evidence:
+    - {work: "gao-2024-scaling-sparse-autoencoders", role: original, locator: "p. 3", stance: for}
+
+- id: c-ga-dead
+  type: attributive
+  text: "In larger autoencoders an increasingly large proportion of latents stop activating; Templeton et al. trained a 34 million latent autoencoder with only 12 million alive latents, and Gao et al. find up to 90% dead latents when no mitigations are applied."
+  evidence:
+    - {work: "gao-2024-scaling-sparse-autoencoders", role: original, locator: "p. 3", stance: for}
+
+- id: c-ga-dead-def
+  type: definitional
+  text: "Gao et al., following Templeton et al., consider a latent dead if it has not activated in 10 million tokens."
+  evidence:
+    - {work: "gao-2024-scaling-sparse-autoencoders", role: original, locator: "p. 3", stance: for}
+
+- id: c-ga-dead-fixes
+  type: attributive
+  text: "Gao et al. prevent dead latents by initializing the encoder to the transpose of the decoder and adding an auxiliary loss that models the reconstruction error using the top-k_aux dead latents; their largest, 16 million latent, autoencoder then has only 7% dead latents."
+  evidence:
+    - {work: "gao-2024-scaling-sparse-autoencoders", role: original, locator: "p. 3", stance: for}
+
+- id: c-ga-auxk
+  type: definitional
+  text: "The AuxK loss takes the main error e = x − x̂ and the reconstruction ê = W_dec z from the top-k_aux dead latents, typically k_aux = 512, and adds α L_aux with L_aux = ||e − ê||_2^2 and α typically 1/32, increasing compute by about 10%."
+  evidence:
+    - {work: "gao-2024-scaling-sparse-autoencoders", role: original, locator: "p. 18", stance: for}
+
+- id: c-ga-inputs
+  type: attributive
+  text: "Gao et al. subtract the mean over the d_model dimension and normalize all inputs to unit norm, and report MSE normalized by the reconstruction error of always predicting the mean activations."
+  evidence:
+    - {work: "gao-2024-scaling-sparse-autoencoders", role: original, locator: "p. 2", stance: for}
+
+- id: c-ga-init
+  type: attributive
+  text: "Gao et al. initialize b_pre to the geometric median of a sample of data points, the encoder directions parallel to the decoder directions, and the decoder directions to unit norm, rescaling them to unit norm after each training step."
+  evidence:
+    - {work: "gao-2024-scaling-sparse-autoencoders", role: original, locator: "p. 17", stance: for}
+
+- id: c-ga-project
+  type: attributive
+  text: "Gao et al. project away gradient information parallel to the decoder vectors, to account for the interaction between Adam and decoder normalization."
+  evidence:
+    - {work: "gao-2024-scaling-sparse-autoencoders", role: original, locator: "p. 18", stance: for}
+
+# Derivation
+
+- id: c-shrink-soft-threshold
+  type: mathematical
+  text: "For one latent with unit decoder direction d, the minimizer over f ≥ 0 of ||x − f d||^2 + λ f is f* = max(0, <d, x> − λ/2): every active latent is lowered by exactly λ/2, and latents with <d, x> ≤ λ/2 are switched off."
+  assumes: ["one latent with a unit-norm decoder direction d", "x has the decoder bias subtracted", "f ≥ 0", "λ ≥ 0"]
+  derivation: l1-shrinkage
+
+- id: c-shrink-relu-encoder
+  type: mathematical
+  text: "A ReLU encoder with weight row d and bias −λ/2 computes this minimizer exactly."
+  assumes: ["one latent with a unit-norm decoder direction d", "x has the decoder bias subtracted", "f ≥ 0", "λ ≥ 0"]
+  derivation: l1-shrinkage
+
+- id: c-shrink-figure
+  type: mathematical
+  text: "With x = d and λ = 1 the minimizer is 1/2, so the reconstruction is half the input although a perfect reconstruction exists."
+  assumes: ["one latent with a unit-norm decoder direction d", "x has the decoder bias subtracted", "f ≥ 0", "λ ≥ 0"]
+  derivation: l1-shrinkage
+
+- id: c-norm-scale-symmetry
+  type: mathematical
+  text: "Replacing W_dec by s W_dec and the code z by z/s, s > 0, leaves the reconstruction unchanged and divides the L1 term by s, so without a norm constraint the L1 term can be made arbitrarily small."
+  assumes: ["s > 0", "no constraint on decoder norms"]
+  derivation: l1-shrinkage
+
+- id: c-topk-exact-l0
+  type: mathematical
+  text: "ReLU(TopK(a)) has at most k nonzero entries for every input, with exactly min(k, number of positive entries) nonzeros."
+  assumes: ["a finite pre-activation vector a in R^n", "1 ≤ k ≤ n", "ties broken the same way in every form"]
+  derivation: topk-l0
+
+- id: c-topk-projection
+  type: mathematical
+  text: "ReLU(TopK(a)) is a closest point to a among nonnegative vectors with at most k nonzero entries, because including entry i in the support lowers the squared distance by max(a_i, 0)^2."
+  assumes: ["a finite pre-activation vector a in R^n", "1 ≤ k ≤ n", "ties broken the same way in every form"]
+  derivation: topk-l0
+
+- id: c-topk-orthonormal
+  type: mathematical
+  text: "If the decoder W has orthonormal columns and the encoder is W^T, then ||x − W v||^2 = ||x − W W^T x||^2 + ||W^T x − v||^2, so the TopK code of W^T x is the best nonnegative k-sparse code of x."
+  assumes: ["a finite pre-activation vector a in R^n", "1 ≤ k ≤ n", "ties broken the same way in every form", "W^T W = I"]
+  derivation: topk-l0
+
+- id: c-topk-no-shrink
+  type: mathematical
+  text: "Each value kept by ReLU(TopK(a)) equals its pre-activation; nothing is subtracted from it."
+  assumes: ["a finite pre-activation vector a in R^n", "1 ≤ k ≤ n", "ties broken the same way in every form"]
+  derivation: topk-l0
+
+- id: c-ra-gamma
+  type: definitional
+  text: "Rajamanoharan et al. define the relative reconstruction bias γ as the minimizer over γ' of E||x̂(x)/γ' − x||^2, so that γ^{-1} is the optimal multiplicative factor for rescaling reconstructions; γ = 1 for an unbiased SAE and γ < 1 when there is shrinkage."
+  evidence:
+    - {work: "rajamanoharan-2024-gated-sparse-autoencoders", role: original, locator: "p. 8", stance: for}
+
+- id: c-gamma-def
+  type: mathematical
+  text: "The scale c minimizing E||c x̂ − x||^2 is E[x̂ · x]/E||x̂||^2, so γ = E||x̂||^2 / E[x̂ · x] = 2E||x̂||^2 / (E||x̂||^2 + E||x||^2 − E||x̂ − x||^2)."
+  assumes: ["a finite batch", "sum of x̂ · x over the batch is positive"]
+  derivation: reconstruction-bias
+
+- id: c-gamma-shrink-example
+  type: mathematical
+  text: "For one latent with x = s d, ||d|| = 1 and s > λ/2, the L1 optimum gives γ = 1 − λ/(2s), which is 1/2 for s = λ = 1."
+  assumes: ["a finite batch", "sum of x̂ · x over the batch is positive", "s > λ/2"]
+  derivation: reconstruction-bias
+
+- id: c-fvu-mean-one
+  type: mathematical
+  text: "The fraction of variance unexplained, Σ||x − x̂||^2 / Σ||x − x̄||^2, equals 1 for the predictor that always outputs the batch mean x̄ and 0 for perfect reconstruction."
+  assumes: ["the inputs are not all equal"]
+  derivation: reconstruction-bias
+
+# Worked example
+
+- id: c-worked-l1
+  type: mathematical
+  text: "For inputs (3, 1) and (1, 3) with an identity decoder and tied encoder, the L1 SAE with λ = 1 (bias −1/2) gives codes (2.5, 0.5) and (0.5, 2.5), L0 = 2, squared error 1, FVU 0.25 and γ = 13/16."
+  assumes: ["identity decoder", "tied encoder", "no decoder bias"]
+  derivation: reconstruction-bias
+
+- id: c-worked-topk
+  type: mathematical
+  text: "For the same inputs the TopK SAE with k = 1 gives codes (3, 0) and (0, 3), L0 = 1, squared error 2, FVU 0.5 and γ = 1, while the L1 SAE with λ = 2 reaches L0 = 1 with squared error 4, FVU 1.0 and γ = 2/3."
+  assumes: ["identity decoder", "tied encoder", "no decoder bias"]
+  derivation: reconstruction-bias
+
+# Hyperparameters
+
+- id: c-ga-lr-tokens
+  type: empirical
+  text: "Gao et al. find that the largest learning rate that converges scales with 1/√n, and that the number of tokens to convergence increases as approximately Θ(n0.6) for GPT-2 small and Θ(n0.65) for GPT-4."
+  scope:
+    models: "TopK autoencoders of Gao et al."
+    data: ["GPT-2 small and GPT-4 residual-stream activations"]
+    scale: "up to 16 million latents"
+    setting: "autoencoders on a layer near the end of the network, context length 64"
+  evidence:
+    - {work: "gao-2024-scaling-sparse-autoencoders", role: original, locator: "p. 4", stance: for}
+
+- id: c-cu-tradeoff
+  type: empirical
+  text: "Varying α, Cunningham et al. consistently find a smooth tradeoff between sparsity and accuracy, with no bump or knee, which provides some evidence that there is not a single correct sparse decomposition of activation spaces."
+  scope:
+    models: "ReLU SAEs of Cunningham et al."
+    data: ["the-pile"]
+    scale: "unknown"
+    setting: "Pythia activations"
+  evidence:
+    - {work: "cunningham-2023-sparse-autoencoders", role: original, locator: "p. 12", stance: for}
+
+- id: c-cu-training
+  type: attributive
+  text: "Cunningham et al. train with Adam at a learning rate of 1e-3 on 5-50M activation vectors for 1-3 epochs, a single run completing in under an hour on a single A40 GPU."
+  evidence:
+    - {work: "cunningham-2023-sparse-autoencoders", role: original, locator: "p. 12", stance: for}
+
+- id: c-ga-adam
+  type: attributive
+  text: "Gao et al. use Adam ε = 6.25 × 10−10 in many experiments, a batch size of 131,072 tokens for most experiments, and an EMA of the weights with coefficient 0.999."
+  evidence:
+    - {work: "gao-2024-scaling-sparse-autoencoders", role: original, locator: "p. 18", stance: for}
+
+# Cost
+
+- id: c-ra-wallclock
+  type: attributive
+  text: "Rajamanoharan et al. note that in their experience much of the training wall clock time goes to generating language model activations or to disk I/O."
+  evidence:
+    - {work: "rajamanoharan-2024-gated-sparse-autoencoders", role: original, locator: "p. 7", stance: for}
+
+- id: c-cu-compute
+  type: attributive
+  text: "Cunningham et al. describe their approach as requiring only unlabelled model activations and using orders of magnitude less compute than training the original models."
+  evidence:
+    - {work: "cunningham-2023-sparse-autoencoders", role: original, locator: "p. 9", stance: for}
+
+- id: c-ga-16m
+  type: attributive
+  text: "Gao et al. train a 16 million latent autoencoder on GPT-4 activations for 40 billion tokens."
+  evidence:
+    - {work: "gao-2024-scaling-sparse-autoencoders", role: original, locator: "p. 1", stance: for}
+
+# Evidence
+
+- id: c-cu-interp
+  type: empirical
+  text: "Cunningham et al. compare against the default basis, random directions, PCA and ICA, and find their dictionary features far more interpretable by autointerpretability score."
+  scope:
+    models: "ReLU SAEs of Cunningham et al. on Pythia-70M and Pythia-410M"
+    data: ["the-pile"]
+    scale: "unknown"
+    setting: "residual stream; autointerpretability scores of Bills et al."
+  evidence:
+    - {work: "cunningham-2023-sparse-autoencoders", role: original, locator: "p. 3", stance: for}
+    - {work: "cunningham-2023-sparse-autoencoders", role: original, locator: "p. 5", stance: for}
+
+- id: c-cu-layers
+  type: empirical
+  text: "The strength of the effect declines through the model, being comparable to ICA in layer 4 and showing minimal improvement in the final layer."
+  scope:
+    models: "ReLU SAEs of Cunningham et al. on Pythia-70M and Pythia-410M"
+    data: ["the-pile"]
+    scale: "unknown"
+    setting: "residual stream; autointerpretability scores of Bills et al."
+  evidence:
+    - {work: "cunningham-2023-sparse-autoencoders", role: original, locator: "p. 5", stance: for}
+
+- id: c-cu-ioi
+  type: empirical
+  text: "On the indirect object identification task, Cunningham et al.'s dictionary features require fewer patches to reach a given level of KL divergence than comparable decompositions such as PCA."
+  scope:
+    models: "ReLU SAEs of Cunningham et al. on Pythia-410M"
+    data: ["the-pile"]
+    scale: "about 7 million activations"
+    setting: "activation patching on indirect object identification"
+  evidence:
+    - {work: "cunningham-2023-sparse-autoencoders", role: original, locator: "p. 5", stance: for}
+
+- id: c-ga-joint-law
+  type: empirical
+  text: "Gao et al. fit L(n, k) = exp(α + β_k log k + β_n log n + γ log k log n) + exp(ζ + η log k) on GPT-4 autoencoders with α = −0.50, β_k = 0.26, β_n = −0.017, γ = −0.042, ζ = −1.32 and η = −0.085, holding only in the small k regime."
+  scope:
+    models: "TopK autoencoders of Gao et al."
+    data: ["GPT-2 small and GPT-4 residual-stream activations"]
+    scale: "up to 16 million latents"
+    setting: "autoencoders on a layer near the end of the network, context length 64"
+  evidence:
+    - {work: "gao-2024-scaling-sparse-autoencoders", role: original, locator: "p. 5", stance: for}
+
+- id: c-ga-tradeoff
+  type: empirical
+  text: "At n = 32768, TopK has a better reconstruction-sparsity trade-off than ReLU and ProLU and is comparable to Gated; at L0 = 128 scaling laws are steeper for TopK than for ReLU."
+  scope:
+    models: "TopK autoencoders of Gao et al."
+    data: ["GPT-2 small and GPT-4 residual-stream activations"]
+    scale: "up to 16 million latents"
+    setting: "autoencoders on a layer near the end of the network, context length 64"
+  evidence:
+    - {work: "gao-2024-scaling-sparse-autoencoders", role: original, locator: "p. 3", stance: for}
+
+- id: c-ga-gpt4-loss
+  type: empirical
+  text: "Substituting the 16 million latent autoencoder into GPT-4 gives a language modeling loss corresponding to 10% of the pretraining compute of GPT-4."
+  scope:
+    models: "TopK autoencoders of Gao et al."
+    data: ["GPT-2 small and GPT-4 residual-stream activations"]
+    scale: "up to 16 million latents"
+    setting: "autoencoders on a layer near the end of the network, context length 64"
+  evidence:
+    - {work: "gao-2024-scaling-sparse-autoencoders", role: original, locator: "p. 6", stance: for}
+
+- id: c-ga-refine
+  type: empirical
+  text: "Refining the nonzero activations on a saved sparsity mask tends to increase activations in ReLU models on average but not in TopK models, and closes only part of the gap between ReLU and TopK."
+  scope:
+    models: "TopK autoencoders of Gao et al."
+    data: ["GPT-2 small and GPT-4 residual-stream activations"]
+    scale: "up to 16 million latents"
+    setting: "autoencoders on a layer near the end of the network, context length 64"
+  evidence:
+    - {work: "gao-2024-scaling-sparse-autoencoders", role: original, locator: "p. 9", stance: for}
+    - {work: "gao-2024-scaling-sparse-autoencoders", role: original, locator: "p. 10", stance: for}
+
+- id: c-ra-gamma-results
+  type: empirical
+  text: "Gated SAEs' reconstructions are unbiased with γ ≈ 1, whereas baseline SAEs exhibit shrinkage with γ < 1, getting worse as the L1 coefficient λ increases."
+  scope:
+    models: "Gated and baseline SAEs of Rajamanoharan et al."
+    data: ["unknown"]
+    scale: "subject models up to Gemma-7B"
+    setting: "GELU-1L neuron activations, Pythia-2.8B and Gemma-7B"
+  evidence:
+    - {work: "rajamanoharan-2024-gated-sparse-autoencoders", role: original, locator: "p. 9", stance: for}
+
+- id: c-ra-half
+  type: empirical
+  text: "Training SAEs on LMs of up to 7B parameters, Rajamanoharan et al. find that Gated SAEs solve shrinkage, are similarly interpretable, and require half as many firing features to achieve comparable reconstruction fidelity."
+  scope:
+    models: "Gated and baseline SAEs of Rajamanoharan et al."
+    data: ["unknown"]
+    scale: "subject models up to Gemma-7B"
+    setting: "GELU-1L neuron activations, Pythia-2.8B and Gemma-7B"
+  evidence:
+    - {work: "rajamanoharan-2024-gated-sparse-autoencoders", role: original, locator: "p. 1", stance: for}
+
+- id: c-ra-human
+  type: empirical
+  text: "In a blinded human rater study, the test of the null hypothesis that Gated SAEs are at most as interpretable as baseline SAEs gives p = .060 (estimate .13, mean difference CI [0, .26])."
+  scope:
+    models: "Gated and baseline SAEs of Rajamanoharan et al."
+    data: ["unknown"]
+    scale: "subject models up to Gemma-7B"
+    setting: "GELU-1L neuron activations, Pythia-2.8B and Gemma-7B"
+  evidence:
+    - {work: "rajamanoharan-2024-gated-sparse-autoencoders", role: original, locator: "p. 10", stance: for}
+
+# Limitations and failure modes
+
+- id: c-cu-perplexity
+  type: empirical
+  text: "Replacing the layer 2 residual stream activations of Pythia-70M with their reconstruction increases the perplexity on the Pile from 25 to 40."
+  scope:
+    models: "ReLU SAE of Cunningham et al. on Pythia-70M"
+    data: ["the-pile"]
+    scale: "unknown"
+    setting: "layer 2 residual stream"
+  evidence:
+    - {work: "cunningham-2023-sparse-autoencoders", role: original, locator: "p. 9", stance: for}
+
+- id: c-cu-mlp
+  type: attributive
+  text: "The training pipeline of Cunningham et al. is not able to robustly learn overcomplete bases in the intermediate layers of the MLP."
+  evidence:
+    - {work: "cunningham-2023-sparse-autoencoders", role: original, locator: "p. 9", stance: for}
+
+- id: c-ga-k1
+  type: attributive
+  text: "Gao et al. note that an infinitely wide maximally sparse (k = 1) autoencoder can perfectly reconstruct by assigning latents densely in R^d while being completely structure-less."
+  evidence:
+    - {work: "gao-2024-scaling-sparse-autoencoders", role: original, locator: "p. 5", stance: for}
+
+- id: c-ga-zero-ablation
+  type: attributive
+  text: "Because ablating the residual stream to zero causes very high downstream loss, even very poorly explaining the behavior can give high zero-ablation fidelity scores; the zero-ablation fidelity of the 16M autoencoder is 98.2%."
+  evidence:
+    - {work: "gao-2024-scaling-sparse-autoencoders", role: original, locator: "p. 6", stance: for}
+
+- id: c-ra-rescale
+  type: attributive
+  text: "Rescaling the shrunk feature activations is not necessarily enough to overcome the L1 bias, since an SAE trained with the L1 penalty could have learnt sub-optimal encoder and decoder directions."
+  evidence:
+    - {work: "rajamanoharan-2024-gated-sparse-autoencoders", role: original, locator: "p. 5", stance: for}
+
+- id: c-ra-unbiased-norm
+  type: attributive
+  text: "An unbiased but imperfect SAE must have mean squared reconstruction norm strictly less than the mean squared norm of its inputs even without shrinkage."
+  evidence:
+    - {work: "rajamanoharan-2024-gated-sparse-autoencoders", role: original, locator: "p. 8", stance: for}
+
+- id: c-ga-limits
+  type: attributive
+  text: "Gao et al. note that TopK forces every token to use exactly k latents, which is likely suboptimal, and that a large fraction of the random activations of features they find, especially in GPT-4, are not yet adequately monosemantic."
+  evidence:
+    - {work: "gao-2024-scaling-sparse-autoencoders", role: original, locator: "p. 11", stance: for}
+
+- id: c-ga-progressive
+  type: attributive
+  text: "Training with TopK only gives a progressive code up to the value of k used during training; summing TopK losses as L(k) + L(4k)/8 (Multi-TopK) gives a progressive code over all k', doing slightly worse than TopK at k."
+  evidence:
+    - {work: "gao-2024-scaling-sparse-autoencoders", role: original, locator: "p. 10", stance: for}
+
+- id: c-el-challenges
+  type: attributive
+  text: "Elhage et al. list challenges of finding an overcomplete basis: it is no longer easy to know how many features to enumerate; it may mean factoring a millions (neurons) by billions (tokens) matrix to be a thousand or more times larger; and interference is no longer pushing in your favor."
+  evidence:
+    - {work: "elhage-2022-toy-models-of-superposition", role: original, locator: "p. 43", stance: for}
+
+# Variants
+
+- id: c-ra-two-roles
+  type: attributive
+  text: "The encoder of a baseline SAE has two roles, detecting which features are active, for which the L1 penalty is necessary, and estimating the magnitudes of active features, for which the L1 penalty is a source of unwanted bias."
+  evidence:
+    - {work: "rajamanoharan-2024-gated-sparse-autoencoders", role: original, locator: "p. 5", stance: for}
+
+- id: c-ra-gated
+  type: definitional
+  text: "The gated encoder is f̃(x) := 1[(Wgate(x − bdec) + bgate) > 0] ⊙ ReLU(Wmag(x − bdec) + bmag), where fgate determines which features are active and fmag estimates their magnitudes; Wmag shares the projection directions of Wgate through a rescaling parameter rmag, so the Gated SAE has only 2 × M more parameters than a baseline SAE."
+  evidence:
+    - {work: "rajamanoharan-2024-gated-sparse-autoencoders", role: original, locator: "p. 5", stance: for}
+
+- id: c-ra-compute
+  type: attributive
+  text: "The gated loss runs the decoder twice, leading to a 50% increase in the compute required for a training update step."
+  evidence:
+    - {work: "rajamanoharan-2024-gated-sparse-autoencoders", role: original, locator: "p. 7", stance: for}
+
+- id: c-ga-jumprelu
+  type: definitional
+  text: "ProLU, also known as TRec or JumpReLU, sets all values below a positive threshold to zero, J_θ(x) = x · 1(x > θ), and needs an approximate gradient because θ is non-differentiable."
+  evidence:
+    - {work: "gao-2024-scaling-sparse-autoencoders", role: original, locator: "p. 10", stance: for}
+
+# History
+
+- id: c-el-l1
+  type: attributive
+  text: "Elhage et al. find it quite easy to get rid of superposition in their toy models, at the cost of a higher loss, by adding an L1 regularization term λ||h||_1 on the hidden layer activations."
+  evidence:
+    - {work: "elhage-2022-toy-models-of-superposition", role: original, locator: "p. 42", stance: for}
+
+- id: c-cu-builds
+  type: attributive
+  text: "Building on Sharkey et al., Cunningham et al. train sparse autoencoders to learn these directions, an approach similar to Yun et al., who apply sparse dictionary learning to all residual stream layers."
+  evidence:
+    - {work: "cunningham-2023-sparse-autoencoders", role: original, locator: "p. 2", stance: for}
+
+- id: c-ra-history
+  type: attributive
+  text: "Rajamanoharan et al. write that, motivated by the superposition hypothesis, Bricken et al. and Cunningham et al. used sparse autoencoders to find sparse decompositions of model activations in terms of an overcomplete basis, or dictionary."
+  evidence:
+    - {work: "rajamanoharan-2024-gated-sparse-autoencoders", role: original, locator: "p. 1", stance: for}
+
+- id: c-cu-enumerative
+  type: attributive
+  text: "Cunningham et al. name enumerative safety as an ambitious dream: a complete list of a model's features that would provide a guarantee against dangerous behaviours such as deception."
+  evidence:
+    - {work: "cunningham-2023-sparse-autoencoders", role: original, locator: "p. 9", stance: for}
