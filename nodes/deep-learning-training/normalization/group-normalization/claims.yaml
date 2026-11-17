@@ -1,0 +1,412 @@
+# The claims of the group normalization page (spec 07). The build computes the labels.
+
+# Setting
+
+- id: c-small-batch
+  type: empirical
+  text: "The error of batch normalization increases rapidly when the batch size becomes smaller, which Wu and He attribute to inaccurate batch statistics estimation."
+  scope: &gn
+    models: "ResNet-50 with BN, LN, IN and GN"
+    data: [imagenet-ilsvrc-2012]
+    scale: "8 GPUs, 32 to 2 images per GPU"
+    setting: "ImageNet classification, validation error"
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "the abstract", stance: for}
+
+- id: c-per-worker
+  type: attributive
+  text: "Wu and He use batch size to mean the number of samples per worker, because the batch statistics are computed per worker and not broadcast across workers in many libraries."
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "p. 1", stance: for}
+
+- id: c-detection-batch
+  type: attributive
+  text: "Wu and He note that BN needs a sufficiently large batch, for example 32 per worker, while detection systems in the Fast/er and Mask R-CNN frameworks use a batch of 1 or 2 images and freeze BN by turning it into a linear layer."
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "p. 1", stance: for}
+
+- id: c-bn-conv
+  type: definitional
+  text: "For convolutional layers, all locations of a feature map are normalized in the same way with one pair of gamma and beta per feature map, over an effective mini-batch of size m' = m p q for a mini-batch of size m and feature maps of size p by q."
+  evidence:
+    - {work: "ioffe-2015-batch-normalization", role: original, locator: "p. 5", stance: for}
+
+- id: c-inference-population
+  type: definitional
+  text: "At inference, the normalization uses the population statistics instead of the mini-batch statistics, with the unbiased variance estimate m/(m-1) times the expectation of the mini-batch variances over training mini-batches of size m."
+  evidence:
+    - {work: "ioffe-2015-batch-normalization", role: original, locator: "p. 4", stance: for}
+
+- id: c-ln-definition
+  type: definitional
+  text: "Layer normalization computes the mean and the standard deviation over all the H hidden units in a layer; all the hidden units in a layer share the same normalization terms mu and sigma, but different training cases have different normalization terms."
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "Section 3", stance: for}
+
+- id: c-batch-size-one
+  type: attributive
+  text: "Layer normalization does not impose any constraint on the size of a mini-batch and it can be used in the pure online regime with batch size 1."
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "Section 3", stance: for}
+
+- id: c-train-test
+  type: definitional
+  text: "Layer normalization performs exactly the same computation at training and test times."
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "the abstract", stance: for}
+
+- id: c-in-definition
+  type: definitional
+  text: "Instance normalization, also known as contrast normalization, normalizes each image t and each channel i by its own mean mu_ti and variance sigma_ti, computed over the H by W spatial positions, while batch normalization applies the normalization to a whole batch of images."
+  evidence:
+    - {work: "ulyanov-2016-instance-normalization", role: original, locator: "p. 4", stance: for}
+
+- id: c-instance-norm
+  type: definitional
+  text: "Instance normalization replaces batch normalization in a stylization network and is applied both at training and testing time."
+  evidence:
+    - {work: "ulyanov-2016-instance-normalization", role: original, locator: "the abstract", stance: for}
+
+- id: c-ln-in-limited
+  type: attributive
+  text: "Wu and He note that layer and instance normalization are effective for training sequential and generative models but have limited success in visual recognition."
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "p. 2", stance: for}
+
+# The method
+
+- id: c-general-form
+  type: definitional
+  text: "A family of feature normalization methods, including BN, LN, IN and GN, computes x-hat_i = (x_i - mu_i) / sigma_i, where mu_i and sigma_i are the mean and the standard deviation over a set S_i of m pixels, with a small constant inside the standard deviation; these methods mainly differ in how the set S_i is defined."
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "p. 3", stance: for}
+
+- id: c-sets
+  type: definitional
+  text: "The set of batch normalization is S_i = {k : k_C = i_C}, the set of layer normalization is S_i = {k : k_N = i_N}, and the set of instance normalization is S_i = {k : k_N = i_N, k_C = i_C}."
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "p. 3", stance: for}
+
+- id: c-gn-set
+  type: definitional
+  text: "Group normalization uses the set S_i = {k : k_N = i_N, floor(k_C / (C/G)) = floor(i_C / (C/G))}, where G is a pre-defined number of groups, G = 32 by default, and the groups of channels are stored in sequential order along the C axis."
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "p. 4", stance: for}
+
+- id: c-affine
+  type: definitional
+  text: "In group normalization the pixels in the same group are normalized together by the same mean and standard deviation, and the layer learns a per-channel gamma and beta."
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "p. 4", stance: for}
+
+- id: c-extremes
+  type: attributive
+  text: "Wu and He state that GN becomes LN when G = 1 and becomes IN when G = C, one channel per group."
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "p. 4", stance: for}
+
+- id: c-ln-assumption
+  type: attributive
+  text: "Wu and He argue that LN assumes that all channels in a layer make similar contributions, which can be less valid with convolutions, and that GN is less restricted because only each group of channels shares a mean and a variance."
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "p. 4", stance: for}
+
+- id: c-in-channels
+  type: attributive
+  text: "Wu and He argue that IN can only rely on the spatial dimension for computing the mean and variance and misses the opportunity of exploiting the channel dependence."
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "p. 4", stance: for}
+
+- id: c-motivation
+  type: attributive
+  text: "Wu and He motivate grouping by classical features such as SIFT and HOG, which are group-wise features that involve group-wise normalization."
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "p. 2", stance: for}
+
+- id: c-batch-indep-claim
+  type: attributive
+  text: "Wu and He state that the computation of GN is independent of batch sizes, and that its accuracy is stable in a wide range of batch sizes."
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "the abstract", stance: for}
+
+- id: c-setup
+  type: attributive
+  text: "In the ImageNet experiments, Wu and He initialize all gamma to 1, except in the last normalization layer of each residual block where gamma starts at 0, and use a weight decay of 0.0001 for all weight layers including gamma and beta."
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "p. 4", stance: for}
+
+# Derivation
+
+- id: c-g1-is-ln
+  type: mathematical
+  text: "With G = 1 the group normalization set of every index is the set of all indices of the same example, so group normalization equals layer normalization over the channels and all positions."
+  assumes: ["the channels are split into G contiguous groups of C/G channels", "both layers use the biased variance and the same epsilon"]
+  derivation: special-cases
+
+- id: c-gc-is-in
+  type: mathematical
+  text: "With G = C the group normalization set of every index is the set of positions of the same channel of the same example, so group normalization equals instance normalization."
+  assumes: ["the channels are split into G contiguous groups of C/G channels", "both layers use the biased variance and the same epsilon"]
+  derivation: special-cases
+
+- id: c-bn-batch1-is-in
+  type: mathematical
+  text: "Batch normalization in training mode on a batch of one example uses the set of positions of each channel of that example, so it equals instance normalization."
+  assumes: ["batch normalization uses the statistics of the current batch", "both layers use the biased variance and the same epsilon"]
+  derivation: special-cases
+
+- id: c-batch-independence
+  type: mathematical
+  text: "The group normalization output of an example is a function of that example alone, so it is the same in any batch and at any batch size, at training and at test time."
+  assumes: ["the statistics are computed from one example only"]
+  derivation: batch-independence
+
+- id: c-bn-depends
+  type: mathematical
+  text: "The batch normalization output of an example in training mode changes when the other examples of the batch change."
+  assumes: ["batch normalization uses the statistics of the current batch"]
+  derivation: batch-independence
+
+- id: c-group-moments
+  type: mathematical
+  text: "Within each group of each example, the normalized values have mean 0 and biased variance var/(var + epsilon), so variance 1 when epsilon = 0; the channels inside a group need not have mean 0 or variance 1."
+  assumes: ["the mean and the variance are computed over the same group that is normalized", "the moments are read before the scale and the shift"]
+  derivation: group-moments
+
+- id: c-grad
+  type: mathematical
+  text: "With u the output gradient times gamma, the input gradient within a group is (u - mean(u) - x-hat mean(u x-hat)) / s, where the means are over the group and s is the square root of the group variance plus epsilon."
+  assumes: ["the group mean and variance depend on the input and the gradient flows through them", "s > 0"]
+  derivation: gradient
+
+- id: c-grad-mean-zero
+  type: mathematical
+  text: "The input gradient of group normalization sums to zero over each group."
+  assumes: ["the gradient flows through the group mean"]
+  derivation: gradient
+
+- id: c-grad-eps-leak
+  type: mathematical
+  text: "The mean over a group of x-hat times the input gradient is mean(u x-hat) / s times epsilon / (var + epsilon), so the input gradient of each group is orthogonal to x-hat when epsilon = 0."
+  assumes: ["the gradient flows through the group variance"]
+  derivation: gradient
+
+- id: c-affine-grad
+  type: mathematical
+  text: "The gradient for gamma_c is the sum of the output gradient times x-hat, and the gradient for beta_c is the sum of the output gradient, both over the examples and the positions of channel c."
+  assumes: ["gamma and beta are per channel"]
+  derivation: gradient
+
+# Evidence
+
+- id: c-table1
+  type: empirical
+  text: "With 32 images per GPU, the ResNet-50 validation error is 23.6% for BN, 24.1% for GN, 25.3% for LN and 28.4% for IN."
+  scope: *gn
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "Table 1", stance: for}
+
+- id: c-train-error
+  type: empirical
+  text: "With 32 images per GPU, GN has lower training error than BN but slightly higher validation error, which Wu and He read as GN losing some of the regularization that the stochastic batch sampling gives BN."
+  scope: *gn
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "p. 5", stance: for}
+
+- id: c-gn-vs-bn
+  type: empirical
+  text: "On ImageNet with ResNet-50, GN has an error of 24.1% against 23.6% for BN at 32 images per GPU, and 24.1% against 34.7% at 2 images per GPU."
+  scope: *gn
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "Table 2", stance: for}
+
+- id: c-groups
+  type: empirical
+  text: "With 32 images per GPU, GN with 64 to 2 groups has an error between 24.1% and 24.7%, against 25.3% for G = 1, which is LN; with 64 to 2 channels per group it has an error between 24.2% and 25.6%, against 28.4% for one channel per group, which is IN."
+  scope: *gn
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "Table 3", stance: for}
+
+- id: c-bn-one-image
+  type: attributive
+  text: "Wu and He note that when the statistics are computed from 1 image, BN becomes similar to IN at training time, and that IN has a better result (28.4%) than BN with a batch size of 2 (34.7%)."
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "p. 6", stance: for}
+
+- id: c-memory
+  type: attributive
+  text: "Wu and He state that removing the batch size constraint of BN can give considerably more memory, for example 16 times or more, for higher-capacity models."
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "p. 6", stance: for}
+
+- id: c-resnet101
+  type: empirical
+  text: "With ResNet-101, the validation error is 22.0% for BN and 22.4% for GN at 32 images per GPU, and 31.9% for BN and 23.0% for GN at 2 images per GPU."
+  scope:
+    models: "ResNet-101 with BN and GN"
+    data: [imagenet-ilsvrc-2012]
+    scale: "8 GPUs, 32 and 2 images per GPU"
+    setting: "ImageNet classification, validation error"
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "p. 6", stance: for}
+
+- id: c-vgg
+  type: empirical
+  text: "VGG-16 has a validation error of 29.2% without normalization, 28.0% with BN and 27.6% with GN, with BN or GN right after each convolutional layer."
+  scope:
+    models: "VGG-16 without normalization, with BN and with GN"
+    data: [imagenet-ilsvrc-2012]
+    scale: "32 images per GPU"
+    setting: "ImageNet classification, validation error"
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "p. 6", stance: for}
+
+- id: c-renorm
+  type: empirical
+  text: "With a batch size of 4, ResNet-50 trained with batch renormalization has an error of 26.3%, better than the 27.3% of BN but 2.1% higher than the 24.2% of GN."
+  scope:
+    models: "ResNet-50 with BN, batch renormalization and GN"
+    data: [imagenet-ilsvrc-2012]
+    scale: "4 images per GPU"
+    setting: "ImageNet classification, validation error"
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "p. 6", stance: for}
+
+- id: c-coco-c4
+  type: empirical
+  text: "Fine-tuning Mask R-CNN with a ResNet-50 C4 backbone at 1 image per GPU, GN improves over frozen BN by 1.1 box AP and 0.8 mask AP, and LN is 1.9 box AP worse than GN and 0.8 worse than frozen BN."
+  scope: &coco
+    models: "Mask R-CNN with ResNet-50 and ResNet-101 backbones, BN frozen against GN"
+    data: [coco-2017]
+    scale: "8 GPUs, 1 image per GPU"
+    setting: "COCO detection and instance segmentation, box and mask AP on val2017"
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "p. 7", stance: for}
+
+- id: c-coco-head
+  type: empirical
+  text: "With an FPN backbone, adding GN to the convolutional layers of the box head raises box AP by 0.9 to 39.5, while BN in the box head is about 9 AP worse, because the RoIs of a batch are sampled from the same image and are not i.i.d."
+  scope: *coco
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "p. 7", stance: for}
+
+- id: c-finetune-bn
+  type: attributive
+  text: "Wu and He report that fine-tuning BN without freezing it works poorly, reducing about 6 AP with a batch size of 2."
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "p. 7", stance: for}
+
+- id: c-coco-long
+  type: empirical
+  text: "With the default schedule GN is not fully trained; with 270k instead of 180k iterations, the ResNet-50 FPN GN model is 2.2 box AP and 1.6 mask AP better than its frozen BN variant, which does not benefit from longer training."
+  scope: *coco
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "p. 8", stance: for}
+
+- id: c-scratch
+  type: empirical
+  text: "GN makes it easy to train Mask R-CNN from scratch, without pre-training, and the GN models trained from scratch for 270k iterations reach 41.0 box AP and 36.4 mask AP."
+  scope: *coco
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "p. 8", stance: for}
+
+- id: c-kinetics
+  type: empirical
+  text: "With 32-frame clips and a batch size of 8, GN is slightly worse than BN by 0.3% top-1 accuracy and 0.1% top-5."
+  scope: &kinetics
+    models: "ResNet-50 I3D with BN and GN"
+    data: [kinetics-400]
+    scale: "8 or 4 clips per GPU, 32 or 64 frames"
+    setting: "video classification, top-1 and top-5 accuracy with 10-clip testing"
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "p. 8", stance: for}
+
+- id: c-kinetics-small
+  type: empirical
+  text: "With 32-frame clips and a batch size of 4, GN keeps its accuracy at 72.8 / 90.6 top-1 / top-5, while BN drops by 1.2% to 72.1 / 90.0."
+  scope: *kinetics
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "p. 9", stance: for}
+
+- id: c-kinetics-long
+  type: empirical
+  text: "With 64-frame clips and 4 clips per GPU, GN reaches 74.5% top-1 and 91.7% top-5 accuracy, against 73.3% and 90.8% for BN."
+  scope: *kinetics
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "Table 8", stance: for}
+
+- id: c-ws
+  type: definitional
+  text: "Weight standardization standardizes the weights in convolutional layers to zero mean and unit variance."
+  evidence:
+    - {work: "qiao-2019-micro-batch-training", role: original, locator: "p. 2", stance: for}
+
+- id: c-gn-ws
+  type: empirical
+  text: "Qiao et al. report that GN with weight standardization at batch size 1 is able to match or outperform BN with large batch sizes on ImageNet, and significantly improves the performances on COCO, where only micro-batch training is available."
+  scope:
+    models: "ResNet with GN and weight standardization, against BN"
+    data: [imagenet-ilsvrc-2012, coco-2017]
+    scale: "1 image per GPU against large batches"
+    setting: "image classification, detection and segmentation"
+  evidence:
+    - {work: "qiao-2019-micro-batch-training", role: original, locator: "p. 2", stance: for}
+
+# Limitations
+
+- id: c-singularities
+  type: attributive
+  text: "Qiao et al. argue that channel-based normalizations such as LN and GN are unable to guarantee far distances from elimination singularities, which might explain their inferior performance compared with BN in large-batch training."
+  evidence:
+    - {work: "qiao-2019-micro-batch-training", role: original, locator: "p. 1", stance: for}
+    - {work: "qiao-2019-micro-batch-training", role: original, locator: "p. 2", stance: for}
+
+- id: c-designed-for-bn
+  type: attributive
+  text: "Wu and He note that many systems and their hyper-parameters have been designed for BN and may not be optimal for GN-based models."
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "p. 9", stance: for}
+
+- id: c-no-wd-gamma
+  type: attributive
+  text: "During fine-tuning, Wu and He use a weight decay of 0 for the γ and β parameters, which is important for good detection results when γ and β are being tuned."
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "p. 7", stance: for}
+
+- id: c-conv-boundary
+  type: attributive
+  text: "In convolutional networks, the hidden units whose receptive fields lie near the boundary of the image are rarely turned on and thus have very different statistics from the rest of the hidden units, and further research is needed to make layer normalization work well in ConvNets."
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "Section 6.7", stance: for}
+
+# History
+
+- id: c-hist-gn
+  type: historical
+  text: "Yuxin Wu and Kaiming He of Facebook AI Research posted Group Normalization as arXiv 1803.08494v3 on 11 Jun 2018."
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-ioffe
+  type: historical
+  text: "Sergey Ioffe and Christian Szegedy of Google posted Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift as arXiv 1502.03167v3 on 2 Mar 2015."
+  evidence:
+    - {work: "ioffe-2015-batch-normalization", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-layer-norm
+  type: historical
+  text: "Ba, Kiros and Hinton posted Layer Normalization as arXiv 1607.06450v1 on 21 Jul 2016."
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-in
+  type: historical
+  text: "Dmitry Ulyanov, Andrea Vedaldi and Victor Lempitsky wrote Instance Normalization: The Missing Ingredient for Fast Stylization, arXiv 1607.08022v3, 6 Nov 2017."
+  evidence:
+    - {work: "ulyanov-2016-instance-normalization", role: original, locator: "the title page", stance: for}
+
+- id: c-future
+  type: attributive
+  text: "Wu and He propose to study GN in recurrent and generative models, where LN and IN are particularly successful, and in reinforcement learning."
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "p. 9", stance: for}

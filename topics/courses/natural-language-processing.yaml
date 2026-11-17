@@ -1,0 +1,217 @@
+# A course of spec 5.7: an ordered list of items with section headings. Names and orders only (19.3).
+# An item names its node by slug when the node exists; before that it is a name and a kind, which aik harvest courses
+# reads into the inventory, so that the catalog step can place it and the course can count its coverage (18).
+id: natural-language-processing
+title: Natural language processing
+basis: >-
+  the chapter order of Jurafsky and Martin, Speech and Language Processing, 3rd edition draft (January 2025), from words
+  and tokens to discourse, cross-checked with public NLP syllabi; the shared material of the machine learning and deep
+  learning courses is named once, where the book first needs it
+sections:
+  - heading: Words and tokens
+    items:
+      - {name: Natural language processing, kind: area}
+      - {name: Corpus, kind: definition}
+      - {name: Zipf's law, kind: finding}
+      - {name: Regular expression, kind: definition}
+      - {name: Tokenization, kind: method}
+      - {name: Byte-pair encoding, kind: method}
+      - {name: WordPiece, kind: method}
+      - {name: Unigram language model tokenizer, kind: method}
+      - {name: SentencePiece, kind: software}
+      - {name: Text normalization, kind: method}
+      - {name: Stemming, kind: method}
+      - {name: Lemmatization, kind: method}
+      - {name: Edit distance, kind: definition}
+  - heading: N-gram language models
+    items:
+      - {name: Language model, kind: concept}
+      - {name: N-gram language model, kind: method}
+      - {name: Markov assumption, kind: concept}
+      - {name: Perplexity, kind: metric}
+      - {name: Out-of-vocabulary word, kind: concept}
+      - {name: Laplace smoothing, kind: method}
+      - {name: Interpolation and backoff, kind: method}
+      - {name: Kneser-Ney smoothing, kind: method}
+  - heading: Text classification
+    items:
+      - {name: Text classification, kind: task}
+      - {name: Sentiment analysis, kind: task}
+      - {name: Bag of words, kind: concept}
+      - {name: Naive Bayes classifier, kind: method}
+      - {name: Logistic regression, kind: method}
+      - {name: Paired bootstrap test, kind: method}
+      - {name: Harms in classification, kind: risk}
+  - heading: Vector semantics and embeddings
+    items:
+      - {name: Distributional hypothesis, kind: concept}
+      - {name: Term-document matrix, kind: definition}
+      - {name: TF-IDF, kind: method}
+      - {name: Pointwise mutual information, kind: definition}
+      - {name: Cosine similarity, kind: metric}
+      - {name: Word embedding, kind: concept}
+      - {name: Word2vec, kind: method}
+      - {name: Skip-gram with negative sampling, kind: method}
+      - {name: GloVe, kind: method}
+      - {name: fastText, kind: method}
+      - {name: Word analogy, kind: concept}
+      - {name: Bias in word embeddings, kind: risk}
+  - heading: Neural language models
+    items:
+      - {name: Feedforward neural language model, kind: method}
+      - {name: Embedding layer, kind: concept}
+      - {name: Recurrent neural network, kind: architecture}
+      - {name: Backpropagation through time, kind: method}
+      - {name: Long short-term memory, kind: architecture}
+      - {name: Gated recurrent unit, kind: architecture}
+      - {name: Bidirectional RNN, kind: architecture}
+      - {name: Encoder-decoder model, kind: architecture}
+      - {name: Attention mechanism, kind: method}
+  - heading: Transformers
+    items:
+      - {name: Transformer, kind: architecture}
+      - {name: Self-attention, kind: method}
+      - {name: Multi-head attention, kind: method}
+      - {name: Positional encoding, kind: method}
+      - {name: Causal masking, kind: method}
+      - {name: Residual stream, kind: concept}
+      - {name: Layer normalization, kind: method}
+  - heading: Large language models
+    items:
+      - {name: Large language model, kind: concept}
+      - {name: Pretraining, kind: method}
+      - {name: Common Crawl, kind: dataset}
+      - {name: The Pile, kind: dataset}
+      - {name: Scaling laws, kind: finding}
+      - {name: Greedy decoding, kind: method}
+      - {name: Beam search, kind: method}
+      - {name: Temperature sampling, kind: method}
+      - {name: Top-k sampling, kind: method}
+      - {name: Nucleus sampling, kind: method}
+      - {name: Hallucination, kind: risk}
+      - {name: GPT-3, kind: model}
+  - heading: Masked language models
+    items:
+      - {name: Masked language modeling, kind: method}
+      - {name: Contextual embedding, kind: concept}
+      - {name: ELMo, kind: model}
+      - {name: BERT, kind: model}
+      - {name: RoBERTa, kind: model}
+      - {name: Fine-tuning, kind: method}
+      - {name: Span prediction, kind: method}
+  - heading: Prompting and alignment
+    items:
+      - {name: Prompting, kind: method}
+      - {name: In-context learning, kind: concept}
+      - {name: Few-shot prompting, kind: method}
+      - {name: Chain-of-thought prompting, kind: method}
+      - {name: Instruction tuning, kind: method}
+      - {name: Reinforcement learning from human feedback, kind: method}
+      - {name: Direct preference optimization, kind: method}
+  - heading: Machine translation
+    items:
+      - {name: Machine translation, kind: task}
+      - {name: Statistical machine translation, kind: method}
+      - {name: Neural machine translation, kind: method}
+      - {name: Back-translation, kind: method}
+      - {name: Multilingual language model, kind: concept}
+      - {name: Low-resource languages, kind: concept}
+      - {name: BLEU, kind: metric}
+      - {name: chrF, kind: metric}
+      - {name: COMET, kind: metric}
+      - {name: WMT shared tasks, kind: benchmark}
+  - heading: Retrieval and question answering
+    items:
+      - {name: Information retrieval, kind: area}
+      - {name: Inverted index, kind: definition}
+      - {name: BM25, kind: method}
+      - {name: Dense retrieval, kind: method}
+      - {name: Dual encoder, kind: architecture}
+      - {name: Mean reciprocal rank, kind: metric}
+      - {name: Question answering, kind: task}
+      - {name: Extractive question answering, kind: task}
+      - {name: SQuAD, kind: benchmark}
+      - {name: Natural Questions, kind: benchmark}
+      - {name: Retrieval-augmented generation, kind: method}
+  - heading: Chatbots and dialogue
+    items:
+      - {name: ELIZA, kind: system}
+      - {name: Dialogue system, kind: concept}
+      - {name: Task-oriented dialogue, kind: task}
+      - {name: Dialogue state tracking, kind: task}
+      - {name: Intent detection and slot filling, kind: task}
+      - {name: Dialogue act, kind: definition}
+  - heading: Speech
+    items:
+      - {name: Automatic speech recognition, kind: task}
+      - {name: Log mel spectrum, kind: definition}
+      - {name: Connectionist temporal classification, kind: method}
+      - {name: Word error rate, kind: metric}
+      - {name: LibriSpeech, kind: dataset}
+      - {name: wav2vec 2.0, kind: model}
+      - {name: Whisper, kind: model}
+      - {name: Text-to-speech, kind: task}
+  - heading: Sequence labeling
+    items:
+      - {name: Sequence labeling, kind: task}
+      - {name: Part-of-speech tagging, kind: task}
+      - {name: Named entity recognition, kind: task}
+      - {name: BIO tagging, kind: method}
+      - {name: Hidden Markov model, kind: concept}
+      - {name: Viterbi algorithm, kind: method}
+      - {name: Conditional random field, kind: method}
+      - {name: Penn Treebank, kind: dataset}
+      - {name: CoNLL-2003, kind: benchmark}
+  - heading: Constituency parsing
+    items:
+      - {name: Context-free grammar, kind: concept}
+      - {name: Constituency, kind: concept}
+      - {name: Treebank, kind: concept}
+      - {name: Chomsky normal form, kind: definition}
+      - {name: CKY algorithm, kind: method}
+      - {name: Probabilistic context-free grammar, kind: method}
+      - {name: Span-based neural constituency parsing, kind: method}
+      - {name: PARSEVAL, kind: metric}
+  - heading: Dependency parsing
+    items:
+      - {name: Dependency grammar, kind: concept}
+      - {name: Universal Dependencies, kind: dataset}
+      - {name: Transition-based dependency parsing, kind: method}
+      - {name: Graph-based dependency parsing, kind: method}
+      - {name: Chu-Liu-Edmonds algorithm, kind: method}
+      - {name: Attachment score, kind: metric}
+  - heading: Information extraction
+    items:
+      - {name: Information extraction, kind: task}
+      - {name: Relation extraction, kind: task}
+      - {name: Distant supervision, kind: method}
+      - {name: Open information extraction, kind: task}
+      - {name: Event extraction, kind: task}
+      - {name: Temporal expression normalization, kind: task}
+      - {name: Knowledge graph, kind: concept}
+  - heading: Meaning
+    items:
+      - {name: WordNet, kind: dataset}
+      - {name: Word sense disambiguation, kind: task}
+      - {name: Semantic role labeling, kind: task}
+      - {name: PropBank, kind: dataset}
+      - {name: FrameNet, kind: dataset}
+      - {name: Selectional restrictions, kind: concept}
+      - {name: Sentiment lexicon, kind: dataset}
+  - heading: Coreference and discourse
+    items:
+      - {name: Coreference resolution, kind: task}
+      - {name: Mention detection, kind: task}
+      - {name: Entity linking, kind: task}
+      - {name: OntoNotes, kind: dataset}
+      - {name: Winograd Schema Challenge, kind: benchmark}
+      - {name: Discourse coherence, kind: concept}
+      - {name: Rhetorical structure theory, kind: concept}
+      - {name: Penn Discourse Treebank, kind: dataset}
+      - {name: Centering theory, kind: concept}
+  - heading: Evaluating language understanding
+    items:
+      - {name: GLUE, kind: benchmark}
+      - {name: SuperGLUE, kind: benchmark}
+      - {name: MMLU, kind: benchmark}
+      - {name: Benchmark contamination, kind: risk}

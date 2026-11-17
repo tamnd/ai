@@ -1,0 +1,790 @@
+# The method: Wei et al. (2022)
+
+- id: c-wei-definition
+  type: definitional
+  text: "Wei et al. define a chain of thought as a series of intermediate reasoning steps, and chain-of-thought prompting as a simple method in which a few chain of thought demonstrations are provided as exemplars in prompting."
+  evidence:
+    - {work: "wei-2022-chain-of-thought-prompting", role: original, locator: "p. 1", stance: for}
+
+- id: c-wei-triples
+  type: definitional
+  text: "In chain-of-thought prompting the exemplars of a few-shot prompt are triples of an input, a chain of thought and an output, where the chain of thought is a coherent series of intermediate natural language reasoning steps that lead to the final answer."
+  evidence:
+    - {work: "wei-2022-chain-of-thought-prompting", role: original, locator: "p. 2", stance: for}
+
+- id: c-wei-figure-1
+  type: attributive
+  text: "Figure 1 of Wei et al. contrasts standard prompting, where the exemplar answer to the tennis balls question is just The answer is 11, with chain-of-thought prompting, where the exemplar answer first works out 5 + 6 = 11."
+  evidence:
+    - {work: "wei-2022-chain-of-thought-prompting", role: original, locator: "p. 1", stance: for}
+
+- id: c-wei-properties
+  type: attributive
+  text: "Wei et al. list attractive properties of chain of thought: it allows models to decompose multi-step problems into intermediate steps and allocate additional computation to problems that require more reasoning steps, it provides an interpretable window into the behavior of the model, it could be applicable to any task that humans can solve via language, and it can be elicited in sufficiently large off-the-shelf language models by including examples in the exemplars of few-shot prompting."
+  evidence:
+    - {work: "wei-2022-chain-of-thought-prompting", role: original, locator: "p. 3", stance: for}
+
+- id: c-wei-open-question
+  type: attributive
+  text: "Wei et al. qualify the interpretable window: fully characterizing a model's computations that support an answer remains an open question."
+  evidence:
+    - {work: "wei-2022-chain-of-thought-prompting", role: original, locator: "p. 3", stance: for}
+
+- id: c-wei-exemplars
+  type: empirical
+  text: "For the math word problem benchmarks GSM8K, SVAMP, ASDiv, AQuA and MAWPS, Wei et al. manually composed a set of eight few-shot exemplars with chains of thought, and these particular exemplars did not undergo prompt engineering."
+  scope:
+    models: "GPT-3, LaMDA, PaLM, UL2 20B, Codex"
+    data: [gsm8k, svamp, asdiv, aqua, mawps]
+    scale: "eight exemplars, one set for all the free-response math benchmarks"
+    setting: "few-shot prompting, no finetuning"
+  evidence:
+    - {work: "wei-2022-chain-of-thought-prompting", role: original, locator: "p. 3", stance: for}
+
+- id: c-wei-models
+  type: empirical
+  text: "Wei et al. evaluate GPT-3 InstructGPT models from 350M to 175B parameters, LaMDA models of 422M, 2B, 8B, 68B and 137B parameters, PaLM models of 8B, 62B and 540B parameters, UL2 20B and Codex, sampling from the models via greedy decoding."
+  scope:
+    models: "GPT-3 (InstructGPT), LaMDA, PaLM, UL2 20B, Codex"
+    data: [gsm8k, svamp, asdiv, aqua, mawps]
+    scale: "350M to 540B parameters"
+    setting: "few-shot prompting with greedy decoding"
+  evidence:
+    - {work: "wei-2022-chain-of-thought-prompting", role: original, locator: "p. 4", stance: for}
+
+- id: c-wei-emergent
+  type: empirical
+  text: "Wei et al. find that chain-of-thought prompting is an emergent ability of model scale: it does not positively impact performance for small models, and only yields performance gains when used with models of about 100B parameters, while models of smaller scale produced fluent but illogical chains of thought."
+  scope:
+    models: "LaMDA, GPT-3, PaLM"
+    data: [gsm8k, svamp, mawps]
+    scale: "350M to 540B parameters"
+    setting: "few-shot prompting with eight exemplars, greedy decoding"
+  evidence:
+    - {work: "wei-2022-chain-of-thought-prompting", role: original, locator: "p. 4", stance: for}
+
+- id: c-wei-small-hurts
+  type: empirical
+  text: "In the appendix Wei et al. add that chain-of-thought prompting actually hurts performance for most models smaller than 10B parameters."
+  scope:
+    models: "LaMDA, GPT-3, PaLM"
+    data: [gsm8k, svamp, asdiv, aqua, mawps]
+    scale: "models below 10B parameters"
+    setting: "few-shot prompting, greedy decoding"
+  evidence:
+    - {work: "wei-2022-chain-of-thought-prompting", role: original, locator: "p. 16", stance: for}
+
+- id: c-wei-conflated
+  type: attributive
+  text: "Wei et al. note that model scale is often conflated with other factors, such as the amount of training compute, so their scale curves do not isolate the number of parameters."
+  evidence:
+    - {work: "wei-2022-chain-of-thought-prompting", role: original, locator: "p. 16", stance: for}
+
+- id: c-wei-harder
+  type: empirical
+  text: "Wei et al. find that chain-of-thought prompting has larger performance gains for more complicated problems: performance more than doubled on GSM8K for the largest GPT and PaLM models, while on SingleOp, the easiest subset of MAWPS, the improvements were either negative or very small."
+  scope:
+    models: "GPT-3 175B, PaLM 540B"
+    data: [gsm8k, mawps]
+    scale: "the largest models of each family"
+    setting: "few-shot prompting, greedy decoding"
+  evidence:
+    - {work: "wei-2022-chain-of-thought-prompting", role: original, locator: "p. 5", stance: for}
+
+- id: c-wei-sota
+  type: empirical
+  text: "Prompting PaLM 540B with just eight chain-of-thought exemplars achieved state-of-the-art accuracy on the GSM8K benchmark of math word problems, surpassing even finetuned GPT-3 with a verifier."
+  scope:
+    models: "PaLM 540B"
+    data: [gsm8k]
+    scale: "540B parameters, eight exemplars"
+    setting: "few-shot prompting, greedy decoding"
+  evidence:
+    - {work: "wei-2022-chain-of-thought-prompting", role: original, locator: "p. 1", stance: for}
+
+- id: c-wei-audit
+  type: empirical
+  text: "Wei et al. read 50 random samples of LaMDA 137B with a correct final answer on GSM8K and found all chains of thought logically and mathematically correct except two that coincidentally arrived at the correct answer; of 50 samples with a wrong answer, 46% of the chains of thought were almost correct, with minor mistakes, and 54% had major errors in semantic understanding or coherence."
+  scope:
+    models: "LaMDA 137B"
+    data: [gsm8k]
+    scale: "50 correct and 50 incorrect samples"
+    setting: "manual inspection of generated chains of thought"
+  evidence:
+    - {work: "wei-2022-chain-of-thought-prompting", role: original, locator: "p. 5", stance: for}
+
+- id: c-wei-62b-errors
+  type: empirical
+  text: "Of 45 errors of PaLM 62B on GSM8K, Wei et al. classify 20 as semantic understanding errors, 18 as one step missing errors and 7 as other errors, and scaling to PaLM 540B fixed 6, 12 and 4 of them."
+  scope:
+    models: "PaLM 62B, PaLM 540B"
+    data: [gsm8k]
+    scale: "45 errors"
+    setting: "manual error analysis"
+  evidence:
+    - {work: "wei-2022-chain-of-thought-prompting", role: original, locator: "p. 16", stance: for}
+
+- id: c-wei-equation-only
+  type: empirical
+  text: "In the ablation of Wei et al., prompting the model to output only a mathematical equation before the answer does not help much on GSM8K, because its semantically challenging questions are hard to translate directly into an equation, but it does improve performance on datasets with one-step or two-step problems."
+  scope:
+    models: "LaMDA 137B, PaLM 540B"
+    data: [gsm8k]
+    scale: "the two largest models"
+    setting: "ablation of the prompt"
+  evidence:
+    - {work: "wei-2022-chain-of-thought-prompting", role: original, locator: "p. 5", stance: for}
+
+- id: c-wei-variable-compute
+  type: empirical
+  text: "To isolate variable computation, Wei et al. prompted the model to output a sequence of dots equal to the number of characters in the equation needed to solve the problem, and this variant performs about the same as the baseline."
+  scope:
+    models: "LaMDA 137B, PaLM 540B"
+    data: [gsm8k]
+    scale: "the two largest models"
+    setting: "ablation of the prompt"
+  evidence:
+    - {work: "wei-2022-chain-of-thought-prompting", role: original, locator: "p. 6", stance: for}
+
+- id: c-wei-after-answer
+  type: empirical
+  text: "When the chain of thought prompt is given only after the answer, the chain of thought after answer variant performs about the same as the baseline, which suggests that the sequential reasoning embodied in the chain of thought is useful for reasons beyond just activating knowledge."
+  scope:
+    models: "LaMDA 137B, PaLM 540B"
+    data: [gsm8k]
+    scale: "the two largest models"
+    setting: "ablation of the prompt"
+  evidence:
+    - {work: "wei-2022-chain-of-thought-prompting", role: original, locator: "p. 6", stance: for}
+
+- id: c-wei-annotators
+  type: empirical
+  text: "Chains of thought written by three annotators, and one more concise than the original, all outperformed the standard baseline by a large margin, which Wei et al. take to mean that successful use of chain of thought does not depend on a particular linguistic style."
+  scope:
+    models: "LaMDA 137B"
+    data: [gsm8k, mawps]
+    scale: "three annotators and a concise style"
+    setting: "robustness study of the exemplars"
+  evidence:
+    - {work: "wei-2022-chain-of-thought-prompting", role: original, locator: "p. 6", stance: for}
+
+- id: c-wei-prompt-engineering
+  type: empirical
+  text: "Wei et al. state that prompt engineering still does matter: on coin flip, chain-of-thought prompting by annotator A achieved 99.6% accuracy and by annotator C 71.4%, against 50.0% for standard prompting."
+  scope:
+    models: "LaMDA 137B"
+    data: [coin-flip]
+    scale: "one model, three annotators"
+    setting: "symbolic reasoning, robustness study of the exemplars"
+  evidence:
+    - {work: "wei-2022-chain-of-thought-prompting", role: original, locator: "p. 18", stance: for}
+
+- id: c-wei-commonsense
+  type: empirical
+  text: "On commonsense reasoning, PaLM 540B with chain-of-thought prompting reached 75.6% on StrategyQA against a prior state of the art of 69.4%, and 95.4% on sports understanding against 84% for an unaided sports enthusiast, while the gain on CSQA was minimal."
+  scope:
+    models: "PaLM 540B"
+    data: [strategyqa, csqa, big-bench-sports-understanding]
+    scale: "540B parameters"
+    setting: "few-shot prompting, greedy decoding"
+  evidence:
+    - {work: "wei-2022-chain-of-thought-prompting", role: original, locator: "p. 7", stance: for}
+
+- id: c-wei-symbolic
+  type: empirical
+  text: "On the symbolic tasks of last letter concatenation and coin flip, chain-of-thought prompting facilitated length generalization to inputs longer than those in the exemplars, and again the ability only arises at the scale of 100B model parameters."
+  scope:
+    models: "LaMDA, PaLM"
+    data: [last-letter-concatenation, coin-flip]
+    scale: "up to 540B parameters"
+    setting: "in-domain and out-of-domain test sets with more steps than the exemplars"
+  evidence:
+    - {work: "wei-2022-chain-of-thought-prompting", role: original, locator: "p. 8", stance: for}
+
+- id: c-wei-not-reasoning
+  type: attributive
+  text: "Wei et al. write that although chain of thought emulates the thought processes of human reasoners, this does not answer whether the neural network is actually reasoning, which they leave as an open question."
+  evidence:
+    - {work: "wei-2022-chain-of-thought-prompting", role: original, locator: "p. 9", stance: for}
+
+- id: c-wei-limitations
+  type: attributive
+  text: "Wei et al. list as limitations that there is no guarantee of correct reasoning paths, which can lead to both correct and incorrect answers, and that the emergence of chain-of-thought reasoning only at large model scales makes it costly to serve in real-world applications."
+  evidence:
+    - {work: "wei-2022-chain-of-thought-prompting", role: original, locator: "p. 9", stance: for}
+
+- id: c-wei-lower-bound
+  type: attributive
+  text: "Wei et al. argue that standard prompting only provides a lower bound on the capabilities of large language models."
+  evidence:
+    - {work: "wei-2022-chain-of-thought-prompting", role: original, locator: "p. 9", stance: for}
+
+# Zero-shot chain of thought: Kojima et al. (2022)
+
+- id: c-kojima-definition
+  type: definitional
+  text: "Kojima et al. show that large language models are decent zero-shot reasoners by simply adding Let's think step by step before each answer, a method they call Zero-shot-CoT."
+  evidence:
+    - {work: "kojima-2022-large-language-models-zero-shot-reasoners", role: original, locator: "p. 1", stance: for}
+
+- id: c-kojima-headline
+  type: empirical
+  text: "With the large InstructGPT model text-davinci-002, Zero-shot-CoT increased the accuracy on MultiArith from 17.7% to 78.7% and on GSM8K from 10.4% to 40.7%, compared with standard zero-shot prompting."
+  scope:
+    models: "InstructGPT text-davinci-002"
+    data: [multiarith, gsm8k]
+    scale: "one large model"
+    setting: "zero-shot prompting, greedy decoding"
+  evidence:
+    - {work: "kojima-2022-large-language-models-zero-shot-reasoners", role: original, locator: "p. 1", stance: for}
+
+- id: c-kojima-two-stage
+  type: definitional
+  text: "Zero-shot-CoT uses two prompts: a reasoning extraction prompt Q: [X]. A: [T], with a trigger sentence T such as Let's think step by step, whose output is the reasoning Z, and then an answer extraction prompt that joins the first prompt, Z and an answer trigger such as Therefore, the answer (arabic numerals) is."
+  evidence:
+    - {work: "kojima-2022-large-language-models-zero-shot-reasoners", role: original, locator: "p. 4", stance: for}
+
+- id: c-kojima-task-agnostic
+  type: attributive
+  text: "Kojima et al. contrast Zero-shot-CoT with Few-shot-CoT: it does not need step-by-step few-shot examples written for each task, and it is task-agnostic, eliciting multi-hop reasoning across diverse tasks with a single template."
+  evidence:
+    - {work: "kojima-2022-large-language-models-zero-shot-reasoners", role: original, locator: "p. 3", stance: for}
+
+- id: c-kojima-answer-cleansing
+  type: definitional
+  text: "Kojima et al. use answer cleansing: for arithmetic tasks they pick up the first number in the text generated by the answer extraction prompt as the prediction."
+  evidence:
+    - {work: "kojima-2022-large-language-models-zero-shot-reasoners", role: original, locator: "p. 5", stance: for}
+
+- id: c-kojima-few-shot-compare
+  type: empirical
+  text: "In Table 2 of Kojima et al., Zero-shot-CoT reached 78.7 on MultiArith and 40.7 on GSM8K, against 93.0 and 48.7 for Few-shot-CoT with 8 samples and 17.7 and 10.4 for Zero-Shot."
+  scope:
+    models: "InstructGPT text-davinci-002"
+    data: [multiarith, gsm8k]
+    scale: "one large model"
+    setting: "zero-shot and few-shot prompting"
+  evidence:
+    - {work: "kojima-2022-large-language-models-zero-shot-reasoners", role: original, locator: "p. 6", stance: for}
+
+- id: c-kojima-beats-few-shot
+  type: empirical
+  text: "Zero-shot-CoT naturally underperforms Few-shot-CoT, but it substantially outperforms standard Few-shot prompting with even 8 examples per task."
+  scope:
+    models: "InstructGPT text-davinci-002"
+    data: [multiarith, gsm8k]
+    scale: "one large model"
+    setting: "zero-shot and few-shot prompting"
+  evidence:
+    - {work: "kojima-2022-large-language-models-zero-shot-reasoners", role: original, locator: "p. 7", stance: for}
+
+- id: c-kojima-scale
+  type: empirical
+  text: "Kojima et al. find that without chain of thought reasoning the performance does not increase or increases slowly as the model scale increases, while with chain of thought it increases drastically; when the model size is smaller, chain of thought reasoning is not effective."
+  scope:
+    models: "Original GPT-3, InstructGPT and PaLM families"
+    data: [multiarith, gsm8k]
+    scale: "models from 0.3B to 540B parameters"
+    setting: "zero-shot prompting"
+  evidence:
+    - {work: "kojima-2022-large-language-models-zero-shot-reasoners", role: original, locator: "p. 7", stance: for}
+
+- id: c-kojima-templates
+  type: empirical
+  text: "In the robustness study against template on MultiArith, the instructive templates Let's think step by step, First, and Let's think about this logically scored 78.7, 77.3 and 74.5, while the misleading and irrelevant templates scored between 9.3 and 18.8, against 17.7 for zero-shot."
+  scope:
+    models: "InstructGPT text-davinci-002"
+    data: [multiarith]
+    scale: "one large model, sixteen templates"
+    setting: "zero-shot prompting with different trigger sentences"
+  evidence:
+    - {work: "kojima-2022-large-language-models-zero-shot-reasoners", role: original, locator: "p. 8", stance: for}
+
+- id: c-kojima-commonsense
+  type: empirical
+  text: "Zero-shot-CoT did not provide performance gains on commonsense reasoning: on CommonsenseQA zero-shot prompting scored 68.8 and Zero-shot-CoT 64.6."
+  scope:
+    models: "InstructGPT text-davinci-002"
+    data: [commonsenseqa]
+    scale: "one large model"
+    setting: "zero-shot prompting"
+  evidence:
+    - {work: "kojima-2022-large-language-models-zero-shot-reasoners", role: original, locator: "p. 6", stance: for}
+
+- id: c-kojima-cross-task
+  type: empirical
+  text: "When the Few-shot-CoT examples come from a different domain, common sense examples for arithmetic tasks, the results are worse than Zero-shot-CoT, which Kojima et al. take as affirming the importance of task-specific sample engineering in Few-shot-CoT."
+  scope:
+    models: "InstructGPT text-davinci-002"
+    data: [multiarith, aqua]
+    scale: "one large model"
+    setting: "few-shot prompting with exemplars from another task"
+  evidence:
+    - {work: "kojima-2022-large-language-models-zero-shot-reasoners", role: original, locator: "p. 9", stance: for}
+
+- id: c-kojima-palm-gsm8k
+  type: empirical
+  text: "Kojima et al. report that, combined with the 540B parameter PaLM model, chain of thought prompting significantly increases the performance over standard few-shot prompting on GSM8K, from 17.9% to 58.1%."
+  scope:
+    models: "PaLM 540B"
+    data: [gsm8k]
+    scale: "540B parameters"
+    setting: "few-shot prompting, as reported by Kojima et al."
+  evidence:
+    - {work: "kojima-2022-large-language-models-zero-shot-reasoners", role: original, locator: "p. 2", stance: for}
+
+# Self-consistency: Wang et al. (2023)
+
+- id: c-wang-definition
+  type: definitional
+  text: "Self-consistency is a decoding strategy that replaces the naive greedy decoding used in chain-of-thought prompting: it first samples a diverse set of reasoning paths instead of only taking the greedy one, and then selects the most consistent answer by marginalizing out the sampled reasoning paths."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 1", stance: for}
+
+- id: c-wang-gains
+  type: empirical
+  text: "Self-consistency boosts the performance of chain-of-thought prompting by a striking margin on popular arithmetic and commonsense reasoning benchmarks, including GSM8K (+17.9%), SVAMP (+11.0%), AQuA (+12.2%), StrategyQA (+6.4%) and ARC-challenge (+3.9%)."
+  scope:
+    models: "UL2 20B, GPT-3, LaMDA 137B, PaLM 540B"
+    data: [gsm8k, svamp, aqua, strategyqa, arc-challenge]
+    scale: "the best model for each benchmark"
+    setting: "few-shot chain-of-thought prompting, sampled decoding"
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 1", stance: for}
+
+- id: c-wang-hypothesis
+  type: attributive
+  text: "Wang et al. hypothesize that correct reasoning processes, even if they are diverse, tend to have greater agreement in their final answer than incorrect processes."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 2", stance: for}
+
+- id: c-wang-self-ensemble
+  type: attributive
+  text: "Wang et al. describe self-consistency as entirely unsupervised: it works off-the-shelf with pre-trained language models, requires no additional human annotation and avoids any additional training, auxiliary models or fine-tuning, and it acts like a self-ensemble on top of a single language model."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 2", stance: for}
+
+- id: c-wang-vote
+  type: definitional
+  text: "Given m sampled outputs whose final answers a_i lie in a fixed answer set A, self-consistency applies a marginalization over the reasoning paths by taking a majority vote over the a_i, the answer that maximizes the number of i with a_i equal to it, the most consistent answer among the final answer set."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 3", stance: for}
+
+- id: c-wang-weighted
+  type: empirical
+  text: "In Table 1 of Wang et al., the unweighted majority vote and the normalized weighted sum give very similar accuracy, 74.4 and 74.1 on GSM8K, while the weighted average is much worse; they attribute the similarity to the model's normalized conditional probabilities being quite close to each other."
+  scope:
+    models: "PaLM 540B"
+    data: [gsm8k]
+    scale: "40 sampled reasoning paths"
+    setting: "aggregation strategies over the same samples"
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 3", stance: for}
+
+- id: c-wang-calibration
+  type: attributive
+  text: "Wang et al. explain the similar accuracy of the unweighted and the normalized weighted sum by the normalized conditional probabilities of the generations being quite close to each other, and add in a footnote that this also means that the language model is not well calibrated and thus cannot distinguish well between correct solutions and wrong solutions."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 3", stance: for}
+
+- id: c-wang-weights
+  type: definitional
+  text: "Instead of the majority vote, one can weight each sampled pair of reasoning path and answer by its probability P(r_i, a_i | prompt, question), either unnormalized or normalized by the output length as the exponential of the mean log probability of its K tokens, which is Equation 1 of Wang et al.; the weighted average divides the weighted sum of an answer by the number of paths that give it."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 3", stance: for}
+
+- id: c-wang-normalized
+  type: empirical
+  text: "In Table 1 of Wang et al., the normalized weighted sum of Equation 1 yields a much higher accuracy than its unnormalized counterpart, and the weighted average results in a much worse performance."
+  scope:
+    models: "PaLM 540B"
+    data: [gsm8k, multiarith, aqua, svamp, csqa, arc-challenge]
+    scale: "40 sampled reasoning paths"
+    setting: "aggregation strategies over the same samples"
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 3", stance: for}
+
+- id: c-wang-parser
+  type: definitional
+  text: "Wang et al. parse the final answer with a task dependent parser: for arithmetic reasoning they parse the first numerical part as the final answer after the model generates The answer is, and for commonsense reasoning the full string answer."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 3", stance: for}
+
+- id: c-wang-fixed-answer
+  type: attributive
+  text: "Wang et al. state that self-consistency can only be applied to problems where the final answer is from a fixed answer set, and that extending it to open-ended text generation needs a good metric of consistency between multiple generations."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 4", stance: for}
+
+- id: c-wang-sampling
+  type: empirical
+  text: "For UL2 and LaMDA-137B Wang et al. applied T = 0.5 with the output truncated at the top-k (k = 40) tokens, for PaLM-540B T = 0.7 and k = 40, and for GPT-3 they used T = 0.7 without top-k truncation."
+  scope:
+    models: "UL2 20B, LaMDA 137B, PaLM 540B, GPT-3"
+    data: [gsm8k, svamp, aqua, strategyqa]
+    scale: "four language models"
+    setting: "temperature sampling of reasoning paths"
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 4", stance: for}
+
+- id: c-wang-independent
+  type: empirical
+  text: "Wang et al. average their results over 10 runs, where in each run they sample 40 outputs independently from the decoder."
+  scope:
+    models: "UL2 20B, LaMDA 137B, PaLM 540B, GPT-3"
+    data: [gsm8k, svamp, aqua, strategyqa]
+    scale: "10 runs of 40 outputs per question"
+    setting: "the main experiments"
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 5", stance: for}
+
+- id: c-wang-table-2
+  type: empirical
+  text: "In Table 2 of Wang et al., self-consistency raised the GSM8K accuracy of PaLM-540B from 56.5 to 74.4 and of GPT-3 code-davinci-002 from 60.1 to 78.0, compared with chain-of-thought prompting with greedy decoding."
+  scope:
+    models: "PaLM 540B, GPT-3 code-davinci-002"
+    data: [gsm8k]
+    scale: "40 sampled paths"
+    setting: "few-shot chain-of-thought prompting"
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 5", stance: for}
+
+- id: c-wang-scale
+  type: empirical
+  text: "The gains of self-consistency grow with the language model scale: +3%-6% for UL2-20B against +9%-23% for LaMDA-137B and GPT-3."
+  scope:
+    models: "UL2 20B, LaMDA 137B, GPT-3"
+    data: [gsm8k, svamp, aqua, multiarith, asdiv, addsub]
+    scale: "20B to 175B parameters"
+    setting: "arithmetic reasoning"
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 5", stance: for}
+
+- id: c-wang-paths
+  type: empirical
+  text: "Sampling a higher number of reasoning paths, from 1 up to 40, leads to a consistently better performance, which Wang et al. read as the importance of introducing diversity in the reasoning paths."
+  scope:
+    models: "LaMDA 137B"
+    data: [gsm8k, svamp, aqua, strategyqa]
+    scale: "1, 5, 10, 20 and 40 sampled paths"
+    setting: "self-consistency"
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 6", stance: for}
+
+- id: c-wang-hurts
+  type: empirical
+  text: "On some NLP tasks, such as ANLI, e-SNLI and RTE, chain-of-thought prompting can hurt performance compared with standard prompting, and self-consistency robustly boosts the performance over standard prompting on them."
+  scope:
+    models: "PaLM 540B"
+    data: [anli, e-snli, rte]
+    scale: "540B parameters"
+    setting: "few-shot prompting"
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 6", stance: for}
+
+- id: c-wang-ensembles
+  type: empirical
+  text: "On LaMDA-137B and GSM8K, self-consistency with 40 sampled paths scored 27.7, against 18.6 for an ensemble of 3 sets of prompts, 19.2 for an ensemble of 40 prompt permutations and 17.1 for chain-of-thought prompting, so existing ensemble-based approaches achieve a much smaller gain."
+  scope:
+    models: "LaMDA 137B"
+    data: [gsm8k]
+    scale: "40 sampled paths or 40 prompt permutations"
+    setting: "comparison with ensemble baselines, majority vote over greedy answers"
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 7", stance: for}
+
+- id: c-wang-beam
+  type: empirical
+  text: "Self-consistency outperforms beam search decoding, and using beam search to decode each reasoning path is worse than sampling, because beam search yields a lower diversity in the outputs, while in self-consistency the diversity of the reasoning paths is the key to a better performance."
+  scope:
+    models: "UL2 20B"
+    data: [aqua, multiarith]
+    scale: "beam sizes and numbers of paths from 1 to 40"
+    setting: "comparison with beam search"
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 7", stance: for}
+
+- id: c-wang-uncertainty
+  type: empirical
+  text: "Wang et al. find that consistency, the percentage of decodes agreeing with the final aggregated answer, is highly correlated with accuracy, so self-consistency can be used to provide uncertainty estimates."
+  scope:
+    models: "the language models of Figure 5 of Wang et al."
+    data: [gsm8k]
+    scale: "40 sampled paths"
+    setting: "self-consistency"
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 8", stance: for}
+
+- id: c-wang-zero-shot
+  type: empirical
+  text: "Self-consistency also works with zero-shot chain-of-thought prompting, improving PaLM-540B on GSM8K from 43.0 to 69.2, by +26.2%."
+  scope:
+    models: "PaLM 540B"
+    data: [gsm8k]
+    scale: "540B parameters"
+    setting: "zero-shot chain-of-thought prompting"
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 8", stance: for}
+
+- id: c-wang-cost
+  type: attributive
+  text: "Wang et al. list as a limitation that self-consistency incurs more computation cost, and suggest trying a small number of paths, such as 5 or 10, as a starting point to realize most of the gains."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 9", stance: for}
+
+- id: c-wang-incorrect-paths
+  type: attributive
+  text: "Wang et al. observe that language models can sometimes generate incorrect or nonsensical reasoning paths, so better grounding of the rationale generations is still needed."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 9", stance: for}
+
+# Faithfulness: Turpin et al. (2023) and Lanham et al. (2023)
+
+- id: c-turpin-misrepresent
+  type: empirical
+  text: "Turpin et al. demonstrate that chain-of-thought explanations can systematically misrepresent the true reason for a model's prediction, by adding biasing features to model inputs, such as reordering the multiple-choice options in a few-shot prompt to make the answer always (A), which models systematically fail to mention in their explanations."
+  scope:
+    models: "GPT-3.5, Claude 1.0"
+    data: [big-bench-hard, bbq]
+    scale: "13 tasks from BIG-Bench Hard"
+    setting: "few-shot and zero-shot chain-of-thought prompting with biasing features"
+  evidence:
+    - {work: "turpin-2023-unfaithful-explanations-chain-of-thought", role: original, locator: "p. 1", stance: for}
+
+- id: c-turpin-36
+  type: empirical
+  text: "When models are biased toward incorrect answers, they frequently generate chain-of-thought explanations rationalizing those answers, causing accuracy to drop by as much as 36% on a suite of 13 tasks from BIG-Bench Hard when testing GPT-3.5 from OpenAI and Claude 1.0 from Anthropic."
+  scope:
+    models: "GPT-3.5 (text-davinci-003), Claude 1.0"
+    data: [big-bench-hard]
+    scale: "13 tasks"
+    setting: "biased chain-of-thought prompting"
+  evidence:
+    - {work: "turpin-2023-unfaithful-explanations-chain-of-thought", role: original, locator: "p. 1", stance: for}
+
+- id: c-turpin-one-mention
+  type: empirical
+  text: "Of 426 explanations that support biased predictions, Turpin et al. find that only one explicitly mentions the bias."
+  scope:
+    models: "GPT-3.5, Claude 1.0"
+    data: [big-bench-hard]
+    scale: "426 explanations"
+    setting: "manual review of chain-of-thought explanations"
+  evidence:
+    - {work: "turpin-2023-unfaithful-explanations-chain-of-thought", role: original, locator: "p. 3", stance: for}
+
+- id: c-turpin-why-unfaithful
+  type: attributive
+  text: "Turpin et al. argue that there are reasons to not expect chain-of-thought explanations to be faithful: nothing in the training objectives explicitly incentivizes models to accurately report the reasons for their behavior, human-written explanations are themselves often unfaithful, and RLHF may directly disincentivize faithful explanations."
+  evidence:
+    - {work: "turpin-2023-unfaithful-explanations-chain-of-thought", role: original, locator: "p. 2", stance: for}
+
+- id: c-turpin-drops
+  type: empirical
+  text: "With the Suggested Answer bias, zero-shot chain-of-thought accuracy of GPT-3.5 dropped by as much as 36.3%, and with the Answer is Always A bias the drops were 18.7% for GPT-3.5 and 4.7% for Claude 1.0."
+  scope:
+    models: "GPT-3.5, Claude 1.0"
+    data: [big-bench-hard]
+    scale: "13 tasks, 3,299 examples"
+    setting: "zero-shot and few-shot chain-of-thought prompting with biasing features"
+  evidence:
+    - {work: "turpin-2023-unfaithful-explanations-chain-of-thought", role: original, locator: "p. 6", stance: for}
+
+- id: c-turpin-helps-unbiased
+  type: empirical
+  text: "Both models benefit from using CoT in an unbiased context on average, from 57.1% to 59.6% for GPT-3.5 and from 59.2% to 65.3% for Claude 1.0, though on some tasks CoT makes results worse."
+  scope:
+    models: "GPT-3.5, Claude 1.0"
+    data: [big-bench-hard]
+    scale: "13 tasks"
+    setting: "few-shot chain-of-thought prompting"
+  evidence:
+    - {work: "turpin-2023-unfaithful-explanations-chain-of-thought", role: original, locator: "p. 6", stance: for}
+
+- id: c-turpin-73
+  type: empirical
+  text: "Of 104 manually annotated unfaithful explanations, as many as 73% support the bias-consistent answer, and 15% have no obvious errors, so models can give fully plausible CoT explanations that are nonetheless unfaithful."
+  scope:
+    models: "GPT-3.5, Claude 1.0"
+    data: [big-bench-hard]
+    scale: "104 unfaithful explanations"
+    setting: "manual annotation, Suggested Answer bias"
+  evidence:
+    - {work: "turpin-2023-unfaithful-explanations-chain-of-thought", role: original, locator: "p. 7", stance: for}
+
+- id: c-turpin-bbq
+  type: empirical
+  text: "On the social-bias task BBQ, models give explanations that justify answers in line with stereotypes without mentioning the influence of these social biases."
+  scope:
+    models: "GPT-3.5, Claude 1.0"
+    data: [bbq]
+    scale: "one bias benchmark"
+    setting: "zero-shot and few-shot chain-of-thought prompting"
+  evidence:
+    - {work: "turpin-2023-unfaithful-explanations-chain-of-thought", role: original, locator: "p. 1", stance: for}
+
+- id: c-turpin-necessary
+  type: attributive
+  text: "Turpin et al. describe their evaluation as a necessary but not sufficient test for faithfulness: explanations that pass it can still be unfaithful."
+  evidence:
+    - {work: "turpin-2023-unfaithful-explanations-chain-of-thought", role: original, locator: "p. 10", stance: for}
+
+- id: c-lanham-hypotheses
+  type: attributive
+  text: "Lanham et al. test hypotheses for how chain of thought could be unfaithful: post-hoc reasoning, where the reasoning is generated after the conclusion is already certain, extra test-time computation that the tokens provide regardless of their content, and encoded reasoning in the phrasing of the chain of thought."
+  evidence:
+    - {work: "lanham-2023-measuring-faithfulness-chain-of-thought", role: original, locator: "p. 2", stance: for}
+
+- id: c-lanham-vary
+  type: empirical
+  text: "Lanham et al. find that models show large variation across tasks in how strongly they condition on the chain of thought when predicting their answer, and that the performance boost from chain of thought does not seem to come from the added test-time compute alone or from information encoded via the particular phrasing of the chain of thought."
+  scope:
+    models: "a 175B-parameter pretrained decoder-only transformer finetuned with RLHF"
+    data: [aqua, logiqa, arc-easy, arc-challenge, openbookqa, hellaswag, mmlu, truthfulqa]
+    scale: "eight multiple-choice tasks"
+    setting: "interventions on the chain of thought"
+  evidence:
+    - {work: "lanham-2023-measuring-faithfulness-chain-of-thought", role: original, locator: "p. 1", stance: for}
+
+- id: c-lanham-inverse
+  type: empirical
+  text: "Lanham et al. find that as models become larger and more capable, they produce less faithful reasoning on most tasks they study."
+  scope:
+    models: "RLHF models from 810M to 175B parameters"
+    data: [aqua, logiqa, arc-easy, arc-challenge, openbookqa, hellaswag, mmlu, truthfulqa]
+    scale: "810M to 175B parameters"
+    setting: "early answering with and without chain of thought"
+  evidence:
+    - {work: "lanham-2023-measuring-faithfulness-chain-of-thought", role: original, locator: "p. 1", stance: for}
+
+- id: c-lanham-early
+  type: empirical
+  text: "In the early answering test, for ARC Easy, ARC Challenge and OpenBookQA the chain of thought changes the final answer less than 10% of the time, while for AQuA it changes the answer more than 60% of the time."
+  scope:
+    models: "a 175B-parameter RLHF model"
+    data: [arc-easy, arc-challenge, openbookqa, aqua]
+    scale: "100 samples per question"
+    setting: "truncated chains of thought"
+  evidence:
+    - {work: "lanham-2023-measuring-faithfulness-chain-of-thought", role: original, locator: "p. 4", stance: for}
+
+- id: c-lanham-filler
+  type: empirical
+  text: "Replacing the chain of thought with strings of filler tokens, from zero tokens up to the length of the longest sampled chain of thought, shows no increase in accuracy, which suggests that extra test-time compute alone is not used by models to perform helpful but unstated reasoning."
+  scope:
+    models: "a 175B-parameter RLHF model"
+    data: [aqua, logiqa, arc-easy, arc-challenge, openbookqa, hellaswag, mmlu, truthfulqa]
+    scale: "eight multiple-choice tasks"
+    setting: "filler tokens in place of the chain of thought"
+  evidence:
+    - {work: "lanham-2023-measuring-faithfulness-chain-of-thought", role: original, locator: "p. 6", stance: for}
+
+- id: c-lanham-paraphrase
+  type: empirical
+  text: "The accuracy after a paraphrased chain of thought closely matches the accuracy of the original chain of thought for almost all tasks, so the particular phrasing of the reasoning is unlikely to encode information responsible for the accuracy gains of CoT."
+  scope:
+    models: "a 175B-parameter RLHF model"
+    data: [aqua, logiqa, arc-easy, arc-challenge, openbookqa, hellaswag, mmlu, truthfulqa]
+    scale: "eight multiple-choice tasks"
+    setting: "paraphrased chains of thought"
+  evidence:
+    - {work: "lanham-2023-measuring-faithfulness-chain-of-thought", role: original, locator: "p. 7", stance: for}
+
+- id: c-lanham-13b
+  type: empirical
+  text: "For seven of the eight tasks, the 13B model changes its answer after chain of thought more often than the 175B model does, an inverse scaling of faithfulness with model size."
+  scope:
+    models: "RLHF models from 810M to 175B parameters"
+    data: [aqua, logiqa, arc-easy, arc-challenge, openbookqa, hellaswag, mmlu, truthfulqa]
+    scale: "810M to 175B parameters"
+    setting: "how often the answer with chain of thought differs from the answer without"
+  evidence:
+    - {work: "lanham-2023-measuring-faithfulness-chain-of-thought", role: original, locator: "p. 7", stance: for}
+
+- id: c-lanham-limitations
+  type: attributive
+  text: "Lanham et al. state as a key limitation that they do not have a separate way to understand the model's real internal reasoning process, without which they cannot know if the chain of thought is faithful to it, and they analyzed only RLHF-finetuned models."
+  evidence:
+    - {work: "lanham-2023-measuring-faithfulness-chain-of-thought", role: original, locator: "p. 9", stance: for}
+
+# Majority voting under independent samples: this page's own model
+
+- id: c-binary-vote
+  type: mathematical
+  text: "If each of m sampled answers to a question is correct independently with probability p, and the vote is between the correct answer and one wrong answer, then for odd m the majority vote is correct with probability P_m(p) = Σ_{j > m/2} C(m, j) p^j (1 − p)^(m − j)."
+  assumes: ["the m answers are independent and identically distributed given the question", "only two answers occur, the correct one and one wrong one", "m is odd, so there are no ties"]
+  derivation: majority-vote
+
+- id: c-binary-step
+  type: mathematical
+  text: "For odd m, P_{m+2}(p) − P_m(p) = C(m, (m + 1)/2) p^((m+1)/2) (1 − p)^((m+1)/2) (2p − 1), so with p > 1/2 the vote accuracy rises strictly with every two more samples, starting from P_1 = p, and with p < 1/2 it falls strictly."
+  assumes: ["the m answers are independent and identically distributed given the question", "only two answers occur", "m is odd", "0 < p < 1"]
+  derivation: majority-vote
+
+- id: c-binary-limit
+  type: mathematical
+  text: "With p > 1/2 the majority vote accuracy tends to 1 as m grows, with error at most exp(−2m(p − 1/2)^2) by Hoeffding's inequality, and with p < 1/2 it tends to 0."
+  assumes: ["the m answers are independent and identically distributed given the question", "only two answers occur", "m is odd"]
+  derivation: majority-vote
+
+- id: c-even-ties
+  type: mathematical
+  text: "If ties are broken by a fair coin, the vote accuracy with an even number 2k of samples equals the accuracy with 2k − 1 samples, so the sample counts 2k − 1 and 2k give the same accuracy."
+  assumes: ["the answers are independent and identically distributed given the question", "only two answers occur", "ties are broken uniformly at random"]
+  derivation: majority-vote
+
+- id: c-first-seen-ties
+  type: mathematical
+  text: "For independent and identically distributed samples, breaking a tie in favour of the tied answer that was sampled first picks each tied answer with the same probability, so it has the same distribution as breaking the tie uniformly at random."
+  assumes: ["the m answers are independent and identically distributed given the question", "the tie rule looks only at the order in which the answers were sampled"]
+  derivation: majority-vote
+
+- id: c-plurality-limit
+  type: mathematical
+  text: "With more than two possible answers drawn independently from a distribution q over a finite answer set, the plurality vote tends to the correct answer as m grows if the correct answer is the unique most likely answer of q, and to a wrong answer if some wrong answer is strictly more likely than the correct one; the correct answer need not have probability above 1/2."
+  assumes: ["the m answers are independent and identically distributed given the question", "the answer set is finite", "the mode of q is unique when the limit is to a single answer"]
+  derivation: majority-vote
+
+- id: c-dataset-mixture
+  type: mathematical
+  text: "The benchmark accuracy of the vote is the mean of the per-question vote accuracies, so voting raises it only to the extent that the questions where the correct answer is the most likely answer outweigh those where a wrong answer is: with one question of correctness probability 0.9 and another where the correct answer has probability 0.3 and one wrong answer 0.5, single-sample accuracy is 0.6 and the vote accuracy tends to 0.5."
+  assumes: ["the samples are independent and identically distributed given each question", "the questions are fixed, and each is weighted equally"]
+  derivation: majority-vote
+
+- id: c-worked-numbers
+  type: mathematical
+  text: "For p = 0.6 the binary vote accuracy is 0.648 with 3 samples, 0.68256 with 5 samples and about 0.8256 with 21 samples, and for p = 0.4 it is 0.352 with 3 samples."
+  assumes: ["the samples are independent and identically distributed given the question", "only two answers occur"]
+  derivation: majority-vote
+
+# History
+
+- id: c-hist-wei
+  type: historical
+  text: "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models, by Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Brian Ichter, Fei Xia, Ed H. Chi, Quoc V. Le and Denny Zhou of Google Research, Brain Team, appeared at the 36th Conference on Neural Information Processing Systems (NeurIPS 2022)."
+  evidence:
+    - {work: "wei-2022-chain-of-thought-prompting", role: original, locator: "p. 1", stance: for}
+
+- id: c-hist-kojima
+  type: historical
+  text: "Large Language Models are Zero-Shot Reasoners, by Takeshi Kojima, Shixiang Shane Gu, Machel Reid, Yutaka Matsuo and Yusuke Iwasawa of The University of Tokyo and Google Research, appeared at the 36th Conference on Neural Information Processing Systems (NeurIPS 2022)."
+  evidence:
+    - {work: "kojima-2022-large-language-models-zero-shot-reasoners", role: original, locator: "p. 1", stance: for}
+
+- id: c-hist-wang
+  type: historical
+  text: "Self-Consistency Improves Chain of Thought Reasoning in Language Models, by Xuezhi Wang, Jason Wei, Dale Schuurmans, Quoc Le, Ed Chi, Sharan Narang, Aakanksha Chowdhery and Denny Zhou of Google Research, Brain Team, was published as a conference paper at ICLR 2023."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 1", stance: for}
+
+- id: c-hist-turpin
+  type: historical
+  text: "Language Models Don't Always Say What They Think, by Miles Turpin, Julian Michael, Ethan Perez and Samuel R. Bowman of the NYU Alignment Research Group, Cohere and Anthropic, appeared at the 37th Conference on Neural Information Processing Systems (NeurIPS 2023)."
+  evidence:
+    - {work: "turpin-2023-unfaithful-explanations-chain-of-thought", role: original, locator: "p. 1", stance: for}
+
+- id: c-hist-lanham
+  type: historical
+  text: "Measuring Faithfulness in Chain-of-Thought Reasoning was posted to arXiv in July 2023 by Tamera Lanham and coauthors, all at Anthropic except Jan Brauner of the University of Oxford."
+  evidence:
+    - {work: "lanham-2023-measuring-faithfulness-chain-of-thought", role: original, locator: "p. 1", stance: for}

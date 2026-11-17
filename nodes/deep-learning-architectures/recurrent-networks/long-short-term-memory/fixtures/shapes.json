@@ -1,0 +1,368 @@
+{
+  "note": "Written by aik shapes sample -w from shapes.yaml; do not edit. The tests of each implementation check shapes, param_count and flops against these values (spec 08.6, rule X09).",
+  "configs": [
+    {
+      "name": "example",
+      "kind": "example",
+      "config": {
+        "B": 2,
+        "H": 4,
+        "I": 3,
+        "T": 5,
+        "hidden_size": 4,
+        "input_size": 3
+      },
+      "blocks": {
+        "cell": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "c0": [
+              2,
+              4
+            ],
+            "z": [
+              2,
+              5,
+              16
+            ]
+          },
+          "outputs": {
+            "c": [
+              2,
+              5,
+              4
+            ],
+            "h": [
+              2,
+              5,
+              4
+            ]
+          },
+          "internals": {
+            "f": [
+              2,
+              5,
+              4
+            ],
+            "g": [
+              2,
+              5,
+              4
+            ],
+            "i": [
+              2,
+              5,
+              4
+            ],
+            "o": [
+              2,
+              5,
+              4
+            ]
+          }
+        },
+        "gates": {
+          "params": 128,
+          "flops_forward": 2240,
+          "inputs": {
+            "h0": [
+              2,
+              4
+            ],
+            "x": [
+              2,
+              5,
+              3
+            ]
+          },
+          "outputs": {
+            "z": [
+              2,
+              5,
+              16
+            ]
+          }
+        },
+        "layer": {
+          "params": 128,
+          "flops_forward": 2240,
+          "inputs": {
+            "c0": [
+              2,
+              4
+            ],
+            "h0": [
+              2,
+              4
+            ],
+            "x": [
+              2,
+              5,
+              3
+            ]
+          },
+          "outputs": {
+            "c": [
+              2,
+              5,
+              4
+            ],
+            "h": [
+              2,
+              5,
+              4
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 2240,
+        "params": 128,
+        "state": 8
+      }
+    },
+    {
+      "name": "sample-1",
+      "kind": "sample",
+      "config": {
+        "B": 2,
+        "H": 3,
+        "I": 5,
+        "T": 3,
+        "hidden_size": 3,
+        "input_size": 5
+      },
+      "blocks": {
+        "cell": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "c0": [
+              2,
+              3
+            ],
+            "z": [
+              2,
+              3,
+              12
+            ]
+          },
+          "outputs": {
+            "c": [
+              2,
+              3,
+              3
+            ],
+            "h": [
+              2,
+              3,
+              3
+            ]
+          },
+          "internals": {
+            "f": [
+              2,
+              3,
+              3
+            ],
+            "g": [
+              2,
+              3,
+              3
+            ],
+            "i": [
+              2,
+              3,
+              3
+            ],
+            "o": [
+              2,
+              3,
+              3
+            ]
+          }
+        },
+        "gates": {
+          "params": 108,
+          "flops_forward": 1152,
+          "inputs": {
+            "h0": [
+              2,
+              3
+            ],
+            "x": [
+              2,
+              3,
+              5
+            ]
+          },
+          "outputs": {
+            "z": [
+              2,
+              3,
+              12
+            ]
+          }
+        },
+        "layer": {
+          "params": 108,
+          "flops_forward": 1152,
+          "inputs": {
+            "c0": [
+              2,
+              3
+            ],
+            "h0": [
+              2,
+              3
+            ],
+            "x": [
+              2,
+              3,
+              5
+            ]
+          },
+          "outputs": {
+            "c": [
+              2,
+              3,
+              3
+            ],
+            "h": [
+              2,
+              3,
+              3
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 1152,
+        "params": 108,
+        "state": 6
+      }
+    },
+    {
+      "name": "sample-2",
+      "kind": "sample",
+      "config": {
+        "B": 2,
+        "H": 1,
+        "I": 3,
+        "T": 5,
+        "hidden_size": 1,
+        "input_size": 3
+      },
+      "blocks": {
+        "cell": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "c0": [
+              2,
+              1
+            ],
+            "z": [
+              2,
+              5,
+              4
+            ]
+          },
+          "outputs": {
+            "c": [
+              2,
+              5,
+              1
+            ],
+            "h": [
+              2,
+              5,
+              1
+            ]
+          },
+          "internals": {
+            "f": [
+              2,
+              5,
+              1
+            ],
+            "g": [
+              2,
+              5,
+              1
+            ],
+            "i": [
+              2,
+              5,
+              1
+            ],
+            "o": [
+              2,
+              5,
+              1
+            ]
+          }
+        },
+        "gates": {
+          "params": 20,
+          "flops_forward": 320,
+          "inputs": {
+            "h0": [
+              2,
+              1
+            ],
+            "x": [
+              2,
+              5,
+              3
+            ]
+          },
+          "outputs": {
+            "z": [
+              2,
+              5,
+              4
+            ]
+          }
+        },
+        "layer": {
+          "params": 20,
+          "flops_forward": 320,
+          "inputs": {
+            "c0": [
+              2,
+              1
+            ],
+            "h0": [
+              2,
+              1
+            ],
+            "x": [
+              2,
+              5,
+              3
+            ]
+          },
+          "outputs": {
+            "c": [
+              2,
+              5,
+              1
+            ],
+            "h": [
+              2,
+              5,
+              1
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 320,
+        "params": 20,
+        "state": 2
+      }
+    }
+  ]
+}

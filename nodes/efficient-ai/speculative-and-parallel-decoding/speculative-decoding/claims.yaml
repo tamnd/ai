@@ -1,0 +1,461 @@
+# The claims of the speculative decoding page (spec 07). The build computes the labels.
+
+# Setting
+
+- id: c-le-serial
+  type: attributive
+  text: "Decoding $K$ tokens from an autoregressive model such as a Transformer takes $K$ serial runs of the model."
+  evidence:
+    - {work: "leviathan-2023-fast-inference-speculative-decoding", role: original, locator: "p. 1", stance: for}
+
+- id: c-le-observations
+  type: attributive
+  text: "Leviathan et al. build on two observations: hard language-modelling tasks often contain easier subtasks that more efficient models approximate well, and speculative execution with a new sampling method can run the large model in parallel on the outputs of the approximation model without changing the distribution."
+  evidence:
+    - {work: "leviathan-2023-fast-inference-speculative-decoding", role: original, locator: "p. 1", stance: for}
+
+- id: c-le-spec-exec
+  type: attributive
+  text: "Speculative execution, a common optimization in processors such as branch prediction, does work in parallel before knowing whether it is needed; their method generalizes it to the stochastic setting."
+  evidence:
+    - {work: "leviathan-2023-fast-inference-speculative-decoding", role: original, locator: "p. 1", stance: for}
+
+- id: c-le-memory
+  type: attributive
+  text: "The resources are there because inference from large models is often bottlenecked not on arithmetic but on memory bandwidth and communication, so additional computation may be available."
+  evidence:
+    - {work: "leviathan-2023-fast-inference-speculative-decoding", role: original, locator: "p. 1", stance: for}
+
+- id: c-ch-bandwidth
+  type: attributive
+  text: "Chen et al. make the same point: transformer sampling is typically memory-bandwidth bound, and scoring a short continuation in parallel with the target model has a latency comparable to sampling a single token from it."
+  evidence:
+    - {work: "chen-2023-accelerating-llm-decoding-speculative-sampling", role: original, locator: "p. 1", stance: for}
+
+- id: c-ch-concurrent
+  type: attributive
+  text: "Chen et al. developed their method concurrently and independently of Leviathan et al. and state that the core idea is the same."
+  evidence:
+    - {work: "chen-2023-accelerating-llm-decoding-speculative-sampling", role: original, locator: "p. 2", stance: for}
+
+- id: c-le-other-methods
+  type: attributive
+  text: "Other techniques, such as distillation, sparsification, quantization and architecture modification, make inference more efficient for all tokens but usually also change the outputs of the model."
+  evidence:
+    - {work: "leviathan-2023-fast-inference-speculative-decoding", role: original, locator: "p. 7", stance: for}
+
+- id: c-le-distill-draft
+  type: attributive
+  text: "Leviathan et al. suggest that further improvements might be obtained from approximation models with custom training procedures, such as standard distillation with soft targets from $M_p$, or optimizing $M_q$ for $\\alpha$ directly."
+  evidence:
+    - {work: "leviathan-2023-fast-inference-speculative-decoding", role: original, locator: "p. 8", stance: for}
+
+# The method
+
+- id: c-le-notation
+  type: definitional
+  text: "$M_p$ is the target model and $M_q$ the more efficient approximation (draft) model for the same task; $p(x)$ and $q(x)$ are their distributions over the next token given a prefix."
+  evidence:
+    - {work: "leviathan-2023-fast-inference-speculative-decoding", role: original, locator: "p. 2", stance: for}
+
+- id: c-le-adjusted
+  type: attributive
+  text: "Greedy decoding, top-k, nucleus sampling and temperature can all be cast as standard sampling from an adjusted distribution, so $p$ and $q$ are taken after that adjustment and the method covers these decoding schemes."
+  evidence:
+    - {work: "leviathan-2023-fast-inference-speculative-decoding", role: original, locator: "p. 2", stance: for}
+
+- id: c-ch-decoding-schemes
+  type: attributive
+  text: "Chen et al. likewise state that their scheme works with nucleus, top-k and temperature sampling."
+  evidence:
+    - {work: "chen-2023-accelerating-llm-decoding-speculative-sampling", role: original, locator: "p. 5", stance: for}
+
+- id: c-le-rule
+  type: definitional
+  text: "To sample $x \\sim p$, sample $x \\sim q$ instead, keep it if $q(x) \\le p(x)$, and if $q(x) > p(x)$ reject it with probability $1 - p(x)/q(x)$ and sample again from $p'(x) = \\mathrm{norm}(\\max(0, p(x) - q(x)))$."
+  evidence:
+    - {work: "leviathan-2023-fast-inference-speculative-decoding", role: original, locator: "p. 3", stance: for}
+
+- id: c-le-exact
+  type: attributive
+  text: "For any distributions $p(x)$ and $q(x)$, Leviathan et al. find that $x$ sampled in this way is indeed distributed as $p(x)$ (their Appendix A.1)."
+  evidence:
+    - {work: "leviathan-2023-fast-inference-speculative-decoding", role: original, locator: "p. 3", stance: for}
+
+- id: c-ch-theorem
+  type: attributive
+  text: "Chen et al. call the same rule modified rejection sampling and prove that it recovers the target distribution."
+  evidence:
+    - {work: "chen-2023-accelerating-llm-decoding-speculative-sampling", role: original, locator: "p. 10", stance: for}
+
+- id: c-le-algorithm
+  type: definitional
+  text: "Algorithm 1 of Leviathan et al. samples $\\gamma$ guesses $x_1, \\dots, x_\\gamma$ from $M_q$ autoregressively, runs $M_p$ in parallel on the prefix and on the prefix extended by each guess to get $p_1, \\dots, p_{\\gamma+1}$, and accepts the guesses from left to right by speculative sampling."
+  evidence:
+    - {work: "leviathan-2023-fast-inference-speculative-decoding", role: original, locator: "p. 3", stance: for}
+
+- id: c-le-bonus
+  type: definitional
+  text: "If a guess is rejected, an additional token is sampled from an adjusted distribution to fix the first one that was rejected; if all $\\gamma$ are accepted, an additional token is sampled from $p_{\\gamma+1}$, the bonus token."
+  evidence:
+    - {work: "leviathan-2023-fast-inference-speculative-decoding", role: original, locator: "p. 2", stance: for}
+
+- id: c-le-at-least-one
+  type: attributive
+  text: "Each run of the target therefore produces at least one new token and up to $\\gamma + 1$, and the number of serial runs of the target can never exceed that of standard decoding."
+  evidence:
+    - {work: "leviathan-2023-fast-inference-speculative-decoding", role: original, locator: "p. 2", stance: for}
+
+- id: c-ch-loop
+  type: definitional
+  text: "Chen et al. describe the same loop: generate a draft of length $K$, score it with the target, and accept a subset of the draft from left to right with modified rejection sampling."
+  evidence:
+    - {work: "chen-2023-accelerating-llm-decoding-speculative-sampling", role: original, locator: "p. 1", stance: for}
+
+- id: c-le-beta
+  type: definitional
+  text: "The acceptance rate $\\beta$ for a prefix is the probability of accepting $x \\sim q$ by speculative sampling, and $\\alpha = E(\\beta)$ measures how well $M_q$ approximates $M_p$."
+  evidence:
+    - {work: "leviathan-2023-fast-inference-speculative-decoding", role: original, locator: "p. 3", stance: for}
+
+- id: c-le-dlk
+  type: attributive
+  text: "By their Theorem 3.5, $\\beta = 1 - D_{LK}(p, q) = \\sum_x \\min(p(x), q(x))$."
+  evidence:
+    - {work: "leviathan-2023-fast-inference-speculative-decoding", role: original, locator: "p. 4", stance: for}
+
+- id: c-le-capped
+  type: attributive
+  text: "Under the simplifying assumption that the $\\beta$s are i.i.d., the number of tokens from one run is a capped geometric variable with success probability $1 - \\alpha$ and cap $\\gamma + 1$, with mean"
+  evidence:
+    - {work: "leviathan-2023-fast-inference-speculative-decoding", role: original, locator: "p. 3", stance: for}
+
+- id: c-le-walltime
+  type: attributive
+  text: "With $c$ the ratio between the time of one run of $M_q$ and one run of $M_p$, and assuming the $\\gamma + 1$ target runs fit in the walltime of one, the expected walltime improvement is"
+  evidence:
+    - {work: "leviathan-2023-fast-inference-speculative-decoding", role: original, locator: "p. 4", stance: for}
+
+- id: c-le-corollary
+  type: attributive
+  text: "If $\\alpha > c$ some $\\gamma$ gives an improvement, by a factor of at least $(1 + \\alpha)/(1 + c)$."
+  evidence:
+    - {work: "leviathan-2023-fast-inference-speculative-decoding", role: original, locator: "p. 4", stance: for}
+
+- id: c-le-ops
+  type: attributive
+  text: "With $\\hat c$ the ratio of arithmetic operations per token of $M_q$ to $M_p$, the expected total arithmetic grows by the factor"
+  evidence:
+    - {work: "leviathan-2023-fast-inference-speculative-decoding", role: original, locator: "p. 4", stance: for}
+
+# Derivation
+
+- id: c-ss-exact
+  type: mathematical
+  text: "The probability of accepting and outputting $x$ is $q(x)\\min(1, p(x)/q(x)) = \\min(p(x), q(x))$, rejection has probability $1 - \\sum \\min(p, q) = \\sum \\max(0, p - q)$, which is the normalizer of $p'$, so the output has probability $\\min(p(y), q(y)) + \\max(0, p(y) - q(y)) = p(y)$."
+  assumes: ["p and q are probability distributions on one finite vocabulary", "the draft token is drawn from q and the uniform variable is independent of it"]
+  derivation: speculative-sampling
+
+- id: c-ss-accept-mass
+  type: mathematical
+  text: "The acceptance probability is $\\beta = \\sum_x \\min(p(x), q(x))$."
+  assumes: ["p and q are probability distributions on one finite vocabulary", "the draft token is drawn from q and the uniform variable is independent of it"]
+  derivation: speculative-sampling
+
+- id: c-ss-tv
+  type: mathematical
+  text: "Since $|a - b| = a + b - 2\\min(a, b)$, $\\beta = 1 - \\mathrm{TV}(p, q)$, one minus the total variation distance."
+  assumes: ["p and q are probability distributions on one finite vocabulary", "the draft token is drawn from q and the uniform variable is independent of it"]
+  derivation: speculative-sampling
+
+- id: c-ss-extremes
+  type: mathematical
+  text: "So $\\beta = 1$ exactly when $p = q$ and $\\beta = 0$ exactly when the supports are disjoint."
+  assumes: ["p and q are probability distributions on one finite vocabulary", "the draft token is drawn from q and the uniform variable is independent of it"]
+  derivation: speculative-sampling
+
+- id: c-ss-greedy
+  type: mathematical
+  text: "For greedy decoding $p$ is one-hot on a token $t$: a draft is accepted exactly when it is $t$, and the output is always $t$."
+  assumes: ["p and q are probability distributions on one finite vocabulary", "the draft token is drawn from q and the uniform variable is independent of it"]
+  derivation: speculative-sampling
+
+- id: c-ss-zero
+  type: mathematical
+  text: "A token with $p(y) = 0$ is never output, whatever $q$ proposes."
+  assumes: ["p and q are probability distributions on one finite vocabulary", "the draft token is drawn from q and the uniform variable is independent of it"]
+  derivation: speculative-sampling
+
+- id: c-et-pmf
+  type: mathematical
+  text: "Then $N$, the tokens per run, has $P(N = n) = \\alpha^{n-1}(1 - \\alpha)$ for $n \\le \\gamma$ and $P(N = \\gamma + 1) = \\alpha^\\gamma$."
+  assumes: ["the acceptance events of the draft positions are independent with one probability alpha", "a parallel target run on gamma + 1 prefixes takes the walltime of one run"]
+  derivation: expected-tokens
+
+- id: c-et-mean
+  type: mathematical
+  text: "Writing $N = 1 + \\sum_{k=1}^{\\gamma} \\mathbb 1[\\text{the first } k \\text{ accepted}]$ gives $E[N] = \\sum_{k=0}^{\\gamma} \\alpha^k$, which is eq-expected-tokens."
+  assumes: ["the acceptance events of the draft positions are independent with one probability alpha", "a parallel target run on gamma + 1 prefixes takes the walltime of one run"]
+  derivation: expected-tokens
+
+- id: c-et-bounds
+  type: mathematical
+  text: "It lies between 1 and $\\min(\\gamma + 1, 1/(1 - \\alpha))$ and grows with both $\\alpha$ and $\\gamma$."
+  assumes: ["the acceptance events of the draft positions are independent with one probability alpha", "a parallel target run on gamma + 1 prefixes takes the walltime of one run"]
+  derivation: expected-tokens
+
+- id: c-et-walltime
+  type: mathematical
+  text: "A run costs $\\gamma c + 1$ target times and yields $E[N]$ tokens, which gives eq-walltime."
+  assumes: ["the acceptance events of the draft positions are independent with one probability alpha", "a parallel target run on gamma + 1 prefixes takes the walltime of one run"]
+  derivation: expected-tokens
+
+- id: c-et-gamma-one
+  type: mathematical
+  text: "At $\\gamma = 1$ the improvement is $(1 + \\alpha)/(1 + c)$, above 1 exactly when $\\alpha > c$."
+  assumes: ["the acceptance events of the draft positions are independent with one probability alpha", "a parallel target run on gamma + 1 prefixes takes the walltime of one run"]
+  derivation: expected-tokens
+
+- id: c-et-ops
+  type: mathematical
+  text: "A run spends $\\gamma \\hat c + \\gamma + 1$ target units of arithmetic for $E[N]$ tokens, which gives eq-ops."
+  assumes: ["the acceptance events of the draft positions are independent with one probability alpha", "a parallel target run on gamma + 1 prefixes takes the walltime of one run"]
+  derivation: expected-tokens
+
+- id: c-et-tables
+  type: mathematical
+  text: "At $c = \\hat c = 0$ these formulas give, for example, $3.69\\times$ speed and $1.63\\times$ arithmetic at $\\alpha = 0.8$, $\\gamma = 5$."
+  assumes: ["the acceptance events of the draft positions are independent with one probability alpha", "a parallel target run on gamma + 1 prefixes takes the walltime of one run"]
+  derivation: expected-tokens
+
+# Hyperparameters
+
+- id: c-le-size
+  type: attributive
+  text: "Leviathan et al. give the optimal $\\gamma$ as a function of $\\alpha$ and $c$ in their Figure 3, and find that a draft model about two orders of magnitude smaller than the target usually performed best, balancing $\\alpha$ and $c$."
+  evidence:
+    - {work: "leviathan-2023-fast-inference-speculative-decoding", role: original, locator: "p. 5", stance: for}
+
+- id: c-ch-k
+  type: empirical
+  text: "Chen et al. find that as $K$ grows the speedup plateaus or regresses, with XSum fastest at $K = 3$, and that the variance of the time to generate a sequence grows with $K$."
+  scope:
+    models: "Chinchilla 70B target with a 4B draft"
+    data: ["XSum", "HumanEval"]
+    scale: "70B"
+    setting: "K from 0 to 7, time to generate 128 tokens"
+  evidence:
+    - {work: "chen-2023-accelerating-llm-decoding-speculative-sampling", role: original, locator: "p. 7", stance: for}
+
+- id: c-ch-tail
+  type: attributive
+  text: "Larger $K$ may give marginally greater mean speedups in some cases, but the larger variance matters where P90 or P99 latency is of concern."
+  evidence:
+    - {work: "chen-2023-accelerating-llm-decoding-speculative-sampling", role: original, locator: "p. 8", stance: for}
+
+# Cost
+
+- id: c-le-c
+  type: attributive
+  text: "In Leviathan et al.'s experiments, with $M_q$ typically a couple of orders of magnitude smaller than $M_p$, $c$ was always less than 0.05 and often negligibly close to 0."
+  evidence:
+    - {work: "leviathan-2023-fast-inference-speculative-decoding", role: original, locator: "p. 4", stance: for}
+
+- id: c-le-negligible
+  type: attributive
+  text: "For a draft of negligible cost the improvement of eq-walltime is bounded above by $1/(1 - \\alpha)$."
+  evidence:
+    - {work: "leviathan-2023-fast-inference-speculative-decoding", role: original, locator: "p. 5", stance: for}
+
+- id: c-ch-linear
+  type: empirical
+  text: "Chen et al. note that the time per loop grows roughly linearly with $K$, because of the extra model calls."
+  scope:
+    models: "Chinchilla 70B target with a 4B draft"
+    data: ["XSum", "HumanEval"]
+    scale: "70B"
+    setting: "time per loop against K on 16 TPU v4"
+  evidence:
+    - {work: "chen-2023-accelerating-llm-decoding-speculative-sampling", role: original, locator: "p. 7", stance: for}
+
+- id: c-ch-draft
+  type: attributive
+  text: "Their draft model has 4B parameters and 8 layers, and samples at 1.8 ms per token against 14.1 ms per token for Chinchilla 70B on 16 TPU v4."
+  evidence:
+    - {work: "chen-2023-accelerating-llm-decoding-speculative-sampling", role: original, locator: "p. 5", stance: for}
+
+- id: c-ch-wide
+  type: attributive
+  text: "They trained a wide, shallow draft because a 7B model on 16 TPUs would be slower than on fewer, through communication overhead."
+  evidence:
+    - {work: "chen-2023-accelerating-llm-decoding-speculative-sampling", role: original, locator: "p. 6", stance: for}
+
+# Evidence
+
+- id: c-le-headline
+  type: empirical
+  text: "On T5-XXL, Leviathan et al. report a 2X-3X acceleration compared to the T5X implementation, with identical outputs."
+  scope:
+    models: "T5-XXL 11B target with T5 drafts (Leviathan et al.)"
+    data: ["WMT EnDe", "CNN/DM"]
+    scale: "11B"
+    setting: "walltime against the T5X implementation"
+  evidence:
+    - {work: "leviathan-2023-fast-inference-speculative-decoding", role: original, locator: "p. 1", stance: for}
+
+- id: c-le-t5
+  type: empirical
+  text: "With T5-small as the draft, at batch size 1 on one TPU-v4, English-German translation runs 3.4X faster at temperature 0 and 2.6X at temperature 1, and CNN/DM summarization 3.1X and 2.3X."
+  scope:
+    models: "T5-XXL 11B target with T5-small 77M draft (Leviathan et al.)"
+    data: ["WMT EnDe", "CNN/DM"]
+    scale: "11B"
+    setting: "batch size 1 on one TPU-v4, against T5X, temperatures 0 and 1"
+  evidence:
+    - {work: "leviathan-2023-fast-inference-speculative-decoding", role: original, locator: "p. 6", stance: for}
+
+- id: c-le-alpha-range
+  type: empirical
+  text: "Drafts some two orders of magnitude below the target in size tend to give $\\alpha$ between 0.5 and 0.9, and the sharper the adjusted distribution, the higher $\\alpha$."
+  scope:
+    models: "GPT-like 97M, T5-XXL 11B and LaMDA 137B targets with smaller drafts"
+    data: ["lm1b", "WMT EnDe", "CNN/DM", "dialog"]
+    scale: "97M to 137B"
+    setting: "measured acceptance rates at temperatures 0 and 1"
+  evidence:
+    - {work: "leviathan-2023-fast-inference-speculative-decoding", role: original, locator: "p. 7", stance: for}
+
+- id: c-le-bigram
+  type: empirical
+  text: "Even a bigram model has $\\alpha$ of 0.2 on translation, which gives 1.25X at negligible cost."
+  scope:
+    models: "T5-XXL 11B target with a bigram draft"
+    data: ["WMT EnDe"]
+    scale: "11B"
+    setting: "temperature 0"
+  evidence:
+    - {work: "leviathan-2023-fast-inference-speculative-decoding", role: original, locator: "p. 7", stance: for}
+
+- id: c-le-predicted
+  type: empirical
+  text: "Theoretical predictions mostly match measured runtimes, and Leviathan et al. trace the larger differences to optimization differences between their implementation and the baseline, and to the i.i.d. assumption being only approximate."
+  scope:
+    models: "T5-XXL 11B target with T5 drafts"
+    data: ["WMT EnDe", "CNN/DM"]
+    scale: "11B"
+    setting: "Theorem 3.8 with c from profiler traces against measured walltime"
+  evidence:
+    - {work: "leviathan-2023-fast-inference-speculative-decoding", role: original, locator: "p. 11", stance: for}
+
+- id: c-ch-headline
+  type: empirical
+  text: "On Chinchilla 70B, Chen et al. report a 2 to 2.5 times decoding speedup, distributed over many devices, with no loss of sample quality."
+  scope:
+    models: "Chinchilla 70B target with a 4B draft (Chen et al.)"
+    data: ["XSum", "HumanEval"]
+    scale: "70B"
+    setting: "distributed sampling on 16 TPU v4"
+  evidence:
+    - {work: "chen-2023-accelerating-llm-decoding-speculative-sampling", role: original, locator: "p. 1", stance: for}
+
+- id: c-ch-table
+  type: empirical
+  text: "On XSum with nucleus sampling, latency falls from 14.1 to 7.52 ms per token, 1.92 times faster, and on HumanEval to 5.73 ms per token, 2.46 times, with the benchmark scores within noise."
+  scope:
+    models: "Chinchilla 70B target with a 4B draft, K = 4"
+    data: ["XSum", "HumanEval"]
+    scale: "70B"
+    setting: "batch size 1, nucleus sampling, 16 TPU v4"
+  evidence:
+    - {work: "chen-2023-accelerating-llm-decoding-speculative-sampling", role: original, locator: "p. 6", stance: for}
+
+- id: c-ch-exceed
+  type: empirical
+  text: "On HumanEval and greedy XSum the speedup went past the theoretical memory bandwidth limit that the hardware sets on autoregressive sampling."
+  scope:
+    models: "Chinchilla 70B target with a 4B draft"
+    data: ["XSum", "HumanEval"]
+    scale: "70B"
+    setting: "greedy XSum and nucleus HumanEval on 16 TPU v4"
+  evidence:
+    - {work: "chen-2023-accelerating-llm-decoding-speculative-sampling", role: original, locator: "p. 7", stance: for}
+
+- id: c-ch-domain
+  type: empirical
+  text: "The acceptance rate depends on the domain and the decoding method; Chen et al. attribute the larger gain on code to its many common subsequences."
+  scope:
+    models: "Chinchilla 70B target with a 4B draft"
+    data: ["XSum", "HumanEval"]
+    scale: "70B"
+    setting: "greedy and nucleus sampling"
+  evidence:
+    - {work: "chen-2023-accelerating-llm-decoding-speculative-sampling", role: original, locator: "p. 7", stance: for}
+
+# Limitations and failure modes
+
+- id: c-le-limit
+  type: attributive
+  text: "Latency improves through more concurrency at the cost of more arithmetic operations, so the method does not help where additional computation is not available."
+  evidence:
+    - {work: "leviathan-2023-fast-inference-speculative-decoding", role: original, locator: "p. 8", stance: for}
+
+- id: c-ch-numerics
+  type: attributive
+  text: "Chen et al. note that their samples are not identical to those of standard sampling, because of numerics and random seeds, but come from the same distribution."
+  evidence:
+    - {work: "chen-2023-accelerating-llm-decoding-speculative-sampling", role: original, locator: "p. 6", stance: for}
+
+- id: c-ch-7b
+  type: attributive
+  text: "Chen et al. note that a 7B draft would provide only a modest speedup with its optimal topology, without full utilisation of the hardware during drafting."
+  evidence:
+    - {work: "chen-2023-accelerating-llm-decoding-speculative-sampling", role: original, locator: "p. 6", stance: for}
+
+- id: c-me-draft
+  type: attributive
+  text: "Cai et al. note that a separate draft model is challenging to obtain and maintain, and harder still to integrate into a distributed system."
+  evidence:
+    - {work: "cai-2024-medusa-multiple-decoding-heads", role: original, locator: "p. 1", stance: for}
+
+# Variants
+
+- id: c-le-blockwise
+  type: attributive
+  text: "Stern et al. (2018) also decode several tokens in parallel, but only greedily, with a custom-trained model, aiming at task quality rather than identical outputs."
+  evidence:
+    - {work: "leviathan-2023-fast-inference-speculative-decoding", role: original, locator: "p. 7", stance: for}
+
+- id: c-le-beam
+  type: attributive
+  text: "Speculative decoding can be applied, with some performance penalty, to beam search: run beam search with $M_q$ for $\\gamma$ steps and check all of the candidates with $M_p$ in parallel."
+  evidence:
+    - {work: "leviathan-2023-fast-inference-speculative-decoding", role: original, locator: "p. 12", stance: for}
+
+- id: c-le-lenience
+  type: attributive
+  text: "Leviathan et al. note that if some changes to the output distribution are allowed, with nice guarantees, further inference speed improvements are possible."
+  evidence:
+    - {work: "leviathan-2023-fast-inference-speculative-decoding", role: original, locator: "p. 12", stance: for}
+
+- id: c-me-heads
+  type: attributive
+  text: "Cai et al. add extra decoding heads to the target that predict several next tokens, build multiple candidate continuations and verify them at once with tree attention."
+  evidence:
+    - {work: "cai-2024-medusa-multiple-decoding-heads", role: original, locator: "p. 1", stance: for}
+
+- id: c-me-results
+  type: empirical
+  text: "Across different prompt types, Cai et al. report a speedup of 2.3 to 2.8 times without compromising the quality of generation."
+  scope:
+    models: "Vicuna-7B, 13B and 33B and Zephyr-7B with Medusa heads (Cai et al.)"
+    data: ["unknown"]
+    scale: "7B to 33B"
+    setting: "batch size 1"
+  evidence:
+    - {work: "cai-2024-medusa-multiple-decoding-heads", role: original, locator: "p. 2", stance: for}
+
+- id: c-me-typical
+  type: attributive
+  text: "The rejection sampling scheme of speculative decoding can be reused with the heads to generate responses with the same distribution as the original model, but it cannot further enhance the acceleration rate; a typical acceptance scheme instead selects reasonable candidates while maintaining a similar generation quality."
+  evidence:
+    - {work: "cai-2024-medusa-multiple-decoding-heads", role: original, locator: "p. 2", stance: for}
