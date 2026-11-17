@@ -1,5 +1,5 @@
 ---
-tag: NEW-mode-connectivity
+tag: MDXMTA
 kind: finding
 slug: mode-connectivity
 name: Mode connectivity
