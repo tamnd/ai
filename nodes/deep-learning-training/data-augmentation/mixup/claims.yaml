@@ -1,0 +1,471 @@
+# The claims of the mixup page (spec 07). The build computes the labels.
+
+# Setting
+
+- id: c-zh-memorize
+  type: attributive
+  text: "Zhang et al. note that the empirical risk monitors the behaviour of f only at a finite set of n examples, that for functions with a number of parameters comparable to n one trivial way to minimize it is to memorize the training data, and that memorization leads to undesirable behaviour of f outside the training data."
+  evidence:
+    - {work: "zhang-2018-mixup", role: original, locator: "Section 2", stance: for}
+
+- id: c-zh-vrm
+  type: attributive
+  text: "In the Vicinal Risk Minimization principle, human knowledge is required to describe a vicinity around each training example, from which additional virtual examples are drawn; Zhang et al. note that such data augmentation is dataset-dependent, requires expert knowledge, and assumes that the examples in the vicinity share the same class."
+  evidence:
+    - {work: "zhang-2018-mixup", role: original, locator: "Section 1", stance: for}
+
+- id: c-zh-gaussian
+  type: attributive
+  text: "Chapelle et al. considered Gaussian vicinities ν(x̃, ỹ | x_i, y_i) = N(x̃ − x_i, σ²) δ(ỹ = y_i), which is equivalent to augmenting the training data with additive Gaussian noise."
+  evidence:
+    - {work: "zhang-2018-mixup", role: original, locator: "Section 2", stance: for}
+
+# The method
+
+- id: c-zh-virtual
+  type: definitional
+  text: "mixup constructs virtual training examples x̃ = λx_i + (1 − λ)x_j and ỹ = λy_i + (1 − λ)y_j, where x_i and x_j are raw input vectors, y_i and y_j are one-hot label encodings, the two examples are drawn at random from the training data, and λ ∈ [0, 1]."
+  evidence:
+    - {work: "zhang-2018-mixup", role: original, locator: "Section 1", stance: for}
+
+- id: c-zh-prior
+  type: attributive
+  text: "Zhang et al. write that mixup extends the training distribution by incorporating the prior knowledge that linear interpolations of feature vectors should lead to linear interpolations of the associated targets, and that it can be implemented in a few lines of code with minimal computation overhead."
+  evidence:
+    - {work: "zhang-2018-mixup", role: original, locator: "Section 1", stance: for}
+
+- id: c-zh-vicinal
+  type: definitional
+  text: "Zhang et al. propose mixup as a generic vicinal distribution μ(x̃, ỹ | x_i, y_i) = (1/n) Σ_j E_λ[δ(x̃ = λ·x_i + (1 − λ)·x_j, ỹ = λ·y_i + (1 − λ)·y_j)], where λ ∼ Beta(α, α) for α ∈ (0, ∞)."
+  evidence:
+    - {work: "zhang-2018-mixup", role: original, locator: "Section 2", stance: for}
+
+- id: c-zh-alpha
+  type: attributive
+  text: "The mixup hyper-parameter α controls the strength of interpolation between feature-target pairs, recovering the ERM principle as α → 0."
+  evidence:
+    - {work: "zhang-2018-mixup", role: original, locator: "Section 2", stance: for}
+
+- id: c-zh-code
+  type: attributive
+  text: "Figure 1a of Zhang et al. shows the few lines of code of one epoch of mixup training in PyTorch, which draws lam = numpy.random.beta(alpha, alpha) and mixes the inputs and the one-hot targets of two loaders."
+  evidence:
+    - {work: "zhang-2018-mixup", role: original, locator: "Section 2", stance: for}
+
+- id: c-zh-one-loader
+  type: attributive
+  text: "Zhang et al. report that their implementation uses a single data loader to obtain one minibatch, and then applies mixup to the same minibatch after random shuffling, a strategy that works equally well while reducing I/O requirements."
+  evidence:
+    - {work: "zhang-2018-mixup", role: original, locator: "Section 2", stance: for}
+
+- id: c-zh-alternatives
+  type: attributive
+  text: "Zhang et al. report that in preliminary experiments convex combinations of three or more examples with weights sampled from a Dirichlet distribution did not provide further gain but increased the computation cost, and interpolating only between inputs with equal label did not lead to the performance gains of mixup."
+  evidence:
+    - {work: "zhang-2018-mixup", role: original, locator: "Section 2", stance: for}
+
+- id: c-zh-linear
+  type: attributive
+  text: "Zhang et al. argue that mixup encourages the model to behave linearly in-between training examples, that this linear behaviour reduces the amount of undesirable oscillations when predicting outside the training examples, and that linearity is a good inductive bias from the perspective of Occam's razor."
+  evidence:
+    - {work: "zhang-2018-mixup", role: original, locator: "Section 2", stance: for}
+
+- id: c-zh-figure2
+  type: empirical
+  text: "Evaluated at points x = λx_i + (1 − λ)x_j in-between training data, a CIFAR-10 model trained with mixup has fewer misses, predictions outside {y_i, y_j}, and smaller norms of the gradients with respect to the input than a model trained with ERM."
+  scope:
+    models: "the same architecture and training procedure for ERM and mixup"
+    data: [cifar-10]
+    scale: "averages over randomly sampled pairs of training data"
+    setting: "image classification"
+  evidence:
+    - {work: "zhang-2018-mixup", role: original, locator: "figure 2", stance: for}
+
+- id: c-cm-def
+  type: definitional
+  text: "CutMix generates a training sample by combining two training samples as x̃ = M ⊙ x_A + (1 − M) ⊙ x_B and ỹ = λy_A + (1 − λ)y_B, where M ∈ {0, 1}^{W×H} is a binary mask indicating where to drop out and fill in from two images, and the combination ratio λ is sampled from the beta distribution Beta(α, α), with α set to 1 in all their experiments."
+  evidence:
+    - {work: "yun-2019-cutmix", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-cm-box
+  type: definitional
+  text: "CutMix samples the bounding box B = (r_x, r_y, r_w, r_h) with r_x ∼ Unif(0, W), r_w = W√(1 − λ), r_y ∼ Unif(0, H) and r_h = H√(1 − λ), making the cropped area ratio r_w r_h/(WH) = 1 − λ, and the binary mask M is filled with 0 within the bounding box and 1 otherwise."
+  evidence:
+    - {work: "yun-2019-cutmix", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-cm-adjust
+  type: attributive
+  text: "In the pseudo-code of CutMix (Algorithm A1), the minibatch input and target are shuffled into input_s and target_s, lambda = Unif(0,1), r_x = Unif(0,W) and r_y = Unif(0,H), x1, x2, y1, y2 are computed with Round and Clip, input[:, :, x1:x2, y1:y2] is taken from input_s, and lambda = 1 − (x2−x1)(y2−y1)/(W·H) adjusts lambda to the exact area ratio before target = lambda · target + (1 − lambda) · target_s."
+  evidence:
+    - {work: "yun-2019-cutmix", role: original, locator: "p. 12", stance: for}
+
+- id: c-cm-natural
+  type: attributive
+  text: "Yun et al. note that the major difference from Mixup is that CutMix replaces an image region with a patch from another training image and generates a more locally natural image than Mixup does."
+  evidence:
+    - {work: "yun-2019-cutmix", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-mm-def
+  type: definitional
+  text: "Manifold Mixup selects a random layer k from a set of eligible layers S, which may include the input layer, processes two random minibatches as usual until layer k, mixes their hidden representations and one-hot labels with λ ∼ Beta(α, α), continues the forward pass from layer k, and uses the output to compute the loss and gradients that update all the parameters."
+  evidence:
+    - {work: "verma-2019-manifold-mixup", role: original, locator: "Section 2", stance: for}
+
+- id: c-mm-reduces
+  type: attributive
+  text: "Verma et al. note that with S = {0} Manifold Mixup reduces to the original mixup algorithm, that they sample a single (k, λ) per minibatch, which in practice gives the same performance as sampling per example, and that, as in Input Mixup, they mix the minibatch with a copy of itself with shuffled rows."
+  evidence:
+    - {work: "verma-2019-manifold-mixup", role: original, locator: "Section 2", stance: for}
+
+# Derivation
+
+- id: c-mixed-loss
+  type: mathematical
+  text: "For logits z, labels y_i and y_j and any λ in [0, 1], the cross-entropy of p = softmax(z) against the mixed target λe_{y_i} + (1 − λ)e_{y_j} equals λ(−log p_{y_i}) + (1 − λ)(−log p_{y_j}), and its gradient in the logits is p minus the mixed target."
+  assumes: ["p is the softmax of finite logits", "the target is a convex combination of the one-hot labels with a weight that does not depend on the logits", "0 ≤ λ ≤ 1"]
+  derivation: mixed-cross-entropy
+
+- id: c-mixed-batch
+  type: mathematical
+  text: "Mixing a minibatch with a permutation π of itself and training on the targets λy + (1 − λ)y_π gives the same loss and the same gradient as the two-label form λ CE(f(x̃), y) + (1 − λ) CE(f(x̃), y_π) on the same mixed inputs, so the mixed one-hot targets never need to be formed."
+  assumes: ["the loss is the cross-entropy or another loss linear in the target", "π is a permutation of the minibatch indices", "0 ≤ λ ≤ 1"]
+  derivation: mixed-cross-entropy
+
+- id: c-zh21-class
+  type: attributive
+  text: "Zhang et al. (2021) consider losses of the form l(θ, (x, y)) = h(f_θ(x)) − y f_θ(x), a class that includes the losses of generalized linear models such as linear regression and logistic regression, and also cross-entropy for neural networks."
+  evidence:
+    - {work: "zhang-2021-how-does-mixup-help", role: original, locator: "p. 3", stance: for}
+
+- id: c-zh21-lemma
+  type: attributive
+  text: "Lemma 3.1 of Zhang et al. (2021) rewrites the mixup loss with λ ∼ Beta(α, β) as the standard loss plus three regularization terms R_1, R_2, R_3 and higher order terms, which shows that mixup is related to regularizing ∇f_θ(x_i) and ∇²f_θ(x_i), the first and second directional derivatives with respect to x_i."
+  evidence:
+    - {work: "zhang-2021-how-does-mixup-help", role: original, locator: "p. 4", stance: for}
+
+- id: c-zh21-claims
+  type: attributive
+  text: "Zhang et al. (2021) show that minimizing the mixup loss corresponds to approximately minimizing an upper bound of the adversarial loss, which explains the robustness of mixup models to attacks such as the Fast Gradient Sign Method (FGSM), and prove that mixup corresponds to a specific type of data-adaptive regularization which reduces overfitting."
+  evidence:
+    - {work: "zhang-2021-how-does-mixup-help", role: original, locator: "p. 1", stance: for}
+
+- id: c-beta-moments
+  type: mathematical
+  text: "For λ ∼ Beta(α, α), E[λ] = 1/2 and Var[λ] = 1/(4(2α + 1)); as α → 0 the distribution of λ tends to mass 1/2 at each of 0 and 1, so every mixed example is a plain training example as in ERM, and as α → ∞ it concentrates at 1/2; α = 1 gives the uniform distribution on [0, 1]."
+  assumes: ["λ ∼ Beta(α, α) with α > 0"]
+  derivation: beta-moments
+
+- id: c-cutmix-area
+  type: mathematical
+  text: "For a box with integer corners clipped to a W × H image, the fraction of the pixels of the CutMix image that come from x_A is exactly 1 − (x2 − x1)(y2 − y1)/(WH), the adjusted λ; before clipping the box covers the fraction 1 − λ of the image, and clipping can only remove area, so up to rounding the adjusted λ is at least the sampled one."
+  assumes: ["the mask is 0 inside the clipped box and 1 elsewhere", "the box has width W√(1 − λ) and height H√(1 − λ) about a center inside the image", "0 ≤ λ ≤ 1"]
+  derivation: cutmix-area
+
+- id: c-cutmix-mean
+  type: mathematical
+  text: "With α = 1 and the box center uniform over the image, clipping raises the mean of the adjusted λ from 1/2 to 163/240 ≈ 0.68 in the limit of a large image, so CutMix as coded keeps more of x_A on average than the sampled λ says."
+  assumes: ["λ ∼ Unif(0, 1)", "the box center is uniform over the image", "the image is large enough for rounding to be negligible"]
+  derivation: cutmix-area
+
+# Hyperparameters
+
+- id: c-zh-imagenet-alpha
+  type: empirical
+  text: "On ImageNet-2012, Zhang et al. find that α ∈ [0.1, 0.4] leads to improved performance over ERM, whereas for large α mixup leads to underfitting."
+  scope:
+    models: "ResNet-50, ResNet-101, ResNeXt-101"
+    data: [imagenet]
+    scale: "90 and 200 epochs, minibatch size 1,024"
+    setting: "image classification"
+  evidence:
+    - {work: "zhang-2018-mixup", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-zh-cifar-setup
+  type: attributive
+  text: "For the CIFAR experiments Zhang et al. fix α = 1, which results in interpolations λ uniformly distributed between zero and one, and train for 200 epochs with 128 examples per minibatch and weight decay 10^−4, without dropout."
+  evidence:
+    - {work: "zhang-2018-mixup", role: original, locator: "p. 5", stance: for}
+
+- id: c-cm-alpha
+  type: empirical
+  text: "On CIFAR-100, Yun et al. evaluated CutMix with α ∈ {0.1, 0.25, 0.5, 1.0, 2.0, 4.0}; for all α values it improves upon the baseline (16.45%), the best performance is achieved when α = 1.0, and CutMix achieves the best performance when applied on the input images rather than at higher feature levels."
+  scope:
+    models: "PyramidNet-200"
+    data: [cifar-100]
+    scale: "300 epochs"
+    setting: "image classification, ablation of α and of the layer"
+  evidence:
+    - {work: "yun-2019-cutmix", role: original, locator: "Section 4.1.3", stance: for}
+
+- id: c-zh-warmup
+  type: attributive
+  text: "On the Google commands dataset, Zhang et al. use a warm-up period of five epochs in which the network trains on the original training examples, since they find it speeds up initial convergence."
+  evidence:
+    - {work: "zhang-2018-mixup", role: original, locator: "Section 3.3", stance: for}
+
+# Evidence
+
+- id: c-zh-imagenet
+  type: empirical
+  text: "On the ImageNet-2012 development set after 90 epochs, the top-1 error of ResNet-50 goes from 23.5 with ERM to 23.3 with mixup α = 0.2 and that of ResNet-101 from 22.1 to 21.5; after 200 epochs ResNet-50 goes from 23.6 to 22.1 and ResNet-101 from 22.0 to 20.8."
+  scope:
+    models: "ResNet-50, ResNet-101"
+    data: [imagenet]
+    scale: "90 and 200 epochs, central 224 × 224 crop"
+    setting: "image classification"
+  evidence:
+    - {work: "zhang-2018-mixup", role: original, locator: "table 1", stance: for}
+
+- id: c-zh-capacity
+  type: empirical
+  text: "Zhang et al. find that models with higher capacities and longer training runs benefit the most from mixup: at 90 epochs ResNet-101 and ResNeXt-101 gain 0.5% to 0.6% over ERM against 0.2% for ResNet-50, and at 200 epochs the mixup ResNet-50 is a further 1.2% better than at 90 epochs while its ERM analogue stays the same."
+  scope:
+    models: "ResNet-50, ResNet-101, ResNeXt-101"
+    data: [imagenet]
+    scale: "90 and 200 epochs"
+    setting: "image classification"
+  evidence:
+    - {work: "zhang-2018-mixup", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-zh-cifar
+  type: empirical
+  text: "With α = 1, the CIFAR-10 test error goes from 5.6 to 4.2 for PreAct ResNet-18, from 3.8 to 2.7 for WideResNet-28-10 and from 3.7 to 2.7 for DenseNet-BC-190, and the CIFAR-100 test error from 25.6 to 21.1, 19.4 to 17.5 and 19.0 to 16.8, with mixup and ERM converging at a similar speed."
+  scope:
+    models: "PreAct ResNet-18, WideResNet-28-10, DenseNet-BC-190"
+    data: [cifar-10, cifar-100]
+    scale: "200 epochs"
+    setting: "image classification"
+  evidence:
+    - {work: "zhang-2018-mixup", role: original, locator: "figure 3", stance: for}
+
+- id: c-zh-speech
+  type: empirical
+  text: "On the Google commands dataset, the test error of VGG-11 goes from 4.6 with ERM to 3.4 with mixup α = 0.2, while that of LeNet goes from 10.3 to 11.3."
+  scope:
+    models: "LeNet, VGG-11"
+    data: [google-speech-commands]
+    scale: "30 epochs"
+    setting: "speech command classification on spectrograms"
+  evidence:
+    - {work: "zhang-2018-mixup", role: original, locator: "figure 4", stance: for}
+
+- id: c-zh-corrupt
+  type: empirical
+  text: "With 20%, 50% or 80% of the CIFAR-10 training labels replaced by random noise, mixup with a large α (8 or 32) outperforms dropout on both the best and last epoch test errors, and mixup + dropout performs the best of all, showing that the two methods are compatible."
+  scope:
+    models: "PreAct ResNet-18"
+    data: [cifar-10]
+    scale: "200 epochs"
+    setting: "learning with corrupted labels"
+  evidence:
+    - {work: "zhang-2018-mixup", role: original, locator: "Section 3.4", stance: for}
+
+- id: c-zh-corrupt-80
+  type: empirical
+  text: "With 80% corrupted labels, the best and last test errors are 36.5 and 73.9 for ERM, 30.9 and 35.1 for dropout with p = 0.8, 25.3 and 30.9 for mixup with α = 32, and 24.0 and 24.8 for mixup + dropout."
+  scope:
+    models: "PreAct ResNet-18"
+    data: [cifar-10]
+    scale: "200 epochs"
+    setting: "learning with corrupted labels"
+  evidence:
+    - {work: "zhang-2018-mixup", role: original, locator: "table 2", stance: for}
+
+- id: c-zh-adversarial
+  type: empirical
+  text: "For ResNet-101 on ImageNet-2012 with a maximum perturbation of 4, the mixup model is 2.7 times more robust than the ERM model to the FGSM white box attack and 1.25 times more robust to the FGSM black box attack in terms of Top-1 error, and while neither is robust to white box I-FGSM attacks, mixup is about 40% more robust in the black box I-FGSM setting."
+  scope:
+    models: "ResNet-101"
+    data: [imagenet]
+    scale: "ε = 4 per pixel, 10 iterations for I-FGSM"
+    setting: "white box and black box adversarial attacks"
+  evidence:
+    - {work: "zhang-2018-mixup", role: original, locator: "Section 3.5", stance: for}
+
+- id: c-zh-uci
+  type: empirical
+  text: "On six classification problems from the UCI dataset, with fully-connected networks of two hidden layers of 128 ReLU units, mixup improves the average test error on four out of the six datasets and never underperforms ERM."
+  scope:
+    models: "fully-connected network, two hidden layers of 128 ReLU units"
+    data: [uci-repository]
+    scale: "10 epochs, mini-batches of size 16"
+    setting: "tabular classification"
+  evidence:
+    - {work: "zhang-2018-mixup", role: original, locator: "Section 3.6", stance: for}
+
+- id: c-zh-gan
+  type: empirical
+  text: "Zhang et al. argue that mixup should stabilize GAN training because it acts as a regularizer on the gradients of the discriminator, and on two toy datasets the training of mixup GANs is promisingly robust."
+  scope:
+    models: "fully-connected generator and discriminator, three hidden layers of 512 ReLU units"
+    data: [toy-2d]
+    scale: "20,000 mini-batches of size 128"
+    setting: "generative adversarial networks"
+  evidence:
+    - {work: "zhang-2018-mixup", role: original, locator: "Section 3.7", stance: for}
+
+- id: c-zh-ablation
+  type: empirical
+  text: "In the CIFAR-10 ablation of Zhang et al., mixup is the best data augmentation method tested and significantly better than the second best, mix input + label smoothing; ERM works better with a large weight decay and mixup with a small one, confirming its regularization effects, and label smoothing and adding Gaussian noise have a relatively small regularization effect."
+  scope:
+    models: "PreAct ResNet-18"
+    data: [cifar-10]
+    scale: "median test error of the last 10 epochs, weight decay 10^−4 and 5 × 10^−4"
+    setting: "ablation of the design choices of mixup"
+  evidence:
+    - {work: "zhang-2018-mixup", role: original, locator: "Section 3.8", stance: for}
+
+- id: c-zh-ablation-layers
+  type: empirical
+  text: "In the same ablation, the advantage of a large weight decay increases when interpolating in higher layers of latent representations, indicating decreasing strength of regularization, and among the input interpolation methods mixing random pairs from all classes (AC + RP) has the strongest regularization effect."
+  scope:
+    models: "PreAct ResNet-18"
+    data: [cifar-10]
+    scale: "median test error of the last 10 epochs"
+    setting: "ablation of the design choices of mixup"
+  evidence:
+    - {work: "zhang-2018-mixup", role: original, locator: "Section 3.8", stance: for}
+
+- id: c-cm-table1
+  type: empirical
+  text: "Table 1 of Yun et al. lists ImageNet Cls (%) of 76.3 for ResNet-50, 77.4 with Mixup, 77.1 with Cutout and 78.6 with CutMix, and ImageNet Loc (%) of 46.3, 45.8, 46.7 and 47.3 for the same four."
+  scope:
+    models: "ResNet-50"
+    data: [imagenet]
+    scale: "300 epochs"
+    setting: "image classification and weakly supervised localization"
+  evidence:
+    - {work: "yun-2019-cutmix", role: original, locator: "table 1", stance: for}
+
+- id: c-cm-loc
+  type: empirical
+  text: "Yun et al. report that although Mixup and Cutout enhance ImageNet classification, they decrease the ImageNet localization or object detection performances, while CutMix consistently achieves significant enhancements across the three tasks."
+  scope:
+    models: "ResNet-50"
+    data: [imagenet]
+    scale: "300 epochs"
+    setting: "classification, weakly supervised localization and transfer to Pascal VOC detection"
+  evidence:
+    - {work: "yun-2019-cutmix", role: original, locator: "Section 1", stance: for}
+
+- id: c-cm-imagenet
+  type: empirical
+  text: "On ImageNet with ResNet-50 trained for 300 epochs, the best top-1 errors during training are 23.68% for the baseline, 22.93% with Cutout, 22.58% with Mixup, 22.50% with Manifold Mixup and 21.40% with CutMix."
+  scope:
+    models: "ResNet-50"
+    data: [imagenet]
+    scale: "300 epochs, batch size 256, best performance during training"
+    setting: "image classification"
+  evidence:
+    - {work: "yun-2019-cutmix", role: original, locator: "table 3", stance: for}
+
+- id: c-cm-cifar100
+  type: empirical
+  text: "On CIFAR-100 with PyramidNet-200, the top-1 error is 16.45% for the baseline, 15.63% with Mixup (α = 1.0), 16.14% with Manifold Mixup and 14.47% with CutMix."
+  scope:
+    models: "PyramidNet-200"
+    data: [cifar-100]
+    scale: "300 epochs, averaged best performances during training"
+    setting: "image classification"
+  evidence:
+    - {work: "yun-2019-cutmix", role: original, locator: "table 5", stance: for}
+
+- id: c-cm-occlusion
+  type: empirical
+  text: "For center and boundary occlusion of ImageNet images, Cutout and CutMix achieve significant improvements in robustness while Mixup only marginally improves it, and Mixup and Cutout aggravate the over-confidence of the base networks, while CutMix significantly alleviates it."
+  scope:
+    models: "ResNet-50"
+    data: [imagenet]
+    scale: "ImageNet validation set"
+    setting: "robustness to occlusion and over-confidence"
+  evidence:
+    - {work: "yun-2019-cutmix", role: original, locator: "Section 4.4", stance: for}
+
+- id: c-mm-table1
+  type: empirical
+  text: "For PreActResNet18, the CIFAR-10 test error is 4.83% without mixup, 3.82% with Input Mixup (α = 1) and 2.95% with Manifold Mixup (α = 2), and the CIFAR-100 test error 24.01%, 22.11% and 20.34%."
+  scope:
+    models: "PreActResNet18"
+    data: [cifar-10, cifar-100]
+    scale: "five repetitions"
+    setting: "image classification"
+  evidence:
+    - {work: "verma-2019-manifold-mixup", role: original, locator: "table 1", stance: for}
+
+# Limitations and failure modes
+
+- id: c-zh-sweet-spot
+  type: attributive
+  text: "Zhang et al. observe that with increasingly large α the training error on real data increases while the generalization gap decreases, that they do not yet have a good theory for the sweet spot of this bias-variance trade-off, and that in CIFAR-10 the training error on real data stays very low even when α → ∞, whereas in ImageNet it increases significantly."
+  evidence:
+    - {work: "zhang-2018-mixup", role: original, locator: "Section 5", stance: for}
+
+- id: c-zh-conjecture
+  type: attributive
+  text: "Based on their ImageNet and Google commands experiments, Zhang et al. conjecture that increasing the model capacity would make training error less sensitive to large α, giving mixup a more significant advantage."
+  evidence:
+    - {work: "zhang-2018-mixup", role: original, locator: "Section 5", stance: for}
+
+- id: c-zh-structured
+  type: attributive
+  text: "Zhang et al. write that generalizing mixup to regression problems is straightforward, while its application to structured prediction problems such as image segmentation remains less obvious."
+  evidence:
+    - {work: "zhang-2018-mixup", role: original, locator: "Section 5", stance: for}
+
+- id: c-cm-ambiguous
+  type: attributive
+  text: "Yun et al. write that Mixup samples suffer from the fact that they are locally ambiguous and unnatural, and therefore confuse the model, especially for localization."
+  evidence:
+    - {work: "yun-2019-cutmix", role: original, locator: "Section 2", stance: for}
+
+# Variants
+
+- id: c-mm-flatten
+  type: attributive
+  text: "Verma et al. write that neural networks trained with Manifold Mixup have smoother decision boundaries at multiple levels of representation and learn class-representations with fewer directions of variance."
+  evidence:
+    - {work: "verma-2019-manifold-mixup", role: original, locator: "the abstract", stance: for}
+
+- id: c-mm-theorem
+  type: attributive
+  text: "Theorem 1 of Verma et al. states that if the dimension of the representation space H satisfies dim(H) ≥ d − 1, where d is the number of classes, the Manifold Mixup loss can reach zero with a linear classifier, and Corollary 1 that for dim(H) > d − 1 the minimizing representations of the training points fall on a (dim(H) − d + 1)-dimensional subspace."
+  evidence:
+    - {work: "verma-2019-manifold-mixup", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-cm-feature
+  type: attributive
+  text: "Feature CutMix applies CutMix at a randomly chosen layer per minibatch, as Manifold Mixup does."
+  evidence:
+    - {work: "yun-2019-cutmix", role: original, locator: "Section 4.1.1", stance: for}
+
+- id: c-zh-related
+  type: attributive
+  text: "Zhang et al. note that label smoothing and penalizing high-confidence softmax distributions resemble mixup in that supervision depends on multiple smooth labels, but that the label smoothing in these works is applied independently from the associated feature values, whereas mixup establishes a linear relationship between data augmentation and the supervision signal."
+  evidence:
+    - {work: "zhang-2018-mixup", role: original, locator: "Section 4", stance: for}
+
+# History
+
+- id: c-hist-zhang
+  type: historical
+  text: "Hongyi Zhang of MIT and Moustapha Cisse, Yann N. Dauphin and David Lopez-Paz of FAIR wrote mixup: Beyond Empirical Risk Minimization, arXiv 1710.09412, published as a conference paper at ICLR 2018."
+  evidence:
+    - {work: "zhang-2018-mixup", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-verma
+  type: historical
+  text: "Vikas Verma, Alex Lamb, Christopher Beckham, Amir Najafi, Ioannis Mitliagkas, Aaron Courville, David Lopez-Paz and Yoshua Bengio wrote Manifold Mixup: Better Representations by Interpolating Hidden States, arXiv 1806.05236."
+  evidence:
+    - {work: "verma-2019-manifold-mixup", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-yun
+  type: historical
+  text: "Sangdoo Yun, Dongyoon Han, Seong Joon Oh, Sanghyuk Chun, Junsuk Choe and Youngjoon Yoo of Clova AI Research at NAVER Corp. and LINE Plus Corp. and of Yonsei University wrote CutMix: Regularization Strategy to Train Strong Classifiers with Localizable Features, arXiv 1905.04899."
+  evidence:
+    - {work: "yun-2019-cutmix", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-zhang21
+  type: historical
+  text: "Linjun Zhang, Zhun Deng, Kenji Kawaguchi, Amirata Ghorbani and James Zou wrote How Does Mixup Help With Robustness and Generalization?, arXiv 2010.04819, published as a conference paper at ICLR 2021."
+  evidence:
+    - {work: "zhang-2021-how-does-mixup-help", role: original, locator: "the title page", stance: for}

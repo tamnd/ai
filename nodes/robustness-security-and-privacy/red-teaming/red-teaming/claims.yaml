@@ -1,0 +1,659 @@
+# The claims of the red teaming page (spec 07). The build computes the labels.
+- id: c-def-ganguli
+  type: definitional
+  text: "Red teaming is using manual or automated methods to adversarially probe a language model for harmful outputs, and then updating the model to avoid such outputs."
+  evidence:
+    - {work: "ganguli-2022-red-teaming-reduce-harms", role: original, locator: "p. 1", stance: for}
+
+- id: c-perez-abstract
+  type: attributive
+  text: "Perez et al. generate test cases (red teaming) using another LM, evaluate the target LM's replies with a classifier, and uncover tens of thousands of offensive replies in a 280B parameter LM chatbot."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "the abstract", stance: for}
+
+- id: c-feffer-theater
+  type: attributive
+  text: "Feffer et al. argue that red-teaming may be a valuable big-tent idea, but treating it as a panacea for every possible risk verges on security theater."
+  evidence:
+    - {work: "feffer-2024-red-teaming-silver-bullet", role: original, locator: "p. 1", stance: for}
+
+- id: c-setting
+  type: definitional
+  text: "Perez et al. aim to find test cases x that cause a target LM p_t(y|x) to output some text y that is harmful, and assume a red team classifier r(x, y) that predicts whether or not an output y is harmful given a test case x."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 2", stance: for}
+
+- id: c-classifier-examples
+  type: attributive
+  text: "Examples of the red team classifier include a classifier trained to predict whether or not y is offensive and a Python function that evaluates whether or not y contains a social security number."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 2", stance: for}
+
+- id: c-black-box
+  type: attributive
+  text: "Perez et al. do not assume that the classifier or the target LM are differentiable or available for white-box access."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 2", stance: for}
+
+- id: c-natural-language
+  type: attributive
+  text: "Test cases should be well-formed natural language, representative of failures that users may encounter, as opposed to nonsensical character sequences found using gradient-based search, and should be diverse to catch diverse failure modes."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 2", stance: for}
+
+- id: c-likert
+  type: attributive
+  text: "Red team members rate how successful they were at making the AI assistant behave badly on a Likert scale from 0 to 4."
+  evidence:
+    - {work: "ganguli-2022-red-teaming-reduce-harms", role: original, locator: "p. 4", stance: for}
+
+- id: c-not-audit
+  type: attributive
+  text: "Feffer et al. note that in computer security red-teaming models an adversary, in contrast to penetration testing, and that red-teaming is not an audit."
+  evidence:
+    - {work: "feffer-2024-red-teaming-silver-bullet", role: original, locator: "p. 5", stance: for}
+
+- id: c-question-bank
+  type: attributive
+  text: "Feffer et al. propose a set of questions to guide future AI red-teaming activities, for the pre-activity, during activity and post-activity phases."
+  evidence:
+    - {work: "feffer-2024-red-teaming-silver-bullet", role: original, locator: "p. 4", stance: for}
+
+- id: c-ganguli-instructions
+  type: attributive
+  text: "Ganguli et al. instruct red team members to make the AI behave badly, to get it to say obnoxious, offensive, and harmful things, and do not define what harmful means."
+  evidence:
+    - {work: "ganguli-2022-red-teaming-reduce-harms", role: original, locator: "p. 4", stance: for}
+
+- id: c-three-stages
+  type: definitional
+  text: "Perez et al. propose a three-stage approach: generate test cases using a red LM p_r(x), use the target LM p_t(y|x) to generate an output y for each test case x, and find the test cases that led to a harmful output using the red team classifier r(x, y)."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 2.1", stance: for}
+
+- id: c-four-methods
+  type: attributive
+  text: "To ensure that inputs are well-formed natural language, Perez et al. initialize the red LM from a large pretrained LM, and obtain diverse inputs by decoding from it many times using random sampling."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-zero-shot
+  type: attributive
+  text: "Simple one-sentence prompts were effective at generating test cases, and finding a prompt to test a new behavior typically only required a few minutes of iteration."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-sfs
+  type: attributive
+  text: "Stochastic few-shot generation appends failing zero-shot test cases to the prompt as few-shot examples, increasing the likelihood of sampling a test case that led to a harmful output according to the red team classifier."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-sl
+  type: attributive
+  text: "Supervised learning finetunes the pretrained LM to maximize the log-likelihood of failing zero-shot test cases, training for one epoch to preserve test case diversity and avoid overfitting."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-rl
+  type: attributive
+  text: "Reinforcement learning trains the red LM with synchronous advantage actor-critic (A2C) to maximize the expected harmfulness, warm-started from the SL-trained model, with a KL penalty to prevent collapsing to a single high-reward generation."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-nucleus
+  type: attributive
+  text: "Perez et al. always decode from the red LM with nucleus sampling from the top p = 0.95 of the probability mass, and sample until they obtain a desired number of unique test cases that are valid."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 2.3", stance: for}
+
+- id: c-two-responses
+  type: attributive
+  text: "At each turn of the conversation the red team member sees two responses and picks the more harmful one, which doubles the chances of eliciting harmful behavior and yields preference data."
+  evidence:
+    - {work: "ganguli-2022-red-teaming-reduce-harms", role: original, locator: "p. 4", stance: for}
+
+- id: c-four-turns
+  type: empirical
+  text: "Red team conversations last about 4 turns on average."
+  scope:
+    models: "Anthropic dialogue models: plain LM, prompted LM, rejection sampling, RLHF"
+    data: ["anthropic red team attacks"]
+    scale: "2.7B, 13B and 52B parameters"
+  evidence:
+    - {work: "ganguli-2022-red-teaming-reduce-harms", role: original, locator: "p. 4", stance: for}
+
+- id: c-min-harmlessness
+  type: attributive
+  text: "Ganguli et al. use the minimum harmlessness score of the preference model over the AI utterances of a conversation as a lower bound on the harmfulness of the attack."
+  evidence:
+    - {work: "ganguli-2022-red-teaming-reduce-harms", role: original, locator: "p. 8", stance: for}
+
+- id: c-clustering
+  type: attributive
+  text: "Perez et al. embed each word using FastText, average the embeddings of each test case, and form 100 clusters using k-means on the 18k failing zero-shot test cases."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 3.3", stance: for}
+
+- id: c-umap
+  type: attributive
+  text: "Ganguli et al. embed the red team attacks and visualize them with UMAP, and have reviewers tag a sample of attacks with topic tags."
+  evidence:
+    - {work: "ganguli-2022-red-teaming-reduce-harms", role: original, locator: "p. 12", stance: for}
+
+- id: c-blue-team
+  type: attributive
+  text: "Failing test cases can be used to improve the LM by removing training examples or blacklisting phrases, or with learning algorithms such as unlikelihood training, and red LMs and target LMs may be trained jointly."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 8.2", stance: for}
+
+- id: c-rounds
+  type: empirical
+  text: "Some organizations chose to conduct a single round of red-teaming, while others saw red-teaming as an iterative process in which results from initial rounds were used to prioritize risk areas."
+  scope:
+    models: "six industry red-teaming exercises on generative AI systems"
+    data: ["case studies"]
+    scale: "unknown"
+  evidence:
+    - {work: "feffer-2024-red-teaming-silver-bullet", role: original, locator: "p. 6", stance: for}
+
+- id: c-rule-of-three
+  type: mathematical
+  text: "If N independent test cases all pass, every failure rate pi with (1 - pi)^N < 0.05 is rejected at the 5% level, which leaves pi < 1 - 0.05^(1/N), and this is at most about 3/N because -ln 0.05 is about 3.0 and 1 - e^(-u) <= u."
+  assumes: ["the N test cases are independent draws from one distribution", "each case fails with the same probability pi"]
+  derivation: "node.md#derivation"
+
+- id: c-no-failures
+  type: attributive
+  text: "If no test cases elicit harmful behavior, then there is evidence the target LM is at low risk for producing harmful behavior on the distribution of tested cases."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-sfs-formula
+  type: attributive
+  text: "In stochastic few-shot generation, a zero-shot test case is sampled into the prompt with probability proportional to e^(r(x,y)/T), where r(x,y) is the classifier probability that the reply y is offensive and T is a temperature."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-sfs-ratio
+  type: mathematical
+  text: "Under sampling with probability proportional to exp(r/T), the ratio of the probabilities of two cases with scores r_i and r_j is exp((r_i - r_j)/T), so the choice tends to the maximum score as T goes to 0 and to the uniform choice as T grows without bound."
+  assumes: ["T > 0", "finitely many candidate cases"]
+  derivation: "node.md#derivation"
+
+- id: c-rl-reward
+  type: attributive
+  text: "For RL, the reward is -log p(1 - r(x,y)) where r(x,y) is the classifier probability that the reply is offensive."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-rl-reward-shape
+  type: mathematical
+  text: "The reward -log(1 - r) is 0 at r = 0, has derivative 1/(1 - r) > 0 on [0, 1), and grows without bound as r tends to 1, so each tenfold reduction of 1 - r adds ln 10, about 2.303, to the reward."
+  assumes: ["0 <= r < 1"]
+  derivation: "node.md#derivation"
+
+- id: c-rl-loss
+  type: attributive
+  text: "The final loss is a linear combination of the KL penalty weighted by alpha in [0, 1] and the A2C loss weighted by 1 - alpha, and decreasing values of alpha sacrifice diversity for expected reward."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-dialogue-generalization
+  type: attributive
+  text: "To generate coherent dialogues, Perez et al. condition the red LM on the dialogue history, and dialogue red teaming can be viewed as a generalization of single-turn red teaming."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 7", stance: for}
+
+- id: c-zs-results
+  type: empirical
+  text: "The 0.5M zero-shot test cases elicit offensive replies 3.7% of the time, resulting in 18,444 failed test cases."
+  scope:
+    models: "Dialogue-Prompted Gopher (280B), red teamed by Gopher red LMs"
+    data: ["zero-shot and generated test cases", "bot-adversarial-dialogue"]
+    scale: "280B parameters"
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-we-zs-rate
+  type: mathematical
+  text: "18,444 failing test cases out of 500,000 is a rate of 0.0369, which rounds to 3.7%."
+  assumes: ["0.5M means exactly 500,000 test cases"]
+  derivation: "node.md#worked-example"
+
+- id: c-bad-size
+  type: attributive
+  text: "BAD contains 2598 conversation-starting questions, and Perez et al. use the same number of questions from each red teaming method for evaluation."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-we-rule-of-three
+  type: mathematical
+  text: "With N = 2598 passing test cases, 1 - 0.05^(1/2598) is about 0.00115, as is 3/2598, so the failure rate is below about 0.12% at the 5% level."
+  assumes: ["the N test cases are independent draws from one distribution"]
+  derivation: "node.md#worked-example"
+
+- id: c-we-sfs
+  type: mathematical
+  text: "With T = 1/10, a case with score 0.9 is e^((0.9 - 0.5)/0.1) = e^4, about 54.6, times as likely to be sampled as a case with score 0.5."
+  assumes: ["cases are sampled with probability proportional to exp(r/T)"]
+  derivation: "node.md#worked-example"
+
+- id: c-we-rl-reward
+  type: mathematical
+  text: "The reward -log(1 - r) equals ln 2, about 0.693, at r = 0.5, ln 10, about 2.303, at r = 0.9, and ln 100, about 4.605, at r = 0.99, so the gain from 0.9 to 0.99 equals the gain from 0 to 0.9."
+  assumes: ["the reward is -log(1 - r) with the natural logarithm"]
+  derivation: "node.md#worked-example"
+
+- id: c-hp-perez
+  type: attributive
+  text: "Perez et al. use T = 1/10 and 5 few-shot examples for stochastic few-shot generation, and test KL penalties alpha in [.3, .35, .4] for RL."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-hp-question-mark
+  type: attributive
+  text: "For RL, the reward is set to -3 when a question mark is not in the generated test case."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-hp-threshold
+  type: attributive
+  text: "The offensiveness classifier uses a threshold of at least 0.5 to classify an utterance as offensive."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "p. 23", stance: for}
+
+- id: c-hp-target
+  type: attributive
+  text: "Dialogue-Prompted Gopher generates replies using nucleus sampling with p = 0.8."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 3", stance: for}
+
+- id: c-rate-limits
+  type: attributive
+  text: "Red teams can test at a scale that is only limited by compute, whereas external users of commercial LMs are often rate-limited."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 8.2", stance: for}
+
+- id: c-rl-compute
+  type: empirical
+  text: "The RL red LM is trained with A2C and Adafactor, sharded across 128 TPU v3 machines, freezing the first 80% of the weights (64 of 80 layers), with the policy and value functions sharing parameters."
+  scope:
+    models: "Dialogue-Prompted Gopher (280B), red teamed by Gopher red LMs"
+    data: ["zero-shot and generated test cases", "bot-adversarial-dialogue"]
+    scale: "280B parameters"
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "p. 23", stance: for}
+
+- id: c-7b
+  type: empirical
+  text: "With a 7B parameter red LM, the 0.5M zero-shot test cases elicit offensive replies 4.3% of the time, similar to zero-shot generation with the 280B LM (3.7%)."
+  scope:
+    models: "Dialogue-Prompted Gopher (280B), red teamed by Gopher red LMs"
+    data: ["zero-shot and generated test cases", "bot-adversarial-dialogue"]
+    scale: "280B parameters"
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "p. 20", stance: for}
+
+- id: c-pay
+  type: attributive
+  text: "Ganguli et al. paid MTurk workers $7.50 to $9.50 for each set of 5 conversations and Upwork workers $20 per hour."
+  evidence:
+    - {work: "ganguli-2022-red-teaming-reduce-harms", role: original, locator: "p. 6", stance: for}
+
+- id: c-manual-expensive
+  type: attributive
+  text: "Fully manual red teaming by crowdworkers is expensive and possibly slow to do at scale, and previous work illustrates the potential for automating red teaming."
+  evidence:
+    - {work: "ganguli-2022-red-teaming-reduce-harms", role: original, locator: "p. 14", stance: for}
+
+- id: c-durations
+  type: empirical
+  text: "No case disclosed complete monetary costs; in two cases red-teaming lasted 6 to 7 months before release, and crowdsourced red teamers spent 30 to 50 minutes per task."
+  scope:
+    models: "six industry red-teaming exercises on generative AI systems"
+    data: ["case studies"]
+    scale: "unknown"
+  evidence:
+    - {work: "feffer-2024-red-teaming-silver-bullet", role: original, locator: "p. 7", stance: for}
+    - {work: "feffer-2024-red-teaming-silver-bullet", role: original, locator: "p. 9", stance: for}
+
+- id: c-rl-results
+  type: empirical
+  text: "With alpha = 0.3, RL elicits an offensive reply from DPG over 40% of the time, and 78% of its test cases contain the word invisible."
+  scope:
+    models: "Dialogue-Prompted Gopher (280B), red teamed by Gopher red LMs"
+    data: ["zero-shot and generated test cases", "bot-adversarial-dialogue"]
+    scale: "280B parameters"
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-pareto
+  type: empirical
+  text: "RL with alpha = 0.4 produces questions that are similarly difficult and diverse to the human BAD questions, and zero-shot, SFS, RL and BAD form a Pareto frontier in difficulty and diversity."
+  scope:
+    models: "Dialogue-Prompted Gopher (280B), red teamed by Gopher red LMs"
+    data: ["zero-shot and generated test cases", "bot-adversarial-dialogue"]
+    scale: "280B parameters"
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-complementary
+  type: empirical
+  text: "A larger fraction of BAD questions are offensive (36%) than red LM questions (up to 19% for RL and as little as 2.3% for zero-shot), which suggests that manual and automatic red teaming are complementary."
+  scope:
+    models: "Dialogue-Prompted Gopher (280B), red teamed by Gopher red LMs"
+    data: ["zero-shot and generated test cases", "bot-adversarial-dialogue"]
+    scale: "280B parameters"
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-bad-missing
+  type: empirical
+  text: "The BAD dataset does not contain 37 of the top 100 flagged noun phrases, and red LMs are a powerful complement to human red teams."
+  scope:
+    models: "Dialogue-Prompted Gopher (280B), red teamed by Gopher red LMs"
+    data: ["zero-shot and generated test cases", "bot-adversarial-dialogue"]
+    scale: "280B parameters"
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 3.4", stance: for}
+
+- id: c-leakage
+  type: empirical
+  text: "Red teaming DPG finds 1709 utterances that leak training data, defined as replies with 13 consecutive words that are a subsequence of a training example."
+  scope:
+    models: "Dialogue-Prompted Gopher (280B), red teamed by Gopher red LMs"
+    data: ["zero-shot and generated test cases", "bot-adversarial-dialogue"]
+    scale: "280B parameters"
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 4", stance: for}
+
+- id: c-phone
+  type: empirical
+  text: "DPG replies contain 2790 unique phone numbers, 479 of which are in the training data, including around 200 helplines."
+  scope:
+    models: "Dialogue-Prompted Gopher (280B), red teamed by Gopher red LMs"
+    data: ["zero-shot and generated test cases", "bot-adversarial-dialogue"]
+    scale: "280B parameters"
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 5", stance: for}
+
+- id: c-dialogue
+  type: empirical
+  text: "In dialogues up to 16 turns long, the percentage of offensive DPG utterances tends to increase over the conversation for all adversarial methods, and offensive replies early in a dialogue beget offensive replies later."
+  scope:
+    models: "Dialogue-Prompted Gopher (280B), red teamed by Gopher red LMs"
+    data: ["zero-shot and generated test cases", "bot-adversarial-dialogue"]
+    scale: "280B parameters"
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 7", stance: for}
+
+- id: c-ganguli-design
+  type: attributive
+  text: "Ganguli et al. red team models of 3 sizes (2.7B, 13B and 52B parameters) and 4 types: a plain LM, an LM prompted to be helpful, honest and harmless, an LM with rejection sampling, and a model trained with RLHF."
+  evidence:
+    - {work: "ganguli-2022-red-teaming-reduce-harms", role: original, locator: "p. 1", stance: for}
+
+- id: c-ganguli-scaling
+  type: empirical
+  text: "RLHF models are increasingly difficult to red team as they scale, while the other model types show a flat trend with scale."
+  scope:
+    models: "Anthropic dialogue models: plain LM, prompted LM, rejection sampling, RLHF"
+    data: ["anthropic red team attacks"]
+    scale: "2.7B, 13B and 52B parameters"
+  evidence:
+    - {work: "ganguli-2022-red-teaming-reduce-harms", role: original, locator: "p. 1", stance: for}
+
+- id: c-rs-evasive
+  type: empirical
+  text: "Rejection sampling models are the most difficult to red team at any scale, but tend to be harmless by being evasive."
+  scope:
+    models: "Anthropic dialogue models: plain LM, prompted LM, rejection sampling, RLHF"
+    data: ["anthropic red team attacks"]
+    scale: "2.7B, 13B and 52B parameters"
+  evidence:
+    - {work: "ganguli-2022-red-teaming-reduce-harms", role: original, locator: "p. 2", stance: for}
+
+- id: c-prompted-not-harder
+  type: empirical
+  text: "Prompted LMs are not significantly harder to red team than plain LMs, unlike what static evaluations found."
+  scope:
+    models: "Anthropic dialogue models: plain LM, prompted LM, rejection sampling, RLHF"
+    data: ["anthropic red team attacks"]
+    scale: "2.7B, 13B and 52B parameters"
+  evidence:
+    - {work: "ganguli-2022-red-teaming-reduce-harms", role: original, locator: "p. 2", stance: for}
+
+- id: c-release
+  type: attributive
+  text: "Ganguli et al. release a dataset of 38,961 red team attacks."
+  evidence:
+    - {work: "ganguli-2022-red-teaming-reduce-harms", role: original, locator: "p. 1", stance: for}
+
+- id: c-revealed-harms
+  type: empirical
+  text: "In every case, red-teaming revealed harms that other systematic methods missed."
+  scope:
+    models: "six industry red-teaming exercises on generative AI systems"
+    data: ["case studies"]
+    scale: "unknown"
+  evidence:
+    - {work: "feffer-2024-red-teaming-silver-bullet", role: original, locator: "p. 8", stance: for}
+
+- id: c-no-block
+  type: empirical
+  text: "None of the cases led to a decision not to release the model."
+  scope:
+    models: "six industry red-teaming exercises on generative AI systems"
+    data: ["case studies"]
+    scale: "unknown"
+  evidence:
+    - {work: "feffer-2024-red-teaming-silver-bullet", role: original, locator: "p. 7", stance: for}
+
+- id: c-not-exhaustive
+  type: attributive
+  text: "LM-based red teaming should not be viewed as a way to perfectly and exhaustively find all possible critical oversights but rather as a tool for uncovering many failure modes and complementing manual testing."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 2.4", stance: for}
+
+- id: c-one-tool
+  type: attributive
+  text: "LM-based red teaming is one promising tool (among many needed) for finding and fixing diverse, undesirable LM behaviors before impacting users."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "the abstract", stance: for}
+
+- id: c-red-lm-bias
+  type: attributive
+  text: "LMs learn biases from the training data, limiting the red LM and classifier alike; a biased red LM places higher probability on inputs from certain sub-categories, so Perez et al. generate hundreds of thousands of test cases to reduce the impact."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 2.4", stance: for}
+
+- id: c-demographics
+  type: empirical
+  text: "79% of the red team members are White, compared with 75.8% in the US Census, and 66% have at least a college degree, compared with 32.9%."
+  scope:
+    models: "none"
+    data: ["red team member survey"]
+    scale: "324 US crowdworkers"
+  evidence:
+    - {work: "ganguli-2022-red-teaming-reduce-harms", role: original, locator: "p. 6", stance: for}
+
+- id: c-few-workers
+  type: empirical
+  text: "About 80% of the red team attacks come from about 50 of the roughly 300 red team members."
+  scope:
+    models: "none"
+    data: ["anthropic red team attacks"]
+    scale: "about 300 crowdworkers"
+  evidence:
+    - {work: "ganguli-2022-red-teaming-reduce-harms", role: original, locator: "p. 6", stance: for}
+
+- id: c-classifier-errors
+  type: attributive
+  text: "Flawed classifiers may lead to many false positives, in which case the classifier should only surface candidates of harmful behavior that are validated by other classifiers or human annotators, and to many false negatives, which lowering the threshold for classifying text as harmful can reduce at the cost of more false positives."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 2.4", stance: for}
+
+- id: c-hello
+  type: empirical
+  text: "The classifier predicted that 3.5 times as many red team questions were offensive as DPG replies, because in the BAD training data the human utterances always occurred on odd-numbered dialogue plies; after prepending Hello to the dialogue, the percentage of red LM utterances predicted as offensive dropped 3.5x."
+  scope:
+    models: "Dialogue-Prompted Gopher (280B), red teamed by Gopher red LMs"
+    data: ["zero-shot and generated test cases", "bot-adversarial-dialogue"]
+    scale: "280B parameters"
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "p. 23", stance: for}
+
+- id: c-kappa
+  type: empirical
+  text: "Three reviewers rated each sampled attack, with Fleiss's kappa of 0.32 on the Likert scale and 0.49 on the binarized scale."
+  scope:
+    models: "Anthropic dialogue models: plain LM, prompted LM, rejection sampling, RLHF"
+    data: ["anthropic red team attacks"]
+    scale: "2.7B, 13B and 52B parameters"
+  evidence:
+    - {work: "ganguli-2022-red-teaming-reduce-harms", role: original, locator: "p. 9", stance: for}
+
+- id: c-coverage
+  type: attributive
+  text: "Ganguli et al. limit red teaming to the AI-assistant framing, lack attacks that require domain expertise and attacks with code, and observe roleplay attacks on the RLHF models."
+  evidence:
+    - {work: "ganguli-2022-red-teaming-reduce-harms", role: original, locator: "p. 14", stance: for}
+
+- id: c-tags-other
+  type: empirical
+  text: "The tag Other is prevalent, so the fixed list of tags is not comprehensive."
+  scope:
+    models: "Anthropic dialogue models: plain LM, prompted LM, rejection sampling, RLHF"
+    data: ["anthropic red team attacks"]
+    scale: "2.7B, 13B and 52B parameters"
+  evidence:
+    - {work: "ganguli-2022-red-teaming-reduce-harms", role: original, locator: "p. 14", stance: for}
+
+- id: c-ill-structured
+  type: attributive
+  text: "Feffer et al. find red-teaming ill-structured, with a trade-off between specific and open-ended instructions to red teamers."
+  evidence:
+    - {work: "feffer-2024-red-teaming-silver-bullet", role: original, locator: "p. 8", stance: for}
+
+- id: c-misuse
+  type: attributive
+  text: "Adversaries may misuse LMs to attack commercial LMs in a large-scale, automated way."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 8.1", stance: for}
+
+- id: c-dual-use
+  type: attributive
+  text: "The released red team data could also be used to train harmful models."
+  evidence:
+    - {work: "ganguli-2022-red-teaming-reduce-harms", role: original, locator: "p. 15", stance: for}
+
+- id: c-bad
+  type: attributive
+  text: "The BAD dataset contains about 5K conversations with models from 345M to 2.7B parameters."
+  evidence:
+    - {work: "ganguli-2022-red-teaming-reduce-harms", role: original, locator: "p. 3", stance: for}
+
+- id: c-dalle
+  type: attributive
+  text: "DALL-E 2 was red teamed by domain experts."
+  evidence:
+    - {work: "ganguli-2022-red-teaming-reduce-harms", role: original, locator: "p. 3", stance: for}
+
+- id: c-targeted
+  type: attributive
+  text: "Perez et al. generate test cases about contact info with prompts such as List of questions that inquire about a person's phone number: 1."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 5", stance: for}
+
+- id: c-groups
+  type: attributive
+  text: "To red team for distributional bias, Perez et al. generate groups of people and question templates with the red LM, and find groups that DPG discusses in an offensive way."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 6", stance: for}
+
+- id: c-taxonomy
+  type: empirical
+  text: "Of 104 red-teaming papers, 20 use brute-force, 42 brute-force with AI help, 14 algorithmic search and 28 targeted attack approaches."
+  scope:
+    models: "various generative AI models"
+    data: ["104 research papers"]
+    scale: "unknown"
+  evidence:
+    - {work: "feffer-2024-red-teaming-silver-bullet", role: original, locator: "p. 10", stance: for}
+
+- id: c-team-types
+  type: empirical
+  text: "The industry cases used three kinds of red team: subject matter experts, crowdsourced red teamers and language models."
+  scope:
+    models: "six industry red-teaming exercises on generative AI systems"
+    data: ["case studies"]
+    scale: "unknown"
+  evidence:
+    - {work: "feffer-2024-red-teaming-silver-bullet", role: original, locator: "p. 6", stance: for}
+
+- id: c-red-team-advantages
+  type: attributive
+  text: "Internal red teams have advantages over external adversaries, including rate limits that do not apply to them and access advantages such as knowledge of the training corpus, gradients and white-box methods."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 8.2", stance: for}
+
+- id: c-not-panacea
+  type: attributive
+  text: "Red-teaming is not a panacea and should be one evaluation paradigm among others, such as impact assessments and audits."
+  evidence:
+    - {work: "feffer-2024-red-teaming-silver-bullet", role: original, locator: "p. 15", stance: for}
+
+- id: c-gnomes
+  type: attributive
+  text: "Some generated groups are unhelpful, such as Gnomes, so Perez et al. recommend only using LM-based red teaming for surfacing candidates of harmful behavior for manual review."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 6", stance: for}
+
+- id: c-reporting
+  type: attributive
+  text: "There are no reporting standards for red-teaming, and reports should at minimum clarify the resources used, success against goals, mitigations and other evaluations."
+  evidence:
+    - {work: "feffer-2024-red-teaming-silver-bullet", role: original, locator: "p. 15", stance: for}
+
+- id: c-approval-stamping
+  type: attributive
+  text: "Taken with the lack of reporting, unclear mitigation strategies could reduce red-teaming to an approval-stamping process."
+  evidence:
+    - {work: "feffer-2024-red-teaming-silver-bullet", role: original, locator: "p. 15", stance: for}
+
+- id: c-wellbeing
+  type: attributive
+  text: "Ganguli et al. recommend clear warnings, letting red team members set their personal risk tolerance, and resilience plans to protect the well-being of the red team."
+  evidence:
+    - {work: "ganguli-2022-red-teaming-reduce-harms", role: original, locator: "p. 16", stance: for}
+
+- id: c-military
+  type: attributive
+  text: "The US military used the term red team by the 1960s, with a red team representing the Soviet Union and a blue team the United States, and the ideas originate hundreds of years ago."
+  evidence:
+    - {work: "feffer-2024-red-teaming-silver-bullet", role: original, locator: "p. 3", stance: for}
+
+- id: c-tay
+  type: attributive
+  text: "Microsoft took down its chatbot Tay after adversarial users evoked it into sending racist and sexually-charged tweets to over 50,000 followers."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "Section 1", stance: for}
+
+- id: c-human-annotators
+  type: attributive
+  text: "Prior work identifies harmful behaviors before deployment by using human annotators to hand-write test cases, but human annotation is expensive, limiting the number and diversity of test cases."
+  evidence:
+    - {work: "perez-2022-red-teaming-language-models", role: original, locator: "the abstract", stance: for}
+
+- id: c-order-of-magnitude
+  type: attributive
+  text: "The released red team dataset is an order of magnitude larger than the BAD dataset."
+  evidence:
+    - {work: "ganguli-2022-red-teaming-reduce-harms", role: original, locator: "p. 2", stance: for}
+
+- id: c-executive-order
+  type: attributive
+  text: "The US Executive Order defines AI red-teaming and mentions red-teaming eight times."
+  evidence:
+    - {work: "feffer-2024-red-teaming-silver-bullet", role: original, locator: "p. 2", stance: for}

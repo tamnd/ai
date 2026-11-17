@@ -1,0 +1,442 @@
+- id: c-foret-abstract
+  type: attributive
+  text: "Foret et al. introduce SAM, which seeks parameters that lie in neighborhoods having uniformly low loss, a minmax optimization problem on which gradient descent can be performed efficiently."
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "the abstract", stance: for}
+
+- id: c-label-noise-abstract
+  type: empirical
+  text: "SAM provides robustness to label noise on par with state-of-the-art procedures that specifically target learning with noisy labels, and it improves generalization in the vast majority of the image tasks evaluated."
+  scope:
+    models: "WideResNets, PyramidNets, ResNets and EfficientNets"
+    data: [cifar-10, cifar-100, imagenet, svhn, fashion-mnist]
+    scale: "up to EfficientNet-L2 finetuning and ResNet-152 on ImageNet"
+    setting: "supervised image classification from scratch and by finetuning, with SGD as the base optimizer"
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "the abstract", stance: for}
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "p. 4", stance: for}
+
+- id: c-setting
+  type: definitional
+  text: "With a training set S of n examples from a distribution D and a per-example loss l, the training loss L_S is the mean of l over S and the population loss L_D is the expectation of l under D."
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "p. 3", stance: for}
+
+- id: c-many-minima
+  type: attributive
+  text: "Foret et al. note that the training loss of modern models is non-convex, with several local and even global minima that reach similar training loss but generalize quite differently."
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "p. 3", stance: for}
+
+- id: c-keskar-main
+  type: empirical
+  text: "Large-batch training tended to converge to sharp minimizers, with many large positive Hessian eigenvalues, that generalized worse, while small-batch training converged to flat minimizers with many small eigenvalues."
+  scope:
+    models: "six multi-class classification networks, fully connected and convolutional, including AlexNet- and VGG-like networks"
+    data: [mnist, timit, cifar-10, cifar-100]
+    scale: "small and medium networks of 2016"
+    setting: "ADAM with batches of 256 examples against batches of 10% of the training set"
+  evidence:
+    - {work: "keskar-2017-large-batch-training-sharp-minima", role: original, locator: "the abstract", stance: for}
+    - {work: "keskar-2017-large-batch-training-sharp-minima", role: original, locator: "p. 3", stance: for}
+
+- id: c-flat-def
+  type: definitional
+  text: "Following Hochreiter and Schmidhuber, a flat minimizer is one where the function varies slowly in a relatively large neighbourhood, and a sharp minimizer one where it increases rapidly in a small neighbourhood."
+  evidence:
+    - {work: "keskar-2017-large-batch-training-sharp-minima", role: original, locator: "p. 3", stance: for}
+
+- id: c-keskar-gap
+  type: empirical
+  text: "The drop in test accuracy from large-batch training, the generalization gap, was as high as 5% even for smaller networks."
+  scope:
+    models: "the six networks of Keskar et al."
+    data: [mnist, timit, cifar-10, cifar-100]
+    scale: "small and medium networks of 2016"
+    setting: "ADAM, small against large batches"
+  evidence:
+    - {work: "keskar-2017-large-batch-training-sharp-minima", role: original, locator: "p. 2", stance: for}
+
+- id: c-bound
+  type: attributive
+  text: "Foret et al. state informally a theorem: for any ρ > 0, with high probability over the training set S drawn from D, the population loss L_D(w) is at most the max of L_S(w + ε) over the neighborhood of radius ρ plus h(||w||^2 / ρ^2), where h is a strictly increasing function."
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "p. 3", stance: for}
+
+- id: c-sharpness-term
+  type: attributive
+  text: "Rewriting the right hand side of the bound makes the sharpness term explicit: the term in square brackets measures how quickly the training loss can be increased by moving from w to a nearby parameter value."
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "p. 3", stance: for}
+
+- id: c-objective
+  type: definitional
+  text: "The SAM problem minimizes the max of L_S(w + ε) over a p-norm neighborhood of radius ρ plus a standard L2 regularization term λ||w||^2, where ρ ≥ 0 is a hyperparameter and p is in [1, ∞]; Foret et al. show empirically that p = 2 is typically optimal."
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "p. 3", stance: for}
+
+- id: c-taylor
+  type: attributive
+  text: "Foret et al. approximate the inner maximization problem via a first-order Taylor expansion of L_S(w + ε) around 0, which reduces it to the arg max of ε^T ∇L_S(w)."
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "p. 3", stance: for}
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "p. 4", stance: for}
+
+- id: c-eps-formula
+  type: attributive
+  text: "The perturbation solving this approximation is given by the solution to a classical dual norm problem, ρ sign(∇L_S(w)) |∇L_S(w)|^(q-1) / (||∇L_S(w)||_q^q)^(1/p), where 1/p + 1/q = 1."
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "p. 4", stance: for}
+
+- id: c-p2-footnote
+  type: attributive
+  text: "For p = 2 the solution amounts to rescaling the gradient so that its norm is ρ."
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "p. 4", stance: for}
+
+- id: c-drop-second-order
+  type: attributive
+  text: "The SAM gradient implicitly depends on the Hessian, which enters only via Hessian-vector products; to further accelerate the computation Foret et al. drop the second-order terms, which gives the gradient of L_S at w + ε̂(w)."
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "p. 4", stance: for}
+
+- id: c-second-order-worse
+  type: empirical
+  text: "In an initial experiment, keeping the second-order terms of the SAM gradient made performance worse."
+  scope:
+    models: "the network of Foret et al.'s initial experiment"
+    data: [cifar-10]
+    scale: "one model"
+    setting: "SAM with and without the second-order terms"
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "p. 4", stance: for}
+
+- id: c-algorithm
+  type: attributive
+  text: "Algorithm 1 of Foret et al. samples a batch, computes the gradient of the batch training loss, computes the perturbation per equation 2, computes the gradient approximation for the SAM objective at the perturbed weights, and updates the weights with step size η."
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "p. 4", stance: for}
+
+- id: c-parallel
+  type: attributive
+  text: "When training on several accelerators, Foret et al. split each batch evenly among them, compute the SAM gradient on each accelerator independently, and average the sub-batch SAM gradients into the final update."
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "p. 5", stance: for}
+
+- id: c-m-sharpness
+  type: definitional
+  text: "Averaging per-accelerator SAM updates amounts to a sum of independent maximizations, each over the losses of a disjoint subset of m examples, instead of one maximization over the training set; Foret et al. call the associated sharpness measure m-sharpness."
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "p. 8", stance: for}
+
+- id: c-m-smaller
+  type: empirical
+  text: "Smaller values of m gave models that generalized better, and m-sharpness correlated better with the actual generalization gap as m decreased."
+  scope:
+    models: "a small ResNet"
+    data: [cifar-10]
+    scale: "small models"
+    setting: "SAM with a range of values of m; correlation measured on tasks of the NeurIPS 2020 Predicting Generalization in Deep Learning competition"
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "p. 8", stance: for}
+
+- id: c-eps-dual
+  type: mathematical
+  text: "For g != 0, the vector epsilon-hat has p-norm rho and epsilon-hat^T g = rho ||g||_q, the largest value of epsilon^T g on the p-ball of radius rho by Hoelder's inequality."
+  assumes: ["g != 0", "1 < p <= infinity and 1/p + 1/q = 1", "rho > 0"]
+  derivation: "derivations/dual-norm-perturbation.md"
+
+- id: c-eps-p2
+  type: mathematical
+  text: "At p = 2 the perturbation is rho g / ||g||_2, and at p = infinity it is rho sign(g)."
+  assumes: ["g != 0", "rho > 0"]
+  derivation: "derivations/dual-norm-perturbation.md"
+
+- id: c-eps-scale
+  type: mathematical
+  text: "The perturbation depends only on the direction of g: replacing g by c g for any c > 0 leaves it unchanged."
+  assumes: ["g != 0", "c > 0", "1 < p <= infinity"]
+  derivation: "derivations/dual-norm-perturbation.md"
+
+- id: c-first-order-penalty
+  type: mathematical
+  text: "The linearized SAM objective is L_S(w) + rho ||grad L_S(w)||_q, and it differs from the exact inner maximum by O(rho^2) when the Hessian is bounded on the ball."
+  assumes: ["L_S is twice differentiable with Hessian bounded on the ball", "1 < p <= infinity and 1/p + 1/q = 1"]
+  derivation: "derivations/dual-norm-perturbation.md"
+
+- id: c-quad-sam-grad
+  type: mathematical
+  text: "For L(w) = w^T H w / 2 and p = 2, the first-order SAM gradient is Hw + rho H^2 w / ||Hw||."
+  assumes: ["H symmetric", "Hw != 0", "p = 2"]
+  derivation: "derivations/sam-quadratic.md"
+
+- id: c-quad-penalty
+  type: mathematical
+  text: "On a quadratic with p = 2, the first-order SAM gradient is the exact gradient of L(w) + rho ||Hw||, so SAM is gradient descent with a gradient-norm penalty."
+  assumes: ["H symmetric", "Hw != 0", "p = 2"]
+  derivation: "derivations/sam-quadratic.md"
+
+- id: c-quad-eigen
+  type: mathematical
+  text: "In the eigenbasis of H the i-th component of the SAM gradient is lambda_i c_i (1 + rho lambda_i / ||Hw||), so SAM amplifies the gradient most along the directions of largest curvature."
+  assumes: ["H symmetric positive semi-definite", "Hw != 0", "p = 2"]
+  derivation: "derivations/sam-quadratic.md"
+
+- id: c-quad-no-rest
+  type: mathematical
+  text: "If H is positive definite, the SAM gradient is non-zero at every w != 0, so the update has no fixed point near the minimum other than through a decaying learning rate."
+  assumes: ["H symmetric positive definite", "p = 2", "rho > 0"]
+  derivation: "derivations/sam-quadratic.md"
+
+- id: c-quad-cycle
+  type: mathematical
+  text: "In one dimension with 0 < eta lambda < 2, the update w <- w - eta lambda (w + rho sign w) has a 2-cycle between plus and minus eta lambda rho / (2 - eta lambda)."
+  assumes: ["L(w) = lambda w^2 / 2 with lambda > 0", "0 < eta lambda < 2", "rho > 0"]
+  derivation: "derivations/sam-quadratic.md"
+
+- id: c-valley
+  type: mathematical
+  text: "For L(a, b) = (ab - 1)^2 / 2, every point with ab = 1 is a global minimum with Hessian eigenvalues 0 and a^2 + b^2 >= 2, so the flattest minima are a = b = 1 and a = b = -1."
+  assumes: ["a and b real"]
+  derivation: "derivations/sam-quadratic.md"
+
+- id: c-rho-grid
+  type: attributive
+  text: "Foret et al. tune rho by grid search over {0.01, 0.02, 0.05, 0.1, 0.2, 0.5}, using 10% of the training set as a validation set."
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "p. 5", stance: for}
+
+- id: c-rho-default
+  type: attributive
+  text: "Foret et al. found rho = 0.05 a solid default and report scores for all their experiments at that value without further tuning."
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "p. 5", stance: for}
+
+- id: c-rho-imagenet
+  type: attributive
+  text: "For ImageNet Foret et al. used rho = 0.05, chosen by grid search on a ResNet-50 trained for 100 epochs."
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "p. 5", stance: for}
+
+- id: c-rho-noise
+  type: attributive
+  text: "With noisy labels Foret et al. used rho = 0.1 for every noise level except 80%, where rho = 0.05 gave more stable convergence."
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "p. 7", stance: for}
+
+- id: c-p-ablation
+  type: empirical
+  text: "For a wide ResNet on CIFAR-10, p = 2 gave higher test accuracy than p = infinity, and adversarial perturbations beat random perturbations of the same Euclidean norm."
+  scope:
+    models: "a wide ResNet"
+    data: [cifar-10]
+    scale: "one architecture"
+    setting: "SAM with p = 2, p = infinity and random Gaussian perturbations rescaled to norm rho"
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "p. 18", stance: for}
+
+- id: c-two-backprop
+  type: attributive
+  text: "Each SAM weight update requires two backpropagation operations, one to compute the perturbation and another to compute the final gradient."
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "p. 5", stance: for}
+
+- id: c-fair-epochs
+  type: attributive
+  text: "Foret et al. let each non-SAM run train for twice as many epochs as the SAM run and report its best score over the standard and the doubled epoch count."
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "p. 5", stance: for}
+
+- id: c-scalable
+  type: attributive
+  text: "Foret et al. contrast earlier sharpness measures, which are hard to compute and differentiate through, with SAM, which scales because it needs only two gradient computations per iteration."
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "p. 9", stance: for}
+
+- id: c-cifar
+  type: empirical
+  text: "SAM improved generalization in every CIFAR-10 and CIFAR-100 setting evaluated; a WideResNet reached 1.6% test error with SAM against 2.2% without, and a PyramidNet with ShakeDrop reached 10.3% error on CIFAR-100."
+  scope:
+    models: "WideResNets with and without Shake-Shake, PyramidNet with ShakeDrop"
+    data: [cifar-10, cifar-100]
+    scale: "models trained from scratch on one host with 8 V100 GPUs"
+    setting: "basic augmentation, cutout and AutoAugment; five replicas per condition; non-SAM runs allowed twice the epochs"
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "p. 5", stance: for}
+
+- id: c-imagenet
+  type: empirical
+  text: "SAM consistently improved ResNets on ImageNet, lowering the top-1 error of ResNet-152 from 20.3% to 18.4%."
+  scope:
+    models: "ResNet-50, ResNet-101 and ResNet-152"
+    data: [imagenet]
+    scale: "up to 400 epochs on Cloud TPUv3, batch size 4096"
+    setting: "SGD with momentum 0.9, cosine schedule, label smoothing 0.1, weight decay 0.0001, rho = 0.05"
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "p. 6", stance: for}
+
+- id: c-epochs
+  type: empirical
+  text: "With SAM, accuracy kept improving as ImageNet training grew from 200 to 400 epochs, while standard training generally overfitted significantly."
+  scope:
+    models: "ResNet-50, ResNet-101 and ResNet-152"
+    data: [imagenet]
+    scale: "200 and 400 epochs"
+    setting: "the ImageNet recipe of Foret et al."
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "p. 6", stance: for}
+
+- id: c-finetune
+  type: empirical
+  text: "Finetuning EfficientNets with SAM uniformly improved on finetuning without it and gave new state-of-the-art results of 0.30% error on CIFAR-10, 3.92% on CIFAR-100 and 11.39% on ImageNet."
+  scope:
+    models: "EfficientNet-b7 and EfficientNet-L2 from public checkpoints"
+    data: [cifar-10, cifar-100, imagenet]
+    scale: "EfficientNet-L2 pretrained on ImageNet and unlabeled JFT"
+    setting: "finetuning, five runs per dataset"
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "pp. 6 to 7", stance: for}
+
+- id: c-label-noise
+  type: empirical
+  text: "With randomly flipped CIFAR-10 labels, SAM alone outperformed all prior methods aimed at label noise except MentorMix, and bootstrapped SAM was comparable to MentorMix."
+  scope:
+    models: "ResNet-32 trained for 200 epochs"
+    data: [cifar-10]
+    scale: "one small model"
+    setting: "a fraction of training labels flipped at random, clean test set"
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "p. 7", stance: for}
+
+- id: c-hessian
+  type: empirical
+  text: "For a WideResNet40-10 trained on CIFAR-10 without batch norm, SAM converged to minima with lower curvature: the maximum eigenvalue at convergence was approximately 24 without SAM and 1.0 with SAM, and the ratio λmax / λ5 was up to 11.4 without SAM and 2.6 with SAM."
+  scope:
+    models: "WideResNet40-10 without batch normalization"
+    data: [cifar-10]
+    scale: "one model"
+    setting: "Hessian spectrum estimated with the Lanczos algorithm"
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "pp. 8 to 9", stance: for}
+
+- id: c-one-step
+  type: empirical
+  text: "For most of training, one projected gradient step, as in standard SAM, approximated well the perturbation found with several steps of inner maximization."
+  scope:
+    models: "a WideResNet"
+    data: [cifar-10, cifar-100]
+    scale: "20 runs per setting"
+    setting: "SAM with one or several steps of projected gradient ascent"
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "p. 19", stance: for}
+
+- id: c-inner-steps
+  type: empirical
+  text: "Test accuracy was not strongly affected by the number of inner maximization steps, though on CIFAR-100 several steps outperformed one by a statistically significant margin."
+  scope:
+    models: "a WideResNet"
+    data: [cifar-10, cifar-100]
+    scale: "20 runs per setting"
+    setting: "SAM with one or several steps of projected gradient ascent"
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "p. 19", stance: for}
+
+- id: c-weaker-near-convergence
+  type: empirical
+  text: "Near convergence the one-step approximation becomes weaker: on CIFAR-10 the maximum loss found on each batch was about 3% higher with 5 inner steps than with one."
+  scope:
+    models: "a WideResNet"
+    data: [cifar-10]
+    scale: "20 runs"
+    setting: "SAM with one or five steps of projected gradient ascent"
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "p. 19", stance: for}
+
+- id: c-li-correlates
+  type: empirical
+  text: "With filter-normalized directions, the sharpness of loss plots correlates well with generalization error, while plots without the normalization can be very misleading."
+  scope:
+    models: "VGG-9 and ResNet-56 with batch normalization"
+    data: [cifar-10]
+    scale: "small convolutional networks"
+    setting: "small-batch against large-batch SGD, with and without weight decay"
+  evidence:
+    - {work: "li-2018-visualizing-loss-landscape", role: original, locator: "p. 4", stance: for}
+    - {work: "li-2018-visualizing-loss-landscape", role: original, locator: "p. 6", stance: for}
+
+- id: c-li-flatter
+  type: empirical
+  text: "In Li et al.'s filter-normalized plots, visually flatter minimizers consistently corresponded to lower test error."
+  scope:
+    models: "ResNets, networks without skip connections and Wide-ResNets"
+    data: [cifar-10]
+    scale: "networks of 20 to 110 layers"
+    setting: "two-dimensional filter-normalized loss surface plots"
+  evidence:
+    - {work: "li-2018-visualizing-loss-landscape", role: original, locator: "p. 8", stance: for}
+
+- id: c-li-filter
+  type: definitional
+  text: "Filter normalization draws a random Gaussian direction d and rescales each filter d_ij, the j-th filter of the i-th layer, to the Frobenius norm of the matching filter of the weights."
+  evidence:
+    - {work: "li-2018-visualizing-loss-landscape", role: original, locator: "p. 4", stance: for}
+
+- id: c-li-fc
+  type: attributive
+  text: "Li et al. apply filter normalization to fully connected layers by treating them as convolutions with a 1 x 1 output feature map."
+  evidence:
+    - {work: "li-2018-visualizing-loss-landscape", role: original, locator: "p. 4", stance: for}
+
+- id: c-li-bn
+  type: attributive
+  text: "In their 2D plots Li et al. hold batch-normalization parameters constant, applying no random direction to them."
+  evidence:
+    - {work: "li-2018-visualizing-loss-landscape", role: original, locator: "p. 3", stance: for}
+
+- id: c-dinh-abstract
+  type: attributive
+  text: "Dinh et al. show that for deep networks with rectifier units, the symmetries of parameter space can be used to build equivalent models with arbitrarily sharper minima."
+  evidence:
+    - {work: "dinh-2017-sharp-minima-can-generalize", role: original, locator: "the abstract", stance: for}
+
+- id: c-dinh-alpha
+  type: attributive
+  text: "For a one-hidden-layer rectifier network, Dinh et al. define the transformation T_alpha mapping (theta_1, theta_2) to (alpha theta_1, theta_2 / alpha) for alpha > 0, which gives observationally equivalent parameters."
+  evidence:
+    - {work: "dinh-2017-sharp-minima-can-generalize", role: original, locator: "p. 4", stance: for}
+
+- id: c-dinh-spectral
+  type: attributive
+  text: "Dinh et al. show that any minimum with non-zero Hessian is observationally equivalent to a minimum whose Hessian has an arbitrarily large spectral norm."
+  evidence:
+    - {work: "dinh-2017-sharp-minima-can-generalize", role: original, locator: "p. 5", stance: for}
+
+- id: c-second-order-appendix
+  type: empirical
+  text: "For a WideResNet-40x2 on CIFAR-10, first- and second-order SAM updates stayed closely aligned during the first half of training and drifted apart near convergence, and the model trained without the second-order terms reached a lower test error."
+  scope:
+    models: "WideResNet-40x2"
+    data: [cifar-10]
+    scale: "one model"
+    setting: "SAM with and without the second-order terms of the gradient"
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "pp. 17 to 18", stance: for}
+
+- id: c-history-hochreiter
+  type: historical
+  text: "The idea of searching for flat minima can be traced back to Hochreiter and Schmidhuber (1995)."
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "p. 9", stance: for}
+
+- id: c-keskar-metric
+  type: attributive
+  text: "Keskar et al. measure the sharpness of a minimizer by the largest value the loss attains in a small box around it, relative to the value at the minimizer."
+  evidence:
+    - {work: "keskar-2017-large-batch-training-sharp-minima", role: original, locator: "p. 4", stance: for}
+    - {work: "keskar-2017-large-batch-training-sharp-minima", role: original, locator: "p. 5", stance: for}
+
+- id: c-figure1
+  type: attributive
+  text: "Figure 1 of Foret et al. contrasts a sharp minimum reached by a ResNet trained with SGD with a wide minimum reached by the same ResNet trained with SAM."
+  evidence:
+    - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "p. 2", stance: for}
