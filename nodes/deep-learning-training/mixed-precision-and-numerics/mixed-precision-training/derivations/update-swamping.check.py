@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/mixed-precision-training/ (ai://NEW-mixed-precision-training).
+# Part of https://ai.tamnd.com/mixed-precision-training/ (ai://EPEFQ9).
 # Check of derivations/update-swamping.md: under round to nearest even, FP16 rounds to zero exactly the magnitudes up
 # to 2^-25, and an update u added to a normal weight w is lost whenever |w|/|u| > 2^(m+2) and never when
 # |w|/|u| < 2^(m+1), with m = 10 for FP16 and m = 7 for BF16. Sums are formed exactly in float64 and rounded once.

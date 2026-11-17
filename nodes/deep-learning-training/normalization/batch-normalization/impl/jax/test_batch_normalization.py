@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/batch-normalization/ (ai://NEW-batch-normalization).
+# Part of https://ai.tamnd.com/batch-normalization/ (ai://TD3H76).
 """Tests of the JAX reference: the worked example, jax.grad against eq-bn-backward and finite differences, the running
 statistics, evaluation mode and the convolutional case."""
 

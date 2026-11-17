@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/randaugment/ (ai://NEW-randaugment).
+# Part of https://ai.tamnd.com/randaugment/ (ai://88YEPR).
 """RandAugment and TrivialAugment in PyTorch.
 
 The same operations and samplers as the NumPy reference, on uint8 tensors of shape (H, W) or (C, H, W) and with a

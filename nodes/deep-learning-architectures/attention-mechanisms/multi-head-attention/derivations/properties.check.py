@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/multi-head-attention/ (ai://NEW-multi-head-attention).
+# Part of https://ai.tamnd.com/multi-head-attention/ (ai://ND4EXH).
 # Check of derivations/properties.md: the head sum, the convex combinations, the permutation properties, the
 # causal and padding masks, the weight count, the FLOP count and the size of the key-value cache.
 import numpy as np

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/distillation/ (ai://NEW-distillation).
+# Part of https://ai.tamnd.com/distillation/ (ai://JGNGHC).
 """Tests of the PyTorch code: the shared fixture, agreement with a hand-built reference from F.kl_div,
 F.log_softmax, F.softmax and F.cross_entropy, the gradient (q - p) / T from autograd, the T^2 factor and the
 high-temperature limit, the detached teacher, the KL and cross-entropy forms, extra axes, the pitfalls of

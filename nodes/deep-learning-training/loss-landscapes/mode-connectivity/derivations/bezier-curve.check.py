@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/mode-connectivity/ (ai://NEW-mode-connectivity).
+# Part of https://ai.tamnd.com/mode-connectivity/ (ai://MDXMTA).
 # Check of derivations/bezier-curve.md: the endpoints and midpoint of the quadratic Bezier curve, the bend factor
 # 2 t (1 - t) against a finite difference, and the ring loss with barrier 1 on the segment and 1/16 on the curve.
 import numpy as np

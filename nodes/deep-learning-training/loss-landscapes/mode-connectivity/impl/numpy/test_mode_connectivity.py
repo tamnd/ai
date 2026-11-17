@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/mode-connectivity/ (ai://NEW-mode-connectivity).
+# Part of https://ai.tamnd.com/mode-connectivity/ (ai://MDXMTA).
 """Tests of the NumPy reference: the endpoints and midpoints of the linear, Bezier and polychain paths; the bend
 weight against a finite difference; the loss barrier in both conventions, zero for a convex loss and positive between
 a network and a permuted copy; the hand-written gradient of the MLP against finite differences; the invariance of

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/ai-safety-via-debate/ (ai://NEW-ai-safety-via-debate).
+# Part of https://ai.tamnd.com/ai-safety-via-debate/ (ai://N45PC9).
 # Check of derivations/bisection-debate.md: the bisection debates of Irving et al. (2018, Section 2.2) for counting
 # primes and for a deterministic simulation, solved exactly by minimax over every claim in a range, the number of
 # rounds and judge operations, the logarithmic score of Michael et al. (2023, Section 2.1), and the numbers of the

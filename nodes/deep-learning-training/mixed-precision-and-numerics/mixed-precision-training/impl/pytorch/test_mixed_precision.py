@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/mixed-precision-training/ (ai://NEW-mixed-precision-training).
+# Part of https://ai.tamnd.com/mixed-precision-training/ (ai://EPEFQ9).
 """Tests of the PyTorch code on CPU: the shared fixtures against torch.finfo and the bfloat16 conversion, the dynamic
 loss scaler against torch.amp.GradScaler and its update kernel, training with float32 master weights against
 GradScaler step for step, FP16 and BF16 underflow and lost updates, a regression in float16 and bfloat16, and two

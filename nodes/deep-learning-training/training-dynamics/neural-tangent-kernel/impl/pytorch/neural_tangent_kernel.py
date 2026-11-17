@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/neural-tangent-kernel/ (ai://NEW-neural-tangent-kernel).
+# Part of https://ai.tamnd.com/neural-tangent-kernel/ (ai://3SJCNH).
 """The neural tangent kernel of a two-layer ReLU network, in PyTorch.
 
 The network is eq-two-layer of the page, f(x) = (1/sqrt(m)) sum_j a_j relu(w_j . x), in the NTK parametrization.

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/layer-normalization/ (ai://NEW-layer-normalization).
+# Part of https://ai.tamnd.com/layer-normalization/ (ai://RA5R92).
 """Layer normalization and RMSNorm as PyTorch modules, written from tensor operations.
 
 LayerNorm follows torch.nn.LayerNorm: the statistics are the mean and the biased variance over the last axes, those

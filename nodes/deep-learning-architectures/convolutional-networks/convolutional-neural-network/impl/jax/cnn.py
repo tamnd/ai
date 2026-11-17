@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/convolutional-neural-network/ (ai://NEW-convolutional-neural-network).
+# Part of https://ai.tamnd.com/convolutional-neural-network/ (ai://GNXZCP).
 """The convolutional layer and the small network of the page in JAX; the NumPy reference is the oracle.
 
 conv2d calls jax.lax.conv_general_dilated, which computes the same cross-correlation as eq-conv; circular padding

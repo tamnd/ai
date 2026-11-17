@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/mixed-precision-training/ (ai://NEW-mixed-precision-training).
+# Part of https://ai.tamnd.com/mixed-precision-training/ (ai://EPEFQ9).
 # Check of derivations/loss-scaling.md: a loss scale S = 2^k moves the window of gradient magnitudes that FP16 keeps
 # from (2^-25, 65520) to (2^-25 / S, 65520 / S); scaling by a power of two commutes with rounding and with the
 # arithmetic of backpropagation while nothing overflows or leaves the normal range; unscaling in FP32 is exact; and a

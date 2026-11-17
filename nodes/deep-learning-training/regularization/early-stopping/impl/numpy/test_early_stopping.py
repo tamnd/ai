@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/early-stopping/ (ai://NEW-early-stopping).
+# Part of https://ai.tamnd.com/early-stopping/ (ai://VR3ZRP).
 """Tests of the NumPy reference: the worked example, gradient descent and ridge as spectral filters, the gradient flow
 limit, the patience rule with restore-best, and the criteria GL, PQ and UP."""
 

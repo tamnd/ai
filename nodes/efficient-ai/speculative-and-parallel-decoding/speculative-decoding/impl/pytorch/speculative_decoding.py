@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/speculative-decoding/ (ai://NEW-speculative-decoding).
+# Part of https://ai.tamnd.com/speculative-decoding/ (ai://JKWQF4).
 """Speculative decoding in PyTorch, over a vocabulary of V tokens. A distribution is a 1-D float64 tensor of V
 probabilities; p is the target model's next-token distribution and q the draft model's, as in Leviathan et al.
 Randomness comes from a torch.Generator.

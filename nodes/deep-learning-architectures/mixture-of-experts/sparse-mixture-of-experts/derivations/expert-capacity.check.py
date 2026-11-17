@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/sparse-mixture-of-experts/ (ai://NEW-sparse-mixture-of-experts).
+# Part of https://ai.tamnd.com/sparse-mixture-of-experts/ (ai://1H67K0).
 # Check of derivations/expert-capacity.md: with C = floor(k T c / N) slots per expert, a slot-by-slot dispatch keeps
 # min(n_i, C) choices per expert, drops sum max(0, n_i - C) >= k T - N C >= k T (1 - c), pads N C - k T + D slots,
 # drops nothing under even routing with c >= 1, and gives GShard's 2 N / (G E) per group for top-2.

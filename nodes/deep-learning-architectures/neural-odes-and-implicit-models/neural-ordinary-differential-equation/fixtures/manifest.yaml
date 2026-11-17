@@ -5,7 +5,7 @@ inputs: {B: 5, x: "standard Gaussian", t: "standard Gaussian targets for the fir
 loss: "half the mean squared error of the first d coordinates of h(T)"
 gradients: "of the discrete RK4 map, by backprop"
 dtype: float64
-numpy: "2.5.5"
+numpy: "2.5.4"
 files:
   params-small.npz: {sha256: f8945752b6480d605c76d7f3dd33b220224c9a1375fff41ec4945b78be4c604a}
   input-small.npz: {sha256: b4bf57a2f4dc4761935e8e3fcee39cb3605662d0def76cb1e7bb8aae463725c0}

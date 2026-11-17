@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/batch-normalization/ (ai://NEW-batch-normalization).
+# Part of https://ai.tamnd.com/batch-normalization/ (ai://TD3H76).
 """Batch normalization as a PyTorch module, written from tensor operations.
 
 The module follows torch.nn.BatchNorm1d and torch.nn.BatchNorm2d: the input has the shape (N, C) or (N, C, ...),

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/multilayer-perceptron/ (ai://NEW-multilayer-perceptron).
+# Part of https://ai.tamnd.com/multilayer-perceptron/ (ai://YA59M7).
 """The multilayer perceptron, the NumPy reference: forward, backward and one step of SGD.
 
 It computes eq-layer, eq-output, eq-loss, eq-delta, eq-grads and eq-sgd of the page, and initializes with

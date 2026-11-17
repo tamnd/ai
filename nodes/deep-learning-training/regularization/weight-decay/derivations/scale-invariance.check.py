@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/weight-decay/ (ai://NEW-weight-decay).
+# Part of https://ai.tamnd.com/weight-decay/ (ai://DD5QVM).
 # Check of derivations/scale-invariance.md: for a loss with L(c w) = L(w) for all c > 0, the gradient is orthogonal to
 # w and scales as 1/c; without decay, gradient descent only grows |w|; a step moves the direction w/|w| like a step of
 # size lr/|w|^2 on the unit sphere; decay by (1 - lr lam) is the same as an exponentially growing learning rate

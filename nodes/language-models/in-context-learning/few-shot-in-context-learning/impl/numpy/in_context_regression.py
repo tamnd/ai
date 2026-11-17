@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/few-shot-in-context-learning/ (ai://NEW-few-shot-in-context-learning).
+# Part of https://ai.tamnd.com/few-shot-in-context-learning/ (ai://JNEP9D).
 """In-context linear regression in NumPy: a linear self-attention layer with the weights of von Oswald et al.
 (2023), which performs one gradient descent step on the in-context least-squares loss, the gradient descent
 predictor it matches, and the ridge predictor that is Bayes-optimal under a Gaussian prior.

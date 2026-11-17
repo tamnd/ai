@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/sparse-autoencoders/ (ai://NEW-sparse-autoencoders).
+# Part of https://ai.tamnd.com/sparse-autoencoders/ (ai://ZTPNXN).
 """Sparse autoencoders in PyTorch. Tokens are rows: x has shape (B, d), W_enc (n, d), W_dec (d, n), n latents.
 
 SparseAutoencoder is the ReLU encoder of eq-relu-encoder or the TopK encoder of eq-topk-encoder with the decoder of

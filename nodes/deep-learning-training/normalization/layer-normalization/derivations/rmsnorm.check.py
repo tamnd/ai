@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/layer-normalization/ (ai://NEW-layer-normalization).
+# Part of https://ai.tamnd.com/layer-normalization/ (ai://RA5R92).
 # Check of derivations/rmsnorm.md: RMSNorm of the centered vector is layer normalization, its invariances and the
 # counterexample to re-centering, its gradient and Jacobian norm, the R of Eq. 9 of Zhang and Sennrich (2019), and the
 # sphere of radius sqrt(n).

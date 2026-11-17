@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/sharpness-aware-minimization/ (ai://NEW-sharpness-aware-minimization).
+# Part of https://ai.tamnd.com/sharpness-aware-minimization/ (ai://8BNWST).
 # Check of derivations/dual-norm-perturbation.md: the perturbation rho sign(g) |g|^(q-1) / (||g||_q^q)^(1/p) has
 # p-norm rho and attains rho ||g||_q, the largest value of e.g on the p-ball, which no sampled point of the ball beats;
 # it is rho g / ||g||_2 at p = 2 and rho sign(g) at p = infinity; it does not change when g is scaled by c > 0; and

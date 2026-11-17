@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/sparse-autoencoders/ (ai://NEW-sparse-autoencoders).
+# Part of https://ai.tamnd.com/sparse-autoencoders/ (ai://ZTPNXN).
 # Check of derivations/reconstruction-bias.md: gamma = E|x_hat|^2 / E[x_hat . x] is 1 / (best rescale of x_hat),
 # its polarization form agrees, one-latent L1 shrinkage gives gamma = 1 - lambda / (2 s), and FVU end points are 1 and 0.
 import numpy as np

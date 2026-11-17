@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/sharpness-aware-minimization/ (ai://NEW-sharpness-aware-minimization).
+# Part of https://ai.tamnd.com/sharpness-aware-minimization/ (ai://8BNWST).
 # Check of derivations/sam-quadratic.md: on L(w) = w.Hw / 2 the SAM gradient is H(w + rho Hw / ||Hw||), which is the
 # gradient of L + rho ||Hw||; in the eigenbasis it scales the i-th component of the gradient by 1 + rho lambda_i / ||Hw||,
 # so the sharp components shrink faster than under plain gradient descent; with H positive definite it is never zero,

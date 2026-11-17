@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/rms-normalization/ (ai://NEW-rms-normalization).
+# Part of https://ai.tamnd.com/rms-normalization/ (ai://3FZB17).
 # Check of derivations/invariances.md: RMSNorm and pRMSNorm do not change when the input, the weight matrix or
 # both are scaled by delta > 0 (eps = 0); a positive eps breaks this; scaling one row of W does change the output;
 # adding a constant does change the output; and layer normalization equals RMSNorm of the centred input.

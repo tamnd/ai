@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/reinforcement-learning-from-human-feedback/ (ai://NEW-reinforcement-learning-from-human-feedback).
+# Part of https://ai.tamnd.com/reinforcement-learning-from-human-feedback/ (ai://6XVY3X).
 """The losses and objectives of RLHF on toy tensors, the NumPy reference.
 
 The reward model is fitted with the Bradley-Terry loss (eq-bt, eq-rm-loss), on pairs or on rankings of K responses as

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/convolutional-neural-network/ (ai://NEW-convolutional-neural-network).
+# Part of https://ai.tamnd.com/convolutional-neural-network/ (ai://GNXZCP).
 """The convolutional layer and a small convolutional network, the NumPy reference.
 
 conv2d computes eq-conv of the page, the cross-correlation that deep learning libraries call convolution, with a

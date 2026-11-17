@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/expected-calibration-error/ (ai://NEW-expected-calibration-error).
+# Part of https://ai.tamnd.com/expected-calibration-error/ (ai://01R1CF).
 # Check of derivations/temperature-scaling.md: softmax(z / T) keeps the order of the logits, so the argmax and the
 # accuracy do not change; the confidence does not increase in T and tends to 1/K and to 1; the mean NLL is convex in
 # beta = 1/T with slope mean(E_q[z] - z_y) and second derivative mean(Var_q[z]); and at the minimizer the slope is 0.

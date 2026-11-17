@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/adam/ (ai://NEW-adam).
+# Part of https://ai.tamnd.com/adam/ (ai://88GHGT).
 """Tests of the PyTorch optimizers: the worked example, the shared fixture, agreement with torch.optim.Adam and
 torch.optim.AdamW on a small model with and without AMSGrad, weight decay and its coupling to the learning rate, the
 place of eps, and the epsilon hat of Keras."""

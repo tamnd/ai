@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/gradient-checkpointing/ (ai://NEW-gradient-checkpointing).
+# Part of https://ai.tamnd.com/gradient-checkpointing/ (ai://C4TQW1).
 """Gradient checkpointing on the chain eq-layer, the NumPy reference: segments, recursive bisection, the BPTT-HSM
 dynamic program eq-hsm of Gruslys et al., and the per-layer count eq-transformer-memory of Korthikanti et al. A Meter
 counts the layer forwards and the saved activations."""

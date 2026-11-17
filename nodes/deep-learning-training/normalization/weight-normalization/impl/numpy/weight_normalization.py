@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/weight-normalization/ (ai://NEW-weight-normalization).
+# Part of https://ai.tamnd.com/weight-normalization/ (ai://5PC0VR).
 """Weight normalization, the NumPy reference.
 
 A weight-normalized linear layer keeps a direction v of shape (out, in), a length g of shape (out,) and a bias b.

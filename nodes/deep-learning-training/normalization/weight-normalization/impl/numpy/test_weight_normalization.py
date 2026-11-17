@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/weight-normalization/ (ai://NEW-weight-normalization).
+# Part of https://ai.tamnd.com/weight-normalization/ (ai://5PC0VR).
 """Tests of the NumPy reference: the worked examples of the page, a shared fixture, the gradients against finite
 differences, the projection form, the orthogonality of the gradient and the growth of ||v||, the moments after the
 data-dependent initialization, mean-only batch normalization, the power iteration against the SVD, and agreement

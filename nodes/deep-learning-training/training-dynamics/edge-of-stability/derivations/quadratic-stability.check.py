@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/edge-of-stability/ (ai://NEW-edge-of-stability).
+# Part of https://ai.tamnd.com/edge-of-stability/ (ai://17Q1PD).
 # Check of derivations/quadratic-stability.md: on 0.5 x^T H x each eigen-coordinate is multiplied by 1 - eta lambda_i;
 # gradient descent converges iff eta lambda_1 < 2; Cohen's 20 and 1 example at eta = 0.09 and 0.11; and the momentum
 # thresholds (2 + 2 beta) / eta for Polyak and (2 + 2 beta) / (eta (1 + 2 beta)) for Nesterov.

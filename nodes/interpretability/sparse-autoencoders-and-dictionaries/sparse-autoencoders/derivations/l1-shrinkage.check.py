@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/sparse-autoencoders/ (ai://NEW-sparse-autoencoders).
+# Part of https://ai.tamnd.com/sparse-autoencoders/ (ai://ZTPNXN).
 # Check of derivations/l1-shrinkage.md: the one-latent minimizer of ||x - f d||^2 + lam f over f >= 0 is
 # max(0, <d, x> - lam/2), a ReLU with bias -lam/2 computes it, x = d with lam = 1 gives 1/2, and rescaling the decoder
 # by s and the encoder by 1/s keeps the reconstruction and divides the penalty by s.

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/pass-at-k/ (ai://NEW-pass-at-k).
+# Part of https://ai.tamnd.com/pass-at-k/ (ai://AH634X).
 # Check of derivations/unbiased-estimator.md: the estimator 1 - C(n - c, k) / C(n, k) has mean 1 - (1 - p)^k when
 # c ~ Binomial(n, p); it equals the product of eq-product-form; the plug-in 1 - (1 - c/n)^k is biased low for k >= 2;
 # and the special cases of part 4.

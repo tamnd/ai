@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/reinforcement-learning-from-human-feedback/ (ai://NEW-reinforcement-learning-from-human-feedback).
+# Part of https://ai.tamnd.com/reinforcement-learning-from-human-feedback/ (ai://6XVY3X).
 """Tests of the PyTorch losses: the shared fixture, agreement with torch.nn.functional, the gradients of autograd
 against the closed forms, a reward model and a DPO step on toy tensors, the frozen reference, and the masks."""
 
