@@ -1,0 +1,428 @@
+- id: c-goyal-rule
+  type: definitional
+  text: "Linear Scaling Rule: when the minibatch size is multiplied by k, multiply the learning rate by k."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 2", stance: for}
+
+- id: c-goyal-unchanged
+  type: attributive
+  text: "Under the linear scaling rule of Goyal et al. all other hyper-parameters, such as weight decay, are kept unchanged."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 2", stance: for}
+
+- id: c-mccandlish-abstract
+  type: attributive
+  text: "McCandlish et al. show that a simple and easy-to-measure statistic, the gradient noise scale, predicts the largest useful batch size across many domains and applications."
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 1", stance: for}
+
+- id: c-sgd-minibatch
+  type: definitional
+  text: "Minibatch SGD with minibatch B of size n and learning rate eta updates w_{t+1} = w_t - eta (1/n) sum over x in B of grad l(x, w_t)."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 2", stance: for}
+
+- id: c-gest
+  type: definitional
+  text: "The batch gradient, an average of per-example gradients over a batch of B samples, is a random variable whose expected value is the true gradient G and whose covariance is the per-example covariance matrix Sigma divided by B, so its variance scales inversely with the batch size."
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 5", stance: for}
+
+- id: c-without-replacement
+  type: attributive
+  text: "When batches are sampled without replacement from a dataset of size D, the variance of the batch gradient scales like 1/B - 1/D instead of 1/B."
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 5", stance: for}
+
+- id: c-goyal-interpretation
+  type: attributive
+  text: "Goyal et al. compare executing k SGD iterations with small minibatches B_j and learning rate eta against a single iteration with a large minibatch of size kn and learning rate eta-hat, and note that if one could assume grad l(x, w_t) is approximately grad l(x, w_{t+j}) for j < k, then setting eta-hat = k eta would yield w-hat_{t+1} approximately w_{t+k}."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 2", stance: for}
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 3", stance: for}
+
+- id: c-goyal-fails
+  type: attributive
+  text: "Goyal et al. name two cases where the assumption fails: early in training, when the network changes rapidly, and at very large minibatch sizes, where accuracy degrades rapidly beyond a point that is as large as about 8k in their ImageNet experiments."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 3", stance: for}
+
+- id: c-goyal-n-fixed
+  type: attributive
+  text: "In distributed training Goyal et al. keep the per-worker sample size n, the batch-normalization batch, constant when changing the number of workers k, using n = 32."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 4", stance: for}
+
+- id: c-remark1
+  type: attributive
+  text: "Goyal et al.'s Remark 1: scaling the cross-entropy loss is not equivalent to scaling the learning rate, because weight decay is not scaled with it."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 4", stance: for}
+
+- id: c-remark2
+  type: attributive
+  text: "Goyal et al.'s Remark 2: apply momentum correction after changing the learning rate when momentum is written with the learning rate folded into the update."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 4", stance: for}
+
+- id: c-remark3
+  type: attributive
+  text: "Goyal et al.'s Remark 3: normalize the per-worker loss by the total minibatch size kn, not the per-worker size n."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 4", stance: for}
+
+- id: c-reference-lr
+  type: attributive
+  text: "For ResNet-50 on ImageNet Goyal et al. use the reference learning rate eta = 0.1 kn / 256, which is 0.1 for k = 8 workers with n = 32 images each."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 6", stance: for}
+
+- id: c-goyal-setup
+  type: attributive
+  text: "Goyal et al. train every model for 90 epochs regardless of minibatch size, with Nesterov momentum 0.9 and weight decay 0.0001."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 6", stance: for}
+
+- id: c-noise-scale-def
+  type: definitional
+  text: "The gradient noise scale is B_noise = tr(H Sigma) / (G^T H G), where H is the Hessian of the loss; it does not depend on the size of the training set."
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 6", stance: for}
+
+- id: c-mc-eps-opt
+  type: attributive
+  text: "McCandlish et al. minimize the expected loss after a step along the batch gradient, to second order, and obtain the optimal step eps_opt(B) = eps_max / (1 + B_noise / B) and the optimal improvement Delta L_opt(B) = Delta L_max / (1 + B_noise / B)."
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 6", stance: for}
+
+- id: c-mc-twice
+  type: attributive
+  text: "McCandlish et al. note that with a step size larger than twice eps_opt the loss may increase."
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 6", stance: for}
+
+- id: c-small-batch-regime
+  type: attributive
+  text: "When the batch size is much smaller than the noise scale, increasing it linearly increases the progress per step, which McCandlish et al. call the small-batch regime; when it is much larger, increasing it barely helps."
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 6", stance: for}
+
+- id: c-mc-parallelize
+  type: attributive
+  text: "The model of McCandlish et al. predicts that training parallelizes almost linearly up to a batch size equal to the noise scale, followed by a smooth but relatively rapid switch to a regime where more parallelism gives little benefit."
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 3", stance: for}
+
+- id: c-b-simple-def
+  type: definitional
+  text: "If the Hessian is a multiple of the identity, the noise scale reduces to the simple noise scale B_simple = tr(Sigma) / |G|^2, the sum of the variances of the gradient components divided by the squared norm of the gradient."
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 7", stance: for}
+
+- id: c-simple-vs-noise
+  type: attributive
+  text: "McCandlish et al. find that B_simple and B_noise typically differ only by a small constant multiplicative factor, particularly with training schemes that improve conditioning."
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 7", stance: for}
+
+- id: c-mc-tradeoff
+  type: attributive
+  text: "By averaging over multiple optimization steps McCandlish et al. find a simple relationship between training speed and data efficiency, (S / S_min - 1)(E / E_min - 1) = 1, where S and S_min are the actual and minimum possible number of steps and E and E_min the actual and minimum possible number of training examples processed to reach a specified level of performance; they define the critical batch size B_crit = E_min / S_min by an empirical fit to this equation."
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 7", stance: for}
+
+- id: c-mc-bcrit-noise
+  type: attributive
+  text: "Their model predicts B_crit approximately equal to B_noise appropriately averaged over training, and at B = B_crit training takes twice as many passes through the data as the most data-efficient run and twice as many steps as the fastest one."
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 7", stance: for}
+
+- id: c-two-batch
+  type: definitional
+  text: "From the squared norms of gradients at two batch sizes B_small < B_big, |G|^2 is estimated without bias by (B_big |G_big|^2 - B_small |G_small|^2) / (B_big - B_small) and tr(Sigma) by (|G_small|^2 - |G_big|^2) / (1/B_small - 1/B_big)."
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 17", stance: for}
+
+- id: c-ratio-biased
+  type: attributive
+  text: "The ratio of the two estimates is not an unbiased estimator of the noise scale, so McCandlish et al. compute both on every step, keep separate exponentially weighted moving averages of them, and take the ratio of the averages."
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 17", stance: for}
+
+- id: c-k-step-identity
+  type: mathematical
+  text: "For least squares with plain SGD, k steps at rate eta on disjoint batches end at w_t - eta sum_j g_j(w_{t+j}), and one step at rate k eta on their union differs from them by exactly eta^2 sum_{j>=1} H_j sum_{i<j} g_i(w_{t+i})."
+  assumes: ["least-squares loss, so each batch gradient is affine in w with Hessian H_j", "plain SGD without momentum or weight decay", "the k batches are disjoint and their union is the large batch"]
+  derivation: "derivations/k-small-steps.md"
+
+- id: c-k-step-second-order
+  type: mathematical
+  text: "The norm of that gap is at most (k-1)/2 * eta lambda_max * k eta max_i ||g_i||, so relative to the size of the step it is first order in eta and vanishes as eta goes to zero."
+  assumes: ["least-squares loss with Hessians H_j whose eigenvalues are at most lambda_max", "plain SGD"]
+  derivation: "derivations/k-small-steps.md"
+
+- id: c-k-step-only-k
+  type: mathematical
+  text: "Any large-batch rate other than k eta, such as sqrt(k) eta or eta, leaves a gap proportional to (k eta - eta-hat) times the mean gradient, which is first order in eta, so only the linear rule matches the k small steps as eta goes to zero."
+  assumes: ["least-squares loss", "plain SGD", "the mean gradient at w_t is non-zero"]
+  derivation: "derivations/k-small-steps.md"
+
+- id: c-k-step-fails
+  type: mathematical
+  text: "On least squares the scaled step is stable only if k eta lambda_max < 2 for the Hessian of the union, while the small steps need only eta lambda_max < 2, so for 2/k < eta lambda_max < 2 the small-batch run converges and the linearly scaled run diverges."
+  assumes: ["least-squares loss with the same Hessian for every batch", "plain SGD"]
+  derivation: "derivations/k-small-steps.md"
+
+- id: c-expected-loss
+  type: mathematical
+  text: "On a quadratic, the expected loss after the step theta - eps G_est is L(theta) - eps |G|^2 + (1/2) eps^2 (G^T H G + tr(H Sigma) / B)."
+  assumes: ["quadratic loss, or second order in eps", "the B examples are drawn independently, so cov(G_est) = Sigma / B"]
+  derivation: "derivations/optimal-step-noise-scale.md"
+
+- id: c-eps-opt
+  type: mathematical
+  text: "The expected loss is minimized at eps_opt(B) = eps_max / (1 + B_noise / B), with eps_max = |G|^2 / (G^T H G) and B_noise = tr(H Sigma) / (G^T H G)."
+  assumes: ["quadratic loss, or second order in eps", "independent examples", "G^T H G > 0"]
+  derivation: "derivations/optimal-step-noise-scale.md"
+
+- id: c-dl-opt
+  type: mathematical
+  text: "The best expected improvement is Delta L_opt(B) = Delta L_max / (1 + B_noise / B), with Delta L_max = |G|^4 / (2 G^T H G)."
+  assumes: ["quadratic loss, or second order in eps", "independent examples", "G^T H G > 0"]
+  derivation: "derivations/optimal-step-noise-scale.md"
+
+- id: c-eps-regimes
+  type: mathematical
+  text: "For B much smaller than B_noise the optimal step is approximately eps_max B / B_noise, linear in B; for B much larger it tends to eps_max; at B = B_noise it is eps_max / 2."
+  assumes: ["the optimal step eps_max / (1 + B_noise / B)"]
+  derivation: "derivations/optimal-step-noise-scale.md"
+
+- id: c-b-simple-reduction
+  type: mathematical
+  text: "If H = h I with h > 0, then B_noise = B_simple = tr(Sigma) / |G|^2, and the expected squared error of the batch gradient relative to |G|^2 is B_simple / B."
+  assumes: ["H = h I with h > 0", "independent examples", "G != 0"]
+  derivation: "derivations/optimal-step-noise-scale.md"
+
+- id: c-twice-eps
+  type: mathematical
+  text: "The expected loss after the step is back at L(theta) when eps = 2 eps_opt and is higher than L(theta) for larger eps."
+  assumes: ["quadratic loss", "independent examples", "G != 0 and G^T H G > 0"]
+  derivation: "derivations/optimal-step-noise-scale.md"
+
+- id: c-steps-form
+  type: mathematical
+  text: "If every step at batch B lowers the loss by Delta L_max / (1 + B_noise / B), the number of steps to a target loss is S(B) = S_min + E_min / B, with S_min the integral of dL / Delta L_max and E_min the integral of B_noise dL / Delta L_max."
+  assumes: ["each step achieves the optimal improvement Delta L_max / (1 + B_noise / B)", "fixed batch size", "Delta L_max and B_noise depend only on the current loss"]
+  derivation: "derivations/steps-examples-tradeoff.md"
+
+- id: c-tradeoff-product
+  type: mathematical
+  text: "With E = B S, the steps and examples satisfy (S / S_min - 1)(E / E_min - 1) = 1 for every batch size."
+  assumes: ["S(B) = S_min + E_min / B"]
+  derivation: "derivations/steps-examples-tradeoff.md"
+
+- id: c-bcrit-average
+  type: mathematical
+  text: "B_crit = E_min / S_min is the average of B_noise over the steps of an infinite-batch run."
+  assumes: ["S(B) = S_min + E_min / B with S_min and E_min the integrals above"]
+  derivation: "derivations/steps-examples-tradeoff.md"
+
+- id: c-bcrit-twice
+  type: mathematical
+  text: "At B = B_crit a run takes 2 S_min steps and 2 E_min examples."
+  assumes: ["S(B) = S_min + E_min / B"]
+  derivation: "derivations/steps-examples-tradeoff.md"
+
+- id: c-goyal-table2a
+  type: empirical
+  text: "At minibatch 8k the linear scaling rule suggests η = 0.1 · 32, which gives the best performance, 23.74% top-1 error, against 23.60% for minibatch 256 with η = 0.1; other ways of scaling η give worse results: 41.67% with η fixed at 0.1 and 26.22% with η = 0.1 · √32."
+  scope:
+    models: "ResNet-50"
+    data: [imagenet]
+    scale: "minibatch 256 and 8k, 90 epochs, 5 runs each"
+    setting: "synchronous SGD with Nesterov momentum and gradual warmup"
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 10", stance: for}
+
+- id: c-goyal-sweep
+  type: empirical
+  text: "Using the linear scaling rule, validation error remained stable across minibatch sizes from 64 to 8k, after which it began to increase, and beyond 64k training diverged."
+  scope:
+    models: "ResNet-50"
+    data: [imagenet]
+    scale: "minibatch 64 to 64k, 90 epochs"
+    setting: "synchronous SGD with the linear scaling rule and gradual warmup"
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 9", stance: for}
+
+- id: c-goyal-resnet101
+  type: empirical
+  text: "ResNet-101 trained with minibatch 8k reached 22.36% top-1 error against 22.08% for the 256 baseline, a 0.28% increase, in 92.5 minutes on 256 Tesla P100 GPUs."
+  scope:
+    models: "ResNet-101"
+    data: [imagenet]
+    scale: "minibatch 8k on 256 GPUs"
+    setting: "synchronous SGD with the linear scaling rule and gradual warmup"
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 10", stance: for}
+
+- id: c-goyal-5k
+  type: empirical
+  text: "On ImageNet-5k, about five times larger than ImageNet-1k, an 8k minibatch raised validation error by 0.26%, from 25.83% to 26.09%, and the error curve against minibatch size was qualitatively similar to ImageNet-1k, so the larger dataset did not significantly change the maximum effective minibatch size."
+  scope:
+    models: "ResNet-50"
+    data: [imagenet-5k]
+    scale: "6.8 million images, minibatch 256 to 32k, 90 epochs"
+    setting: "synchronous SGD with the linear scaling rule and gradual warmup"
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 10", stance: for}
+
+- id: c-mc-range
+  type: empirical
+  text: "The simple noise scale predicted the critical batch size at the order-of-magnitude level across tasks, while the critical batch size ranged from 20 for an SVHN autoencoder to over 10 million."
+  scope:
+    models: "image classifiers, autoencoders, LSTM language models, Atari and Dota 2 agents"
+    data: [mnist, svhn, cifar-10, imagenet, billion-word]
+    scale: "2018 models"
+    setting: "SGD, momentum, Adam and RMSProp with learning rates tuned per batch size"
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 9", stance: for}
+
+- id: c-mc-optimal-lr
+  type: empirical
+  text: "With plain SGD or momentum the optimal learning rate followed the functional form of eps_opt(B), initially scaling linearly with the batch size and then leveling off; for Adam and RMSProp it initially obeyed a power law in B with exponent between 0.5 and 1.0 depending on the task, then became roughly constant."
+  scope:
+    models: "the tasks of McCandlish et al., with the SGD case shown for an SVHN classifier"
+    data: [svhn, billion-word]
+    scale: "2018 models"
+    setting: "learning rate tuned by grid search for each batch size"
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 10", stance: for}
+
+- id: c-mc-grows
+  type: empirical
+  text: "The critical batch size typically increased by an order of magnitude or more over the course of training."
+  scope:
+    models: "the tasks of McCandlish et al."
+    data: [mnist, svhn, cifar-10, imagenet, billion-word]
+    scale: "2018 models"
+    setting: "critical batch size measured at several target losses"
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 11", stance: for}
+
+- id: c-mc-model-size
+  type: empirical
+  text: "For LSTM language models the simple noise scale was roughly independent of model size at a fixed value of the loss, but larger models reached lower losses and so larger noise scales."
+  scope:
+    models: "LSTM language models of several sizes"
+    data: [billion-word]
+    scale: "2018 LSTMs"
+    setting: "Adam"
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 13", stance: for}
+
+- id: c-goyal-breaking-point
+  type: empirical
+  text: "At minibatch 8k, near the breaking point, results were more sensitive to the learning rate, and Goyal et al. suggest using a minibatch size that is not close to the breaking point."
+  scope:
+    models: "ResNet-50"
+    data: [imagenet]
+    scale: "minibatch 8k"
+    setting: "synchronous SGD with gradual warmup"
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 9", stance: for}
+
+- id: c-mc-generalization
+  type: attributive
+  text: "McCandlish et al. state that their model says nothing about generalization, being strictly about optimizing the training loss, and cite work that found no evidence of a generalization gap when hyperparameters are properly tuned."
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 8", stance: for}
+
+- id: c-mc-temperature
+  type: attributive
+  text: "The measured noise scale depends on the learning rate through the temperature T = eps / B of training, is inflated if the learning rate is too small, and in equilibrium varies in proportion to 1 / T."
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 9", stance: for}
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 25", stance: for}
+
+- id: c-hoffer-gap
+  type: attributive
+  text: "Hoffer et al. argue that the generalization gap of large-batch training stems from the relatively small number of updates rather than from the batch size, and can be eliminated by adapting the training regime."
+  evidence:
+    - {work: "hoffer-2017-train-longer-generalize-better", role: original, locator: "p. 1", stance: for}
+
+- id: c-hoffer-sqrt
+  type: attributive
+  text: "To keep the covariance matrix of the weight update the same for all minibatch sizes, Hoffer et al. propose scaling the learning rate with the square root of the minibatch size M."
+  evidence:
+    - {work: "hoffer-2017-train-longer-generalize-better", role: original, locator: "p. 5", stance: for}
+
+- id: c-smith-noise
+  type: attributive
+  text: "Smith et al. use the noise scale g = eps (N / B - 1), approximately eps N / B when B is much smaller than the training-set size N, which implies an optimal batch size proportional to the learning rate."
+  evidence:
+    - {work: "smith-2018-dont-decay-learning-rate", role: original, locator: "p. 1", stance: for}
+    - {work: "smith-2018-dont-decay-learning-rate", role: original, locator: "p. 2", stance: for}
+
+- id: c-smith-abstract
+  type: empirical
+  text: "Increasing the batch size during training instead of decaying the learning rate gave the same learning curve on training and test sets and equivalent test accuracy after the same number of epochs, with fewer parameter updates, for SGD, momentum, Nesterov momentum and Adam."
+  scope:
+    models: "wide ResNets and Inception-ResNet-V2, ResNet-50"
+    data: [cifar-10, imagenet]
+    scale: "batches up to 65536"
+    setting: "existing decaying schedules converted into batch-size schedules"
+  evidence:
+    - {work: "smith-2018-dont-decay-learning-rate", role: original, locator: "p. 1", stance: for}
+
+- id: c-smith-n10
+  type: attributive
+  text: "Smith et al. increase the batch size at constant learning rate until B is about N/10 and then revert to decaying the learning rate."
+  evidence:
+    - {work: "smith-2018-dont-decay-learning-rate", role: original, locator: "p. 2", stance: for}
+
+- id: c-smith-momentum
+  type: attributive
+  text: "With momentum coefficient m the noise scale becomes approximately eps N / (B (1 - m)), and scaling B with 1 / (1 - m) while raising m slightly reduces test accuracy."
+  evidence:
+    - {work: "smith-2018-dont-decay-learning-rate", role: original, locator: "p. 3", stance: for}
+
+- id: c-smith-results
+  type: empirical
+  text: "Inception-ResNet-V2 reached 77% ImageNet validation accuracy in under 2500 parameter updates with batches of 65536 images, and ResNet-50 reached 76.1% in under 30 minutes."
+  scope:
+    models: "Inception-ResNet-V2 and ResNet-50"
+    data: [imagenet]
+    scale: "batches up to 65536, TPU"
+    setting: "batch size increased during training in place of learning-rate decay"
+  evidence:
+    - {work: "smith-2018-dont-decay-learning-rate", role: original, locator: "p. 1", stance: for}
+
+- id: c-krizhevsky
+  type: historical
+  text: "The linear scaling rule was adopted by Krizhevsky, if not earlier, who reported a 1% increase of error when increasing the minibatch size from 128 to 1024."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 3", stance: for}
+
+- id: c-bottou
+  type: historical
+  text: "Bottou et al. review the trade-offs of minibatching and show that with the linear scaling rule a solver follows the same training curve as a function of the number of examples seen, and that the learning rate should not exceed a maximum rate independent of the minibatch size."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 3", stance: for}
+
+- id: c-goyal-hour
+  type: empirical
+  text: "Goyal et al. trained ResNet-50 with a minibatch of 8192 images on 256 GPUs in one hour while matching small-minibatch accuracy, with about 90% scaling efficiency from 8 to 256 GPUs."
+  scope:
+    models: "ResNet-50"
+    data: [imagenet]
+    scale: "256 Tesla P100 GPUs"
+    setting: "Caffe2, synchronous SGD"
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 1", stance: for}
+
+- id: c-goyal-accumulation
+  type: attributive
+  text: "Goyal et al. simulated very large minibatches of 12k and more on a single server with gradient accumulation between SGD updates and verified that this gave results equivalent to distributed training."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 9", stance: for}
