@@ -1,0 +1,12 @@
+# Written by fixtures/make.py; do not edit.
+seed: 20180619
+config: {d: 2, d_hidden: 4, d_state: 3, n_steps: 3, T: 1.0, method: rk4}
+inputs: {B: 5, x: "standard Gaussian", t: "standard Gaussian targets for the first d coordinates of h(T)"}
+loss: "half the mean squared error of the first d coordinates of h(T)"
+gradients: "of the discrete RK4 map, by backprop"
+dtype: float64
+numpy: "2.5.5"
+files:
+  params-small.npz: {sha256: f8945752b6480d605c76d7f3dd33b220224c9a1375fff41ec4945b78be4c604a}
+  input-small.npz: {sha256: b4bf57a2f4dc4761935e8e3fcee39cb3605662d0def76cb1e7bb8aae463725c0}
+  expected-small.npz: {sha256: 72c002474c337527f29a63179ef58f3c1af802c2e46bee9a123e91daa29c41b5}

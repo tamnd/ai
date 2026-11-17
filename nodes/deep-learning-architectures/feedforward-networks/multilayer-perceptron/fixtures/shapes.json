@@ -1,0 +1,329 @@
+{
+  "note": "Written by aik shapes sample -w from shapes.yaml; do not edit. The tests of each implementation check shapes, param_count and flops against these values (spec 08.6, rule X09).",
+  "configs": [
+    {
+      "name": "example",
+      "kind": "example",
+      "config": {
+        "B": 5,
+        "H": 4,
+        "I": 3,
+        "O": 2,
+        "d_hidden": 4,
+        "d_in": 3,
+        "d_out": 2,
+        "n_hidden": 2
+      },
+      "blocks": {
+        "first": {
+          "params": 16,
+          "flops_forward": 120,
+          "inputs": {
+            "x": [
+              5,
+              3
+            ]
+          },
+          "outputs": {
+            "h": [
+              5,
+              4
+            ]
+          },
+          "internals": {
+            "z": [
+              5,
+              4
+            ]
+          }
+        },
+        "hidden": {
+          "params": 20,
+          "flops_forward": 160,
+          "inputs": {
+            "h": [
+              5,
+              4
+            ]
+          },
+          "outputs": {
+            "h": [
+              5,
+              4
+            ]
+          },
+          "internals": {
+            "z": [
+              5,
+              4
+            ]
+          }
+        },
+        "output": {
+          "params": 10,
+          "flops_forward": 80,
+          "inputs": {
+            "h": [
+              5,
+              4
+            ]
+          },
+          "outputs": {
+            "y": [
+              5,
+              2
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_backward": 720,
+        "flops_forward": 360,
+        "params": 46
+      }
+    },
+    {
+      "name": "sample-1",
+      "kind": "sample",
+      "config": {
+        "B": 3,
+        "H": 1,
+        "I": 2,
+        "O": 1,
+        "d_hidden": 1,
+        "d_in": 2,
+        "d_out": 1,
+        "n_hidden": 1
+      },
+      "blocks": {
+        "first": {
+          "params": 3,
+          "flops_forward": 12,
+          "inputs": {
+            "x": [
+              3,
+              2
+            ]
+          },
+          "outputs": {
+            "h": [
+              3,
+              1
+            ]
+          },
+          "internals": {
+            "z": [
+              3,
+              1
+            ]
+          }
+        },
+        "hidden": {
+          "params": 2,
+          "flops_forward": 6,
+          "inputs": {
+            "h": [
+              3,
+              1
+            ]
+          },
+          "outputs": {
+            "h": [
+              3,
+              1
+            ]
+          },
+          "internals": {
+            "z": [
+              3,
+              1
+            ]
+          }
+        },
+        "output": {
+          "params": 2,
+          "flops_forward": 6,
+          "inputs": {
+            "h": [
+              3,
+              1
+            ]
+          },
+          "outputs": {
+            "y": [
+              3,
+              1
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_backward": 36,
+        "flops_forward": 18,
+        "params": 5
+      }
+    },
+    {
+      "name": "sample-2",
+      "kind": "sample",
+      "config": {
+        "B": 3,
+        "H": 8,
+        "I": 6,
+        "O": 3,
+        "d_hidden": 8,
+        "d_in": 6,
+        "d_out": 3,
+        "n_hidden": 2
+      },
+      "blocks": {
+        "first": {
+          "params": 56,
+          "flops_forward": 288,
+          "inputs": {
+            "x": [
+              3,
+              6
+            ]
+          },
+          "outputs": {
+            "h": [
+              3,
+              8
+            ]
+          },
+          "internals": {
+            "z": [
+              3,
+              8
+            ]
+          }
+        },
+        "hidden": {
+          "params": 72,
+          "flops_forward": 384,
+          "inputs": {
+            "h": [
+              3,
+              8
+            ]
+          },
+          "outputs": {
+            "h": [
+              3,
+              8
+            ]
+          },
+          "internals": {
+            "z": [
+              3,
+              8
+            ]
+          }
+        },
+        "output": {
+          "params": 27,
+          "flops_forward": 144,
+          "inputs": {
+            "h": [
+              3,
+              8
+            ]
+          },
+          "outputs": {
+            "y": [
+              3,
+              3
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_backward": 1632,
+        "flops_forward": 816,
+        "params": 155
+      }
+    },
+    {
+      "name": "xor",
+      "kind": "named",
+      "config": {
+        "B": 4,
+        "H": 2,
+        "I": 2,
+        "O": 1,
+        "d_hidden": 2,
+        "d_in": 2,
+        "d_out": 1,
+        "n_hidden": 1
+      },
+      "blocks": {
+        "first": {
+          "params": 6,
+          "flops_forward": 32,
+          "inputs": {
+            "x": [
+              4,
+              2
+            ]
+          },
+          "outputs": {
+            "h": [
+              4,
+              2
+            ]
+          },
+          "internals": {
+            "z": [
+              4,
+              2
+            ]
+          }
+        },
+        "hidden": {
+          "params": 6,
+          "flops_forward": 32,
+          "inputs": {
+            "h": [
+              4,
+              2
+            ]
+          },
+          "outputs": {
+            "h": [
+              4,
+              2
+            ]
+          },
+          "internals": {
+            "z": [
+              4,
+              2
+            ]
+          }
+        },
+        "output": {
+          "params": 3,
+          "flops_forward": 16,
+          "inputs": {
+            "h": [
+              4,
+              2
+            ]
+          },
+          "outputs": {
+            "y": [
+              4,
+              1
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_backward": 96,
+        "flops_forward": 48,
+        "params": 9
+      }
+    }
+  ]
+}

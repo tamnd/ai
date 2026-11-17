@@ -1,0 +1,427 @@
+# The claims of the neural-ordinary-differential-equation page (spec 07). The build computes the labels.
+
+# The model
+
+- id: c-chen-euler
+  type: attributive
+  text: "Chen et al. write that the iterative updates of residual networks can be seen as an Euler discretization of a continuous transformation, and ask what happens as more layers are added and smaller steps are taken."
+  evidence:
+    - {work: "chen-2018-neural-ordinary-differential-equations", role: original, locator: "Section 1", stance: for}
+
+- id: c-lu-discretizations
+  type: attributive
+  text: "Lu et al. show that many effective networks, such as ResNet, PolyNet, FractalNet and RevNet, can be interpreted as different numerical discretizations of differential equations."
+  evidence:
+    - {work: "lu-2018-beyond-finite-layer-neural-networks", role: original, locator: "the abstract", stance: for}
+
+- id: c-def
+  type: definitional
+  text: "A neural ordinary differential equation parameterizes the derivative of the hidden state with a neural network instead of specifying a discrete sequence of hidden layers, and computes the output with a black-box differential equation solver."
+  evidence:
+    - {work: "chen-2018-neural-ordinary-differential-equations", role: original, locator: "the abstract", stance: for}
+
+- id: c-properties
+  type: attributive
+  text: "Chen et al. list three properties of continuous-depth models: constant memory cost, an evaluation strategy that adapts to each input, and an explicit trade of numerical precision for speed."
+  evidence:
+    - {work: "chen-2018-neural-ordinary-differential-equations", role: original, locator: "the abstract", stance: for}
+
+- id: c-picard
+  type: attributive
+  text: "Chen et al. cite Picard's existence theorem, that the solution to an initial value problem exists and is unique if the differential equation is uniformly Lipschitz continuous in the state and continuous in time, and note that it holds for their model if the network has finite weights and uses Lipschitz nonlinearities such as tanh or relu."
+  evidence:
+    - {work: "chen-2018-neural-ordinary-differential-equations", role: original, locator: "Section 6", stance: for}
+
+- id: c-anode-def
+  type: definitional
+  text: "An augmented neural ODE concatenates every data point with a vector of zeros and solves the ODE on the augmented space, from R^d to R^(d+p)."
+  evidence:
+    - {work: "dupont-2019-augmented-neural-odes", role: original, locator: "Section 5", stance: for}
+
+- id: c-euler-resnet
+  type: mathematical
+  text: "One step of Euler's method of size dt for dh/dt = f(h, t) is the residual block h + dt f(h, t)."
+  assumes: ["the step h_{k+1} = h_k + dt f(h_k, t_k)"]
+  derivation: euler-resnet
+
+- id: c-euler-order
+  type: mathematical
+  text: "For a smooth field the error of Euler's method at the end time shrinks in proportion to the step, and the error of the classical Runge-Kutta method of order 4 in proportion to the fourth power of the step."
+  assumes: ["the field is smooth and Lipschitz in the state", "fixed steps of size dt = T / N"]
+  derivation: euler-resnet
+
+- id: c-solvers-history
+  type: attributive
+  text: "Chen et al. note more than 120 years of development of efficient and accurate ODE solvers, starting with Runge (1895) and Kutta (1901)."
+  evidence:
+    - {work: "chen-2018-neural-ordinary-differential-equations", role: original, locator: "Section 1", stance: for}
+
+# Parameters and cost
+
+- id: c-params
+  type: mathematical
+  text: "The one-hidden-layer field f(h, t) = W_2 tanh(W_1 h + t u + b_1) + b_2 of state width D and hidden width H has 2 D H + 2 H + D parameters, whatever the number of solver steps."
+  assumes: ["W_1 is H by D, u and b_1 have length H, W_2 is D by H and b_2 has length D"]
+  derivation: parameter-and-flop-count
+
+- id: c-flops
+  type: mathematical
+  text: "A fixed-step solve of N steps with S evaluations of the field per step costs 4 S N B D H FLOPs over a batch of B, counting a multiply-add as two and leaving out the biases and the activation."
+  assumes: ["the one-hidden-layer field of state width D and hidden width H", "S = 1 for Euler and S = 4 for RK4"]
+  derivation: parameter-and-flop-count
+
+- id: c-tolerance
+  type: empirical
+  text: "The time spent by the forward call of an ODE-Net is proportional to the number of function evaluations, so tuning the tolerance trades accuracy against computational cost."
+  scope:
+    models: "ODE-Nets with an adaptive solver"
+    data: ["MNIST"]
+    setting: "supervised classification"
+  evidence:
+    - {work: "chen-2018-neural-ordinary-differential-equations", role: original, locator: "Section 3", stance: for}
+
+- id: c-nfe-training
+  type: empirical
+  text: "The number of function evaluations of an ODE-Net increases throughout training."
+  scope:
+    models: "ODE-Nets with an adaptive solver"
+    data: ["MNIST"]
+    setting: "supervised classification"
+  evidence:
+    - {work: "chen-2018-neural-ordinary-differential-equations", role: original, locator: "Section 3", stance: for}
+
+- id: c-tolerances
+  type: empirical
+  text: "Chen et al. used the default tolerance of 1.5e-8 for sequence modelling, and could reduce it to 1e-3 for classification and 1e-5 for density estimation without degrading performance."
+  scope:
+    models: "ODE-Nets, continuous normalizing flows and latent ODEs"
+    data: [unknown]
+    setting: "the experiments of Chen et al."
+  evidence:
+    - {work: "chen-2018-neural-ordinary-differential-equations", role: original, locator: "Section 6", stance: for}
+
+- id: c-minibatch
+  type: empirical
+  text: "Solving a minibatch as one combined ODE might in some cases need many more evaluations than solving each system alone, but in practice the number of evaluations did not increase substantially when using minibatches."
+  scope:
+    models: "the models of Chen et al."
+    data: [unknown]
+    setting: "the experiments of Chen et al."
+  evidence:
+    - {work: "chen-2018-neural-ordinary-differential-equations", role: original, locator: "Section 6", stance: for}
+
+# The adjoint method
+
+- id: c-adjoint
+  type: mathematical
+  text: "The adjoint a(t) = dL/dh(t) follows da/dt = -a(t) df/dh backwards in time from a(T) = dL/dh(T), and a(0) is the gradient of the loss with respect to the input."
+  assumes: ["f is continuously differentiable in h and theta", "the loss depends on the trajectory only through h(T)"]
+  derivation: adjoint
+
+- id: c-adjoint-theta
+  type: mathematical
+  text: "The gradient of the loss with respect to the parameters is the integral from 0 to T of a(t) df(h(t), t, theta)/dtheta dt."
+  assumes: ["f is continuously differentiable in h and theta", "the loss depends on the trajectory only through h(T)"]
+  derivation: adjoint
+
+- id: c-adjoint-memory
+  type: mathematical
+  text: "When h is recomputed by solving the ODE backwards next to the adjoint, the state of the backward solve has 2 B D + P numbers for a batch of B, state width D and P parameters, for any number of steps."
+  assumes: ["the backward solve carries h, a and the running parameter gradient"]
+  derivation: adjoint
+
+- id: c-algorithm-1
+  type: attributive
+  text: "Chen et al. compute the state, the adjoint and the parameter gradient in a single call to an ODE solver on their concatenation, with vector-Jacobian products evaluated by automatic differentiation."
+  evidence:
+    - {work: "chen-2018-neural-ordinary-differential-equations", role: original, locator: "Section 2", stance: for}
+
+- id: c-pontryagin
+  type: attributive
+  text: "Chen et al. use the adjoint sensitivity method of Pontryagin et al. (1962), which they describe as scaling linearly with problem size, having low memory cost and explicitly controlling numerical error."
+  evidence:
+    - {work: "chen-2018-neural-ordinary-differential-equations", role: original, locator: "Section 2", stance: for}
+
+- id: c-forward-sensitivity
+  type: attributive
+  text: "Chen et al. contrast forward sensitivity analysis, which is quadratic-time in the number of variables, with adjoint sensitivity analysis, which is linear."
+  evidence:
+    - {work: "chen-2018-neural-ordinary-differential-equations", role: original, locator: "Section 7", stance: for}
+
+- id: c-backward-cost
+  type: mathematical
+  text: "One evaluation of the adjoint system for the one-hidden-layer field makes six matrix products against two for the field alone, so the backward solve costs three times the forward solve when both take the same steps."
+  assumes: ["the one-hidden-layer field", "the field and its two vector-Jacobian products share one pre-activation"]
+  derivation: parameter-and-flop-count
+
+- id: c-memory
+  type: mathematical
+  text: "Backpropagation through N steps of RK4 stores the input of every stage, 4 N B D numbers, against 2 B D + P for the adjoint method."
+  assumes: ["fixed RK4 steps", "a batch of B and state width D"]
+  derivation: parameter-and-flop-count
+
+- id: c-backward-nfe
+  type: empirical
+  text: "On a trained ODE-Net the number of function evaluations in the backward pass is roughly half that of the forward pass."
+  scope:
+    models: "ODE-Nets with an adaptive solver"
+    data: ["MNIST"]
+    setting: "supervised classification"
+  evidence:
+    - {work: "chen-2018-neural-ordinary-differential-equations", role: original, locator: "Section 3", stance: for}
+
+- id: c-reconstruction
+  type: attributive
+  text: "Chen et al. note that reconstructing the trajectory by running the dynamics backwards can introduce extra numerical error if it diverges from the original, which checkpointing addresses, and that they did not find this to be a practical problem."
+  evidence:
+    - {work: "chen-2018-neural-ordinary-differential-equations", role: original, locator: "Section 6", stance: for}
+
+- id: c-gholami-unstable
+  type: attributive
+  text: "Gholami, Keutzer and Biros show that solving the forward ODE backwards may be numerically unstable for ReLU and non-ReLU activations and general convolution operators, and that the optimize-then-discretize approach may lead to divergent training through inconsistent gradients for small time steps."
+  evidence:
+    - {work: "gholami-2019-anode", role: original, locator: "the abstract", stance: for}
+
+- id: c-gholami-memory
+  type: attributive
+  text: "Gholami, Keutzer and Biros propose ANODE, which checkpoints the forward pass and differentiates the discrete steps with a memory footprint of O(L) + O(N_t) for L ODE blocks of N_t time steps."
+  evidence:
+    - {work: "gholami-2019-anode", role: original, locator: "the abstract", stance: for}
+
+# Continuous normalizing flows
+
+- id: c-cnf
+  type: mathematical
+  text: "If h(t) follows dh/dt = f(h(t), t) with f uniformly Lipschitz continuous in h and continuous in t, the log density of h(t) follows d log p(h(t))/dt = -tr(df/dh(t))."
+  assumes: ["f is uniformly Lipschitz continuous in h and continuous in t", "h(0) has a density"]
+  derivation: instantaneous-change-of-variables
+
+- id: c-trace-cost
+  type: mathematical
+  text: "For the field W_2 tanh(W_1 h + t u + b_1) + b_2 the trace of the Jacobian is the sum over j of (1 - s_j^2) (W_1 W_2)_jj with s = tanh(W_1 h + t u + b_1), which costs O(H) per example once the diagonal of W_1 W_2 is known."
+  assumes: ["the one-hidden-layer field of hidden width H"]
+  derivation: instantaneous-change-of-variables
+
+- id: c-cnf-bijective
+  type: attributive
+  text: "Chen et al. point out that, unlike a finite flow, the field of a continuous normalizing flow does not need to be bijective, because if uniqueness holds the whole transformation is automatically bijective."
+  evidence:
+    - {work: "chen-2018-neural-ordinary-differential-equations", role: original, locator: "Section 4", stance: for}
+
+- id: c-cnf-linear
+  type: attributive
+  text: "Chen et al. note that the cost of a continuous planar flow is linear in the number of hidden units M, against O(M^3) for a standard normalizing flow, which is why those use many layers of a single hidden unit."
+  evidence:
+    - {work: "chen-2018-neural-ordinary-differential-equations", role: original, locator: "Section 4", stance: for}
+
+- id: c-cnf-planar
+  type: attributive
+  text: "Chen et al. show that a planar continuous normalizing flow with M hidden units can be at least as expressive as a planar normalizing flow with K = M layers."
+  evidence:
+    - {work: "chen-2018-neural-ordinary-differential-equations", role: original, locator: "Section 4.1", stance: for}
+
+# What a flow can represent
+
+- id: c-flow-order
+  type: mathematical
+  text: "In one dimension the flow map of an ODE is strictly increasing: if x_1 < x_2 then h_1(T) < h_2(T)."
+  assumes: ["the field is Lipschitz in h, so solutions are unique"]
+  derivation: one-dimensional-flow
+
+- id: c-dupont-prop1
+  type: mathematical
+  text: "The flow of an ODE cannot represent the function g with g(-1) = 1 and g(1) = -1."
+  assumes: ["the field is Lipschitz in h, so solutions are unique", "the state is one-dimensional"]
+  evidence:
+    - {work: "dupont-2019-augmented-neural-odes", role: original, locator: "Section 3", stance: for}
+
+- id: c-g1d
+  type: mathematical
+  text: "On the points -1 and 1 with the targets 1 and -1, every one-dimensional flow has a loss of at least 1/2 under half the mean squared error, the value of mapping both points to 0."
+  assumes: ["the field is Lipschitz in h, so solutions are unique", "the loss is (1/4) the sum of squared errors"]
+  derivation: one-dimensional-flow
+
+- id: c-dupont-zero
+  type: empirical
+  text: "Trained to represent g with g(-1) = 1 and g(1) = -1, a neural ODE maps all input points to zero to minimize the mean squared error, since the trajectories cannot cross."
+  scope:
+    models: "a one-dimensional neural ODE"
+    data: [unknown]
+    setting: "regression on a synthetic one-dimensional function"
+  small_scale: yes
+  evidence:
+    - {work: "dupont-2019-augmented-neural-odes", role: original, locator: "Section 3", stance: for}
+
+- id: c-residual-g1d
+  type: mathematical
+  text: "A single residual step h + F(h) with F(h) = -2h represents g with g(-1) = 1 and g(1) = -1."
+  assumes: ["one residual block with a linear residual branch"]
+  derivation: one-dimensional-flow
+
+- id: c-dupont-resnet
+  type: attributive
+  text: "Dupont et al. interpret ResNets as ODE solutions with large errors, which let the trajectories cross and the networks represent more functions."
+  evidence:
+    - {work: "dupont-2019-augmented-neural-odes", role: original, locator: "Section 3", stance: for}
+
+- id: c-augment-g1d
+  type: mathematical
+  text: "With one zero coordinate added, the rotation by pi in the augmented plane maps (x, 0) to (-x, 0), so an augmented flow represents g on its first coordinate with zero loss."
+  assumes: ["the linear field f(h) = pi [[0, -1], [1, 0]] h", "the end time T = 1"]
+  derivation: one-dimensional-flow
+
+- id: c-dupont-prop2
+  type: mathematical
+  text: "Neural ODEs cannot represent the function that maps all points inside a ball to -1 and all points in a surrounding annulus to 1."
+  assumes: ["the field is Lipschitz in h, so solutions are unique", "the output is a linear function of the final state of the input's width"]
+  evidence:
+    - {work: "dupont-2019-augmented-neural-odes", role: original, locator: "Section 3", stance: for}
+
+- id: c-homeomorphism
+  type: mathematical
+  text: "The feature map of a neural ODE is a homeomorphism, so its features preserve the topology of the input space: the flow can only continuously deform the input space and cannot tear a connected region apart."
+  assumes: ["the field is Lipschitz in h, so solutions are unique"]
+  evidence:
+    - {work: "dupont-2019-augmented-neural-odes", role: original, locator: "Section 3", stance: for}
+
+# Stability
+
+- id: c-haber-re0
+  type: attributive
+  text: "Haber and Ruthotto argue that stable forward propagation and well-posed learning problems are obtained when the real parts of the eigenvalues of the Jacobian of the forward propagation are close to zero."
+  evidence:
+    - {work: "haber-2017-stable-architectures-deep-neural-networks", role: original, locator: "Section 3", stance: for}
+
+- id: c-antisymmetric-unstable
+  type: mathematical
+  text: "For an antisymmetric matrix the ODE preserves the norm exactly, but a forward Euler step multiplies the component along an eigenvalue i omega by sqrt(1 + dt^2 omega^2), which exceeds 1 for every nonzero omega."
+  assumes: ["the linear ODE dy/dt = K y with K antisymmetric", "forward Euler steps of size dt > 0"]
+  derivation: euler-stability
+
+- id: c-euler-stable
+  type: mathematical
+  text: "Forward Euler steps of size dt for dy/dt = K y do not grow along an eigenvector with eigenvalue lambda if and only if |1 + dt lambda| <= 1."
+  assumes: ["K is diagonalizable", "forward Euler steps of size dt > 0"]
+  derivation: euler-stability
+
+- id: c-diffusion
+  type: mathematical
+  text: "For an eigenvalue -gamma + i omega with gamma > 0, forward Euler steps do not grow if and only if dt (gamma^2 + omega^2) <= 2 gamma."
+  assumes: ["the linear ODE dy/dt = (K - gamma I) y with K antisymmetric", "forward Euler steps of size dt > 0"]
+  derivation: euler-stability
+
+- id: c-haber-antisym
+  type: attributive
+  text: "Haber and Ruthotto propose antisymmetric weight matrices, (K - K^T)/2 - gamma I, with the diffusion gamma >= 0 added to stabilize the discrete forward propagation based on the forward Euler method."
+  evidence:
+    - {work: "haber-2017-stable-architectures-deep-neural-networks", role: original, locator: "Section 4.1", stance: for}
+
+# Evidence
+
+- id: c-mnist
+  type: empirical
+  text: "On MNIST an ODE-Net with 0.22 M parameters and O(1) memory has a test error of 0.42%, against 0.41% for a ResNet with 0.60 M parameters and O(L) memory, 0.47% for the same network backpropagated through a Runge-Kutta integrator and 1.60% for a one-layer MLP."
+  scope:
+    models: "an ODE-Net, a ResNet, an RK-Net and a one-layer MLP"
+    data: ["MNIST"]
+    setting: "supervised classification, the test error"
+  evidence:
+    - {work: "chen-2018-neural-ordinary-differential-equations", role: original, locator: "Section 3", stance: for}
+
+- id: c-latent-ode
+  type: empirical
+  text: "On noisy spirals sampled at irregular times, a latent ODE has a predictive RMSE of 0.1642, 0.1502 and 0.1346 with 30, 50 and 100 observed points, against 0.3937, 0.3202 and 0.1813 for an RNN."
+  scope:
+    models: "a latent ODE with an RNN encoder, and an RNN"
+    data: [unknown]
+    setting: "extrapolation of synthetic bidirectional spirals from 30, 50 or 100 of 100 observations"
+  small_scale: yes
+  evidence:
+    - {work: "chen-2018-neural-ordinary-differential-equations", role: original, locator: "Section 5", stance: for}
+
+- id: c-anode-accuracy
+  type: empirical
+  text: "Augmented neural ODEs reach test accuracies of 98.2%, 60.6% and 83.5% on MNIST, CIFAR10 and SVHN, against 96.4%, 53.7% and 81.0% for plain neural ODEs, over 5 runs."
+  scope:
+    models: "neural ODEs and augmented neural ODEs of similar size"
+    data: ["MNIST", "CIFAR-10", "SVHN"]
+    setting: "supervised image classification, the mean test accuracy over 5 runs"
+  evidence:
+    - {work: "dupont-2019-augmented-neural-odes", role: original, locator: "Section 5.2", stance: for}
+
+- id: c-anode-nfe
+  type: empirical
+  text: "Trained on the ball and annulus function, augmented neural ODEs need a number of function evaluations that hardly increases during training, while it nearly doubles for plain neural ODEs."
+  scope:
+    models: "neural ODEs and augmented neural ODEs"
+    data: [unknown]
+    setting: "regression on a synthetic function in two dimensions"
+  small_scale: yes
+  evidence:
+    - {work: "dupont-2019-augmented-neural-odes", role: original, locator: "Section 5.1", stance: for}
+
+- id: c-nfe-1000
+  type: empirical
+  text: "The number of function evaluations of plain neural ODEs could often become prohibitively large, in excess of 1000, roughly a 1000-layer ResNet."
+  scope:
+    models: "neural ODEs"
+    data: ["MNIST", "CIFAR-10", "SVHN"]
+    setting: "supervised image classification"
+  evidence:
+    - {work: "dupont-2019-augmented-neural-odes", role: original, locator: "Section 5.2", stance: for}
+
+- id: c-anode-imagenet
+  type: empirical
+  text: "On 200 classes of 64 by 64 ImageNet, augmented neural ODEs achieve lower losses and train almost 10 times faster than plain neural ODEs."
+  scope:
+    models: "neural ODEs and augmented neural ODEs"
+    data: [imagenet]
+    setting: "supervised classification on 200 classes at 64 by 64"
+  evidence:
+    - {work: "dupont-2019-augmented-neural-odes", role: original, locator: "Section 5.2", stance: for}
+
+- id: c-rubanova
+  type: empirical
+  text: "ODE-RNNs and latent ODEs with an ODE-RNN recognition network outperform their RNN-based counterparts on irregularly-sampled data."
+  scope:
+    models: "ODE-RNNs, latent ODEs and RNN baselines"
+    data: [unknown]
+    setting: "irregularly sampled time series"
+  evidence:
+    - {work: "rubanova-2019-latent-odes-irregularly-sampled", role: original, locator: "the abstract", stance: for}
+
+- id: c-finlay
+  type: empirical
+  text: "Optimal transport and stability regularizations of neural ODEs lead to simpler dynamics, fewer discretizations of the solver and considerably less wall-clock time, without loss in performance."
+  scope:
+    models: "continuous normalizing flows"
+    data: [unknown]
+    setting: "density estimation"
+  evidence:
+    - {work: "finlay-2020-how-to-train-your-neural-ode", role: original, locator: "the abstract", stance: for}
+
+- id: c-kidger
+  type: attributive
+  text: "Kidger notes that many popular neural network architectures, such as residual networks and recurrent networks, are discretisations of differential equations."
+  evidence:
+    - {work: "kidger-2022-on-neural-differential-equations", role: original, locator: "the abstract", stance: for}
+
+# History
+
+- id: c-hist-euler
+  type: historical
+  text: "Chen et al. cite Lu et al. (2017) and Haber and Ruthotto (2017) for reading the updates of residual networks as an Euler discretization of a continuous transformation."
+  evidence:
+    - {work: "chen-2018-neural-ordinary-differential-equations", role: original, locator: "Section 1", stance: for}
+
+- id: c-hist-adjoint
+  type: attributive
+  text: "Chen et al. write that the adjoint method for training continuous-time neural networks was previously proposed by LeCun et al. (1988) and Pearlmutter (1995), though not demonstrated practically."
+  evidence:
+    - {work: "chen-2018-neural-ordinary-differential-equations", role: original, locator: "Section 7", stance: for}
+
+- id: c-hist-neurips
+  type: historical
+  text: "Neural Ordinary Differential Equations by Chen, Rubanova, Bettencourt and Duvenaud appeared at the 32nd Conference on Neural Information Processing Systems (NeurIPS 2018)."
+  evidence:
+    - {work: "chen-2018-neural-ordinary-differential-equations", role: primary-document, locator: "p. 1", stance: for}
