@@ -5953,3 +5953,5 @@ GHB8D4 dehghani-2023-scaling-vision-transformers-22b
 0JBWD9 henry-2020-query-key-normalization
 B6PWZA qk-layernorm
 77J06X wortsman-2023-small-scale-proxies
+QFEJMP group-normalization
+K82W0Q qiao-2019-micro-batch-training
