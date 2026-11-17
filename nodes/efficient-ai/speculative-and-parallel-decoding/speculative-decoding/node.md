@@ -1,5 +1,5 @@
 ---
-tag: NEW-speculative-decoding
+tag: JKWQF4
 kind: method
 slug: speculative-decoding
 name: Speculative decoding
