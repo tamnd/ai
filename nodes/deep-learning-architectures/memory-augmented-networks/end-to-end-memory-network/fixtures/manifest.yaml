@@ -1,0 +1,12 @@
+# Written by fixtures/make.py; do not edit.
+seed: 20150331
+config: {vocab: 12, dim: 6, hops: 3, mem: 5, sent_len: 4, tying: adjacent, encoding: pe, temporal: true}
+inputs: {B: 2, story: "(B, N, J) word ids, the most recent sentence first, 0 the null word", query: "(B, J)", answer: "(B,) word ids"}
+expected: "logits (B, V) and the attention of every hop (K, B, N)"
+loss: "the cross-entropy of the answers, summed over the batch"
+dtype: float64
+numpy: "2.5.4"
+files:
+  params-small.npz: {sha256: d2879ca13bcb5e69379a47bd351ca69238bc16672ae85237c86f26a8b6b781dd}
+  input-small.npz: {sha256: 3c71b364be7a7048e8af3546d44fc2da19a25c01ffeb497112136cf94c1feb38}
+  expected-small.npz: {sha256: 4d25707caa2b841322c264660659ebecd6f7e5cdaf3d24b7b6ba35193dec7ade}

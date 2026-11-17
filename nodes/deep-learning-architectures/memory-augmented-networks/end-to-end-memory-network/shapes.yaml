@@ -1,0 +1,60 @@
+# SPDX-License-Identifier: MIT
+# The shape contract of an end-to-end memory network for question answering with adjacent weight tying, the position
+# encoding and the temporal encoding (spec 08.6). A story of N sentences of J words and a question of J words come in
+# as word ids; K + 1 embedding matrices E_0..E_K of shape (V, D) and K + 1 temporal matrices of shape (N, D) are the
+# weights: the question is embedded by E_0, hop k reads memory vectors made by E_{k-1} and output vectors made by E_k,
+# and the answer map is E_K transposed. Since adjacent hops share a matrix, the story is embedded K + 1 times, not 2K.
+# The FLOPs count the products only, a multiply-add as 2: the position-weighted sums of the words, the inner products
+# and the weighted sum of every hop, and the answer map. The softmaxes, the lookups and the additions are not counted.
+config:
+  vocab:    {meaning: "words of the vocabulary, the null word included", symbol: "V", example: 12, sample: [2, 20]}
+  dim:      {meaning: "width of an embedding and of the controller state", symbol: "d", example: 6, sample: [1, 10]}
+  hops:     {meaning: "memory layers, the hops", symbol: "K", example: 3, sample: [1, 4]}
+  mem:      {meaning: "sentences held in the memory, the most recent first", symbol: "N", example: 5, sample: [1, 8]}
+  sent_len: {meaning: "words of a sentence or a question after padding with the null word", symbol: "J", example: 4, sample: [1, 7]}
+axes:
+  B: {meaning: "batch", example: 2, sample: [1, 4]}
+  N: mem
+  J: sent_len
+  D: dim
+  V: vocab
+  K: hops
+blocks:
+  - id: embed
+    meaning: "one embedding matrix and its temporal matrix turn the story into one vector per sentence, by the position encoding and the temporal rows"
+    eq: [pe, temporal]
+    inputs: {story: "(B, N, J)"}
+    internals: {word_vectors: "(B, N, J, D)"}
+    outputs: {memory: "(B, N, D)"}
+    params: "V * D + N * D"
+    flops_forward: "2 * B * N * J * D"
+  - id: question
+    meaning: "the question embedded by E_0 with the position encoding and no temporal row, the first controller state u"
+    inputs: {query: "(B, J)"}
+    outputs: {u: "(B, D)"}
+    params: "0"
+    flops_forward: "2 * B * J * D"
+  - id: hop
+    meaning: "one memory layer: a softmax over the inner products of u with the memory vectors, the weighted sum of the output vectors, added to u"
+    eq: [match, out, stack]
+    inputs: {u: "(B, D)", memory: "(B, N, D)", outputs: "(B, N, D)"}
+    outputs: {u_next: "(B, D)", attention: "(B, N)"}
+    params: "0"
+    flops_forward: "4 * B * N * D"
+  - id: answer
+    meaning: "the last controller state times E_K transposed, one logit per word of the vocabulary"
+    eq: [answer]
+    inputs: {u: "(B, D)"}
+    outputs: {logits: "(B, V)"}
+    params: "0"
+    flops_forward: "2 * B * V * D"
+model:
+  params: {formula: "(K + 1) * embed.params", symbol: "P_{\\text{adj}}", meaning: "the K + 1 embedding matrices and the K + 1 temporal matrices of adjacent tying; the question map and the answer map are among them"}
+  flops_forward: {formula: "(K + 1) * embed.flops_forward + question.flops_forward + K * hop.flops_forward + answer.flops_forward", symbol: "C_{\\text{fwd}}", meaning: "FLOPs of one forward pass of the batch, a multiply-add counted as 2"}
+  untied_params: {formula: "2 * K * (V * D + N * D) + 2 * V * D", meaning: "the weights with no tying at all: an A, a C, a T_A and a T_C for every hop, and a B and a W"}
+  layerwise_params: {formula: "4 * V * D + D * D + 2 * N * D", meaning: "the weights of layer-wise tying: one A and one C for all hops, a B, a W, the map H between hops, and one T_A and one T_C"}
+  lm_params: {formula: "3 * V * D + D * D + 2 * N * D", meaning: "the language model of Section 5: layer-wise tying with a constant question, so no B"}
+  rnn_params: {formula: "2 * V * D + D * D", meaning: "a simple recurrent language model with D hidden units, counting its input, recurrent and output weights and no biases, for the comparison of Section 5.2"}
+configs:
+  babi: {meaning: "the bAbI sizes of Section 4: V = 177, d = 20 for a model of one task, K = 3, the 50 most recent sentences; J = 7 holds the longest sentences of the stories of Figure 2, such as The suitcase is bigger than the chest, and a real task needs its own", vocab: 177, dim: 20, hops: 3, mem: 50, sent_len: 7}
+  ptb: {meaning: "the Penn Treebank sizes of Section 5 and Table 2: 10k words, 150 hidden units, 6 hops, a memory of 100 single words; the model there is layer-wise, so read lm_params and rnn_params, not params", vocab: 10000, dim: 150, hops: 6, mem: 100, sent_len: 1}
