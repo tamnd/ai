@@ -1,0 +1,10 @@
+# Written by fixtures/make.py; do not edit.
+seed: 20200629
+config: {d_model: 8, n_heads: 2, d_k: 4, d_v: 4, feature: elu}
+inputs: {B: 2, N: 6, loss: half the mean squared error, causal: [true, false]}
+dtype: float64
+numpy: "2.5.5"
+files:
+  params-small.npz: {sha256: fcc4a1008b70615353da0c9daa0490753f431cd3bbec41e500dda9b5a7d52d4b}
+  input-small.npz: {sha256: 462470c7f3ab61a7c9dd85e8114c0091edd31357be15c86603150ca2ed6d6112}
+  expected-small.npz: {sha256: a165e2c4697818a46344625ca9e54a8cc67f84e9f49f8ec8613b837abf31280f}
