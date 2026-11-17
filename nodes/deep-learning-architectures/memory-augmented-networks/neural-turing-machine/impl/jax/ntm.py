@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/neural-turing-machine/ (ai://NEW-neural-turing-machine).
+# Part of https://ai.tamnd.com/neural-turing-machine/ (ai://P3DWR1).
 """A Neural Turing Machine with a feedforward controller, the JAX reference.
 
 The steps run in jax.lax.scan, with the state (memory, weightings, read vectors) as the carry: the weightings are

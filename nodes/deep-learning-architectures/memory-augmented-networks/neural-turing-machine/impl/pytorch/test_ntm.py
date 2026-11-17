@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/neural-turing-machine/ (ai://NEW-neural-turing-machine).
+# Part of https://ai.tamnd.com/neural-turing-machine/ (ai://P3DWR1).
 """Tests of the PyTorch reference: the shared fixture, the shape contract, the gradients against finite
 differences, the guards of the gradients, and a short training run on a copy task."""
 

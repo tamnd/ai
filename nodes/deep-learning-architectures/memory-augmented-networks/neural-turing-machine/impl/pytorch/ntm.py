@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/neural-turing-machine/ (ai://NEW-neural-turing-machine).
+# Part of https://ai.tamnd.com/neural-turing-machine/ (ai://P3DWR1).
 """A Neural Turing Machine with a feedforward controller, the PyTorch reference.
 
 It follows the NumPy reference step for step, on a dict of tensors, so that autograd gives the gradients. The

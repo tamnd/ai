@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/neural-turing-machine/ (ai://NEW-neural-turing-machine).
+# Part of https://ai.tamnd.com/neural-turing-machine/ (ai://P3DWR1).
 """Tests of the JAX reference: the shared fixture, the shape contract, jit, vmap and the gradient against finite
 differences."""
 

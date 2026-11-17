@@ -1,5 +1,5 @@
 ---
-tag: NEW-neural-turing-machine
+tag: P3DWR1
 kind: architecture
 slug: neural-turing-machine
 name: Neural Turing machine

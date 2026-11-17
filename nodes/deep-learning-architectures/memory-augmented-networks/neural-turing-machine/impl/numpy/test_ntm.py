@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/neural-turing-machine/ (ai://NEW-neural-turing-machine).
+# Part of https://ai.tamnd.com/neural-turing-machine/ (ai://P3DWR1).
 """Tests of the NumPy reference: each stage of the addressing against its equation, the erase and add of a write,
 a copy and a lookup wired by hand, the pitfalls, the shapes and the shared fixture."""
 

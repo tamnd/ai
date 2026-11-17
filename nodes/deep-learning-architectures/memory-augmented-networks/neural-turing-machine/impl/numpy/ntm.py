@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/neural-turing-machine/ (ai://NEW-neural-turing-machine).
+# Part of https://ai.tamnd.com/neural-turing-machine/ (ai://P3DWR1).
 """A Neural Turing Machine with a feedforward controller, the NumPy reference.
 
 The memory is a (B, N, M) array: N locations of width M for each sequence of the batch. Each head turns the
