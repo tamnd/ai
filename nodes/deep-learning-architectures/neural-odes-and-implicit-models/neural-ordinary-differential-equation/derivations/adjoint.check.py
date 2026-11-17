@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/neural-ordinary-differential-equation/ (ai://NEW-neural-ordinary-differential-equation).
+# Part of https://ai.tamnd.com/neural-ordinary-differential-equation/ (ai://WNCNQE).
 """Numeric check of the derivation adjoint."""
 
 import pathlib

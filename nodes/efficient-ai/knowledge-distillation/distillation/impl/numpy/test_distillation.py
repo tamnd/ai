@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/distillation/ (ai://NEW-distillation).
+# Part of https://ai.tamnd.com/distillation/ (ai://JGNGHC).
 """Tests of the NumPy reference: the worked example, the gradient (q - p) / T against finite differences, the equal
 gradients of the KL and cross-entropy forms, the T^2 factor and the high-temperature limit, the full loss and its
 gradient, the logit regression and hint losses, ensemble soft targets, the fidelity metrics, input checks, and the

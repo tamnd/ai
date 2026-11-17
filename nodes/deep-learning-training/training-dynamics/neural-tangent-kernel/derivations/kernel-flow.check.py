@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/neural-tangent-kernel/ (ai://NEW-neural-tangent-kernel).
+# Part of https://ai.tamnd.com/neural-tangent-kernel/ (ai://3SJCNH).
 # Check of derivations/kernel-flow.md: gradient descent on the linearized two-layer ReLU network with the loss
 # (1/(2n)) |f_lin(X) - y|^2 gives the residual (I - eta K / n)^k r0 exactly, which tends to the flow exp(-eta K t / n) r0
 # as the step shrinks at fixed time t = eta k, and each eigen-component decays at the rate eta lambda_i / n.

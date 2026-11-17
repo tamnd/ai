@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/few-shot-in-context-learning/ (ai://NEW-few-shot-in-context-learning).
+# Part of https://ai.tamnd.com/few-shot-in-context-learning/ (ai://JNEP9D).
 # Check of derivations/lsa-gradient-step.md: one linear self-attention layer with the weights of von Oswald et al.
 # is one gradient step on the in-context least-squares loss, K layers are K steps, the query read-out, the
 # rescaling of the weights, and the averaging estimate at W_0 = 0, eta = 1.

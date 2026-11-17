@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/weight-normalization/ (ai://NEW-weight-normalization).
+# Part of https://ai.tamnd.com/weight-normalization/ (ai://5PC0VR).
 # Check of derivations/norm-growth.md: a plain gradient step v' = v - eta grad_v gives ||v'||^2 = ||v||^2 +
 # eta^2 ||grad_v||^2, so ||v|| never decreases; the effective step on the direction shrinks as ||v|| grows; and a
 # heavy-ball momentum step is not orthogonal to v in general.

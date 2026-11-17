@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/weight-decay/ (ai://NEW-weight-decay).
+# Part of https://ai.tamnd.com/weight-decay/ (ai://DD5QVM).
 """Weight decay in PyTorch.
 
 SGD is torch.optim.SGD with a decoupled switch: with decoupled=False, weight_decay is an L2 term added to the gradient

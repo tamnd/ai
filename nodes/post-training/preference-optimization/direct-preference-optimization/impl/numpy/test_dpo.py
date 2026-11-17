@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/direct-preference-optimization/ (ai://NEW-direct-preference-optimization).
+# Part of https://ai.tamnd.com/direct-preference-optimization/ (ai://CZW0BQ).
 """Tests of the NumPy code: the worked example and the shared fixture, the loss against the textbook formula, its
 stability, the gradient against finite differences, symmetry and invariances, the optimal policy of the
 KL-constrained objective and the cancelling partition function, the IPO loss and sequence log-probabilities."""

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/reward-hacking/ (ai://NEW-reward-hacking).
+# Part of https://ai.tamnd.com/reward-hacking/ (ai://6M2TD6).
 """Train a tabular Q-learning agent in a small gridworld on a shaped proxy reward, and write the final metrics.
 
 The true reward is 10 for reaching the goal cell. The proxy adds a shaping reward for a bonus cell:

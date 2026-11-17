@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/edge-of-stability/ (ai://NEW-edge-of-stability).
+# Part of https://ai.tamnd.com/edge-of-stability/ (ai://17Q1PD).
 """The edge of stability in NumPy: gradient descent on a quadratic, the sharpness of a small network by power
 iteration on Hessian-vector products, and full-batch gradient descent that logs the sharpness.
 

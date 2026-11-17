@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/group-normalization/ (ai://NEW-group-normalization).
+# Part of https://ai.tamnd.com/group-normalization/ (ai://QFEJMP).
 # Check of derivations/group-moments.md: within each group the normalized values have mean 0 and biased variance
 # var / (var + eps); the channels inside a group need not.
 import numpy as np

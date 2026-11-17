@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/sparse-mixture-of-experts/ (ai://NEW-sparse-mixture-of-experts).
+# Part of https://ai.tamnd.com/sparse-mixture-of-experts/ (ai://1H67K0).
 """Tests of the PyTorch code: routing against softmax(KeepTopK), the capacity arithmetic, the dispatch tensor on the
 worked example of the page and against a sequential loop, the Switch balance loss at uniform, collapsed and
 adversarial routing with its gradient through P only, the z-loss and its gradient, the importance loss, and the layer

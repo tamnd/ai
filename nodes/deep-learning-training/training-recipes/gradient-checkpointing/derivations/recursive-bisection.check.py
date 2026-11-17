@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/gradient-checkpointing/ (ai://NEW-gradient-checkpointing).
+# Part of https://ai.tamnd.com/gradient-checkpointing/ (ai://C4TQW1).
 # Check of derivations/recursive-bisection.md: a simulation of the bisection schedule keeps 2 + ceil(log2 n)
 # activations and runs n + R(n) layer forwards, which is n + (n / 2) log2 n when n is a power of two.
 import math

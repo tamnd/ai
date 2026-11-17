@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/graph-neural-network/ (ai://NEW-graph-neural-network).
+# Part of https://ai.tamnd.com/graph-neural-network/ (ai://PS4TCX).
 """Tests of the NumPy reference: the worked example, the shape contract, the fixture, and the symmetries of the page."""
 
 import json

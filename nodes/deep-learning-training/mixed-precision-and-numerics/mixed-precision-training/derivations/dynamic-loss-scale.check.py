@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/mixed-precision-training/ (ai://NEW-mixed-precision-training).
+# Part of https://ai.tamnd.com/mixed-precision-training/ (ai://EPEFQ9).
 # Check of derivations/dynamic-loss-scale.md: the rule that halves the scale and skips the step on an overflow and
 # doubles it after N steps in a row without one, run against a threshold T above which every step overflows. It
 # skips floor(log2(S0 / T)) + 1 steps at the start when S0 >= T, then settles into a cycle of N + 1 steps with one

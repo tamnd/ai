@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/cosine-learning-rate-schedule/ (ai://NEW-cosine-learning-rate-schedule).
+# Part of https://ai.tamnd.com/cosine-learning-rate-schedule/ (ai://FG7K47).
 """Tests of the PyTorch implementation: the worked example, agreement with CosineAnnealingLR and
 CosineAnnealingWarmRestarts (including fractional epochs and the periodic behaviour past T_max), the LambdaLR wrapper
 with warmup, the restart positions against a loop, and the error cases."""

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/sparse-mixture-of-experts/ (ai://NEW-sparse-mixture-of-experts).
+# Part of https://ai.tamnd.com/sparse-mixture-of-experts/ (ai://1H67K0).
 # Check of derivations/balance-loss-minimum.md: the Switch balance loss alpha N sum f_i P_i is alpha under uniform
 # routing, lies in [alpha, alpha N] when P = f, is at least alpha sum f_i^2 in general and can fall to 0.875 alpha with
 # two experts, and its gradient in a token's logits is (alpha N / T) p_j (f_j - sum_i f_i p_i) with f held fixed.

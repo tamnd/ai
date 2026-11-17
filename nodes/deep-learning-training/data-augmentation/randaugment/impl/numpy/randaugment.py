@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/randaugment/ (ai://NEW-randaugment).
+# Part of https://ai.tamnd.com/randaugment/ (ai://88YEPR).
 """RandAugment and TrivialAugment in NumPy.
 
 The image operations act on uint8 arrays of shape (H, W) or (H, W, C): identity, rotate (nearest-neighbour, about the

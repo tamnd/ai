@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/label-smoothing/ (ai://NEW-label-smoothing).
+# Part of https://ai.tamnd.com/label-smoothing/ (ai://98TJG9).
 # Check of derivations/optimal-logits.md: with eps > 0 the smoothed loss of one example is smallest at p = q', every
 # incorrect logit then sits log(1 + K (1 - eps) / eps) below the correct one, and the minimum is H(q'); with eps = 0
 # gradient descent widens the gap at every step; K = 1000, eps = 0.1 gives log 9001; and eps / (K - 1) on the wrong

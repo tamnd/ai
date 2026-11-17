@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/direct-preference-optimization/ (ai://NEW-direct-preference-optimization).
+# Part of https://ai.tamnd.com/direct-preference-optimization/ (ai://CZW0BQ).
 # Check of derivations/kl-constrained-optimum.md: over a finite set of responses, the policy
 # pi*(y) = pi_ref(y) exp(r(y)/beta) / Z maximizes E_pi[r] - beta KL(pi || pi_ref); the maximum is beta log Z; any
 # other policy falls short by exactly beta KL(pi || pi*); and r = beta log(pi*/pi_ref) + beta log Z.

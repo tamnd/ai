@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/sharpness-aware-minimization/ (ai://NEW-sharpness-aware-minimization).
+# Part of https://ai.tamnd.com/sharpness-aware-minimization/ (ai://8BNWST).
 """Sharpness-aware minimization (SAM) in PyTorch.
 
 sam_perturbation is eq-eps-hat over a list of gradient tensors taken as one vector; SAM is an optimizer that wraps a

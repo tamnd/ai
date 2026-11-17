@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/weight-normalization/ (ai://NEW-weight-normalization).
+# Part of https://ai.tamnd.com/weight-normalization/ (ai://5PC0VR).
 # Check of derivations/init-moments.md: after g <- 1 / sigma[t] and b <- -mu[t] / sigma[t] with t = v . x / ||v||,
 # the pre-activations w . x + b on the initialization batch have mean 0 and biased variance 1; with the unbiased
 # standard deviation the biased variance is (m - 1) / m; a second batch is not normalized.

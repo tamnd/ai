@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/sharpness-aware-minimization/ (ai://NEW-sharpness-aware-minimization).
+# Part of https://ai.tamnd.com/sharpness-aware-minimization/ (ai://8BNWST).
 """Tests of the PyTorch code: the perturbation against its closed forms and against brute force on the p-ball; the SAM
 optimizer around SGD, which must give w - lr * grad L(w + eps_hat) with the parameters back at w before the base step,
 with momentum, with several parameter tensors and through step(closure); training a small network; the

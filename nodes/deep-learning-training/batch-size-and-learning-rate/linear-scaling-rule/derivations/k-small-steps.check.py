@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/linear-scaling-rule/ (ai://NEW-linear-scaling-rule).
+# Part of https://ai.tamnd.com/linear-scaling-rule/ (ai://JDMWH4).
 # Check of derivations/k-small-steps.md: on least squares, k SGD steps with batches B_0..B_{k-1} of size n and rate eta
 # differ from one step with their union and rate k*eta by exactly eta^2 sum_j H_j sum_{i<j} g_i(w_{t+i}), whose norm is at
 # most (k - 1) eta lambda_max / 2 times the size of the large step; the gap shrinks in proportion to eta; any rate other

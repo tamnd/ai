@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/edge-of-stability/ (ai://NEW-edge-of-stability).
+# Part of https://ai.tamnd.com/edge-of-stability/ (ai://17Q1PD).
 # Check of derivations/power-iteration-hvp.md: the central-difference HVP is exact on quadratics and O(eps^2) otherwise;
 # power iteration on HVPs converges to the eigenvalue of largest modulus at the rate (mu2 / mu1)^(2k); on a PSD Hessian
 # and on a small tanh network near a minimum this is the top eigenvalue from eigvalsh.

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/graph-neural-network/ (ai://NEW-graph-neural-network).
+# Part of https://ai.tamnd.com/graph-neural-network/ (ai://PS4TCX).
 """Tests of the JAX version: the shared fixture, jit, the shape contract, the gradient, a segment-sum oracle and learning."""
 
 import json

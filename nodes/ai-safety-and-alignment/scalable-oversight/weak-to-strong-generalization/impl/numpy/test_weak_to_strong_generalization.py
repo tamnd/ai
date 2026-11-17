@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/weak-to-strong-generalization/ (ai://NEW-weak-to-strong-generalization).
+# Part of https://ai.tamnd.com/weak-to-strong-generalization/ (ai://G0ZGHC).
 """Tests of the NumPy reference: PGR at its end points, undefined at a zero gap, invariant under affine changes of the
 metric and able to leave [0, 1]; the adaptive threshold that hardens exactly half a batch; the confidence loss at
 alpha = 0 and alpha = 1, its equality with the bootstrapped form, its minimizer and its gradient; the warm-up of alpha;

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/neural-tangent-kernel/ (ai://NEW-neural-tangent-kernel).
+# Part of https://ai.tamnd.com/neural-tangent-kernel/ (ai://3SJCNH).
 # Check of derivations/lazy-weights.md: for the two-layer ReLU network in the NTK parametrization, trained by gradient
 # descent on the loss (1/(2n)) |f(X) - y|^2, the relative change |theta_T - theta_0| / |theta_0| falls like 1/sqrt(m),
 # the linearized model obeys |omega| <= |r0| / sqrt(lambda_min), and at a fixed width a scale factor alpha on the

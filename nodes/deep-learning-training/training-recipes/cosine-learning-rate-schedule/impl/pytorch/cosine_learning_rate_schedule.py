@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/cosine-learning-rate-schedule/ (ai://NEW-cosine-learning-rate-schedule).
+# Part of https://ai.tamnd.com/cosine-learning-rate-schedule/ (ai://FG7K47).
 """Learning-rate schedules in PyTorch.
 
 cosine, linear_decay, step_decay and wsd evaluate eq-cosine, eq-linear, eq-step and eq-wsd on a tensor of steps.

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/cosine-learning-rate-schedule/ (ai://NEW-cosine-learning-rate-schedule).
+# Part of https://ai.tamnd.com/cosine-learning-rate-schedule/ (ai://FG7K47).
 # Check of derivations/restart-epochs.md: with run lengths T_0 T_mult^i, restart k is at T_0 (T_mult^k - 1) / (T_mult - 1),
 # or k T_0 when T_mult = 1; for T_0 = 10 and T_mult = 2 the restarts are at 10, 30, 70, 150 and 310.
 import math

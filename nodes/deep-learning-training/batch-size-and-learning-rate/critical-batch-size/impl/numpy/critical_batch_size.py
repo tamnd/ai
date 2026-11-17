@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/critical-batch-size/ (ai://NEW-critical-batch-size).
+# Part of https://ai.tamnd.com/critical-batch-size/ (ai://X29NFT).
 """The gradient noise scale and the critical batch size in NumPy.
 
 noise_scale_from_examples estimates B_simple = tr(Sigma) / |G|^2 (eq-b-simple) from the gradients of single examples;

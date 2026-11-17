@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/multilayer-perceptron/ (ai://NEW-multilayer-perceptron).
+# Part of https://ai.tamnd.com/multilayer-perceptron/ (ai://YA59M7).
 """Tests of the NumPy reference: the XOR example, the gradient, the linear collapse, the shapes, He initialization and training."""
 
 import json

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/convolutional-neural-network/ (ai://NEW-convolutional-neural-network).
+# Part of https://ai.tamnd.com/convolutional-neural-network/ (ai://GNXZCP).
 """Numeric check of the derivation receptive-field: measure receptive fields with gradients of the NumPy reference."""
 
 import pathlib

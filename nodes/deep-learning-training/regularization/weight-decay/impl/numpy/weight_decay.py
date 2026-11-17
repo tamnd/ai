@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/weight-decay/ (ai://NEW-weight-decay).
+# Part of https://ai.tamnd.com/weight-decay/ (ai://DD5QVM).
 """Weight decay, the NumPy reference.
 
 The parameters and the gradients are dicts of arrays. sgd_step is torch.optim.SGD: with decoupled=False the

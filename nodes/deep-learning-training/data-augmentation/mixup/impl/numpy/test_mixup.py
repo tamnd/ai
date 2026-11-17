@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/mixup/ (ai://NEW-mixup).
+# Part of https://ai.tamnd.com/mixup/ (ai://8X8XEV).
 """Tests of the NumPy reference: the worked example, the shared fixture, the two forms of the mixed loss, the pairing
 of inputs and labels, the Beta moments, the CutMix box and its area-adjusted weight, and integer inputs."""
 

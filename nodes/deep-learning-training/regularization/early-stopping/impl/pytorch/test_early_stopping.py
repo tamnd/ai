@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/early-stopping/ (ai://NEW-early-stopping).
+# Part of https://ai.tamnd.com/early-stopping/ (ai://VR3ZRP).
 """Tests of the PyTorch reference: the worked example and fixture of the NumPy tests, torch.optim.SGD on least squares
 as the spectral filter, the patience rule on a module with restore-best, and the criteria GL and PQ."""
 
