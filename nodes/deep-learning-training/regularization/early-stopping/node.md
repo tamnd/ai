@@ -1,5 +1,5 @@
 ---
-tag: NEW-early-stopping
+tag: VR3ZRP
 kind: method
 slug: early-stopping
 name: Early stopping
