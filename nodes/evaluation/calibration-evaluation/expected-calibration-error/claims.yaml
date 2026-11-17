@@ -1,0 +1,340 @@
+# The claims of the expected calibration error page (spec 07). The build computes the labels.
+- id: c-guo-perfect
+  type: definitional
+  text: "Perfect calibration is defined as P(Y-hat = Y | P-hat = p) = p for all p in [0, 1], where the probability is over the joint distribution; it cannot be computed from finitely many samples because P-hat is a continuous random variable."
+  evidence:
+    - {work: "guo-2017-on-calibration-of-modern-neural-networks", role: original, locator: "equation 1", stance: for}
+
+- id: c-guo-reliability
+  type: definitional
+  text: "Reliability diagrams are a visual representation of model calibration: they plot expected sample accuracy as a function of confidence."
+  evidence:
+    - {work: "guo-2017-on-calibration-of-modern-neural-networks", role: original, locator: "equation 1", stance: for}
+
+- id: c-guo-ece
+  type: definitional
+  text: "The expected calibration error approximates the expectation over the confidence of the gap between accuracy and confidence by partitioning the predictions into M equally spaced bins and taking a weighted average of the bins' accuracy/confidence difference, weighted by the fraction of samples in each bin."
+  evidence:
+    - {work: "guo-2017-on-calibration-of-modern-neural-networks", role: original, locator: "equation 3", stance: for}
+
+- id: c-guo-mce
+  type: definitional
+  text: "The maximum calibration error is the largest gap between accuracy and confidence over the bins, meant for high-risk applications where the worst-case deviation matters."
+  evidence:
+    - {work: "guo-2017-on-calibration-of-modern-neural-networks", role: original, locator: "equation 5", stance: for}
+
+- id: c-guo-modern
+  type: empirical
+  text: "Modern neural networks, unlike those from a decade ago, are poorly calibrated, and depth, width, weight decay and Batch Normalization are important factors influencing calibration."
+  scope:
+    models: "LeNet, ResNet, Wide ResNet, DenseNet and other image and text classifiers"
+    data: ["CIFAR-100", "CIFAR-10", "ImageNet"]
+    scale: "networks from LeNet (1998) to 110-layer ResNets"
+    setting: "classification, confidence taken as the largest softmax probability"
+  evidence:
+    - {work: "guo-2017-on-calibration-of-modern-neural-networks", role: original, locator: "figure 1", stance: for}
+
+- id: c-guo-table1
+  type: empirical
+  text: "With M = 15 bins, the ECE of a 110-layer ResNet on CIFAR-100 falls from 16.53% before calibration to 1.26% after temperature scaling, and that of a 152-layer ResNet on ImageNet from 5.48% to 1.86%."
+  scope:
+    models: "ResNet 110 (CIFAR-100), ResNet 152 (ImageNet)"
+    data: ["CIFAR-100", "ImageNet"]
+    scale: "ECE with 15 equal-width bins on the test set"
+    setting: "post-hoc calibration on a held-out validation set"
+  evidence:
+    - {work: "guo-2017-on-calibration-of-modern-neural-networks", role: original, locator: "table 1", stance: for}
+
+- id: c-guo-typical
+  type: empirical
+  text: "Before calibration, most of the networks studied have an ECE of about 4 to 10%."
+  scope:
+    models: "the image and text classifiers of Table 1"
+    data: ["CIFAR-100", "CIFAR-10", "ImageNet", "SVHN"]
+    scale: "ECE with 15 bins"
+    setting: "uncalibrated softmax confidences"
+  evidence:
+    - {work: "guo-2017-on-calibration-of-modern-neural-networks", role: original, locator: "p. 7", stance: for}
+
+- id: c-guo-temperature
+  type: definitional
+  text: "Temperature scaling divides the logit vector by a single scalar T > 0 before the softmax, with T optimized with respect to NLL on the validation set; because it does not change the maximum of the softmax, the class prediction and hence the model's accuracy are unchanged."
+  evidence:
+    - {work: "guo-2017-on-calibration-of-modern-neural-networks", role: original, locator: "equation 9", stance: for}
+
+- id: c-guo-ts-best
+  type: empirical
+  text: "On the image classification data sets, temperature scaling outperforms all other post-hoc calibration methods studied, including histogram binning, isotonic regression, BBQ, and vector and matrix scaling."
+  scope:
+    models: "ResNet, Wide ResNet, DenseNet and LeNet image classifiers"
+    data: ["CIFAR-100", "CIFAR-10", "ImageNet", "SVHN"]
+    scale: "ECE with 15 bins"
+    setting: "post-hoc calibration on a held-out validation set"
+  evidence:
+    - {work: "guo-2017-on-calibration-of-modern-neural-networks", role: original, locator: "p. 7", stance: for}
+
+- id: c-guo-low-dim
+  type: attributive
+  text: "Because vector scaling learns nearly constant entries and so is no different from a scalar transformation, Guo et al. conclude that network miscalibration is intrinsically low dimensional."
+  evidence:
+    - {work: "guo-2017-on-calibration-of-modern-neural-networks", role: original, locator: "p. 7", stance: for}
+
+- id: c-guo-convex
+  type: definitional
+  text: "Fitting the temperature is a one-dimensional convex optimization problem, which Guo et al. solve with conjugate gradients in about 10 iterations."
+  evidence:
+    - {work: "guo-2017-on-calibration-of-modern-neural-networks", role: original, locator: "p. 8", stance: for}
+
+- id: c-guo-reuters
+  type: empirical
+  text: "Reuters is the only data set that temperature scaling does not calibrate: its ECE is 0.85% before calibration and 0.91% after temperature scaling."
+  scope:
+    models: "a deep averaging network"
+    data: ["Reuters"]
+    scale: "ECE with 15 bins"
+    setting: "post-hoc temperature scaling"
+  evidence:
+    - {work: "guo-2017-on-calibration-of-modern-neural-networks", role: original, locator: "table 1", stance: for}
+    - {work: "guo-2017-on-calibration-of-modern-neural-networks", role: original, locator: "p. 7", stance: for}
+
+- id: c-kadavath-mc
+  type: empirical
+  text: "Larger language models are well calibrated on diverse multiple-choice and true/false questions when the questions are presented in the right format, with the answer options visible and labelled by letters."
+  scope:
+    models: "Anthropic pretrained language models of 800M to 52B parameters"
+    data: ["MMLU", "TruthfulQA", "QuALITY", "LogiQA", "BIG-bench"]
+    scale: "800M, 3B, 12B and 52B parameters"
+    setting: "the probability of the answer letter as confidence"
+  evidence:
+    - {work: "kadavath-2022-language-models-mostly-know-what-they-know", role: original, locator: "abstract", stance: for}
+    - {work: "kadavath-2022-language-models-mostly-know-what-they-know", role: original, locator: "p. 4", stance: for}
+
+- id: c-kadavath-size
+  type: empirical
+  text: "Calibration improves with model size and from zero-shot to few-shot evaluation."
+  scope:
+    models: "Anthropic pretrained language models"
+    data: ["MMLU", "BIG-bench"]
+    scale: "800M to 52B parameters"
+    setting: "multiple choice with visible lettered options"
+  evidence:
+    - {work: "kadavath-2022-language-models-mostly-know-what-they-know", role: original, locator: "p. 4", stance: for}
+
+- id: c-kadavath-ece
+  type: definitional
+  text: "Kadavath et al. compute ECE with 10 bins that hold equal numbers of predictions, using only the most likely prediction of each question, call it the mean absolute deviation calibration error, and also report the RMS calibration error."
+  evidence:
+    - {work: "kadavath-2022-language-models-mostly-know-what-they-know", role: original, locator: "p. 5", stance: for}
+
+- id: c-kadavath-rlhf
+  type: empirical
+  text: "RLHF policies naively seem very miscalibrated, but a single temperature, T = 2.5 for all evaluations, makes them fairly well calibrated."
+  scope:
+    models: "52B RLHF policy"
+    data: ["MMLU", "BIG-bench"]
+    scale: "52B parameters"
+    setting: "multiple choice, logits divided by a fixed temperature"
+  evidence:
+    - {work: "kadavath-2022-language-models-mostly-know-what-they-know", role: original, locator: "p. 4", stance: for}
+    - {work: "kadavath-2022-language-models-mostly-know-what-they-know", role: original, locator: "p. 11", stance: for}
+
+- id: c-kadavath-pik
+  type: empirical
+  text: "A model trained to predict P(IK), the probability that it knows the answer to a question, tends to be poorly calibrated on distributions other than the one it was trained on."
+  scope:
+    models: "52B language model with a P(IK) head"
+    data: ["TriviaQA", "LAMBADA"]
+    scale: "52B parameters"
+    setting: "P(IK) trained on TriviaQA, evaluated on math, LAMBADA and code questions"
+  evidence:
+    - {work: "kadavath-2022-language-models-mostly-know-what-they-know", role: original, locator: "p. 4", stance: for}
+
+- id: c-minderer-best
+  type: empirical
+  text: "The most recent image classifiers, notably those that do not use convolutions, are among the best calibrated."
+  scope:
+    models: "ViT, BiT, MLP-Mixer, SimCLR, CLIP, AlexNet and other ImageNet classifiers"
+    data: ["ImageNet"]
+    scale: "models from AlexNet to large ViT"
+    setting: "in-distribution and under distribution shift"
+  evidence:
+    - {work: "minderer-2021-revisiting-the-calibration-of-modern-neural", role: original, locator: "p. 1", stance: for}
+
+- id: c-minderer-trends
+  type: empirical
+  text: "Within a model family, in-distribution calibration slightly deteriorates as models grow, but this is outweighed by the gain in accuracy, and under distribution shift calibration improves with model size."
+  scope:
+    models: "ViT, BiT, MLP-Mixer and other ImageNet classifier families"
+    data: ["ImageNet", "ImageNet-C"]
+    scale: "several sizes per family"
+    setting: "ECE with 100 equal-mass bins, with and without temperature scaling"
+  evidence:
+    - {work: "minderer-2021-revisiting-the-calibration-of-modern-neural", role: original, locator: "p. 2", stance: for}
+
+- id: c-minderer-top-label
+  type: definitional
+  text: "Minderer et al. measure top-label (argmax) calibration, and note that its definition conditions on a null event for continuous confidences, so it cannot be estimated without quantizing the confidence."
+  evidence:
+    - {work: "minderer-2021-revisiting-the-calibration-of-modern-neural", role: original, locator: "p. 3", stance: for}
+
+- id: c-minderer-setup
+  type: definitional
+  text: "Minderer et al. compute the ECE with equal-mass binning and 100 bins."
+  evidence:
+    - {work: "minderer-2021-revisiting-the-calibration-of-modern-neural", role: original, locator: "p. 5", stance: for}
+
+- id: c-minderer-holdout
+  type: definitional
+  text: "For the post-hoc recalibration of models, Minderer et al. reserve 20% of the ImageNet validation set to fit the temperature, and report results on the remaining 80%."
+  evidence:
+    - {work: "minderer-2021-revisiting-the-calibration-of-modern-neural", role: original, locator: "p. 4", stance: for}
+
+- id: c-minderer-two-biases
+  type: attributive
+  text: "The binned ECE has two sources of bias: the bias from binning the confidences, which is always negative, and the bias from a finite sample, which is always positive."
+  evidence:
+    - {work: "minderer-2021-revisiting-the-calibration-of-modern-neural", role: original, locator: "p. 8", stance: for}
+    - {work: "minderer-2021-revisiting-the-calibration-of-modern-neural", role: original, locator: "p. 9", stance: for}
+
+- id: c-minderer-ranking
+  type: empirical
+  text: "The ranking of models by calibration depends on the ECE variant, and with different bin sizes one can reach opposite conclusions about which of two models is better calibrated."
+  scope:
+    models: "ImageNet classifiers"
+    data: ["ImageNet"]
+    scale: "ECE variants with different numbers and kinds of bins"
+    setting: "comparing models by ECE"
+  evidence:
+    - {work: "minderer-2021-revisiting-the-calibration-of-modern-neural", role: original, locator: "p. 9", stance: for}
+
+- id: c-kumar-less
+  type: attributive
+  text: "Kumar et al. argue that Platt scaling and temperature scaling are less calibrated than reported, and that current techniques cannot estimate how miscalibrated they are."
+  evidence:
+    - {work: "kumar-2019-verified-uncertainty-calibration", role: original, locator: "p. 1", stance: for}
+
+- id: c-kumar-underestimate
+  type: definitional
+  text: "Binning can severely underestimate the calibration error: Kumar et al. give a model whose binned version has calibration error 0 while its own calibration error is at least 0.49, and prove that the calibration error of the binned model is at most that of the model."
+  evidence:
+    - {work: "kumar-2019-verified-uncertainty-calibration", role: original, locator: "p. 4", stance: for}
+    - {work: "kumar-2019-verified-uncertainty-calibration", role: original, locator: "p. 5", stance: for}
+
+- id: c-kumar-more-bins
+  type: empirical
+  text: "The binned estimate of the calibration error of a scaling method grows as the number of bins grows."
+  scope:
+    models: "VGG16 networks recalibrated with Platt scaling"
+    data: ["ImageNet", "CIFAR-10"]
+    scale: "a growing number of equal-mass bins, with 90% bootstrap intervals"
+    setting: "plugin estimate of the binned calibration error"
+  evidence:
+    - {work: "kumar-2019-verified-uncertainty-calibration", role: original, locator: "p. 5", stance: for}
+
+- id: c-kumar-debiased
+  type: definitional
+  text: "The debiased estimator subtracts an approximation of the bias, y-hat_s (1 - y-hat_s) / (p-hat_s n - 1), from each weighted squared difference of the plugin estimate; while the plugin estimator requires samples proportional to B, the number of bins, the debiased estimator requires samples proportional to the square root of B."
+  evidence:
+    - {work: "kumar-2019-verified-uncertainty-calibration", role: original, locator: "p. 8", stance: for}
+
+- id: c-gpt4
+  type: empirical
+  text: "On a subset of MMLU, the pre-trained GPT-4 model is highly calibrated, with an ECE of 0.007, and after post-training with PPO its ECE is 0.074."
+  scope:
+    models: "GPT-4 before and after post-training"
+    data: ["MMLU"]
+    scale: "not stated"
+    setting: "confidence in the answer choice, calibration plotted per bin"
+  evidence:
+    - {work: "openai-2023-gpt-4-technical-report", role: original, locator: "p. 10", stance: for}
+    - {work: "openai-2023-gpt-4-technical-report", role: original, locator: "p. 12", stance: for}
+
+- id: c-muller-ls
+  type: empirical
+  text: "Label smoothing also lowers the ECE: on CIFAR-100 a ResNet-56 goes from an ECE of 0.150 to 0.021 with temperature scaling (T = 1.9) and to 0.024 with label smoothing of 0.05, without temperature scaling."
+  scope:
+    models: "ResNet-56"
+    data: ["CIFAR-100"]
+    scale: "ECE with 15 bins"
+    setting: "temperature scaling against training with label smoothing"
+  evidence:
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "p. 4", stance: for}
+    - {work: "muller-2019-when-does-label-smoothing-help", role: original, locator: "p. 5", stance: for}
+
+- id: c-ts-argmax
+  type: mathematical
+  text: "For every T > 0 and logits z, softmax(z / T)_j > softmax(z / T)_k if and only if z_j > z_k, so the predicted class and the accuracy on any labelled set do not depend on T."
+  assumes: ["the logits z are finite real vectors of length K >= 2", "T > 0", "the predicted class is the first index of the largest logit"]
+  derivation: "derivations/temperature-scaling.md"
+
+- id: c-ts-confidence
+  type: mathematical
+  text: "The confidence max_k softmax(z / T)_k does not increase in T; it tends to 1/K as T grows and to 1 as T tends to 0 when the largest logit is unique."
+  assumes: ["the logits z are finite real vectors of length K >= 2", "T > 0"]
+  derivation: "derivations/temperature-scaling.md"
+
+- id: c-ts-convex
+  type: mathematical
+  text: "The mean negative log-likelihood L(beta) of softmax(beta z) is convex in beta = 1/T, with L'(beta) the mean of E_q[z] - z_y and L''(beta) the mean of Var_q[z]."
+  assumes: ["the logits z_i are finite real vectors of length K >= 2", "beta = 1/T > 0"]
+  derivation: "derivations/temperature-scaling.md"
+
+- id: c-ts-stationary
+  type: mathematical
+  text: "At an interior minimizer of the mean NLL over T, the mean logit of the true class equals the mean over examples of the logits averaged under the fitted probabilities."
+  assumes: ["the logits z_i are finite real vectors of length K >= 2", "the minimizer beta* is interior"]
+  derivation: "derivations/temperature-scaling.md"
+
+- id: c-brier-population
+  type: mathematical
+  text: "For the top-label confidence C and correctness A, E[(C - A)^2] = E[(C - r(C))^2] + E[r(C)(1 - r(C))] with r(c) = P(A = 1 | C = c), and the first term is zero exactly when the model is calibrated."
+  assumes: ["C is in [0, 1] and A is 0 or 1", "r(c) = P(A = 1 | C = c)"]
+  derivation: "derivations/brier-decomposition.md"
+
+- id: c-brier-sample
+  type: mathematical
+  text: "For n predictions in bins with n_m members, the mean squared top-label error equals the sum over bins of n_m / n times the squared gap between mean confidence and accuracy, plus the accuracy times one minus it, plus the within-bin variance of the confidences, minus twice their within-bin covariance with the correctness."
+  assumes: ["confidences in [0, 1] and correctness 0 or 1", "bins are disjoint and cover [0, 1]"]
+  derivation: "derivations/brier-decomposition.md"
+
+- id: c-ece-le-rms
+  type: mathematical
+  text: "With the same bins, the ECE is at most the root-mean-square calibration error."
+  assumes: ["bins are disjoint and cover [0, 1]", "the bin weights n_m / n sum to 1"]
+  derivation: "derivations/brier-decomposition.md"
+
+- id: c-binning-lower
+  type: mathematical
+  text: "The population binned calibration error, the sum over bins of P(C in I_m) times |E[r(C) - C | C in I_m]|, is at most the calibration error E|r(C) - C|."
+  assumes: ["C is in [0, 1] and A is 0 or 1", "the bins are fixed before the data are seen"]
+  derivation: "derivations/ece-estimator.md"
+
+- id: c-refine
+  type: mathematical
+  text: "On a fixed sample, splitting a bin into smaller bins never lowers the binned ECE."
+  assumes: ["the bins are disjoint and cover [0, 1]", "each new bin lies inside one old bin"]
+  derivation: "derivations/ece-estimator.md"
+
+- id: c-sampling-bias
+  type: mathematical
+  text: "Given the confidences, the expected sample ECE is at least the ECE computed with the true accuracies r(c_i) in place of the outcomes, so a perfectly calibrated model has a positive expected sample ECE as soon as one confidence lies strictly between 0 and 1."
+  assumes: ["the bins are fixed before the data are seen", "given the confidences, the outcomes are independent with P(A_i = 1) = r(c_i)"]
+  derivation: "derivations/ece-estimator.md"
+
+- id: c-squared-bias
+  type: mathematical
+  text: "For a bin with k members, E[(mean A - mean c)^2] equals (mean r - mean c)^2 plus the sum of r(c_i)(1 - r(c_i)) over the bin divided by k^2."
+  assumes: ["given the confidences, the outcomes are independent with P(A_i = 1) = r(c_i)"]
+  derivation: "derivations/ece-estimator.md"
+
+- id: c-bias-size
+  type: mathematical
+  text: "For a calibrated bin of k members with confidence p, the expected gap E|X/k - p| with X ~ Binomial(k, p) equals (2v/k) C(k, v) p^v (1 - p)^(k - v + 1) with v = floor(kp) + 1, close to sqrt(2p(1 - p)/(pi k)) for large k; at p = 0.8 it is 0.0966, 0.0318 and 0.0101 for k = 10, 100 and 1,000."
+  assumes: ["the k outcomes are independent Bernoulli(p)", "0 < p < 1"]
+  derivation: "derivations/ece-estimator.md"
+
+- id: c-bias-table
+  type: mathematical
+  text: "For a calibrated model with n confidences spread evenly over [0.5, 1], the expected binned ECE with 15 and 100 equal-width bins is 0.090 and 0.229 at n = 100, 0.028 and 0.070 at n = 1,000, and 0.0089 and 0.022 at n = 10,000, although the true calibration error is 0."
+  assumes: ["the confidences are c_i = 0.5 + 0.5 (i - 0.5) / n for i = 1..n", "the outcomes are independent with P(A_i = 1) = c_i", "equal-width bins"]
+  derivation: "derivations/ece-estimator.md"

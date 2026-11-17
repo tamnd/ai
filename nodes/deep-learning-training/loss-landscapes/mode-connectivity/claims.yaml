@@ -1,0 +1,370 @@
+# The claims of the mode-connectivity page (spec 07). The build computes the labels.
+
+# Definitions
+
+- id: c-goodfellow-probe
+  type: definitional
+  text: "Goodfellow, Vinyals and Saxe evaluate the objective J(θ) at a series of points θ = (1 − α)θ0 + αθ1 for varying α, which sweeps out a line in parameter space, and look at the cross-section of the objective along it."
+  evidence:
+    - {work: "goodfellow-2015-qualitatively-characterizing-optimization", role: original, locator: "p. 2", stance: for}
+
+- id: c-frankle-barrier
+  type: definitional
+  text: "Frankle et al. define the error barrier height on the linear path between W1 and W2 as the supremum of the error along the path minus the mean of the errors of W1 and W2; two networks are mode connected if some path between them has error barrier height ≈ 0, and linearly mode connected if this holds along the linear path."
+  evidence:
+    - {work: "frankle-2019-linear-mode-connectivity-lottery", role: original, locator: "p. 3", stance: for}
+    - {work: "ainsworth-2023-git-re-basin", role: original, locator: "p. 3", stance: for}
+
+- id: c-entezari-barrier
+  type: definitional
+  text: "Entezari et al. define the loss barrier along the linear path between θ1 and θ2 as the highest difference between the loss when linearly connecting the two points and the linear interpolation of the loss values at each of them, sup over α of L(αθ1 + (1 − α)θ2) − [αL(θ1) + (1 − α)L(θ2)]; the definitions are the same if L(θ1) = L(θ2), and theirs assigns no barrier value to a loss that is changing linearly between θ1 and θ2."
+  evidence:
+    - {work: "entezari-2022-permutation-invariance-mode-connectivity", role: original, locator: "p. 3", stance: for}
+
+- id: c-ainsworth-nonneg
+  type: attributive
+  text: "Ainsworth et al. note that loss barriers are non-negative, so an interpolation that includes points with lower loss than either of the two models still has a positive loss barrier, an important shortcoming of the loss barrier metric."
+  evidence:
+    - {work: "ainsworth-2023-git-re-basin", role: original, locator: "p. 3", stance: for}
+    - {work: "ainsworth-2023-git-re-basin", role: original, locator: "p. 8", stance: for}
+
+- id: c-frankle-instability
+  type: definitional
+  text: "Instability analysis trains two copies of a network from the same weights W_k under different samples of SGD noise, such as data order and augmentation, and takes the error barrier height on the linear path between the results; Frankle et al. consider instability below 2% to be stable."
+  evidence:
+    - {work: "frankle-2019-linear-mode-connectivity-lottery", role: original, locator: "p. 1", stance: for}
+    - {work: "frankle-2019-linear-mode-connectivity-lottery", role: original, locator: "p. 3", stance: for}
+
+- id: c-bezier-def
+  type: definitional
+  text: "A quadratic Bezier curve with endpoints ŵ1 and ŵ2 and bend θ is φθ(t) = (1 − t)²ŵ1 + 2t(1 − t)θ + t²ŵ2 for 0 ≤ t ≤ 1, and a polygonal chain with one bend runs on the segment from ŵ1 to θ for t ≤ 0.5 and on the segment from θ to ŵ2 for t ≥ 0.5."
+  evidence:
+    - {work: "garipov-2018-loss-surfaces-mode-connectivity", role: original, locator: "p. 4", stance: for}
+
+- id: c-curve-loss
+  type: definitional
+  text: "Garipov et al. train the curve by minimizing the loss averaged over t ∼ U(0, 1), ℓ(θ) = E_t L(φθ(t)), sampling one t̃ at each iteration and taking a gradient step on L(φθ(t̃)); they use this loss because for Bezier curves the gradient of the loss averaged over the uniform distribution on the curve is intractable."
+  evidence:
+    - {work: "garipov-2018-loss-surfaces-mode-connectivity", role: original, locator: "p. 4", stance: for}
+    - {work: "garipov-2018-loss-surfaces-mode-connectivity", role: original, locator: "p. 5", stance: for}
+
+- id: c-draxler-mep
+  type: definitional
+  text: "Draxler et al. look for the path between two minima whose maximum loss is lowest, the minimum energy path, and call the point of maximum loss on a path its saddle point."
+  evidence:
+    - {work: "draxler-2018-essentially-no-barriers", role: original, locator: "p. 2", stance: for}
+
+# Mathematics (derivations of this page)
+
+- id: c-barrier-convex
+  type: mathematical
+  text: "Both barriers are non-negative, since the endpoints are on the path; if L is convex along the segment, the barrier with the linear reference is 0 and the barrier with the mean reference is half the difference of the endpoint losses, so both are 0 when the endpoint losses are equal."
+  assumes: ["the maximum is over t in [0, 1], endpoints included", "L is convex along the segment, for the second part"]
+  derivation: loss-barrier
+
+- id: c-barrier-relation
+  type: mathematical
+  text: "The two barriers differ by at most half the difference of the endpoint losses; their gaps coincide at t = 1/2, and the barriers are equal when the endpoint losses are equal."
+  assumes: ["the maximum is over t in [0, 1]"]
+  derivation: loss-barrier
+
+- id: c-bezier-points
+  type: mathematical
+  text: "The quadratic Bezier curve passes through w1 at t = 0 and w2 at t = 1, and its midpoint is (w1 + 2θ + w2)/4, not θ."
+  assumes: ["w1, w2 and theta are vectors of the same space"]
+  derivation: bezier-curve
+
+- id: c-bend-gradient
+  type: mathematical
+  text: "The gradient of L(φθ(t)) with respect to the bend θ of a quadratic Bezier curve is 2t(1 − t)∇L(φθ(t)), so one sampled t gives an unbiased estimate of the gradient of the curve loss."
+  assumes: ["L is differentiable on the curve", "the expectation and the gradient can be exchanged"]
+  derivation: bezier-curve
+
+- id: c-ring-example
+  type: mathematical
+  text: "For the ring loss (‖w‖² − 1)² with minima (−1, 0) and (1, 0), the segment has a barrier of 1 at its midpoint, while the Bezier curve with bend (0, 2) has a barrier of 1/16, reached where t(1 − t) = 1/8."
+  assumes: ["L(w) = (|w|^2 - 1)^2 in two dimensions"]
+  derivation: bezier-curve
+
+- id: c-perm-invariance
+  type: mathematical
+  text: "Permuting the hidden units of a one-hidden-layer network, rows of W1 and entries of b1 together with the matching columns of W2, leaves the function unchanged, so each network has h! weight settings with the same outputs."
+  assumes: ["one hidden layer of h units", "an elementwise activation"]
+  derivation: permutation-symmetry
+
+- id: c-perm-barrier
+  type: mathematical
+  text: "The two-unit ReLU network with input weights (1, −1) and output weights (1, 1) computes |x|, as does its copy with the units swapped, yet the network halfway between them is the constant 0, and the squared error on x = ±1 rises from 0 at the ends to 1 at the midpoint."
+  assumes: ["ReLU activation", "squared error on the two inputs x = -1 and x = 1 with targets |x|"]
+  derivation: permutation-symmetry
+
+- id: c-weight-matching-lap
+  type: mathematical
+  text: "For a network with one hidden layer, the weight matching problem arg min over π of ‖vec(ΘA) − vec(π(ΘB))‖², equivalently arg max over π of vec(ΘA) · vec(π(ΘB)), is a single linear assignment problem (LAP) on C = W1_A W1_Bᵀ + b1_A b1_Bᵀ + W2_Aᵀ W2_B, which the Hungarian method solves in O(h³) time."
+  assumes: ["one hidden layer of h units", "the Euclidean distance between flattened weight vectors"]
+  derivation: permutation-symmetry
+  evidence:
+    - {work: "ainsworth-2023-git-re-basin", role: original, locator: "p. 4", stance: for}
+
+# Before 2018: barriers on the segment
+
+- id: c-goodfellow-init
+  type: empirical
+  text: "For seven different models of practical interest, there exists a straight path from initialization to solution along which the objective decreases smoothly and monotonically, at least up to the resolution of the experiments."
+  scope:
+    models: "feedforward and convolutional classifiers, an MP-DBM and an LSTM"
+    data: [mnist, cifar-10, penn-treebank]
+    scale: "the networks of 2014"
+    setting: "linear interpolation from the initial to the final weights of one training run"
+  evidence:
+    - {work: "goodfellow-2015-qualitatively-characterizing-optimization", role: original, locator: "p. 10", stance: for}
+
+- id: c-goodfellow-two
+  type: empirical
+  text: "The shortest path between two minima can contain a barrier of higher cost; Goodfellow et al. find two different solutions by using different random seeds and observe such a barrier on the line between them."
+  scope:
+    models: "a maxout network"
+    data: [mnist]
+    scale: "a single pair of solutions"
+    setting: "linear interpolation between two solutions trained from different seeds"
+  evidence:
+    - {work: "goodfellow-2015-qualitatively-characterizing-optimization", role: original, locator: "p. 5", stance: for}
+
+- id: c-goodfellow-linear
+  type: attributive
+  text: "Goodfellow et al. show two solutions of a deep linear regression that lie on a connected manifold of globally minimal values, while the straight line between them encounters a barrier of higher cost."
+  evidence:
+    - {work: "goodfellow-2015-qualitatively-characterizing-optimization", role: original, locator: "p. 7", stance: for}
+
+# Curves of low loss
+
+- id: c-garipov-curves
+  type: empirical
+  text: "The optima of deep network loss functions are connected by simple curves, such as a polygonal chain with one bend or a quadratic Bezier curve, over which training and test accuracy are nearly constant."
+  scope:
+    models: "VGG-16, ResNet-158, ResNet-164 and Wide ResNet-28-10"
+    data: [cifar-10, cifar-100]
+    scale: "pairs of networks trained from different random initializations"
+    setting: "SGD with the same hyperparameters for both endpoints; curves trained with the curve loss"
+  evidence:
+    - {work: "garipov-2018-loss-surfaces-mode-connectivity", role: original, locator: "p. 1", stance: for}
+    - {work: "draxler-2018-essentially-no-barriers", role: replication, locator: "p. 1", stance: for}
+
+- id: c-garipov-segment
+  type: empirical
+  text: "Line segments directly connecting two modes generally incur high error: for VGG-16 on CIFAR-10 the test error reaches 90% at the centre of the segment, and for ResNet-158 and Wide ResNet-28-10 the worst errors along the segment are 80% and 66%."
+  scope:
+    models: "VGG-16, ResNet-158, Wide ResNet-28-10"
+    data: [cifar-10]
+    scale: "pairs of independently trained networks"
+    setting: "test error along the segment between the two networks"
+  evidence:
+    - {work: "garipov-2018-loss-surfaces-mode-connectivity", role: original, locator: "p. 5", stance: for}
+
+- id: c-garipov-ensemble
+  type: empirical
+  text: "An ensemble of 50 networks at equally spaced points of a polygonal chain between two ResNet-164 networks on CIFAR-100 had a test error of 21.03%, against 22.0% for the ensemble of the two endpoints and 21.01% for an ensemble of three independently trained networks."
+  scope:
+    models: "ResNet-164"
+    data: [cifar-100]
+    scale: "one curve between two networks"
+    setting: "polygonal chain with one bend trained with the curve loss"
+  evidence:
+    - {work: "garipov-2018-loss-surfaces-mode-connectivity", role: original, locator: "p. 14", stance: for}
+
+- id: c-garipov-not-rescaling
+  type: attributive
+  text: "Garipov et al. argue from ensembling that the curves do not exist only because of degenerate parametrizations such as rescaling on either side of a ReLU, and that points on a curve are meaningfully different representations of the data."
+  evidence:
+    - {work: "garipov-2018-loss-surfaces-mode-connectivity", role: original, locator: "p. 6", stance: for}
+
+- id: c-garipov-fge
+  type: attributive
+  text: "Inspired by the curves, Garipov et al. propose Fast Geometric Ensembling, which trains high-performing ensembles in the time required to train a single model."
+  evidence:
+    - {work: "garipov-2018-loss-surfaces-mode-connectivity", role: original, locator: "p. 1", stance: for}
+
+- id: c-draxler-flat
+  type: empirical
+  text: "Continuous paths constructed between minima of recent architectures on CIFAR10 and CIFAR100 are essentially flat in both the training and the test landscapes."
+  scope:
+    models: "CNNs, ResNets and DenseNets, up to DenseNet-100-12-BC"
+    data: [cifar-10, cifar-100]
+    scale: "ten minima per architecture, connected by a minimum spanning tree"
+    setting: "paths found with AutoNEB"
+  evidence:
+    - {work: "draxler-2018-essentially-no-barriers", role: original, locator: "p. 1", stance: for}
+
+- id: c-draxler-manifold
+  type: attributive
+  text: "Draxler et al. conclude that minima are perhaps best seen as points on a single connected manifold of low loss, rather than as the bottoms of distinct valleys."
+  evidence:
+    - {work: "draxler-2018-essentially-no-barriers", role: original, locator: "p. 1", stance: for}
+
+- id: c-draxler-neb
+  type: attributive
+  text: "Draxler et al. find their paths with the Automated Nudged Elastic Band algorithm, a method for connecting minima taken from molecular statistical mechanics."
+  evidence:
+    - {work: "draxler-2018-essentially-no-barriers", role: original, locator: "p. 2", stance: for}
+
+- id: c-draxler-depth-width
+  type: empirical
+  text: "The deeper and wider an architecture, the lower the saddles between minima, until they essentially vanish for current deep architectures; CIFAR100 raises the barriers, and the classification error at the saddles rises by at most 0.5% on CIFAR10 and 2.2% on CIFAR100 for all deep architectures."
+  scope:
+    models: "CNNs, ResNets and DenseNets of several depths and widths"
+    data: [cifar-10, cifar-100]
+    scale: "ten minima per architecture"
+    setting: "AutoNEB paths"
+  evidence:
+    - {work: "draxler-2018-essentially-no-barriers", role: original, locator: "p. 6", stance: for}
+
+- id: c-garipov-simultaneous
+  type: historical
+  text: "Garipov et al. state that Draxler et al. simultaneously and independently discovered curves connecting local optima in the loss landscapes of deep networks, with a different method."
+  evidence:
+    - {work: "garipov-2018-loss-surfaces-mode-connectivity", role: original, locator: "p. 3", stance: for}
+
+# Linear mode connectivity and training
+
+- id: c-frankle-init
+  type: empirical
+  text: "Except for LeNet on MNIST, none of the networks studied is stable to SGD noise at initialization: train and test error rise to the point of random guessing along the linear path between the two copies."
+  scope:
+    models: "LeNet, ResNet-20, VGG-16, ResNet-50 and Inception-v3"
+    data: [mnist, cifar-10, imagenet]
+    scale: "three initializations and three data orders per network"
+    setting: "instability analysis from initialization"
+  evidence:
+    - {work: "frankle-2019-linear-mode-connectivity-lottery", role: original, locator: "p. 3", stance: for}
+
+- id: c-frankle-early
+  type: empirical
+  text: "ResNet-20 and VGG-16 become stable to SGD noise after 3% and 1.5% of training, and ResNet-50 and Inception-v3 on ImageNet at epoch 18 (20% into training) and epoch 28 (16%), measured on the test set."
+  scope:
+    models: "ResNet-20, VGG-16, ResNet-50 and Inception-v3"
+    data: [cifar-10, imagenet]
+    scale: "standard training schedules"
+    setting: "instability analysis from step k of training"
+  evidence:
+    - {work: "frankle-2019-linear-mode-connectivity-lottery", role: original, locator: "p. 4", stance: for}
+
+- id: c-frankle-imp
+  type: empirical
+  text: "Sparse subnetworks found by iterative magnitude pruning are matching, that is, reach full accuracy, only when they are stable to SGD noise according to linear interpolation."
+  scope:
+    models: "LeNet, ResNet-20, VGG-16, ResNet-50 and Inception-v3"
+    data: [mnist, cifar-10, imagenet]
+    scale: "extreme sparsities"
+    setting: "iterative magnitude pruning with rewinding"
+  evidence:
+    - {work: "frankle-2019-linear-mode-connectivity-lottery", role: original, locator: "p. 2", stance: for}
+
+# Permutations
+
+- id: c-entezari-width
+  type: empirical
+  text: "Without permutation, the barrier between solutions from different initializations increases with width up to a point, and beyond that increasing width lowers it, which Entezari et al. liken to double descent."
+  scope:
+    models: "MLPs, Shallow CNN, VGG and ResNet18"
+    data: [mnist, svhn, cifar-10, cifar-100]
+    scale: "MLP widths from 2^3 to 2^15"
+    setting: "SGD from different random initializations, train loss barrier"
+  evidence:
+    - {work: "entezari-2022-permutation-invariance-mode-connectivity", role: original, locator: "p. 4", stance: for}
+
+- id: c-entezari-depth
+  type: empirical
+  text: "For MLPs with layer width fixed at 2^10, the barrier increases fast and significantly as more layers are added."
+  scope:
+    models: "MLPs"
+    data: [mnist, svhn, cifar-10, cifar-100]
+    scale: "width 2^10, several depths"
+    setting: "SGD from different random initializations"
+  evidence:
+    - {work: "entezari-2022-permutation-invariance-mode-connectivity", role: original, locator: "p. 4", stance: for}
+
+- id: c-entezari-conjecture
+  type: attributive
+  text: "Entezari et al. conjecture that most SGD solutions belong to a set whose elements can be permuted in such a way that there is no barrier on the linear interpolation between any two permuted elements."
+  evidence:
+    - {work: "entezari-2022-permutation-invariance-mode-connectivity", role: original, locator: "p. 6", stance: for}
+    - {work: "ainsworth-2023-git-re-basin", role: original, locator: "p. 1", stance: for}
+
+- id: c-entezari-theorem
+  type: attributive
+  text: "Entezari et al. prove that for a wide enough fully-connected network with a single hidden layer at random initialization, a permutation exists that leaves no barrier on the linear interpolation, with an error that falls with the width h."
+  evidence:
+    - {work: "entezari-2022-permutation-invariance-mode-connectivity", role: original, locator: "p. 7", stance: for}
+
+- id: c-entezari-brute
+  type: attributive
+  text: "Even for MLPs with one hidden layer, brute-force search over permutations works in reasonable time only up to 24 neurons, and it is not feasible even for modest size deep networks."
+  evidence:
+    - {work: "entezari-2022-permutation-invariance-mode-connectivity", role: original, locator: "p. 7", stance: for}
+
+- id: c-ainsworth-sobla
+  type: attributive
+  text: "Ainsworth et al. show that weight matching across several layers is a sum of bilinear assignments problem, which is NP-hard, and solve it approximately by coordinate descent, choosing the best permutation of one layer at a time."
+  evidence:
+    - {work: "ainsworth-2023-git-re-basin", role: original, locator: "p. 4", stance: for}
+
+- id: c-ainsworth-seconds
+  type: empirical
+  text: "Weight matching runs in seconds on current hardware and produces high-quality solutions, without access to the input data."
+  scope:
+    models: "MLPs, VGG and ResNets"
+    data: [mnist, cifar-10, cifar-100, imagenet]
+    scale: "up to ResNet-50 on ImageNet"
+    setting: "permutation coordinate descent"
+  evidence:
+    - {work: "ainsworth-2023-git-re-basin", role: original, locator: "p. 7", stance: for}
+
+- id: c-ainsworth-zero
+  type: empirical
+  text: "After weight matching, wide ResNets trained independently on CIFAR-10 show zero-barrier linear mode connectivity, the first such demonstration according to Ainsworth et al."
+  scope:
+    models: "ResNet20 at large width multipliers"
+    data: [cifar-10]
+    scale: "width multipliers up to 32"
+    setting: "two models from different random initializations, weight matching"
+  evidence:
+    - {work: "ainsworth-2023-git-re-basin", role: original, locator: "p. 7", stance: for}
+
+- id: c-ainsworth-width
+  type: empirical
+  text: "1×-sized models did not seem to exhibit linear mode connectivity after matching, while larger widths decreased the loss barrier all the way to zero."
+  scope:
+    models: "VGG-16 and ResNet20"
+    data: [cifar-10]
+    scale: "width multipliers from 1x upward"
+    setting: "weight matching"
+  evidence:
+    - {work: "ainsworth-2023-git-re-basin", role: original, locator: "p. 8", stance: for}
+
+- id: c-ainsworth-imagenet
+  type: empirical
+  text: "On ImageNet, matching falls short of zero barrier but lowers the barrier by 67% relative to naive interpolation."
+  scope:
+    models: "ResNet-50"
+    data: [imagenet]
+    scale: "1x width"
+    setting: "weight matching"
+  evidence:
+    - {work: "ainsworth-2023-git-re-basin", role: original, locator: "p. 7", stance: for}
+
+- id: c-ainsworth-emergent
+  type: empirical
+  text: "Linear mode connectivity after matching is an emergent property of training: Ainsworth et al. were unable to uncover it early in training."
+  scope:
+    models: "MLPs"
+    data: [mnist, cifar-10]
+    scale: "loss barriers measured each epoch"
+    setting: "weight matching"
+  evidence:
+    - {work: "ainsworth-2023-git-re-basin", role: original, locator: "p. 7", stance: for}
+
+- id: c-ainsworth-counter
+  type: attributive
+  text: "Ainsworth et al. construct adversarial, non-SGD solutions such that no permutation of units gives linear mode connectivity, and read this as a sign that SGD and its relatives are implicitly biased toward solutions that admit it."
+  evidence:
+    - {work: "ainsworth-2023-git-re-basin", role: original, locator: "p. 6", stance: for}

@@ -9,4 +9,4 @@ files:
   params-small.npz: {sha256: d523ce8e8de1a1eb81b1c24f09db227d1edca0cabebebb5f02662cd0d9230354}
   state-small.npz: {sha256: fcfe822477be6cccc872204f68cdd0a9a4190262a5363a867d04aed258e9bb78}
   input-small.npz: {sha256: 497594422053e7d5408c51549ad95c813ad7e212c5eef3ca6ab238e4384e59cb}
-  expected-small.npz: {sha256: 9e27f9db6bd908b916f3993e5f1b08a86697055fe377b87f4879acabd66206bc}
+  expected-small.npz: {sha256: 49e239c2053188e2562ca0a01218c9dd6b3e2016e77eec0386795726d4b85b17}
