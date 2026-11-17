@@ -1,0 +1,135 @@
+# A course of spec 5.7: an ordered list of items with section headings. Names and orders only (19.3).
+# An item names its node by slug when the node exists; before that it is a name and a kind, which aik harvest courses
+# reads into the inventory, so that the catalog step can place it and the course can count its coverage (18).
+id: learning-theory
+title: Learning theory
+basis: >-
+  the chapter order of Shalev-Shwartz and Ben-David, Understanding Machine Learning: From Theory to Algorithms (2014),
+  parts 1 to 4, then the topics that Mohri, Rostamizadeh and Talwalkar, Foundations of Machine Learning, 2nd edition
+  (2018), adds, then the questions that deep learning raised
+sections:
+  - heading: The formal model
+    items:
+      - {name: Statistical learning framework, kind: concept}
+      - {name: Hypothesis class, kind: definition}
+      - {name: Empirical risk minimization, kind: method}
+      - {name: True risk and empirical risk, kind: definition}
+      - {name: Realizability assumption, kind: definition}
+      - {name: PAC learning, kind: concept}
+      - {name: Agnostic PAC learning, kind: definition}
+      - {name: Sample complexity, kind: definition}
+      - {name: Finite hypothesis classes are PAC learnable, kind: theorem}
+  - heading: Uniform convergence
+    items:
+      - {name: Uniform convergence, kind: definition}
+      - {name: Hoeffding's inequality, kind: theorem}
+      - {name: Union bound, kind: theorem}
+      - {name: Concentration inequality, kind: concept}
+  - heading: The bias-complexity tradeoff
+    items:
+      - {name: No free lunch theorem, kind: theorem}
+      - {name: Approximation error and estimation error, kind: definition}
+      - {name: Bias-complexity tradeoff, kind: concept}
+  - heading: VC dimension
+    items:
+      - {name: Shattering, kind: definition}
+      - {name: VC dimension, kind: definition}
+      - {name: Growth function, kind: definition}
+      - {name: Sauer-Shelah lemma, kind: theorem}
+      - {name: Fundamental theorem of statistical learning, kind: theorem}
+  - heading: Nonuniform learnability
+    items:
+      - {name: Nonuniform learnability, kind: definition}
+      - {name: Structural risk minimization, kind: method}
+      - {name: Minimum description length bound, kind: theorem}
+      - {name: Occam's razor, kind: concept}
+      - {name: Consistency, kind: definition}
+  - heading: The runtime of learning
+    items:
+      - {name: Computational complexity of learning, kind: concept}
+      - {name: Efficient PAC learning, kind: definition}
+      - {name: Hardness of learning, kind: theorem}
+  - heading: Linear predictors and boosting
+    items:
+      - {name: Halfspace, kind: definition}
+      - {name: Perceptron convergence theorem, kind: theorem}
+      - {name: VC dimension of halfspaces, kind: theorem}
+      - {name: Weak learnability, kind: definition}
+      - {name: AdaBoost, kind: method}
+      - {name: Boosting margin theory, kind: theorem}
+  - heading: Model selection and validation
+    items:
+      - {name: Validation set bound, kind: theorem}
+      - {name: Cross-validation, kind: method}
+      - {name: Model selection, kind: concept}
+  - heading: Convex learning, regularization and stability
+    items:
+      - {name: Convex learning problem, kind: definition}
+      - {name: Lipschitz and smooth losses, kind: definition}
+      - {name: Surrogate loss, kind: concept}
+      - {name: Regularized loss minimization, kind: method}
+      - {name: Algorithmic stability, kind: definition}
+      - {name: Stability implies generalization, kind: theorem}
+      - {name: Stochastic gradient descent, kind: method}
+      - {name: Convergence of SGD for convex problems, kind: theorem}
+  - heading: Margins and kernels
+    items:
+      - {name: Hard-margin SVM, kind: method}
+      - {name: Margin-based generalization bound, kind: theorem}
+      - {name: Kernel trick, kind: method}
+      - {name: Representer theorem, kind: theorem}
+  - heading: Other learning settings
+    items:
+      - {name: Multiclass learnability, kind: concept}
+      - {name: Natarajan dimension, kind: definition}
+      - {name: Ranking, kind: task}
+      - {name: Nearest neighbor generalization bound, kind: theorem}
+      - {name: Expressive power of neural networks, kind: theorem}
+      - {name: Sample complexity of neural networks, kind: theorem}
+  - heading: Online learning
+    items:
+      - {name: Online learning, kind: concept}
+      - {name: Mistake bound model, kind: definition}
+      - {name: Littlestone dimension, kind: definition}
+      - {name: Halving algorithm, kind: method}
+      - {name: Regret, kind: definition}
+      - {name: Weighted majority algorithm, kind: method}
+      - {name: Online convex optimization, kind: concept}
+      - {name: Online gradient descent, kind: method}
+      - {name: Multi-armed bandit, kind: task}
+      - {name: Upper confidence bound algorithm, kind: method}
+  - heading: Unsupervised learning in theory
+    items:
+      - {name: Clustering axioms, kind: theorem}
+      - {name: Johnson-Lindenstrauss lemma, kind: theorem}
+      - {name: Compressed sensing, kind: concept}
+  - heading: Advanced complexity measures
+    items:
+      - {name: Rademacher complexity, kind: definition}
+      - {name: Rademacher generalization bound, kind: theorem}
+      - {name: McDiarmid's inequality, kind: theorem}
+      - {name: Massart's lemma, kind: theorem}
+      - {name: Contraction lemma, kind: theorem}
+      - {name: Covering number, kind: definition}
+      - {name: Dudley's entropy integral, kind: theorem}
+      - {name: Fat-shattering dimension, kind: definition}
+      - {name: Sample compression scheme, kind: definition}
+      - {name: PAC-Bayes bound, kind: theorem}
+  - heading: Beyond Shalev-Shwartz and Ben-David
+    items:
+      - {name: Domain adaptation bound, kind: theorem}
+      - {name: Learning with expert advice, kind: concept}
+      - {name: Statistical query model, kind: concept}
+      - {name: Differential privacy and generalization, kind: concept}
+  - heading: Generalization in deep learning
+    items:
+      - {name: Rethinking generalization, kind: finding}
+      - {name: Implicit regularization, kind: concept}
+      - {name: Implicit bias of gradient descent, kind: theorem}
+      - {name: Double descent, kind: finding}
+      - {name: Benign overfitting, kind: theorem}
+      - {name: Neural tangent kernel, kind: concept}
+      - {name: Lottery ticket hypothesis, kind: finding}
+      - {name: Flat minima and sharpness, kind: concept}
+      - {name: Grokking, kind: finding}
+      - {name: Generalization of overparameterized models, kind: open-problem}

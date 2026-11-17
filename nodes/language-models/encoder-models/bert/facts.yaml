@@ -1,0 +1,102 @@
+# The facts of the BERT family of models (spec 04.9). Each fact names the release it belongs to. The build computes the status of each fact.
+- id: developer
+  value: "Google AI Language"
+  note: "The group at Google named on the paper and on the announcement."
+  sources:
+    - {src: "devlin-2019-bert", loc: "the title page", value: "Google AI Language", kind: primary}
+    - {src: "google-2018-open-sourcing-bert-blog", loc: "p. 1", value: "Google AI Language", kind: primary}
+- id: released.bert
+  value: "2018-11-02"
+  note: "The announcement of 2 November 2018 says that Google open sourced BERT that week. The checkpoints of BERT-Base and BERT-Large are in a folder named 2018_10_18, and the paper was first posted to arXiv on 11 October 2018."
+  sources:
+    - {src: "google-2018-open-sourcing-bert-blog", loc: "p. 1", value: "2018-11-02", kind: primary}
+- id: released.bert_multilingual
+  value: "2018-11-03"
+  note: "BERT-Base, Multilingual (102 languages) and BERT-Base, Chinese."
+  sources:
+    - {src: "google-research-bert-readme", loc: "p. 1", value: "2018-11-03", kind: primary}
+- id: released.bert_multilingual_cased
+  value: "2018-11-23"
+  note: "BERT-Base, Multilingual Cased (104 languages), the recommended multilingual model."
+  sources:
+    - {src: "google-research-bert-readme", loc: "p. 1", value: "2018-11-23", kind: primary}
+- id: released.bert_wwm
+  value: "2019-05-31"
+  note: "BERT-Large, Uncased and Cased, with Whole Word Masking."
+  sources:
+    - {src: "google-research-bert-readme", loc: "p. 1", value: "2019-05-31", kind: primary}
+- id: released.bert_small
+  value: "2020-03-11"
+  note: "24 smaller BERT models, from BERT-Tiny (2 layers, hidden size 128) to BERT-Base."
+  sources:
+    - {src: "google-research-bert-readme", loc: "p. 1", value: "2020-03-11", kind: primary}
+- id: architecture
+  value: "multi-layer bidirectional Transformer encoder"
+  sources:
+    - {src: "devlin-2019-bert", loc: "p. 3", value: "multi-layer bidirectional Transformer encoder", kind: primary}
+- id: params.total.bert_base
+  value: 110e6
+  unit: parameters
+  note: "L=12, H=768, A=12. The multilingual and Chinese models have the same shape and are also given as 110M parameters."
+  sources:
+    - {src: "devlin-2019-bert", loc: "p. 3", value: 110e6, kind: primary}
+    - {src: "google-research-bert-readme", loc: "p. 1", value: 110e6, kind: primary}
+- id: params.total.bert_large
+  value: 340e6
+  unit: parameters
+  note: "L=24, H=1024, A=16."
+  sources:
+    - {src: "devlin-2019-bert", loc: "p. 3", value: 340e6, kind: primary}
+    - {src: "google-research-bert-readme", loc: "p. 1", value: 340e6, kind: primary}
+- id: modalities
+  value: "text in; contextual token representations out"
+  sources:
+    - {src: "devlin-2019-bert", loc: "p. 4", value: "text in; contextual token representations out", kind: primary}
+- id: context_length
+  value: 512
+  unit: tokens
+  note: "The combined length of the two segments of a pre-training input is at most 512 tokens."
+  sources:
+    - {src: "devlin-2019-bert", loc: "p. 13", value: 512, kind: primary}
+- id: vocabulary
+  value: 30000
+  unit: tokens
+  note: "A WordPiece vocabulary of 30,000 tokens for the English models; the multilingual models share a vocabulary of 110k WordPieces."
+  sources:
+    - {src: "devlin-2019-bert", loc: "p. 4", value: 30000, kind: primary}
+- id: training.tokens_per_batch
+  value: 128000
+  unit: tokens
+  note: "256 sequences of 512 tokens, as the paper writes it (256 × 512 is 131,072)."
+  sources:
+    - {src: "devlin-2019-bert", loc: "p. 13", value: 128000, kind: primary}
+- id: training.steps
+  value: 1000000
+  unit: items
+  note: "About 40 epochs over the 3.3 billion word corpus."
+  sources:
+    - {src: "devlin-2019-bert", loc: "p. 13", value: 1000000, kind: primary}
+- id: training.tpu_chips.bert_base
+  value: 16
+  unit: items
+  note: "4 Cloud TPUs in Pod configuration, for 4 days."
+  sources:
+    - {src: "devlin-2019-bert", loc: "p. 13", value: 16, kind: primary}
+- id: training.tpu_chips.bert_large
+  value: 64
+  unit: items
+  note: "16 Cloud TPUs, for 4 days."
+  sources:
+    - {src: "devlin-2019-bert", loc: "p. 13", value: 64, kind: primary}
+- id: access
+  value: "code and pre-trained weights for download from the google-research/bert repository"
+  as_of: 2020-03-11
+  sources:
+    - {src: "google-research-bert-readme", loc: "p. 1", value: "code and pre-trained weights for download from the google-research/bert repository", kind: primary, as_of: 2020-03-11}
+- id: licence
+  value: "Apache-2.0"
+  as_of: 2020-03-11
+  note: "The README says that the models are released under the same license as the source code (Apache 2.0)."
+  sources:
+    - {src: "google-research-bert-license", loc: "p. 1", value: "Apache-2.0", kind: primary, as_of: 2020-03-11}
+    - {src: "google-research-bert-readme", loc: "p. 1", value: "Apache-2.0", kind: primary, as_of: 2020-03-11}
