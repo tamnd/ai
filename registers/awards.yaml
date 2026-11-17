@@ -1,0 +1,36 @@
+# The awards of the field whose recipients are notable (rule S-P1 of spec 18, and 19.6): a recipient of one of these is
+# a person card, and a node may name them with their public professional facts only (P01).
+# aik harvest awards reads this list and asks Wikidata (through QLever) for the recipients of each award (P166) and the
+# years (P585). qid is the Wikidata item of the award; note says when the award is not given for AI work alone, so that
+# a node checks that the recipient's work is AI.
+# A change to this file is its own pull request with a reason, and each new QID is checked to have recipients on P166.
+- qid: Q185667
+  name: Turing Award
+  note: all of computing; a recipient is a node only for AI work
+- qid: Q5971529
+  name: IJCAI Computers and Thought Award
+- qid: Q5971528
+  name: IJCAI Award for Research Excellence
+- qid: Q30514449
+  name: ACM-AAAI Allen Newell Award
+- qid: Q5970364
+  name: IEEE Frank Rosenblatt Award
+- qid: Q14565187
+  name: IEEE Neural Networks Pioneer Award
+- qid: Q2175611
+  name: Rumelhart Prize
+  note: contributions to the theoretical foundations of human cognition; a recipient is a node only for AI work
+- qid: Q18748042
+  name: AAAI Fellow
+- qid: Q94282044
+  name: EurAI Fellow
+- qid: Q59765913
+  name: ACL Fellow
+- qid: Q123058423
+  name: AAAI Award for Artificial Intelligence for the Benefit of Humanity
+- qid: Q6772765
+  name: Marr Prize
+- qid: Q4832915
+  name: Azriel Rosenfeld Award
+- qid: Q30312379
+  name: PAMI Distinguished Researcher Award

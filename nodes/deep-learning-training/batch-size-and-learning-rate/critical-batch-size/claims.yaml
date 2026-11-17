@@ -1,0 +1,357 @@
+# The claims of the critical batch size page (spec 07). The build computes the labels.
+- id: c-noise-scale-predicts
+  type: empirical
+  text: "A simple and easy-to-measure statistic called the gradient noise scale predicts the largest useful batch size across many domains and applications, including a number of supervised learning datasets, reinforcement learning domains such as Atari and Dota, and generative model training with autoencoders on SVHN."
+  scope:
+    models: "CNNs, ResNets, LSTMs, autoencoders, VAEs and PPO agents"
+    data: [mnist, svhn, cifar-10, imagenet, billion-word, atari, dota-2]
+    scale: "8 tasks, batch sizes from about 20 to over 10 million"
+    setting: "SGD, momentum and Adam, with the learning rate tuned for each batch size"
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 1", stance: for}
+
+- id: c-grows-with-loss
+  type: empirical
+  text: "The noise scale increases as the loss decreases over a training run and depends on the model size primarily through improved model performance."
+  scope:
+    models: "the models of the 8 tasks"
+    data: [mnist, svhn, cifar-10, imagenet, billion-word, atari, dota-2]
+    scale: "full training runs"
+    setting: "noise scale measured during training with a well-tuned learning rate"
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 1", stance: for}
+
+- id: c-shallue-universal
+  type: empirical
+  text: "For each workload (model, training algorithm, and data set), increasing the batch size initially decreases the required number of training steps proportionally, but eventually there are diminishing returns until finally increasing the batch size no longer changes the required number of training steps; the relationship holds across all workloads considered."
+  scope:
+    models: "the neural network families of the 35 workloads"
+    data: [unknown]
+    scale: "35 workloads, 168,160 trained models"
+    setting: "SGD, momentum and Nesterov momentum, with the learning rate and momentum tuned for each batch size"
+  evidence:
+    - {work: "shallue-2019-measuring-effects-data-parallelism", role: original, locator: "p. 4", stance: for}
+
+- id: c-shallue-regimes
+  type: empirical
+  text: "As the batch size grows there is an initial period of perfect scaling where the steps needed to achieve the error goal halves for each doubling of the batch size, followed by a region of diminishing returns that eventually leads to a regime of maximal data parallelism where additional parallelism provides no benefit whatsoever."
+  scope:
+    models: "the models of the 35 workloads"
+    data: [unknown]
+    scale: "steps to a goal validation error at each batch size"
+    setting: "metaparameters tuned for each batch size"
+  evidence:
+    - {work: "shallue-2019-measuring-effects-data-parallelism", role: original, locator: "p. 15", stance: for}
+
+- id: c-shallue-variation
+  type: empirical
+  text: "The relationship between batch size and the number of steps to reach a goal out-of-sample error shows extremely large variation between workloads."
+  scope:
+    models: "the models of the 35 workloads"
+    data: [unknown]
+    scale: "35 workloads"
+    setting: "metaparameters tuned for each batch size"
+  evidence:
+    - {work: "shallue-2019-measuring-effects-data-parallelism", role: original, locator: "p. 1", stance: for}
+
+- id: c-batch-gradient
+  type: definitional
+  text: "The minibatch gradient G_est is a random variable whose expected value over random batches is the true gradient G, and whose covariance is Sigma / B, where Sigma is the covariance of the per-example gradients."
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 5", stance: for}
+
+- id: c-regimes
+  type: attributive
+  text: "When the batch size is much smaller than the noise scale, increasing the batch size linearly increases the progress in loss; when it is much larger, increasing B has almost no effect on the progress in loss; the switch between the two occurs at B approximately equal to B_noise."
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 6", stance: for}
+
+- id: c-crit-approx-noise
+  type: attributive
+  text: "The model predicts B_crit approximately equal to B_noise, where B_noise is appropriately averaged over training."
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 7", stance: for}
+
+- id: c-data-parallel-free
+  type: attributive
+  text: "In data-parallel training the squared norms of the small-batch and big-batch gradients can be computed with minimal effort as the norm of the gradient before and after averaging between devices, with B_small the local batch size and B_big the global batch size."
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 17", stance: for}
+
+- id: c-without-replacement
+  type: attributive
+  text: "When batches are sampled without replacement from a training set of size D, the factor 1/B in the covariance of the batch gradient is replaced by 1/B - 1/D."
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 5", stance: for}
+
+- id: c-one-step-optimum
+  type: mathematical
+  text: "Under a quadratic model of the loss, the expected loss after the step theta - eps G_est is L - eps |G|^2 + eps^2 (G^T H G + tr(H Sigma) / B) / 2; it is minimized at eps_opt(B) = eps_max / (1 + B_noise / B) with eps_max = |G|^2 / G^T H G and B_noise = tr(H Sigma) / G^T H G, where the expected improvement is Delta L_max / (1 + B_noise / B) with Delta L_max = |G|^4 / (2 G^T H G)."
+  assumes: ["the loss is quadratic in the step, or its second-order expansion is accurate", "the batch gradient is unbiased with covariance Sigma / B", "plain SGD"]
+  derivation: "derivations/one-step-improvement.md"
+
+- id: c-overshoot
+  type: mathematical
+  text: "Under the same quadratic model, a step size larger than twice eps_opt(B) increases the expected loss."
+  assumes: ["the loss is quadratic in the step", "the batch gradient is unbiased with covariance Sigma / B"]
+  derivation: "derivations/one-step-improvement.md"
+
+- id: c-no-dataset-size
+  type: attributive
+  text: "The definition of the noise scale is independent of the size of the full training set."
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 6", stance: for}
+
+- id: c-simple-isotropic
+  type: mathematical
+  text: "If the Hessian is a multiple of the identity, B_noise = tr(H Sigma) / G^T H G reduces to B_simple = tr(Sigma) / |G|^2."
+  assumes: ["H = h I with h > 0"]
+  derivation: "derivations/one-step-improvement.md"
+
+- id: c-simple-relative-error
+  type: mathematical
+  text: "The expected normalized squared distance between the batch gradient and the true gradient is E|G_est - G|^2 / |G|^2 = tr(Sigma) / (B |G|^2) = B_simple / B."
+  assumes: ["the batch gradient is unbiased with covariance Sigma / B"]
+  derivation: "derivations/one-step-improvement.md"
+
+- id: c-simple-vs-noise
+  type: empirical
+  text: "In practice B_simple and B_noise typically differ only by a small constant multiplicative factor, particularly when common training schemes that improve conditioning are used."
+  scope:
+    models: "the models of the paper's experiments"
+    data: [unknown]
+    scale: "not stated"
+    setting: "B_noise and B_simple measured during training"
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 7", stance: for}
+
+- id: c-tradeoff-hyperbola
+  type: mathematical
+  text: "If every step at batch size B makes the progress of 1 / (1 + B_noise / B) full-batch steps, a run to a fixed loss takes S = S_min + E_min / B steps and E = B S examples, so (S / S_min - 1)(E / E_min - 1) = 1, and E_min / S_min is B_noise averaged over the full-batch steps of the run."
+  assumes: ["the per-step model of eq-eps-opt holds along the run with the step size retuned", "Delta L_max and B_noise depend on the run only through the loss reached", "fixed batch size", "the sum over steps is approximated by an integral"]
+  derivation: "derivations/step-example-tradeoff.md"
+
+- id: c-crit-definition
+  type: definitional
+  text: "The critical batch size is defined by an empirical fit to (S / S_min - 1) = (E / E_min - 1)^(-1) as B_crit = E_min / S_min, where S and S_min are the actual and minimum possible number of steps and E and E_min the actual and minimum possible number of training examples to reach a specified level of performance."
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 7", stance: for}
+
+- id: c-crit-twice
+  type: mathematical
+  text: "At B = B_crit both sides of the trade-off equal 1, so training takes twice as many passes through the data as the most data-efficient run and twice as many optimization steps as the most time-efficient run."
+  assumes: ["S = S_min + E_min / B at fixed batch size"]
+  derivation: "derivations/step-example-tradeoff.md"
+
+- id: c-two-batch-unbiased
+  type: mathematical
+  text: "With |G_small|^2 and |G_big|^2 the squared norms of batch gradients of sizes B_small and B_big, (B_big |G_big|^2 - B_small |G_small|^2) / (B_big - B_small) and (|G_small|^2 - |G_big|^2) / (1/B_small - 1/B_big) are unbiased estimates of |G|^2 and tr(Sigma)."
+  assumes: ["each batch consists of independent draws, so E|G_B|^2 = |G|^2 + tr(Sigma) / B", "B_small differs from B_big"]
+  derivation: "derivations/unbiased-norm-estimators.md"
+
+- id: c-per-example-bessel
+  type: mathematical
+  text: "When B_small = 1 and B_big = n, with the small-batch squared norm averaged over the n examples, the trace estimate is the sample variance with the Bessel correction n / (n - 1)."
+  assumes: ["the n per-example gradients of one batch are available"]
+  derivation: "derivations/unbiased-norm-estimators.md"
+
+- id: c-ratio-biased
+  type: mathematical
+  text: "The ratio of the two unbiased estimates is not an unbiased estimator of the noise scale, while the ratio of their averages over many steps converges to it."
+  assumes: ["the estimates of successive steps are independent with finite variance"]
+  derivation: "derivations/unbiased-norm-estimators.md"
+
+- id: c-ema
+  type: attributive
+  text: "The estimates of |G|^2 and S are calculated on every training step and used to compute separate exponentially-weighted moving averages, and the ratio of the moving averages provides a good estimate of the noise scale."
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 17", stance: for}
+
+- id: c-kaplan-power-law
+  type: empirical
+  text: "The critical batch size of Transformer language models can be fit with a power law in the loss, B_crit(L) approximately B_* / L^(1/alpha_B), where B_* is approximately 2 x 10^8 tokens and alpha_B approximately 0.21."
+  scope:
+    models: "decoder-only Transformer language models"
+    data: [webtext2]
+    scale: "the range of model sizes in the paper"
+    setting: "B_crit fit to the steps-examples trade-off and compared with the gradient noise scale"
+  evidence:
+    - {work: "kaplan-2020-scaling-laws", role: original, locator: "p. 13", stance: for}
+    - {work: "kaplan-2020-scaling-laws", role: original, locator: "p. 5", stance: for}
+
+- id: c-kaplan-million
+  type: empirical
+  text: "The ideal batch size for training these models is roughly a power of the loss only, continues to be determinable by measuring the gradient noise scale, and is roughly 1-2 million tokens at convergence for the largest models trained."
+  scope:
+    models: "the largest decoder-only Transformer language models of the paper"
+    data: [webtext2]
+    scale: "the largest models of the paper, at convergence"
+    setting: "batch size set from the gradient noise scale"
+  evidence:
+    - {work: "kaplan-2020-scaling-laws", role: original, locator: "p. 3", stance: for}
+
+- id: c-kaplan-doubles
+  type: empirical
+  text: "The critical batch size approximately doubles for every 13% decrease in loss."
+  scope:
+    models: "decoder-only Transformer language models"
+    data: [webtext2]
+    scale: "two model sizes in Figure 10"
+    setting: "B_crit measured from the steps-examples trade-off"
+  evidence:
+    - {work: "kaplan-2020-scaling-laws", role: original, locator: "p. 12", stance: for}
+
+- id: c-temperature
+  type: attributive
+  text: "The noise scale depends on the learning rate and batch size roughly through a temperature T, approximated by eps / B for pure SGD in the small-batch regime, and in equilibrium on a quadratic toy model the noise scales vary in proportion to the inverse temperature, B_noise proportional to B_simple proportional to 1/T."
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 25", stance: for}
+
+- id: c-lr-too-small
+  type: attributive
+  text: "The noise scale will be artificially inflated if the learning rate is too small, and to get a useful measurement the learning rate needs to be appropriate to the current point in parameter space."
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 9", stance: for}
+
+- id: c-range
+  type: empirical
+  text: "The gradient noise scale predicts the critical batch size at the order of magnitude level, even as the latter varies from 20 for an SVHN autoencoder to over 10 million."
+  scope:
+    models: "the models of the 8 tasks"
+    data: [mnist, svhn, cifar-10, imagenet, billion-word, atari, dota-2]
+    scale: "critical batch sizes from 20 to over 10 million"
+    setting: "B_crit fit from Pareto fronts of tuned runs, B_simple measured during training"
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 9", stance: for}
+
+- id: c-imagenet
+  type: empirical
+  text: "On ImageNet the noise scale varies from 2,000 to 100,000 in the main phase of training."
+  scope:
+    models: "ResNet-50"
+    data: [imagenet]
+    scale: "one training run with three learning-rate decays"
+    setting: "momentum"
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 12", stance: for}
+
+- id: c-crit-grows
+  type: empirical
+  text: "The critical batch size typically increases by an order of magnitude or more over the course of training."
+  scope:
+    models: "the models of the paper's tasks"
+    data: [unknown]
+    scale: "full training runs"
+    setting: "B_crit fit from Pareto fronts at several points of training"
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 11", stance: for}
+
+- id: c-schedule
+  type: empirical
+  text: "With a learning rate schedule that decays the learning rate three times, both B_simple and B_crit change significantly during training and must be measured separately at each learning rate."
+  scope:
+    models: "ResNet-50"
+    data: [imagenet]
+    scale: "one training run with three learning-rate decays"
+    setting: "momentum"
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 12", stance: for}
+
+- id: c-imagenet-lars
+  type: empirical
+  text: "The critical batch sizes measured on ImageNet are slightly lower than those reported in the literature, 15k against 64k, without techniques such as layer-wise adaptive learning rates."
+  scope:
+    models: "ResNet-50"
+    data: [imagenet]
+    scale: "one batch-size sweep"
+    setting: "momentum without layer-wise adaptive rates"
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 12", stance: for}
+
+- id: c-adaptive-sqrt
+  type: attributive
+  text: "If the batch size is varied during training, the exchange rate between examples and steps should be constant, so the batch size should vary in proportion to the square root of the noise scale; the predicted gains are relatively modest unless B_crit changes greatly during training."
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 27", stance: for}
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 26", stance: for}
+
+- id: c-kaplan-conversion
+  type: attributive
+  text: "The minimum number of steps and the minimum compute to reach a loss are estimated from a run at batch size B as S_min = S / (1 + B_crit(L) / B) and C_min = C / (1 + B / B_crit(L)), where C = 6 N B S."
+  evidence:
+    - {work: "kaplan-2020-scaling-laws", role: original, locator: "p. 13", stance: for}
+
+- id: c-model-size
+  type: attributive
+  text: "The number of model parameters cancels in the noise scale, so B is not expected to depend strongly on model size at fixed loss; larger models often achieve better loss and so are expected to have a higher noise scale only through that mechanism."
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 9", stance: for}
+
+- id: c-kaplan-size
+  type: empirical
+  text: "B_crit(L) is independent of model size and depends only on the loss L."
+  scope:
+    models: "two decoder-only Transformer language models of different size"
+    data: [webtext2]
+    scale: "Figure 10"
+    setting: "B_crit fit to the steps-examples trade-off"
+  evidence:
+    - {work: "kaplan-2020-scaling-laws", role: original, locator: "p. 13", stance: for}
+
+- id: c-smith-le
+  type: attributive
+  text: "Interpreting SGD as a stochastic differential equation gives the noise scale g = eps (N / B - 1), approximately eps N / B, where eps is the learning rate, N the training set size and B the batch size, so the optimum batch size is proportional to both, B_opt proportional to eps N."
+  evidence:
+    - {work: "smith-2018-bayesian-perspective-generalization-sgd", role: original, locator: "p. 1", stance: for}
+    - {work: "smith-2018-bayesian-perspective-generalization-sgd", role: original, locator: "p. 7", stance: for}
+
+- id: c-smith-le-dataset
+  type: attributive
+  text: "Smith and Le connected the temperature of SGD to the critical batch size, though they predict a dependence on dataset size which McCandlish et al. do not observe."
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 14", stance: for}
+
+- id: c-simple-misses
+  type: empirical
+  text: "For the VAE and autoencoder on SVHN, B_simple was significantly smaller than B_crit, while on MNIST B_simple roughly estimates B_crit though the latter is significantly smaller."
+  scope:
+    models: "a CNN, a VAE and an autoencoder"
+    data: [mnist, svhn]
+    scale: "one sweep per task"
+    setting: "SGD for MNIST"
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 12", stance: for}
+
+- id: c-shallue-no-degrade
+  type: empirical
+  text: "There is no evidence that larger batch sizes degrade out-of-sample performance."
+  scope:
+    models: "the models of the 35 workloads"
+    data: [unknown]
+    scale: "35 workloads"
+    setting: "metaparameters tuned for each batch size"
+  evidence:
+    - {work: "shallue-2019-measuring-effects-data-parallelism", role: original, locator: "p. 1", stance: for}
+
+- id: c-earlier-work
+  type: historical
+  text: "The gradient noise scale has also been studied in earlier work to aid in batch size selection."
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 14", stance: for}
+
+- id: c-history-mccandlish
+  type: historical
+  text: "McCandlish et al. introduced the gradient noise scale as a predictor of the largest useful batch size in arXiv 1812.06162v1, dated 14 December 2018, testing it on supervised learning, reinforcement learning and generative models."
+  evidence:
+    - {work: "mccandlish-2018-empirical-model-large-batch-training", role: original, locator: "p. 1", stance: for}
+
+- id: c-shallue-momentum
+  type: empirical
+  text: "SGD with momentum, as well as Nesterov momentum, can make use of much larger batch sizes than plain SGD."
+  scope:
+    models: "the models of the 35 workloads"
+    data: [unknown]
+    scale: "35 workloads"
+    setting: "plain SGD against momentum and Nesterov momentum, tuned for each batch size"
+  evidence:
+    - {work: "shallue-2019-measuring-effects-data-parallelism", role: original, locator: "p. 4", stance: for}

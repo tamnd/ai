@@ -1,0 +1,588 @@
+# The claims of the RLHF page (spec 07). The build computes the labels.
+
+# Setting
+
+- id: c-christiano-goals
+  type: attributive
+  text: "Christiano et al. explore goals defined in terms of non-expert human preferences between pairs of trajectory segments, and show that this approach can solve complex RL tasks without access to the reward function, including Atari games and simulated robot locomotion, while providing feedback on less than 1% of the agent's interactions with the environment."
+  evidence:
+    - {work: "christiano-2017-deep-rl-human-preferences", role: original, locator: "the abstract", stance: for}
+
+- id: c-christiano-loop
+  type: definitional
+  text: "The method of Christiano et al. maintains a policy and a reward function estimate, updated by three processes that run asynchronously: the policy interacts with the environment to produce trajectories and is updated by a traditional reinforcement learning algorithm to maximize the sum of the predicted rewards, pairs of segments are selected from the trajectories and sent to a human for comparison, and the reward estimate is optimized via supervised learning to fit the comparisons collected from the human so far."
+  evidence:
+    - {work: "christiano-2017-deep-rl-human-preferences", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-instructgpt-steps
+  type: definitional
+  text: "The method of Ouyang et al. has three steps: supervised fine-tuning (SFT) on labeler demonstrations, reward model (RM) training on rankings of model outputs by labelers, and reinforcement learning via proximal policy optimization (PPO) on this reward model."
+  evidence:
+    - {work: "ouyang-2022-training-language-models-follow-instructions", role: original, locator: "Section 1", stance: for}
+
+- id: c-rafailov-pipeline
+  type: definitional
+  text: "Following Ziegler et al., the RLHF pipeline usually includes three phases: supervised fine-tuning (SFT) on high-quality data to obtain a model pi SFT, preference sampling and reward learning on pairs of answers sampled from the SFT model and labeled by humans, and RL optimization."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "Section 3", stance: for}
+
+# The method: the reward model
+
+- id: c-bt-model
+  type: definitional
+  text: "Christiano et al. view the reward estimate as a latent factor explaining the human's judgments, take the probability of preferring a segment to depend exponentially on the latent reward summed over the clip, and choose the reward to minimize the cross-entropy loss between these predictions and the human labels; this follows the Bradley-Terry model for estimating score functions from pairwise preferences."
+  evidence:
+    - {work: "christiano-2017-deep-rl-human-preferences", role: original, locator: "Section 2.2.3", stance: for}
+
+- id: c-elo
+  type: attributive
+  text: "Christiano et al. compare the reward to the Elo ranking system of chess: the difference in predicted reward of two trajectory segments estimates the probability that one is chosen over the other by the human."
+  evidence:
+    - {work: "christiano-2017-deep-rl-human-preferences", role: original, locator: "Section 2.2.3", stance: for}
+
+- id: c-rm-loss-stiennon
+  type: definitional
+  text: "Stiennon et al. start the reward model from a supervised baseline with a randomly initialized linear head that outputs a scalar value, train it to predict which of two summaries a human judged better with the loss -E[log(sigma(r_theta(x, y_i) - r_theta(x, y_1-i)))], and at the end of training normalize the reward model outputs so that the reference summaries achieve a mean score of 0."
+  evidence:
+    - {work: "stiennon-2020-learning-summarize-human-feedback", role: original, locator: "Section 3.4", stance: for}
+
+- id: c-rm-ranked
+  type: definitional
+  text: "Ouyang et al. have labelers rank between K = 4 and K = 9 responses, which gives K choose 2 comparisons for each prompt, and train on all of them from each prompt as a single batch element, with the loss -1/(K choose 2) E[log(sigma(r_theta(x, y_w) - r_theta(x, y_l)))]."
+  evidence:
+    - {work: "ouyang-2022-training-language-models-follow-instructions", role: original, locator: "Section 3.5", stance: for}
+
+- id: c-rm-shuffle
+  type: empirical
+  text: "Ouyang et al. found that shuffling the comparisons into one dataset caused the reward model to overfit, because each completion appears in K - 1 separate updates."
+  scope:
+    models: "InstructGPT reward models, initialized from GPT-3 SFT models"
+    data: [openai-api-prompts]
+    scale: "6B reward models, K = 4 to 9 ranked responses per prompt"
+    setting: "reward model training on labeler rankings"
+  evidence:
+    - {work: "ouyang-2022-training-language-models-follow-instructions", role: original, locator: "Section 3.5", stance: for}
+
+- id: c-rm-6b
+  type: empirical
+  text: "Ouyang et al. start the reward model from the SFT model with the final unembedding layer removed, and use only 6B reward models, because they found 175B reward model training could be unstable."
+  scope:
+    models: "InstructGPT reward models, initialized from GPT-3 SFT models"
+    data: [openai-api-prompts]
+    scale: "6B reward models, K = 4 to 9 ranked responses per prompt"
+    setting: "reward model training on labeler rankings"
+  evidence:
+    - {work: "ouyang-2022-training-language-models-follow-instructions", role: original, locator: "Section 3.5", stance: for}
+
+- id: c-rm-shift
+  type: attributive
+  text: "Ouyang et al. note that the reward model loss is invariant to shifts in reward, and normalize the reward model with a bias so that the labeler demonstrations achieve a mean score of 0 before doing RL."
+  evidence:
+    - {work: "ouyang-2022-training-language-models-follow-instructions", role: original, locator: "Section 3.5", stance: for}
+
+- id: c-rm-mle
+  type: definitional
+  text: "Given a static dataset of comparisons sampled from the Bradley-Terry preference distribution, the reward model can be estimated via maximum likelihood, framed as a binary classification with the negative log-likelihood loss -E[log sigma(r_phi(x, y_w) - r_phi(x, y_l))], where sigma is the logistic function."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "Section 3", stance: for}
+
+- id: c-ziegler-four
+  type: definitional
+  text: "Ziegler et al. ask humans to choose between four options y0, y1, y2, y3 and fit the reward model with the log of the softmax of the rewards at the chosen option, and normalize it to mean 0 and variance 1."
+  evidence:
+    - {work: "ziegler-2019-fine-tuning-language-models-human-preferences", role: original, locator: "Section 2", stance: for}
+
+# The method: the policy
+
+- id: c-kl-reward-ziegler
+  type: definitional
+  text: "To keep the policy pi from moving too far from the language model rho, Ziegler et al. add a penalty with expectation beta KL(pi, rho) and perform RL on the modified reward R(x, y) = r(x, y) - beta log(pi(y|x) / rho(y|x)), with a constant beta or one varied dynamically to achieve a particular value of KL(pi, rho)."
+  evidence:
+    - {work: "ziegler-2019-fine-tuning-language-models-human-preferences", role: original, locator: "Section 2", stance: for}
+
+- id: c-kl-purposes
+  type: attributive
+  text: "Stiennon et al. state that the KL term acts as an entropy bonus, encouraging the policy to explore and deterring it from collapsing to a single mode, and ensures the policy does not learn to produce outputs that are too different from those that the reward model has seen during training."
+  evidence:
+    - {work: "stiennon-2020-learning-summarize-human-feedback", role: original, locator: "Section 3.4", stance: for}
+
+- id: c-ppo-token
+  type: definitional
+  text: "Stiennon et al. treat the output of the reward model as a reward for the entire summary that they maximize with PPO, where each time step is a BPE token, and initialize the value function to the parameters of the reward model, with completely separate parameters from the policy."
+  evidence:
+    - {work: "stiennon-2020-learning-summarize-human-feedback", role: original, locator: "Section 3.4", stance: for}
+
+- id: c-instructgpt-ppo
+  type: definitional
+  text: "Ouyang et al. fine-tune the SFT model with PPO in a bandit environment that presents a random customer prompt and expects a response, add a per-token KL penalty from the SFT model at each token to mitigate over-optimization of the reward model, and initialize the value function from the RM."
+  evidence:
+    - {work: "ouyang-2022-training-language-models-follow-instructions", role: original, locator: "Section 3.5", stance: for}
+
+- id: c-ptx
+  type: definitional
+  text: "Ouyang et al. mix the pretraining gradients into the PPO gradients, and call these models PPO-ptx; they maximize E[r_theta(x, y) - beta log(pi RL(y|x) / pi SFT(y|x))] + gamma E[log(pi RL(x))] over the pretraining distribution, where beta and gamma control the KL reward coefficient and the pretraining loss coefficient, and gamma is set to 0 for the PPO models."
+  evidence:
+    - {work: "ouyang-2022-training-language-models-follow-instructions", role: original, locator: "Section 3.5", stance: for}
+
+- id: c-rafailov-objective
+  type: definitional
+  text: "The RL fine-tuning phase is formulated as maximizing E[r_phi(x, y)] - beta D_KL(pi_theta(y|x) || pi_ref(y|x)), where beta controls the deviation from the reference policy pi_ref, the initial SFT model; because language generation is discrete, the objective is typically optimized with reinforcement learning by constructing the reward r_phi(x, y) - beta(log pi_theta(y|x) - log pi_ref(y|x)) and maximizing it using PPO."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "Section 3", stance: for}
+
+- id: c-ppo-clip
+  type: definitional
+  text: "With the probability ratio r_t(theta) = pi_theta(a_t|s_t) / pi_theta_old(a_t|s_t), PPO maximizes L^CLIP(theta) = E[min(r_t(theta) A_t, clip(r_t(theta), 1 - epsilon, 1 + epsilon) A_t)], where epsilon is a hyperparameter, say epsilon = 0.2; the final objective is a lower bound, a pessimistic bound, on the unclipped objective."
+  evidence:
+    - {work: "schulman-2017-proximal-policy-optimization", role: original, locator: "Section 3", stance: for}
+
+# Derivation
+
+- id: c-bt-logistic
+  type: mathematical
+  text: "Under the Bradley-Terry model exp(r_w) / (exp(r_w) + exp(r_l)) = sigma(r_w - r_l), so the reward-model loss of a pair is the logistic loss log(1 + exp(-(r_w - r_l))), which is log 2 when the two rewards are equal."
+  assumes: ["the Bradley-Terry model with exponentiated rewards"]
+  derivation: bradley-terry-gradient
+
+- id: c-bt-gradient
+  type: mathematical
+  text: "The derivative of -log sigma(r_w - r_l) is -sigma(r_l - r_w) in r_w and +sigma(r_l - r_w) in r_l, so the gradient in the parameters is -sigma(r_l - r_w) times the difference of the gradients of the two rewards; the weight is below 1, and above 1/2 exactly when the model orders the pair wrong."
+  assumes: ["the reward model is differentiable in its parameters"]
+  derivation: bradley-terry-gradient
+
+- id: c-bt-curvature
+  type: mathematical
+  text: "The second derivative of the Bradley-Terry loss in the reward difference Delta is sigma(Delta) sigma(-Delta), which is positive and at most 1/4, so the loss is convex in Delta."
+  assumes: ["the Bradley-Terry model with exponentiated rewards"]
+  derivation: bradley-terry-gradient
+
+- id: c-bt-shift
+  type: mathematical
+  text: "Adding any function c(x) of the prompt to the reward leaves the Bradley-Terry loss of every pair unchanged, so the preferences fix the reward only up to such a shift."
+  assumes: ["the loss depends on the rewards only through their difference within a prompt"]
+  derivation: bradley-terry-gradient
+
+- id: c-bt-softmax-two
+  type: mathematical
+  text: "The cross-entropy over two responses with the preferred one as the label equals the Bradley-Terry loss, so the softmax loss over several options with two options is the Bradley-Terry loss."
+  assumes: ["the Bradley-Terry model with exponentiated rewards"]
+  derivation: bradley-terry-gradient
+
+- id: c-kl-gap
+  type: mathematical
+  text: "For every policy pi, E_pi[r] - beta KL(pi || pi_ref) equals beta log Z(x) - beta KL(pi || pi_star), where pi_star = pi_ref exp(r / beta) / Z(x) and Z(x) is the sum over responses of pi_ref exp(r / beta)."
+  assumes: ["a finite set of responses", "pi_ref > 0", "beta > 0"]
+  derivation: dpo-from-kl-optimum
+
+- id: c-kl-optimum
+  type: mathematical
+  text: "The unique maximizer of the KL-regularized objective E_pi[r] - beta KL(pi || pi_ref) is pi_star = pi_ref exp(r / beta) / Z(x), and the maximum is beta log Z(x)."
+  assumes: ["a finite set of responses", "pi_ref > 0", "beta > 0"]
+  derivation: dpo-from-kl-optimum
+
+- id: c-rafailov-optimum
+  type: attributive
+  text: "Rafailov et al. state that the optimal solution to the KL-constrained reward maximization objective takes the form pi_r(y|x) = pi_ref(y|x) exp(r(x, y) / beta) / Z(x), where Z(x) is the partition function, which is expensive to estimate even for the MLE estimate of the reward."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "Section 4", stance: for}
+
+- id: c-implicit-reward
+  type: mathematical
+  text: "Taking logarithms of the optimal policy gives r(x, y) = beta log(pi_star(y|x) / pi_ref(y|x)) + beta log Z(x)."
+  assumes: ["pi_ref > 0", "beta > 0"]
+  derivation: dpo-from-kl-optimum
+
+- id: c-dpo-cancel
+  type: mathematical
+  text: "Substituting the reward written through the optimal policy into the Bradley-Terry model cancels the partition function, so the preference probability depends only on the optimal and the reference policies, and the DPO loss at the optimal policy equals the Bradley-Terry loss of the reward."
+  assumes: ["the Bradley-Terry model", "pi_ref > 0", "beta > 0"]
+  derivation: dpo-from-kl-optimum
+
+- id: c-dpo-loss
+  type: definitional
+  text: "Rafailov et al. formulate a maximum likelihood objective for a parametrized policy, L_DPO(pi_theta; pi_ref) = -E[log sigma(beta log(pi_theta(y_w|x) / pi_ref(y_w|x)) - beta log(pi_theta(y_l|x) / pi_ref(y_l|x)))], which fits an implicit reward whose optimal policy is simply pi_theta."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "Section 4", stance: for}
+
+- id: c-dpo-gradient
+  type: mathematical
+  text: "With r_hat = beta log(pi_theta / pi_ref), the gradient of the DPO loss of one pair is -beta sigma(r_hat(y_l) - r_hat(y_w)) times the difference of the gradients of log pi_theta(y_w|x) and log pi_theta(y_l|x)."
+  assumes: ["pi_ref does not depend on theta", "beta > 0"]
+  derivation: dpo-from-kl-optimum
+
+- id: c-dpo-weight
+  type: attributive
+  text: "Rafailov et al. read the gradient of the DPO loss as increasing the likelihood of y_w and decreasing the likelihood of y_l, with a higher weight when the reward estimate is wrong."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "Section 4", stance: for}
+
+- id: c-kl-shaped-unbiased
+  type: mathematical
+  text: "The expectation under pi of the KL-shaped reward r(x, y) - beta log(pi(y|x) / pi_ref(y|x)) is E_pi[r] - beta KL(pi || pi_ref), so reinforcement learning on the KL-shaped reward maximizes the KL-regularized objective."
+  assumes: ["pi_ref > 0 on the support of pi"]
+  derivation: dpo-from-kl-optimum
+
+- id: c-per-token-kl
+  type: mathematical
+  text: "For an autoregressive policy the per-token log-ratios of the policy and the reference add up to the log-ratio of the whole response, so a KL penalty at every token equals one on the sequence."
+  assumes: ["both policies factor over the tokens by the chain rule of probability"]
+  derivation: dpo-from-kl-optimum
+
+- id: c-clip-lower-bound
+  type: mathematical
+  text: "The clipped term min(rho A, clip(rho, 1 - eps, 1 + eps) A) is at most rho A and equals it when rho is in [1 - eps, 1 + eps]."
+  assumes: ["rho > 0", "0 <= eps < 1"]
+  derivation: ppo-clip
+
+- id: c-clip-flat
+  type: mathematical
+  text: "For A > 0 the clipped term is the constant (1 + eps) A once rho exceeds 1 + eps, and for A < 0 it is the constant (1 - eps) A once rho falls below 1 - eps, so its gradient is zero there; on the other side of the interval it is rho A."
+  assumes: ["rho > 0", "0 <= eps < 1", "the advantage does not depend on the parameters"]
+  derivation: ppo-clip
+
+- id: c-clip-first-step
+  type: mathematical
+  text: "At the old parameters the ratio is 1, and the gradient of the clipped term is A times the gradient of log pi_theta(a|s), the term of the policy gradient."
+  assumes: ["the advantage does not depend on the parameters"]
+  derivation: ppo-clip
+
+# Hyperparameters
+
+- id: c-instructgpt-hparams
+  type: empirical
+  text: "Ouyang et al. compute the KL reward with beta = 0.02, train all the RL models for 256k episodes with a batch size of 512 and a minibatch size of 64, apply no discount when estimating the generalized advantage, and set the PPO clip ratio to 0.2."
+  scope:
+    models: "InstructGPT policies, 1.3B, 6B and 175B GPT-3"
+    data: [openai-api-prompts]
+    scale: "256k episodes, about 31k prompts"
+    setting: "PPO and PPO-ptx against a 6B reward model"
+  evidence:
+    - {work: "ouyang-2022-training-language-models-follow-instructions", role: original, locator: "p. 42", stance: for}
+
+- id: c-instructgpt-gamma
+  type: empirical
+  text: "For PPO-ptx, Ouyang et al. use 8 times more pretraining examples than the number of RL training episodes, and multiply the pretraining gradients by a coefficient gamma = 27.8."
+  scope:
+    models: "InstructGPT policies, 1.3B, 6B and 175B GPT-3"
+    data: [openai-api-prompts]
+    scale: "256k episodes, about 31k prompts"
+    setting: "PPO and PPO-ptx against a 6B reward model"
+  evidence:
+    - {work: "ouyang-2022-training-language-models-follow-instructions", role: original, locator: "p. 42", stance: for}
+
+- id: c-dpo-beta
+  type: empirical
+  text: "Unless noted otherwise, Rafailov et al. use beta = 0.1, a batch size of 64 and the RMSprop optimizer with a learning rate of 1e-6, and beta = 0.5 for TL;DR summarization."
+  scope:
+    models: "GPT-2 and Pythia-2.8B policies"
+    data: [imdb, tldr, anthropic-hh]
+    scale: "up to 6B parameters"
+    setting: "controlled sentiment generation, summarization and single-turn dialogue"
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "p. 20", stance: for}
+
+# Evidence
+
+- id: c-christiano-hour
+  type: empirical
+  text: "Christiano et al. train complex novel behaviors with about an hour of human time."
+  scope:
+    models: "deep RL agents trained with A2C and TRPO"
+    data: [atari, mujoco]
+    scale: "about an hour of human time; 700 queries for robotics, 5,500 for Atari"
+    setting: "Atari games and simulated robotics with a reward learned from comparisons"
+  evidence:
+    - {work: "christiano-2017-deep-rl-human-preferences", role: original, locator: "the abstract", stance: for}
+
+- id: c-ziegler-results
+  type: empirical
+  text: "Ziegler et al. achieve good results on stylistic continuation with only 5,000 comparisons evaluated by humans; for summarization, models trained with 60,000 comparisons copy whole sentences from the input but skip irrelevant preamble, which gives very good performance according to the labelers but may be exploiting the fact that labelers rely on simple heuristics."
+  scope:
+    models: "774M GPT-2 policies and reward models"
+    data: [bookcorpus, tldr, cnn-dailymail]
+    scale: "5,000 to 60,000 human comparisons"
+    setting: "stylistic continuation and summarization"
+  evidence:
+    - {work: "ziegler-2019-fine-tuning-language-models-human-preferences", role: original, locator: "the abstract", stance: for}
+
+- id: c-stiennon-results
+  type: empirical
+  text: "Stiennon et al. find that their models significantly outperform both human reference summaries and much larger models fine-tuned with supervised learning alone on the TL;DR dataset, transfer to CNN/DM news articles, and that optimizing their reward model results in better summaries than optimizing ROUGE according to humans."
+  scope:
+    models: "GPT-3-style models of 1.3B and 6.7B parameters"
+    data: [tldr, cnn-dailymail]
+    scale: "64k human comparisons"
+    setting: "summarization of Reddit posts"
+  evidence:
+    - {work: "stiennon-2020-learning-summarize-human-feedback", role: original, locator: "the abstract", stance: for}
+
+- id: c-stiennon-rm-scaling
+  type: empirical
+  text: "Stiennon et al. find that doubling the training data amount leads to a ~1.1% increase in the reward model validation set accuracy, whereas doubling the model size leads to a ~1.8% increase."
+  scope:
+    models: "7 reward models from 160M to 13B parameters"
+    data: [tldr]
+    scale: "8k to 64k comparisons"
+    setting: "reward model validation accuracy"
+  evidence:
+    - {work: "stiennon-2020-learning-summarize-human-feedback", role: original, locator: "Section 4.3", stance: for}
+
+- id: c-instructgpt-1-3b
+  type: empirical
+  text: "In human evaluations on the prompt distribution of Ouyang et al., outputs from the 1.3B parameter InstructGPT model are preferred to outputs from the 175B GPT-3, despite having 100x fewer parameters."
+  scope:
+    models: "InstructGPT and GPT-3, 1.3B, 6B and 175B"
+    data: [openai-api-prompts]
+    scale: "human evaluation by labelers"
+    setting: "prompts submitted to the OpenAI API"
+  evidence:
+    - {work: "ouyang-2022-training-language-models-follow-instructions", role: original, locator: "the abstract", stance: for}
+
+- id: c-instructgpt-85
+  type: empirical
+  text: "Outputs from the 175B InstructGPT are preferred to 175B GPT-3 outputs 85 ± 3% of the time, and preferred 71 ± 4% of the time to few-shot 175B GPT-3."
+  scope:
+    models: "InstructGPT and GPT-3, 1.3B, 6B and 175B"
+    data: [openai-api-prompts]
+    scale: "human evaluation by labelers"
+    setting: "prompts submitted to the OpenAI API"
+  evidence:
+    - {work: "ouyang-2022-training-language-models-follow-instructions", role: original, locator: "Section 1", stance: for}
+
+- id: c-instructgpt-truthful
+  type: empirical
+  text: "On the TruthfulQA benchmark, InstructGPT generates truthful and informative answers about twice as often as GPT-3, and InstructGPT models generate about 25% fewer toxic outputs than GPT-3 when prompted to be respectful, but do not significantly improve over GPT-3 on the Winogender and CrowSPairs bias datasets."
+  scope:
+    models: "InstructGPT and GPT-3, 1.3B, 6B and 175B"
+    data: [truthfulqa, realtoxicityprompts, winogender, crows-pairs]
+    scale: "unknown"
+    setting: "public benchmarks, zero-shot"
+  evidence:
+    - {work: "ouyang-2022-training-language-models-follow-instructions", role: original, locator: "Section 1", stance: for}
+
+- id: c-instructgpt-heldout
+  type: empirical
+  text: "Held-out labelers that did not produce any training data prefer InstructGPT outputs to outputs from GPT-3 at about the same rate as the training labelers."
+  scope:
+    models: "InstructGPT and GPT-3, 1.3B, 6B and 175B"
+    data: [openai-api-prompts]
+    scale: "human evaluation by labelers"
+    setting: "prompts submitted to the OpenAI API"
+  evidence:
+    - {work: "ouyang-2022-training-language-models-follow-instructions", role: original, locator: "Section 1", stance: for}
+
+- id: c-bai-abstract
+  type: empirical
+  text: "Bai et al. apply preference modeling and RLHF to finetune language models to act as helpful and harmless assistants, and find that this alignment training improves performance on almost all NLP evaluations and is fully compatible with training for specialized skills such as python coding and summarization."
+  scope:
+    models: "Anthropic language models from 13M to 52B parameters"
+    data: [anthropic-hh]
+    scale: "preference models and RLHF policies up to 52B"
+    setting: "helpful and harmless dialogue assistants"
+  evidence:
+    - {work: "bai-2022-training-helpful-harmless-assistant", role: original, locator: "the abstract", stance: for}
+
+- id: c-bai-online
+  type: empirical
+  text: "Bai et al. explore an iterated online mode of training, where preference models and RL policies are updated on a weekly cadence with fresh human feedback data."
+  scope:
+    models: "Anthropic language models from 13M to 52B parameters"
+    data: [anthropic-hh]
+    scale: "preference models and RLHF policies up to 52B"
+    setting: "helpful and harmless dialogue assistants"
+  evidence:
+    - {work: "bai-2022-training-helpful-harmless-assistant", role: original, locator: "the abstract", stance: for}
+
+- id: c-bai-sqrt-kl
+  type: empirical
+  text: "Bai et al. identify a roughly linear relation between the RL reward and the square root of the KL divergence between the policy and its initialization."
+  scope:
+    models: "Anthropic language models from 13M to 52B parameters"
+    data: [anthropic-hh]
+    scale: "preference models and RLHF policies up to 52B"
+    setting: "helpful and harmless dialogue assistants"
+  evidence:
+    - {work: "bai-2022-training-helpful-harmless-assistant", role: original, locator: "the abstract", stance: for}
+
+- id: c-bai-sqrt-kl-why
+  type: attributive
+  text: "Bai et al. explain the relation by a series expansion: D_KL(pi + delta pi || pi) begins at quadratic order in delta pi, while the reward varies linearly in delta pi, so in the small-delta-pi region reward is proportional to the square root of D_KL, which suggests that most of RLHF training remains in the small-delta-pi regime."
+  evidence:
+    - {work: "bai-2022-training-helpful-harmless-assistant", role: original, locator: "Section 4.3", stance: for}
+
+- id: c-dpo-reward-kl
+  type: empirical
+  text: "In the sentiment setting, Rafailov et al. find that DPO produces by far the most efficient reward-KL frontier, achieving the highest reward while still achieving low KL, and that its reward/KL tradeoff strictly dominates PPO, even when PPO can access ground truth rewards."
+  scope:
+    models: "GPT-2-large policies"
+    data: [imdb]
+    scale: "22 runs, target KL in {3, 6, 9, 12} for PPO and beta in {0.05, 0.1, 1, 5}"
+    setting: "controlled sentiment generation with a sentiment classifier as the reward"
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "Section 6.1", stance: for}
+
+- id: c-dpo-abstract
+  type: empirical
+  text: "Rafailov et al. report that DPO is stable, performant and computationally lightweight, eliminating the need for sampling from the LM during fine-tuning, and that it matches or improves response quality in summarization and single-turn dialogue while being substantially simpler to implement and train."
+  scope:
+    models: "GPT-2 and Pythia-2.8B policies"
+    data: [imdb, tldr, anthropic-hh]
+    scale: "up to 6B parameters"
+    setting: "controlled sentiment generation, summarization and single-turn dialogue"
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "the abstract", stance: for}
+
+# Limitations
+
+- id: c-alignment-tax
+  type: empirical
+  text: "During RLHF fine-tuning, Ouyang et al. observe performance regressions compared to GPT-3 on public NLP datasets, notably SQuAD, DROP, HellaSwag and WMT 2015 French to English translation, an example of an alignment tax; mixing PPO updates with updates that increase the log likelihood of the pretraining distribution (PPO-ptx) greatly reduces the regressions without compromising labeler preference scores."
+  scope:
+    models: "InstructGPT and GPT-3, 1.3B, 6B and 175B"
+    data: [squad, drop, hellaswag, wmt-2015-fr-en]
+    scale: "unknown"
+    setting: "public NLP datasets after RLHF fine-tuning"
+  evidence:
+    - {work: "ouyang-2022-training-language-models-follow-instructions", role: original, locator: "Section 1", stance: for}
+
+- id: c-bai-tax
+  type: empirical
+  text: "Bai et al. find that smaller models experience severe alignment taxes, with performance on a wide variety of evaluations declining after RLHF training, while their 13B and 52B RLHF-trained models perform better at zero-shot NLP evaluations and the same at few-shot evaluations."
+  scope:
+    models: "Anthropic language models from 13M to 52B parameters"
+    data: [anthropic-hh]
+    scale: "preference models and RLHF policies up to 52B"
+    setting: "helpful and harmless dialogue assistants"
+  evidence:
+    - {work: "bai-2022-training-helpful-harmless-assistant", role: original, locator: "Section 1.1", stance: for}
+
+- id: c-stiennon-overopt
+  type: empirical
+  text: "Stiennon et al. find that under light optimization against the reward model the policies improve according to labelers, but as they optimize further, true preferences fall off compared to the prediction, and eventually the reward model becomes anti-correlated with human preferences."
+  scope:
+    models: "GPT-3-style models of 1.3B and 6.7B parameters"
+    data: [tldr, cnn-dailymail]
+    scale: "64k human comparisons"
+    setting: "summarization of Reddit posts"
+  evidence:
+    - {work: "stiennon-2020-learning-summarize-human-feedback", role: original, locator: "Section 4.3", stance: for}
+
+- id: c-gao-setup
+  type: definitional
+  text: "Gao et al. use a synthetic setup in which a fixed gold-standard reward model plays the role of humans, providing labels used to train a proxy reward model, and study how the gold reward model score changes as they optimize against the proxy reward model using reinforcement learning or best-of-n sampling."
+  evidence:
+    - {work: "gao-2023-scaling-laws-reward-model-overoptimization", role: original, locator: "the abstract", stance: for}
+
+- id: c-gao-forms
+  type: empirical
+  text: "With d the square root of D_KL(pi || pi_init), Gao et al. find empirically that the gold reward model score follows R_bon(d) = d(alpha_bon - beta_bon d) for best-of-n sampling and R_RL(d) = d(alpha_RL - beta_RL log d) for reinforcement learning, with coefficients that vary smoothly with the number of proxy reward model parameters."
+  scope:
+    models: "proxy reward models from 3M to 3B parameters, and policies optimized against them"
+    data: [unknown]
+    scale: "100,000 synthetic comparisons, 10% held out"
+    setting: "synthetic labels from the 6B reward model of Ouyang et al. as the gold reward model, best-of-n and PPO"
+  evidence:
+    - {work: "gao-2023-scaling-laws-reward-model-overoptimization", role: original, locator: "Section 1", stance: for}
+
+- id: c-gao-kl-penalty
+  type: empirical
+  text: "In the reinforcement learning setup of Gao et al., using a KL penalty increases the proxy reward model score that can be achieved for a given KL divergence, but this does not correspond to a measurable improvement in the gold RM score-KL frontier; they note this result could be particularly sensitive to hyperparameters."
+  scope:
+    models: "proxy reward models from 3M to 3B parameters, and policies optimized against them"
+    data: [unknown]
+    scale: "100,000 synthetic comparisons, 10% held out"
+    setting: "synthetic labels from the 6B reward model of Ouyang et al. as the gold reward model, best-of-n and PPO"
+  evidence:
+    - {work: "gao-2023-scaling-laws-reward-model-overoptimization", role: original, locator: "Section 1", stance: for}
+
+- id: c-gao-early-stopping
+  type: empirical
+  text: "Gao et al. observe that the KL penalty only causes the gold RM score to converge earlier, so that its effect on the gold score is akin to early stopping."
+  scope:
+    models: "proxy reward models from 3M to 3B parameters, and policies optimized against them"
+    data: [unknown]
+    scale: "100,000 synthetic comparisons, 10% held out"
+    setting: "synthetic labels from the 6B reward model of Ouyang et al. as the gold reward model, best-of-n and PPO"
+  evidence:
+    - {work: "gao-2023-scaling-laws-reward-model-overoptimization", role: original, locator: "Section 3.6", stance: for}
+
+- id: c-bai-tension
+  type: empirical
+  text: "Bai et al. found many RLHF policies reproducing the same exaggerated responses to all remotely sensitive questions, which they attribute to over-optimizing for harmlessness while under-optimizing helpfulness."
+  scope:
+    models: "Anthropic language models from 13M to 52B parameters"
+    data: [anthropic-hh]
+    scale: "preference models and RLHF policies up to 52B"
+    setting: "helpful and harmless dialogue assistants"
+  evidence:
+    - {work: "bai-2022-training-helpful-harmless-assistant", role: original, locator: "Section 4.4", stance: for}
+
+- id: c-instructgpt-labelers
+  type: attributive
+  text: "Ouyang et al. hire a team of 40 contractors to label their data, and align to the stated preferences of a specific group of people, the labelers and researchers, rather than any broader notion of human values."
+  evidence:
+    - {work: "ouyang-2022-training-language-models-follow-instructions", role: original, locator: "Section 1", stance: for}
+
+- id: c-casper-taxonomy
+  type: attributive
+  text: "Casper et al. divide the open problems of RLHF into challenges with collecting human feedback, training the reward model, and training the policy, plus challenges with jointly learning a reward model and policy, and distinguish relatively tractable challenges from fundamental limitations."
+  evidence:
+    - {work: "casper-2023-open-problems-rlhf", role: original, locator: "Section 3", stance: for}
+
+- id: c-casper-central
+  type: attributive
+  text: "Casper et al. describe RLHF as the central method used to finetune state-of-the-art large language models, and emphasize its limitations and the importance of a multi-layered approach to the development of safer AI systems."
+  evidence:
+    - {work: "casper-2023-open-problems-rlhf", role: original, locator: "the abstract", stance: for}
+
+- id: c-rlhf-unstable
+  type: attributive
+  text: "Rafailov et al. describe RLHF as a complex and often unstable procedure, first fitting a reward model that reflects the human preferences, and then fine-tuning the large unsupervised LM using reinforcement learning to maximize this estimated reward without drifting too far from the original model."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "the abstract", stance: for}
+
+# Variants
+
+- id: c-christiano-rl
+  type: definitional
+  text: "Christiano et al. note that the reward estimate may be non-stationary, which led them to policy gradient methods; they use advantage actor-critic (A2C) for Atari games and trust region policy optimization (TRPO) for simulated robotics tasks."
+  evidence:
+    - {work: "christiano-2017-deep-rl-human-preferences", role: original, locator: "Section 2.2.1", stance: for}
+
+- id: c-christiano-ensemble
+  type: definitional
+  text: "Christiano et al. fit an ensemble of predictors, each trained on triples sampled from the data with replacement, normalize each independently and average them, and hold out a fraction of 1/e of the data as a validation set for each predictor."
+  evidence:
+    - {work: "christiano-2017-deep-rl-human-preferences", role: original, locator: "Section 2.2.3", stance: for}
+
+# History
+
+- id: c-hist-christiano
+  type: historical
+  text: "Deep Reinforcement Learning from Human Preferences, by authors at OpenAI and DeepMind, is arXiv 1706.03741; the fourth version is dated 17 Feb 2023."
+  evidence:
+    - {work: "christiano-2017-deep-rl-human-preferences", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-stiennon
+  type: historical
+  text: "Learning to summarize from human feedback, by authors at OpenAI, appeared at the 34th Conference on Neural Information Processing Systems (NeurIPS 2020), Vancouver, Canada."
+  evidence:
+    - {work: "stiennon-2020-learning-summarize-human-feedback", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-ouyang
+  type: historical
+  text: "Training language models to follow instructions with human feedback, a joint project of the OpenAI Alignment team, was posted as arXiv 2203.02155v1 on 4 Mar 2022."
+  evidence:
+    - {work: "ouyang-2022-training-language-models-follow-instructions", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-bai
+  type: historical
+  text: "Training a Helpful and Harmless Assistant with Reinforcement Learning from Human Feedback, by authors at Anthropic, was posted as arXiv 2204.05862v1 on 12 Apr 2022."
+  evidence:
+    - {work: "bai-2022-training-helpful-harmless-assistant", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-rafailov
+  type: historical
+  text: "Direct Preference Optimization, by authors at Stanford University and CZ Biohub, appeared at the 37th Conference on Neural Information Processing Systems (NeurIPS 2023)."
+  evidence:
+    - {work: "rafailov-2023-direct-preference-optimization", role: original, locator: "the title page", stance: for}

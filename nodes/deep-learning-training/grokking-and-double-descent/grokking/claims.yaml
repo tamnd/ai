@@ -1,0 +1,500 @@
+# The claims of the grokking page (spec 07). The build computes the labels.
+
+# The finding
+
+- id: c-power-grokking
+  type: empirical
+  text: "Long after severely overfitting, validation accuracy sometimes suddenly begins to increase from chance level toward perfect generalization; Power et al. call this phenomenon grokking."
+  scope:
+    models: "small decoder-only transformers"
+    data: [binary operation tables]
+    scale: "about 4 x 10^5 non-embedding parameters"
+    setting: "training on a fraction of all equations a o b = c, validation on the rest"
+  evidence:
+    - {work: "power-2022-grokking-generalization-beyond-overfitting", role: original, locator: "p. 2", stance: for}
+  small_scale: "yes"
+  small_scale_note: "The original runs train a two-layer transformer of about 4 x 10^5 parameters on one GPU; the page's implementation trains a tiny model on a CPU, without reproducing the late jump."
+
+- id: c-power-division
+  type: empirical
+  text: "On division mod 97 with 50% of the equations in the training set, training accuracy becomes close to perfect at < 10^3 optimization steps, but validation accuracy takes close to 10^6 steps to reach that level, with very little evidence of generalization until 10^5 steps."
+  scope:
+    models: "two-layer transformer of width 128 with 4 attention heads"
+    data: [division mod 97]
+    scale: "about 4 x 10^5 non-embedding parameters, 10^6 steps"
+    setting: "Adam with no weight decay, half of the equations for training"
+  evidence:
+    - {work: "power-2022-grokking-generalization-beyond-overfitting", role: original, locator: "p. 1", stance: for}
+
+- id: c-power-thousand-times
+  type: empirical
+  text: "For modular division, validation accuracy starts increasing beyond chance level only after 1000 times more optimization steps than are required for training accuracy to get close to optimal."
+  scope:
+    models: "two-layer transformer"
+    data: [division mod 97]
+    scale: "about 4 x 10^5 non-embedding parameters"
+    setting: "50% of the equations for training"
+  evidence:
+    - {work: "power-2022-grokking-generalization-beyond-overfitting", role: original, locator: "p. 2", stance: for}
+
+- id: c-power-near-minimal
+  type: empirical
+  text: "These behaviors were typical for all the binary operations for dataset sizes close to the minimal dataset size for which the network generalized within the optimization budget; for larger dataset sizes the training and validation curves tend to track each other more closely."
+  scope:
+    models: "two-layer transformer"
+    data: [binary operation tables mod 97, products in S5]
+    scale: "10^5 to 10^6 steps"
+    setting: "varying the fraction of equations used for training"
+  evidence:
+    - {work: "power-2022-grokking-generalization-beyond-overfitting", role: original, locator: "p. 2", stance: for}
+
+- id: c-power-time-vs-data
+  type: empirical
+  text: "For the product in the group S5, in the vicinity of 25-30% of data a decrease of 1% of training data leads to an increase of 40-50% in the median number of steps until validation accuracy first reaches 99%."
+  scope:
+    models: "two-layer transformer"
+    data: [products in S5]
+    scale: "up to 5 x 10^5 steps, 7 seeds"
+    setting: "AdamW with weight decay 1"
+  evidence:
+    - {work: "power-2022-grokking-generalization-beyond-overfitting", role: original, locator: "p. 3", stance: for}
+
+- id: c-power-train-time
+  type: empirical
+  text: "While the steps until validation accuracy exceeds 99% grow quickly as the dataset size decreases, the steps until training accuracy first reaches 99% generally trend down and stay in the range of 10^3-10^4 optimization steps."
+  scope:
+    models: "two-layer transformer"
+    data: [products in S5]
+    scale: "up to 5 x 10^5 steps"
+    setting: "varying the training fraction"
+  evidence:
+    - {work: "power-2022-grokking-generalization-beyond-overfitting", role: original, locator: "p. 3", stance: for}
+
+- id: c-power-no-pattern
+  type: empirical
+  text: "Some operations, for example x^3 + xy^2 + y (mod 97), did not lead to generalization within the optimization budget at any percentage of data up to 95%; the converged models just memorized the training dataset."
+  scope:
+    models: "two-layer transformer"
+    data: [x^3 + xy^2 + y mod 97]
+    scale: "10^5 steps, 3 seeds"
+    setting: "up to 95% of the equations for training"
+  evidence:
+    - {work: "power-2022-grokking-generalization-beyond-overfitting", role: original, locator: "p. 3", stance: for}
+
+- id: c-power-symmetric
+  type: empirical
+  text: "Operations that are symmetric in the order of the operands, such as x + y and x^2 + y^2, tend to require less data for generalization than closely related non-symmetrical counterparts such as x - y."
+  scope:
+    models: "two-layer transformer"
+    data: [binary operation tables mod 97]
+    scale: "10^5 steps, 3 seeds"
+    setting: "best validation accuracy against the training fraction"
+  evidence:
+    - {work: "power-2022-grokking-generalization-beyond-overfitting", role: original, locator: "p. 3", stance: for}
+
+- id: c-power-weight-decay
+  type: empirical
+  text: "Adding weight decay has a very large effect on data efficiency, more than halving the amount of samples needed compared to most other interventions; weight decay towards the initialization is also effective, but not quite as effective as weight decay towards the origin."
+  scope:
+    models: "two-layer transformer"
+    data: [products in S5]
+    scale: "10^5 steps"
+    setting: "full-batch and minibatch Adam, dropout, gradient and weight noise, learning rates, weight decay"
+  evidence:
+    - {work: "power-2022-grokking-generalization-beyond-overfitting", role: original, locator: "p. 4", stance: for}
+
+- id: c-power-noise
+  type: empirical
+  text: "Adding some noise to the optimization process, such as gradient noise from using minibatches or Gaussian noise applied to the weights before or after computing the gradients, is beneficial for generalization."
+  scope:
+    models: "two-layer transformer"
+    data: [products in S5]
+    scale: "10^5 steps"
+    setting: "full-batch Adam against minibatch Adam and Adam with added noise"
+  evidence:
+    - {work: "power-2022-grokking-generalization-beyond-overfitting", role: original, locator: "p. 4", stance: for}
+
+- id: c-power-learning-rate
+  type: empirical
+  text: "The learning rate had to be tuned in a relatively narrow window, within 1 order of magnitude, for generalization to happen."
+  scope:
+    models: "two-layer transformer"
+    data: [products in S5, modular addition]
+    scale: "10^5 steps"
+    setting: "Adam and AdamW"
+  evidence:
+    - {work: "power-2022-grokking-generalization-beyond-overfitting", role: original, locator: "p. 4", stance: for}
+
+- id: c-power-embeddings
+  type: empirical
+  text: "In t-SNE plots of the output layer of networks trained on modular addition, the circular topology of modular addition shows as a number line formed by adding 8 to each element, and the structure is more apparent in networks optimized with weight decay."
+  scope:
+    models: "two-layer transformer"
+    data: [modular addition mod 97]
+    scale: "about 4 x 10^5 non-embedding parameters"
+    setting: "t-SNE of the rows of the output layer"
+  evidence:
+    - {work: "power-2022-grokking-generalization-beyond-overfitting", role: original, locator: "p. 4", stance: for}
+
+- id: c-power-setup
+  type: empirical
+  text: "The original experiments used a decoder-only transformer with 2 layers, width 128 and 4 attention heads, about 4 · 10^5 non-embedding parameters, trained with AdamW at learning rate 10^-3, weight decay 1, beta2 = 0.98, minibatches of 512 and a budget of 10^5 updates."
+  scope:
+    models: "two-layer decoder-only transformer"
+    data: [binary operation tables mod 97, products in S5]
+    scale: "about 4 x 10^5 non-embedding parameters"
+    setting: "loss and accuracy on the answer token only"
+  evidence:
+    - {work: "power-2022-grokking-generalization-beyond-overfitting", role: original, locator: "p. 6", stance: for}
+
+- id: c-power-figure-one-adam
+  type: empirical
+  text: "For the experiments of Section 3.1, including the division example, the budget was raised to 10^6 steps and the optimizer was Adam with no weight decay, to emphasize how late the generalization can begin."
+  scope:
+    models: "two-layer transformer"
+    data: [division mod 97]
+    scale: "10^6 steps"
+    setting: "Adam without weight decay"
+  evidence:
+    - {work: "power-2022-grokking-generalization-beyond-overfitting", role: original, locator: "p. 7", stance: for}
+
+# The mechanism in modular addition
+
+- id: c-nanda-setup
+  type: empirical
+  text: "The mainline model of Nanda et al. is a one-layer ReLU transformer with d = 128, 4 attention heads and 512 hidden units, trained on 30% of the 113 · 113 pairs of addition mod 113 with full-batch AdamW, learning rate 0.001 and weight decay 1, for forty thousand epochs."
+  scope:
+    models: "one-layer transformer without LayerNorm"
+    data: [modular addition mod 113]
+    scale: "d = 128, 512 MLP units"
+    setting: "full-batch training, test on all pairs not used for training"
+  evidence:
+    - {work: "nanda-2023-progress-measures-grokking", role: original, locator: "p. 3", stance: for}
+
+- id: c-nanda-grokking
+  type: empirical
+  text: "The networks first overfit the training set: train accuracy quickly converges to 100% while the test accuracy remains low; later the network generalizes and test accuracy increases to near 100%."
+  scope:
+    models: "one-layer transformer"
+    data: [modular addition mod 113]
+    scale: "40,000 epochs"
+    setting: "30% of pairs for training, weight decay 1"
+  evidence:
+    - {work: "nanda-2023-progress-measures-grokking", role: replication, locator: "p. 3", stance: for}
+
+- id: c-nanda-algorithm
+  type: empirical
+  text: "The embedding matrix maps the inputs a, b to sines and cosines at a sparse set of key frequencies; the attention and MLP layers combine these with trigonometric identities to compute the sine and cosine of w_k (a + b); and the output matrices shift and combine these frequencies."
+  scope:
+    models: "one-layer transformer"
+    data: [modular addition mod 113]
+    scale: "mainline model"
+    setting: "reverse engineering of the trained weights"
+  evidence:
+    - {work: "nanda-2023-progress-measures-grokking", role: original, locator: "p. 2", stance: for}
+
+- id: c-nanda-key-frequencies
+  type: empirical
+  text: "The embedding matrix is sparse in the Fourier basis, with significant norm at only 6 frequencies, of which 5 appear to be used significantly in later parts of the model, k in {14, 35, 41, 42, 52}."
+  scope:
+    models: "one-layer transformer"
+    data: [modular addition mod 113]
+    scale: "mainline model"
+    setting: "discrete Fourier transform of the embedding over the input axis"
+  evidence:
+    - {work: "nanda-2023-progress-measures-grokking", role: original, locator: "p. 4", stance: for}
+
+- id: c-nanda-wl
+  type: empirical
+  text: "Approximating the neuron-logit map W_L by the cosine and sine directions of the five key frequencies leaves a residual whose Frobenius norm is under 0.55% of the norm of W_L."
+  scope:
+    models: "one-layer transformer"
+    data: [modular addition mod 113]
+    scale: "mainline model"
+    setting: "discrete Fourier transform over the logit axis"
+  evidence:
+    - {work: "nanda-2023-progress-measures-grokking", role: original, locator: "p. 6", stance: for}
+
+- id: c-nanda-logit-fit
+  type: empirical
+  text: "Fitting the output logits as sum_k alpha_k cos(w_k (a + b - c)) over the five key frequencies explains 95% of the variance in the original logits, and evaluating the test loss with this approximation improves it from 2.4 · 10^-7 to 4.7 · 10^-8."
+  scope:
+    models: "one-layer transformer"
+    data: [modular addition mod 113]
+    scale: "mainline model"
+    setting: "ordinary least squares fit of the coefficients"
+  evidence:
+    - {work: "nanda-2023-progress-measures-grokking", role: original, locator: "p. 6", stance: for}
+
+- id: c-nanda-neurons
+  type: empirical
+  text: "Out of 512 MLP neurons, 433 (84.6%) have over 85% of their variance explained by a degree-2 polynomial of a single key frequency."
+  scope:
+    models: "one-layer transformer"
+    data: [modular addition mod 113]
+    scale: "512 neurons"
+    setting: "fit of each neuron's activation over all input pairs"
+  evidence:
+    - {work: "nanda-2023-progress-measures-grokking", role: original, locator: "p. 6", stance: for}
+
+- id: c-nanda-ablation
+  type: empirical
+  text: "Ablating the key frequencies used by the model reduces performance to chance, while ablating the other 95% of frequencies slightly improves performance."
+  scope:
+    models: "one-layer transformer"
+    data: [modular addition mod 113]
+    scale: "mainline model"
+    setting: "ablations of the logits in the 2D Fourier basis"
+  evidence:
+    - {work: "nanda-2023-progress-measures-grokking", role: original, locator: "p. 2", stance: for}
+
+- id: c-nanda-phases
+  type: empirical
+  text: "Training splits into three phases: memorization (epochs 0k-1.4k), in which train and excluded loss fall; circuit formation (epochs 1.4k-9.4k), in which excluded loss rises, the sum of squared weights falls and restricted loss starts to fall while train and test loss stay flat; and cleanup (epochs 9.4k-14k), in which test loss suddenly drops and the sum of squared weights sharply drops."
+  scope:
+    models: "one-layer transformer"
+    data: [modular addition mod 113]
+    scale: "mainline model"
+    setting: "progress measures built from the reverse-engineered algorithm"
+  evidence:
+    - {work: "nanda-2023-progress-measures-grokking", role: original, locator: "p. 9", stance: for}
+
+- id: c-nanda-cleanup
+  type: empirical
+  text: "The sudden transition to perfect test accuracy in grokking occurs during cleanup, after the generalizing mechanism is learned; grokking arises from the gradual amplification of structured mechanisms encoded in the weights, followed by the later removal of memorizing components."
+  scope:
+    models: "one-layer transformer"
+    data: [modular addition mod 113]
+    scale: "mainline model"
+    setting: "restricted and excluded loss over training"
+  evidence:
+    - {work: "nanda-2023-progress-measures-grokking", role: original, locator: "p. 2", stance: for}
+
+- id: c-nanda-weight-decay
+  type: empirical
+  text: "Smaller amounts of weight decay cause the network to take significantly longer to grok, and the networks do not grok on the modular arithmetic task without weight decay or some other form of regularization."
+  scope:
+    models: "one-layer transformer"
+    data: [modular addition mod 113]
+    scale: "mainline and variant models"
+    setting: "varying the weight decay"
+  evidence:
+    - {work: "nanda-2023-progress-measures-grokking", role: original, locator: "p. 9", stance: for}
+
+- id: c-nanda-enough-data
+  type: empirical
+  text: "When the networks are provided with enough data, there is no longer a gap between the train and test losses; both decline sharply some number of epochs into training."
+  scope:
+    models: "one-layer transformer"
+    data: [modular addition mod 113]
+    scale: "variant models"
+    setting: "varying the training fraction"
+  evidence:
+    - {work: "nanda-2023-progress-measures-grokking", role: original, locator: "p. 9", stance: for}
+
+# Weight norm and representations
+
+- id: c-liu-lu
+  type: empirical
+  text: "Grokking is attributed to a mismatch between the training and test loss landscapes: the reduced training and test losses, plotted against the model weight norm, resemble an L and a U, which Liu, Michaud and Tegmark call the LU mechanism."
+  scope:
+    models: "MLPs, a one-layer transformer, an LSTM and a graph convolutional network"
+    data: [teacher-student regression, mnist, imdb, qm9, modular addition]
+    scale: "small models"
+    setting: "losses minimized over weight directions at a fixed weight norm"
+  evidence:
+    - {work: "liu-2022-omnigrok-grokking-beyond-algorithmic", role: original, locator: "p. 1", stance: for}
+
+- id: c-liu-decay-time
+  type: empirical
+  text: "If weight decay is the only source of regularization and the training loss is negligible after overfitting, weight decay gamma gives w(t) = exp(-gamma t) w_0 for an initial norm w_0 above the generalizing norm w_c, so it takes time ln(w_0/w_c)/gamma to generalize, and a small gamma results in a huge generalization delay."
+  scope:
+    models: "any model trained from a large initialization"
+    data: []
+    scale: "not applicable"
+    setting: "gradient flow with weight decay after the training loss is near zero"
+  evidence:
+    - {work: "liu-2022-omnigrok-grokking-beyond-algorithmic", role: original, locator: "p. 3", stance: for}
+
+- id: c-liu-teacher-student
+  type: empirical
+  text: "In a teacher-student setup with a 5-100-100-5 tanh MLP initialized at twice the standard scale, the number of steps to reach 95% training accuracy is independent of the weight decay, while the steps to reach 95% test accuracy are inversely proportional to it."
+  scope:
+    models: "5-100-100-5 MLP with tanh"
+    data: [teacher-student regression]
+    scale: "100 training and 100 test samples"
+    setting: "Adam with weight decay from 0.03 to 1, initialization scale alpha = 2"
+  evidence:
+    - {work: "liu-2022-omnigrok-grokking-beyond-algorithmic", role: original, locator: "p. 4", stance: for}
+
+- id: c-liu-mnist
+  type: empirical
+  text: "With the training set of MNIST reduced from 60k to 1k samples and the initial weights multiplied by a constant alpha > 1, a depth-3 width-200 ReLU MLP trained with AdamW on the MSE loss quickly fits the training set while test accuracy improves much later."
+  scope:
+    models: "depth-3 width-200 MLP with ReLU"
+    data: [mnist]
+    scale: "1,000 training samples"
+    setting: "AdamW, MSE loss with one-hot targets, enlarged initialization"
+  evidence:
+    - {work: "liu-2022-omnigrok-grokking-beyond-algorithmic", role: original, locator: "p. 5", stance: for}
+
+- id: c-liu-imdb-qm9
+  type: empirical
+  text: "Grokking signals also appear for IMDb sentiment with an LSTM, where overfitting is complete within 10^2 steps but generalization does not start until around 10^3 steps at a sixfold initialization, and for QM9 with a graph convolutional network at a threefold initialization with zero weight decay; the jump is not as sharp as on algorithmic datasets."
+  scope:
+    models: "LSTM, graph convolutional network"
+    data: [imdb, qm9]
+    scale: "1,000 IMDb reviews, 200 molecules"
+    setting: "enlarged initialization"
+  evidence:
+    - {work: "liu-2022-omnigrok-grokking-beyond-algorithmic", role: original, locator: "p. 6", stance: for}
+
+- id: c-liu-norm-curve
+  type: empirical
+  text: "For a one-layer transformer on modular addition with p = 113, the weight norm first increases, is highest during the period of overfitting, and then drops to become lower than the initial weight norm when the model generalizes."
+  scope:
+    models: "one-layer transformer, d_model = 128, 4 heads, d_mlp = 512"
+    data: [modular addition mod 113]
+    scale: "the setup of Nanda et al."
+    setting: "AdamW, learning rate 0.001, weight decay 1"
+  evidence:
+    - {work: "liu-2022-omnigrok-grokking-beyond-algorithmic", role: original, locator: "p. 8", stance: for}
+
+- id: c-liu-constrained
+  type: empirical
+  text: "Reducing the initialization scale and constraining optimization to hold the model weight norm constant over training brings the train and test accuracy curves together, almost eliminating grokking for transformers on algorithmic tasks."
+  scope:
+    models: "one-layer transformer"
+    data: [modular addition mod 113]
+    scale: "the setup of Nanda et al."
+    setting: "weight norm held at 0.8 times the standard initialization"
+  evidence:
+    - {work: "liu-2022-omnigrok-grokking-beyond-algorithmic", role: original, locator: "p. 9", stance: for}
+
+- id: c-liu-representation
+  type: empirical
+  text: "The dramatic nature of grokking on algorithmic datasets is attributed to representation learning: on MNIST the quality of the representation decides between 95% and 100% test accuracy, while on algorithmic datasets it decides between a random guess and 100%."
+  scope:
+    models: "MLPs and small transformers"
+    data: [mnist, modular addition]
+    scale: "small models"
+    setting: "loss landscapes over weight norm and representation messiness"
+  evidence:
+    - {work: "liu-2022-omnigrok-grokking-beyond-algorithmic", role: original, locator: "p. 6", stance: for}
+
+# Circuit efficiency
+
+- id: c-varma-efficiency
+  type: empirical
+  text: "Grokking occurs when the task admits a generalising solution and a memorising solution, where the generalising solution is slower to learn but more efficient, producing larger logits with the same parameter norm."
+  scope:
+    models: "one-layer transformers and a constructed simulation"
+    data: [modular addition mod 113]
+    scale: "small models"
+    setting: "AdamW on cross-entropy"
+  evidence:
+    - {work: "varma-2023-explaining-grokking-circuit-efficiency", role: original, locator: "p. 1", stance: for}
+
+- id: c-varma-ingredients
+  type: empirical
+  text: "Three properties are sufficient for grokking in a constructed simulation: the generalising circuit generalises well while the memorising one does not, the generalising circuit is more efficient, and it is learned more slowly than the memorising one."
+  scope:
+    models: "two lookup-table circuits with learned scalar weights"
+    data: [synthetic]
+    scale: "a simulation"
+    setting: "gradient descent on cross-entropy plus weight decay"
+  evidence:
+    - {work: "varma-2023-explaining-grokking-circuit-efficiency", role: original, locator: "p. 1", stance: for}
+
+- id: c-varma-dataset-size
+  type: empirical
+  text: "The efficiency of the generalising circuit is independent of the dataset size, while the efficiency of the memorising circuit decreases as the training dataset size increases."
+  scope:
+    models: "one-layer transformers"
+    data: [modular addition mod 113]
+    scale: "varying dataset size and weight decay"
+    setting: "runs in which only one circuit is present"
+  evidence:
+    - {work: "varma-2023-explaining-grokking-circuit-efficiency", role: original, locator: "p. 7", stance: for}
+
+- id: c-varma-ungrokking
+  type: empirical
+  text: "A network trained on the full dataset to 100% test accuracy and then trained further on a smaller subset shows a sharp transition from strong test accuracy to near-zero test accuracy as the subset shrinks, independent of the weight decay."
+  scope:
+    models: "one-layer transformers"
+    data: [modular addition mod 113]
+    scale: "a range of reduced dataset sizes and weight decays"
+    setting: "continued training on a subset after grokking"
+  evidence:
+    - {work: "varma-2023-explaining-grokking-circuit-efficiency", role: original, locator: "p. 9", stance: for}
+
+- id: c-varma-semi-grokking
+  type: empirical
+  text: "Out of 200 runs at dataset sizes near the critical size, at least 6 show clear semi-grokking at the end of training, a delayed transition to middling rather than perfect test accuracy."
+  scope:
+    models: "one-layer transformers"
+    data: [modular addition mod 113]
+    scale: "200 runs"
+    setting: "dataset sizes near the critical dataset size"
+  evidence:
+    - {work: "varma-2023-explaining-grokking-circuit-efficiency", role: original, locator: "p. 9", stance: for}
+
+# History
+
+- id: c-hist-power
+  type: empirical
+  text: "arXiv 2201.02177v1, Grokking: Generalization Beyond Overfitting on Small Algorithmic Datasets, by Power, Burda, Edwards, Babuschkin and Misra, 6 Jan 2022."
+  scope: {models: "not applicable", data: [], scale: "not applicable", setting: "publication record"}
+  evidence:
+    - {work: "power-2022-grokking-generalization-beyond-overfitting", role: original, locator: "p. 1", stance: for}
+
+- id: c-hist-varma
+  type: empirical
+  text: "Varma, Shah, Kenton, Kramár and Kumar posted the circuit-efficiency account, with ungrokking and semi-grokking, as arXiv 2309.02390 on 5 September 2023."
+  scope: {models: "not applicable", data: [], scale: "not applicable", setting: "publication record"}
+  evidence:
+    - {work: "varma-2023-explaining-grokking-circuit-efficiency", role: original, locator: "p. 1", stance: for}
+
+# Derived on this page
+
+- id: c-fourier-peak
+  type: mathematical
+  text: "For a prime p, frequencies k in 1, ..., p - 1 and positive weights alpha_k, the logit sum_k alpha_k cos(2 pi k (a + b - c) / p) equals sum_k alpha_k at c = a + b mod p and is strictly smaller at every other c."
+  assumes: ["p is a prime", "every alpha_k is positive", "every k lies in 1, ..., p - 1"]
+  derivation: fourier-identity
+
+- id: c-fourier-prime
+  type: mathematical
+  text: "If p is not prime the rule can fail: for p = 12 and the single frequency k = 3, the answer c = a + b - 4 gets the same logit as the right one."
+  assumes: ["one frequency with a factor in common with p"]
+  derivation: fourier-identity
+
+- id: c-fourier-all-frequencies
+  type: mathematical
+  text: "With all frequencies k = 1, ..., (p - 1)/2 and unit weights, the logit is (p - 1)/2 at c = a + b mod p and exactly -1/2 at every other c."
+  assumes: ["p is an odd prime"]
+  derivation: fourier-identity
+
+- id: c-fourier-113
+  type: mathematical
+  text: "For p = 113 with the five key frequencies 14, 35, 41, 42 and 52 and unit weights, the right answer has logit 5 and the largest wrong logit is 2.5898, at c = a + b + 16 mod 113, so the rule answers all 12,769 pairs correctly."
+  assumes: ["unit weights"]
+  derivation: fourier-identity
+
+- id: c-decay-geometric
+  type: mathematical
+  text: "With a zero data gradient and zero Adam moments, each AdamW step multiplies the weights and their norm by 1 - lr x wd, so after t steps they are (1 - lr x wd)^t times their start."
+  assumes: ["decoupled weight decay", "a zero gradient of the data loss"]
+  derivation: weight-decay-shrinkage
+
+- id: c-decay-time
+  type: mathematical
+  text: "Under decay alone, the number of steps to bring the weight norm from w_0 down to w_c is ceil(ln(w_0/w_c) / -ln(1 - lr x wd)), at most ceil(ln(w_0/w_c) / (lr x wd)), so it grows as one over the weight decay."
+  assumes: ["0 < lr x wd < 1"]
+  derivation: weight-decay-shrinkage
+
+- id: c-decay-numbers
+  type: mathematical
+  text: "At learning rate 10^-3 and weight decay 1, decay alone multiplies the weights by 0.999 per step and by 0.3677 over 1,000 steps, and halves their norm in 693 steps."
+  assumes: ["lr = 10^-3", "wd = 1"]
+  derivation: weight-decay-shrinkage

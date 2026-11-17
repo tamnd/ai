@@ -1,0 +1,55 @@
+# The facts of the MMLU benchmark (spec 04.9). The build computes the status of each fact.
+# The values agree with the benchmark card mmlu (8M40DJ, PR #45), which this node promotes.
+- id: released
+  value: "2020-09-07"
+  note: "The date of arXiv 2009.03300v1; the paper was published at ICLR 2021."
+  sources:
+    - {src: "https://arxiv.org/abs/2009.03300", loc: "Submission history, [v1]", value: "2020-09-07", kind: primary}
+- id: size.items
+  value: 15908
+  unit: items
+  note: "The questions that the authors collected, over the dev, validation and test splits."
+  sources:
+    - {src: "hendrycks-2020-measuring-massive-multitask", loc: "Section 3", value: 15908, kind: primary}
+- id: size.items.test
+  value: 14079
+  unit: items
+  note: "The test set of the paper. The released files hold 14,042 (the fact size.items.test.released)."
+  sources:
+    - {src: "hendrycks-2020-measuring-massive-multitask", loc: "Section 3", value: 14079, kind: primary}
+- id: size.items.test.released
+  value: 14042
+  unit: items
+  note: "The test split of the config all of cais/mmlu on Hugging Face, 37 questions fewer than Section 3 of the paper; its validation split has 1,531 questions (1,540 in the paper) and its dev split 285 (5 for each of the 57 subjects)."
+  as_of: 2026-11-15
+  no_primary: "The paper does not count the released files; the count is read from the Hugging Face copy, which holds the same questions as data.tar."
+  sources:
+    - {src: "https://huggingface.co/api/datasets/cais/mmlu", loc: "cardData.dataset_info, config all, splits (revision c30699e8356da336a370243923dbaf21066bb9fe)", value: 14042, kind: secondary, as_of: 2026-11-15}
+- id: splits
+  value: "dev (5 questions per subject), validation (1,540), test (14,079)"
+  note: "The dev set holds the few-shot examples; the validation set may be used to choose hyperparameters; the test set gives the score."
+  sources:
+    - {src: "hendrycks-2020-measuring-massive-multitask", loc: "Section 3", value: "dev (5 questions per subject), validation (1,540), test (14,079)", kind: primary}
+- id: metric
+  value: "accuracy"
+  note: "Accuracy over all questions of all 57 subjects. A mean of the 57 subject accuracies, as in the Llama 3 report, is the metric macro-accuracy."
+  sources:
+    - {src: "hendrycks-2020-measuring-massive-multitask", loc: "Section 4.1", value: "accuracy", kind: primary}
+- id: protocol
+  value: "four-choice multiple choice, zero-shot or with up to 5 dev examples; the answer is the letter of highest probability"
+  note: "The prompt of Section 4.1. Many later evaluators generate the answer, use chain of thought or average by subject: the setting is part of a result."
+  sources:
+    - {src: "hendrycks-2020-measuring-massive-multitask", loc: "Section 4.1", value: "four-choice multiple choice, zero-shot or with up to 5 dev examples; the answer is the letter of highest probability", kind: primary}
+- id: licence
+  value: "MIT"
+  note: "The LICENSE file of the authors' repository hendrycks/test; the Hugging Face copy cais/mmlu also gives mit."
+  as_of: 2026-11-15
+  sources:
+    - {src: "https://github.com/hendrycks/test/blob/4450500f923c49f1fb1dd3d99108a0bd9717b660/LICENSE", loc: "the file", value: "MIT", kind: primary}
+    - {src: "https://huggingface.co/api/datasets/cais/mmlu", loc: "cardData.license", value: "mit", kind: secondary, as_of: 2026-11-15}
+- id: data_hash
+  value: "sha256:bec563ba4bac1d6aaf04141cd7d1605d7a5ca833e38f994051e818489592989b"
+  note: "The SHA-256 of data.tar, linked from the README of hendrycks/test (Last-Modified 2022-08-31), as the benchmark card 8M40DJ records it, computed on 2026-11-14."
+  no_primary: "The authors publish no checksum; the value was computed from the authors' file."
+  sources:
+    - {src: "https://people.eecs.berkeley.edu/~hendrycks/data.tar", loc: "the file (Last-Modified 2022-08-31), hashed on 2026-11-14", value: "sha256:bec563ba4bac1d6aaf04141cd7d1605d7a5ca833e38f994051e818489592989b", kind: secondary}

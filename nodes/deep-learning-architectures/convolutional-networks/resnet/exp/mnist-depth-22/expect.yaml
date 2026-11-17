@@ -1,0 +1,10 @@
+claim: c-shortcuts-fix-degradation
+primary:
+  - {metric: train_error, at: final, compare: {treatment: plain-4, control: plain-22}, direction: lower, test: mann-whitney, alpha: 0.01, min_effect: {kind: relative, value: 0.5}, note: "the degradation: the deeper plain network fits its training images worse"}
+  - {metric: train_error, at: final, compare: {treatment: res-22, control: plain-22}, direction: lower, test: mann-whitney, alpha: 0.01, min_effect: {kind: relative, value: 0.5}, note: "the shortcuts remove most of it"}
+secondary:
+  - {metric: test_error, compare: {treatment: res-22, control: plain-22}, direction: lower, test: bootstrap-diff}
+  - {metric: train_error, compare: {treatment: res-4, control: plain-4}, direction: lower, test: bootstrap-diff, note: "at 4 layers the shortcut matters little"}
+  - {metric: train_error, compare: {treatment: res-22, control: res-4}, direction: lower, test: bootstrap-diff, note: "the paper's deeper residual network trains to a lower error than its shallower one; at this budget that is not expected"}
+correction: holm
+report: {ci: 0.95, bootstrap: {resamples: 10000, method: bca}}
