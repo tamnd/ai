@@ -1,5 +1,5 @@
 ---
-tag: NEW-residual-connection
+tag: F5K1AF
 kind: method
 slug: residual-connection
 name: Residual connection
