@@ -1,0 +1,10 @@
+# Written by fixtures/make.py; do not edit.
+seed: 20170612
+config: {d_model: 8, n_heads: 2}
+inputs: {B: 2, T: 5, S: 4, padded: "memory sequence 1 has 3 real keys of 4"}
+dtype: float64
+numpy: "2.5.4"
+files:
+  params-small.npz: {sha256: 32ddd0cd90e1b994818501578641b2e0c3c5909ba18e276a3b7ab82662457832}
+  input-small.npz: {sha256: cf774ac50c715f22e805d21bdea6515706dff9bf9eda4f78ca6c871703c16946}
+  expected-small.npz: {sha256: 7ea1747caa794d9c1c1e642fdf933086888eadf08dec1be55e990f091ffc4fc7}

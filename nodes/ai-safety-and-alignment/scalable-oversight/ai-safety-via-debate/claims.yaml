@@ -1,0 +1,578 @@
+# The claims of the AI safety via debate page (spec 07). The build computes the labels.
+
+# Setting and the method
+
+- id: c-def
+  type: definitional
+  text: "Irving et al. propose training agents via self play on a zero sum debate game: given a question or proposed action, two agents take turns making short statements up to a limit, then a human judges which of the agents gave the most true, useful information."
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 1", stance: for}
+
+- id: c-motivation
+  type: attributive
+  text: "One approach to specifying complex goals asks humans to judge during training which agent behaviors are safe and useful, but Irving et al. note that this approach can fail if the task is too complicated for a human to directly judge."
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 1", stance: for}
+
+- id: c-game-steps
+  type: definitional
+  text: "In the simplest version of debate a question is shown to both agents, the two agents state their answers, which may be the same, take turns making statements, the judge sees the debate and decides which agent wins, and the game is zero sum, each agent maximizing their probability of winning."
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 3", stance: for}
+
+- id: c-test-time
+  type: attributive
+  text: "Irving et al. note that at test time it suffices to stop after the two agents state their answers: the debate need not be run, though agents could simulate debates at test time to strengthen answers."
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 3", stance: for}
+
+- id: c-central-claim
+  type: attributive
+  text: "The utility of debate as an approach for AI alignment rests on the central claim that in the debate game it is harder to lie than to refute a lie, which Irving et al. say is an empirical question for any particular setting."
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 3", stance: for}
+
+- id: c-hoped-claims
+  type: attributive
+  text: "If the central claim is true, Irving et al. hope that in all Nash equilibria both agents try to tell the truth in the most convincing manner possible, that approximate Nash equilibria can be found with some version of gradient descent such as self play, and that at Nash equilibria debate agents are approximately as strong as unrestricted AI."
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 3", stance: for}
+
+- id: c-unbranched
+  type: attributive
+  text: "Irving et al. argue that debates can be short because long arguments are usually long only because they branch down many paths, and an argument phrased as a sequential process can be rearranged into a shallow tree by stating the conclusion of the first half and choosing which half to discuss in detail."
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 5", stance: for}
+
+- id: c-p-np
+  type: attributive
+  text: "Replacing the human by a polynomial time algorithm H, using H to answer questions directly gives the class P, which Irving et al. relate to supervised learning, and using H to judge answers gives NP, which they relate to single agent reinforcement learning."
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 5", stance: for}
+
+- id: c-hierarchy
+  type: attributive
+  text: "A debate of n alternating rounds produces a formula of the form exists x0 for all x1 and so on of H(q, x0, ...); a fixed number of rounds n gives the polynomial hierarchy level Sigma_n P, and a polynomial number of rounds gives PSPACE."
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 5", stance: for}
+
+- id: c-theorem-pspace
+  type: attributive
+  text: "Theorem 1 of Irving et al.: for any problem L in PSPACE, one can choose a polynomial time judge so that optimal play in the debate game with polynomially many steps solves L."
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 5", stance: for}
+
+- id: c-direct-np
+  type: attributive
+  text: "In an analogy to complexity theory, debate with optimal play can answer any question in PSPACE given polynomial time judges, while direct judging answers only NP questions."
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 1", stance: for}
+
+- id: c-prime-example
+  type: attributive
+  text: "To count the primes up to x by debate, Alice computes pi(x) and pi(x/2); if she lies about pi(x) she must lie about one of the half ranges, Bob points out which, and the debate continues until the judge checks a single number for primality, having done only addition and subtraction along the way, so that optimal play is for Alice to tell the truth at the start."
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 6", stance: for}
+
+- id: c-simulation
+  type: attributive
+  text: "Given a polynomial time algorithm for one step of a simulation, debate can evolve the simulation for an exponential number of steps n: Alice gives the result after n and n/2 steps, Bob says which half interval is a lie, and they iterate until they disagree about a single step."
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 6", stance: for}
+
+- id: c-analogies-only
+  type: attributive
+  text: "Irving et al. stress that these complexity class arguments are analogies only: they do not expect tractable machine learning algorithms to achieve all of PSPACE, but the analogies show that at least in theory one can be limited by the capacity of the models and the ability to train them, not by the supervisory signal."
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 6", stance: for}
+
+- id: c-large-queries
+  type: attributive
+  text: "To support a question too large to show to a human, such as a 10 gigapixel image or the whole internet, Irving et al. let the agents reveal small parts of the question in their statements."
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 6", stance: for}
+
+# The derivation
+
+- id: c-bisect-count
+  type: mathematical
+  text: "In the bisection debate for counting primes in a range of 2^n numbers, where the judge requires the two half counts to add up to the count being defended, Alice can win against every strategy of Bob if and only if her claimed count is the true count; otherwise the Bob who always challenges a half with a wrong count wins."
+  assumes: ["the judge checks that the two half claims add up to the claim being defended, by one subtraction per round", "the range or the number of simulation steps is a power of two"]
+  derivation: bisection-debate
+
+- id: c-bisect-rounds
+  type: mathematical
+  text: "Every play of the bisection debate on 2^n numbers lasts exactly n rounds, and the judge does n subtractions and one primality test."
+  assumes: ["the judge checks that the two half claims add up to the claim being defended, by one subtraction per round", "the range or the number of simulation steps is a power of two"]
+  derivation: bisection-debate
+
+- id: c-bisect-sim
+  type: mathematical
+  text: "For a deterministic step function, the bisection debate over 2^k simulation steps is won by Alice against every strategy of Bob if and only if her claimed final state is the true one, and it lasts k rounds with one step checked by the judge."
+  assumes: ["the simulation step is deterministic and the judge can check one step", "the range or the number of simulation steps is a power of two"]
+  derivation: bisection-debate
+
+- id: c-log-score-proper
+  type: mathematical
+  text: "For a judge who believes with probability q in (0, 1) that an answer is correct, the expected logarithmic score q log2 p + (1 - q) log2 (1 - p) has the unique maximizer p = q, and a turn penalty that does not depend on p leaves the maximizer unchanged."
+  assumes: ["the judge's belief that an answer is correct is q, and the judge reports p"]
+  derivation: bisection-debate
+
+# The MNIST experiment
+
+- id: c-mnist-setup
+  type: attributive
+  text: "In the MNIST experiment the judge is a classifier trained in advance to classify digits from 6 (or 4) revealed nonzero pixels; the two players precommit to their claimed label, then reveal one pixel per turn up to a total of 6 (or 4), one player is prespecified to be honest and the other to lie, and the winner is the player whose claimed class has the higher logit."
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 9", stance: for}
+
+- id: c-mnist-mcts
+  type: attributive
+  text: "The MNIST debate game is played with pure Monte Carlo tree search without a trained heuristic, with 10k rollouts per move and the PUCT rule with c_puct = 1; precommit is modelled by playing 9 different games for the same image, one per possible lie."
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 9", stance: for}
+
+- id: c-mnist-result
+  type: empirical
+  text: "With 6 pixels, debate with precommit turns a 59.4% accurate judge into an 88.9% accurate debate, and with 4 pixels a 48.2% accurate judge becomes an 85.2% accurate debate."
+  scope:
+    models: "a convolutional MNIST classifier as the judge, with Monte Carlo tree search debaters"
+    data: [mnist]
+    scale: "the MNIST test set, 10k rollouts per move"
+    setting: "sparse-pixel debate with precommitted labels, one honest player and one liar"
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 10", stance: for}
+
+- id: c-mnist-precommit
+  type: empirical
+  text: "For both 4 and 6 pixels precommit is crucial: the liar does much better if the lie can adapt in different parts of the game tree."
+  scope:
+    models: "a convolutional MNIST classifier as the judge, with Monte Carlo tree search debaters"
+    data: [mnist]
+    scale: "the MNIST test set, 10k rollouts per move"
+    setting: "sparse-pixel debate with and without precommitted labels"
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 10", stance: for}
+
+- id: c-mnist-second
+  type: attributive
+  text: "Both versions of the MNIST game give an advantage to the second player to move, since if the first player has a winning strategy the second player can steal it by ignoring the previous move on each turn."
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 9", stance: for}
+
+- id: c-mnist-lies
+  type: empirical
+  text: "Errors of the 6 pixel judge on random masks are distributed somewhat randomly, while successful lies in debate are concentrated on the digits 8 and 9, likely an artifact of restricting the game to nonzero pixels."
+  scope:
+    models: "a convolutional MNIST classifier as the judge, with Monte Carlo tree search debaters"
+    data: [mnist]
+    scale: "the MNIST test set"
+    setting: "6 pixel debate with precommit"
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 9", stance: for}
+
+- id: c-mnist-no-generalization
+  type: attributive
+  text: "Since MCTS is run on the test set with full access to the judge, the MNIST experiment models the limit of debate agents with no generalization error, though the judge does have generalization error."
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 10", stance: for}
+
+# Human debate experiments
+
+- id: c-michael-setup
+  type: attributive
+  text: "Michael et al. collect human-written debates on hard reading comprehension questions where the judge has not read the source passage and sees only expert arguments and short quotes selectively revealed by debaters who have access to it; one expert argues for the correct answer and the other for an incorrect answer."
+  evidence:
+    - {work: "michael-2023-debate-helps-supervise", role: original, locator: "p. 1", stance: for}
+
+- id: c-michael-consultancy
+  type: attributive
+  text: "In the consultancy baseline of Michael et al., a single expert argues for one of the two answers, the incorrect one half of the time, which they design as a worst-case variant of RLHF."
+  evidence:
+    - {work: "michael-2023-debate-helps-supervise", role: original, locator: "p. 5", stance: for}
+
+- id: c-michael-protocol
+  type: attributive
+  text: "In the protocol of Michael et al. the debaters are randomly assigned to the two answers, write opening statements simultaneously, then take turns with the judge until the judge decides to end the debate, and part of each turn may be certified quotes from the story, verbatim ground-truth evidence."
+  evidence:
+    - {work: "michael-2023-debate-helps-supervise", role: original, locator: "p. 4", stance: for}
+
+- id: c-michael-limits-chars
+  type: attributive
+  text: "Michael et al. use a character limit of 750 and a quote limit of 250 per turn, so that on average up to 1.8% of the story could be revealed in each round of the debate."
+  evidence:
+    - {work: "michael-2023-debate-helps-supervise", role: original, locator: "p. 6", stance: for}
+
+- id: c-michael-score
+  type: attributive
+  text: "The judge is scored by log2 of the probability assigned to the correct answer minus 0.05 per turn the debate was continued, a strictly proper scoring function that incentivizes the judge to report their true beliefs, while each debater is scored by log2 of the probability the judge assigns to their answer, with no length penalty."
+  evidence:
+    - {work: "michael-2023-debate-helps-supervise", role: original, locator: "p. 5", stance: for}
+
+- id: c-michael-result
+  type: empirical
+  text: "Debate performs significantly better than consultancy, with 84% judge accuracy compared to consultancy's 74%, and debates are 68% of the length of consultancies."
+  scope:
+    models: "human debaters and judges, 19 participants"
+    data: [quality]
+    scale: "413 debates and consultancies across four conditions"
+    setting: "QuALITY-hard questions over Project Gutenberg stories, judges without access to the story"
+  evidence:
+    - {work: "michael-2023-debate-helps-supervise", role: original, locator: "p. 1", stance: for}
+
+- id: c-michael-ai
+  type: empirical
+  text: "With GPT-4 debaters, AI debate and AI consultancy lie between human debate and human consultancy, at 78% and 80% judge accuracy."
+  scope:
+    models: "gpt-4-32k debaters and consultants, human judges"
+    data: [quality]
+    scale: "413 debates and consultancies across four conditions"
+    setting: "QuALITY-hard questions over Project Gutenberg stories"
+  evidence:
+    - {work: "michael-2023-debate-helps-supervise", role: original, locator: "p. 7", stance: for}
+
+- id: c-michael-ai-evidence
+  type: empirical
+  text: "The AI debaters are much worse than humans at reporting useful evidence from the story, with less than half of the quote density of the human settings, and they tend to repeat quotes they have already given."
+  scope:
+    models: "gpt-4-32k debaters and consultants, human judges"
+    data: [quality]
+    scale: "413 debates and consultancies across four conditions"
+    setting: "QuALITY-hard questions over Project Gutenberg stories"
+  evidence:
+    - {work: "michael-2023-debate-helps-supervise", role: original, locator: "p. 8", stance: for}
+
+- id: c-michael-skill-trend
+  type: empirical
+  text: "Comparing human to AI debaters, Michael et al. find evidence that with more skilled debaters the performance of debate goes up but the performance of consultancy goes down."
+  scope:
+    models: "human and gpt-4-32k debaters, human judges"
+    data: [quality]
+    scale: "413 debates and consultancies"
+    setting: "QuALITY-hard questions over Project Gutenberg stories"
+  evidence:
+    - {work: "michael-2023-debate-helps-supervise", role: original, locator: "p. 1", stance: for}
+
+- id: c-michael-deceive
+  type: empirical
+  text: "Dishonest human consultants successfully deceive judges 40% of the time, while for AI consultants judges are more accurate when the consultant is dishonest, 87% against 74% in the honest case."
+  scope:
+    models: "human and gpt-4-32k consultants, human judges"
+    data: [quality]
+    scale: "413 debates and consultancies"
+    setting: "QuALITY-hard questions over Project Gutenberg stories"
+  evidence:
+    - {work: "michael-2023-debate-helps-supervise", role: original, locator: "p. 8", stance: for}
+
+- id: c-michael-efficiency
+  type: empirical
+  text: "Human debates finish in 2.7 rounds on average against 4 for consultancies, and reveal only 3.5% of the underlying story on average, against 5.8% for human consultancy."
+  scope:
+    models: "human debaters and judges"
+    data: [quality]
+    scale: "413 debates and consultancies"
+    setting: "QuALITY-hard stories of 27.7k characters on average"
+  evidence:
+    - {work: "michael-2023-debate-helps-supervise", role: original, locator: "p. 8", stance: for}
+
+- id: c-michael-calibration
+  type: empirical
+  text: "Judges are most calibrated in human debate, and all settings see consistent overconfidence in the 90% to 100% confidence range."
+  scope:
+    models: "human judges"
+    data: [quality]
+    scale: "413 debates and consultancies"
+    setting: "QuALITY-hard questions over Project Gutenberg stories"
+  evidence:
+    - {work: "michael-2023-debate-helps-supervise", role: original, locator: "p. 9", stance: for}
+
+- id: c-michael-errors
+  type: empirical
+  text: "46% of errors in human debate are attributable to mistakes by the honest debater, whereas 52% of errors in human consultancy are due to the consultant obfuscating the relevant evidence from the judge."
+  scope:
+    models: "human debaters and judges"
+    data: [quality]
+    scale: "the debates and consultancies with incorrect judgments"
+    setting: "manual error tagging with non-exclusive categories"
+  evidence:
+    - {work: "michael-2023-debate-helps-supervise", role: original, locator: "p. 1", stance: for}
+
+- id: c-michael-early
+  type: empirical
+  text: "Judges often end debates too early: in 25% of mistakes on debates the judge made their decision after only a single round."
+  scope:
+    models: "human debaters and judges"
+    data: [quality]
+    scale: "the debates with incorrect judgments"
+    setting: "manual error tagging with non-exclusive categories"
+  evidence:
+    - {work: "michael-2023-debate-helps-supervise", role: original, locator: "p. 9", stance: for}
+
+- id: c-michael-swing
+  type: attributive
+  text: "Deciding after one round gives no time for either debater to refute potential lies by the other, and Michael et al. suggest requiring judges to wait at least one extra round after the first round or after a swing in their judgment."
+  evidence:
+    - {work: "michael-2023-debate-helps-supervise", role: original, locator: "p. 10", stance: for}
+
+- id: c-michael-differences
+  type: attributive
+  text: "Unlike Irving et al., Michael et al. assign debaters the answers they argue for, let the judge interact with the debaters between turns, and relax the rule that judges automatically vote against a debater caught in a lie, asking judges to report probabilities instead."
+  evidence:
+    - {work: "michael-2023-debate-helps-supervise", role: original, locator: "p. 13", stance: for}
+
+- id: c-khan-setup
+  type: attributive
+  text: "Khan et al. study debate in information-asymmetric reading comprehension, where expert models have the text and argue for different answers with a tool that presents verified quotes, and a non-expert judge without the text selects the answer."
+  evidence:
+    - {work: "khan-2024-debating-persuasive-llms", role: original, locator: "p. 2", stance: for}
+
+- id: c-khan-result
+  type: empirical
+  text: "On the QuALITY comprehension task, debate helps both non-expert models and humans answer questions, achieving 76% and 88% accuracy respectively, where naive baselines obtain 48% and 60%."
+  scope:
+    models: "GPT-4-Turbo debaters with best-of-16 sampling; LLM and human judges"
+    data: [quality]
+    scale: "the QuALITY test sets of Khan et al."
+    setting: "judges without access to the story"
+  evidence:
+    - {work: "khan-2024-debating-persuasive-llms", role: original, locator: "p. 1", stance: for}
+
+- id: c-khan-consultancy
+  type: empirical
+  text: "With consultancy, human and LLM judges achieve 78% and 54%, below their accuracies with debate."
+  scope:
+    models: "GPT-4-Turbo consultants with best-of-16 sampling; LLM and human judges"
+    data: [quality]
+    scale: "the QuALITY test sets of Khan et al."
+    setting: "judges without access to the story"
+  evidence:
+    - {work: "khan-2024-debating-persuasive-llms", role: original, locator: "p. 2", stance: for}
+
+- id: c-khan-persuasive
+  type: empirical
+  text: "Debaters optimised for judge approval with best-of-N and critique-and-refinement become better at arguing for the correct answer relative to the incorrect one, and judge accuracy in self-play debates rises with the debaters' aggregate Elo rating, while judge accuracy falls as consultants are made more persuasive."
+  scope:
+    models: "GPT-4-Turbo, Claude 2.1, Claude 1.3 and Mixtral 8x7B debaters; a GPT-4-Turbo judge"
+    data: [quality]
+    scale: "a cross-play tournament of 20 debaters"
+    setting: "inference-time optimisation for persuasiveness without ground-truth labels"
+  evidence:
+    - {work: "khan-2024-debating-persuasive-llms", role: original, locator: "p. 2", stance: for}
+    - {work: "khan-2024-debating-persuasive-llms", role: original, locator: "p. 6", stance: for}
+
+- id: c-khan-weak-evidence
+  type: attributive
+  text: "Khan et al. say their persuasiveness result provides weak evidence that under optimal play debate produces truthful information, and suggests that training models to win debates may produce more truthful outcomes."
+  evidence:
+    - {work: "khan-2024-debating-persuasive-llms", role: original, locator: "p. 6", stance: for}
+
+- id: c-khan-truth-easier
+  type: empirical
+  text: "Models are more persuasive when assigned to the correct answer, and the advantage increases for models with higher aggregate Elo, which Khan et al. read as evidence that for debates in QuALITY telling the truth is easier than lying."
+  scope:
+    models: "GPT-4-Turbo, Claude 2.1, Claude 1.3 and Mixtral 8x7B debaters; a GPT-4-Turbo judge"
+    data: [quality]
+    scale: "a cross-play tournament of 20 debaters"
+    setting: "information-asymmetric debate with verified quotes"
+  evidence:
+    - {work: "khan-2024-debating-persuasive-llms", role: original, locator: "p. 5", stance: for}
+
+- id: c-khan-interaction
+  type: empirical
+  text: "Khan et al. find identical human judge accuracy between static and interactive debate, so adding non-expert interaction does not help in their information-asymmetric debates."
+  scope:
+    models: "GPT-4-Turbo debaters; human judges"
+    data: [quality]
+    scale: "953 human judgements in the test phase"
+    setting: "static and interactive debate"
+  evidence:
+    - {work: "khan-2024-debating-persuasive-llms", role: original, locator: "p. 7", stance: for}
+
+- id: c-khan-calibration
+  type: empirical
+  text: "Rejecting static-debate judgements with confidence below 75% retains 65% of questions at a judge accuracy of 94%, and across all rejection thresholds debate protocols achieve higher judge accuracy than consultancy."
+  scope:
+    models: "GPT-4-Turbo debaters; human judges"
+    data: [quality]
+    scale: "953 human judgements in the test phase"
+    setting: "classification with rejection by judge confidence"
+  evidence:
+    - {work: "khan-2024-debating-persuasive-llms", role: original, locator: "p. 7", stance: for}
+
+- id: c-bc-protocols
+  type: attributive
+  text: "Brown-Cohen et al. note that the original framework assumed the honest strategy can simulate deterministic AI systems for an exponential number of steps, and design debate protocols where the honest strategy can always succeed using a simulation of a polynomial number of steps, while verifying stochastic AI systems, even when the dishonest strategy may use exponentially many simulation steps."
+  evidence:
+    - {work: "brown-cohen-2023-doubly-efficient-debate", role: original, locator: "p. 1", stance: for}
+
+- id: c-bc-constant
+  type: attributive
+  text: "In the model of doubly-efficient debate, two polynomial-time provers compete to convince a much more efficient verifier, and Brown-Cohen et al. prove that under appropriate assumptions any polynomial-time computation can be verified using only a constant number of queries to the black box representing human judgement."
+  evidence:
+    - {work: "brown-cohen-2023-doubly-efficient-debate", role: original, locator: "p. 2", stance: for}
+
+- id: c-bc-requirement
+  type: attributive
+  text: "A key requirement and limitation of these results is that the debating models must be able to produce natural-language reasoning traces such that extensive careful human analysis could have been used to judge the reasoning correct."
+  evidence:
+    - {work: "brown-cohen-2023-doubly-efficient-debate", role: original, locator: "p. 2", stance: for}
+
+# Limitations
+
+- id: c-obfuscated-bc
+  type: attributive
+  text: "Allowing both provers to be unbounded runs into what Barnes and Christiano (2020) call the obfuscated argument problem, where a dishonest prover can in polynomial time produce an argument that would require the honest prover exponential time to refute."
+  evidence:
+    - {work: "brown-cohen-2023-doubly-efficient-debate", role: original, locator: "p. 9", stance: for}
+
+- id: c-obfuscated-michael
+  type: attributive
+  text: "Michael et al. describe obfuscated arguments as long arguments with many individual pieces where neither debater can confidently point out which step contains a mistake, though both know it is incorrect; they do not observe obfuscated arguments to be a significant problem in their setting."
+  evidence:
+    - {work: "michael-2023-debate-helps-supervise", role: original, locator: "p. 14", stance: for}
+
+- id: c-fail-gracefully
+  type: attributive
+  text: "To ameliorate confusing, complex or undecidable debates, Michael et al. elicit probabilities from the judges so that they can express low confidence; in the worst case judges can decide debates only when one side has provided positive proof, which gives up some of the power of the original approach."
+  evidence:
+    - {work: "michael-2023-debate-helps-supervise", role: original, locator: "p. 14", stance: for}
+
+- id: c-stalemate
+  type: attributive
+  text: "Michael et al. have not shown that debate extracts all the knowledge held by debaters: there may be questions where the best strategy by both debaters yields arguments too complex for the judge, leading to a stalemate."
+  evidence:
+    - {work: "michael-2023-debate-helps-supervise", role: original, locator: "p. 11", stance: for}
+
+- id: c-honesty-best
+  type: attributive
+  text: "Irving et al. ask whether honesty is actually the best policy: whether humans can check logical statements containing words they do not understand, and whether an agent can sneak in a statement that appears logical but contains a hidden flaw without the other pointing it out."
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 15", stance: for}
+
+- id: c-approx-optimal
+  type: attributive
+  text: "Optimal play is unachievable for any practical system, so what matters is approximately optimal play, and Irving et al. call the hope that agents near optimal play are honest far from a solid argument."
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 17", stance: for}
+
+- id: c-no-convergence
+  type: attributive
+  text: "Irving et al. know of no theory which says why self play should stably converge to optimal play, and describe bad cycles where both agents learn to be honest, forget how to point out lies, and one agent goes back to lying and wins for a while."
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 17", stance: for}
+
+- id: c-michael-nash
+  type: attributive
+  text: "Michael et al. note that there may be strong strategies for the dishonest debater that break debate at the Nash equilibrium which their human debaters did not find, so their high judge accuracy may partly result from mistakes by the dishonest debater."
+  evidence:
+    - {work: "michael-2023-debate-helps-supervise", role: original, locator: "p. 11", stance: for}
+
+- id: c-belief-bias
+  type: attributive
+  text: "Irving et al. worry about belief bias, and expect that there is some threshold of judge performance beyond which debate is practically limited only by capacity; they list interventions such as majority votes, weighting better judges, instructions, and training judges."
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 14", stance: for}
+
+- id: c-michael-no-bias-test
+  type: attributive
+  text: "In the experiments of Michael et al., judges begin each debate with no strong opinion on the question, so the robustness of debate to strong preexisting views or cognitive biases is not tested."
+  evidence:
+    - {work: "michael-2023-debate-helps-supervise", role: original, locator: "p. 11", stance: for}
+
+- id: c-khan-judge-bias
+  type: attributive
+  text: "Khan et al. found strong biases with LLM judges, and mitigate positional bias by judging each debate twice with the debater order swapped and verbosity bias by strict word limits."
+  evidence:
+    - {work: "khan-2024-debating-persuasive-llms", role: original, locator: "p. 4", stance: for}
+
+- id: c-stochastic
+  type: attributive
+  text: "The bisection protocol works only for deterministic simulation: if each step introduces noise, a misaligned Alice could choose the noise so that each step is plausible but the final result has extremely low probability, and Irving et al. leave a natural debate protocol for stochastic simulation open."
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 18", stance: for}
+
+- id: c-convincing-dangerous
+  type: attributive
+  text: "Irving et al. note that training for maximum convincing is not intuitively safe, as it sounds similar to training for deception, but rewarding both agents for acting honestly would let them collude on statements that sound consistent but are both lies."
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 18", stance: for}
+
+- id: c-mind-hack
+  type: attributive
+  text: "A sufficiently strong misaligned AI may be able to convince a human to do dangerous things via a text channel; Irving et al. propose making statements short enough that such a hack needs many of them, so the opponent can win by pointing it out."
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 17", stance: for}
+
+- id: c-matched
+  type: attributive
+  text: "The debate model relies on the agents being approximately matched in strength, since a much stronger Alice may be able to lie in ways that Bob cannot refute; using the same weights for both agents via self play gives this symmetry."
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 19", stance: for}
+
+- id: c-khan-limits
+  type: attributive
+  text: "Khan et al. note that in their setup the difference between strong and weak models is only in access to information, that their models are fine-tuned with RLHF and have a propensity for honesty, and that their results are limited to setups where debaters can provide verified evidence to the judge."
+  evidence:
+    - {work: "khan-2024-debating-persuasive-llms", role: original, locator: "p. 8", stance: for}
+
+- id: c-michael-limits
+  type: attributive
+  text: "Michael et al. address only a limited expertise gap, privileged access to a source text, and say it is not clear how their result generalizes to larger knowledge gaps or to differences in reasoning and persuasion skills."
+  evidence:
+    - {work: "michael-2023-debate-helps-supervise", role: original, locator: "p. 11", stance: for}
+
+- id: c-bc-fallible
+  type: attributive
+  text: "Brown-Cohen et al. list as open whether debate can verify computations when the human-judgement oracle gives incorrect answers on some subset of queries, since human judgement is fallible and reward models only approximate it."
+  evidence:
+    - {work: "brown-cohen-2023-doubly-efficient-debate", role: original, locator: "p. 10", stance: for}
+
+# Variants and history
+
+- id: c-variants-symmetric
+  type: attributive
+  text: "To remove a first-mover advantage, Irving et al. propose simultaneous moves, playing two debates with Alice and Bob each moving first, or a komi as in Go if judges can give smooth scores."
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 19", stance: for}
+
+- id: c-shared-activations
+  type: attributive
+  text: "Irving et al. propose giving each agent access to the other's activations at previous steps, which should make intentional lies trivial to discover if not to refute."
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 19", stance: for}
+
+- id: c-amplification
+  type: historical
+  text: "Irving et al. found debate while trying to better understand the amplification model of AI alignment of Christiano et al. (2018), to which debate is closely related."
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 20", stance: for}
+
+- id: c-cat-dog
+  type: attributive
+  text: "Irving et al. built a website for humans to play a cat versus dog debate revealing one pixel at a time, found informally that it was extremely difficult to lie, and left formal experiments to future work."
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 11", stance: for}
+
+- id: c-hist-irving
+  type: historical
+  text: "AI safety via debate, by Geoffrey Irving, Paul Christiano and Dario Amodei of OpenAI, is arXiv 1805.00899, and its v2 is dated 22 Oct 2018."
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 1", stance: for}
+
+- id: c-hist-michael
+  type: historical
+  text: "Debate Helps Supervise Unreliable Experts, by Michael et al. of New York University, Cohere and Anthropic, was posted as arXiv 2311.08702v1 on 15 Nov 2023."
+  evidence:
+    - {work: "michael-2023-debate-helps-supervise", role: original, locator: "p. 1", stance: for}
+
+- id: c-hist-bc
+  type: historical
+  text: "Scalable AI Safety via Doubly-Efficient Debate, by Jonah Brown-Cohen and Geoffrey Irving of Google DeepMind with Georgios Piliouras, was posted as arXiv 2311.14125v1 on 23 Nov 2023."
+  evidence:
+    - {work: "brown-cohen-2023-doubly-efficient-debate", role: original, locator: "p. 1", stance: for}
+
+- id: c-hist-khan
+  type: historical
+  text: "Debating with More Persuasive LLMs Leads to More Truthful Answers, by Khan et al., appeared in the Proceedings of the 41st International Conference on Machine Learning in Vienna, PMLR 235, 2024."
+  evidence:
+    - {work: "khan-2024-debating-persuasive-llms", role: original, locator: "p. 1", stance: for}

@@ -1,0 +1,452 @@
+# The claims of the weight decay page (spec 07). The build computes the labels.
+
+# Setting and method
+
+- id: c-kh-penalty
+  type: definitional
+  text: "Krogh and Hertz limit the growth of the weights by adding to the cost function a term that penalizes large weights, E(w) = E0(w) + (1/2) λ Σ w_i^2, where E0 is one's favorite error measure and λ is a parameter governing how strongly large weights are penalized."
+  evidence:
+    - {work: "krogh-1991-simple-weight-decay", role: original, locator: "Section 1", stance: for}
+
+- id: c-kh-decay-term
+  type: attributive
+  text: "Krogh and Hertz note that if gradient descent is used for learning, the last term in the cost function leads to a new term -λ w_i in the weight update, and that if the gradient of E0 were not present this equation would lead to an exponential decay of the weights."
+  evidence:
+    - {work: "krogh-1991-simple-weight-decay", role: original, locator: "Section 1", stance: for}
+
+- id: c-hanson-pratt
+  type: definitional
+  text: "In the weight decay described by Hanson & Pratt (1988), the weights θ decay exponentially as θ_{t+1} = (1 − λ)θ_t − α∇f_t(θ_t), where λ defines the rate of the weight decay per step and ∇f_t(θ_t) is the t-th batch gradient multiplied by a learning rate α."
+  evidence:
+    - {work: "loshchilov-2017-decoupled-weight-decay", role: original, locator: "Section 2", stance: for}
+
+- id: c-lh-called-wd
+  type: attributive
+  text: "Loshchilov and Hutter note that, due to this equivalence for standard SGD, L2 regularization is very frequently referred to as weight decay, including in popular deep learning libraries."
+  evidence:
+    - {work: "loshchilov-2017-decoupled-weight-decay", role: original, locator: "Section 2", stance: for}
+
+- id: c-goyal-l2
+  type: attributive
+  text: "Goyal et al. write that weight decay is actually the outcome of the gradient of an L2-regularization term in the loss function, and that in practice the term λw_t is computed separately and added to the aggregated gradients."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "Section 3", stance: for}
+
+- id: c-lh-sgdw
+  type: definitional
+  text: "Algorithm 1 of Loshchilov and Hutter gives SGD with momentum and L2 regularization, which adds λθ_{t−1} to the gradient g_t, and SGD with decoupled weight decay (SGDW), which decays the weights simultaneously with the update of θ_t in line 9."
+  evidence:
+    - {work: "loshchilov-2017-decoupled-weight-decay", role: original, locator: "Section 2", stance: for}
+
+# Derivation: L2 and decay under SGD
+
+- id: c-lh-prop1
+  type: attributive
+  text: "Proposition 1 of Loshchilov and Hutter states that standard SGD executes the same steps on batch loss functions with weight decay λ as it executes without weight decay on the loss plus an L2 term, when the L2 regularizer λ' is set to λ/α, so the best value of λ' is tightly coupled with the learning rate α."
+  evidence:
+    - {work: "loshchilov-2017-decoupled-weight-decay", role: original, locator: "Section 2", stance: for}
+
+- id: c-sgd-equivalence
+  type: mathematical
+  text: "For plain SGD with learning rate eta, an L2 penalty (lambda/2)|theta|^2 takes exactly the steps of decoupled weight decay that multiplies the parameters by 1 - eta lambda at each step, for every sequence of gradients."
+  assumes: ["the L2 penalty is (lambda/2) |theta|^2", "plain SGD without momentum", "a constant learning rate"]
+  derivation: sgd-equivalence
+
+- id: c-exponential-decay
+  type: mathematical
+  text: "With no loss gradient, SGD with L2 coefficient lambda multiplies the weights by 1 - eta lambda per step, so after k steps they are (1 - eta lambda)^k theta_0, the discrete form of the exponential decay of dtheta/dt = -lambda theta."
+  assumes: ["the loss gradient is zero", "a constant learning rate"]
+  derivation: sgd-equivalence
+
+- id: c-momentum-differs
+  type: mathematical
+  text: "With heavy-ball momentum mu, where the L2 term enters the momentum buffer, L2 with lambda and decoupled decay of eta lambda per step agree at the first step and differ at the second by exactly eta mu lambda theta_0, so no constant decoupled decay reproduces L2 along the trajectory."
+  assumes: ["momentum in the form of torch.optim.SGD with dampening 0", "a constant learning rate", "decoupled decay keeps only the loss gradient in the buffer"]
+  derivation: sgd-equivalence
+
+- id: c-momentum-fixed-point
+  type: mathematical
+  text: "On a fixed loss, SGD with momentum mu and L2 coefficient lambda stops where the gradient of the loss plus lambda theta is zero, and decoupled decay delta per step stops where the gradient plus delta (1 - mu)/eta times theta is zero, so the fixed points coincide when delta = eta lambda / (1 - mu)."
+  assumes: ["momentum in the form of torch.optim.SGD with dampening 0", "a constant learning rate", "the iteration converges"]
+  derivation: sgd-equivalence
+
+# Derivation: adaptive and preconditioned methods
+
+- id: c-lh-not-equivalent
+  type: attributive
+  text: "Loshchilov and Hutter state that L2 regularization and weight decay regularization are equivalent for standard stochastic gradient descent when rescaled by the learning rate, but not for adaptive gradient algorithms such as Adam."
+  evidence:
+    - {work: "loshchilov-2017-decoupled-weight-decay", role: original, locator: "the abstract", stance: for}
+
+- id: c-lh-prop2
+  type: attributive
+  text: "Proposition 2 of Loshchilov and Hutter states that for an optimizer with iterates θ_{t+1} ← θ_t − αM_t∇f_t(θ_t) and M_t ≠ kI, there exists no L2 coefficient λ' such that running it on the batch loss plus an L2 term without weight decay is equivalent to running it with decay λ."
+  evidence:
+    - {work: "loshchilov-2017-decoupled-weight-decay", role: original, locator: "Section 2", stance: for}
+
+- id: c-lh-large-s
+  type: attributive
+  text: "Loshchilov and Hutter explain that with L2 regularization both the gradient of the loss and the gradient of the regularizer are normalized by their typical magnitudes, so weights with large typical gradient magnitude s are regularized by a smaller relative amount, while decoupled weight decay regularizes all weights with the same rate λ."
+  evidence:
+    - {work: "loshchilov-2017-decoupled-weight-decay", role: original, locator: "Section 2", stance: for}
+
+- id: c-lh-prop3
+  type: attributive
+  text: "Proposition 3 of Loshchilov and Hutter states that with a fixed preconditioner M_t = diag(s)^−1, weight decay λ is equivalent to a scale-adjusted L2 regularization, so parameters with a large inverse preconditioner s_i are regularized relatively more, in proportion to the square root of s_i."
+  evidence:
+    - {work: "loshchilov-2017-decoupled-weight-decay", role: original, locator: "Section 2", stance: for}
+
+- id: c-zhang-c-norm
+  type: attributive
+  text: "Zhang et al. write that the weight decay update with a preconditioner C^−1 can be interpreted as the preconditioned gradient descent update on a regularized objective whose regularizer is the squared C-norm θᵀCθ, and that if C is adapted during training, as in Adam or K-FAC, this holds only approximately."
+  evidence:
+    - {work: "zhang-2018-three-mechanisms-weight-decay", role: original, locator: "Section 3", stance: for}
+
+- id: c-precond-not-equal
+  type: mathematical
+  text: "With a fixed symmetric positive definite preconditioner P, the L2 step theta - eta P (g + lambda theta) and the decoupled step (1 - delta) theta - eta P g agree for every theta if and only if eta lambda P = delta I; for P = diag(1/s_i) the L2 decay of coordinate i is eta lambda theta_i / s_i."
+  assumes: ["a fixed symmetric positive definite preconditioner", "a constant learning rate"]
+  derivation: preconditioned
+
+- id: c-precond-penalty
+  type: mathematical
+  text: "The decoupled step (1 - delta) theta - eta P g is the preconditioned gradient step on the loss plus the penalty (delta / (2 eta)) theta^T P^-1 theta, which for P = diag(1/s_i) penalizes coordinate i in proportion to s_i."
+  assumes: ["a fixed symmetric positive definite preconditioner", "a constant learning rate"]
+  derivation: preconditioned
+
+- id: c-precond-fixed-point
+  type: mathematical
+  text: "On a fixed loss, a preconditioned method with L2 coefficient lambda stops where the gradient plus lambda theta is zero whatever the preconditioner, while decoupled decay stops where the gradient plus (delta/eta) P^-1 theta is zero, which depends on the preconditioner."
+  assumes: ["a fixed invertible preconditioner", "a constant learning rate", "the iteration converges"]
+  derivation: preconditioned
+
+- id: c-lh-bayesian
+  type: attributive
+  text: "Loshchilov and Hutter summarize the view of Aitchison (2018) of adaptive gradient methods as Bayesian filtering, in which a state transition with A = λ × I plays exactly the role of decoupled weight decay, multiplying the current mean estimate by (1 − λ) at each step, and does not depend on the uncertainty in each of the parameters."
+  evidence:
+    - {work: "loshchilov-2017-decoupled-weight-decay", role: original, locator: "Section 3", stance: for}
+
+- id: c-lh-diagonal
+  type: empirical
+  text: "Loshchilov and Hutter find that for SGD with L2 regularization the basin of best hyperparameter settings lies on the diagonal of the learning rate and the L2 factor, so the two must be changed together, while SGDW decouples weight decay and initial learning rate."
+  scope:
+    models: "26 2x64d ResNet with Shake-Shake regularization"
+    data: [cifar-10]
+    scale: "100 epochs per setting"
+    setting: "image classification, a grid over the initial learning rate and the weight decay factor"
+  evidence:
+    - {work: "loshchilov-2017-decoupled-weight-decay", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-lh-adam-no-benefit
+  type: empirical
+  text: "Loshchilov and Hutter report that Adam did not benefit from L2 regularization at all, its best results with non-zero L2 factors being comparable to those without it, while AdamW largely decouples weight decay and learning rate and gives results that rival those of SGD and SGDW."
+  scope:
+    models: "26 2x64d ResNet with Shake-Shake regularization"
+    data: [cifar-10]
+    scale: "100 epochs per setting"
+    setting: "image classification, a grid over the initial learning rate and the weight decay factor"
+  evidence:
+    - {work: "loshchilov-2017-decoupled-weight-decay", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-lh-schedules
+  type: empirical
+  text: "Loshchilov and Hutter find that decoupled weight decay outperforms L2 regularization in Adam for all learning rate schedules they tried, with larger differences for better schedules, and that it leads to a more separable hyperparameter search space."
+  scope:
+    models: "2x64d ResNet"
+    data: [cifar-10]
+    scale: "100 epochs"
+    setting: "fixed, step-drop and cosine annealing learning rate schedules"
+  evidence:
+    - {work: "loshchilov-2017-decoupled-weight-decay", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-zhang-wd-beats-l2
+  type: empirical
+  text: "Zhang et al. found that weight decay consistently outperformed L2 regularization in cases where they differ, and that it closed most of the generalization gaps between first- and second-order optimizers and between small and large batches."
+  scope:
+    models: "VGG16 and ResNet32 trained with SGD, Adam and K-FAC"
+    data: [cifar-10, cifar-100]
+    scale: "varied batch sizes"
+    setting: "image classification with and without batch normalization and data augmentation"
+  evidence:
+    - {work: "zhang-2018-three-mechanisms-weight-decay", role: original, locator: "Section 1", stance: for}
+
+# Derivation: the Gaussian prior
+
+- id: c-map-penalty
+  type: mathematical
+  text: "Under the Gaussian prior N(0, sigma_p^2 I) the maximum a posteriori estimate minimizes the negative log likelihood plus |theta|^2 / (2 sigma_p^2), which is L2 regularization with lambda = 1/sigma_p^2 on the summed loss, or 1/(N sigma_p^2) on the loss averaged over N examples."
+  assumes: ["the prior N(0, sigma_p^2 I)", "N examples independent given theta"]
+  derivation: map-gaussian-prior
+
+- id: c-map-ridge
+  type: mathematical
+  text: "For a linear model with Gaussian noise of variance sigma^2 and the prior N(0, sigma_p^2 I), the MAP estimate is ridge regression (X^T X + lambda I)^-1 X^T y with lambda = sigma^2 / sigma_p^2, and it equals the posterior mean."
+  assumes: ["a linear model with Gaussian noise of variance sigma^2", "the prior N(0, sigma_p^2 I)"]
+  derivation: map-gaussian-prior
+
+- id: c-map-optimal
+  type: mathematical
+  text: "Averaged over the prior N(0, sigma_p^2 I) and the noise, the expected squared error of the ridge weights is smallest at lambda = sigma^2 / sigma_p^2 for every design matrix, the ratio of the noise variance to the prior variance."
+  assumes: ["a linear model with Gaussian noise of variance sigma^2", "the true weights drawn from N(0, sigma_p^2 I)", "a fixed design matrix"]
+  derivation: map-gaussian-prior
+
+- id: c-min-norm
+  type: mathematical
+  text: "As lambda tends to 0 the ridge solution tends to the minimum-norm solution X^+ y, and gradient descent with weight decay lambda multiplies any component of the weights in the null space of X by 1 - eta lambda per step."
+  assumes: ["a linear model with squared error", "a constant learning rate"]
+  derivation: map-gaussian-prior
+
+- id: c-kh-two-effects
+  type: attributive
+  text: "Krogh and Hertz prove that a weight decay has two effects in a linear network: it suppresses any irrelevant components of the weight vector by choosing the smallest vector that solves the learning problem, and if the size is chosen right it can suppress some of the effects of static noise on the targets."
+  evidence:
+    - {work: "krogh-1991-simple-weight-decay", role: original, locator: "the abstract", stance: for}
+
+- id: c-kh-smallest
+  type: attributive
+  text: "Krogh and Hertz show for the linear perceptron that with a weight decay the part of the weights outside the pattern subspace decays to zero, so an infinitesimal weight decay chooses the solution with the smallest norm out of all the solutions in the valley."
+  evidence:
+    - {work: "krogh-1991-simple-weight-decay", role: original, locator: "Section 3", stance: for}
+
+- id: c-kh-optimal
+  type: attributive
+  text: "Krogh and Hertz find, for targets with noise of variance σ^2, an optimal weight decay equal to σ^2 divided by the average of N^−1 |u|^2, and show that this optimal value is independent of the spectrum of A."
+  evidence:
+    - {work: "krogh-1991-simple-weight-decay", role: original, locator: "Section 4", stance: for}
+
+- id: c-kh-nonlinear
+  type: attributive
+  text: "Krogh and Hertz extend the argument to non-linear networks by a local linearization: a small weight decay picks out the point with the smallest norm in a valley of zero error, which cannot be proven best in general but is the solution with the smallest complexity, the one that Ockham would probably have chosen."
+  evidence:
+    - {work: "krogh-1991-simple-weight-decay", role: original, locator: "Section 5", stance: for}
+
+# Derivation: scale invariance
+
+- id: c-vl-no-effect
+  type: attributive
+  text: "van Laarhoven shows that L2 regularization has no regularizing effect when combined with normalization; instead regularization has an influence on the scale of weights, and thereby on the effective learning rate."
+  evidence:
+    - {work: "van-laarhoven-2017-l2-regularization-normalization", role: original, locator: "the abstract", stance: for}
+
+- id: c-vl-penalty-scale
+  type: attributive
+  text: "van Laarhoven notes that with normalization L_λ(αw) = L_{λα²}(w), so the L2 penalty term forces the weights to become small but has no regularizing effect of making the computed function simpler, and λ has no impact on the optimum, since the weights can be scaled to compensate."
+  evidence:
+    - {work: "van-laarhoven-2017-l2-regularization-normalization", role: original, locator: "Section 2", stance: for}
+
+- id: c-vl-gradient-scale
+  type: attributive
+  text: "van Laarhoven shows that while the output y does not change when the weights are scaled by α, its gradient does change, scaling like 1/α, for batch normalization, layer normalization and weight normalization."
+  evidence:
+    - {work: "van-laarhoven-2017-l2-regularization-normalization", role: original, locator: "Section 3", stance: for}
+
+- id: c-vl-effective-lr
+  type: attributive
+  text: "van Laarhoven derives the effective learning rate η_eff = η/‖w‖²₂ in terms of the normalized weights, which means that by decreasing the scale of the weights, weight decay increases the effective learning rate, and that the optimal learning rate must be proportional to 1/λ."
+  evidence:
+    - {work: "van-laarhoven-2017-l2-regularization-normalization", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-vl-unbounded
+  type: attributive
+  text: "van Laarhoven answers why L2 regularization is still beneficial when training networks with Batch Normalization: if no regularization is used the weights can grow unbounded, and the effective learning rate goes to 0."
+  evidence:
+    - {work: "van-laarhoven-2017-l2-regularization-normalization", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-vl-adam
+  type: attributive
+  text: "van Laarhoven shows that popular optimization methods such as ADAM only partially eliminate the influence of normalization on the learning rate."
+  evidence:
+    - {work: "van-laarhoven-2017-l2-regularization-normalization", role: original, locator: "the abstract", stance: for}
+
+- id: c-scale-gradient
+  type: mathematical
+  text: "If L(c w) = L(w) for every c > 0, then the gradient at c w is the gradient at w divided by c, and the gradient is orthogonal to w."
+  assumes: ["L(c w) = L(w) for every c > 0", "L differentiable away from 0"]
+  derivation: scale-invariance
+
+- id: c-norm-grows
+  type: mathematical
+  text: "For a scale-invariant loss, each step of gradient descent without weight decay increases the squared norm of the weights by exactly eta^2 times the squared norm of the gradient."
+  assumes: ["L(c w) = L(w) for every c > 0", "plain gradient descent"]
+  derivation: scale-invariance
+
+- id: c-effective-lr
+  type: mathematical
+  text: "For a scale-invariant loss, the direction after a gradient step of size eta from w is the direction after a step of size eta/|w|^2 from the unit vector w/|w|, so the effective learning rate of the direction is eta/|w|^2."
+  assumes: ["L(c w) = L(w) for every c > 0", "plain gradient descent"]
+  derivation: scale-invariance
+
+- id: c-li-arora
+  type: attributive
+  text: "Li and Arora prove that training BN networks with SGD, weight decay and momentum is equivalent to training with an exponentially increasing learning rate schedule, in which the learning rate increases by some (1 + α) factor in every epoch, and that such training rapidly blows up network weights while the network stays well-behaved due to normalization."
+  evidence:
+    - {work: "li-2019-exponential-learning-rate", role: original, locator: "page 1", stance: for}
+
+- id: c-li-arora-theorem
+  type: attributive
+  text: "Theorem 1.1 of Li and Arora states that SGD on a scale-invariant objective with learning rate η, weight decay factor λ and momentum γ is equivalent to SGD without weight decay with the learning rate η̃t = α^(−2t−1) η, which for γ = 0 simplifies to (1 − λη)^(−2t−1) η, and requires λη to be smaller than (1 − √γ)²."
+  evidence:
+    - {work: "li-2019-exponential-learning-rate", role: original, locator: "page 2", stance: for}
+
+- id: c-li-arora-identity
+  type: mathematical
+  text: "For a scale-invariant loss, gradient descent with weight decay, w_{t+1} = (1 - eta lambda) w_t - eta grad L(w_t), and gradient descent without decay at the learning rate eta (1 - eta lambda)^(-2t-1), started at the same point, give weights related by (1 - eta lambda)^(-t), so the same directions and the same losses at every step."
+  assumes: ["L(c w) = L(w) for every c > 0", "no momentum", "0 < eta lambda < 1"]
+  derivation: scale-invariance
+
+- id: c-equilibrium
+  type: mathematical
+  text: "If the gradient of a scale-invariant loss has norm G/|w| at every step, gradient descent with weight decay drives the squared weight norm to sqrt(eta G^2 / (lambda (2 - eta lambda))), where the effective learning rate is sqrt(eta lambda (2 - eta lambda))/G and the direction turns by an angle of about sqrt(2 eta lambda) per step."
+  assumes: ["L(c w) = L(w) for every c > 0", "the gradient norm is G/|w| at every step", "no momentum", "0 < eta lambda < 1"]
+  derivation: scale-invariance
+
+- id: c-zhang-three
+  type: attributive
+  text: "Zhang et al. identify three distinct mechanisms by which weight decay exerts a regularization effect, depending on the optimization algorithm and architecture: increasing the effective learning rate, approximately regularizing the input-output Jacobian norm, and reducing the effective damping coefficient for second-order optimization."
+  evidence:
+    - {work: "zhang-2018-three-mechanisms-weight-decay", role: original, locator: "the abstract", stance: for}
+
+- id: c-zhang-bn-layers
+  type: empirical
+  text: "Zhang et al. found for SGD and Adam on networks with BN that almost all of the regularization effect of weight decay was due to applying it to layers with BN, and that applying the effective learning rate of the network with weight decay to a network without weight decay captured the full regularization effect."
+  scope:
+    models: "ResNet32 and VGG16 with batch normalization, trained with SGD and Adam"
+    data: [cifar-10, cifar-100]
+    scale: "varied batch sizes"
+    setting: "image classification with batch normalization"
+  evidence:
+    - {work: "zhang-2018-three-mechanisms-weight-decay", role: original, locator: "Section 1", stance: for}
+
+- id: c-zhang-elr-curve
+  type: empirical
+  text: "Zhang et al. report that without weight decay the increase of the weight norm reduces the effective learning rate by a factor of 10 over the first 50 epochs, while with weight decay the effective learning rate remains more or less constant in each stage."
+  scope:
+    models: "ResNet32 with batch normalization trained with SGD"
+    data: [cifar-100]
+    scale: "3 factor-of-10 reductions of the learning rate spaced 60 epochs apart"
+    setting: "the effective learning rate of the first layer"
+  evidence:
+    - {work: "zhang-2018-three-mechanisms-weight-decay", role: original, locator: "Section 4.1", stance: for}
+
+# Evidence and modern view
+
+- id: c-kh-nettalk
+  type: empirical
+  text: "On the NetTalk problem, Krogh and Hertz find a clear improvement in generalization error when weight decay is used, and a less pronounced improvement in error rate, with a weight decay of λ = 0.00008; the values 0.00005 and 0.0001 gave basically the same curves."
+  scope:
+    models: "a network with 7 x 26 input units, 40 hidden units and 26 output units, about 8400 weights, trained by back-propagation with momentum 0.8"
+    data: [nettalk]
+    scale: "400 to 5000 training words, a test set of 1000 words, 300 epochs"
+    setting: "phoneme prediction from text"
+  evidence:
+    - {work: "krogh-1991-simple-weight-decay", role: original, locator: "Section 6", stance: for}
+
+- id: c-krizhevsky
+  type: empirical
+  text: "Krizhevsky et al. trained their ImageNet network by stochastic gradient descent with a batch size of 128, momentum of 0.9 and weight decay of 0.0005, and found that this small amount of weight decay was important for the model to learn: it is not merely a regularizer, it reduces the model's training error."
+  scope:
+    models: "the eight-layer convolutional network of Krizhevsky et al."
+    data: [imagenet]
+    scale: "ILSVRC training set"
+    setting: "image classification"
+  evidence:
+    - {work: "krizhevsky-2012-imagenet-classification", role: original, locator: "Section 5", stance: for}
+
+- id: c-zhang-train-acc
+  type: attributive
+  text: "Zhang et al. list among the findings that cast doubt on the L2 interpretation that weight decay has sometimes been observed to improve training accuracy, and that in networks with BN weight decay should in principle have no effect, since the weights can be scaled by a small factor without changing the predictions."
+  evidence:
+    - {work: "zhang-2018-three-mechanisms-weight-decay", role: original, locator: "Section 1", stance: for}
+
+- id: c-dangelo-never
+  type: attributive
+  text: "D'Angelo et al. argue that weight decay is never useful as an explicit regularizer but instead changes the training dynamics in a desirable way: for vision networks trained with multipass SGD it enhances the implicit regularization of SGD, and for large language models trained with nearly one epoch it balances the bias-variance tradeoff, leading to lower training loss and improved training stability."
+  evidence:
+    - {work: "dangelo-2023-why-weight-decay", role: original, locator: "the abstract", stance: for}
+
+- id: c-dangelo-gpt2
+  type: empirical
+  text: "D'Angelo et al. find that the final training loss of GPT-2-124M trained with AdamW on OpenWebText is smaller for a weight decay of 0.1 and 0.3 than for 0, and that a simple ℓ2 penalty added to the loss suffices for this effect."
+  scope:
+    models: "GPT-2-124M with NanoGPT"
+    data: [openwebtext]
+    scale: "50,000 iterations with a batch size of 256 and a context length of 256"
+    setting: "one-pass language model training with AdamW and a cosine schedule"
+  evidence:
+    - {work: "dangelo-2023-why-weight-decay", role: original, locator: "Section 3", stance: for}
+
+- id: c-dangelo-bf16
+  type: attributive
+  text: "D'Angelo et al. show that weight decay has another important practical benefit for LLMs trained with one-pass Adam: enabling stable training with the bfloat16 precision."
+  evidence:
+    - {work: "dangelo-2023-why-weight-decay", role: original, locator: "Section 1", stance: for}
+
+# Practice
+
+- id: c-he-resnet
+  type: attributive
+  text: "He et al. trained ResNets on ImageNet with SGD with a mini-batch size of 256, a weight decay of 0.0001 and a momentum of 0.9."
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "Section 3.4", stance: for}
+
+- id: c-goyal-bn
+  type: attributive
+  text: "Goyal et al. use a weight decay λ of 0.0001 and do not apply weight decay on the learnable BN coefficients γ and β."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "Section 5.1", stance: for}
+
+- id: c-goyal-remark
+  type: attributive
+  text: "Goyal et al. note that if there is no weight decay term there are many equivalent ways of scaling the learning rate, including scaling the loss, but with weight decay this is not the case: scaling the cross-entropy loss is not equivalent to scaling the learning rate."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "page 4", stance: for}
+
+- id: c-no-bias-decay
+  type: attributive
+  text: "He et al. describe the no bias decay heuristic, which applies the weight decay only to the weights in convolution and fully-connected layers, while the other parameters, including the biases and γ and β in BN layers, are left unregularized."
+  evidence:
+    - {work: "he-2019-bag-of-tricks", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-llama
+  type: attributive
+  text: "Touvron et al. trained the LLaMA models with the AdamW optimizer with β1 = 0.9, β2 = 0.95, a cosine learning rate schedule, a weight decay of 0.1 and gradient clipping of 1.0."
+  evidence:
+    - {work: "touvron-2023-llama", role: original, locator: "Section 2.3", stance: for}
+
+- id: c-lh-normalized
+  type: attributive
+  text: "Loshchilov and Hutter found that different weight decay factors are optimal for different computational budgets, and propose a normalized weight decay λ_norm that sets λ from the batch size b, the number of training points B and the number of epochs T, as the weight decay used if only one batch pass is allowed."
+  evidence:
+    - {work: "loshchilov-2017-decoupled-weight-decay", role: original, locator: "page 12", stance: for}
+
+# History
+
+- id: c-dangelo-history
+  type: historical
+  text: "The ℓ2 weight penalty traces back to studies on the stability of solutions for ill-posed problems (Tikhonov, 1943) and was explored in statistics by Hoerl and Kennard (1970) among others; Krogh and Hertz (1991) present one of the earliest systematic studies on weight decay tailored for neural networks."
+  evidence:
+    - {work: "dangelo-2023-why-weight-decay", role: original, locator: "Section 1.1", stance: for}
+
+- id: c-kh-known
+  type: historical
+  text: "Krogh and Hertz wrote that it has been known for a long time that a weight decay of this form can improve generalization, but until then not very widely recognized."
+  evidence:
+    - {work: "krogh-1991-simple-weight-decay", role: original, locator: "Section 1", stance: for}
+
+- id: c-hist-kh
+  type: historical
+  text: "Anders Krogh of CONNECT, The Niels Bohr Institute, and John A. Hertz of Nordita, both in Copenhagen, wrote A Simple Weight Decay Can Improve Generalization."
+  evidence:
+    - {work: "krogh-1991-simple-weight-decay", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-lh
+  type: historical
+  text: "Ilya Loshchilov and Frank Hutter of the University of Freiburg posted Decoupled Weight Decay Regularization as arXiv 1711.05101v3 on 4 Jan 2019; it was published as a conference paper at ICLR 2019."
+  evidence:
+    - {work: "loshchilov-2017-decoupled-weight-decay", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-vl
+  type: historical
+  text: "Twan van Laarhoven posted L2 Regularization versus Batch and Weight Normalization in 2017."
+  evidence:
+    - {work: "van-laarhoven-2017-l2-regularization-normalization", role: original, locator: "the title page", stance: for}

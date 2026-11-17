@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: MIT
+# The contract of the pass@k page (spec 04.4 and 08.7.5). The inputs are the counts that the unit tests produce, so
+# the metric runs no code. Every framework version's score reproduces every row of vectors/ within the tolerance.
+# The rows are exact rationals rounded once to float64, computed by hand with math.comb and fractions.Fraction; no row
+# comes from the human-eval package yet, because the aik-vectors image does not have it.
+entry: score
+inputs:
+  predictions: {type: "list[int]", meaning: "for each problem, the number c of its generated samples that pass all of its unit tests"}
+  references: {type: "list[int]", meaning: "for each problem, the number n of samples generated for it; 0 <= c <= n and k <= n for every problem"}
+options:
+  k: {type: int, default: 1, meaning: "the number of samples a problem gets in the metric: it counts as solved when at least one of k samples passes; 1 <= k <= n"}
+  estimator: {type: str, default: unbiased, values: [unbiased, plug-in], meaning: "unbiased is 1 - C(n - c, k) / C(n, k) of Chen et al. (2021), computed as a product; plug-in is 1 - (1 - c/n)^k, which is biased low for k >= 2"}
+output:
+  pass_at_k: {type: float, meaning: "the mean of the per-problem estimates, between 0 and 1"}
+  per_problem: {type: "list[float]", meaning: "the estimate for each problem, in the order of the inputs"}
+tolerance: {rtol: 1.0e-9, atol: 1.0e-12}
