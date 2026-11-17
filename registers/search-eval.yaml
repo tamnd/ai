@@ -1,0 +1,121 @@
+# The evaluation set of the search (spec 17.10). aik search eval runs it on the built index with the ranking of the
+# browser, and aik site build fails when a gate fails.
+# q is the query as a reader types it. class is one of title, alias, id, acronym, version, question and log, and sets
+# what the query must do: title, alias, id and version want the item at rank 1; an acronym wants its target at rank 1,
+# or every sense in the top 5 when it has several; a question or a query of the logs wants an answering item in the top 3.
+# want is a slug, a tag or the path of a page, or a list of them. A query none of whose items is in the index is
+# pending and no gate counts it, so a query can name a node before the node is written.
+# Questions are written by the evaluator role and reviewed; queries of the logs come from the gaps job (17.9), reviewed.
+
+# Titles, with a change of case, a typo or a missing hyphen.
+- {q: DROPOUT, class: title, want: dropout}
+- {q: transfomer, class: title, want: transformer}
+- {q: resnet, class: title, want: resnet}
+- {q: q learning, class: title, want: q-learning}
+- {q: Lora, class: title, want: lora}
+- {q: bert, class: title, want: bert}
+- {q: llama, class: title, want: llama}
+- {q: bleu, class: title, want: bleu}
+- {q: gpqa, class: title, want: gpqa}
+- {q: imagenet, class: title, want: imagenet}
+- {q: alphgo, class: title, want: alphago}
+- {q: Pytorch, class: title, want: pytorch}
+- {q: nvidia h100, class: title, want: nvidia-h100}
+- {q: eu ai act, class: title, want: eu-ai-act}
+- {q: chinese room, class: title, want: chinese-room}
+- {q: reward hacking, class: title, want: reward-hacking}
+- {q: double decent, class: title, want: double-descent}
+- {q: neural scaling laws, class: title, want: neural-scaling-laws}
+- {q: pac learnability, class: title, want: pac-learnability}
+- {q: image classification, class: title, want: image-classification}
+- {q: dartmouth workshop, class: title, want: dartmouth-workshop}
+- {q: alan turnig, class: title, want: alan-turing}
+- {q: google deepmind, class: title, want: deepmind}
+- {q: imagenet ilsvrc 2012, class: title, want: imagenet-ilsvrc-2012}
+- {q: the pac bound for a finite hypothesis class, class: title, want: pac-bound-finite-hypothesis-class}
+- {q: does scaling lead to general intelligence, class: title, want: does-scaling-lead-to-general-intelligence}
+
+# Aliases.
+- {q: inverted dropout, class: alias, want: dropout}
+- {q: low-rank adaptation, class: alias, want: lora}
+- {q: residual network, class: alias, want: resnet}
+- {q: specification gaming, class: alias, want: reward-hacking}
+- {q: scaling laws, class: alias, want: neural-scaling-laws}
+- {q: PAC learning, class: alias, want: pac-learnability}
+- {q: torch, class: alias, want: pytorch}
+- {q: DeepMind, class: alias, want: deepmind}
+- {q: attention is all you need, class: alias, want: vaswani-2017-attention}
+- {q: artificial intelligence act, class: alias, want: eu-ai-act}
+- {q: chinchilla scaling laws, class: alias, want: neural-scaling-laws}
+- {q: deep double descent, class: alias, want: double-descent}
+- {q: probably approximately correct learning, class: alias, want: pac-learnability}
+- {q: a. m. turing, class: alias, want: alan-turing}
+- {q: dartmouth conference, class: alias, want: dartmouth-workshop}
+- {q: scaling hypothesis, class: alias, want: does-scaling-lead-to-general-intelligence}
+- {q: watkins q-learning, class: alias, want: q-learning}
+- {q: bidirectional encoder representations from transformers, class: alias, want: bert}
+- {q: specification gaming reward, class: alias, want: reward-hacking}
+
+# Ids: the tag of a node, in any case, and the ids of other schemes (17.4).
+- {q: Y8VNMB, class: id, want: dropout}
+- {q: y8vnmb, class: id, want: dropout}
+- {q: 4W3NTQ, class: id, want: transformer}
+- {q: V3JG9E, class: id, want: bleu}
+- {q: KDH97E, class: id, want: q-learning}
+- {q: 2NT5ZY, class: id, want: pac-learnability}
+- {q: XSZ95D, class: id, want: pac-bound-finite-hypothesis-class}
+- {q: H0HPFC, class: id, want: gpqa}
+- {q: 1706.03762, class: id, want: vaswani-2017-attention}
+- {q: arXiv:1706.03762, class: id, want: vaswani-2017-attention}
+- {q: 1810.04805, class: id, want: bert}
+- {q: 1512.03385, class: id, want: resnet}
+- {q: 2106.09685, class: id, want: lora}
+
+# Acronyms, with one sense and with several.
+- {q: CRA, class: acronym, want: chinese-room}
+- {q: BERT, class: acronym, want: bert}
+- {q: LoRA, class: acronym, want: lora}
+- {q: BLEU, class: acronym, want: bleu}
+- {q: GPQA, class: acronym, want: gpqa}
+- {q: ILSVRC, class: acronym, want: imagenet-ilsvrc-2012}
+- {q: M-BERT, class: acronym, want: bert}
+- {q: PAC, class: acronym, want: [pac-learnability, pac-bound-finite-hypothesis-class]}
+- {q: AGI, class: acronym, want: does-scaling-lead-to-general-intelligence}
+
+# Models, benchmarks and hardware with a version or a size.
+- {q: Llama 3.1, class: version, want: llama}
+- {q: llama 2, class: version, want: llama}
+- {q: Llama 4, class: version, want: llama}
+- {q: BERT-Large, class: version, want: bert}
+- {q: bert base, class: version, want: bert}
+- {q: ResNet-50, class: version, want: resnet}
+- {q: H100 SXM, class: version, want: nvidia-h100}
+- {q: GPQA Diamond, class: version, want: gpqa}
+- {q: ImageNet-1k, class: version, want: imagenet-ilsvrc-2012}
+- {q: AlphaGo Lee, class: version, want: alphago}
+
+# Questions and tasks.
+- {q: how to prevent overfitting in neural networks, class: question, want: dropout}
+- {q: fine-tune a large model with few trainable parameters, class: question, want: lora}
+- {q: why do very deep networks train worse, class: question, want: resnet}
+- {q: test error falls again as the model grows, class: question, want: double-descent}
+- {q: how does loss scale with compute, class: question, want: neural-scaling-laws}
+- {q: can a computer understand language, class: question, want: chinese-room}
+- {q: who proposed the turing test, class: question, want: alan-turing}
+- {q: where did the field of artificial intelligence begin, class: question, want: dartmouth-workshop}
+- {q: the law that regulates AI in Europe, class: question, want: eu-ai-act}
+- {q: metric for machine translation, class: question, want: bleu}
+- {q: benchmark of graduate-level science questions, class: question, want: gpqa}
+- {q: how many examples to learn a finite hypothesis class, class: question, want: pac-bound-finite-hypothesis-class}
+- {q: the program that beat a professional at go, class: question, want: alphago}
+- {q: the paper that introduced the transformer, class: question, want: vaswani-2017-attention}
+- {q: an agent exploits a flaw in its reward, class: question, want: reward-hacking}
+- {q: gpu for training large models, class: question, want: nvidia-h100}
+- {q: learn action values without a model of the environment, class: question, want: q-learning}
+- {q: open weight language models from meta, class: question, want: llama}
+- {q: masked language model pretraining, class: question, want: bert}
+- {q: assign a label to a whole image, class: question, want: image-classification}
+- {q: attention mechanism architecture, class: question, want: transformer}
+- {q: dataset of labelled photos for vision research, class: question, want: imagenet}
+- {q: python deep learning library, class: question, want: pytorch}
+- {q: will bigger models become generally intelligent, class: question, want: does-scaling-lead-to-general-intelligence}

@@ -1,0 +1,221 @@
+# The claims of the gradient checkpointing page (spec 07). The build computes the labels.
+- id: c-segment-memory
+  type: mathematical
+  text: "For a chain of n layers of equal activation size cut into k segments, the longer segments first, the segment schedule holds at most k + floor(n / k) activations at once, against n + 1 when every activation is stored."
+  assumes: ["every activation has the same size", "the backward of a layer needs its input and its output", "parameters and gradients are not counted"]
+  derivation: "derivations/segment-memory.md"
+
+- id: c-segment-compute
+  type: mathematical
+  text: "The segment schedule runs 2n - k layer forwards, so it costs at most one extra forward pass."
+  assumes: ["a chain of n layers cut into k segments", "the last output of each segment is a checkpoint and is not recomputed"]
+  derivation: "derivations/segment-memory.md"
+
+- id: c-sqrt-optimum
+  type: mathematical
+  text: "The memory n / k + k is least at k = sqrt(n), where it is 2 sqrt(n); for n = q^2 the integer count k + floor(n / k) is least at k = q, where it is 2q."
+  assumes: ["the memory model of c-segment-memory"]
+  derivation: "derivations/segment-memory.md"
+
+- id: c-recursive-memory
+  type: mathematical
+  text: "Recursive bisection of the chain holds at most 2 + ceil(log2 n) activations at once."
+  assumes: ["the memory model of c-segment-memory", "a range of length t is split at floor(t / 2)"]
+  derivation: "derivations/recursive-bisection.md"
+
+- id: c-recursive-compute
+  type: mathematical
+  text: "Recursive bisection runs n + (n / 2) log2 n layer forwards when n is a power of two."
+  assumes: ["n = 2^p", "a range of length t is split at floor(t / 2)"]
+  derivation: "derivations/recursive-bisection.md"
+
+- id: c-layer-memory
+  type: mathematical
+  text: "Without model parallelism, the activations that one transformer layer stores for back-propagation take sbh(34 + 5as/h) bytes."
+  assumes: ["16-bit activations and 1-byte dropout masks", "an MLP of width 4h", "no tensor, sequence or pipeline parallelism"]
+  derivation: "derivations/transformer-memory.md"
+  evidence:
+    - {work: "korthikanti-2022-reducing-activation-recomputation", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-selective-share
+  type: mathematical
+  text: "By using selective activation recomputation we can save 70% and 65% of the required memory for activations for the GPT-3 and MT-NLG models, respectively."
+  assumes: ["the per-layer count of c-layer-memory", "GPT-3 has a = 96, s = 2048, h = 12288; MT-NLG has a = 128, s = 2048, h = 20480"]
+  derivation: "derivations/transformer-memory.md"
+  evidence:
+    - {work: "korthikanti-2022-reducing-activation-recomputation", role: original, locator: "Section 5", stance: for}
+
+- id: c-chen-sqrt
+  type: attributive
+  text: "Chen et al. design an algorithm that costs O(sqrt(n)) memory to train an n layer network, with only the computational cost of an extra forward pass per mini-batch."
+  evidence:
+    - {work: "chen-2016-sublinear-memory-cost", role: original, locator: "the abstract", stance: for}
+
+- id: c-chen-segments
+  type: attributive
+  text: "Chen et al. divide the n layer network into k segments, so that the memory cost is O(n/k) + O(k), and setting k = sqrt(n) gives a cost of O(2 sqrt(n))."
+  evidence:
+    - {work: "chen-2016-sublinear-memory-cost", role: original, locator: "Section 4.3", stance: for}
+
+- id: c-chen-log
+  type: attributive
+  text: "Chen et al. show that the memory consumption can be reduced to O(log n) with as little as O(n log n) extra cost for forward computation."
+  evidence:
+    - {work: "chen-2016-sublinear-memory-cost", role: original, locator: "the abstract", stance: for}
+
+- id: c-chen-recursion
+  type: attributive
+  text: "Storing k intermediate results and applying the same strategy recursively on each sub-path gives the memory recursion g(n) = k + g(n/(k + 1)), whose solution is g(n) = k log_{k+1}(n), and log2 n for k = 1."
+  evidence:
+    - {work: "chen-2016-sublinear-memory-cost", role: original, locator: "Section 4.4", stance: for}
+
+- id: c-chen-cheap-ops
+  type: attributive
+  text: "In a Conv-BatchNorm-Activation pipeline, Chen et al. keep the result of convolution but drop the result of the batch normalization, activation function and pooling, because they are cheap to compute."
+  evidence:
+    - {work: "chen-2016-sublinear-memory-cost", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-chen-greedy
+  type: attributive
+  text: "When the memory cost of each layer is not the same, Chen et al. do a greedy allocation with a memory budget B for each segment and search over B for a plan."
+  evidence:
+    - {work: "chen-2016-sublinear-memory-cost", role: original, locator: "Section 4.3", stance: for}
+
+- id: c-chen-resnet
+  type: empirical
+  text: "The memory cost of a 1,000-layer deep residual network on ImageNet went from 48G to 7G."
+  scope:
+    models: "a 1,000-layer residual network"
+    data: [imagenet]
+    scale: "one GPU"
+    setting: "the sublinear memory plan of Chen et al. in MXNet, against the plan without recomputation"
+  evidence:
+    - {work: "chen-2016-sublinear-memory-cost", role: original, locator: "the abstract", stance: for}
+  small_scale: "no"
+  small_scale_note: "The claim is about memory at the scale of a 1,000-layer network; the counts of the small chain test the same schedule."
+
+- id: c-chen-lstm
+  type: empirical
+  text: "On a four-layer LSTM unrolled over long sequences, the sub-linear plan gives more than 4x reduction over the optimized memory plan."
+  scope:
+    models: "a four-layer LSTM with 1024 hidden units"
+    data: []
+    scale: "one GPU"
+    setting: "memory of the feature maps against the number of unrolling steps"
+  evidence:
+    - {work: "chen-2016-sublinear-memory-cost", role: original, locator: "Section 5.3", stance: for}
+  small_scale: "no"
+
+- id: c-chen-runtime
+  type: empirical
+  text: "Because of the double forward cost in gradient calculation, the sublinear allocation strategy costs 30% additional runtime compared to the normal strategy."
+  scope:
+    models: "the residual network and LSTM of Chen et al."
+    data: [imagenet]
+    scale: "one Titan X GPU"
+    setting: "time per batch of the sublinear plan against the plan without recomputation"
+  evidence:
+    - {work: "chen-2016-sublinear-memory-cost", role: original, locator: "Section 5.4", stance: for}
+  small_scale: "no"
+
+- id: c-revolve-lineage
+  type: historical
+  text: "The idea of dropping intermediate results is also known as the gradient checkpointing technique in the automatic differentiation literature."
+  evidence:
+    - {work: "chen-2016-sublinear-memory-cost", role: original, locator: "Section 2", stance: for}
+
+- id: c-hsm-recurrence
+  type: definitional
+  text: "C(t, m) is the number of forward operations of backpropagation through time of length t with m hidden-state slots under an optimal policy; C(t, 1) = t(t + 1)/2, C(t, m) = 2t - 1 for m >= t, C(1, m) = 1, and C(t, m) is the least over 1 <= y < t of y + C(t - y, m - 1) + C(y, m)."
+  evidence:
+    - {work: "gruslys-2016-memory-efficient-bptt", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-hsm-bound
+  type: attributive
+  text: "Gruslys et al. establish the upper bound C(t, m) <= m t^(1 + 1/m) for BPTT-HSM."
+  evidence:
+    - {work: "gruslys-2016-memory-efficient-bptt", role: original, locator: "Section 3.5", stance: for}
+
+- id: c-hsm-covers-chen
+  type: attributive
+  text: "The strategies of Chen et al. can be expressed as policies of the dynamic program, so the dynamic program performs at least as well under any memory budget and any sequence length."
+  evidence:
+    - {work: "gruslys-2016-memory-efficient-bptt", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-gruslys-95
+  type: empirical
+  text: "For sequences of length 1000, the algorithm saves 95% of memory usage while using only one third more time per iteration than the standard BPTT."
+  scope:
+    models: "recurrent networks trained with BPTT"
+    data: []
+    scale: "unknown"
+    setting: "the dynamic-programming policy against standard BPTT"
+  evidence:
+    - {work: "gruslys-2016-memory-efficient-bptt", role: original, locator: "the abstract", stance: for}
+  small_scale: "no"
+
+- id: c-full-recompute-memory
+  type: attributive
+  text: "Checkpointing the input of each transformer layer and recomputing the rest in an extra forward pass reduces the activation memory to 2sbhL."
+  evidence:
+    - {work: "korthikanti-2022-reducing-activation-recomputation", role: original, locator: "Section 5", stance: for}
+
+- id: c-full-overhead
+  type: empirical
+  text: "In the training runs of Korthikanti et al., full activation recomputation gave a 30 to 40% execution time overhead."
+  scope:
+    models: "GPT-style transformers from 22B to 1T parameters"
+    data: []
+    scale: "NVIDIA A100 GPUs with tensor and pipeline parallelism"
+    setting: "full activation recomputation at transformer layer boundaries"
+  evidence:
+    - {work: "korthikanti-2022-reducing-activation-recomputation", role: original, locator: "Section 1", stance: for}
+  small_scale: "no"
+
+- id: c-selective-flops
+  type: attributive
+  text: "The recomputation of the attention-score activations introduces only 2.7% and 1.6% FLOPs overhead for GPT-3 and MT-NLG."
+  evidence:
+    - {work: "korthikanti-2022-reducing-activation-recomputation", role: original, locator: "Section 5", stance: for}
+
+- id: c-layer-time
+  type: empirical
+  text: "For one transformer layer of the 22B model, the overhead of the forward and backward pass was 39% with full recomputation, 7% with selective recomputation and 4% with selective recomputation and sequence parallelism."
+  scope:
+    models: "one layer of the 22B GPT-style model"
+    data: []
+    scale: "8-way tensor parallelism on A100 GPUs"
+    setting: "time per layer against the baseline with no recomputation"
+  evidence:
+    - {work: "korthikanti-2022-reducing-activation-recomputation", role: original, locator: "Section 6.2", stance: for}
+  small_scale: "no"
+
+- id: c-large-overhead
+  type: empirical
+  text: "For the 530B and 1T models, the overhead is just 2%, compared to 36% overhead for full recompute."
+  scope:
+    models: "530B and 1T GPT-style transformers"
+    data: []
+    scale: "NVIDIA A100 GPUs with tensor and pipeline parallelism"
+    setting: "selective recomputation with sequence parallelism against full recomputation, per layer"
+  evidence:
+    - {work: "korthikanti-2022-reducing-activation-recomputation", role: original, locator: "Section 6.2", stance: for}
+  small_scale: "no"
+
+- id: c-mfu
+  type: empirical
+  text: "Training a 530B parameter GPT-3 style model on 2240 NVIDIA A100 GPUs reached a Model Flops Utilization of 54.2%, against 42.1% using recomputation."
+  scope:
+    models: "a 530B parameter GPT-3 style model"
+    data: []
+    scale: "2240 NVIDIA A100 GPUs"
+    setting: "sequence parallelism and selective recomputation against full recomputation"
+  evidence:
+    - {work: "korthikanti-2022-reducing-activation-recomputation", role: original, locator: "the abstract", stance: for}
+  small_scale: "no"
+
+- id: c-names
+  type: definitional
+  text: "Not storing most of the activations and recomputing them as necessary to calculate gradients during the backward pass is usually called gradient checkpointing or activation recomputation."
+  evidence:
+    - {work: "korthikanti-2022-reducing-activation-recomputation", role: original, locator: "Section 1", stance: for}

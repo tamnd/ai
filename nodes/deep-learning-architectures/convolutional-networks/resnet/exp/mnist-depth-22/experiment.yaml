@@ -1,0 +1,24 @@
+id: mnist-depth-22
+claims: [c-degradation, c-shortcuts-fix-degradation]
+question: "On MNIST, with the same budget of SGD steps, does a plain fully connected network of 22 layers with batch normalization reach a higher training error than one of 4 layers, and does adding identity shortcuts around each pair of its layers bring its training error down?"
+scale_note:
+  here: "Fully connected networks of width 32 on 5000 MNIST training images: an input layer, then 1 or 10 blocks of two layers, then a classifier, so 4 or 22 layers with weights; batch normalization after each layer, ReLU, SGD with momentum 0.9, weight decay 1e-4, batches of 128, 300 steps. The training error is measured on the 5000 training images with the running statistics of the norms. The learning rate of each arm is the one of 0.01, 0.03 and 0.1 with the lowest training error in a prototype with the seeds 100 to 102, which are not among the seeds here."
+  source: "He et al. (2016) train convolutional networks of 18 and 34 layers, plain and residual, on the 1.28 million images of ImageNet for 60 x 10^4 iterations of SGD with batches of 256 (Section 3.4 and Section 4.1); their Figure 4 shows the degradation of the plain network and its absence in the residual one."
+replicates: null
+arms:
+  - {id: plain-4, config: {blocks: 1, residual: false, lr: 0.03}}
+  - {id: res-4, config: {blocks: 1, residual: true, lr: 0.1}}
+  - {id: plain-22, config: {blocks: 10, residual: false, lr: 0.03}}
+  - {id: res-22, config: {blocks: 10, residual: true, lr: 0.03}}
+base_config:
+  model: {width: 32, activation: relu, norm: "batch normalization after each layer, before the ReLU and before the addition", init: "He et al. (2015): a Gaussian with variance 2 / fan-in"}
+  train: {images: 5000, steps: 300, batch_size: 128}
+  optimizer: {kind: sgd, momentum: 0.9, weight_decay: 0.0001}
+  bn_momentum: 0.1
+data:
+  - {dataset: mnist, version: "lecun-1998", subset: "train, test", pin: "S:mnist-ai-data", train: [train]}
+seeds: {n: 10, base: 20151210}
+budget: cpu-small
+framework: numpy
+uses_impl: ../../impl/numpy/resnet.py
+metrics: [train_error, test_error, final_loss, layers, params]
