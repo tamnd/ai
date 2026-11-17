@@ -1,0 +1,651 @@
+# The claims of the Constitutional AI page (spec 07). The build computes the labels.
+
+# Setting
+
+- id: c-cai-definition
+  type: definitional
+  text: "Constitutional AI trains a harmless AI assistant through self-improvement, without any human labels identifying harmful outputs; the only human oversight is provided through a list of rules or principles, hence the name Constitutional AI."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "the abstract", stance: for}
+
+- id: c-cai-name
+  type: attributive
+  text: "Bai et al. chose the term 'constitutional' because they can train less harmful systems entirely through the specification of a short list of principles, and also to emphasize that when developing and deploying a general AI system one cannot avoid choosing some set of principles to govern it, even if they remain hidden or implicit."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 1", stance: for}
+
+- id: c-cai-motivations
+  type: attributive
+  text: "The motivations of Bai et al. were to study simple possibilities for using AI systems to help supervise other AIs and thus scale supervision, to improve on their prior harmless assistant by eliminating evasive responses and reducing the tension between helpfulness and harmlessness, to make the principles governing AI behavior and their implementation more transparent, and to reduce iteration time by obviating new human feedback labels when altering the objective."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 1", stance: for}
+
+- id: c-rlhf-labels
+  type: attributive
+  text: "Bai et al. note that RLHF typically uses at least tens of thousands of human feedback labels, which, even when shared publicly, do not shed much light on AI training objectives, since no one can feasibly understand or summarize the collective impact of so much information."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 1", stance: for}
+
+- id: c-hh-baseline
+  type: empirical
+  text: "Bai et al. apply preference modeling and RLHF to finetune language models to act as helpful and harmless assistants, and find that this alignment training improves performance on almost all NLP evaluations and is fully compatible with training for specialized skills such as python coding and summarization."
+  scope:
+    models: "Anthropic language models from 13M to 52B parameters"
+    data: [anthropic-hh]
+    scale: "preference models and RLHF policies up to 52B"
+    setting: "helpful and harmless dialogue assistants"
+  evidence:
+    - {work: "bai-2022-training-helpful-harmless-assistant", role: original, locator: "the abstract", stance: for}
+
+- id: c-hh-datasets
+  type: attributive
+  text: "For the helpfulness dataset of Bai et al., crowdworkers had open-ended conversations with the models and chose the more helpful response; for the red-teaming dataset they tried to elicit harmful responses and chose the more harmful response; the authors believe this difference made it difficult to train models that were both helpful and harmless."
+  evidence:
+    - {work: "bai-2022-training-helpful-harmless-assistant", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-hh-evasive
+  type: attributive
+  text: "Bai et al. (2022b) report that their earlier human-feedback assistant often refused to answer controversial questions and, once it encountered objectionable queries, could get stuck producing evasive responses for the rest of the conversation, ultimately because evasiveness was rewarded as a response to harmful inputs by their crowdworkers."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 1", stance: for}
+
+- id: c-hh-tension
+  type: empirical
+  text: "Bai et al. found many RLHF policies reproducing the same exaggerated responses to all remotely sensitive questions, which they attribute to over-optimizing for harmlessness while under-optimizing helpfulness."
+  scope:
+    models: "Anthropic language models from 13M to 52B parameters"
+    data: [anthropic-hh]
+    scale: "preference models and RLHF policies up to 52B"
+    setting: "helpful and harmless dialogue assistants"
+  evidence:
+    - {work: "bai-2022-training-helpful-harmless-assistant", role: original, locator: "Section 4.4", stance: for}
+
+- id: c-sixteen
+  type: attributive
+  text: "Bai et al. wrote a total of 16 different principles related to harmlessness, many quite similar and addressing harmfulness in general, others targeting specific areas."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 3.1", stance: for}
+
+# The method: the supervised stage
+
+- id: c-sl-loop
+  type: definitional
+  text: "In the supervised stage, the helpful RLHF model is shown a red-teaming prompt designed to elicit harmful behavior and a response is sampled; a set of pre-written instructions requesting a critique of the response is appended and the critique is sampled; then instructions requesting a revision are appended and the revision is sampled."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-critique-request
+  type: attributive
+  text: "An example critique request of Bai et al. reads 'Identify specific ways in which the assistant's last response is harmful, unethical, racist, sexist, toxic, dangerous, or illegal', and the matching revision request reads 'Please rewrite the assistant response to remove any and all harmful, unethical, racist, sexist, toxic, dangerous, or illegal content'."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-repeat
+  type: definitional
+  text: "Since the final prompt-revision pair has the same format as the original prompt-response pair, the critique-revision pipeline can be applied multiple times, giving a sequence of revisions; the critique and revision instructions collectively form a constitutional principle, and principles are randomly sampled at each revision step of each red team prompt."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-pov
+  type: attributive
+  text: "Bai et al. found that the language model sometimes becomes confused about its point of view, for example generating a critique where it is supposed to generate a revision, and addressed this by few-shot prompting with examples of critiques and revisions."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-sl-finetune
+  type: definitional
+  text: "SL-CAI models are obtained by finetuning a pre-trained model on the revisions from all revision steps, together with responses sampled from the helpful RLHF model on helpfulness prompts, included to retain helpfulness as much as possible."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-sl-purpose
+  type: attributive
+  text: "The main purpose of the supervised phase is to easily and flexibly alter the distribution of the model's responses, to reduce the need for exploration and the total length of training during the RL phase."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 1.2", stance: for}
+
+# The method: the RL stage
+
+- id: c-feedback-prompt
+  type: definitional
+  text: "In the RL stage, the assistant model generates a pair of responses to a prompt, and the prompt and response pair are presented, with a principle for choosing the more harmless response, as a multiple-choice question to an independent feedback model, typically a pretrained language model."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-normalized-targets
+  type: definitional
+  text: "Bai et al. compute the log probability of the responses (A) and (B) and make a labeled preference modeling comparison with the normalized probabilities as targets, which they expect to be fairly well-calibrated since they are multiple choice responses."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-principle-ensemble
+  type: attributive
+  text: "Bai et al. randomly sampled one of 16 principles for each comparison label, and found qualitatively that ensembling over principles led to notably more robust preference model behavior than using the same principle for all labels."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-principle-example
+  type: attributive
+  text: "One of the principles reads: 'Which of these assistant responses is less harmful? Choose the response that a wise, ethical, polite and friendly person would more likely say.'"
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "p. 11", stance: for}
+
+- id: c-hybrid
+  type: definitional
+  text: "Constitutional AI keeps human feedback labels for helpfulness and replaces human labels for harmlessness with feedback model labels; once the comparison labels are obtained, the rest of the pipeline, preference model training and RL, is exactly the same as RLHF."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-distill
+  type: attributive
+  text: "Bai et al. describe the RL stage as distilling language-model interpretations of a set of principles into a hybrid human/AI preference model, just as RLHF distills human preferences into a single preference model."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 1.2", stance: for}
+
+- id: c-same-model
+  type: attributive
+  text: "Bai et al. use the SL-CAI models both to generate the response pairs and as the initial snapshot for RL, and suspect that this leads to better results because the policy's responses are then similar to the preference model's training distribution, at least early in RL."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-lee-rm
+  type: definitional
+  text: "Lee et al. train the reward model on soft AI labels with a cross-entropy loss on the softmax of the reward model's scores, and note that training a reward model on AI labels can be viewed as a form of model distillation."
+  evidence:
+    - {work: "lee-2023-rlaif-vs-rlhf", role: original, locator: "Section 2.2.1", stance: for}
+
+- id: c-cot
+  type: definitional
+  text: "For chain-of-thought labels, Bai et al. use the helpful RLHF model instead of the pretrained model as the feedback model, reformat the principles conversationally, elicit the chain of thought with the prompt 'Let's think step-by-step', and prepend hand-written few-shot examples."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-clamp
+  type: attributive
+  text: "Chain-of-thought samples typically state which option is preferred, so the probability targets are very confident and not well-calibrated; Bai et al. found that clamping them to the 40-60 percent range led to better and more robust behavior, and that without clamping RL-CAI models learned to output more extreme responses."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-lee-labeling
+  type: definitional
+  text: "Lee et al. prompt an off-the-shelf LLM with a preamble, optional few-shot exemplars, the sample to annotate and an ending such as 'Preferred Response=', extract the log-probabilities of the tokens '1' and '2', and compute their softmax to obtain a preference distribution."
+  evidence:
+    - {work: "lee-2023-rlaif-vs-rlhf", role: original, locator: "Section 2", stance: for}
+
+- id: c-lee-position
+  type: attributive
+  text: "Lee et al. find that the order in which candidates are shown can bias the LLM, especially smaller labelers, and mitigate it by making two inferences per pair with the order reversed in the second and averaging the results."
+  evidence:
+    - {work: "lee-2023-rlaif-vs-rlhf", role: original, locator: "Section 2.1.1", stance: for}
+
+- id: c-lee-cot
+  type: definitional
+  text: "Lee et al. elicit chain-of-thought reasoning in two steps: the ending is replaced by a request for a rationale, which is decoded, and the original prompt, the response and the standard ending are then concatenated and scored as before."
+  evidence:
+    - {work: "lee-2023-rlaif-vs-rlhf", role: original, locator: "Section 2", stance: for}
+
+- id: c-lee-reinforce
+  type: attributive
+  text: "Lee et al. train the policy with a modified version of REINFORCE with a baseline instead of PPO, as simpler yet still effective, with both policy and value models initialized from the SFT model."
+  evidence:
+    - {work: "lee-2023-rlaif-vs-rlhf", role: original, locator: "Section 3", stance: for}
+
+# Derivation
+
+- id: c-label-logistic
+  type: mathematical
+  text: "exp(l_A) / (exp(l_A) + exp(l_B)) = sigma(l_A - l_B), and adding the same constant to both log-probabilities leaves the label unchanged."
+  assumes: ["the label is the softmax of the feedback model's log-probabilities of the two options"]
+  derivation: ai-preference-label
+
+- id: c-soft-gradient
+  type: mathematical
+  text: "The soft-label loss L(Delta) = -p log sigma(Delta) - (1 - p) log sigma(-Delta) has derivative sigma(Delta) - p and second derivative sigma(Delta) sigma(-Delta) > 0."
+  assumes: ["the preference model is trained by cross-entropy on the soft label p of the pair, through the logistic function of its score difference"]
+  derivation: ai-preference-label
+
+- id: c-soft-minimizer
+  type: mathematical
+  text: "For 0 < p < 1 the soft-label loss has the unique minimizer Delta* = log(p / (1 - p)), where it equals the binary entropy of p."
+  assumes: ["the preference model is trained by cross-entropy on the soft label p of the pair, through the logistic function of its score difference"]
+  derivation: ai-preference-label
+
+- id: c-hard-no-minimizer
+  type: mathematical
+  text: "For p = 1 the loss -log sigma(Delta) decreases strictly in Delta and has no minimizer."
+  assumes: ["the preference model is trained by cross-entropy on the soft label p of the pair, through the logistic function of its score difference"]
+  derivation: ai-preference-label
+
+- id: c-clamp-bound
+  type: mathematical
+  text: "If p is clamped to [a, 1 - a] with 0 < a < 1/2, the minimizer satisfies |Delta*| <= log((1 - a)/a), which is log 1.5 for a = 0.4 and log 4 for a = 0.2."
+  assumes: ["the preference model is trained by cross-entropy on the soft label p of the pair, through the logistic function of its score difference"]
+  derivation: ai-preference-label
+
+- id: c-ensemble-average
+  type: mathematical
+  text: "Since the loss is linear in p, the expected loss over a randomly drawn principle k with label p_k equals the loss with the averaged label E_k[p_k], whose minimizer is the log-odds of the average."
+  assumes: ["the preference model is trained by cross-entropy on the soft label p of the pair, through the logistic function of its score difference", "the principle is drawn independently of the score difference"]
+  derivation: ai-preference-label
+
+- id: c-swap-symmetric
+  type: mathematical
+  text: "If the log-odds for the first-shown response are d + b, the average over both orders, (sigma(d + b) + sigma(d - b)) / 2, is even in b and equals 1/2 at d = 0 for every b."
+  assumes: ["an additive bias b on the log-odds of the first position"]
+  derivation: ai-preference-label
+
+- id: c-swap-shrinks
+  type: mathematical
+  text: "For d > 0, the average over both orders decreases in |b| from sigma(d) towards 1/2 and stays above 1/2."
+  assumes: ["an additive bias b on the log-odds of the first position"]
+  derivation: ai-preference-label
+
+# Hyperparameters
+
+- id: c-num-principles
+  type: empirical
+  text: "Bai et al. find that the number of principles in the constitution does not appear to have a significant effect on the harmlessness preference model score, though they expect more principles to lead to more diverse behaviors, which they did not study quantitatively."
+  scope:
+    models: "Anthropic language models up to 52B parameters"
+    data: [anthropic-hh, anthropic-red-team]
+    scale: "182,831 red-team and 135,296 helpfulness prompts; RL policies up to 52B"
+    setting: "helpful and harmless dialogue assistants"
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 3.4", stance: for}
+
+- id: c-sl-data
+  type: attributive
+  text: "Bai et al. collected 42,496 human-written red-team prompts and generated 140,335 more by few-shot prompting a pretrained model, 182,831 in total, sampling 4 critique-revision pairs per prompt from a helpful RLHF model, and 135,296 human-written helpfulness prompts with 2 responses each, always sampling at temperature T = 1."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-sl-train
+  type: attributive
+  text: "SL-CAI models are trained for one epoch with a constant learning rate of 0.5 relative to the pre-training learning rate and batch size 1024 sequences."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-rl-data
+  type: attributive
+  text: "The RL runs of Bai et al. use the same hyperparameters as their prior work; the preference model data are 135,296 human helpfulness comparisons and 182,831 constitutionally generated harmlessness comparisons, one per SL-CAI prompt, and the RL prompts add 491,142 model-generated red-team and 474,300 helpfulness prompts."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-soft-vs-hard
+  type: empirical
+  text: "For RL-CAI without chain of thought, soft preference labels led to much better results than hard labels, which Bai et al. attribute to soft labels being fairly well-calibrated; with chain of thought, clamping at 20-80 percent slightly improved results and 40-60 improved them further, and they used 40-60 for the main results."
+  scope:
+    models: "Anthropic language models up to 52B parameters"
+    data: [anthropic-hh, anthropic-red-team]
+    scale: "182,831 red-team and 135,296 helpfulness prompts; RL policies up to 52B"
+    setting: "helpful and harmless dialogue assistants"
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 4.3", stance: for}
+
+# Cost
+
+- id: c-lee-cost
+  type: attributive
+  text: "Lee et al. estimate the cost of LLM labeling to be over 10x cheaper than human annotation."
+  evidence:
+    - {work: "lee-2023-rlaif-vs-rlhf", role: original, locator: "p. 6", stance: for}
+
+- id: c-lee-labeler-once
+  type: attributive
+  text: "Since the AI labeler is used only once to generate preference examples and is not called during RL in canonical RLAIF, Lee et al. note that using an even larger labeler is not necessarily prohibitively expensive."
+  evidence:
+    - {work: "lee-2023-rlaif-vs-rlhf", role: original, locator: "Section 4.5", stance: for}
+
+# Evidence
+
+- id: c-hhh-eval
+  type: empirical
+  text: "Models achieve well over 90% binary accuracy on 221 comparisons of helpfulness, honesty and harmlessness, so Bai et al. wrote 217 more challenging comparisons focused on subtle harmlessness; chain-of-thought reasoning improves performance significantly for larger models, and averaging five chain-of-thought samples gives a further small boost."
+  scope:
+    models: "Anthropic language models up to 52B parameters"
+    data: [anthropic-hh, anthropic-red-team]
+    scale: "182,831 red-team and 135,296 helpfulness prompts; RL policies up to 52B"
+    setting: "helpful and harmless dialogue assistants"
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 2", stance: for}
+
+- id: c-hhh-trend
+  type: empirical
+  text: "On 438 binary comparison questions, the trends suggest that models larger than 52B will be competitive with preference models trained on human feedback."
+  scope:
+    models: "Anthropic language models up to 52B parameters"
+    data: [anthropic-hh, anthropic-red-team]
+    scale: "182,831 red-team and 135,296 helpfulness prompts; RL policies up to 52B"
+    setting: "helpful and harmless dialogue assistants"
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 1.3", stance: for}
+
+- id: c-approaching
+  type: attributive
+  text: "Bai et al. read their results as suggesting that large language models may already be approaching the performance of crowdworkers in identifying and assessing harmful behavior."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 2", stance: for}
+
+- id: c-revisions-harmless
+  type: empirical
+  text: "Revisions achieve progressively higher harmlessness preference model scores, though preference model scores become less calibrated at higher values, so these results should be taken with a grain of salt."
+  scope:
+    models: "Anthropic language models up to 52B parameters"
+    data: [anthropic-hh, anthropic-red-team]
+    scale: "182,831 red-team and 135,296 helpfulness prompts; RL policies up to 52B"
+    setting: "helpful and harmless dialogue assistants"
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 3.4", stance: for}
+
+- id: c-revisions-helpful
+  type: empirical
+  text: "Harmlessness and combined HH preference model scores improve monotonically with the number of revisions, while pure helpfulness scores decrease."
+  scope:
+    models: "Anthropic language models up to 52B parameters"
+    data: [anthropic-hh, anthropic-red-team]
+    scale: "182,831 red-team and 135,296 helpfulness prompts; RL policies up to 52B"
+    setting: "helpful and harmless dialogue assistants"
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "p. 9", stance: for}
+
+- id: c-critiques
+  type: empirical
+  text: "Critiqued revisions achieved better harmlessness scores than direct revisions for small models but made no noticeable difference for large models; inspecting 52B samples, Bai et al. found the critiques sometimes reasonable but often inaccurate or overstated."
+  scope:
+    models: "Anthropic language models up to 52B parameters"
+    data: [anthropic-hh, anthropic-red-team]
+    scale: "182,831 red-team and 135,296 helpfulness prompts; RL policies up to 52B"
+    setting: "helpful and harmless dialogue assistants"
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 3.5", stance: for}
+
+- id: c-sl-results
+  type: empirical
+  text: "SL-CAI is less helpful than both RLHF models, more harmless than the helpful RLHF model and more harmful than HH RLHF."
+  scope:
+    models: "Anthropic language models up to 52B parameters"
+    data: [anthropic-hh, anthropic-red-team]
+    scale: "182,831 red-team and 135,296 helpfulness prompts; RL policies up to 52B"
+    setting: "helpful and harmless dialogue assistants"
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 3.3", stance: for}
+
+- id: c-eval-setup
+  type: attributive
+  text: "A total of 10,274 helpfulness and 8,135 comparisons were collected for AB testing the 24 snapshots, and crowdworkers were instructed to prefer thoughtfully harmless responses over evasively harmless responses."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 3.3", stance: for}
+
+- id: c-rl-results
+  type: empirical
+  text: "RL-CAI models are significantly more harmless than the RLHF and SL-CAI models; RL-CAI with chain of thought seems slightly less helpful but slightly more harmless than without; the feedback model's log-probabilities are reasonably well-calibrated."
+  scope:
+    models: "Anthropic language models up to 52B parameters"
+    data: [anthropic-hh, anthropic-red-team]
+    scale: "182,831 red-team and 135,296 helpfulness prompts; RL policies up to 52B"
+    setting: "helpful and harmless dialogue assistants"
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 4.3", stance: for}
+
+- id: c-equal-human
+  type: empirical
+  text: "Using self-supervised preference labels for RL further improves model behavior as evaluated by crowdworkers, equaling or exceeding the performance when using human feedback to evaluate harmlessness."
+  scope:
+    models: "Anthropic language models up to 52B parameters"
+    data: [anthropic-hh, anthropic-red-team]
+    scale: "182,831 red-team and 135,296 helpfulness prompts; RL policies up to 52B"
+    setting: "helpful and harmless dialogue assistants"
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 1.3", stance: for}
+
+- id: c-never-evasive
+  type: empirical
+  text: "RL-CAI is virtually never evasive, and often gives nuanced and harmless responses to most red team prompts."
+  scope:
+    models: "Anthropic language models up to 52B parameters"
+    data: [anthropic-hh, anthropic-red-team]
+    scale: "182,831 red-team and 135,296 helpfulness prompts; RL policies up to 52B"
+    setting: "helpful and harmless dialogue assistants"
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 4.4", stance: for}
+
+- id: c-absolute-harm
+  type: empirical
+  text: "On absolute harmfulness scores from 0 to 4 for 64 hand-picked held-out red team prompts averaged over 256 responses per prompt, the helpful RLHF model becomes more harmful during training while HH RLHF, RL-CAI and RL-CAI with chain of thought become progressively less harmful; absolute scores may not be well-calibrated."
+  scope:
+    models: "Anthropic language models up to 52B parameters"
+    data: [anthropic-hh, anthropic-red-team]
+    scale: "182,831 red-team and 135,296 helpfulness prompts; RL policies up to 52B"
+    setting: "helpful and harmless dialogue assistants"
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 4.5", stance: for}
+
+- id: c-lee-gap
+  type: attributive
+  text: "Lee et al. note that Bai et al. (2022b) did not directly compare the efficacy of human and AI feedback, leaving unanswered whether RLAIF can be a suitable alternative to RLHF."
+  evidence:
+    - {work: "lee-2023-rlaif-vs-rlhf", role: original, locator: "Section 1", stance: for}
+
+- id: c-lee-winrates
+  type: empirical
+  text: "Human evaluators prefer RLAIF and RLHF over the SFT baseline 71% and 73% of the time for summarization and 63% and 64% for helpful dialogue; the differences are not statistically significant, and in head-to-head comparison RLAIF and RLHF are equally preferred."
+  scope:
+    models: "PaLM 2 XS policies and reward models; PaLM 2 L, S and XS labelers"
+    data: [tldr, openai-human-preferences, anthropic-hh]
+    scale: "3-4k downsampled training examples per task for labeling experiments"
+    setting: "summarization, helpful dialogue and harmless dialogue"
+  evidence:
+    - {work: "lee-2023-rlaif-vs-rlhf", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-lee-harmless
+  type: empirical
+  text: "For harmless dialogue generation, RLAIF achieves a harmless rate of 88%, outperforming RLHF and SFT at 76% and 64%."
+  scope:
+    models: "PaLM 2 XS policies and reward models; PaLM 2 L, S and XS labelers"
+    data: [tldr, openai-human-preferences, anthropic-hh]
+    scale: "3-4k downsampled training examples per task for labeling experiments"
+    setting: "summarization, helpful dialogue and harmless dialogue"
+  evidence:
+    - {work: "lee-2023-rlaif-vs-rlhf", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-lee-same-size
+  type: empirical
+  text: "With PaLM 2 XS as the AI labeler, the same size as the policy, human annotators prefer same-size RLAIF over SFT 68% of the time, against 71% for RLAIF with a larger labeler."
+  scope:
+    models: "PaLM 2 XS policies and reward models; PaLM 2 L, S and XS labelers"
+    data: [tldr, openai-human-preferences, anthropic-hh]
+    scale: "3-4k downsampled training examples per task for labeling experiments"
+    setting: "summarization, helpful dialogue and harmless dialogue"
+  evidence:
+    - {work: "lee-2023-rlaif-vs-rlhf", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-lee-direct
+  type: empirical
+  text: "Human annotators prefer d-RLAIF over SFT 74% of the time for summarization and over same-size RLAIF 60% of the time; for helpful dialogue, where the labeler and the starting policy are the same checkpoint, d-RLAIF achieves a 66% win rate over SFT."
+  scope:
+    models: "PaLM 2 XS policies and reward models; PaLM 2 L, S and XS labelers"
+    data: [tldr, openai-human-preferences, anthropic-hh]
+    scale: "3-4k downsampled training examples per task for labeling experiments"
+    setting: "summarization, helpful dialogue and harmless dialogue"
+  evidence:
+    - {work: "lee-2023-rlaif-vs-rlhf", role: original, locator: "Section 4.3", stance: for}
+
+- id: c-lee-combine
+  type: empirical
+  text: "Lee et al. experimented with combining human and AI feedback but did not see an improvement beyond using human feedback alone."
+  scope:
+    models: "PaLM 2 XS policies and reward models; PaLM 2 L, S and XS labelers"
+    data: [tldr, openai-human-preferences, anthropic-hh]
+    scale: "3-4k downsampled training examples per task for labeling experiments"
+    setting: "summarization, helpful dialogue and harmless dialogue"
+  evidence:
+    - {work: "lee-2023-rlaif-vs-rlhf", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-lee-length
+  type: empirical
+  text: "RLAIF and RLHF policies tend to generate longer responses than the SFT policy, which may bias human evaluation, and after controlling for length both still outperform SFT."
+  scope:
+    models: "PaLM 2 XS policies and reward models; PaLM 2 L, S and XS labelers"
+    data: [tldr, openai-human-preferences, anthropic-hh]
+    scale: "3-4k downsampled training examples per task for labeling experiments"
+    setting: "summarization, helpful dialogue and harmless dialogue"
+  evidence:
+    - {work: "lee-2023-rlaif-vs-rlhf", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-lee-prompting
+  type: empirical
+  text: "Eliciting chain-of-thought reasoning tends to improve AI labeler alignment, while few-shot prompting and detailed preambles have mixed effects across tasks, and self-consistency strictly degrades alignment."
+  scope:
+    models: "PaLM 2 XS policies and reward models; PaLM 2 L, S and XS labelers"
+    data: [tldr, openai-human-preferences, anthropic-hh]
+    scale: "3-4k downsampled training examples per task for labeling experiments"
+    setting: "summarization, helpful dialogue and harmless dialogue"
+  evidence:
+    - {work: "lee-2023-rlaif-vs-rlhf", role: original, locator: "Section 4.4", stance: for}
+
+- id: c-lee-agreement
+  type: attributive
+  text: "Lee et al. compare the 78% alignment of their off-the-shelf labeler on summarization with the 73-77% human inter-annotator agreement estimated by Stiennon et al."
+  evidence:
+    - {work: "lee-2023-rlaif-vs-rlhf", role: original, locator: "Section 4.4", stance: for}
+
+- id: c-lee-size
+  type: empirical
+  text: "AI labeler alignment on summarization is 78.0% for PaLM 2 L, 73.8% for PaLM 2 S and 62.7% for PaLM 2 XS; Lee et al. suggest that one contributing factor may be that smaller LLMs display greater position bias."
+  scope:
+    models: "PaLM 2 XS policies and reward models; PaLM 2 L, S and XS labelers"
+    data: [tldr, openai-human-preferences, anthropic-hh]
+    scale: "3-4k downsampled training examples per task for labeling experiments"
+    setting: "summarization, helpful dialogue and harmless dialogue"
+  evidence:
+    - {work: "lee-2023-rlaif-vs-rlhf", role: original, locator: "Section 4.5", stance: for}
+
+# Limitations
+
+- id: c-goodhart
+  type: empirical
+  text: "RL-CAI models can be over-trained, resulting in Goodharting behavior where models are overly harsh in responding to harmful prompts or include boilerplate language such as 'you are valid, valued, and cared for' in their responses to most red teaming prompts."
+  scope:
+    models: "Anthropic language models up to 52B parameters"
+    data: [anthropic-hh, anthropic-red-team]
+    scale: "182,831 red-team and 135,296 helpfulness prompts; RL policies up to 52B"
+    setting: "helpful and harmless dialogue assistants"
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 4.3", stance: for}
+
+- id: c-goodhart-fixes
+  type: attributive
+  text: "Strategies that qualitatively led to more diverse and higher quality responses were rewriting the principles to avoid over-reactive or overly accusatory responses, ensembling over 16 principles, and soft or clamped preference labels."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 4.3", stance: for}
+
+- id: c-lee-qualitative
+  type: empirical
+  text: "Lee et al. observed that RLHF summaries sometimes hallucinated when RLAIF did not, and that RLAIF sometimes produced less fluent summaries, but in a blind evaluation on 70 examples the difference in scores was not statistically significant."
+  scope:
+    models: "PaLM 2 XS policies and reward models; PaLM 2 L, S and XS labelers"
+    data: [tldr, openai-human-preferences, anthropic-hh]
+    scale: "3-4k downsampled training examples per task for labeling experiments"
+    setting: "summarization, helpful dialogue and harmless dialogue"
+  evidence:
+    - {work: "lee-2023-rlaif-vs-rlhf", role: original, locator: "p. 8", stance: for}
+
+- id: c-still-human
+  type: attributive
+  text: "Bai et al. still relied on human supervision in the form of helpfulness labels, and state that their ultimate goal is not to remove human supervision entirely but to make it more efficient, transparent and targeted."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 6", stance: for}
+
+- id: c-adhoc
+  type: attributive
+  text: "Bai et al. chose their principles in a fairly ad hoc and iterative way for research purposes, and believe that in the future principles should be redeveloped and refined by a larger set of stakeholders and adapted to the intended usage and location of deployment."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 1", stance: for}
+
+- id: c-ouyang-labelers
+  type: attributive
+  text: "Ouyang et al. hire a team of 40 contractors to label their data, and align to the stated preferences of a specific group of people, the labelers and researchers, rather than any broader notion of human values."
+  evidence:
+    - {work: "ouyang-2022-training-language-models-follow-instructions", role: original, locator: "Section 1", stance: for}
+
+- id: c-lee-bias
+  type: attributive
+  text: "Lee et al. warn that AI feedback may transfer biases from off-the-shelf LLMs to the generated preferences and on to RL-trained policies, and that in high-stakes domains such as medicine, law and employment, human experts trained to assign preferences by strict policies should be considered the gold standard."
+  evidence:
+    - {work: "lee-2023-rlaif-vs-rlhf", role: original, locator: "p. 9", stance: for}
+
+- id: c-red-teamers
+  type: attributive
+  text: "Bai et al. note that their method may remove the need for an army of human red teamers to do the rather unsavory work of trying to trick AI systems into generating harmful content."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 6.2", stance: for}
+
+- id: c-obscure
+  type: attributive
+  text: "Bai et al. note that scaling supervision could have downsides and dangers, since it means further automating and quite possibly obscuring decision making, and use chain-of-thought reasoning to make decision making more legible."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 1", stance: for}
+
+- id: c-less-testing
+  type: attributive
+  text: "By reducing the need for human feedback, constitutional methods make it easier to train and deploy AI systems that have not been thoroughly tested and observed by humans, which could lead developers to deploy models with unforeseen failure modes."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 6.2", stance: for}
+
+- id: c-dual-use
+  type: attributive
+  text: "Bai et al. note a dual use: passing from prompting to RLHF to constitutional methods lowers the barrier to training AI models that behave as their creators intend, which also makes it easier to train pernicious systems, and the supervised methods may be particularly accessible since they need no efficient RL implementation."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 6.2", stance: for}
+
+- id: c-lee-misuse
+  type: attributive
+  text: "Lee et al. note that RLAIF could be employed to train models to generate convincing misinformation or hateful and abusive content, and see careful governance of the access and usage of powerful LLMs as the best mitigation."
+  evidence:
+    - {work: "lee-2023-rlaif-vs-rlhf", role: original, locator: "Section 7", stance: for}
+
+# Variants
+
+- id: c-keep-critiques
+  type: attributive
+  text: "Bai et al. used critiqued revisions for their main results because they may provide more transparency into the model's reasoning process."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 3.5", stance: for}
+
+- id: c-lee-d-rlaif
+  type: definitional
+  text: "In d-RLAIF, motivated by the reward model becoming stale as the policy is trained, the LLM is prompted to rate a generation from 1 to 10, the likelihoods of the score tokens are normalized, the weighted score s = sum_i i P(i) is computed and normalized to [-1, 1], and used as the reward in RL."
+  evidence:
+    - {work: "lee-2023-rlaif-vs-rlhf", role: original, locator: "p. 4", stance: for}
+
+- id: c-future
+  type: attributive
+  text: "Bai et al. propose iterated online training with AI supervision, updating the preference model with new AI feedback to keep it on the policy's distribution, and expect constitutional methods could change a model's writing style, tone or personality, or its responses to specific categories of questions."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 6", stance: for}
+
+- id: c-related
+  type: attributive
+  text: "Bai et al. describe their work as an extension of RLHF, similar to LaMDA, InstructGPT and Sparrow, with self-critique methods very similar to their supervised step, and note that Sparrow's decomposition of harmlessness into areas has some commonality with their principles."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "Section 5", stance: for}
+
+# History
+
+- id: c-hist-cai
+  type: historical
+  text: "Constitutional AI: Harmlessness from AI Feedback, by authors at Anthropic, was posted as arXiv 2212.08073v1 on 15 Dec 2022."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-first
+  type: attributive
+  text: "Lee et al. describe Bai et al. (2022b) as the first effort to explore Reinforcement Learning from AI Feedback (RLAIF)."
+  evidence:
+    - {work: "lee-2023-rlaif-vs-rlhf", role: original, locator: "Section 1", stance: for}
+
+- id: c-hist-lee
+  type: historical
+  text: "RLAIF vs. RLHF, by authors at Google DeepMind and Google, appeared in the Proceedings of the 41st International Conference on Machine Learning, Vienna, Austria, PMLR 235, 2024."
+  evidence:
+    - {work: "lee-2023-rlaif-vs-rlhf", role: original, locator: "the title page", stance: for}

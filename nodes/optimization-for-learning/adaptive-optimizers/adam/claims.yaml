@@ -1,0 +1,456 @@
+# The claims of the Adam page (spec 07). The build computes the labels.
+
+# Setting and method
+
+- id: c-adam-definition
+  type: definitional
+  text: "Adam is an algorithm for first-order gradient-based optimization of stochastic objective functions, based on adaptive estimates of lower-order moments."
+  evidence:
+    - {work: "kingma-2014-adam", role: original, locator: "the abstract", stance: for}
+
+- id: c-adam-properties
+  type: attributive
+  text: "Kingma and Ba state that Adam is straightforward to implement, computationally efficient, has little memory requirements, and is invariant to diagonal rescaling of the gradients."
+  evidence:
+    - {work: "kingma-2014-adam", role: original, locator: "the abstract", stance: for}
+
+- id: c-adam-suited
+  type: attributive
+  text: "Kingma and Ba state that Adam is appropriate for non-stationary objectives and problems with very noisy and sparse gradients, and that its hyper-parameters have intuitive interpretations and typically require little tuning."
+  evidence:
+    - {work: "kingma-2014-adam", role: original, locator: "the abstract", stance: for}
+
+- id: c-algorithm
+  type: definitional
+  text: "Algorithm 1 initializes the 1st moment vector and the 2nd moment vector to 0, updates the biased first moment estimate and the biased second raw moment estimate with the exponential decay rates β1 and β2, computes the bias-corrected first moment estimate and the bias-corrected second raw moment estimate, and updates the parameters θ with the stepsize α."
+  evidence:
+    - {work: "kingma-2014-adam", role: original, locator: "Algorithm 1", stance: for}
+
+- id: c-defaults
+  type: attributive
+  text: "Kingma and Ba give as good default settings for the tested machine learning problems α = 0.001, β1 = 0.9, β2 = 0.999 and an epsilon of 10−8."
+  evidence:
+    - {work: "kingma-2014-adam", role: original, locator: "Algorithm 1", stance: for}
+
+- id: c-moment-estimates
+  type: definitional
+  text: "The moving averages m_t and v_t are estimates of the 1st moment (the mean) and the 2nd raw moment (the uncentered variance) of the gradient, and beta1 and beta2 control their exponential decay rates."
+  evidence:
+    - {work: "kingma-2014-adam", role: original, locator: "Section 2", stance: for}
+
+- id: c-init-bias
+  type: attributive
+  text: "Because the moving averages are initialized as vectors of 0's, the moment estimates are biased towards zero, especially during the initial timesteps and when the decay rates are small, that is when the betas are close to 1."
+  evidence:
+    - {work: "kingma-2014-adam", role: original, locator: "Section 2", stance: for}
+
+- id: c-efficient-form
+  type: definitional
+  text: "Kingma and Ba note that the efficiency of algorithm 1 can, at the expense of clarity, be improved upon by changing the order of computation, replacing the last three lines in the loop with a stepsize αt computed from α, β1t and β2t and an update of θt from mt and vt."
+  evidence:
+    - {work: "kingma-2014-adam", role: original, locator: "Section 2", stance: for}
+
+# Derivation: the bias correction
+
+- id: c-bias-section3
+  type: attributive
+  text: "Kingma and Ba write the exponential moving average vt as a function of the gradients at all previous timesteps, relate its expected value E[vt] to the true second moment E[gt2] through the term (1 − β2t) and a term ζ that is 0 if the true second moment is stationary, and divide by this term to correct the initialization bias."
+  evidence:
+    - {work: "kingma-2014-adam", role: original, locator: "Section 3", stance: for}
+
+- id: c-sparse-large-steps
+  type: attributive
+  text: "Kingma and Ba note that sparse gradients need a small value of 1 - beta2 for a reliable estimate of the second moment, and that without bias correction this small value would lead to initial steps that are much larger."
+  evidence:
+    - {work: "kingma-2014-adam", role: original, locator: "Section 3", stance: for}
+
+- id: c-bias-expectation
+  type: mathematical
+  text: "With m_0 = v_0 = 0, m_t and v_t are weighted sums of the gradients and of their squares whose weights add up to 1 - beta1^t and 1 - beta2^t, so if every gradient has the mean mu and the second moment s, the expected m_t is (1 - beta1^t) mu, the expected v_t is (1 - beta2^t) s, and the bias-corrected estimates have the expectations mu and s."
+  assumes: ["m_0 = v_0 = 0", "the gradients have the same mean and the same second moment at every step", "0 <= beta1, beta2 < 1"]
+  derivation: bias-correction
+
+- id: c-constant-gradient
+  type: mathematical
+  text: "For a constant non-zero gradient g, the bias-corrected estimates are exactly g and g^2 at every step, so with epsilon = 0 Adam steps by exactly the learning rate in the direction opposite to g."
+  assumes: ["m_0 = v_0 = 0", "epsilon = 0", "the gradient is the same at every step"]
+  derivation: bias-correction
+
+- id: c-uncorrected-first-step
+  type: mathematical
+  text: "Without the bias correction and with epsilon = 0, the first step is (1 - beta1) / sqrt(1 - beta2) times the learning rate, about 3.16 times for beta1 = 0.9 and beta2 = 0.999; with the correction it is exactly the learning rate."
+  assumes: ["m_0 = v_0 = 0", "epsilon = 0", "a non-zero first gradient"]
+  derivation: bias-correction
+
+- id: c-eps-hat
+  type: mathematical
+  text: "The efficient form with epsilon hat is the update of Algorithm 1 with epsilon = epsilon hat / sqrt(1 - beta2^t), so a fixed epsilon hat acts as an epsilon that is 1/sqrt(1 - beta2), about 31.6 for beta2 = 0.999, times larger at the first step and that falls to epsilon hat as t grows."
+  assumes: ["0 <= beta1, beta2 < 1", "the same learning rate and moments in both forms"]
+  derivation: bias-correction
+
+# Derivation: the size of the step
+
+- id: c-trust-region
+  type: attributive
+  text: "Kingma and Ba state that the effective magnitude of the steps taken in parameter space is approximately bounded by the stepsize setting alpha, which can be understood as establishing a trust region around the current parameter value."
+  evidence:
+    - {work: "kingma-2014-adam", role: original, locator: "Section 2.1", stance: for}
+
+- id: c-paper-bounds
+  type: attributive
+  text: "Assuming epsilon = 0, Kingma and Ba state that the effective stepsize has two upper bounds, alpha (1 - beta1) / sqrt(1 - beta2) in the case (1 - beta1) > sqrt(1 - beta2) and alpha otherwise, and that the first case only happens in the most severe case of sparsity, when a gradient has been zero at all timesteps except at the current timestep."
+  evidence:
+    - {work: "kingma-2014-adam", role: original, locator: "Section 2.1", stance: for}
+
+- id: c-snr
+  type: attributive
+  text: "Kingma and Ba call the ratio of the bias-corrected moment estimates the signal-to-noise ratio (SNR), and state that with a smaller SNR the effective stepsize will be closer to zero."
+  evidence:
+    - {work: "kingma-2014-adam", role: original, locator: "Section 2.1", stance: for}
+
+- id: c-scale-invariant
+  type: attributive
+  text: "The effective stepsize is invariant to the scale of the gradients: rescaling the gradients g with a factor c scales the first moment by c and the second moment by c^2, which cancel out."
+  evidence:
+    - {work: "kingma-2014-adam", role: original, locator: "Section 2.1", stance: for}
+
+- id: c-step-bound-tight
+  type: mathematical
+  text: "With epsilon = 0, the ratio of the corrected first moment to the square root of the corrected second moment is at most B_t = (1 - beta1)/sqrt(1 - beta2) times sqrt(1 - beta2^t)/(1 - beta1^t) times the square root of the sum of (beta1^2/beta2)^k for k from 0 to t - 1, and gradients that grow as g_(t-k) = (beta1/beta2)^k reach this bound."
+  assumes: ["epsilon = 0", "m_0 = v_0 = 0", "some gradient is non-zero", "0 <= beta1 < 1 and 0 < beta2 < 1"]
+  derivation: step-bound
+
+- id: c-step-bound-limits
+  type: mathematical
+  text: "When beta1^2 < beta2 the bound B_t tends to (1 - beta1) / sqrt((1 - beta2)(1 - beta1^2/beta2)), about 7.27 for beta1 = 0.9 and beta2 = 0.999 and about 2.35 for beta2 = 0.99, above the bounds 3.16 and 1 stated for these settings in Section 2.1 of Kingma and Ba; when beta1^2 >= beta2 the bound grows without limit."
+  assumes: ["epsilon = 0", "m_0 = v_0 = 0", "the worst case over all gradient sequences"]
+  derivation: step-bound
+
+- id: c-first-step
+  type: mathematical
+  text: "With epsilon = 0 the first step of Adam is exactly the learning rate in size, whatever the gradient and the betas."
+  assumes: ["epsilon = 0", "m_0 = v_0 = 0", "a non-zero first gradient"]
+  derivation: step-bound
+
+- id: c-single-spike
+  type: mathematical
+  text: "A gradient that has been zero at every step but the current one gives the ratio (1 - beta1)/sqrt(1 - beta2) times sqrt(1 - beta2^t)/(1 - beta1^t), which tends to the first bound of Section 2.1, (1 - beta1)/sqrt(1 - beta2)."
+  assumes: ["epsilon = 0", "m_0 = v_0 = 0"]
+  derivation: step-bound
+
+# Relations to other methods
+
+- id: c-rmsprop-relation
+  type: attributive
+  text: "Kingma and Ba state that RMSProp with momentum generates its parameter updates using a momentum on the rescaled gradient, whereas Adam updates are directly estimated using a running average of first and second moment of the gradient, and that RMSProp also lacks a bias-correction term, which matters most for a value of beta2 close to 1, where it leads to very large stepsizes and often divergence."
+  evidence:
+    - {work: "kingma-2014-adam", role: original, locator: "Section 5", stance: for}
+
+- id: c-adagrad-relation
+  type: attributive
+  text: "Kingma and Ba state that AdaGrad corresponds to a version of Adam with β1 = 0, infinitesimal (1 − β2) and a replacement of α by an annealed version of the stepsize."
+  evidence:
+    - {work: "kingma-2014-adam", role: original, locator: "Section 5", stance: for}
+
+- id: c-fisher
+  type: attributive
+  text: "Kingma and Ba note that the corrected second moment is an approximation to the diagonal of the Fisher information matrix, and that Adam's preconditioner is more conservative in its adaption than natural gradient descent by preconditioning with the square root of the inverse of the diagonal Fisher information matrix approximation."
+  evidence:
+    - {work: "kingma-2014-adam", role: original, locator: "Section 5", stance: for}
+
+- id: c-adamax
+  type: definitional
+  text: "AdaMax is a variant of Adam based on the infinity norm: it replaces the second moment by the exponentially weighted infinity norm u_t = max(beta2 u_t-1, |g_t|), needs no correction of initialization bias for u_t, and has the default stepsize alpha = 0.002."
+  evidence:
+    - {work: "kingma-2014-adam", role: original, locator: "Section 7.1", stance: for}
+
+- id: c-temporal-averaging
+  type: attributive
+  text: "Kingma and Ba suggest an exponential moving average over the parameters, with its initialization bias corrected by dividing by 1 - beta2^t, because the last iterate is noisy due to stochastic approximation."
+  evidence:
+    - {work: "kingma-2014-adam", role: original, locator: "Section 7.2", stance: for}
+
+# Convergence
+
+- id: c-regret
+  type: attributive
+  text: "Kingma and Ba analyze the convergence of Adam in the online learning framework of Zinkevich and state an O(sqrt(T)) regret bound for convex cost functions with bounded gradients, a learning rate decaying as t^(-1/2) and a first moment coefficient beta1 that decays exponentially."
+  evidence:
+    - {work: "kingma-2014-adam", role: original, locator: "Section 4", stance: for}
+
+- id: c-reddi-flaw
+  type: attributive
+  text: "Reddi, Kale and Kumar point out a problem with the proof of convergence of the Adam algorithm given by Kingma and Ba, and show an example of a simple convex optimization problem where Adam does not converge to the optimal solution."
+  evidence:
+    - {work: "reddi-2018-convergence-of-adam", role: original, locator: "Section 1", stance: for}
+
+- id: c-reddi-gamma
+  type: attributive
+  text: "Reddi et al. state that the proof in the original paper of Adam erroneously assumes that Gamma_t is positive semi-definite and is hence incorrect, while for Adam and RMSProp this quantity can potentially be negative."
+  evidence:
+    - {work: "reddi-2018-convergence-of-adam", role: original, locator: "Section 4", stance: for}
+
+- id: c-reddi-example
+  type: attributive
+  text: "For the sequence of linear functions on F = [-1, 1] with f_t(x) = C x when t mod 3 = 1 and f_t(x) = -x otherwise, C > 2, beta1 = 0 and beta2 = 1/(1 + C^2), Reddi et al. show that Adam converges to the highly suboptimal solution x = +1, while the point x = -1 provides the minimum regret."
+  evidence:
+    - {work: "reddi-2018-convergence-of-adam", role: original, locator: "Section 3", stance: for}
+
+- id: c-reddi-any-beta
+  type: attributive
+  text: "Reddi et al. prove that for any constant beta1 and beta2 with beta1 < sqrt(beta2) there is an online convex optimization problem where Adam has non-zero average regret, and a stochastic convex optimization problem for which Adam does not converge to the optimal solution."
+  evidence:
+    - {work: "reddi-2018-convergence-of-adam", role: original, locator: "Section 3", stance: for}
+
+- id: c-reddi-epsilon
+  type: attributive
+  text: "Reddi et al. show that adding epsilon to the denominator does not remove the non-convergence, and they note that in practice the selection of the epsilon parameter appears to be critical for the performance of the algorithm."
+  evidence:
+    - {work: "reddi-2018-convergence-of-adam", role: original, locator: "Section 3", stance: for}
+
+- id: c-amsgrad
+  type: definitional
+  text: "AMSGrad maintains the maximum of all v_t until the present time step and uses this maximum value for normalizing the running average of the gradient instead of v_t, which results in a non-increasing step size."
+  evidence:
+    - {work: "reddi-2018-convergence-of-adam", role: original, locator: "Section 4", stance: for}
+
+- id: c-zhang-order
+  type: attributive
+  text: "Zhang et al. point out that Reddi et al. pick the problem after picking the hyperparameters of Adam, while practical applications often fix the problem first and then tune beta1 and beta2."
+  evidence:
+    - {work: "zhang-2022-adam-can-converge", role: original, locator: "the abstract", stance: for}
+
+- id: c-zhang-converge
+  type: attributive
+  text: "Zhang et al. prove that when beta2 is large and beta1 < sqrt(beta2) < 1, Adam without any modification converges to the neighborhood of critical points, with a neighborhood whose size is proportional to the variance of stochastic gradients."
+  evidence:
+    - {work: "zhang-2022-adam-can-converge", role: original, locator: "the abstract", stance: for}
+
+- id: c-zhang-diverge
+  type: attributive
+  text: "When beta2 is small, Zhang et al. find a large region of (beta1, beta2) combinations where Adam can diverge to infinity, and they suggest tuning up beta2 and trying beta1 < sqrt(beta2) when Adam does not work well."
+  evidence:
+    - {work: "zhang-2022-adam-can-converge", role: original, locator: "the abstract", stance: for}
+
+# Weight decay
+
+- id: c-lh-not-equivalent
+  type: attributive
+  text: "Loshchilov and Hutter state that L2 regularization and weight decay regularization are equivalent for standard stochastic gradient descent when rescaled by the learning rate, but not for adaptive gradient algorithms such as Adam."
+  evidence:
+    - {work: "loshchilov-2017-decoupled-weight-decay", role: original, locator: "the abstract", stance: for}
+
+- id: c-lh-decouple
+  type: attributive
+  text: "Loshchilov and Hutter propose to decouple the weight decay from the optimization steps taken with respect to the loss function, and report that this decouples the optimal choice of weight decay factor from the setting of the learning rate and substantially improves the generalization performance of Adam."
+  evidence:
+    - {work: "loshchilov-2017-decoupled-weight-decay", role: original, locator: "the abstract", stance: for}
+
+- id: c-lh-large-gradients
+  type: attributive
+  text: "Loshchilov and Hutter note that with L2 regularization in Adam, weights with large historic parameter and gradient amplitudes are regularized less than they would be when using weight decay."
+  evidence:
+    - {work: "loshchilov-2017-decoupled-weight-decay", role: original, locator: "Section 1", stance: for}
+
+- id: c-lh-alg2
+  type: definitional
+  text: "In Algorithm 2 of Loshchilov and Hutter, Adam with decoupled weight decay (AdamW) updates the parameter vector θt by the schedule multiplier ηt times the sum of the Adam step with stepsize α and the decay λθt−1, while Adam with L2 regularization adds λθt−1 to the gradient gt."
+  evidence:
+    - {work: "loshchilov-2017-decoupled-weight-decay", role: original, locator: "Algorithm 2", stance: for}
+
+- id: c-lh-results
+  type: empirical
+  text: "Loshchilov and Hutter report that Adam generalizes substantially better with decoupled weight decay than with L2 regularization, achieving 15% relative improvement in test error on CIFAR-10 and ImageNet32x32 for training budgets of 100 to 1800 epochs."
+  scope:
+    models: "26 2x64d ResNet with Shake-Shake regularization and other image classifiers"
+    data: [cifar-10, imagenet32x32]
+    scale: "100 to 1800 epochs"
+    setting: "image classification, fixed, drop-step and cosine annealing schedules"
+  evidence:
+    - {work: "loshchilov-2017-decoupled-weight-decay", role: original, locator: "Section 1", stance: for}
+
+- id: c-lh-runtime
+  type: empirical
+  text: "Loshchilov and Hutter find that the larger the runtime or the number of batch passes to be performed, the smaller the optimal weight decay, and that Adam can substantially benefit from a scheduled learning rate multiplier such as cosine annealing."
+  scope:
+    models: "SGD and Adam on image classifiers"
+    data: [cifar-10, imagenet32x32]
+    scale: "100 to 1800 epochs"
+    setting: "image classification"
+  evidence:
+    - {work: "loshchilov-2017-decoupled-weight-decay", role: original, locator: "Section 1", stance: for}
+
+- id: c-sgd-equivalence
+  type: mathematical
+  text: "For SGD with learning rate eta, the step with an L2 coefficient lambda' equals the step with decoupled weight decay lambda when lambda' = lambda / eta."
+  assumes: ["plain SGD without momentum", "the L2 penalty is (lambda'/2) |theta|^2"]
+  derivation: decoupled-weight-decay
+
+- id: c-adam-l2-not-decay
+  type: mathematical
+  text: "In Adam an L2 term is divided by sqrt(v_hat) + epsilon like the rest of the gradient, so coordinates with a large second moment are decayed less, and when the second moments of the coordinates differ no single L2 coefficient gives decoupled weight decay."
+  assumes: ["the update of Algorithm 1", "the second moments of at least two coordinates differ"]
+  derivation: decoupled-weight-decay
+
+- id: c-l2-first-step
+  type: mathematical
+  text: "At the first step with epsilon = 0, Adam with an L2 term steps by the learning rate in the direction of the sign of the penalised gradient, so the penalty has no effect unless it flips the sign of the gradient."
+  assumes: ["m_0 = v_0 = 0", "epsilon = 0"]
+  derivation: decoupled-weight-decay
+
+- id: c-torch-adamw-lr-wd
+  type: mathematical
+  text: "One step of torch.optim.AdamW, which multiplies the parameters by 1 - lr times weight_decay before the Adam step, is line 12 of Algorithm 2 of Loshchilov and Hutter with a schedule multiplier of 1 and lambda = lr times weight_decay, so the decay per step changes with the learning rate."
+  assumes: ["a schedule multiplier of 1", "the same moments in both forms"]
+  derivation: decoupled-weight-decay
+
+# Hyperparameters and evidence
+
+- id: c-choi-eps
+  type: empirical
+  text: "Choi et al. find that the optimal value of Adam's epsilon is problem-dependent, and that the onus is on empirical studies that fix it at 10^-8 to defend that choice."
+  scope:
+    models: "convolutional networks, ResNets, LSTMs and Transformers on standard workloads"
+    data: [cifar-10, cifar-100, imagenet, penn-treebank, lm1b, wmt]
+    scale: "tens to hundreds of tuning trials per optimizer"
+    setting: "quasi-random search over the learning rate, the betas and epsilon"
+  evidence:
+    - {work: "choi-2019-empirical-comparisons-optimizers", role: original, locator: "Section 5", stance: for}
+
+- id: c-choi-inclusion
+  type: empirical
+  text: "Choi et al. find that when all hyperparameters are tuned, the popular adaptive gradient methods never underperform momentum or gradient descent, and that the hyperparameter search space may be the single most important factor explaining the rankings of earlier comparisons."
+  scope:
+    models: "convolutional networks, ResNets, LSTMs and Transformers on standard workloads"
+    data: [cifar-10, cifar-100, imagenet, penn-treebank, lm1b, wmt]
+    scale: "tens to hundreds of tuning trials per optimizer"
+    setting: "quasi-random search over all optimizer hyperparameters"
+  evidence:
+    - {work: "choi-2019-empirical-comparisons-optimizers", role: original, locator: "the abstract", stance: for}
+
+- id: c-choi-wilson
+  type: empirical
+  text: "Reproducing the VGG on CIFAR-10 experiment of Wilson et al., Choi et al. find that when the momentum parameter and epsilon are tuned with random search, all four optimizers reach nearly identical test error rates."
+  scope:
+    models: "VGG"
+    data: [cifar-10]
+    scale: "the code and the architecture of Wilson et al."
+    setting: "image classification, test error after tuning"
+  evidence:
+    - {work: "choi-2019-empirical-comparisons-optimizers", role: original, locator: "Section 4.3", stance: for}
+
+- id: c-wilson-generalize
+  type: empirical
+  text: "Wilson et al. construct a binary classification problem where gradient descent and SGD achieve zero test error while AdaGrad, Adam and RMSProp attain test errors arbitrarily close to half, and find on several state-of-the-art models that the solutions found by adaptive methods generalize worse than those of SGD, even when they have better training performance."
+  scope:
+    models: "a linearly separable construction, and image, language and parsing models"
+    data: [cifar-10, war-and-peace, penn-treebank]
+    scale: "the models and tuning budgets of the paper"
+    setting: "test error with a learning rate search for each optimizer"
+  evidence:
+    - {work: "wilson-2017-marginal-value-adaptive-gradient-methods", role: original, locator: "the abstract", stance: for}
+
+- id: c-wilson-plateau
+  type: empirical
+  text: "Wilson et al. observe that adaptive methods often display faster initial progress on the training set, but their performance quickly plateaus on the development and test set, and that the same amount of tuning was required for all methods."
+  scope:
+    models: "image, language and parsing models"
+    data: [cifar-10, war-and-peace, penn-treebank]
+    scale: "the models and tuning budgets of the paper"
+    setting: "training and test curves with a learning rate search for each optimizer"
+  evidence:
+    - {work: "wilson-2017-marginal-value-adaptive-gradient-methods", role: original, locator: "Section 1", stance: for}
+
+- id: c-wilson-default
+  type: attributive
+  text: "Wilson et al. state that Adam in particular has become the default algorithm used across many deep learning frameworks."
+  evidence:
+    - {work: "wilson-2017-marginal-value-adaptive-gradient-methods", role: original, locator: "Section 1", stance: for}
+
+- id: c-lh-default
+  type: attributive
+  text: "Loshchilov and Hutter state that adaptive gradient methods such as AdaGrad, RMSProp, Adam and AMSGrad have become a default method of choice for training feed-forward and recurrent neural networks, while state-of-the-art results on CIFAR-10 and CIFAR-100 were still obtained with SGD with momentum."
+  evidence:
+    - {work: "loshchilov-2017-decoupled-weight-decay", role: original, locator: "Section 1", stance: for}
+
+- id: c-liu-warmup
+  type: attributive
+  text: "Liu et al. identify that the variance of the adaptive learning rate is problematically large in the early stage of training, presume that learning rate warmup works as a variance reduction technique, and propose Rectified Adam (RAdam), which rectifies the variance of the adaptive learning rate."
+  evidence:
+    - {work: "liu-2019-variance-adaptive-learning-rate", role: original, locator: "the abstract", stance: for}
+
+- id: c-transformer
+  type: attributive
+  text: "Vaswani et al. trained the Transformer with the Adam optimizer with beta1 = 0.9, beta2 = 0.98 and epsilon = 10^-9, increasing the learning rate linearly for the first 4000 warmup steps and decreasing it thereafter proportionally to the inverse square root of the step number."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 5.3", stance: for}
+
+- id: c-llama
+  type: attributive
+  text: "Touvron et al. trained the LLaMA models with the AdamW optimizer with β1 = 0.9, β2 = 0.95, a cosine learning rate schedule such that the final learning rate is equal to 10% of the maximal learning rate, a weight decay of 0.1, gradient clipping of 1.0 and a learning rate warmup."
+  evidence:
+    - {work: "touvron-2023-llama", role: original, locator: "Section 2.3", stance: for}
+
+- id: c-mnist-logreg
+  type: empirical
+  text: "On L2-regularized multi-class logistic regression on MNIST with minibatches of 128, Adam yields similar convergence as SGD with Nesterov momentum and both converge faster than Adagrad; on sparse IMDB bag-of-words features, Adam converges as fast as Adagrad."
+  scope:
+    models: "logistic regression"
+    data: [mnist, imdb]
+    scale: "784 inputs for MNIST, 10,000 bag-of-words features for IMDB, minibatch 128"
+    setting: "training negative log likelihood, stepsize decayed as 1/sqrt(t)"
+  evidence:
+    - {work: "kingma-2014-adam", role: original, locator: "Section 6.1", stance: for}
+
+- id: c-mlp
+  type: empirical
+  text: "On a multi-layer neural network with two hidden layers of 1000 ReLU units on MNIST, Adam makes faster progress than the quasi-Newton method SFO, which is 5-10x slower per iteration, and with dropout Adam shows better convergence than the other stochastic first order methods."
+  scope:
+    models: "a fully connected network with two hidden layers of 1000 units"
+    data: [mnist]
+    scale: "minibatch 128"
+    setting: "training cost, with and without dropout"
+  evidence:
+    - {work: "kingma-2014-adam", role: original, locator: "Section 6.2", stance: for}
+
+- id: c-cnn-eps
+  type: empirical
+  text: "In convolutional networks on CIFAR-10, Kingma and Ba notice that the second moment estimate vanishes to zeros after a few epochs and is dominated by the epsilon in Algorithm 1, so that it is a poor approximation to the geometry of the cost function."
+  scope:
+    models: "a CNN with three convolution and pooling stages and a fully connected layer of 1000 ReLUs (c64-c64-c128-1000)"
+    data: [cifar-10]
+    scale: "45 epochs, minibatch 128"
+    setting: "training cost, with and without dropout"
+  evidence:
+    - {work: "kingma-2014-adam", role: original, locator: "Section 6.3", stance: for}
+
+- id: c-bias-experiment
+  type: empirical
+  text: "Training a variational autoencoder over beta1 in [0, 0.9] and beta2 in [0.99, 0.999, 0.9999], Kingma and Ba find that values of beta2 close to 1 lead to instabilities in training when no bias correction term was present, especially at the first few epochs, and that Adam performed equal or better than RMSProp regardless of hyper-parameter setting."
+  scope:
+    models: "a variational autoencoder with one hidden layer of 500 softplus units and a 50-dimensional latent variable"
+    data: [mnist]
+    scale: "log10 of the stepsize from -5 to -1"
+    setting: "loss after 10 and 100 epochs, with and without bias correction"
+  evidence:
+    - {work: "kingma-2014-adam", role: original, locator: "Section 6.4", stance: for}
+
+# History
+
+- id: c-hist-kingma
+  type: historical
+  text: "Diederik P. Kingma and Jimmy Ba posted Adam: A Method for Stochastic Optimization as arXiv 1412.6980v9 on 30 Jan 2017; it was published as a conference paper at ICLR 2015."
+  evidence:
+    - {work: "kingma-2014-adam", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-reddi
+  type: historical
+  text: "Sashank J. Reddi, Satyen Kale and Sanjiv Kumar of Google New York published On the Convergence of Adam and Beyond as a conference paper at ICLR 2018; it is arXiv 1904.09237v1 of 19 Apr 2019."
+  evidence:
+    - {work: "reddi-2018-convergence-of-adam", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-lh
+  type: historical
+  text: "Ilya Loshchilov and Frank Hutter of the University of Freiburg posted Decoupled Weight Decay Regularization as arXiv 1711.05101v3 on 4 Jan 2019; it was published as a conference paper at ICLR 2019."
+  evidence:
+    - {work: "loshchilov-2017-decoupled-weight-decay", role: original, locator: "the title page", stance: for}

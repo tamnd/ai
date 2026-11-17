@@ -1,0 +1,523 @@
+# The claims of the data-contamination page (spec 07). The build computes the labels.
+- id: c-def-golchin
+  type: definitional
+  text: "Golchin and Surdeanu define data contamination as the presence of test data from downstream tasks in the training data of large language models."
+  evidence:
+    - {work: "golchin-2023-time-travel-llms", role: original, locator: "p. 1", stance: for}
+
+- id: c-def-sainz
+  type: definitional
+  text: "Sainz et al. define data contamination as any breach in the strict control of datasets required by the experimental protocol, and focus on the case where an LLM has processed the evaluation benchmark during its pre-training."
+  evidence:
+    - {work: "sainz-2023-nlp-evaluation-trouble", role: original, locator: "Section 3", stance: for}
+
+- id: c-sainz-types
+  type: definitional
+  text: "Sainz et al. present three types of contamination: guideline contamination, raw text contamination and annotation contamination."
+  evidence:
+    - {work: "sainz-2023-nlp-evaluation-trouble", role: original, locator: "Section 3", stance: for}
+
+- id: c-sainz-annotation
+  type: attributive
+  text: "Sainz et al. write that annotation contamination of the evaluation split completely invalidates the experiment, while contamination of the train or development splits invalidates conclusions claiming zero-shot or few-shot performance."
+  evidence:
+    - {work: "sainz-2023-nlp-evaluation-trouble", role: original, locator: "Section 3", stance: for}
+
+- id: c-dodge-kinds
+  type: definitional
+  text: "Dodge et al. distinguish input-and-label contamination, where task labels are available in the pretraining corpus, from input contamination of evaluation examples that does not include labels."
+  evidence:
+    - {work: "dodge-2021-documenting-large-webtext", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-gpt3-dirty
+  type: definitional
+  text: "Brown et al. define a dirty example as one with any N-gram overlap with any training document, and a clean example as one with no collision."
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "p. 44", stance: for}
+
+- id: c-gpt3-n
+  type: definitional
+  text: "In the overlap analysis of GPT-3, N is the 5th percentile example length in words, with a minimum value of 8 on non-synthetic tasks and a maximum value of 13 for all tasks."
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "p. 44", stance: for}
+
+- id: c-dodge-exact
+  type: definitional
+  text: "Unlike Brown et al., who measure n-gram overlap, Dodge et al. measure exact matches, normalized for capitalization and punctuation."
+  evidence:
+    - {work: "dodge-2021-documenting-large-webtext", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-yang-bypass
+  type: empirical
+  text: "Yang et al. show that simple variations of test data, such as paraphrasing and translation, can bypass decontamination methods based on string matching such as n-gram overlap."
+  scope:
+    models: "language models trained on rephrased test samples, including a 13B model"
+    data: [mmlu, gsm8k, humaneval]
+    scale: unknown
+    setting: "rephrased test samples added to the training data, then checked with n-gram decontamination"
+  evidence:
+    - {work: "yang-2023-rethinking-benchmark-contamination", role: original, locator: "the abstract", stance: for}
+
+- id: c-gpt3-winograd-format
+  type: empirical
+  text: "Manual inspection showed that 132 Winograd schemas were present in the GPT-3 training set, though presented in a different format than the one used to present the task to the model."
+  self_reported: true
+  scope:
+    models: "GPT-3"
+    data: [winograd]
+    scale: "175B parameters"
+    setting: "13-gram overlap analysis followed by manual inspection"
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "Section 4", stance: for}
+
+- id: c-palm-context
+  type: attributive
+  text: "Chowdhery et al. argue that when the context is provided at evaluation time, having trained on it for the language modeling objective does not give the model an unfair advantage."
+  evidence:
+    - {work: "chowdhery-2022-palm", role: original, locator: "Section 8", stance: for}
+
+- id: c-palm-categories
+  type: definitional
+  text: "Chowdhery et al. divide their benchmark tasks into four categories, wholesale contamination, constructed from web, context on web, and no significant overlap, and consider the first two contaminated."
+  evidence:
+    - {work: "chowdhery-2022-palm", role: original, locator: "Section 8", stance: for}
+
+- id: c-magar-measures
+  type: definitional
+  text: "Magar and Schwartz define mem as the difference in MLM accuracy of the pretrained model between seen and unseen test examples, and expl as the difference in task performance between seen and unseen after fine-tuning."
+  evidence:
+    - {work: "magar-2022-data-contamination", role: original, locator: "Section 2", stance: for}
+
+- id: c-shi-scale
+  type: attributive
+  text: "Shi et al. write that, given the scale of up to trillions of tokens, the pretraining data is all but certain to include test data for widely reported benchmarks, but there is no way to know which data of this type is included or in what proportions."
+  evidence:
+    - {work: "shi-2023-detecting-pretraining-data", role: original, locator: "p. 1", stance: for}
+
+- id: c-dodge-two-ways
+  type: attributive
+  text: "Dodge et al. describe two ways a dataset can end up in a snapshot from Common Crawl: it is built from text on the web, or it is uploaded after creation, for example to a GitHub repository."
+  evidence:
+    - {work: "dodge-2021-documenting-large-webtext", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-gpt3-filter
+  type: historical
+  text: "Brown et al. searched for 13-gram overlaps between all test and development sets used in their work and the GPT-3 training data, and removed the colliding 13-gram as well as a 200 character window around it."
+  self_reported: true
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "p. 43", stance: for}
+
+- id: c-gpt3-bug
+  type: historical
+  text: "A bug resulted in only partial removal of the detected overlaps from the GPT-3 training data, and due to the cost of training it was not feasible to retrain the model."
+  self_reported: true
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "Section 4", stance: for}
+
+- id: c-sainz-sft
+  type: attributive
+  text: "Sainz et al. note that contamination can also occur in the supervised fine-tuning or instruction-tuning step, though much less frequently, since documenting the training data is a required practice for publishing."
+  evidence:
+    - {work: "sainz-2023-nlp-evaluation-trouble", role: original, locator: "p. 3", stance: for}
+
+- id: c-yang-synthetic
+  type: empirical
+  text: "Yang et al. find contamination in synthetic datasets generated by GPT-3.5 and GPT-4, suggesting a potential risk of unintentional contamination."
+  scope:
+    models: "GPT-3.5 and GPT-4"
+    data: [synthetic-training-data]
+    scale: unknown
+    setting: "synthetic training datasets checked with the LLM decontaminator"
+  evidence:
+    - {work: "yang-2023-rethinking-benchmark-contamination", role: original, locator: "the abstract", stance: for}
+
+- id: c-magar-setup
+  type: historical
+  text: "Magar and Schwartz pretrain BERT models on joint corpora of Wikipedia and labeled downstream datasets, and fine-tune them on the relevant task."
+  evidence:
+    - {work: "magar-2022-data-contamination", role: original, locator: "the abstract", stance: for}
+
+- id: c-magar-result
+  type: empirical
+  text: "In experiments with two models and three downstream tasks, exploitation exists in some cases, while in others the models memorize the contaminated data but do not exploit it, and the number of duplications of the contaminated data and the model size affect the two measures."
+  scope:
+    models: "BERT models"
+    data: [three-classification-tasks]
+    scale: "two model sizes"
+    setting: "pretraining on Wikipedia with part of the labeled test set, then fine-tuning; seen against unseen test examples"
+  evidence:
+    - {work: "magar-2022-data-contamination", role: original, locator: "the abstract", stance: for}
+
+- id: c-dodge-targets
+  type: empirical
+  text: "Dodge et al. show that 1.87 to 24.88% of the target texts of the test sets of three generation tasks appear in C4.EN."
+  scope:
+    models: "none; a corpus study"
+    data: [c4, xsum, tifu, wikibio, amr-to-text]
+    scale: unknown
+    setting: "exact matches, normalized for capitalization and punctuation"
+  evidence:
+    - {work: "dodge-2021-documenting-large-webtext", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-dodge-glue
+  type: empirical
+  text: "The percentage of the test inputs of the GLUE benchmark found in C4.EN varies widely, from less than 2% to over 50%."
+  scope:
+    models: "none; a corpus study"
+    data: [c4, glue]
+    scale: unknown
+    setting: "exact matches of inputs, normalized for capitalization and punctuation"
+  evidence:
+    - {work: "dodge-2021-documenting-large-webtext", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-dodge-lama
+  type: empirical
+  text: "Dodge et al. find 4.6% and 5.7% of the examples of the LAMA T-REx and Google-RE sets verbatim in C4.EN."
+  scope:
+    models: "none; a corpus study"
+    data: [c4, lama]
+    scale: unknown
+    setting: "exact matches, normalized for capitalization and punctuation"
+  evidence:
+    - {work: "dodge-2021-documenting-large-webtext", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-gpt3-reading-flag
+  type: empirical
+  text: "The initial analysis of Brown et al. flagged more than 90% of the task examples from QuAC, SQuAD2 and DROP as potentially contaminated."
+  self_reported: true
+  scope:
+    models: "GPT-3"
+    data: [quac, squad2, drop]
+    scale: "175B parameters"
+    setting: "13-gram overlap with the GPT-3 training data"
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "Section 4", stance: for}
+
+- id: c-gpt3-reading-context
+  type: empirical
+  text: "For every overlap inspected in QuAC, SQuAD2 and DROP, the source text was present in the GPT-3 training data but the question and answer pairs were not, so the model gains only background information."
+  self_reported: true
+  scope:
+    models: "GPT-3"
+    data: [quac, squad2, drop]
+    scale: "175B parameters"
+    setting: "manual inspection of flagged overlaps"
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "Section 4", stance: for}
+
+- id: c-gpt3-piqa
+  type: empirical
+  text: "The overlap analysis flagged 29% of the examples of PIQA as contaminated, with a 3 percentage point absolute decrease, a 4% relative decrease, on the clean subset, and Brown et al. mark their PIQA results with an asterisk."
+  self_reported: true
+  scope:
+    models: "GPT-3"
+    data: [piqa]
+    scale: "175B parameters"
+    setting: "clean subset defined by 13-gram overlap"
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "Section 4", stance: for}
+
+- id: c-gpt3-wmt
+  type: empirical
+  text: "25% of the examples in the WMT16 German-English test set were marked as potentially contaminated, with an associated total effect size of 1 to 2 BLEU."
+  self_reported: true
+  scope:
+    models: "GPT-3"
+    data: [wmt16-de-en]
+    scale: "175B parameters"
+    setting: "clean subset defined by 13-gram overlap"
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "Section 4", stance: for}
+
+- id: c-golchin-gpt4
+  type: empirical
+  text: "Golchin and Surdeanu find that GPT-4 is contaminated with the AG News, WNLI and XSum datasets."
+  scope:
+    models: "GPT-4"
+    data: [ag-news, wnli, xsum]
+    scale: unknown
+    setting: "guided instruction and partition-level detection"
+  evidence:
+    - {work: "golchin-2023-time-travel-llms", role: original, locator: "p. 1", stance: for}
+
+- id: c-lcb-drop
+  type: empirical
+  text: "On LeetCode problems, the DS-Ins-33B model shows a stark drop in performance after August 2023, right before its release date, and GPT-4-O drops on problems released since November, its official cutoff date."
+  scope:
+    models: "DeepSeek-Coder-33B-Instruct (DS-Ins-33B) and GPT-4o"
+    data: [livecodebench]
+    scale: unknown
+    setting: "code generation and test output prediction on LeetCode problems released from May 2023 to February 2024"
+  evidence:
+    - {work: "jain-2024-livecodebench", role: original, locator: "Section 5.1", stance: for}
+
+- id: c-lcb-leetcode
+  type: empirical
+  text: "The drop in performance primarily occurs for the LeetCode problems, and model performance is relatively smooth across the months for problems from other platforms."
+  scope:
+    models: "DeepSeek-Coder-33B-Instruct (DS-Ins-33B) and GPT-4o"
+    data: [livecodebench]
+    scale: unknown
+    setting: "problems from LeetCode, AtCoder and CodeForces by release month"
+  evidence:
+    - {work: "jain-2024-livecodebench", role: original, locator: "Section 5.1", stance: for}
+
+- id: c-gsm1k-mirror
+  type: historical
+  text: "Zhang et al. commissioned GSM1k to mirror the style and complexity of the GSM8k benchmark, and do not release it publicly."
+  evidence:
+    - {work: "zhang-2024-careful-examination-large", role: original, locator: "the abstract", stance: for}
+    - {work: "zhang-2024-careful-examination-large", role: original, locator: "Section 3", stance: for}
+
+- id: c-gsm1k-drops
+  type: empirical
+  text: "Evaluating leading open- and closed-source LLMs on GSM1k, Zhang et al. observe accuracy drops of up to 8%, with several families of models showing evidence of systematic overfitting across almost all model sizes."
+  scope:
+    models: "leading open- and closed-source LLMs"
+    data: [gsm8k, gsm1k]
+    scale: unknown
+    setting: "accuracy on GSM1k compared with GSM8k"
+  evidence:
+    - {work: "zhang-2024-careful-examination-large", role: original, locator: "the abstract", stance: for}
+
+- id: c-yang-13b
+  type: empirical
+  text: "Yang et al. demonstrate that if rephrased test data is not eliminated, a 13B model can overfit a test benchmark and achieve drastically high performance, on par with GPT-4, in benchmarks such as MMLU, GSM8k and HumanEval."
+  scope:
+    models: "a 13B model"
+    data: [mmlu, gsm8k, humaneval]
+    scale: "13B parameters"
+    setting: "training on rephrased samples of the test set"
+  evidence:
+    - {work: "yang-2023-rethinking-benchmark-contamination", role: original, locator: "the abstract", stance: for}
+
+- id: c-gpt3-quarter
+  type: empirical
+  text: "Although potential contamination is often high, with a quarter of benchmarks scoring over 50%, in most cases the performance of GPT-3 changes only negligibly, and Brown et al. see no evidence that contamination level and performance difference are correlated."
+  self_reported: true
+  scope:
+    models: "GPT-3"
+    data: [gpt-3-benchmarks]
+    scale: "175B parameters"
+    setting: "full against clean subsets defined by N-gram overlap"
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "Section 4", stance: for}
+
+- id: c-gpt3-lambada
+  type: empirical
+  text: "LAMBADA appeared to have substantial genuine contamination, yet the clean subset scored within 0.5% of the full dataset."
+  self_reported: true
+  scope:
+    models: "GPT-3"
+    data: [lambada]
+    scale: "175B parameters"
+    setting: "full against clean subset defined by N-gram overlap"
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "Section 4", stance: for}
+
+- id: c-palm-split
+  type: empirical
+  text: "Chowdhery et al. find that 10 out of 29 sets fall into the two contaminated categories, and split each into a contaminated and a clean subset based on whether at least 70% of the 8-grams in question, prompt or target were seen at least once in the training data."
+  self_reported: true
+  scope:
+    models: "PaLM"
+    data: [palm-29-english-benchmarks]
+    scale: "8B and 540B parameters"
+    setting: "29 primary English NLP benchmark tasks"
+  evidence:
+    - {work: "chowdhery-2022-palm", role: original, locator: "Section 8", stance: for}
+
+- id: c-palm-deltas
+  type: attributive
+  text: "Chowdhery et al. report an equal number of sets with a positive and a negative accuracy delta on the clean subset, which they take to imply that data contamination does not cause meaningful inflation of their reported results."
+  self_reported: true
+  evidence:
+    - {work: "chowdhery-2022-palm", role: original, locator: "Section 8", stance: for}
+
+- id: c-gsm1k-generalize
+  type: empirical
+  text: "Many models, especially those on the frontier, show minimal signs of overfitting on GSM1k, and all models broadly demonstrate generalization to novel math problems guaranteed to not be in their training data."
+  scope:
+    models: "leading open- and closed-source LLMs"
+    data: [gsm8k, gsm1k]
+    scale: unknown
+    setting: "accuracy on GSM1k compared with GSM8k"
+  evidence:
+    - {work: "zhang-2024-careful-examination-large", role: original, locator: "the abstract", stance: for}
+
+- id: c-gsm1k-corr
+  type: empirical
+  text: "Zhang et al. observe a Spearman's rank correlation of 0.36 (p = 0.03) between the per-character log-likelihood of generating GSM8k and the performance gap between GSM8k and GSM1k."
+  scope:
+    models: "open models whose log-likelihoods can be computed"
+    data: [gsm8k, gsm1k]
+    scale: unknown
+    setting: "per-character log-likelihood of the GSM8k test set against the accuracy gap"
+  evidence:
+    - {work: "zhang-2024-careful-examination-large", role: original, locator: "Section 5.4", stance: for}
+
+- id: c-gsm1k-not-full
+  type: attributive
+  text: "Zhang et al. conclude that data contamination is likely not the full explanation for overfitting."
+  evidence:
+    - {work: "zhang-2024-careful-examination-large", role: original, locator: "Section 5.4", stance: for}
+
+- id: c-yang-humaneval
+  type: empirical
+  text: "Applying an LLM-based decontamination method, Yang et al. identify that 8 to 18% of the HumanEval benchmark overlaps with pre-training sets such as RedPajama-Data-1T and StarCoder-Data."
+  scope:
+    models: "none; a corpus study"
+    data: [humaneval, redpajama-data-1t, starcoder-data]
+    scale: unknown
+    setting: "the LLM decontaminator of Yang et al."
+  evidence:
+    - {work: "yang-2023-rethinking-benchmark-contamination", role: original, locator: "the abstract", stance: for}
+
+- id: c-gpt3-new-area
+  type: attributive
+  text: "Brown et al. write that accurately detecting test contamination from internet-scale datasets is a new area of research without established best practices."
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "Section 4", stance: for}
+
+- id: c-wikimia
+  type: definitional
+  text: "WikiMIA treats Wikipedia event pages created after January 1, 2023 as non-member data, and pages created before 2017 as member data, because models such as LLaMA, GPT-NeoX and OPT incorporate Wikipedia dumps into their pretraining data."
+  evidence:
+    - {work: "shi-2023-detecting-pretraining-data", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-mink
+  type: definitional
+  text: "Min-K% Prob selects the k% of tokens of a text with the minimum token probability and computes their average log-likelihood, and detects whether the text was in the pretraining data by thresholding this result."
+  evidence:
+    - {work: "shi-2023-detecting-pretraining-data", role: original, locator: "Section 3", stance: for}
+
+- id: c-mink-hypothesis
+  type: definitional
+  text: "Min-K% Prob is based on the hypothesis that a non-member example is more likely to include a few outlier words with low probability, while a member example is less likely to include such words."
+  evidence:
+    - {work: "shi-2023-detecting-pretraining-data", role: original, locator: "Section 3", stance: for}
+
+- id: c-mink-gain
+  type: empirical
+  text: "Shi et al. report that their method can be applied without any knowledge about the pretraining corpus or any additional training, and achieves a 7.4% improvement over previous methods on their benchmark."
+  scope:
+    models: "the open models of Shi et al."
+    data: [wikimia]
+    scale: unknown
+    setting: "black-box access to token probabilities"
+  evidence:
+    - {work: "shi-2023-detecting-pretraining-data", role: original, locator: "p. 1", stance: for}
+
+- id: c-guided
+  type: definitional
+  text: "A guided instruction is a prompt consisting of the dataset name, the partition type and a random-length initial segment of a reference instance, which asks the LLM to complete it."
+  evidence:
+    - {work: "golchin-2023-time-travel-llms", role: original, locator: "p. 1", stance: for}
+
+- id: c-guided-flag
+  type: definitional
+  text: "An instance is flagged as contaminated if the output of the LLM either exactly or nearly matches the latter segment of the reference."
+  evidence:
+    - {work: "golchin-2023-time-travel-llms", role: original, locator: "p. 1", stance: for}
+
+- id: c-guided-partition
+  type: definitional
+  text: "A partition is marked as contaminated if the average overlap with the reference instances is statistically significantly better with guided instruction than with a general instruction that omits the dataset and partition name, or if a GPT-4 classifier with few-shot in-context learning marks multiple completions as exact or near-exact matches."
+  evidence:
+    - {work: "golchin-2023-time-travel-llms", role: original, locator: "p. 1", stance: for}
+
+- id: c-guided-accuracy
+  type: empirical
+  text: "The best method of Golchin and Surdeanu achieves an accuracy between 92% and 100% in detecting contamination with seven datasets, containing train and test or validation partitions, when contrasted with manual evaluation by human experts."
+  scope:
+    models: "GPT-3.5 and GPT-4"
+    data: [synthetic-training-data]
+    scale: unknown
+    setting: "seven datasets with train and test or validation partitions, against manual evaluation by human experts"
+  evidence:
+    - {work: "golchin-2023-time-travel-llms", role: original, locator: "p. 1", stance: for}
+
+- id: c-canary
+  type: definitional
+  text: "All BIG-bench task definition files include a canary GUID string, intended to help researchers filter BIG-bench data out of web-scraped training corpora so that models do not train on the test set."
+  evidence:
+    - {work: "srivastava-2022-beyond-imitation-game", role: original, locator: "Section 2.4", stance: for}
+
+- id: c-canary-diagnosis
+  type: definitional
+  text: "The BIG-bench task training_on_test_set uses the canary string for post-hoc diagnosis of whether BIG-bench data was used in model training."
+  evidence:
+    - {work: "srivastava-2022-beyond-imitation-game", role: original, locator: "Section 2.4", stance: for}
+
+- id: c-canary-publications
+  type: attributive
+  text: "The BIG-bench authors write that all publications that include excerpts from BIG-bench tasks should include the canary string."
+  evidence:
+    - {work: "srivastava-2022-beyond-imitation-game", role: original, locator: "Section 2.4", stance: for}
+
+- id: c-yang-urge
+  type: attributive
+  text: "Yang et al. propose a stronger LLM-based decontamination method and urge the community to adopt stronger decontamination approaches when using public benchmarks."
+  evidence:
+    - {work: "yang-2023-rethinking-benchmark-contamination", role: original, locator: "the abstract", stance: for}
+
+- id: c-gsm1k-private
+  type: historical
+  text: "To prevent data contamination, Zhang et al. do not release GSM1k publicly, and commit to release it when three open-source models with different pre-trained foundational model lineages reach 95% accuracy on it, or in June 2025, whichever comes earlier."
+  evidence:
+    - {work: "zhang-2024-careful-examination-large", role: original, locator: "Section 3", stance: for}
+
+- id: c-gsm1k-holdout
+  type: historical
+  text: "Because proprietary models were evaluated by sending the dataset through an API, Zhang et al. also hold out a small number of data points that passed all quality checks, in case GSM1k data is leaked that way."
+  evidence:
+    - {work: "zhang-2024-careful-examination-large", role: original, locator: "Section 3", stance: for}
+
+- id: c-lcb-design
+  type: definitional
+  text: "LiveCodeBench collects new problems over time from contests across three competition platforms, LeetCode, AtCoder and CodeForces."
+  evidence:
+    - {work: "jain-2024-livecodebench", role: original, locator: "the abstract", stance: for}
+
+- id: c-lcb-cutoff
+  type: definitional
+  text: "LiveCodeBench measures model performance on problems released after the cutoff date, giving a performance estimate on unseen problems."
+  evidence:
+    - {work: "jain-2024-livecodebench", role: original, locator: "Section 5.1", stance: for}
+
+- id: c-livebench
+  type: definitional
+  text: "LiveBench contains frequently-updated questions based on recently-released math competitions, arXiv papers, news articles and datasets, adds and updates questions on a monthly basis, and scores answers automatically according to objective ground-truth values."
+  evidence:
+    - {work: "white-2024-livebench", role: original, locator: "p. 1", stance: for}
+
+- id: c-yang-fresh
+  type: attributive
+  text: "Yang et al. call for the community to actively develop fresh one-time exams to evaluate models accurately."
+  evidence:
+    - {work: "yang-2023-rethinking-benchmark-contamination", role: original, locator: "the abstract", stance: for}
+
+- id: c-gpt3-insensitive
+  type: attributive
+  text: "Brown et al. write that their overlap results suggest that GPT-3 is relatively insensitive to contamination."
+  self_reported: true
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "p. 44", stance: for}
+
+- id: c-magar-conclusion
+  type: attributive
+  text: "Magar and Schwartz write that their results highlight the importance of analyzing massive web-scale datasets to verify that progress in NLP is obtained by better language understanding and not better data exploitation."
+  evidence:
+    - {work: "magar-2022-data-contamination", role: original, locator: "the abstract", stance: for}
+
+- id: c-sainz-overestimation
+  type: attributive
+  text: "Sainz et al. argue that contamination causes an overestimation of the performance of a contaminated model in a target benchmark, with consequences such as wrong scientific conclusions being published."
+  evidence:
+    - {work: "sainz-2023-nlp-evaluation-trouble", role: original, locator: "the abstract", stance: for}
+
+- id: c-gsm1k-distribution
+  type: attributive
+  text: "Zhang et al. recommend reading all results with the understanding that GSM8k and GSM1k are only highly similar, but not identically distributed."
+  evidence:
+    - {work: "zhang-2024-careful-examination-large", role: original, locator: "Section 3", stance: for}
