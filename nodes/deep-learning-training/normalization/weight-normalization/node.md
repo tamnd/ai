@@ -1,5 +1,5 @@
 ---
-tag: NEW-weight-normalization
+tag: 5PC0VR
 kind: method
 slug: weight-normalization
 name: Weight normalization
