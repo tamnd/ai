@@ -1,0 +1,48 @@
+# The facts of the GPQA benchmark (spec 04.9). The build computes the status of each fact.
+- id: released
+  value: "2023-11-20"
+  note: "The date of arXiv 2311.12022v1."
+  sources:
+    - {src: "rein-2023-gpqa-graduate-level", loc: "p. 1", value: "2023-11-20", kind: primary}
+- id: size.items.extended
+  value: 546
+  unit: items
+  sources:
+    - {src: "rein-2023-gpqa-graduate-level", loc: "p. 6", value: 546, kind: primary}
+- id: size.items.main
+  value: 448
+  unit: items
+  sources:
+    - {src: "rein-2023-gpqa-graduate-level", loc: "p. 6", value: 448, kind: primary}
+- id: size.items.diamond
+  value: 198
+  unit: items
+  sources:
+    - {src: "rein-2023-gpqa-graduate-level", loc: "p. 6", value: 198, kind: primary}
+    - {src: "epoch-2026-gpqa-diamond", loc: "p. 1", value: 198, kind: secondary}
+- id: splits
+  value: "extended, main, diamond"
+  note: "Nested sets, not a train and test split: the main set is filtered from the extended set and the diamond set from the main set. 18 more questions are an unreleased held-out set."
+  sources:
+    - {src: "rein-2023-gpqa-graduate-level", loc: "p. 6", value: "extended, main, diamond", kind: primary}
+- id: metric
+  value: "accuracy"
+  sources:
+    - {src: "rein-2023-gpqa-graduate-level", loc: "p. 10", value: "accuracy", kind: primary}
+- id: protocol
+  value: "four-choice multiple choice, scored by accuracy"
+  note: "There is no official prompt: the prompt, the answer format and the scoring of each evaluator are part of a result."
+  sources:
+    - {src: "rein-2023-gpqa-graduate-level", loc: "pp. 9 to 10", value: "four-choice multiple choice, scored by accuracy", kind: primary}
+- id: licence
+  value: "cc-by-4.0"
+  note: "The licence of the data on its Hugging Face card, behind a gate where users agree not to reveal examples online. The code of the GitHub repository is under the MIT License (its LICENSE file at commit 56686c0)."
+  as_of: 2026-11-14
+  sources:
+    - {src: "https://huggingface.co/api/datasets/Idavidrein/gpqa", loc: "cardData.license and cardData.extra_gated_prompt", value: "cc-by-4.0", kind: primary, as_of: 2026-11-14}
+- id: data_hash
+  value: "sha256:461ae7329f15a3e35f8184d2dac24b990f34fdf12f366ca4062d8e6638cd08dc"
+  note: "The SHA-256 of dataset.zip in the GitHub repository at commit 56686c0 (2024-09-30), computed here on 2026-11-14; the zip is password-protected, with the password in the README, and holds the same sets as the Hugging Face files."
+  no_primary: "The authors publish no checksum; the value was computed here from the file of the authors' repository at a fixed commit."
+  sources:
+    - {src: "https://github.com/idavidrein/gpqa/blob/56686c06f5e19865c153de0fdb11be3890014df7/dataset.zip", loc: "the file", value: "sha256:461ae7329f15a3e35f8184d2dac24b990f34fdf12f366ca4062d8e6638cd08dc", kind: secondary}
