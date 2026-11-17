@@ -1,0 +1,259 @@
+# The claims of the multilayer perceptron page (spec 07). The build computes the labels.
+
+# Why hidden layers, and why nonlinear ones
+
+- id: c-xor-linear
+  type: mathematical
+  text: "No affine function of (x1, x2) is positive on (0, 1) and (1, 0) and non-positive on (0, 0) and (1, 1), so no linear classifier computes XOR."
+  assumes: ["a linear classifier predicts class 1 where an affine function is positive"]
+  derivation: xor
+
+- id: c-xor-lstsq
+  type: mathematical
+  text: "The least-squares affine fit to the four points of XOR has zero weights and intercept 1/2, so it predicts 1/2 at every point."
+  assumes: ["the targets are 0, 1, 1, 0 on (0, 0), (0, 1), (1, 0), (1, 1)"]
+  derivation: xor
+
+- id: c-xor-network
+  type: mathematical
+  text: "The 2-2-1 ReLU network y = relu(x1 + x2) - 2 relu(x1 + x2 - 1) computes XOR exactly on {0, 1}^2."
+  assumes: ["W_0 = [[1, 1], [1, 1]], b_0 = (0, -1), W_1 = (1, -2), b_1 = 0"]
+  derivation: xor
+
+- id: c-collapse
+  type: mathematical
+  text: "A multilayer perceptron whose activations are all the identity computes one affine map y = W x + b with W = W_L ... W_0, whatever its depth."
+  assumes: ["the identity activation in every hidden layer"]
+  derivation: linear-collapse
+
+- id: c-collapse-rank
+  type: mathematical
+  text: "The matrix W of a linear multilayer perceptron has rank at most the smallest width of the network."
+  assumes: ["the identity activation in every hidden layer", "W_l has the shape n_{l+1} by n_l"]
+  derivation: linear-collapse
+
+# Universal approximation, width and depth
+
+- id: c-uat
+  type: mathematical
+  text: "The classical Universal Approximation Theorem (Cybenko, 1989; Hornik, 1991; Pinkus, 1999): for a continuous activation function rho, feedforward networks with n input neurons, one output neuron and one hidden layer with an arbitrary number of neurons are dense in C(K) for compact K in R^n if and only if rho is nonpolynomial."
+  assumes: ["K is compact", "the activation is continuous"]
+  evidence:
+    - {work: "kidger-2020-universal-approximation-deep-narrow", role: review, locator: "Section 1", stance: for}
+
+- id: c-uat-depth
+  type: attributive
+  text: "Kidger and Lyons note that extending the classical theorem to any bounded number of hidden layers is easy, by requiring the extra hidden layers to approximate the identity function, so the classical theorem addresses the case of arbitrary width and bounded depth."
+  evidence:
+    - {work: "kidger-2020-universal-approximation-deep-narrow", role: original, locator: "Section 1", stance: for}
+
+- id: c-deep-narrow
+  type: mathematical
+  text: "For any nonaffine continuous activation function with a continuous nonzero derivative at some point, the class of networks of arbitrary depth and width n + m + 2, with n inputs and m outputs, is dense in C(K; R^m) for compact K in R^n; this includes polynomial activation functions."
+  assumes: ["K is compact", "the activation is continuous and nonaffine, with a continuous nonzero derivative at some point"]
+  evidence:
+    - {work: "kidger-2020-universal-approximation-deep-narrow", role: original, locator: "the abstract", stance: for}
+
+- id: c-min-width
+  type: mathematical
+  text: "For networks with the ReLU activation, the minimum width required for universal approximation of L^p functions is exactly max{d_x + 1, d_y}, and the same conclusion does not hold for uniform approximation with the ReLU alone."
+  assumes: ["d_x inputs and d_y outputs", "networks of arbitrary depth"]
+  evidence:
+    - {work: "park-2020-minimum-width-universal-approximation", role: original, locator: "the abstract", stance: for}
+
+- id: c-eldan
+  type: mathematical
+  text: "There is a simple, approximately radial function on R^d, expressible by a small 3-layer feedforward network, which cannot be approximated by any 2-layer network to more than a certain constant accuracy unless its width is exponential in the dimension; the result holds for virtually all known activation functions, including rectified linear units, sigmoids and thresholds."
+  assumes: ["the activation satisfies the mild conditions of Eldan and Shamir"]
+  evidence:
+    - {work: "eldan-2016-power-of-depth", role: original, locator: "the abstract", stance: for}
+
+- id: c-telgarsky
+  type: mathematical
+  text: "For any positive integer k, there exist neural networks with Theta(k^3) layers, Theta(1) nodes per layer and Theta(1) distinct parameters which cannot be approximated by networks with O(k) layers unless they have Omega(2^k) nodes; this holds for semi-algebraic gates, which include ReLU, maximum, indicator and piecewise polynomial functions."
+  assumes: ["approximation in the L1 distance on the cube [0, 1]^d"]
+  evidence:
+    - {work: "telgarsky-2016-benefits-of-depth", role: original, locator: "the abstract", stance: for}
+
+- id: c-telgarsky-oscillation
+  type: attributive
+  text: "Telgarsky's key idea is that just a few function compositions, or layers, suffice to construct a highly oscillatory function."
+  evidence:
+    - {work: "telgarsky-2016-benefits-of-depth", role: original, locator: "Section 1", stance: for}
+
+# Activations
+
+- id: c-rectifier
+  type: empirical
+  text: "Rectifying neurons yield equal or better performance than hyperbolic tangent networks in spite of the hard non-linearity and non-differentiability at zero, and deep rectifier networks can reach their best performance without requiring any unsupervised pre-training on purely supervised tasks with large labeled datasets."
+  scope:
+    models: "deep rectifier and hyperbolic tangent networks"
+    data: [unknown]
+    setting: "image and text classification, with and without unsupervised pre-training"
+  evidence:
+    - {work: "glorot-2011-deep-sparse-rectifier", role: original, locator: "the abstract", stance: for}
+
+- id: c-sigmoid-saturation
+  type: empirical
+  text: "The logistic sigmoid activation is unsuited for deep networks with random initialization because of its mean value, which can drive especially the top hidden layer into saturation."
+  scope:
+    models: "deep feedforward networks with sigmoid units"
+    data: ["Shapeset-3x2", "MNIST", "CIFAR-10", "Small-ImageNet"]
+    setting: "supervised training from random initialization"
+  evidence:
+    - {work: "glorot-2010-understanding-difficulty-training", role: original, locator: "the abstract", stance: for}
+    - {work: "glorot-2010-understanding-difficulty-training", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-sigmoid-depth-five
+  type: empirical
+  text: "The saturation of sigmoid units can last very long in deeper networks, and the depth-five model of Glorot and Bengio never escaped this regime during training."
+  scope:
+    models: "deep feedforward networks with sigmoid units"
+    data: ["Shapeset-3x2"]
+    setting: "supervised training from random initialization"
+  evidence:
+    - {work: "glorot-2010-understanding-difficulty-training", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-gelu
+  type: definitional
+  text: "The GELU activation function is x Phi(x), where Phi is the standard Gaussian cumulative distribution function; it weights inputs by their value, rather than gating inputs by their sign as in ReLUs."
+  evidence:
+    - {work: "hendrycks-2016-gelu", role: original, locator: "the abstract", stance: for}
+
+- id: c-gelu-results
+  type: empirical
+  text: "In an empirical evaluation of the GELU against the ReLU and ELU activations, Hendrycks and Gimpel find performance improvements across all considered computer vision, natural language processing and speech tasks."
+  scope:
+    models: "networks with GELU, ReLU and ELU activations"
+    data: [unknown]
+    setting: "computer vision, natural language processing and speech tasks"
+  evidence:
+    - {work: "hendrycks-2016-gelu", role: original, locator: "the abstract", stance: for}
+
+# Counts
+
+- id: c-params
+  type: mathematical
+  text: "A multilayer perceptron with widths n_0, ..., n_{L+1} has the sum over l of n_l n_{l+1} + n_{l+1} parameters."
+  assumes: ["every layer is fully connected with a bias"]
+  derivation: parameter-and-flop-count
+
+- id: c-width-depth-params
+  type: mathematical
+  text: "With L hidden layers of width d, input width n_0 and output width k, a multilayer perceptron has (n_0 + 1) d + (L - 1)(d + 1) d + (d + 1) k parameters, linear in the depth and quadratic in the width."
+  assumes: ["every layer is fully connected with a bias"]
+  derivation: parameter-and-flop-count
+
+- id: c-flops
+  type: mathematical
+  text: "The forward pass of a multilayer perceptron over a batch of B examples costs 2 B times the sum over l of n_l n_{l+1} FLOPs."
+  assumes: ["a multiply-add counts as 2 FLOPs", "the biases and activations are left out"]
+  derivation: parameter-and-flop-count
+
+- id: c-backward-cost
+  type: mathematical
+  text: "The backward pass of a multilayer perceptron, including the gradient of the input, costs twice the FLOPs of the forward pass: each layer makes two matrix products of the size of its forward product."
+  assumes: ["only the matrix products are counted"]
+  derivation: backpropagation
+
+# Backpropagation
+
+- id: c-delta
+  type: mathematical
+  text: "The errors delta_l = dE/dz_l of the pre-activations satisfy delta_{l-1} = (W_l^T delta_l) * sigma'(z_{l-1}), element-wise, starting from delta_L = dE/dy."
+  assumes: ["sigma is differentiable at the pre-activations that occur, or a subgradient is used"]
+  derivation: backpropagation
+
+- id: c-grads
+  type: mathematical
+  text: "The gradient of the loss for W_l is the sum over the batch of delta_l h_l^T, and for b_l the sum over the batch of delta_l, where h_l is the input of layer l."
+  assumes: ["the loss is a sum of terms that each depend on one example"]
+  derivation: backpropagation
+
+# Initialization
+
+- id: c-variance-recursion
+  type: mathematical
+  text: "With independent zero-mean weights, zero biases and ReLU activations whose input is symmetric about zero, the variance of the pre-activations satisfies Var[z_l] = (1/2) n_l Var[w_l] Var[z_{l-1}], so it is constant from layer to layer exactly when Var[w_l] = 2 / n_l."
+  assumes: ["the weights are independent, zero-mean and independent of the layer input", "the biases are zero", "z_{l-1} is symmetric about zero"]
+  derivation: variance-propagation
+
+- id: c-half-variance
+  type: mathematical
+  text: "With Var[w_l] = 1 / n_l, each ReLU layer halves the variance of the pre-activations, so m layers multiply it by 2^-m."
+  assumes: ["the assumptions of c-variance-recursion"]
+  derivation: variance-propagation
+
+- id: c-he-init
+  type: attributive
+  text: "For rectifier networks He et al. derive the sufficient condition (1/2) n_l Var[w_l] = 1 for all layers, which leads to a zero-mean Gaussian distribution with standard deviation sqrt(2 / n_l), and they initialize the biases to zero."
+  evidence:
+    - {work: "he-2015-delving-deep-rectifiers", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-he-xavier-linear
+  type: attributive
+  text: "He et al. note that the derivation of the Xavier initialization of Glorot and Bengio is based on the assumption that the activations are linear, an assumption that is invalid for ReLU and PReLU."
+  evidence:
+    - {work: "he-2015-delving-deep-rectifiers", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-he-30-layers
+  type: empirical
+  text: "On a 30-layer model (27 convolutional and 3 fully connected layers) with ReLU activations, the initialization of He et al. makes the model converge, while the Xavier method completely stalls the learning, with diminishing gradients."
+  scope:
+    models: "a 30-layer ReLU network, 27 convolutional and 3 fully connected layers"
+    data: [imagenet]
+    setting: "ImageNet 2012 classification, trained from scratch"
+  evidence:
+    - {work: "he-2015-delving-deep-rectifiers", role: original, locator: "Section 2.2", stance: for}
+  small_scale: "no"
+  small_scale_note: "The stall needs the depth and the data of the ImageNet model; the check of variance-propagation reproduces only the variance arithmetic behind it."
+
+- id: c-he-depth-degrades
+  type: empirical
+  text: "The 30-layer model of He et al. has 38.56/16.59 top-1/top-5 error, clearly worse than the 33.82/13.34 of their 14-layer model."
+  scope:
+    models: "a 30-layer and a 14-layer ReLU network"
+    data: [imagenet]
+    setting: "ImageNet 2012 classification, 10-view testing"
+  evidence:
+    - {work: "he-2015-delving-deep-rectifiers", role: original, locator: "Section 2.2", stance: for}
+  small_scale: "no"
+  small_scale_note: "An ImageNet error rate does not show at the scale of a CPU experiment."
+
+- id: c-glorot-init
+  type: attributive
+  text: "Glorot and Bengio ask for constant variance of the activations forward and of the gradients backward, which give the conditions n_i Var[W^i] = 1 and n_{i+1} Var[W^i] = 1; as a compromise they take Var[W^i] = 2 / (n_i + n_{i+1}), and they propose the normalized initialization W ~ U[-sqrt(6) / sqrt(n_j + n_{j+1}), sqrt(6) / sqrt(n_j + n_{j+1})]."
+  evidence:
+    - {work: "glorot-2010-understanding-difficulty-training", role: original, locator: "Section 4.2.1", stance: for}
+
+- id: c-glorot-variance
+  type: mathematical
+  text: "The uniform distribution on [-a, a] with a = sqrt(6 / (n_l + n_{l+1})) has variance 2 / (n_l + n_{l+1})."
+  assumes: ["the variance of the uniform distribution on [-a, a] is a^2 / 3"]
+  derivation: variance-propagation
+
+# Evidence and history
+
+- id: c-before-2006
+  type: historical
+  text: "Glorot and Bengio write that before 2006 it appears that deep multilayer neural networks were not successfully trained, and that the algorithms that trained them since then all came with new initialization or training mechanisms."
+  evidence:
+    - {work: "glorot-2010-understanding-difficulty-training", role: original, locator: "the abstract", stance: for}
+
+- id: c-hist-gmdh
+  type: historical
+  text: "Networks trained by the Group Method of Data Handling (Ivakhnenko and Lapa, 1965) were perhaps the first deep learning systems of the feedforward multilayer perceptron type, with layers grown incrementally and trained by regression analysis; a paper of 1971 already described a deep GMDH network with 8 layers."
+  evidence:
+    - {work: "schmidhuber-2014-deep-learning-overview", role: review, locator: "Section 5.3", stance: for}
+
+- id: c-hist-minsky
+  type: historical
+  text: "Schmidhuber finds it surprising in hindsight that a book (Minsky and Papert, 1969) on the limitations of simple linear perceptrons with a single layer discouraged some researchers from further studying neural networks."
+  evidence:
+    - {work: "schmidhuber-2014-deep-learning-overview", role: review, locator: "Section 5.5", stance: for}
+
+- id: c-hist-backprop
+  type: historical
+  text: "Explicit, efficient error backpropagation was apparently first described in a 1970 master's thesis (Linnainmaa), without reference to neural networks; the first neural-network-specific application of efficient backpropagation was described in 1981 (Werbos), and a 1986 paper (Rumelhart et al.) significantly contributed to its popularisation, experimentally demonstrating the emergence of useful internal representations in hidden layers."
+  evidence:
+    - {work: "schmidhuber-2014-deep-learning-overview", role: review, locator: "Section 5.5", stance: for}

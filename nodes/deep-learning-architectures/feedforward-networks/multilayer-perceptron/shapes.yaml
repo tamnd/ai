@@ -1,0 +1,43 @@
+# SPDX-License-Identifier: MIT
+# The shape contract of the multilayer perceptron (spec 08.6): n_hidden hidden layers of the same width and a linear output layer.
+# Every layer is fully connected with a bias. The example config is small, so that the tests can run the forward pass on it.
+config:
+  d_in:     {meaning: "width of the input", symbol: "n_0", example: 3, sample: [1, 6]}
+  d_hidden: {meaning: "width of each hidden layer", symbol: "d", example: 4, sample: [1, 8]}
+  d_out:    {meaning: "width of the output", symbol: "k", example: 2, sample: [1, 4]}
+  n_hidden: {meaning: "number of hidden layers", symbol: "L", example: 2, sample: [1, 4]}
+axes:
+  B: {meaning: "batch", example: 5, sample: [1, 6]}
+  I: d_in
+  H: d_hidden
+  O: d_out
+blocks:
+  - id: first
+    meaning: "the first hidden layer: an affine map from the input to d_hidden units, then the activation"
+    eq: [layer]
+    inputs: {x: "(B, I)"}
+    outputs: {h: "(B, H)"}
+    internals: {z: "(B, H)"}
+    params: "H * I + H"
+    flops_forward: "2 * B * I * H"
+  - id: hidden
+    meaning: "each of the n_hidden - 1 other hidden layers: an affine map from d_hidden to d_hidden units, then the activation"
+    eq: [layer]
+    inputs: {h: "(B, H)"}
+    outputs: {h: "(B, H)"}
+    internals: {z: "(B, H)"}
+    params: "H * H + H"
+    flops_forward: "2 * B * H * H"
+  - id: output
+    meaning: "the output layer: an affine map from d_hidden units to d_out outputs, with no activation"
+    eq: [output]
+    inputs: {h: "(B, H)"}
+    outputs: {y: "(B, O)"}
+    params: "O * H + O"
+    flops_forward: "2 * B * H * O"
+model:
+  params: {formula: "first.params + (n_hidden - 1) * hidden.params + output.params", symbol: "P", meaning: "all weights and biases"}
+  flops_forward: {formula: "first.flops_forward + (n_hidden - 1) * hidden.flops_forward + output.flops_forward", symbol: "C_{\\text{fwd}}", meaning: "FLOPs of one forward pass over the batch, a multiply-add counted as 2; the biases and the activations are left out"}
+  flops_backward: {formula: "2 * flops_forward", symbol: "C_{\\text{bwd}}", meaning: "FLOPs of the backward pass of the reference over the batch: the gradient of each weight matrix and the gradient of each layer input, including the input x"}
+configs:
+  xor: {meaning: "the 2-2-1 network of the worked example on the four points of XOR", d_in: 2, d_hidden: 2, d_out: 1, n_hidden: 1, B: 4}
