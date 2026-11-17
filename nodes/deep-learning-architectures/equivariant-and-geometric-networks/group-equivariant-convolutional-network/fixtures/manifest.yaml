@@ -1,0 +1,12 @@
+# Written by fixtures/make.py; do not edit.
+seed: 20160224
+config: {c_in: 1, c1: 4, c2: 4, k: 3, n_classes: 3, group: p4, padding: zero}
+inputs: {B: 2, N: 5, x: "standard Gaussian images", labels: "uniform over the classes"}
+loss: "mean softmax cross-entropy of the logits"
+gradients: "of the loss, by the reference backward pass"
+dtype: float64
+numpy: "2.5.4"
+files:
+  params-small.npz: {sha256: 9adc270e506564df70128a2d44e3501eb80dd8fa1b67ce691eea5a0a13a6c035}
+  input-small.npz: {sha256: e24a378049a393b293e2d5985e9ed490202fec47eeefa6db2c824bbfbcc2a9a3}
+  expected-small.npz: {sha256: 910755049a125c2afa45b3863ae52ee1f0619cbab6ec08e3ebd1c2dc4568bb1c}
