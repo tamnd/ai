@@ -1,0 +1,400 @@
+{
+  "note": "Written by aik shapes sample -w from shapes.yaml; do not edit. The tests of each implementation check shapes, param_count and flops against these values (spec 08.6, rule X09).",
+  "configs": [
+    {
+      "name": "example",
+      "kind": "example",
+      "config": {
+        "B": 2,
+        "H": 4,
+        "I": 3,
+        "T": 5,
+        "hidden_size": 4,
+        "input_size": 3
+      },
+      "blocks": {
+        "layer": {
+          "params": 36,
+          "flops_forward": 560,
+          "inputs": {
+            "h0": [
+              2,
+              4
+            ],
+            "x": [
+              2,
+              5,
+              3
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              5,
+              4
+            ],
+            "h_T": [
+              2,
+              4
+            ]
+          }
+        },
+        "step": {
+          "params": 36,
+          "flops_forward": 560,
+          "inputs": {
+            "h0": [
+              2,
+              4
+            ],
+            "x": [
+              2,
+              5,
+              3
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              5,
+              4
+            ]
+          },
+          "internals": {
+            "a": [
+              2,
+              5,
+              4
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 560,
+        "gru_flops": 1680,
+        "gru_params": 108,
+        "lstm_flops": 2240,
+        "lstm_params": 144,
+        "one_bias_params": 32,
+        "params": 36,
+        "state": 4
+      }
+    },
+    {
+      "name": "sample-1",
+      "kind": "sample",
+      "config": {
+        "B": 2,
+        "H": 6,
+        "I": 1,
+        "T": 3,
+        "hidden_size": 6,
+        "input_size": 1
+      },
+      "blocks": {
+        "layer": {
+          "params": 54,
+          "flops_forward": 504,
+          "inputs": {
+            "h0": [
+              2,
+              6
+            ],
+            "x": [
+              2,
+              3,
+              1
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              3,
+              6
+            ],
+            "h_T": [
+              2,
+              6
+            ]
+          }
+        },
+        "step": {
+          "params": 54,
+          "flops_forward": 504,
+          "inputs": {
+            "h0": [
+              2,
+              6
+            ],
+            "x": [
+              2,
+              3,
+              1
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              3,
+              6
+            ]
+          },
+          "internals": {
+            "a": [
+              2,
+              3,
+              6
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 504,
+        "gru_flops": 1512,
+        "gru_params": 162,
+        "lstm_flops": 2016,
+        "lstm_params": 216,
+        "one_bias_params": 48,
+        "params": 54,
+        "state": 6
+      }
+    },
+    {
+      "name": "sample-2",
+      "kind": "sample",
+      "config": {
+        "B": 2,
+        "H": 3,
+        "I": 4,
+        "T": 2,
+        "hidden_size": 3,
+        "input_size": 4
+      },
+      "blocks": {
+        "layer": {
+          "params": 27,
+          "flops_forward": 168,
+          "inputs": {
+            "h0": [
+              2,
+              3
+            ],
+            "x": [
+              2,
+              2,
+              4
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              2,
+              3
+            ],
+            "h_T": [
+              2,
+              3
+            ]
+          }
+        },
+        "step": {
+          "params": 27,
+          "flops_forward": 168,
+          "inputs": {
+            "h0": [
+              2,
+              3
+            ],
+            "x": [
+              2,
+              2,
+              4
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              2,
+              3
+            ]
+          },
+          "internals": {
+            "a": [
+              2,
+              2,
+              3
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 168,
+        "gru_flops": 504,
+        "gru_params": 81,
+        "lstm_flops": 672,
+        "lstm_params": 108,
+        "one_bias_params": 24,
+        "params": 27,
+        "state": 3
+      }
+    },
+    {
+      "name": "pixel",
+      "kind": "named",
+      "config": {
+        "B": 2,
+        "H": 100,
+        "I": 1,
+        "T": 5,
+        "hidden_size": 100,
+        "input_size": 1
+      },
+      "blocks": {
+        "layer": {
+          "params": 10300,
+          "flops_forward": 202000,
+          "inputs": {
+            "h0": [
+              2,
+              100
+            ],
+            "x": [
+              2,
+              5,
+              1
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              5,
+              100
+            ],
+            "h_T": [
+              2,
+              100
+            ]
+          }
+        },
+        "step": {
+          "params": 10300,
+          "flops_forward": 202000,
+          "inputs": {
+            "h0": [
+              2,
+              100
+            ],
+            "x": [
+              2,
+              5,
+              1
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              5,
+              100
+            ]
+          },
+          "internals": {
+            "a": [
+              2,
+              5,
+              100
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 202000,
+        "gru_flops": 606000,
+        "gru_params": 30900,
+        "lstm_flops": 808000,
+        "lstm_params": 41200,
+        "one_bias_params": 10200,
+        "params": 10300,
+        "state": 100
+      }
+    },
+    {
+      "name": "wide",
+      "kind": "named",
+      "config": {
+        "B": 2,
+        "H": 1024,
+        "I": 1024,
+        "T": 5,
+        "hidden_size": 1024,
+        "input_size": 1024
+      },
+      "blocks": {
+        "layer": {
+          "params": 2099200,
+          "flops_forward": 41943040,
+          "inputs": {
+            "h0": [
+              2,
+              1024
+            ],
+            "x": [
+              2,
+              5,
+              1024
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              5,
+              1024
+            ],
+            "h_T": [
+              2,
+              1024
+            ]
+          }
+        },
+        "step": {
+          "params": 2099200,
+          "flops_forward": 41943040,
+          "inputs": {
+            "h0": [
+              2,
+              1024
+            ],
+            "x": [
+              2,
+              5,
+              1024
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              5,
+              1024
+            ]
+          },
+          "internals": {
+            "a": [
+              2,
+              5,
+              1024
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 41943040,
+        "gru_flops": 125829120,
+        "gru_params": 6297600,
+        "lstm_flops": 167772160,
+        "lstm_params": 8396800,
+        "one_bias_params": 2098176,
+        "params": 2099200,
+        "state": 1024
+      }
+    }
+  ]
+}
