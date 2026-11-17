@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/neural-ordinary-differential-equation/ (ai://NEW-neural-ordinary-differential-equation).
+# Part of https://ai.tamnd.com/neural-ordinary-differential-equation/ (ai://WNCNQE).
 """The neural ordinary differential equation, the JAX reference: eq-field, eq-augment and RK4 steps of eq-ode.
 
 The parameters are a dict with the names and shapes of the NumPy reference. jax.grad of forward differentiates the

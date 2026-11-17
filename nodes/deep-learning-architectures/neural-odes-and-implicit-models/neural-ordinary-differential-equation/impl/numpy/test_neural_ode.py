@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/neural-ordinary-differential-equation/ (ai://NEW-neural-ordinary-differential-equation).
+# Part of https://ai.tamnd.com/neural-ordinary-differential-equation/ (ai://WNCNQE).
 """Tests of the NumPy reference: the solvers, the residual step, the two gradients, the change of variables,
 the one-dimensional limit and augmentation, the shapes and the shared fixture."""
 

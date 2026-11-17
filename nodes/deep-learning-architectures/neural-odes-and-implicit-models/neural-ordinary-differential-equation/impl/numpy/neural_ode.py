@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/neural-ordinary-differential-equation/ (ai://NEW-neural-ordinary-differential-equation).
+# Part of https://ai.tamnd.com/neural-ordinary-differential-equation/ (ai://WNCNQE).
 """The neural ordinary differential equation, the NumPy reference: solvers, the forward pass and two backward passes.
 
 The hidden state h(t) of width D = d + p follows eq-ode, dh/dt = f(h, t), from h(0) = [x, 0] to h(T); the p zeros

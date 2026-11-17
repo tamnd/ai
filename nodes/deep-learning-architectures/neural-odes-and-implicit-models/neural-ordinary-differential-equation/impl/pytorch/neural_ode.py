@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/neural-ordinary-differential-equation/ (ai://NEW-neural-ordinary-differential-equation).
+# Part of https://ai.tamnd.com/neural-ordinary-differential-equation/ (ai://WNCNQE).
 """The neural ordinary differential equation, the PyTorch reference: eq-field, eq-augment and RK4 steps of eq-ode.
 
 Autograd through the steps gives the gradient of the discrete map (discretize, then optimize), as backprop of the

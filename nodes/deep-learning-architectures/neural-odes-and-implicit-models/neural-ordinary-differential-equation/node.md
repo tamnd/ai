@@ -1,5 +1,5 @@
 ---
-tag: NEW-neural-ordinary-differential-equation
+tag: WNCNQE
 kind: architecture
 slug: neural-ordinary-differential-equation
 name: Neural ordinary differential equation
