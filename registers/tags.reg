@@ -5964,3 +5964,8 @@ MEE1KH chen-2016-sublinear-memory-cost
 C4TQW1 gradient-checkpointing
 320Z0E gruslys-2016-memory-efficient-bptt
 SZY8XC korthikanti-2022-reducing-activation-recomputation
+65KZZ4 cubuk-2018-autoaugment
+61B0K9 cubuk-2019-randaugment
+0XBQFP devries-2017-cutout
+4Y80W8 muller-2021-trivialaugment
+88YEPR randaugment
