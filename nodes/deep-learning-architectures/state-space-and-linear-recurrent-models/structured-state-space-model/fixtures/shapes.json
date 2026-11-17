@@ -1,0 +1,675 @@
+{
+  "note": "Written by aik shapes sample -w from shapes.yaml; do not edit. The tests of each implementation check shapes, param_count and flops against these values (spec 08.6, rule X09).",
+  "configs": [
+    {
+      "name": "example",
+      "kind": "example",
+      "config": {
+        "B": 2,
+        "H": 2,
+        "L": 8,
+        "N": 8,
+        "P": 4,
+        "h": 2,
+        "n": 4,
+        "n_state": 8
+      },
+      "blocks": {
+        "conv": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "k": [
+              2,
+              8
+            ],
+            "u": [
+              2,
+              8,
+              2
+            ]
+          },
+          "outputs": {
+            "y_conv": [
+              2,
+              8,
+              2
+            ]
+          },
+          "internals": {
+            "k_spectrum": [
+              9,
+              2
+            ],
+            "u_spectrum": [
+              2,
+              9,
+              2
+            ]
+          }
+        },
+        "kernel": {
+          "params": 50,
+          "flops_forward": 128,
+          "inputs": {
+            "log_dt": [
+              2
+            ]
+          },
+          "outputs": {
+            "k": [
+              2,
+              8
+            ]
+          },
+          "internals": {
+            "a_bar": [
+              2,
+              4
+            ],
+            "b_bar": [
+              2,
+              4
+            ],
+            "powers": [
+              2,
+              4,
+              8
+            ]
+          }
+        },
+        "skip": {
+          "params": 2,
+          "flops_forward": 0,
+          "inputs": {
+            "u": [
+              2,
+              8,
+              2
+            ],
+            "y_conv": [
+              2,
+              8,
+              2
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              8,
+              2
+            ]
+          }
+        },
+        "step": {
+          "params": 0,
+          "flops_forward": 32,
+          "inputs": {
+            "u_t": [
+              2,
+              2
+            ],
+            "x": [
+              2,
+              2,
+              4
+            ]
+          },
+          "outputs": {
+            "x_next": [
+              2,
+              2,
+              4
+            ],
+            "y_t": [
+              2,
+              2
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 128,
+        "flops_scan": 256,
+        "params": 52,
+        "state_floats": 32
+      }
+    },
+    {
+      "name": "sample-1",
+      "kind": "sample",
+      "config": {
+        "B": 1,
+        "H": 4,
+        "L": 10,
+        "N": 6,
+        "P": 3,
+        "h": 4,
+        "n": 3,
+        "n_state": 6
+      },
+      "blocks": {
+        "conv": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "k": [
+              4,
+              10
+            ],
+            "u": [
+              1,
+              10,
+              4
+            ]
+          },
+          "outputs": {
+            "y_conv": [
+              1,
+              10,
+              4
+            ]
+          },
+          "internals": {
+            "k_spectrum": [
+              11,
+              4
+            ],
+            "u_spectrum": [
+              1,
+              11,
+              4
+            ]
+          }
+        },
+        "kernel": {
+          "params": 76,
+          "flops_forward": 240,
+          "inputs": {
+            "log_dt": [
+              4
+            ]
+          },
+          "outputs": {
+            "k": [
+              4,
+              10
+            ]
+          },
+          "internals": {
+            "a_bar": [
+              4,
+              3
+            ],
+            "b_bar": [
+              4,
+              3
+            ],
+            "powers": [
+              4,
+              3,
+              10
+            ]
+          }
+        },
+        "skip": {
+          "params": 4,
+          "flops_forward": 0,
+          "inputs": {
+            "u": [
+              1,
+              10,
+              4
+            ],
+            "y_conv": [
+              1,
+              10,
+              4
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              10,
+              4
+            ]
+          }
+        },
+        "step": {
+          "params": 0,
+          "flops_forward": 24,
+          "inputs": {
+            "u_t": [
+              1,
+              4
+            ],
+            "x": [
+              1,
+              4,
+              3
+            ]
+          },
+          "outputs": {
+            "x_next": [
+              1,
+              4,
+              3
+            ],
+            "y_t": [
+              1,
+              4
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 240,
+        "flops_scan": 240,
+        "params": 80,
+        "state_floats": 24
+      }
+    },
+    {
+      "name": "sample-2",
+      "kind": "sample",
+      "config": {
+        "B": 2,
+        "H": 1,
+        "L": 10,
+        "N": 14,
+        "P": 7,
+        "h": 1,
+        "n": 7,
+        "n_state": 14
+      },
+      "blocks": {
+        "conv": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "k": [
+              1,
+              10
+            ],
+            "u": [
+              2,
+              10,
+              1
+            ]
+          },
+          "outputs": {
+            "y_conv": [
+              2,
+              10,
+              1
+            ]
+          },
+          "internals": {
+            "k_spectrum": [
+              11,
+              1
+            ],
+            "u_spectrum": [
+              2,
+              11,
+              1
+            ]
+          }
+        },
+        "kernel": {
+          "params": 43,
+          "flops_forward": 140,
+          "inputs": {
+            "log_dt": [
+              1
+            ]
+          },
+          "outputs": {
+            "k": [
+              1,
+              10
+            ]
+          },
+          "internals": {
+            "a_bar": [
+              1,
+              7
+            ],
+            "b_bar": [
+              1,
+              7
+            ],
+            "powers": [
+              1,
+              7,
+              10
+            ]
+          }
+        },
+        "skip": {
+          "params": 1,
+          "flops_forward": 0,
+          "inputs": {
+            "u": [
+              2,
+              10,
+              1
+            ],
+            "y_conv": [
+              2,
+              10,
+              1
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              10,
+              1
+            ]
+          }
+        },
+        "step": {
+          "params": 0,
+          "flops_forward": 28,
+          "inputs": {
+            "u_t": [
+              2,
+              1
+            ],
+            "x": [
+              2,
+              1,
+              7
+            ]
+          },
+          "outputs": {
+            "x_next": [
+              2,
+              1,
+              7
+            ],
+            "y_t": [
+              2,
+              1
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 140,
+        "flops_scan": 280,
+        "params": 44,
+        "state_floats": 28
+      }
+    },
+    {
+      "name": "long",
+      "kind": "named",
+      "config": {
+        "B": 2,
+        "H": 1,
+        "L": 8,
+        "N": 16,
+        "P": 8,
+        "h": 1,
+        "n": 8,
+        "n_state": 16
+      },
+      "blocks": {
+        "conv": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "k": [
+              1,
+              8
+            ],
+            "u": [
+              2,
+              8,
+              1
+            ]
+          },
+          "outputs": {
+            "y_conv": [
+              2,
+              8,
+              1
+            ]
+          },
+          "internals": {
+            "k_spectrum": [
+              9,
+              1
+            ],
+            "u_spectrum": [
+              2,
+              9,
+              1
+            ]
+          }
+        },
+        "kernel": {
+          "params": 49,
+          "flops_forward": 128,
+          "inputs": {
+            "log_dt": [
+              1
+            ]
+          },
+          "outputs": {
+            "k": [
+              1,
+              8
+            ]
+          },
+          "internals": {
+            "a_bar": [
+              1,
+              8
+            ],
+            "b_bar": [
+              1,
+              8
+            ],
+            "powers": [
+              1,
+              8,
+              8
+            ]
+          }
+        },
+        "skip": {
+          "params": 1,
+          "flops_forward": 0,
+          "inputs": {
+            "u": [
+              2,
+              8,
+              1
+            ],
+            "y_conv": [
+              2,
+              8,
+              1
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              8,
+              1
+            ]
+          }
+        },
+        "step": {
+          "params": 0,
+          "flops_forward": 32,
+          "inputs": {
+            "u_t": [
+              2,
+              1
+            ],
+            "x": [
+              2,
+              1,
+              8
+            ]
+          },
+          "outputs": {
+            "x_next": [
+              2,
+              1,
+              8
+            ],
+            "y_t": [
+              2,
+              1
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 128,
+        "flops_scan": 256,
+        "params": 50,
+        "state_floats": 32
+      }
+    },
+    {
+      "name": "wide",
+      "kind": "named",
+      "config": {
+        "B": 2,
+        "H": 4,
+        "L": 8,
+        "N": 4,
+        "P": 2,
+        "h": 4,
+        "n": 2,
+        "n_state": 4
+      },
+      "blocks": {
+        "conv": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "k": [
+              4,
+              8
+            ],
+            "u": [
+              2,
+              8,
+              4
+            ]
+          },
+          "outputs": {
+            "y_conv": [
+              2,
+              8,
+              4
+            ]
+          },
+          "internals": {
+            "k_spectrum": [
+              9,
+              4
+            ],
+            "u_spectrum": [
+              2,
+              9,
+              4
+            ]
+          }
+        },
+        "kernel": {
+          "params": 52,
+          "flops_forward": 128,
+          "inputs": {
+            "log_dt": [
+              4
+            ]
+          },
+          "outputs": {
+            "k": [
+              4,
+              8
+            ]
+          },
+          "internals": {
+            "a_bar": [
+              4,
+              2
+            ],
+            "b_bar": [
+              4,
+              2
+            ],
+            "powers": [
+              4,
+              2,
+              8
+            ]
+          }
+        },
+        "skip": {
+          "params": 4,
+          "flops_forward": 0,
+          "inputs": {
+            "u": [
+              2,
+              8,
+              4
+            ],
+            "y_conv": [
+              2,
+              8,
+              4
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              8,
+              4
+            ]
+          }
+        },
+        "step": {
+          "params": 0,
+          "flops_forward": 32,
+          "inputs": {
+            "u_t": [
+              2,
+              4
+            ],
+            "x": [
+              2,
+              4,
+              2
+            ]
+          },
+          "outputs": {
+            "x_next": [
+              2,
+              4,
+              2
+            ],
+            "y_t": [
+              2,
+              4
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 128,
+        "flops_scan": 256,
+        "params": 56,
+        "state_floats": 32
+      }
+    }
+  ]
+}

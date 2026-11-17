@@ -1,8 +1,11 @@
 # SPDX-License-Identifier: MIT
 # Part of https://ai.tamnd.com/structured-state-space-model/ (ai://MDN3YW).
-"""Tests of the NumPy reference: the two modes agree, the discretizations, the kernel, causality and the worked example."""
+"""Tests of the NumPy reference: the two modes agree, the discretizations, the kernel, causality, the worked example
+and the shape contract."""
 
+import json
 import math
+import pathlib
 
 import numpy as np
 import pytest
@@ -16,6 +19,7 @@ from ssm import (
     discretize,
     discretize_dense,
     expm,
+    flops,
     forward_conv,
     forward_scan,
     hippo_legs,
@@ -23,6 +27,7 @@ from ssm import (
     init_state,
     kernel,
     kernel_dense,
+    param_count,
     s4d_lin,
     scan_dense,
     selective_scan,
@@ -30,6 +35,9 @@ from ssm import (
 )
 
 METHODS = ["zoh", "bilinear"]
+HERE = pathlib.Path(__file__).resolve().parent
+FIXTURES = next(d for d in (HERE / "fixtures", HERE.parents[1] / "fixtures") if d.is_dir())
+SHAPES = json.loads((FIXTURES / "shapes.json").read_text())["configs"]
 
 
 def layer(seed, method, h=3, n=4):
@@ -270,3 +278,38 @@ def test_selective_gate_form():
         h = (1 - g[k]) * h + g[k] * x[k]
         ref.append(h)
     assert np.allclose(y, ref)
+
+
+# The shape contract of shapes.yaml.
+
+
+def real_size(v):
+    return v.size * (2 if np.iscomplexobj(v) else 1)
+
+
+@pytest.mark.parametrize("c", SHAPES, ids=[c["name"] for c in SHAPES])
+def test_shape_contract(c):
+    k, blocks = c["config"], c["blocks"]
+    cfg = config(h=k["h"], n=k["n"])
+    params = init(np.random.default_rng(0), cfg)
+    u = np.random.default_rng(1).standard_normal((k["B"], k["L"], k["H"]))
+    assert list(params["log_dt"].shape) == blocks["kernel"]["inputs"]["log_dt"]
+    kern = kernel(params, k["L"], cfg)
+    assert list(kern.shape) == blocks["kernel"]["outputs"]["k"]
+    y_conv = causal_conv(u, kern)
+    assert list(y_conv.shape) == blocks["conv"]["outputs"]["y_conv"]
+    assert list(forward_conv(params, u, cfg).shape) == blocks["skip"]["outputs"]["y"]
+    x, y_t = step(params, init_state(cfg, k["B"]), u[:, 0, :], cfg)
+    assert list(x.shape) == blocks["step"]["outputs"]["x_next"] and list(y_t.shape) == blocks["step"]["outputs"]["y_t"]
+    assert real_size(x) == c["model"]["state_floats"]
+    assert param_count(cfg) == c["model"]["params"] == sum(real_size(v) for v in params.values())
+    assert real_size(params["d"]) == blocks["skip"]["params"]
+    assert flops(cfg, k["B"], k["L"]) == c["model"]["flops_forward"]
+
+
+def flop_case(c):
+    """The forward call of a config of shapes.json, for aik flopcount."""
+    k = c["config"]
+    cfg = config(h=k["h"], n=k["n"])
+    rng = np.random.default_rng(0)
+    return forward_conv, (init(rng, cfg), rng.standard_normal((k["B"], k["L"], k["H"])), cfg)
