@@ -43,6 +43,20 @@
   facts: the rating of each model in each arena, with its 95% interval, its number of battles, its rank, the developer and the date the leaderboard was published
   credit: LMArena leaderboard data (CC BY 4.0), https://huggingface.co/datasets/lmarena-ai/leaderboard-dataset
   note: 'A rating is the preference of the voters of one arena over one period, comparable only inside one snapshot of one arena (10.10). The dataset''s notes list the changes of method: Bradley-Terry in place of Elo from 2024-01-09, style control by default from 2025-05-16, re-weighting by frequency from 2025-07-23. The Agent Arena configs give an IPS score, not a rating, and are not read. ARC Prize is not a source: the terms of arcprize.org forbid access by a bot or a script and the aggregation of its content (read 2026-11-14), so its results come from Epoch AI''s Benchmarking Hub.'
+- id: federal-register
+  name: Federal Register
+  url: https://www.federalregister.gov/
+  owner: the Office of the Federal Register, US National Archives
+  licence: public domain (a work of the US federal government)
+  checked: "2026-11-14"
+  class: A
+  access: 'the documents API (federalregister.gov/api/v1/documents.json) with no key: the documents with the phrase "artificial intelligence", 1,000 a page, of which those with an AI title are rows; robots.txt closes only the search pages of the site'
+  rate: 1 request per 1 s
+  schedule: daily
+  standing: primary
+  facts: document numbers, titles, types, executive order numbers, citations, agencies and the dates of publication, signing and effect; never the abstracts
+  credit: Federal Register, https://www.federalregister.gov
+  note: The Federal Register covers the US federal government from 1994; the states and other countries come from their own gazettes (S-L1).
 - id: eur-lex
   name: EUR-Lex, through the Cellar of the Publications Office
   url: https://eur-lex.europa.eu/

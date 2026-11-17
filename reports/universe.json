@@ -1,18 +1,18 @@
 {
   "date": "2026-11-17",
-  "rows": 18948,
-  "items": 18948,
-  "new": 235,
+  "rows": 19123,
+  "items": 19123,
+  "new": 175,
   "updated": 0,
-  "unchanged": 18713,
+  "unchanged": 18948,
   "by_outcome": {
     "card": 3892,
-    "pending": 15056
+    "pending": 15231
   },
   "by_kind": {
     "hardware": 183,
     "model": 3709,
-    "policy": 235,
+    "policy": 410,
     "result": 7123,
     "work": 7698
   },
@@ -21,9 +21,10 @@
     "epoch-ai": 3892,
     "epoch-benchmarks": 5546,
     "eur-lex": 235,
+    "federal-register": 175,
     "lmarena": 1577
   },
-  "conflicts": 8,
+  "conflicts": 62,
   "sample": [
     {
       "key": "name=model=commandr",
@@ -71,6 +72,330 @@
       "key": "name=model=swe16",
       "a": "u:epoch:SWE 1.6",
       "b": "u:epoch:SWE-1.6",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=artificialintelligencestandards",
+      "a": "u:federal_register:2019-08818",
+      "b": "u:federal_register:2019-11550",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=requestforcommentsonpatentingartificialintelligenceinventions",
+      "a": "u:federal_register:2019-18443",
+      "b": "u:federal_register:2019-21190",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=requestforcommentsonintellectualpropertyprotectionforartificialintelligenceinnovation",
+      "a": "u:federal_register:2019-23638",
+      "b": "u:federal_register:2019-26104",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=solicitationofwrittencommentsbythenationalsecuritycommissiononartificialintelligence",
+      "a": "u:federal_register:2020-11453",
+      "b": "u:federal_register:2020-20922",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalsecuritycommissiononartificialintelligencenoticeoffederaladvisorycommitteemeeting",
+      "a": "u:federal_register:2020-14587",
+      "b": "u:federal_register:2020-21021",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalsecuritycommissiononartificialintelligencenoticeoffederaladvisorycommitteemeeting",
+      "a": "u:federal_register:2020-14587",
+      "b": "u:federal_register:2020-26365",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalsecuritycommissiononartificialintelligencenoticeoffederaladvisorycommitteemeeting",
+      "a": "u:federal_register:2020-14587",
+      "b": "u:federal_register:2021-00126",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalsecuritycommissiononartificialintelligencenoticeoffederaladvisorycommitteemeeting",
+      "a": "u:federal_register:2020-14587",
+      "b": "u:federal_register:2021-02196",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalsecuritycommissiononartificialintelligencenoticeoffederaladvisorycommitteemeeting",
+      "a": "u:federal_register:2020-14587",
+      "b": "u:federal_register:2021-02983",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=requestforinformationandcommentonfinancialinstitutionsuseofartificialintelligenceincludingmachinelearning",
+      "a": "u:federal_register:2021-06607",
+      "b": "u:federal_register:2021-10861",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceresearchresourcetaskforcenoticeofmeeting",
+      "a": "u:federal_register:2021-13332",
+      "b": "u:federal_register:2021-16566",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceresearchresourcetaskforcenoticeofmeeting",
+      "a": "u:federal_register:2021-13332",
+      "b": "u:federal_register:2021-16980",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceresearchresourcetaskforcenoticeofmeeting",
+      "a": "u:federal_register:2021-13332",
+      "b": "u:federal_register:2021-16981",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=requestforinformationrfionanimplementationplanforanationalartificialintelligenceresearchresource",
+      "a": "u:federal_register:2021-15660",
+      "b": "u:federal_register:2021-17737",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=artificialintelligenceriskmanagementframework",
+      "a": "u:federal_register:2021-16176",
+      "b": "u:federal_register:2021-18108",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceresearchresourcetaskforcenoticeofmeeting",
+      "a": "u:federal_register:2021-13332",
+      "b": "u:federal_register:2021-25779",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceresearchresourcetaskforcenoticeofmeeting",
+      "a": "u:federal_register:2021-13332",
+      "b": "u:federal_register:2022-04101",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceresearchresourcetaskforcenoticeofmeeting",
+      "a": "u:federal_register:2021-13332",
+      "b": "u:federal_register:2022-05879",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceresearchresourcetaskforcenoticeofmeeting",
+      "a": "u:federal_register:2021-13332",
+      "b": "u:federal_register:2022-12851",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceresearchresourcetaskforcenoticeofmeeting",
+      "a": "u:federal_register:2021-13332",
+      "b": "u:federal_register:2022-17227",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceresearchresourcetaskforcenoticeofmeeting",
+      "a": "u:federal_register:2021-13332",
+      "b": "u:federal_register:2022-20478",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceadvisorycommittee",
+      "a": "u:federal_register:2022-08319",
+      "b": "u:federal_register:2022-20801",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceresearchresourcetaskforcenoticeofmeeting",
+      "a": "u:federal_register:2021-13332",
+      "b": "u:federal_register:2022-23733",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceresearchresourcetaskforcenoticeofmeeting",
+      "a": "u:federal_register:2021-13332",
+      "b": "u:federal_register:2022-27401",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceadvisorycommittee",
+      "a": "u:federal_register:2022-08319",
+      "b": "u:federal_register:2023-00026",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceadvisorycommittee",
+      "a": "u:federal_register:2022-08319",
+      "b": "u:federal_register:2023-06271",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceadvisorycommittee",
+      "a": "u:federal_register:2022-08319",
+      "b": "u:federal_register:2023-12164",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceadvisorycommittee",
+      "a": "u:federal_register:2022-08319",
+      "b": "u:federal_register:2023-14025",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceadvisorycommittee",
+      "a": "u:federal_register:2022-08319",
+      "b": "u:federal_register:2023-14965",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceadvisorycommittee",
+      "a": "u:federal_register:2022-08319",
+      "b": "u:federal_register:2023-18542",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceadvisorycommittee",
+      "a": "u:federal_register:2022-08319",
+      "b": "u:federal_register:2023-19640",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceadvisorycommitteelawenforcementsubcommittee",
+      "a": "u:federal_register:2023-18541",
+      "b": "u:federal_register:2023-19656",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=artificialintelligenceandcopyright",
+      "a": "u:federal_register:2023-18624",
+      "b": "u:federal_register:2023-20480",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceadvisorycommittee",
+      "a": "u:federal_register:2022-08319",
+      "b": "u:federal_register:2023-21808",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceadvisorycommittee",
+      "a": "u:federal_register:2022-08319",
+      "b": "u:federal_register:2023-24045",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=artificialintelligenceandcopyright",
+      "a": "u:federal_register:2023-18624",
+      "b": "u:federal_register:2023-25128",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceadvisorycommittee",
+      "a": "u:federal_register:2022-08319",
+      "b": "u:federal_register:2023-25954",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceadvisorycommitteelawenforcementsubcommittee",
+      "a": "u:federal_register:2023-18541",
+      "b": "u:federal_register:2024-00116",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceadvisorycommittee",
+      "a": "u:federal_register:2022-08319",
+      "b": "u:federal_register:2024-02086",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceadvisorycommittee",
+      "a": "u:federal_register:2022-08319",
+      "b": "u:federal_register:2024-03481",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceadvisorycommitteelawenforcementsubcommittee",
+      "a": "u:federal_register:2023-18541",
+      "b": "u:federal_register:2024-06168",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceadvisorycommittee",
+      "a": "u:federal_register:2022-08319",
+      "b": "u:federal_register:2024-06173",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceadvisorycommittee",
+      "a": "u:federal_register:2022-08319",
+      "b": "u:federal_register:2024-07924",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=inventorshipguidanceforaiassistedinventions",
+      "a": "u:federal_register:2024-02623",
+      "b": "u:federal_register:2024-12429",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceadvisorycommittee",
+      "a": "u:federal_register:2022-08319",
+      "b": "u:federal_register:2024-13783",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceadvisorycommittee",
+      "a": "u:federal_register:2022-08319",
+      "b": "u:federal_register:2024-14430",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceadvisorycommittee",
+      "a": "u:federal_register:2022-08319",
+      "b": "u:federal_register:2024-15528",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceadvisorycommittee",
+      "a": "u:federal_register:2022-08319",
+      "b": "u:federal_register:2024-18596",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=2024guidanceupdateonpatentsubjectmattereligibilityincludingonartificialintelligence",
+      "a": "u:federal_register:2024-15377",
+      "b": "u:federal_register:2024-21085",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceadvisorycommittee",
+      "a": "u:federal_register:2022-08319",
+      "b": "u:federal_register:2024-21635",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=artificialintelligenceincampaignads",
+      "a": "u:federal_register:2023-17547",
+      "b": "u:federal_register:2024-21979",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceadvisorycommittee",
+      "a": "u:federal_register:2022-08319",
+      "b": "u:federal_register:2024-25571",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceadvisorycommittee",
+      "a": "u:federal_register:2022-08319",
+      "b": "u:federal_register:2024-27461",
+      "why": "both are rows of the register"
+    },
+    {
+      "key": "name=policy=nationalartificialintelligenceadvisorycommittee",
+      "a": "u:federal_register:2022-08319",
+      "b": "u:federal_register:2024-30263",
       "why": "both are rows of the register"
     }
   ]
