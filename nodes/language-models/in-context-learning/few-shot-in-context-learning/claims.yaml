@@ -1,0 +1,512 @@
+# The term and the settings: Brown et al. (2020)
+
+- id: c-brown-term
+  type: definitional
+  text: "Brown et al. (2020) use the term in-context learning for using the text input of a pretrained language model as a form of task specification: the model is conditioned on a natural language instruction and/or a few demonstrations of the task and is then expected to complete further instances of the task simply by predicting what comes next."
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "p. 4", stance: for}
+
+- id: c-brown-inner-loop
+  type: definitional
+  text: "Brown et al. use meta-learning for the inner-loop and outer-loop structure of the general method and in-context learning for the inner loop, and call it zero-shot, one-shot or few-shot depending on how many demonstrations are provided at inference time."
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "p. 4", stance: for}
+
+- id: c-brown-agnostic
+  type: attributive
+  text: "Brown et al. intend these terms to remain agnostic on whether the model learns new tasks from scratch at inference time or simply recognizes patterns seen during training."
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "p. 4", stance: for}
+
+- id: c-brown-few-shot
+  type: definitional
+  text: "In the few-shot setting of Brown et al. the model is given a few demonstrations of the task at inference time as conditioning, but no weight updates are allowed: K examples of context and completion, then one final example of context, with the model expected to provide the completion."
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "p. 6", stance: for}
+
+- id: c-brown-k
+  type: empirical
+  text: "For GPT-3, Brown et al. typically set K in the range of 10 to 100, as this is how many examples can fit in the model's context window of 2048 tokens."
+  scope:
+    models: "GPT-3"
+    data: ["the tasks of Brown et al."]
+    scale: "a context window of nctx = 2048 tokens"
+    setting: "few-shot prompting, no weight updates"
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "p. 6", stance: for}
+
+- id: c-brown-one-shot
+  type: definitional
+  text: "One-shot is the same as few-shot except that only one demonstration is allowed, in addition to a natural language description of the task."
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "p. 6", stance: for}
+
+- id: c-brown-zero-shot
+  type: definitional
+  text: "Zero-shot is the same as one-shot except that no demonstrations are allowed, and the model is only given a natural language instruction describing the task."
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "p. 7", stance: for}
+
+- id: c-brown-forward-passes
+  type: attributive
+  text: "Brown et al. contrast fine-tuning, which updates the weights of a pretrained model on a supervised dataset specific to the task, with zero-, one- and few-shot, which require the model to perform the task with only forward passes at test time."
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "p. 6", stance: for}
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "p. 7", stance: for}
+
+- id: c-brown-no-gradient
+  type: attributive
+  text: "Brown et al. stress that their in-context learning curves involve no gradient updates or fine-tuning, just increasing numbers of demonstrations given as conditioning."
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "p. 5", stance: for}
+
+- id: c-brown-scale
+  type: empirical
+  text: "Aggregated over 42 accuracy-denominated benchmarks, zero-shot performance improves steadily with model size while few-shot performance increases more rapidly."
+  scope:
+    models: "the GPT-3 family, from 125 million to 175 billion parameters"
+    data: ["42 accuracy-denominated benchmarks"]
+    scale: "125M to 175B parameters"
+    setting: "zero-, one- and few-shot prompting"
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "p. 5", stance: for}
+
+- id: c-brown-gap
+  type: empirical
+  text: "For most tasks Brown et al. find relatively smooth scaling with model capacity in all three settings, and the gap between zero-, one- and few-shot performance often grows with model capacity."
+  scope:
+    models: "the GPT-3 family, from 125 million to 175 billion parameters"
+    data: ["the tasks of Brown et al."]
+    scale: "125M to 175B parameters"
+    setting: "zero-, one- and few-shot prompting"
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "p. 6", stance: for}
+
+- id: c-brown-triviaqa
+  type: empirical
+  text: "GPT-3 reaches 64.3% accuracy on TriviaQA zero-shot, 68.0% one-shot and 71.2% few-shot."
+  scope:
+    models: "GPT-3 175B"
+    data: ["TriviaQA"]
+    scale: "175B parameters"
+    setting: "closed-book question answering, zero-, one- and few-shot"
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "p. 5", stance: for}
+
+- id: c-brown-struggles
+  type: empirical
+  text: "Few-shot performance of GPT-3 struggles on natural language inference tasks like ANLI and on some reading comprehension datasets like RACE or QuAC."
+  scope:
+    models: "GPT-3 175B"
+    data: ["ANLI", "RACE", "QuAC"]
+    scale: "175B parameters"
+    setting: "few-shot prompting"
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "p. 5", stance: for}
+
+- id: c-brown-from-scratch
+  type: attributive
+  text: "Brown et al. list as a limitation the ambiguity about whether few-shot learning actually learns new tasks from scratch at inference time, or simply recognizes and identifies tasks learned during training."
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "p. 34", stance: for}
+
+- id: c-brown-de-novo
+  type: attributive
+  text: "Brown et al. suggest that synthetic tasks such as wordscrambling or defining nonsense words seem especially likely to be learned de novo, whereas translation clearly must be learned during pretraining."
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "p. 34", stance: for}
+
+# Function classes: Garg et al. (2022)
+
+- id: c-garg-no-updates
+  type: definitional
+  text: "Garg et al. (2022) describe in-context learning as the ability of a model to condition on a prompt of in-context examples and a new query input and generate the corresponding output, at inference time and without any parameter updates to the model."
+  evidence:
+    - {work: "garg-2022-what-can-transformers-learn-in-context", role: original, locator: "p. 1", stance: for}
+
+- id: c-garg-definition
+  type: definitional
+  text: "Garg et al. say that a model M can in-context learn a function class F up to epsilon, with respect to distributions D_F over functions and D_X over inputs, if on prompts (x_1, f(x_1), ..., x_k, f(x_k), x_query) with inputs drawn i.i.d. from D_X and f drawn from D_F its average error E_P l(M(P), f(x_query)) is at most epsilon."
+  evidence:
+    - {work: "garg-2022-what-can-transformers-learn-in-context", role: original, locator: "equation 1", stance: for}
+
+- id: c-garg-property
+  type: attributive
+  text: "In this definition, being able to in-context learn a function class is a property of the model alone, independent of how it was trained, and training such a model can be viewed as meta-learning."
+  evidence:
+    - {work: "garg-2022-what-can-transformers-learn-in-context", role: original, locator: "p. 2", stance: for}
+
+- id: c-garg-objective
+  type: definitional
+  text: "Garg et al. train a model M_theta to minimize the expected loss over all prompt prefixes, the average over i = 0 to k of the loss of M_theta(P^i) against f(x_{i+1}), where P^i holds the first i examples and the next input."
+  evidence:
+    - {work: "garg-2022-what-can-transformers-learn-in-context", role: original, locator: "equation 2", stance: for}
+
+- id: c-garg-model
+  type: empirical
+  text: "Garg et al. train from scratch a decoder-only GPT-2 family Transformer with 12 layers, 8 attention heads and a 256-dimensional embedding (9.5M parameters), with squared error, a batch size of 64 and 500k steps."
+  scope:
+    models: "GPT-2 architecture, 9.5M parameters"
+    data: ["synthetic prompts from the function class"]
+    scale: "500k steps of batch 64"
+    setting: "training from scratch, not fine-tuning, no text"
+  evidence:
+    - {work: "garg-2022-what-can-transformers-learn-in-context", role: original, locator: "p. 4", stance: for}
+
+- id: c-garg-linear-setup
+  type: empirical
+  text: "For linear functions Garg et al. take d = 20 and sample x_1, ..., x_k, x_query and w independently from N(0, I_d), and use as a baseline the least squares estimator, the minimum-norm linear fit to the in-context examples, which they call the optimal estimator for this problem."
+  scope:
+    models: "least squares, nearest neighbours and averaging baselines"
+    data: ["noiseless linear functions"]
+    scale: "d = 20"
+    setting: "isotropic Gaussian inputs and weights"
+  evidence:
+    - {work: "garg-2022-what-can-transformers-learn-in-context", role: original, locator: "p. 4", stance: for}
+
+- id: c-garg-averaging
+  type: definitional
+  text: "One baseline of Garg et al. averages the values y_i x_i to estimate w and computes the inner product of this estimate with x_query."
+  evidence:
+    - {work: "garg-2022-what-can-transformers-learn-in-context", role: original, locator: "p. 4", stance: for}
+
+- id: c-garg-result
+  type: empirical
+  text: "The trained Transformer performs comparably to least squares for every number of in-context examples: when the number of examples reaches d = 20, least squares achieves 0 error while the Transformer achieves an error of 0.02, improving to 0.0006 at 2d examples."
+  scope:
+    models: "the 9.5M-parameter Transformer of Garg et al."
+    data: ["noiseless linear functions, 1280 prompts"]
+    scale: "d = 20"
+    setting: "normalized squared error (M(P) - w^T x_query)^2 / d"
+  evidence:
+    - {work: "garg-2022-what-can-transformers-learn-in-context", role: original, locator: "figure 2", stance: for}
+
+- id: c-garg-memorization
+  type: empirical
+  text: "The model sees 32 million random weight vectors during training, and even the best of them would give an expected error of around 0.2, while the model achieves an error below 0.001 with 2d in-context examples, so memorization of weight vectors cannot explain its performance."
+  scope:
+    models: "the 9.5M-parameter Transformer of Garg et al."
+    data: ["noiseless linear functions"]
+    scale: "d = 20"
+    setting: "in-distribution prompts"
+  evidence:
+    - {work: "garg-2022-what-can-transformers-learn-in-context", role: original, locator: "p. 5", stance: for}
+
+- id: c-garg-projection
+  type: attributive
+  text: "Garg et al. note that with fewer in-context examples than dimensions the ground truth cannot be recovered, and the ideal model should approximate the projection of w onto the subspace spanned by x_1, ..., x_k."
+  evidence:
+    - {work: "garg-2022-what-can-transformers-learn-in-context", role: original, locator: "p. 5", stance: for}
+
+- id: c-garg-noisy
+  type: empirical
+  text: "With N(0, 1) noise added to each prompt output, the trained model closely tracks least squares when the number of in-context examples is not close to 20, and also exhibits the double descent error curve; Garg et al. note that the optimal estimator here is least squares with appropriate l2-regularization, which a model trained on noiseless data cannot be expected to learn."
+  scope:
+    models: "the Transformer of Garg et al., trained on noiseless prompts"
+    data: ["noisy linear functions"]
+    scale: "d = 20"
+    setting: "distribution shift from training to inference"
+  evidence:
+    - {work: "garg-2022-what-can-transformers-learn-in-context", role: original, locator: "p. 8", stance: for}
+
+- id: c-garg-orthant
+  type: empirical
+  text: "When all in-context inputs lie in one orthant and the query lies in another, the model closely matches least squares, with errors 0.062 and 0.004 for 20 and 40 in-context examples, against 0.02 and 0.0006 on standard prompts."
+  scope:
+    models: "the Transformer of Garg et al."
+    data: ["linear functions with same-orthant in-context inputs"]
+    scale: "d = 20"
+    setting: "mismatch between in-context and query inputs"
+  evidence:
+    - {work: "garg-2022-what-can-transformers-learn-in-context", role: original, locator: "p. 8", stance: for}
+
+- id: c-garg-input-scale
+  type: empirical
+  text: "The model is relatively robust to scaling the weight vector but less to scaling the prompt inputs: with 40 in-context examples, scaling the inputs by 3 gives an error of 0.58."
+  scope:
+    models: "the Transformer of Garg et al."
+    data: ["linear functions with scaled inputs or weights"]
+    scale: "d = 20, 40 in-context examples"
+    setting: "distribution shift in scale"
+  evidence:
+    - {work: "garg-2022-what-can-transformers-learn-in-context", role: original, locator: "p. 8", stance: for}
+
+- id: c-garg-sparse
+  type: empirical
+  text: "On 3-sparse linear functions in 20 dimensions the trained model achieves errors 0.58 and 0.09 while Lasso achieves 0.62 and 0.08 for k = 5 and 10."
+  scope:
+    models: "a Transformer trained on sparse linear functions"
+    data: ["sparse linear functions, s = 3"]
+    scale: "d = 20"
+    setting: "in-distribution prompts"
+  evidence:
+    - {work: "garg-2022-what-can-transformers-learn-in-context", role: original, locator: "p. 9", stance: for}
+
+- id: c-garg-trees
+  type: empirical
+  text: "On depth 4 decision trees with k = 100 in-context examples, the Transformer achieves an error of 0.12 whereas greedy learning achieves 0.80 and XGBoost 0.62."
+  scope:
+    models: "a Transformer trained on random decision trees"
+    data: ["depth 4 decision trees on N(0, I_20) inputs"]
+    scale: "d = 20, 100 in-context examples"
+    setting: "in-distribution prompts"
+  evidence:
+    - {work: "garg-2022-what-can-transformers-learn-in-context", role: original, locator: "p. 10", stance: for}
+
+- id: c-garg-capacity
+  type: empirical
+  text: "When training and inference prompts come from the same distribution, the error decreases as the model capacity increases or the problem dimension decreases."
+  scope:
+    models: "Transformers of several sizes"
+    data: ["linear functions"]
+    scale: "d from 10 to 50, 2d in-context examples"
+    setting: "in-distribution prompts"
+  evidence:
+    - {work: "garg-2022-what-can-transformers-learn-in-context", role: original, locator: "p. 10", stance: for}
+
+- id: c-garg-curriculum
+  type: empirical
+  text: "For dimension 50 the loss barely decreases through the 500k training steps without curriculum but reaches close to the optimum with curriculum."
+  scope:
+    models: "the Transformer of Garg et al."
+    data: ["linear functions"]
+    scale: "d = 50, 500k steps"
+    setting: "training with and without a curriculum"
+  evidence:
+    - {work: "garg-2022-what-can-transformers-learn-in-context", role: original, locator: "p. 11", stance: for}
+
+# Gradient descent in the forward pass: von Oswald et al. (2023)
+
+- id: c-oswald-gd-step
+  type: definitional
+  text: "One step of gradient descent with learning rate eta on L(W) = (1/2N) sum_i ||W x_i - y_i||^2 yields the weight change Delta W = -(eta / N) sum_i (W x_i - y_i) x_i^T."
+  evidence:
+    - {work: "von-oswald-2023-transformers-learn-in-context-by-gradient", role: original, locator: "equation 3", stance: for}
+
+- id: c-oswald-data-view
+  type: attributive
+  text: "Von Oswald et al. (2023) note that the loss after the step equals the original loss on the transformed targets y_i - Delta y_i with Delta y_i = Delta W x_i, so the outcome of a gradient descent step can be viewed as an update of the data and not of the weights."
+  evidence:
+    - {work: "von-oswald-2023-transformers-learn-in-context-by-gradient", role: original, locator: "equation 4", stance: for}
+
+- id: c-oswald-prop1
+  type: attributive
+  text: "Proposition 1 of von Oswald et al. states that, given a 1-head linear attention layer and the tokens e_j = (x_j, y_j), one can construct key, query, value and projection matrices such that a Transformer step on every token is identical to the gradient-induced dynamics e_j <- (x_j, y_j - Delta W x_j), and the same holds for the test data token."
+  evidence:
+    - {work: "von-oswald-2023-transformers-learn-in-context-by-gradient", role: original, locator: "p. 4", stance: for}
+
+- id: c-oswald-weights
+  type: attributive
+  text: "Von Oswald et al. give the weight matrices in block form: W_K = W_Q with the identity matrix I_x in the top-left block and 0 in the others, W_V with the weight matrix W_0 of the linear model and -I_y in its bottom blocks, and the projection matrix P = η / N I."
+  evidence:
+    - {work: "von-oswald-2023-transformers-learn-in-context-by-gradient", role: original, locator: "p. 13", stance: for}
+
+- id: c-oswald-unique
+  type: attributive
+  text: "The construction is not unique: only the products P W_V and W_K W_Q need to match it, and since no nonlinearity is present, rescaling them to P W_V s and W_K W_Q / s leads to an equivalent result."
+  evidence:
+    - {work: "von-oswald-2023-transformers-learn-in-context-by-gradient", role: original, locator: "p. 4", stance: for}
+
+- id: c-oswald-context-only
+  type: attributive
+  text: "In the construction only the in-context tokens e_1, ..., e_N are used for computing the key and value matrices and the query token is excluded, a minor deviation from full self-attention that can be dropped when the initial weights W_0 are close to zero."
+  evidence:
+    - {work: "von-oswald-2023-transformers-learn-in-context-by-gradient", role: original, locator: "p. 4", stance: for}
+
+- id: c-oswald-setup
+  type: empirical
+  text: "Von Oswald et al. generate each task with a teacher W_tau drawn from N(0, I), inputs x drawn from U(-1, 1) and targets y = W_tau x, with N = n_I = 10 and n_O = 1 in most experiments."
+  scope:
+    models: "linear self-attention layers"
+    data: ["noiseless linear regression tasks"]
+    scale: "N = n_I = 10, n_O = 1"
+    setting: "loss on the query token only"
+  evidence:
+    - {work: "von-oswald-2023-transformers-learn-in-context-by-gradient", role: original, locator: "p. 5", stance: for}
+
+- id: c-oswald-match
+  type: empirical
+  text: "A trained single linear self-attention layer performs identically to one step of gradient descent, and a simple scaling correction of the trained weights recovers the weight construction, so the trained layer, gradient descent and their interpolation reach identical loss."
+  scope:
+    models: "a single linear self-attention layer"
+    data: ["linear regression tasks"]
+    scale: "N = n_I = 10, 5 seeds"
+    setting: "in- and out-of-distribution validation tasks"
+  evidence:
+    - {work: "von-oswald-2023-transformers-learn-in-context-by-gradient", role: original, locator: "figure 2", stance: for}
+    - {work: "von-oswald-2023-transformers-learn-in-context-by-gradient", role: original, locator: "p. 5", stance: for}
+
+- id: c-oswald-deep
+  type: empirical
+  text: "Trained Transformers with K linear self-attention layers generally outperform K steps of plain gradient descent, and their behavior is well described by a variant, GD++, that also transforms the inputs by H(X) = I - gamma X X^T."
+  scope:
+    models: "deep linear self-attention-only Transformers"
+    data: ["linear regression tasks"]
+    scale: "K layers against K gradient steps"
+    setting: "in-context regression"
+  evidence:
+    - {work: "von-oswald-2023-transformers-learn-in-context-by-gradient", role: original, locator: "p. 5", stance: for}
+
+- id: c-oswald-hypothesis
+  type: attributive
+  text: "Von Oswald et al. put forward the hypothesis, similar to Garg et al. and Akyurek et al., that in-context learning in Transformers is driven by gradient descent."
+  evidence:
+    - {work: "von-oswald-2023-transformers-learn-in-context-by-gradient", role: original, locator: "p. 8", stance: for}
+
+# The role of the demonstrations: Min et al. (2022)
+
+- id: c-min-setup
+  type: empirical
+  text: "Min et al. (2022) experiment with 12 models in total: 6 decoder-only language models, each with a direct and a channel inference method, whose sizes vary from 774M to 175B."
+  scope:
+    models: "GPT-2 Large, MetaICL, GPT-J, fairseq 6.7B and 13B, GPT-3"
+    data: ["classification and multi-choice datasets"]
+    scale: "774M to 175B parameters"
+    setting: "in-context learning, direct and channel"
+  evidence:
+    - {work: "min-2022-rethinking-the-role-of-demonstrations", role: original, locator: "p. 2", stance: for}
+
+- id: c-min-data
+  type: empirical
+  text: "Min et al. evaluate on 26 classification and multi-choice datasets and use k = 16 examples as demonstrations by default, sampled at uniform from the training data."
+  scope:
+    models: "the 12 models of Min et al."
+    data: ["26 classification and multi-choice datasets"]
+    scale: "k = 16 demonstrations"
+    setting: "in-context learning"
+  evidence:
+    - {work: "min-2022-rethinking-the-role-of-demonstrations", role: original, locator: "p. 3", stance: for}
+
+- id: c-min-random
+  type: empirical
+  text: "Demonstrations with gold labels significantly improve over no demonstrations, while replacing gold labels with random labels only marginally hurts performance: models see drops in the range of 0 to 5% absolute, 1.7% on average in multi-choice and 2.6% in classification."
+  scope:
+    models: "the 12 models of Min et al., including GPT-3"
+    data: ["classification and multi-choice datasets"]
+    scale: "774M to 175B parameters, k = 16"
+    setting: "random labels sampled uniformly from the label set"
+  evidence:
+    - {work: "min-2022-rethinking-the-role-of-demonstrations", role: original, locator: "p. 4", stance: for}
+
+- id: c-min-incorrect
+  type: empirical
+  text: "Always using incorrect labels significantly outperforms no demonstrations, preserving 92%, 100% and 97% of the improvement from demonstrations with MetaICL in classification, MetaICL in multi-choice and GPT-J in multi-choice."
+  scope:
+    models: "MetaICL, GPT-J"
+    data: ["5 classification and 4 multi-choice datasets"]
+    scale: "774M and 6B parameters"
+    setting: "demonstrations with 0% correct labels"
+  evidence:
+    - {work: "min-2022-rethinking-the-role-of-demonstrations", role: original, locator: "p. 5", stance: for}
+
+- id: c-min-k
+  type: empirical
+  text: "The drop from gold to random labels stays small across k, in the range of 0.8 to 1.6%, and performance does not increase much as k increases when k is 8 or more."
+  scope:
+    models: "Channel MetaICL, Direct GPT-J"
+    data: ["5 classification and 4 multi-choice datasets"]
+    scale: "k from 4 to 32"
+    setting: "gold against random labels"
+  evidence:
+    - {work: "min-2022-rethinking-the-role-of-demonstrations", role: original, locator: "p. 5", stance: for}
+
+- id: c-min-aspects
+  type: definitional
+  text: "Min et al. separate four aspects of the demonstrations: the input-label mapping, the distribution of the input text, the label space, and the format, that is, the use of input-label pairing."
+  evidence:
+    - {work: "min-2022-rethinking-the-role-of-demonstrations", role: original, locator: "p. 5", stance: for}
+
+- id: c-min-ood
+  type: empirical
+  text: "Replacing the demonstration inputs with out-of-distribution sentences from an external corpus drops performance by 3 to 16% absolute for Channel MetaICL, Direct GPT-J and Channel GPT-J."
+  scope:
+    models: "Channel MetaICL, Direct GPT-J, Channel GPT-J"
+    data: ["5 classification and 4 multi-choice datasets"]
+    scale: "774M and 6B parameters"
+    setting: "demonstrations with out-of-distribution inputs"
+  evidence:
+    - {work: "min-2022-rethinking-the-role-of-demonstrations", role: original, locator: "p. 6", stance: for}
+
+- id: c-min-format
+  type: empirical
+  text: "Removing the format is close to or worse than no demonstrations, while keeping it retains much of the gain: with Direct MetaICL, random corpus sentences paired with the label set retain 95% and 82% of the improvement in classification and multi-choice."
+  scope:
+    models: "Direct MetaICL"
+    data: ["5 classification and 4 multi-choice datasets"]
+    scale: "774M parameters"
+    setting: "demonstrations with random inputs and the true label set"
+  evidence:
+    - {work: "min-2022-rethinking-the-role-of-demonstrations", role: original, locator: "p. 7", stance: for}
+
+- id: c-min-learn
+  type: attributive
+  text: "Min et al. argue that under a strict definition of learning, capturing the input-label correspondence given in the training data, language models do not learn new tasks at test time, but under a broader definition that includes adapting to the input and label distributions and the format, the model does learn the task from the demonstrations."
+  evidence:
+    - {work: "min-2022-rethinking-the-role-of-demonstrations", role: original, locator: "p. 8", stance: for}
+
+- id: c-min-limits
+  type: empirical
+  text: "The gap between gold and random labels depends on the dataset and model, reaching nearly 14% absolute on financial_phrasebank with GPT-J, and the experiments are limited to classification and multi-choice tasks."
+  scope:
+    models: "GPT-J"
+    data: ["financial_phrasebank"]
+    scale: "6B parameters"
+    setting: "gold against random labels"
+  evidence:
+    - {work: "min-2022-rethinking-the-role-of-demonstrations", role: original, locator: "p. 9", stance: for}
+
+# Derived on this page
+
+- id: c-lsa-step
+  type: mathematical
+  text: "With the weights of the construction, one linear self-attention layer whose keys and values come from the context tokens maps every token (x_j, y_j) to (x_j, y_j - Delta W x_j), where Delta W is one gradient step from W_0 on the in-context least-squares loss."
+  assumes: ["tokens e_j = (x_j, y_j) with x_j in R^{d_x} and y_j in R^{d_y}", "keys and values from the N context tokens only", "W_K = W_Q = [[I, 0], [0, 0]], W_V = [[0, 0], [W_0, -I]], P = (eta / N) I"]
+  derivation: lsa-gradient-step
+
+- id: c-lsa-readout
+  type: mathematical
+  text: "A query token (x_q, -W_0 x_q) is mapped to (x_q, -(W_0 + Delta W) x_q), so negating its output entry gives the prediction of the linear model after one gradient step."
+  assumes: ["the query token takes part as a query but not as a key or value"]
+  derivation: lsa-gradient-step
+
+- id: c-lsa-stack
+  type: mathematical
+  text: "Stacking K such layers with the same W_0 performs K steps of gradient descent: the output entries of the tokens after layer k are y_j - (W_k - W_0) x_j, where W_k is the k-th gradient descent iterate from W_0."
+  assumes: ["every layer uses the construction with the same W_0 and eta", "each layer takes its keys and values from the context tokens as updated by the previous layer"]
+  derivation: lsa-gradient-step
+
+- id: c-lsa-rescale
+  type: mathematical
+  text: "The layer output depends on its weights only through the products P W_V and W_K^T W_Q, so multiplying P W_V by s and dividing W_K^T W_Q by s, for any s not 0, leaves it unchanged."
+  assumes: ["a linear self-attention layer with no softmax and no bias"]
+  derivation: lsa-gradient-step
+
+- id: c-gd-averaging
+  type: mathematical
+  text: "One gradient step from W_0 = 0 with eta = 1 predicts (1/N) sum_i y_i x_i^T x_q, which is the averaging baseline of Garg et al."
+  assumes: ["W_0 = 0", "eta = 1"]
+  derivation: lsa-gradient-step
+
+- id: c-bayes-ridge
+  type: mathematical
+  text: "If w ~ N(0, tau^2 I_d) and y_i = w^T x_i + eps_i with independent eps_i ~ N(0, sigma^2), the prediction with least expected squared error given the in-context examples is the ridge regression prediction with lambda = sigma^2 / tau^2."
+  assumes: ["the inputs are fixed or independent of w and the noise", "sigma > 0, tau > 0", "squared-error loss on the query output"]
+  derivation: bayes-optimal-in-context-regression
+
+- id: c-bayes-noise-free
+  type: mathematical
+  text: "Without noise and with an isotropic prior, the posterior mean of w is the minimum-norm least-squares solution X^+ y, which is the projection of w onto the span of the in-context inputs, and it is the limit of the ridge solution as lambda tends to 0."
+  assumes: ["w ~ N(0, tau^2 I_d)", "y_i = w^T x_i exactly"]
+  derivation: bayes-optimal-in-context-regression
+
+- id: c-ls-curve
+  type: mathematical
+  text: "In the noiseless setting of Garg et al., with x_i, x_q and w independent N(0, I_d), the expected normalized squared error of minimum-norm least squares after k examples is (d - k)/d for k up to d and 0 for k of d or more."
+  assumes: ["x_1, ..., x_k, x_q and w independent N(0, I_d)", "error (prediction - w^T x_q)^2 / d"]
+  derivation: bayes-optimal-in-context-regression
+
+- id: c-garg-lambda
+  type: mathematical
+  text: "In the noisy setting of Garg et al., with w ~ N(0, I_d) and N(0, 1) noise, the Bayes-optimal ridge parameter is lambda = 1."
+  assumes: ["w ~ N(0, I_d)", "noise N(0, 1) independent of w and the inputs"]
+  derivation: bayes-optimal-in-context-regression

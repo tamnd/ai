@@ -1,0 +1,557 @@
+# The claims of the gradient clipping page (spec 07). The build computes the labels.
+
+- id: c-pascanu-abstract
+  type: attributive
+  text: "Pascanu et al. propose a gradient norm clipping strategy to deal with exploding gradients and a soft constraint for the vanishing gradients problem."
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "p. 1", stance: for}
+
+- id: c-standard-practice
+  type: attributive
+  text: "Even though gradient clipping is a standard practice in tasks such as language models, it lacks a firm theoretical grounding; earlier work discusses the gradient explosion problem in recurrent models and considers clipping as an intuitive work around."
+  evidence:
+    - {work: "zhang-2020-why-gradient-clipping-accelerates", role: original, locator: "p. 1", stance: for}
+
+- id: c-arbitrarily-faster
+  type: attributive
+  text: "Under a relaxed smoothness condition in which smoothness correlates with the gradient norm, gradient clipping and normalized gradient converge arbitrarily faster than gradient descent with fixed stepsize."
+  evidence:
+    - {work: "zhang-2020-why-gradient-clipping-accelerates", role: original, locator: "p. 1", stance: for}
+
+- id: c-exploding-def
+  type: definitional
+  text: "The exploding gradients problem refers to the large increase in the norm of the gradient during training, caused by the explosion of the long term components, which can grow exponentially more than short term ones."
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "p. 2", stance: for}
+
+- id: c-vanishing-def
+  type: definitional
+  text: "The vanishing gradients problem refers to the opposite behaviour, when long term components go exponentially fast to norm 0, making it impossible for the model to learn correlation between temporally distant events."
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "p. 2", stance: for}
+
+- id: c-algorithm
+  type: definitional
+  text: "Algorithm 1, pseudo-code for norm clipping the gradients whenever they explode, sets ĝ ← ∂E/∂θ and, if ‖ĝ‖ ≥ threshold, rescales ĝ ← threshold · ĝ/‖ĝ‖."
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "p. 6", stance: for}
+
+- id: c-brock-standard
+  type: definitional
+  text: "In standard gradient clipping, G → λ G/‖G‖ if ‖G‖ > λ and G otherwise, where the clipping threshold λ is a hyper-parameter which must be tuned."
+  evidence:
+    - {work: "brock-2021-image-recognition-without-normalization", role: original, locator: "p. 4", stance: for}
+
+- id: c-mikolov
+  type: attributive
+  text: "Mikolov's thesis clips the gradient's temporal components element-wise, clipping an entry when it exceeds in absolute value a fixed threshold."
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "p. 6", stance: for}
+
+- id: c-descent-direction
+  type: attributive
+  text: "Pascanu et al. diverge from Mikolov's proposal so as to always move in a descent direction with respect to the current mini-batch, though in practice both variants behave similarly."
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "p. 6", stance: for}
+
+- id: c-gpt3
+  type: attributive
+  text: "To train all versions of GPT-3, Brown et al. use Adam with beta1 = 0.9, beta2 = 0.95 and epsilon = 10^-8, and clip the global norm of the gradient at 1.0."
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "p. 43", stance: for}
+
+- id: c-agc-ratio
+  type: attributive
+  text: "The ratio of the norm of the gradients to the norm of the weights of a layer provides a simple measure of how much a single gradient descent step will change the original weights."
+  evidence:
+    - {work: "brock-2021-image-recognition-without-normalization", role: original, locator: "p. 4", stance: for}
+
+- id: c-agc
+  type: definitional
+  text: "Adaptive gradient clipping clips unit-wise, G_i to lambda times ||W_i||*/||G_i|| times G_i when ||G_i||/||W_i||* exceeds lambda, where ||W_i||* = max(||W_i||, epsilon) with default epsilon = 10^-3, which prevents zero-initialized parameters from always having their gradients clipped to zero."
+  evidence:
+    - {work: "brock-2021-image-recognition-without-normalization", role: original, locator: "p. 4", stance: for}
+
+- id: c-linear-condition
+  type: attributive
+  text: "For the linear case, it is sufficient for the largest eigenvalue of the recurrent weight matrix to be smaller than 1 for long term components to vanish, and necessary for it to be larger than 1 for gradients to explode."
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "p. 2", stance: for}
+
+- id: c-gamma
+  type: attributive
+  text: "For a nonlinearity whose derivative is bounded by gamma, the necessary condition for exploding gradients becomes lambda_1 > 1/gamma; for tanh gamma = 1 while for sigmoid gamma = 1/4."
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "p. 3", stance: for}
+
+- id: c-linear-derivatives
+  type: attributive
+  text: "For x_t = x_0 w^t, dx_t/dw = t x_0 w^(t-1) and d2x_t/dw2 = t(t-1) x_0 w^(t-2), implying that when the first derivative explodes, so does the second derivative."
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "p. 4", stance: for}
+
+- id: c-m-ratio
+  type: mathematical
+  text: "For x_t = x_0 w^t with x_0 != 0, w > 1 and t >= 2, the ratio of the second derivative in w to the first is (t - 1)/w, which grows linearly in t."
+  assumes: ["x_t = x_0 w^t with x_0 != 0", "w > 1", "t >= 2"]
+  derivation: "node.md#derivation"
+
+- id: c-wall
+  type: attributive
+  text: "Pascanu et al. hypothesize that when the gradients explode so does the curvature along v, leading to a wall in the error surface."
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "p. 5", stance: for}
+
+- id: c-jump
+  type: attributive
+  text: "If the gradient descent step reaches the wall, it is forced to jump across the valley moving perpendicular to the steep walls, possibly leaving the valley and disrupting the learning process."
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "p. 5", stance: for}
+
+- id: c-bounded-step
+  type: attributive
+  text: "At the wall, a small-norm step in the direction of the gradient merely pushes the parameters back inside the smoother low-curvature region besides the wall, whereas a regular gradient step would bring them very far."
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "p. 5", stance: for}
+
+- id: c-wide-valley
+  type: attributive
+  text: "Because the valley is assumed to be wide, after getting back to the smooth region near the wall, clipping the gradient might be sufficient, not requiring the use of a second order method."
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "p. 5", stance: for}
+
+- id: c-m-direction
+  type: mathematical
+  text: "If ||g|| > c > 0, the vector (c/||g||) g has norm c and inner product c||g|| > 0 with g."
+  assumes: ["c > 0", "||g|| > c", "Euclidean norm and inner product"]
+  derivation: "node.md#derivation"
+
+- id: c-m-effective-lr
+  type: mathematical
+  text: "The update eta min(1, c/||g||) g has length at most eta c, and equals the SGD update with step size eta min(1, c/||g||), which is proportional to 1/||g|| when ||g|| > c."
+  assumes: ["eta > 0", "c > 0", "g != 0"]
+  derivation: "node.md#derivation"
+
+- id: c-adaptive-lr
+  type: attributive
+  text: "The algorithm can also be thought of as adapting the learning rate based on the norm of the gradient."
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "p. 6", stance: for}
+
+- id: c-instantaneous
+  type: attributive
+  text: "Compared to learning rate adaptation strategies that collect statistics on the gradient, the method relies on the instantaneous gradient, so it can handle very abrupt changes in norm."
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "p. 7", stance: for}
+
+- id: c-m-elementwise
+  type: mathematical
+  text: "Clipping each entry of a d-dimensional vector to [-c, c] gives a vector of norm at most c sqrt(d), and changes its direction when some entries are clipped and others are not."
+  assumes: ["c > 0", "Euclidean norm", "clipping replaces x_i by max(-c, min(c, x_i))"]
+  derivation: "node.md#derivation"
+
+- id: c-l-smooth
+  type: definitional
+  text: "f is L-smooth if ‖∇f(x) − ∇f(y)‖ ≤ L‖x − y‖ for all x, y; for twice differentiable functions, condition (1) is equivalent to ‖∇²f(x)‖ ≤ L for all x."
+  evidence:
+    - {work: "zhang-2020-why-gradient-clipping-accelerates", role: original, locator: "p. 2", stance: for}
+
+- id: c-x3
+  type: attributive
+  text: "Even simple polynomials such as f(x) = x^3 break the usual L-smoothness assumption."
+  evidence:
+    - {work: "zhang-2020-why-gradient-clipping-accelerates", role: original, locator: "p. 2", stance: for}
+
+- id: c-smoothness-varies
+  type: attributive
+  text: "Function smoothness varies greatly at different iterations during training, and local smoothness positively correlates with the full gradient norm, especially in the language modeling experiment."
+  evidence:
+    - {work: "zhang-2020-why-gradient-clipping-accelerates", role: original, locator: "p. 3", stance: for}
+
+- id: c-l0l1
+  type: definitional
+  text: "A second order differentiable function f is (L0, L1)-smooth if ||Hessian f(x)|| <= L0 + L1 ||grad f(x)||, and Definition 1 strictly relaxes the usual L-smoothness."
+  evidence:
+    - {work: "zhang-2020-why-gradient-clipping-accelerates", role: original, locator: "p. 3", stance: for}
+
+- id: c-polynomial
+  type: attributive
+  text: "When d >= 3, the univariate polynomial of degree d is (L0, L1)-smooth for some L0 and L1 but not L-smooth."
+  evidence:
+    - {work: "zhang-2020-why-gradient-clipping-accelerates", role: original, locator: "p. 3", stance: for}
+
+- id: c-m-sandwich
+  type: mathematical
+  text: "For L0 > 0, L1 >= 0 and a >= 0, (1/2) min{1/L0, 1/(L1 a)} <= 1/(L0 + L1 a) <= min{1/L0, 1/(L1 a)}, because max(u, v) <= u + v <= 2 max(u, v) for u, v >= 0."
+  assumes: ["L0 > 0", "L1 >= 0", "a >= 0", "1/(L1 a) is read as +infinity when L1 a = 0"]
+  derivation: "node.md#derivation"
+
+- id: c-clipped-gd
+  type: definitional
+  text: "Clipped GD updates x_{k+1} = x_k − h_c ∇f(x_k), where h_c := min{η_c, γη_c/‖∇f(x)‖}."
+  evidence:
+    - {work: "zhang-2020-why-gradient-clipping-accelerates", role: original, locator: "p. 4", stance: for}
+
+- id: c-ngd-equivalent
+  type: attributive
+  text: "Clipped GD and NGD are almost equivalent: for any given η_n and β, setting γη_c = η_n and η_c = η_n/β gives ½h_c ≤ h_n ≤ 2h_c."
+  evidence:
+    - {work: "zhang-2020-why-gradient-clipping-accelerates", role: original, locator: "p. 5", stance: for}
+
+- id: c-thm3
+  type: attributive
+  text: "With η_c = 1/(10L_0) and γ = min{1/η_c, 1/(10L_1η_c)}, the iteration complexity of clipped GD is upper bounded by 20L_0(f(x_0) − f*)/ε² + 20 max{1, L_1²}(f(x_0) − f*)/L_0."
+  evidence:
+    - {work: "zhang-2020-why-gradient-clipping-accelerates", role: original, locator: "p. 5", stance: for}
+
+- id: c-thm4
+  type: attributive
+  text: "With M the supremum of the gradient norm over the sublevel set of x0, for objectives with L0 >= 1, L1 >= 1 and M > 1, the iteration complexity of fixed-step gradient descent is at least L1 M (f(x0) - f* - 5/8) / (8 epsilon^2 (log M + 1))."
+  evidence:
+    - {work: "zhang-2020-why-gradient-clipping-accelerates", role: original, locator: "p. 6", stance: for}
+
+- id: c-thm6
+  type: attributive
+  text: "With step size h = 1/(2(M L1 + L0)), the iteration complexity of GD with a fixed step size is upper bounded by 4(M L1 + L0)(f(x0) - f*) epsilon^-2."
+  evidence:
+    - {work: "zhang-2020-why-gradient-clipping-accelerates", role: original, locator: "p. 6", stance: for}
+
+- id: c-remark5
+  type: attributive
+  text: "Clipped GD can be arbitrarily faster than GD when L1 M is large, or in other words, when the problem has a poor initialization."
+  evidence:
+    - {work: "zhang-2020-why-gradient-clipping-accelerates", role: original, locator: "p. 6", stance: for}
+
+- id: c-we-value-clip
+  type: mathematical
+  text: "For g = (3, 4) and c = 1, norm clipping gives (0.6, 0.8) and value clipping gives (1, 1), of norm sqrt(2), about 1.414, at an angle arccos(7/(5 sqrt 2)), about 8.13 degrees, from g."
+  assumes: ["Euclidean norm"]
+  derivation: "node.md#worked-example"
+
+- id: c-we-spike
+  type: mathematical
+  text: "With eta = 0.1, a gradient of norm 1000 gives an SGD step of length 100, and clipping at c = 1 gives a step of length 0.1."
+  assumes: ["plain SGD update eta g", "norm clipping at c = 1"]
+  derivation: "node.md#worked-example"
+
+- id: c-we-per-layer
+  type: mathematical
+  text: "Two layers with gradient norms 3 and 4 have global norm 5; global clipping at 1 gives norms 0.6 and 0.8, while per-layer clipping at 1 gives norms 1 and 1, so the first layer's fraction of the step norm goes from 0.6 to 1/sqrt(2), about 0.707."
+  assumes: ["Euclidean norm", "the global norm is the norm of the concatenated gradient"]
+  derivation: "node.md#worked-example"
+
+- id: c-we-linear
+  type: mathematical
+  text: "For x_0 = 1 and w = 1.1, t w^(t-1) is about 50 x 106.7, about 5336, at t = 50, and about 23.6 at t = 10."
+  assumes: ["x_t = x_0 w^t", "x_0 = 1", "w = 1.1"]
+  derivation: "node.md#worked-example"
+
+- id: c-x4-curvature
+  type: attributive
+  text: "For f(x) = x^4 initialized at x0 = 30, within the sublevel set [−30, 30] the function satisfies f''(x) ≤ 10f'(x) + 0.1, so one can pick L1 = 0 for gradient descent or L1 = 10, L0 = 0.1 for clipped GD."
+  evidence:
+    - {work: "zhang-2020-why-gradient-clipping-accelerates", role: original, locator: "p. 20", stance: for}
+
+- id: c-x4-result
+  type: attributive
+  text: "For the best gradient descent run f'(x_T) = 0.36, while for clipped GD the value is 1.3e-8."
+  evidence:
+    - {work: "zhang-2020-why-gradient-clipping-accelerates", role: original, locator: "p. 21", stance: for}
+
+- id: c-we-x4
+  type: mathematical
+  text: "For f(x) = x^4, f'(30) = 108,000 and f''(30) = 10,800, so a fixed step stable at x = 30 is at most 2/10,800, about 1.85 x 10^-4, and at x = 1 it moves x by 4 h, about 7.4 x 10^-4."
+  assumes: ["f(x) = x^4", "the stability limit of a fixed step on a quadratic with curvature f'' is 2/f'', used here as a heuristic", "h = 2/10,800"]
+  derivation: "node.md#worked-example"
+
+- id: c-new-hyperparameter
+  type: attributive
+  text: "The clipping algorithm introduces an additional hyper-parameter, namely the threshold."
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "p. 6", stance: for}
+
+- id: c-threshold-heuristic
+  type: attributive
+  text: "One good heuristic for setting the threshold is to look at statistics on the average norm over a sufficiently large number of updates."
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "p. 6", stance: for}
+
+- id: c-insensitive
+  type: attributive
+  text: "In experiments, for a given task and model size, training is not very sensitive to the threshold and the algorithm behaves well even for rather small thresholds."
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "p. 6", stance: for}
+
+- id: c-brock-sensitive
+  type: attributive
+  text: "Training stability was extremely sensitive to the choice of the clipping threshold, requiring fine-grained tuning when varying the model depth, the batch size, or the learning rate."
+  evidence:
+    - {work: "brock-2021-image-recognition-without-normalization", role: original, locator: "p. 4", stance: for}
+
+- id: c-threshold-6
+  type: attributive
+  text: "For the addition and temporal order problems, Pascanu et al. use clipping with a cutoff threshold of 6 on the norm of the gradients."
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "p. 11", stance: for}
+
+- id: c-threshold-8-45
+  type: attributive
+  text: "The cut-off threshold is 8 for polyphonic music prediction, taking the mean over the sequence length, and 45 for language modelling, taking the sum of the cost over the sequence length."
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "p. 12", stance: for}
+
+- id: c-awd
+  type: attributive
+  text: "For the AWD-LSTM language model, clipped SGD with clip value of 0.25 and a learning rate of 30 is used."
+  evidence:
+    - {work: "zhang-2020-why-gradient-clipping-accelerates", role: original, locator: "p. 18", stance: for}
+
+- id: c-agc-range
+  type: attributive
+  text: "Brock et al. consider a range of lambda values [0.01, 0.02, 0.04, 0.08, 0.16]."
+  evidence:
+    - {work: "brock-2021-image-recognition-without-normalization", role: original, locator: "p. 4", stance: for}
+
+- id: c-agc-lambda
+  type: attributive
+  text: "Empirically, Brock et al. find lambda should be smaller for larger batches."
+  evidence:
+    - {work: "brock-2021-image-recognition-without-normalization", role: original, locator: "p. 4", stance: for}
+
+- id: c-sgd-c-fails
+  type: empirical
+  text: "On the temporal order problem, for sequences longer than 20 the vanishing gradients problem ensures that neither SGD nor SGD-C can solve the task."
+  scope:
+    models: "recurrent network trained with SGD and with SGD-C"
+    data: ["temporal order problem"]
+    scale: "sequences longer than 20 steps"
+    setting: "synthetic pathological task, success rate over runs"
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "p. 7", stance: for}
+
+- id: c-temporal-order
+  type: empirical
+  text: "SGD-CR solved the temporal order task with a success rate of 100% for sequences up to 200 steps."
+  scope:
+    models: "recurrent network trained with SGD-CR"
+    data: ["temporal order problem"]
+    scale: "sequences up to 200 steps"
+    setting: "synthetic pathological task, success rate over runs"
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "p. 8", stance: for}
+
+- id: c-music
+  type: empirical
+  text: "In Table 1 the negative log likelihood per time step on Nottingham test is 3.80 for SGD and 3.48 for SGD+C, and on MuseData train is 8.25 for SGD and 6.54 for SGD+C."
+  scope:
+    models: "sigmoid units RNN"
+    data: ["Nottingham", "MuseData"]
+    scale: "sequences of 200 steps"
+    setting: "polyphonic music prediction, negative log likelihood per time step"
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "p. 8", stance: for}
+
+- id: c-ptb
+  type: empirical
+  text: "In Table 2, on Penn Treebank, test entropy for 1 step is 1.50 bits per character for SGD and 1.42 for SGD+C; for 5 steps SGD is N/A and SGD+C reaches 3.89 on test."
+  scope:
+    models: "character-level RNN language model"
+    data: ["Penn Treebank"]
+    scale: "sequences of 200 steps"
+    setting: "next character and fifth character ahead prediction, entropy in bits per character"
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "p. 8", stance: for}
+
+- id: c-not-regularizer
+  type: attributive
+  text: "Clipping the gradients solves an optimization issue and does not act as a regularizer, as both the training and test error improve in general."
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "p. 8", stance: for}
+
+- id: c-lm-vs-cv
+  type: empirical
+  text: "The correlation exists in the default training procedure for language modeling but not in the default training for image classification, which aligns with the fact that gradient clipping is widely used in language modeling but is less popular in ResNet training."
+  scope:
+    models: "AWD-LSTM language model; ResNet20"
+    data: ["Penn Treebank", "CIFAR-10"]
+    scale: "unknown"
+    setting: "default training procedures, local smoothness against gradient norm"
+  evidence:
+    - {work: "zhang-2020-why-gradient-clipping-accelerates", role: original, locator: "p. 7", stance: for}
+
+- id: c-accelerates
+  type: empirical
+  text: "From Figure 4, clipping indeed accelerates convergence."
+  scope:
+    models: "AWD-LSTM language model; ResNet20"
+    data: ["Penn Treebank", "CIFAR-10"]
+    scale: "unknown"
+    setting: "training loss of clipped and unclipped SGD"
+  evidence:
+    - {work: "zhang-2020-why-gradient-clipping-accelerates", role: original, locator: "p. 7", stance: for}
+
+- id: c-cv-matches
+  type: empirical
+  text: "For image classification, surprisingly, clipped GD also achieves the fastest convergence and matches the test performance of SGD+momentum."
+  scope:
+    models: "ResNet20"
+    data: ["CIFAR-10"]
+    scale: "200 epochs"
+    setting: "clipped GD against SGD with momentum, gradient norm threshold 0.25"
+  evidence:
+    - {work: "zhang-2020-why-gradient-clipping-accelerates", role: original, locator: "p. 8", stance: for}
+
+- id: c-resnet-952
+  type: empirical
+  text: "Gradient clipping can achieve good generalization performance in image classification, 95.2% test accuracy in 200 epochs for ResNet20 on Cifar10."
+  scope:
+    models: "ResNet20"
+    data: ["CIFAR-10"]
+    scale: "200 epochs"
+    setting: "training with gradient clipping, test accuracy"
+  evidence:
+    - {work: "zhang-2020-why-gradient-clipping-accelerates", role: original, locator: "p. 2", stance: for}
+
+- id: c-baseline-950
+  type: empirical
+  text: "The SGD momentum baseline achieves the best known test accuracy (95.0%) for Resnet20 on Cifar10."
+  scope:
+    models: "ResNet20"
+    data: ["CIFAR-10"]
+    scale: "200 epochs"
+    setting: "SGD momentum 0.9, learning rate 0.1 divided by 10 at epochs 100 and 150, weight decay 5e-4"
+  evidence:
+    - {work: "zhang-2020-why-gradient-clipping-accelerates", role: original, locator: "p. 19", stance: for}
+
+- id: c-awd-ppl
+  type: empirical
+  text: "The AWD-LSTM model is trained for 500 epochs and reaches a test-set perplexity of 56.5 on PTB."
+  scope:
+    models: "3-layer AWD-LSTM, hidden size 1150, embedding size 400"
+    data: ["Penn Treebank"]
+    scale: "500 epochs"
+    setting: "clipped SGD, clip value 0.25, learning rate 30"
+  evidence:
+    - {work: "zhang-2020-why-gradient-clipping-accelerates", role: original, locator: "p. 18", stance: for}
+
+- id: c-agc-scale
+  type: empirical
+  text: "AGC helps scale NF-ResNets to large batch sizes, up to 4096, while maintaining performance comparable or better than batch-normalized networks, and the benefits of AGC are smaller when the batch size is small."
+  scope:
+    models: "pre-activation NF-ResNet-50 and NF-ResNet-200; batch-normalized ResNets"
+    data: ["ImageNet"]
+    scale: "batch sizes 256 to 4096, 90 epochs"
+    setting: "SGD with Nesterov momentum, best clipping threshold per batch size"
+  evidence:
+    - {work: "brock-2021-image-recognition-without-normalization", role: original, locator: "p. 4", stance: for}
+
+- id: c-agc-randaugment
+  type: empirical
+  text: "Using AGC, NF-ResNets train stably with very strong data augmentations like RandAugment, for which NF-ResNets without AGC fail to train."
+  scope:
+    models: "NF-ResNets"
+    data: ["ImageNet"]
+    scale: "unknown"
+    setting: "RandAugment data augmentation"
+  evidence:
+    - {work: "brock-2021-image-recognition-without-normalization", role: original, locator: "p. 4", stance: for}
+
+- id: c-lstm-no-explode
+  type: attributive
+  text: "LSTM units are a solution for the vanishing gradients problem, and this solution does not address explicitly the exploding gradients problem."
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "p. 6", stance: for}
+
+- id: c-m-bias
+  type: mathematical
+  text: "If g is 0 or 4 with probability 1/2 each and c = 1, the expected clipped value is 0.5 while the clipped expected value is 1."
+  assumes: ["g is a scalar", "clip_1(g) = min(1, 1/|g|) g, with clip_1(0) = 0"]
+  derivation: "node.md#limitations-and-failure-modes"
+
+- id: c-bounded-noise
+  type: attributive
+  text: "The stochastic analysis assumes there exists tau > 0 such that the stochastic gradient differs from the gradient by at most tau almost surely."
+  evidence:
+    - {work: "zhang-2020-why-gradient-clipping-accelerates", role: original, locator: "p. 6", stance: for}
+
+- id: c-conservative
+  type: attributive
+  text: "In this very adversarial synthetic experiment, the theorem is correct but conservative."
+  evidence:
+    - {work: "zhang-2020-why-gradient-clipping-accelerates", role: original, locator: "p. 21", stance: for}
+
+- id: c-ratio-5-3
+  type: empirical
+  text: "On a smaller LSTM language model, the theory predicts that the ratio between gradients should be roughly 25/5 = 5, and empirically the ratio is about 3."
+  scope:
+    models: "2-layer LSTM, 200 embedding dimension, 512 inner dimension"
+    data: ["Penn Treebank"]
+    scale: "unknown"
+    setting: "clipped GD with threshold 0.25 and learning rate 10 against GD with learning rate 2"
+  evidence:
+    - {work: "zhang-2020-why-gradient-clipping-accelerates", role: original, locator: "p. 21", stance: for}
+
+- id: c-open
+  type: attributive
+  text: "Although the relaxed smoothness condition is weaker than the usual Lipschitz assumption, it is unclear if there is an even better condition that also matches the experimental observations."
+  evidence:
+    - {work: "zhang-2020-why-gradient-clipping-accelerates", role: original, locator: "p. 8", stance: for}
+
+- id: c-l2-penalty
+  type: attributive
+  text: "Using an L1 or L2 penalty on the recurrent weights limits the model to a simple regime with a single point attractor at the origin, where any information inserted in the model dies out exponentially fast."
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "p. 5", stance: for}
+
+- id: c-agc-lars
+  type: attributive
+  text: "AGC can be interpreted as a relaxation of normalized optimizers, which imposes a maximum update size based on the parameter norm but does not simultaneously impose a lower-bound on the update size or ignore the gradient magnitude."
+  evidence:
+    - {work: "brock-2021-image-recognition-without-normalization", role: original, locator: "p. 4", stance: for}
+
+- id: c-brock-larger-lr
+  type: attributive
+  text: "Gradient clipping is often used in language modeling to stabilize training, and recent work shows that it allows training with larger learning rates compared to gradient descent without clipping."
+  evidence:
+    - {work: "brock-2021-image-recognition-without-normalization", role: original, locator: "p. 3", stance: for}
+
+- id: c-traverse
+  type: attributive
+  text: "Clipping enables the training trajectory to stably traverse non-smooth regions; without clipping, the optimizer has to adopt a small learning rate."
+  evidence:
+    - {work: "zhang-2020-why-gradient-clipping-accelerates", role: original, locator: "p. 7", stance: for}
+
+- id: c-agc-final-layer
+  type: attributive
+  text: "Brock et al. find it is always better to not clip the final linear layer, and apply AGC to every layer except the final linear layer."
+  evidence:
+    - {work: "brock-2021-image-recognition-without-normalization", role: original, locator: "p. 5", stance: for}
+
+- id: c-history-mikolov
+  type: attributive
+  text: "Clipped gradient descent was introduced in vanilla RNN language model training (Mikolov et al., 2010) to alleviate the exploding gradient problem, and has been used in more sophisticated RNN models or seq2seq models."
+  evidence:
+    - {work: "zhang-2020-why-gradient-clipping-accelerates", role: original, locator: "p. 18", stance: for}
+
+- id: c-ptb-sota
+  type: attributive
+  text: "Results on Penn Treebank reach the state of the art achieved by Mikolov et al. (2012), who used a different clipping algorithm similar to Pascanu et al.'s, providing evidence that both behave similarly."
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "p. 8", stance: for}
+
+- id: c-conclusion
+  type: attributive
+  text: "Pascanu et al. explore the exploding and vanishing gradient problems from analytical, geometrical and dynamical systems perspectives, and propose a solution for exploding gradients based on the assumption of a valley with a single steep wall."
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "p. 9", stance: for}
+
+- id: c-nfnet
+  type: empirical
+  text: "The smaller NFNet models match the test accuracy of an EfficientNet-B7 on ImageNet while being up to 8.7x faster to train."
+  scope:
+    models: "NFNet family; EfficientNet-B7"
+    data: ["ImageNet"]
+    scale: "unknown"
+    setting: "test accuracy and training speed"
+  evidence:
+    - {work: "brock-2021-image-recognition-without-normalization", role: original, locator: "p. 1", stance: for}

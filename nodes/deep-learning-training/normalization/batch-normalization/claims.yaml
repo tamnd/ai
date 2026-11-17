@@ -1,0 +1,448 @@
+# The claims of the batch normalization page (spec 07). The build computes the labels.
+
+# Setting and method
+
+- id: c-ics-definition
+  type: definitional
+  text: "Ioffe and Szegedy define internal covariate shift as the change in the distribution of network activations due to the change in network parameters during training."
+  evidence:
+    - {work: "ioffe-2015-batch-normalization", role: original, locator: "Section 2", stance: for}
+
+- id: c-higher-lr
+  type: attributive
+  text: "Ioffe and Szegedy propose batch normalization to reduce internal covariate shift, and report that it allows much higher learning rates and less careful initialization."
+  evidence:
+    - {work: "ioffe-2015-batch-normalization", role: original, locator: "the abstract", stance: for}
+
+- id: c-algorithm
+  type: definitional
+  text: "The batch normalizing transform of Algorithm 1 computes the mini-batch mean and the mini-batch variance of each activation, normalizes it with a constant epsilon added to the variance for numerical stability, and then scales by gamma and shifts by beta."
+  evidence:
+    - {work: "ioffe-2015-batch-normalization", role: original, locator: "Algorithm 1", stance: for}
+
+- id: c-per-feature
+  type: attributive
+  text: "Batch normalization normalizes each scalar feature independently instead of whitening the layer inputs jointly, because full whitening is costly and the covariance matrix would be singular when the mini-batch is smaller than the number of activations."
+  evidence:
+    - {work: "ioffe-2015-batch-normalization", role: original, locator: "Section 3", stance: for}
+
+- id: c-identity-recoverable
+  type: attributive
+  text: "Ioffe and Szegedy make sure that the transformation inserted in the network can represent the identity transform, with a learned pair gamma and beta for each activation that scale and shift the normalized value."
+  evidence:
+    - {work: "ioffe-2015-batch-normalization", role: original, locator: "Section 3", stance: for}
+
+- id: c-inference-population
+  type: definitional
+  text: "At inference, the normalization uses the population statistics instead of the mini-batch statistics, with the unbiased variance estimate m/(m-1) times the expectation of the mini-batch variances over training mini-batches of size m."
+  evidence:
+    - {work: "ioffe-2015-batch-normalization", role: original, locator: "p. 4", stance: for}
+
+- id: c-moving-averages
+  type: attributive
+  text: "Ioffe and Szegedy note that using moving averages of the statistics instead lets one track the accuracy of a model as it trains."
+  evidence:
+    - {work: "ioffe-2015-batch-normalization", role: original, locator: "p. 4", stance: for}
+
+- id: c-before-nonlinearity
+  type: attributive
+  text: "Ioffe and Szegedy add the transform immediately before the nonlinearity, as z = g(BN(Wu)), and ignore the bias b of Wu because its effect is subsumed by the shift beta."
+  evidence:
+    - {work: "ioffe-2015-batch-normalization", role: original, locator: "p. 5", stance: for}
+
+- id: c-conv
+  type: definitional
+  text: "For convolutional layers, all locations of a feature map are normalized in the same way with one pair of gamma and beta per feature map, over an effective mini-batch of size m' = m p q for a mini-batch of size m and feature maps of size p by q."
+  evidence:
+    - {work: "ioffe-2015-batch-normalization", role: original, locator: "p. 5", stance: for}
+
+# Derivation
+
+- id: c-backward
+  type: mathematical
+  text: "With g the gradient of the loss with respect to the outputs and s the square root of the batch variance plus epsilon, the gradient for gamma is the sum of g times x-hat, the gradient for beta is the sum of g, and the gradient for x_i is gamma/(m s) times (m g_i minus the sum of g minus x-hat_i times the sum of g times x-hat)."
+  assumes: ["the batch statistics are computed from the same batch as the output", "the gradient flows through the batch mean and the batch variance", "m > 1"]
+  derivation: bn-backward
+
+- id: c-dx-orthogonal
+  type: mathematical
+  text: "The input gradient of batch normalization sums to zero over the batch, and when epsilon is 0 it is orthogonal to the vector of normalized values x-hat."
+  assumes: ["the gradient flows through the batch mean and the batch variance", "m > 1 and the batch variance is positive"]
+  derivation: bn-backward
+
+- id: c-scale-invariance
+  type: mathematical
+  text: "For every a > 0 and epsilon = 0, BN((aW)u) = BN(Wu): scaling the weights of the layer before batch normalization does not change its output."
+  assumes: ["epsilon is 0", "a is a positive scalar", "the batch variance of Wu is positive"]
+  derivation: scale-invariance
+
+- id: c-gradient-scaling
+  type: mathematical
+  text: "Under the same assumptions, the gradient of the loss with respect to the scaled weights aW is the gradient with respect to W divided by a, so larger weights receive smaller gradients."
+  assumes: ["epsilon is 0", "a is a positive scalar", "the loss depends on W only through BN(Wu)"]
+  derivation: scale-invariance
+
+- id: c-norm-grows
+  type: mathematical
+  text: "The gradient of a loss that is invariant to the scale of w is orthogonal to w, so a plain gradient descent step without weight decay never decreases the norm of w: the squared norm grows by the squared step length."
+  assumes: ["the loss is invariant to positive scaling of w", "the loss is differentiable at w", "no weight decay and no momentum"]
+  derivation: scale-invariance
+
+- id: c-fold
+  type: mathematical
+  text: "At inference, batch normalization after a linear layer Wx + b composes with it into one linear layer with weights diag(gamma / sqrt(v + epsilon)) W and bias gamma (b - mu) / sqrt(v + epsilon) + beta, where mu and v are the running statistics."
+  assumes: ["the layer is in inference mode with fixed running statistics", "the linear layer is applied before batch normalization with nothing in between"]
+  derivation: inference-fold
+
+- id: c-momentum-conventions
+  type: mathematical
+  text: "The PyTorch running average update with momentum alpha, new = (1 - alpha) old + alpha batch, is the same update as the Keras and Flax form new = momentum old + (1 - momentum) batch with momentum = 1 - alpha."
+  assumes: ["both frameworks use the same batch statistic in the update"]
+  derivation: inference-fold
+
+- id: c-dropout-variance
+  type: mathematical
+  text: "For a unit with mean 0 and variance v followed by inverted dropout with drop probability q, the variance of the output is v / (1 - q) in training and v at inference."
+  assumes: ["the mask is independent of the unit", "the unit has mean 0", "inverted dropout scales the kept units by 1 / (1 - q)"]
+  derivation: "node.md#derivation"
+
+# Hyperparameters
+
+- id: c-ema-inaccurate
+  type: empirical
+  text: "Wu and Johnson find that the exponential moving average of the batch statistics can be inaccurate because it lags behind the model weights, especially early in training, and propose PreciseBN, which computes the statistics of a fixed model over many batches with equal weights."
+  scope:
+    models: "ResNet-50"
+    data: [imagenet]
+    scale: "batch sizes 256 to 8192"
+    setting: "image classification with batch normalization, validation error with EMA and with PreciseBN statistics"
+  evidence:
+    - {work: "wu-2021-rethinking-batch-in-batchnorm", role: original, locator: "Section 3.1", stance: for}
+    - {work: "wu-2021-rethinking-batch-in-batchnorm", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-per-worker
+  type: attributive
+  text: "Goyal et al. treat the per-worker sample size n of batch normalization as a hyperparameter, use n = 32 per worker, and do not compute the BN statistics across all workers."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "Section 2.3", stance: for}
+
+- id: c-zero-gamma
+  type: attributive
+  text: "Goyal et al. initialize gamma to 0 in the last BN of each residual block, so that the forward and backward signals initially propagate through the identity shortcut."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "Section 5.1", stance: for}
+
+- id: c-no-wd-gamma
+  type: attributive
+  text: "Goyal et al. do not apply weight decay on the learnable BN coefficients, namely γ and β."
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "Section 5.1", stance: for}
+
+# Cost
+
+- id: c-expensive
+  type: attributive
+  text: "Brock et al. describe batch normalization as a surprisingly expensive computational primitive, which incurs memory overhead."
+  evidence:
+    - {work: "brock-2021-image-recognition-without-normalization", role: original, locator: "Section 1", stance: for}
+
+# Evidence
+
+- id: c-inception-steps
+  type: empirical
+  text: "BN-x5, an Inception network with batch normalization and a learning rate five times the initial one, reaches the 72.2% accuracy of Inception in 2.1 · 10^6 steps."
+  scope: &inception
+    models: "Inception with batch normalization, against Inception without it"
+    data: [imagenet]
+    scale: "13.6 million parameters, mini-batches of 32"
+    setting: "ILSVRC 2012 classification, single crop validation accuracy"
+  evidence:
+    - {work: "ioffe-2015-batch-normalization", role: original, locator: "Figure 3", stance: for}
+
+- id: c-inception-baseline
+  type: empirical
+  text: "Inception without batch normalization needs 31.0 · 10^6 training steps to reach its maximum accuracy of 72.2%."
+  scope: *inception
+  evidence:
+    - {work: "ioffe-2015-batch-normalization", role: original, locator: "Figure 3", stance: for}
+
+- id: c-bn-x30
+  type: empirical
+  text: "BN-x30, with a learning rate thirty times the initial one, reaches a maximum accuracy of 74.8%."
+  scope: *inception
+  evidence:
+    - {work: "ioffe-2015-batch-normalization", role: original, locator: "Figure 3", stance: for}
+
+- id: c-sigmoid
+  type: empirical
+  text: "BN-x5-Sigmoid, with sigmoid nonlinearities, reaches 69.8% accuracy, while Inception with sigmoid and without batch normalization never achieves better than 1/1000 accuracy."
+  scope: *inception
+  evidence:
+    - {work: "ioffe-2015-batch-normalization", role: original, locator: "Figure 3", stance: for}
+    - {work: "ioffe-2015-batch-normalization", role: original, locator: "p. 7", stance: for}
+
+- id: c-ensemble
+  type: empirical
+  text: "An ensemble of batch-normalized networks reaches 4.9% top-5 validation error and 4.8% test error on ImageNet classification."
+  scope: *inception
+  evidence:
+    - {work: "ioffe-2015-batch-normalization", role: original, locator: "the abstract", stance: for}
+
+- id: c-mnist
+  type: empirical
+  text: "On MNIST, a network with 3 fully connected hidden layers of 100 sigmoid units each has a higher test accuracy with batch normalization, and the distributions of its inputs are more stable."
+  scope:
+    models: "a fully connected network of 3 hidden layers of 100 sigmoid units, with and without batch normalization"
+    data: [mnist]
+    scale: "50,000 steps with 60 examples per mini-batch"
+    setting: "digit classification, test accuracy over training"
+  evidence:
+    - {work: "ioffe-2015-batch-normalization", role: original, locator: "Section 4.1", stance: for}
+
+# Limitations and failure modes
+
+- id: c-noisy-bn
+  type: empirical
+  text: "Santurkar et al. inject random noise from a non-zero mean and non-unit variance distribution after each BatchNorm layer of a VGG network, and the noisy BatchNorm network performs almost the same as the standard one."
+  scope: &santurkar
+    models: "VGG with and without BatchNorm"
+    data: [cifar-10]
+    scale: "one VGG network"
+    setting: "image classification, training and test accuracy"
+  evidence:
+    - {work: "santurkar-2018-how-does-batchnorm-help-optimization", role: original, locator: "Section 2.1", stance: for}
+
+- id: c-little-to-do
+  type: attributive
+  text: "Santurkar et al. conclude that the distributional stability of layer inputs has little to do with the success of BatchNorm."
+  evidence:
+    - {work: "santurkar-2018-how-does-batchnorm-help-optimization", role: original, locator: "the abstract", stance: for}
+
+- id: c-ics-worse
+  type: empirical
+  text: "With a gradient-based definition of internal covariate shift, networks with BatchNorm have similar or even worse internal covariate shift than networks without it."
+  scope: *santurkar
+  evidence:
+    - {work: "santurkar-2018-how-does-batchnorm-help-optimization", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-smoother
+  type: attributive
+  text: "Santurkar et al. argue that BatchNorm makes the optimization landscape significantly smoother, which induces a more predictive and stable behavior of the gradients."
+  evidence:
+    - {work: "santurkar-2018-how-does-batchnorm-help-optimization", role: original, locator: "the abstract", stance: for}
+
+- id: c-gradient-bound
+  type: attributive
+  text: "Santurkar et al. prove a theorem on the effect of BatchNorm on the Lipschitzness of the loss, which bounds the squared gradient norm with respect to the activations of a BatchNorm network by that of an identical non-BN network, scaled by γ²/σ² and reduced by two inner product terms."
+  evidence:
+    - {work: "santurkar-2018-how-does-batchnorm-help-optimization", role: original, locator: "Theorem 4.1", stance: for}
+
+- id: c-lp-norms
+  type: empirical
+  text: "Normalization strategies that fix the first order moment of the activations, as BatchNorm does, and normalize them by the average of their lp-norm for p = 1, 2, ∞ give a similar smoothening effect."
+  scope: *santurkar
+  evidence:
+    - {work: "santurkar-2018-how-does-batchnorm-help-optimization", role: original, locator: "Section 3.3", stance: for}
+
+- id: c-mean-field
+  type: attributive
+  text: "Yang et al. develop a mean field theory for fully connected feedforward networks with batch normalization at initialization."
+  evidence:
+    - {work: "yang-2019-mean-field-theory-batch-normalization", role: original, locator: "p. 1", stance: for}
+
+- id: c-gradient-explosion
+  type: attributive
+  text: "Yang et al. find that at initialization the gradients of such networks explode exponentially with depth, and that batch normalization itself is the cause of the gradient explosion."
+  evidence:
+    - {work: "yang-2019-mean-field-theory-batch-normalization", role: original, locator: "p. 1", stance: for}
+    - {work: "yang-2019-mean-field-theory-batch-normalization", role: original, locator: "Theorem 3.9", stance: for}
+
+- id: c-not-trainable
+  type: attributive
+  text: "Yang et al. conclude that vanilla batch-normalized networks without skip connections are not trainable at large depths for common initialization schemes."
+  evidence:
+    - {work: "yang-2019-mean-field-theory-batch-normalization", role: original, locator: "p. 1", stance: for}
+
+- id: c-linear-regime
+  type: attributive
+  text: "Yang et al. find that gradient explosion cannot be eliminated, but that it can be reduced by tuning the network close to the linear regime, which improves the trainability of deep batch-normalized networks without residual connections."
+  evidence:
+    - {work: "yang-2019-mean-field-theory-batch-normalization", role: original, locator: "p. 1", stance: for}
+
+- id: c-small-batch
+  type: empirical
+  text: "The error of batch normalization increases rapidly when the batch size becomes smaller."
+  scope: &gn
+    models: "ResNet-50 with BN, LN, IN and GN"
+    data: [imagenet]
+    scale: "8 GPUs, 32 to 2 images per GPU"
+    setting: "ImageNet classification, validation error"
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "the abstract", stance: for}
+
+- id: c-small-batch-numbers
+  type: empirical
+  text: "With ResNet-50 on ImageNet, the error of BN is 23.6% at 32 images per GPU and 34.7% at 2 images per GPU."
+  scope: *gn
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "Table 2", stance: for}
+
+- id: c-non-iid
+  type: attributive
+  text: "Ioffe states that the effectiveness of batch normalization is diminished when the training minibatches are small or do not consist of independent samples."
+  evidence:
+    - {work: "ioffe-2017-batch-renormalization", role: original, locator: "the abstract", stance: for}
+
+- id: c-independence
+  type: attributive
+  text: "Brock et al. note that batch normalization breaks the independence between training examples in the minibatch."
+  evidence:
+    - {work: "brock-2021-image-recognition-without-normalization", role: original, locator: "Section 1", stance: for}
+
+- id: c-train-eval
+  type: attributive
+  text: "Brock et al. list among the disadvantages of batch normalization a discrepancy between the behaviour of the model during training and at inference time, which introduces hidden hyper-parameters."
+  evidence:
+    - {work: "brock-2021-image-recognition-without-normalization", role: original, locator: "Section 1", stance: for}
+
+- id: c-precise-bn-numbers
+  type: empirical
+  text: "For ResNet-50 trained with batch size 8192 for 30 epochs, the validation error is 52.8% with the EMA statistics and 39.42% with PreciseBN statistics."
+  scope:
+    models: "ResNet-50"
+    data: [imagenet]
+    scale: "batch size 8192, 30 epochs"
+    setting: "validation error with EMA and with PreciseBN statistics"
+  evidence:
+    - {work: "wu-2021-rethinking-batch-in-batchnorm", role: original, locator: "Table 1", stance: for}
+
+- id: c-variance-shift
+  type: attributive
+  text: "Li et al. name variance shift the inconsistent behavior of the variance of a neural unit from training to inference when dropout comes before batch normalization."
+  evidence:
+    - {work: "li-2019-disharmony-dropout-batch-normalization", role: original, locator: "p. 1", stance: for}
+
+- id: c-li-remedy
+  type: attributive
+  text: "Li et al. apply Dropout after all BN layers, or modify the formula of Dropout to make it less sensitive to variance."
+  evidence:
+    - {work: "li-2019-disharmony-dropout-batch-normalization", role: original, locator: "p. 2", stance: for}
+
+- id: c-l2-no-reg
+  type: attributive
+  text: "Van Laarhoven argues that, combined with normalization, L2 regularization has no regularizing effect."
+  evidence:
+    - {work: "van-laarhoven-2017-l2-regularization-normalization", role: original, locator: "the abstract", stance: for}
+
+- id: c-effective-lr
+  type: attributive
+  text: "Van Laarhoven argues that L2 regularization instead has an influence on the scale of the weights, and thereby on the effective learning rate."
+  evidence:
+    - {work: "van-laarhoven-2017-l2-regularization-normalization", role: original, locator: "the abstract", stance: for}
+
+# Variants
+
+- id: c-layer-norm
+  type: definitional
+  text: "Layer normalization computes the mean and variance used for normalization from all of the summed inputs to the neurons in a layer on a single training case, and performs the same computation at training and test times."
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "the abstract", stance: for}
+
+- id: c-instance-norm
+  type: definitional
+  text: "Instance normalization replaces batch normalization in a stylization network and is applied both at training and testing time."
+  evidence:
+    - {work: "ulyanov-2016-instance-normalization", role: original, locator: "the abstract", stance: for}
+
+- id: c-group-norm
+  type: definitional
+  text: "Group normalization divides the channels into groups and computes the mean and variance within each group of each example; G = 32 groups by default, and G = 1 is layer normalization."
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "Section 3", stance: for}
+
+- id: c-batch-renorm
+  type: definitional
+  text: "Batch renormalization normalizes with the minibatch statistics and corrects them with r = sigma_B / sigma and d = (mu_B - mu) / sigma, clipped and treated as constants by stop_gradient, where mu and sigma are moving averages."
+  evidence:
+    - {work: "ioffe-2017-batch-renormalization", role: original, locator: "Algorithm 1", stance: for}
+
+- id: c-ghost-bn
+  type: empirical
+  text: "Ghost Batch Normalization, which normalizes over small virtual batches, enables a significant decrease in the generalization gap of large batch training without increasing the number of updates."
+  scope:
+    models: "ResNet, VGG and other convolutional networks"
+    data: [mnist, cifar-10, cifar-100, imagenet]
+    scale: "large batches of 4096 and more"
+    setting: "image classification, generalization gap between small and large batch training"
+  evidence:
+    - {work: "hoffer-2017-train-longer-generalize-better", role: original, locator: "the abstract", stance: for}
+
+- id: c-weight-norm
+  type: definitional
+  text: "Weight normalization reparameterizes the weight vectors to decouple their length from their direction, and does not introduce any dependencies between the examples in a minibatch."
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "the abstract", stance: for}
+
+- id: c-agc
+  type: definitional
+  text: "Normalizer-Free networks are trained without normalization layers using adaptive gradient clipping, which clips gradients unit-wise based on the ratio of gradient norms to parameter norms."
+  evidence:
+    - {work: "brock-2021-image-recognition-without-normalization", role: original, locator: "the abstract", stance: for}
+    - {work: "brock-2021-image-recognition-without-normalization", role: original, locator: "Section 4", stance: for}
+
+# When to use it
+
+- id: c-gn-vs-bn
+  type: empirical
+  text: "On ImageNet with ResNet-50, GN has an error of 24.1% against 23.6% for BN at 32 images per GPU, and 24.1% against 34.7% at 2 images per GPU."
+  scope: *gn
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "Table 2", stance: for}
+
+- id: c-nfnet
+  type: empirical
+  text: "The smaller NFNet models match the test accuracy of EfficientNet-B7 on ImageNet while being up to 8.7 times faster to train."
+  scope:
+    models: "NFNet-F0 to F6 against EfficientNet-B7"
+    data: [imagenet]
+    scale: "image classifiers without normalization layers"
+    setting: "ImageNet top-1 accuracy and training latency"
+  evidence:
+    - {work: "brock-2021-image-recognition-without-normalization", role: original, locator: "the abstract", stance: for}
+
+# History
+
+- id: c-hist-ioffe
+  type: historical
+  text: "Sergey Ioffe and Christian Szegedy of Google posted Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift as arXiv 1502.03167v3 on 2 Mar 2015."
+  evidence:
+    - {work: "ioffe-2015-batch-normalization", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-layer-norm
+  type: historical
+  text: "Ba, Kiros and Hinton posted Layer Normalization as arXiv 1607.06450v1 on 21 Jul 2016."
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-renorm
+  type: historical
+  text: "Sergey Ioffe of Google posted Batch Renormalization as arXiv 1702.03275v2 on 30 Mar 2017."
+  evidence:
+    - {work: "ioffe-2017-batch-renormalization", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-gn
+  type: historical
+  text: "Yuxin Wu and Kaiming He of Facebook AI Research posted Group Normalization as arXiv 1803.08494v3 on 11 Jun 2018."
+  evidence:
+    - {work: "wu-2018-group-normalization", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-nfnet
+  type: empirical
+  text: "The largest NFNet models reach a top-1 accuracy of 86.5% on ImageNet without normalization layers."
+  scope:
+    models: "the largest NFNet models"
+    data: [imagenet]
+    scale: "the largest NFNet models"
+    setting: "ImageNet top-1 accuracy without extra data"
+  evidence:
+    - {work: "brock-2021-image-recognition-without-normalization", role: original, locator: "the abstract", stance: for}

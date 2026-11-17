@@ -1,0 +1,156 @@
+# A course of spec 5.7: an ordered list of items with section headings. Names and orders only (19.3).
+# An item names its node by slug when the node exists; before that it is a name and a kind, which aik harvest courses
+# reads into the inventory, so that the catalog step can place it and the course can count its coverage (18).
+id: ai-safety-and-alignment
+title: AI safety and alignment
+basis: >-
+  the chapter order of Hendrycks, Introduction to AI Safety, Ethics, and Society (2024), chapters 1 to 8, then the
+  sub-areas of ai-safety-and-alignment (5.2) in the order of a reading path, cross-checked with public AI safety
+  syllabi; contested positions are named as positions, never as the site's view (N01)
+sections:
+  - heading: Risks from advanced AI
+    items:
+      - {name: AI safety, kind: area}
+      - {name: Catastrophic risk from AI, kind: risk}
+      - {name: Malicious use of AI, kind: risk}
+      - {name: AI race dynamics, kind: risk}
+      - {name: Organizational risk, kind: risk}
+      - {name: Rogue AI, kind: risk}
+      - {name: Existential risk from AI, kind: argument}
+      - {name: Statement on AI Risk, kind: work}
+  - heading: Single-agent safety
+    items:
+      - {name: Monitoring of AI systems, kind: method}
+      - {name: Interpretability, kind: area}
+      - {name: Emergent capabilities, kind: finding}
+      - {name: Robustness, kind: concept}
+      - {name: Adversarial example, kind: risk}
+      - {name: Trojan attack, kind: risk}
+      - {name: Proxy gaming, kind: risk}
+      - {name: Goodhart's law, kind: concept}
+      - {name: Honesty in AI, kind: concept}
+      - {name: Machine unlearning, kind: method}
+  - heading: Safety engineering and complex systems
+    items:
+      - {name: Risk decomposition, kind: method}
+      - {name: Defense in depth, kind: method}
+      - {name: Swiss cheese model, kind: concept}
+      - {name: System-theoretic process analysis, kind: method}
+      - {name: Normal accidents, kind: argument}
+      - {name: Black swan, kind: concept}
+      - {name: Complex system, kind: concept}
+      - {name: Safety culture, kind: concept}
+  - heading: Ethics and collective action
+    items:
+      - {name: Machine ethics, kind: area}
+      - {name: Moral uncertainty, kind: concept}
+      - {name: Value learning, kind: concept}
+      - {name: Collective action problem, kind: concept}
+      - {name: Evolutionary pressure on AI, kind: argument}
+      - {name: Bargaining and cooperation between AI systems, kind: concept}
+  - heading: The alignment problem
+    items:
+      - {name: AI alignment, kind: concept}
+      - {name: Outer and inner alignment, kind: concept}
+      - {name: Orthogonality thesis, kind: argument}
+      - {name: Instrumental convergence, kind: argument}
+      - {name: Power-seeking AI, kind: risk}
+      - {name: Optimal policies tend to seek power, kind: theorem}
+      - {name: Corrigibility, kind: concept}
+      - {name: Off-switch game, kind: concept}
+  - heading: Specification gaming and reward hacking
+    items:
+      - {name: Specification gaming, kind: risk}
+      - {name: Reward hacking, kind: risk}
+      - {name: Reward tampering, kind: risk}
+      - {name: Reward model overoptimization, kind: finding}
+      - {name: Concrete Problems in AI Safety, kind: work}
+      - {name: Negative side effects, kind: risk}
+      - {name: Impact regularization, kind: method}
+  - heading: Goal misgeneralization
+    items:
+      - {name: Goal misgeneralization, kind: risk}
+      - {name: Distributional shift, kind: concept}
+      - {name: Mesa-optimization, kind: concept}
+      - {name: Risks from Learned Optimization, kind: work}
+  - heading: Learning from human feedback
+    items:
+      - {name: Learning from human preferences, kind: method}
+      - {name: Reinforcement learning from human feedback, kind: method}
+      - {name: Reward model, kind: concept}
+      - {name: Constitutional AI, kind: method}
+      - {name: Direct preference optimization, kind: method}
+      - {name: Inverse reinforcement learning, kind: concept}
+      - {name: Cooperative inverse reinforcement learning, kind: method}
+  - heading: Scalable oversight
+    items:
+      - {name: Scalable oversight, kind: concept}
+      - {name: AI safety via debate, kind: method}
+      - {name: Iterated amplification, kind: method}
+      - {name: Recursive reward modeling, kind: method}
+      - {name: Weak-to-strong generalization, kind: finding}
+      - {name: Sandwiching, kind: method}
+      - {name: Eliciting latent knowledge, kind: open-problem}
+  - heading: Honesty and sycophancy
+    items:
+      - {name: Sycophancy, kind: risk}
+      - {name: Truthfulness, kind: concept}
+      - {name: TruthfulQA, kind: benchmark}
+      - {name: Unfaithful chain-of-thought, kind: finding}
+      - {name: Calibration of language models, kind: concept}
+  - heading: Deception and scheming
+    items:
+      - {name: Deceptive alignment, kind: risk}
+      - {name: Scheming, kind: risk}
+      - {name: Sleeper agents, kind: finding}
+      - {name: Alignment faking, kind: finding}
+      - {name: Situational awareness, kind: concept}
+      - {name: Sandbagging, kind: risk}
+      - {name: Model organisms of misalignment, kind: method}
+  - heading: Interpretability for safety
+    items:
+      - {name: Mechanistic interpretability, kind: area}
+      - {name: Circuits, kind: concept}
+      - {name: Superposition, kind: concept}
+      - {name: Sparse autoencoder, kind: method}
+      - {name: Linear probe, kind: method}
+      - {name: Activation steering, kind: method}
+      - {name: Representation engineering, kind: method}
+  - heading: AI control
+    items:
+      - {name: AI control, kind: concept}
+      - {name: Trusted monitoring, kind: method}
+      - {name: Untrusted monitoring, kind: method}
+      - {name: Control evaluation, kind: method}
+  - heading: Evaluations and red teaming
+    items:
+      - {name: Dangerous capability evaluation, kind: method}
+      - {name: Red teaming, kind: method}
+      - {name: Jailbreak, kind: risk}
+      - {name: Prompt injection, kind: risk}
+      - {name: Many-shot jailbreaking, kind: finding}
+      - {name: Universal adversarial suffix, kind: finding}
+      - {name: Biosecurity risk from AI, kind: risk}
+      - {name: Cyber offense capability, kind: risk}
+      - {name: Autonomous replication, kind: risk}
+  - heading: Safety cases and frontier safety policies
+    items:
+      - {name: Safety case, kind: method}
+      - {name: Responsible scaling policy, kind: policy}
+      - {name: AI safety level, kind: definition}
+      - {name: Frontier Safety Framework, kind: policy}
+      - {name: Preparedness Framework, kind: policy}
+      - {name: Frontier AI Safety Commitments, kind: policy}
+  - heading: Agent foundations and cooperative AI
+    items:
+      - {name: Agent foundations, kind: area}
+      - {name: Embedded agency, kind: concept}
+      - {name: Decision theory for AI, kind: concept}
+      - {name: Logical induction, kind: method}
+      - {name: Cooperative AI, kind: area}
+      - {name: Multi-agent risk, kind: risk}
+  - heading: Open problems
+    items:
+      - {name: The alignment problem for superhuman systems, kind: open-problem}
+      - {name: Detecting deception in models, kind: open-problem}
+      - {name: Verifying the absence of hidden goals, kind: open-problem}

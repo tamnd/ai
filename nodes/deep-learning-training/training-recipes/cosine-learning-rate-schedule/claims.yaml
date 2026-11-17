@@ -1,0 +1,373 @@
+# The claims of the cosine-learning-rate-schedule page (spec 07). The build computes the labels.
+
+# The method
+
+- id: c-sgdr-def
+  type: definitional
+  text: "Within the i-th run, SGDR decays the learning rate with a cosine annealing for each batch, ηt = ηmin + 1/2 (ηmax − ηmin)(1 + cos(π Tcur / Ti)), where ηmin and ηmax are ranges for the learning rate and Tcur accounts for how many epochs have been performed since the last restart."
+  evidence:
+    - {work: "loshchilov-2017-sgdr", role: original, locator: "p. 4", stance: for}
+
+- id: c-sgdr-purpose
+  type: attributive
+  text: "Loshchilov and Hutter propose a simple warm restart technique for stochastic gradient descent to improve its anytime performance when training deep neural networks."
+  evidence:
+    - {work: "loshchilov-2017-sgdr", role: original, locator: "p. 1", stance: for}
+
+- id: c-tcur
+  type: definitional
+  text: "Since Tcur is updated at each batch iteration t, it can take values such as 0.1 and 0.2; ηt = ηmax when t = 0 and Tcur = 0, and once Tcur = Ti the cos function outputs −1 and ηt = ηmin."
+  evidence:
+    - {work: "loshchilov-2017-sgdr", role: original, locator: "p. 4", stance: for}
+
+- id: c-restart-emulated
+  type: attributive
+  text: "In SGDR a restart is not performed from scratch but emulated by increasing the learning rate while the old value of x_t is used as the initial solution."
+  evidence:
+    - {work: "loshchilov-2017-sgdr", role: original, locator: "p. 4", stance: for}
+
+- id: c-tmult
+  type: definitional
+  text: "To improve anytime performance, SGDR can start with a small T_i and increase it by a factor of T_mult at every restart, as in the settings T_0 = 1, T_mult = 2 and T_0 = 10, T_mult = 2."
+  evidence:
+    - {work: "loshchilov-2017-sgdr", role: original, locator: "p. 4", stance: for}
+
+- id: c-same-range
+  type: attributive
+  text: "Loshchilov and Hutter note that it might be of interest to decrease ηmax and ηmin at every new restart, but keep them the same for every i to reduce the number of hyperparameters."
+  evidence:
+    - {work: "loshchilov-2017-sgdr", role: original, locator: "p. 4", stance: for}
+
+- id: c-incumbent
+  type: attributive
+  text: "Because warm restarts often temporarily worsen performance, SGDR recommends after the first run not the last x_t but the solution at the end of the last performed run, at eta_min, and so needs no separate validation set to choose a recommendation."
+  evidence:
+    - {work: "loshchilov-2017-sgdr", role: original, locator: "p. 4", stance: for}
+
+- id: c-two-hyperparameters
+  type: attributive
+  text: "Loshchilov and Hutter report that even without restarts the schedule of their eq. (5) is competitive with the default schedule of wide residual networks on CIFAR-10 and CIFAR-100, and that it needs only two hyperparameters: the initial learning rate and the total number of epochs."
+  evidence:
+    - {work: "loshchilov-2017-sgdr", role: original, locator: "p. 10", stance: for}
+
+- id: c-step-common
+  type: attributive
+  text: "A common learning rate schedule is to use a constant learning rate and divide it by a fixed constant at approximately regular intervals."
+  evidence:
+    - {work: "loshchilov-2017-sgdr", role: original, locator: "p. 2", stance: for}
+
+- id: c-resnet-imagenet
+  type: attributive
+  text: "He et al. train ResNets on ImageNet with SGD and a mini-batch size of 256; the learning rate starts from 0.1 and is divided by 10 when the error plateaus, for up to 60 x 10^4 iterations, with weight decay 0.0001 and momentum 0.9."
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "p. 4", stance: for}
+
+- id: c-resnet-cifar
+  type: attributive
+  text: "On CIFAR-10 He et al. start with a learning rate of 0.1, divide it by 10 at 32k and 48k iterations, and terminate training at 64k iterations, with a mini-batch size of 128."
+  evidence:
+    - {work: "he-2016-deep-residual-learning", role: original, locator: "p. 7", stance: for}
+
+- id: c-wrn-default
+  type: attributive
+  text: "The default schedule of Zagoruyko and Komodakis for wide residual networks, as described by Loshchilov and Hutter, uses SGD with an initial learning rate of 0.1, weight decay 0.0005, momentum 0.9 and minibatch size 128, and drops the learning rate by a factor of 0.2 at 60, 120 and 160 epochs, with a total budget of 200 epochs."
+  evidence:
+    - {work: "loshchilov-2017-sgdr", role: original, locator: "p. 4", stance: for}
+
+- id: c-wsd-def
+  type: definitional
+  text: "The Warmup-Stable-Decay (WSD) learning rate scheduler has three stages: a warmup stage that ends at step W, a stable training stage at the maximum learning rate that ends at step T, and a decay stage in which the rate is f(s - T) times the maximum, with f a decreasing function and 0 < f <= 1."
+  evidence:
+    - {work: "hu-2024-minicpm", role: original, locator: "p. 5", stance: for}
+
+- id: c-cooldown-def
+  type: definitional
+  text: "Hägele et al. define the constant learning rate with cooldown schedule with peak learning rate eta_max, total steps N, warmup steps N_warmup and cooldown steps N_decay: a linear warmup, then eta_max, then f(n, N, N_decay) eta_max with f monotonically decreasing."
+  evidence:
+    - {work: "hagele-2024-scaling-laws-beyond-fixed-durations", role: original, locator: "p. 3", stance: for}
+
+- id: c-cooldown-names
+  type: attributive
+  text: "The schedule that keeps the learning rate constant for most of training and decreases it only in a short final phase was previously called trapezoidal (Zhai et al., 2022) and later warmup-stable-decay (Hu et al., 2024); the cooldown typically takes the learning rate to zero."
+  evidence:
+    - {work: "hagele-2024-scaling-laws-beyond-fixed-durations", role: original, locator: "p. 3", stance: for}
+
+- id: c-one-minus-sqrt
+  type: definitional
+  text: "The (1-sqrt) cooldown is f(n, N, N_decay) = 1 - sqrt((n - (N - N_decay)) / N_decay)."
+  evidence:
+    - {work: "hagele-2024-scaling-laws-beyond-fixed-durations", role: original, locator: "p. 4", stance: for}
+
+- id: c-cooldown-advantage
+  type: attributive
+  text: "The main advantage of the constant schedule with cooldown is that it does not require the number of training steps to be specified in advance; the cooldown can be started at any time."
+  evidence:
+    - {work: "hagele-2024-scaling-laws-beyond-fixed-durations", role: original, locator: "p. 3", stance: for}
+
+- id: c-clr-def
+  type: definitional
+  text: "The triangular learning rate policy of cyclical learning rates increases the learning rate linearly and then decreases it linearly between two bounds; the parameter stepsize is the number of iterations in half a cycle."
+  evidence:
+    - {work: "smith-2017-cyclical-learning-rates", role: original, locator: "p. 2", stance: for}
+
+- id: c-clr-stepsize
+  type: attributive
+  text: "Smith reports that it is often good to set stepsize to 2 to 10 times the number of iterations in an epoch."
+  evidence:
+    - {work: "smith-2017-cyclical-learning-rates", role: original, locator: "p. 3", stance: for}
+
+# The derivations
+
+- id: c-mean-rate
+  type: mathematical
+  text: "The mean of the cosine schedule over one cycle, (1/T) times the integral of eta(t) from 0 to T, is (eta_max + eta_min) / 2."
+  assumes: ["one cycle of the cosine schedule with fixed eta_max, eta_min and length T"]
+  derivation: "derivations/mean-rate.md"
+
+- id: c-mean-discrete
+  type: mathematical
+  text: "Read at the T + 1 integer points t = 0..T the mean rate is exactly (eta_max + eta_min) / 2; read at the T points t = 0..T-1 it is (eta_max + eta_min) / 2 + (eta_max - eta_min) / (2T)."
+  assumes: ["one cycle of the cosine schedule", "T a positive integer"]
+  derivation: "derivations/mean-rate.md"
+
+- id: c-slope-ends
+  type: mathematical
+  text: "The slope of the cosine schedule is -(pi / 2T)(eta_max - eta_min) sin(pi t / T), which is zero at t = 0 and at t = T."
+  assumes: ["one cycle of the cosine schedule in continuous time"]
+  derivation: "derivations/slope.md"
+
+- id: c-slope-max
+  type: mathematical
+  text: "The magnitude of the slope is largest at t = T/2, where it is (pi/2)(eta_max - eta_min)/T, pi/2 times the constant slope of a linear decay between the same ends."
+  assumes: ["one cycle of the cosine schedule in continuous time", "eta_max > eta_min"]
+  derivation: "derivations/slope.md"
+
+- id: c-restart-epochs
+  type: mathematical
+  text: "With run lengths T_i = T_0 T_mult^i, restart k happens at epoch T_0 (T_mult^k - 1) / (T_mult - 1) for T_mult > 1, and at k T_0 for T_mult = 1."
+  assumes: ["the run lengths form a geometric sequence with ratio T_mult >= 1", "a restart happens exactly at the end of each run"]
+  derivation: "derivations/restart-epochs.md"
+
+- id: c-restart-example
+  type: mathematical
+  text: "For T_0 = 10 and T_mult = 2 the restarts are at epochs 10, 30, 70, 150 and 310."
+  assumes: ["SGDR run lengths T_0 T_mult^i"]
+  derivation: "derivations/restart-epochs.md"
+
+- id: c-noise-recursion
+  type: mathematical
+  text: "For SGD on f(x) = h x^2 / 2 with gradient h x + xi, where xi has mean zero and variance sigma^2 and is independent of x, the second moment follows v_{t+1} = (1 - eta_t h)^2 v_t + eta_t^2 sigma^2."
+  assumes: ["one-dimensional quadratic loss", "additive zero-mean noise independent of x and of the past", "plain SGD"]
+  derivation: "derivations/noise-floor.md"
+
+- id: c-noise-constant
+  type: mathematical
+  text: "With a constant rate eta and 0 < eta h < 2 the second moment tends to eta sigma^2 / (h (2 - eta h)), so the expected loss settles at a floor of about eta sigma^2 / 4, in proportion to eta."
+  assumes: ["one-dimensional quadratic loss", "additive zero-mean noise independent of x and of the past", "plain SGD"]
+  derivation: "derivations/noise-floor.md"
+
+- id: c-noise-decay
+  type: mathematical
+  text: "In the page's own run with h = 1, sigma^2 = 1 and 1,000 steps from eta = 0.1, a constant rate stays at v = 0.0526, while a cosine decay to 0 ends at 0.0036, a linear decay at 0.0044, a step decay by 10 at steps 500 and 750 at 0.0034 and a WSD schedule with a 20% linear cooldown at 0.0100."
+  assumes: ["one-dimensional quadratic loss", "additive zero-mean noise independent of x and of the past", "plain SGD", "the start is the floor of the constant rate 0.1"]
+  derivation: "derivations/noise-floor.md"
+
+# The evidence
+
+- id: c-sgdr-table1
+  type: empirical
+  text: "On WRN-28-10, SGDR without restarts and T_0 = 200 gave a median test error of 3.86% on CIFAR-10, against 4.24% and 4.13% for the default schedule with eta_0 = 0.1 and 0.05; on CIFAR-100, SGDR with T_0 = 10 and T_mult = 2 gave 19.58%, against 20.33% and 20.21%."
+  scope:
+    models: "WRN-28-10"
+    data: [cifar-10, cifar-100]
+    scale: "36.5M parameters, 200 epochs, median of 5 runs"
+    setting: "SGD with momentum, flip and translation augmentation"
+  evidence:
+    - {work: "loshchilov-2017-sgdr", role: original, locator: "p. 6", stance: for}
+
+- id: c-sgdr-faster
+  type: empirical
+  text: "With T_0 = 1, T_mult = 2 and T_0 = 10, T_mult = 2, SGDR reached test errors around 4% on CIFAR-10 and around 20% on CIFAR-100 about 2 to 4 times faster than the default schedule of Zagoruyko and Komodakis."
+  scope:
+    models: "WRN-28-10"
+    data: [cifar-10, cifar-100]
+    scale: "up to 200 epochs"
+    setting: "SGD with momentum and warm restarts"
+  evidence:
+    - {work: "loshchilov-2017-sgdr", role: original, locator: "p. 6", stance: for}
+
+- id: c-sgdr-overfit
+  type: empirical
+  text: "SGDR optimized the training loss faster than the default schedule until about epoch 120; after that the default schedule overfit, with a rising test error on CIFAR-10 and CIFAR-100, while SGDR showed only very mild overfitting."
+  scope:
+    models: "WRN-28-10"
+    data: [cifar-10, cifar-100]
+    scale: "200 epochs"
+    setting: "SGD with momentum"
+  evidence:
+    - {work: "loshchilov-2017-sgdr", role: original, locator: "p. 7", stance: for}
+
+- id: c-sgdr-ensemble
+  type: empirical
+  text: "For WRN-28-10 trained by SGDR with T0 = 10, Tmult = 2, the test error of 4.03% on CIFAR-10 and 19.57% on CIFAR-100 can be improved to 3.51% and 17.75% when M = 3 snapshots taken at epochs 30, 70 and 150 are used as an ensemble; increasing the number of runs N to 16 achieves 3.14% on CIFAR-10 and 16.21% on CIFAR-100."
+  scope:
+    models: "WRN-28-10"
+    data: [cifar-10, cifar-100]
+    scale: "1 to 16 runs of 150 epochs"
+    setting: "uniform averaging of softmax outputs of snapshots taken before warm restarts"
+  evidence:
+    - {work: "loshchilov-2017-sgdr", role: original, locator: "p. 8", stance: for}
+
+- id: c-sgdr-imagenet32
+  type: empirical
+  text: "On a downsampled ImageNet whose images have about 50 times fewer pixels than the original, SGDR with T0 = 10, Tmult = 2 and eta_max = 0.01 achieves a top-1 error of 39.24% and a top-5 error of 17.17%, matching the original AlexNet results."
+  scope:
+    models: "WRN-28-10"
+    data: [imagenet]
+    scale: "1000 classes at 32 x 32 pixels, about 40 epochs"
+    setting: "SGD with momentum and warm restarts, preliminary experiment"
+  evidence:
+    - {work: "loshchilov-2017-sgdr", role: original, locator: "p. 9", stance: for}
+
+- id: c-no-multimodality
+  type: attributive
+  text: "Loshchilov and Hutter state that the main purpose of their warm restarts is to improve anytime performance, and do not claim to observe any effect related to multi-modality."
+  evidence:
+    - {work: "loshchilov-2017-sgdr", role: original, locator: "p. 10", stance: for}
+
+- id: c-chinchilla-match
+  type: empirical
+  text: "Hoffmann et al. find that setting the learning rate schedule to approximately match the number of training tokens gives the best final loss regardless of model size."
+  scope:
+    models: "decoder-only Transformer language models"
+    data: [massivetext]
+    scale: "70M to 16B parameters"
+    setting: "AdamW with a cosine schedule that decays the learning rate 10 times"
+  evidence:
+    - {work: "hoffmann-2022-training-compute-optimal", role: original, locator: "p. 3", stance: for}
+
+- id: c-chinchilla-25
+  type: empirical
+  text: "When the cosine cycle overshoots the number of training steps by more than 25%, performance is noticeably degraded."
+  scope:
+    models: "decoder-only Transformer language models"
+    data: [massivetext]
+    scale: "cosine cycle lengths of 1 to 5 times the target number of steps"
+    setting: "AdamW with a cosine schedule that decays the learning rate 10 times"
+  evidence:
+    - {work: "hoffmann-2022-training-compute-optimal", role: original, locator: "p. 24", stance: for}
+
+- id: c-chinchilla-10x
+  type: attributive
+  text: "Hoffmann et al. use a 10x learning rate decay with the cosine schedule, in line with Rae et al. (2021), and assume that an optimally trained model has its cosine cycle length calibrated to the maximum number of steps."
+  evidence:
+    - {work: "hoffmann-2022-training-compute-optimal", role: original, locator: "p. 22", stance: for}
+
+- id: c-chinchilla-kaplan
+  type: attributive
+  text: "For a fixed cosine schedule to 130B tokens, intermediate loss estimates overestimate the loss of a model trained with a matching schedule length, and Hoffmann et al. argue that using them contributed to the conclusion that model size should grow faster than training data."
+  evidence:
+    - {work: "hoffmann-2022-training-compute-optimal", role: original, locator: "p. 3", stance: for}
+
+- id: c-llm-cosine-10
+  type: attributive
+  text: "In LLM training the cosine schedule reaches its maximum early after warmup and then decreases, typically to 10% of the maximum learning rate, and it has been the de facto standard since GPT and models such as Gopher, PaLM 2 and LLaMA."
+  evidence:
+    - {work: "hagele-2024-scaling-laws-beyond-fixed-durations", role: original, locator: "p. 2", stance: for}
+
+- id: c-cosine-continuation
+  type: attributive
+  text: "Extending a cosine schedule beyond the end of its cycle makes little progress because the final learning rate is too low, while rewarming the learning rate leads to loss spikes from which training only slowly recovers."
+  evidence:
+    - {work: "hagele-2024-scaling-laws-beyond-fixed-durations", role: original, locator: "p. 3", stance: for}
+
+- id: c-cooldown-match
+  type: empirical
+  text: "Replacing the cosine decay with a constant learning rate and a linear cooldown to zero over 20% of the steps gave an almost perfect match with the best cosine run for different training durations, with slightly less sensitivity to the learning rate."
+  scope:
+    models: "210M-parameter decoder-only Transformer"
+    data: [slimpajama]
+    scale: "runs of different lengths, learning-rate sweep"
+    setting: "AdamW, validation perplexity"
+  evidence:
+    - {work: "hagele-2024-scaling-laws-beyond-fixed-durations", role: original, locator: "p. 4", stance: for}
+
+- id: c-cooldown-sqrt-better
+  type: empirical
+  text: "The (1-sqrt) cooldown consistently outperformed linear decay, and the longer the training, the more linear cooldown was outperformed."
+  scope:
+    models: "decoder-only Transformer language models"
+    data: [slimpajama]
+    scale: "up to 200K steps, about 20B tokens"
+    setting: "AdamW, cooldowns over 20% of steps"
+  evidence:
+    - {work: "hagele-2024-scaling-laws-beyond-fixed-durations", role: original, locator: "p. 4", stance: for}
+
+- id: c-cooldown-20
+  type: empirical
+  text: "The benefit of a longer cooldown plateaued at around 20% of the steps, and a (1-sqrt) cooldown over only 5% of the steps nearly matched the cosine schedule on a 20B-token run."
+  scope:
+    models: "124M-parameter decoder-only Transformer and larger"
+    data: [slimpajama]
+    scale: "runs up to about 20B tokens"
+    setting: "AdamW, cooldown fraction sweep"
+  evidence:
+    - {work: "hagele-2024-scaling-laws-beyond-fixed-durations", role: original, locator: "p. 4", stance: for}
+
+- id: c-minicpm-cosine-t
+  type: empirical
+  text: "For training lengths S = 20N, 40N, 60N and 80N, the lowest loss was always achieved by the cosine schedule whose cycle T equals S; both T < S and T > S were not optimal."
+  scope:
+    models: "0.036B-parameter language model"
+    data: [unknown]
+    scale: "20N to 80N training tokens"
+    setting: "Cosine(T) and CosineLoop(T) schedules"
+  evidence:
+    - {work: "hu-2024-minicpm", role: original, locator: "p. 5", stance: for}
+
+- id: c-minicpm-decay-drop
+  type: empirical
+  text: "In the decay stage of WSD the loss decreased dramatically and quickly reached a value equal to or lower than the cosine schedule with T = S, and a checkpoint from before the decay could be trained further at the high learning rate and annealed later."
+  scope:
+    models: "0.036B-parameter language model"
+    data: [unknown]
+    scale: "up to 80N training tokens"
+    setting: "WSD schedules against Cosine(T) schedules"
+  evidence:
+    - {work: "hu-2024-minicpm", role: original, locator: "p. 6", stance: for}
+
+- id: c-minicpm-10
+  type: empirical
+  text: "Starting from the same stable-stage checkpoints, a decay over 10% of the total tokens was sufficient to achieve the best results, while a decay over 2.5% fell short."
+  scope:
+    models: "0.036B-parameter language model"
+    data: [unknown]
+    scale: "stable checkpoints at 40N, 60N and 80N tokens"
+    setting: "WSD decay length sweep"
+  evidence:
+    - {work: "hu-2024-minicpm", role: original, locator: "p. 6", stance: for}
+
+- id: c-clr-cifar
+  type: empirical
+  text: "With a cyclical learning rate, a CIFAR-10 network reached the final accuracy of 81.4% of the baseline in 25,000 iterations instead of 70,000."
+  scope:
+    models: "the Caffe CIFAR-10 example network"
+    data: [cifar-10]
+    scale: "25,000 and 70,000 iterations"
+    setting: "SGD with a cyclical learning rate policy against the baseline fixed schedule"
+  evidence:
+    - {work: "smith-2017-cyclical-learning-rates", role: original, locator: "p. 1", stance: for}
+
+# History
+
+- id: c-snapshot-history
+  type: historical
+  text: "The initial arXiv report on SGDR (Loshchilov and Hutter, 2016) inspired the follow-up study of Huang et al. (2016a), which takes M snapshots of the models obtained by SGDR right before the last M restarts and uses them as an ensemble."
+  evidence:
+    - {work: "loshchilov-2017-sgdr", role: original, locator: "p. 7", stance: for}
+
+- id: c-hagele-abstract
+  type: attributive
+  text: "Hägele et al. argue that scale and training research has been needlessly complex because the cosine schedule prevents training across different lengths for the same model size."
+  evidence:
+    - {work: "hagele-2024-scaling-laws-beyond-fixed-durations", role: original, locator: "p. 1", stance: for}
