@@ -43,3 +43,17 @@
   facts: the rating of each model in each arena, with its 95% interval, its number of battles, its rank, the developer and the date the leaderboard was published
   credit: LMArena leaderboard data (CC BY 4.0), https://huggingface.co/datasets/lmarena-ai/leaderboard-dataset
   note: 'A rating is the preference of the voters of one arena over one period, comparable only inside one snapshot of one arena (10.10). The dataset''s notes list the changes of method: Bradley-Terry in place of Elo from 2024-01-09, style control by default from 2025-05-16, re-weighting by frequency from 2025-07-23. The Agent Arena configs give an IPS score, not a rating, and are not read. ARC Prize is not a source: the terms of arcprize.org forbid access by a bot or a script and the aggregation of its content (read 2026-11-14), so its results come from Epoch AI''s Benchmarking Hub.'
+- id: arxiv
+  name: arXiv metadata
+  url: https://info.arxiv.org/help/api/
+  owner: Cornell University
+  licence: CC0-1.0
+  checked: "2026-11-14"
+  class: A
+  access: OAI-PMH (oaipmh.arxiv.org), one set per category; the robots.txt of export.arxiv.org, the host of the search API, disallows every path
+  rate: 1 request per 3 s
+  schedule: daily
+  standing: preprint
+  facts: titles, authors, dates, categories, DOIs and journal references; texts keep their own licences
+  credit: Thank you to arXiv for use of its open access interoperability.
+  note: The metadata is CC0; the abstracts are not kept.
