@@ -1,5 +1,5 @@
 ---
-tag: NEW-rotary-position-embedding
+tag: 0V8E5T
 kind: method
 slug: rotary-position-embedding
 name: Rotary position embedding
