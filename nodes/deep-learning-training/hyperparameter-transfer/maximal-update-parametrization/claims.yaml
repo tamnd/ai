@@ -1,0 +1,551 @@
+# The claims of the maximal update parametrization page (spec 07). The build computes the labels.
+
+# Setting
+
+- id: c-tp5-tuning-cost
+  type: attributive
+  text: "Hyperparameter tuning in deep learning is an expensive process, prohibitively so for neural networks with billions of parameters."
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 1", stance: for}
+
+- id: c-tp5-stable
+  type: attributive
+  text: "In the Maximal Update Parametrization (muP), many optimal hyperparameters remain stable even as model size changes."
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 1", stance: for}
+
+- id: c-tp5-mutransfer
+  type: definitional
+  text: "muTransfer parametrizes the target model in muP, tunes the hyperparameters indirectly on a smaller model, and zero-shot transfers them to the full-sized model, without directly tuning the latter at all."
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 1", stance: for}
+
+- id: c-tp5-sp-imbalance
+  type: attributive
+  text: "The standard parametrization ensures activations are of unit order at initialization, but causes them to blow up in wide models during training, essentially due to an imbalance of per-layer learning rates."
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 1", stance: for}
+
+- id: c-tp5-fig1
+  type: empirical
+  text: "In a Transformer trained with Adam, the optimal learning rate is stable with width in muP but far from so in the standard parametrization."
+  scope:
+    models: "Transformers of widths 128 to 8192 (Yang et al.)"
+    data: ["wikitext-2"]
+    scale: "unknown"
+    setting: "training loss against learning rate"
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 2", stance: for}
+
+- id: c-tp4-ntk-features
+  type: attributive
+  text: "In the NTK limit, the last-layer features learned during pretraining are essentially the same as those from random initialization."
+  evidence:
+    - {work: "yang-2020-feature-learning-infinite-width-networks", role: original, locator: "p. 1", stance: for}
+
+- id: c-tp4-abc
+  type: definitional
+  text: "An abc-parametrization of an L-hidden-layer perceptron writes each weight as W^l = n^(-a_l) w^l for the trainable parameter w^l, initializes each entry of w^l from N(0, n^(-2 b_l)), and uses the SGD learning rate eta n^(-c) with eta independent of the width."
+  evidence:
+    - {work: "yang-2020-feature-learning-infinite-width-networks", role: original, locator: "p. 2", stance: for}
+
+- id: c-tp4-sp-ntp
+  type: definitional
+  text: "The NTK parametrization has a_1 = 0 and a_l = 1/2 for l >= 2, b_l = 0 and c = 0; the standard parametrization, the default in PyTorch, has a_l = 0, b_1 = 0 and b_l = 1/2 for l >= 2, and c = 0."
+  evidence:
+    - {work: "yang-2020-feature-learning-infinite-width-networks", role: original, locator: "p. 2", stance: for}
+
+- id: c-tp4-c-too-small
+  type: attributive
+  text: "If c is too small, so the learning rate is too large, SGD can blow up preactivations or logits; if c is too large, the function computed by the network does not change in finite time."
+  evidence:
+    - {work: "yang-2020-feature-learning-infinite-width-networks", role: original, locator: "p. 2", stance: for}
+
+- id: c-tp4-dichotomy
+  type: attributive
+  text: "By the Dynamical Dichotomy theorem, any nontrivial stable abc-parametrization yields an infinite-width limit that either lets the embedding evolve nontrivially or is described by kernel gradient descent in function space, but not both."
+  evidence:
+    - {work: "yang-2020-feature-learning-infinite-width-networks", role: original, locator: "p. 2", stance: for}
+
+- id: c-tp4-symmetry
+  type: attributive
+  text: "For every theta, f_t(xi) stays fixed for all t and xi if we set a_l <- a_l + theta, b_l <- b_l - theta and c <- c - 2 theta; changing a_l and b_l this way effectively gives w^l a per-layer learning rate."
+  evidence:
+    - {work: "yang-2020-feature-learning-infinite-width-networks", role: original, locator: "p. 8", stance: for}
+
+- id: c-tp4-thm36
+  type: attributive
+  text: "A nontrivial stable abc-parametrization admits feature learning if and only if it evolves the feature kernel, if and only if r = 0."
+  evidence:
+    - {work: "yang-2020-feature-learning-infinite-width-networks", role: original, locator: "p. 10", stance: for}
+
+- id: c-tp4-thm38
+  type: attributive
+  text: "A nontrivial stable abc-parametrization is in kernel regime if and only if r > 0; NTP is a typical example, with r = 1/2."
+  evidence:
+    - {work: "yang-2020-feature-learning-infinite-width-networks", role: original, locator: "p. 10", stance: for}
+
+- id: c-tp4-f0
+  type: attributive
+  text: "Any nontrivial stable feature learning abc-parametrization must have the network output at initialization go to 0 as the width goes to infinity, for every input."
+  evidence:
+    - {work: "yang-2020-feature-learning-infinite-width-networks", role: original, locator: "p. 10", stance: for}
+
+- id: c-tp4-thm41
+  type: attributive
+  text: "An L-hidden-layer MLP in standard parametrization can only allow an SGD learning rate of order O(1/n) if the output must stay bounded; in this case it is in kernel regime and does not admit feature learning."
+  evidence:
+    - {work: "yang-2020-feature-learning-infinite-width-networks", role: original, locator: "p. 12", stance: for}
+
+# The method
+
+- id: c-tp4-lln-readout
+  type: attributive
+  text: "After one update, x^L becomes correlated with W^(L+1), so W^(L+1) x^L scales like n^(1 - a - b) by the Law of Large Numbers, whereas at initialization they are independent and it scales like n^(1/2 - a - b) by the Central Limit Theorem."
+  evidence:
+    - {work: "yang-2020-feature-learning-infinite-width-networks", role: original, locator: "p. 13", stance: for}
+
+- id: c-tp4-first-layer
+  type: attributive
+  text: "Without a change to the first layer, the first-layer preactivation effectively stays fixed throughout training even if the first-layer weights are trained."
+  evidence:
+    - {work: "yang-2020-feature-learning-infinite-width-networks", role: original, locator: "p. 13", stance: for}
+
+- id: c-tp4-mup-def
+  type: definitional
+  text: "The Maximal Update Parametrization of an L-hidden-layer MLP has c = 0, b_l = 1/2 for every l, a_1 = -1/2, a_l = 0 for the hidden layers and a_(L+1) = 1/2."
+  evidence:
+    - {work: "yang-2020-feature-learning-infinite-width-networks", role: original, locator: "p. 14", stance: for}
+
+- id: c-tp4-unique
+  type: attributive
+  text: "In muP every weight matrix is updated maximally and the last layer is also initialized maximally; muP is the unique stable abc-parametrization with this property."
+  evidence:
+    - {work: "yang-2020-feature-learning-infinite-width-networks", role: original, locator: "p. 15", stance: for}
+
+- id: c-tp5-table3
+  type: definitional
+  text: "Table 3 of Tensor Programs V gives muP for general networks: input weights and all biases have initialization variance 1/fan_in, SGD learning rate fan_out and Adam learning rate 1; output weights have variance 1/fan_in^2, SGD learning rate 1/fan_in and Adam learning rate 1/fan_in; hidden weights have variance 1/fan_in, SGD learning rate 1 and Adam learning rate 1/fan_in."
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 5", stance: for}
+
+- id: c-tp5-table3-sp
+  type: definitional
+  text: "In standard parametrization every learning rate in Table 3 is 1 and the output weights have variance 1/fan_in."
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 5", stance: for}
+
+- id: c-tp5-eq4
+  type: definitional
+  text: "With a base width n_0 and n~ = n/n_0, the muP MLP initializes the output layer with variance 1/(n n~) and uses SGD learning rates eta n~ for the input layer and biases, eta for the hidden layer and eta/n~ for the output layer."
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 5", stance: for}
+
+- id: c-tp5-base-equal
+  type: attributive
+  text: "At width n = n_0 all the extra factors are 1 and the parametrization is identical to SP; as n grows, muP determines a different set of networks and optimization trajectory than SP."
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 5", stance: for}
+
+- id: c-tp5-adam-new
+  type: attributive
+  text: "Yang and Hu covered only SGD; Tensor Programs V derives muP for Adam as well."
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 3", stance: for}
+
+- id: c-tp5-attn-def
+  type: definitional
+  text: "The Maximal Update Parametrization for a Transformer is given by Table 3 and 1/d attention: the attention logit is calculated as q^T k / d, where query q and key k have dimension d."
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 6", stance: for}
+
+- id: c-tp5-attn-why
+  type: attributive
+  text: "During training q and k become correlated, so q^T k scales like d by the Law of Large Numbers, in contrast to the original motivation that q and k are uncorrelated at initialization so the Central Limit Theorem applies."
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 6", stance: for}
+
+- id: c-tp5-perceptron
+  type: attributive
+  text: "In a one-hidden-layer linear perceptron in SP, the output blows up with width after one step of SGD with learning rate 1 because U^T U = Theta(n) by the Law of Large Numbers."
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 6", stance: for}
+
+- id: c-tp5-table8
+  type: attributive
+  text: "Table 8 is an equivalent muP formulation in which input and output weights can be tied, a common design feature of Transformer models; it can be derived from Table 3 via Lemma J.1."
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 23", stance: for}
+
+- id: c-tp5-clt
+  type: attributive
+  text: "By the Central Limit Theorem, 1/sqrt(n) is the right order of scaling for a sum of n iid zero-mean terms; the factor 1/n sends the scaled sum to 0, and the factor 1 makes its variance blow up."
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 3", stance: for}
+
+- id: c-tp5-fig5
+  type: empirical
+  text: "After one step of training in SP, the logits and attention logits of a Transformer blow up with width, but the word embeddings do not; in muP all three are well-behaved with width."
+  scope:
+    models: "Transformers of widths up to about 4000 (Yang et al.)"
+    data: ["unknown"]
+    scale: "unknown"
+    setting: "coordinatewise change from initialization over 4 steps of Adam"
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 7", stance: for}
+
+- id: c-tp5-sp-lower-lr
+  type: attributive
+  text: "Scaling down the learning rate with width in SP effectively means the word embeddings are not learned in large width models, because they update by a width-independent amount each step."
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 7", stance: for}
+
+- id: c-tp5-glorot
+  type: attributive
+  text: "In the linear perceptron example Glorot initialization scales asymptotically like muP, but with layernorm or batchnorm Glorot causes logit blowup like SP while muP does not."
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 7", stance: for}
+
+- id: c-tp5-sp-adam
+  type: attributive
+  text: "In SP with Adam and a learning rate of Theta(1), the update of a hidden weight has Theta(1) coordinates and the preactivations blow up like Theta(n)."
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 47", stance: for}
+
+- id: c-tp5-sp-sgd
+  type: attributive
+  text: "In SP with SGD, the gradient of an n-by-n weight has Theta(1/sqrt(n)) coordinates, so a Theta(1) learning rate makes the preactivations scale like Theta(sqrt(n)); a Theta(1/width) learning rate avoids the blow-up but gives a kernel-regime limit."
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 48", stance: for}
+
+- id: c-tp5-maximal
+  type: attributive
+  text: "muP is the unique feature learning parametrization that updates all parameters maximally, so the learning rate of each parameter plays approximately the same role in finite-width networks as in the infinite-width limit."
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 48", stance: for}
+
+- id: c-tp5-lemma
+  type: attributive
+  text: "Lemma J.1 states the equivalence of parametrizations under a change of multiplier, initialization and learning rate, which turns Table 3 into Tables 8 and 9."
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 46", stance: for}
+
+# Derivations
+
+- id: c-aligned-lln
+  type: mathematical
+  text: "An update Delta W = -eta a x^T built from its own input moves Delta W x by eta |x|^2 a, Theta(n eta) per coordinate when x has Theta(1) coordinates, while a matrix with independent entries of the same size moves it only Theta(sqrt(n) eta)."
+  assumes: ["x has n coordinates of size Theta(1)", "the random matrix has independent zero-mean entries"]
+  derivation: feature-update
+
+- id: c-sp-readout-sgd
+  type: mathematical
+  text: "Under SP, one SGD step at a fixed learning rate eta changes the network output by Theta(n eta)."
+  assumes: ["a two-hidden-layer tanh MLP with fixed input and output dimension and hidden width n", "one step of SGD or Adam from initialization at a fixed base learning rate eta"]
+  derivation: feature-update
+
+- id: c-sp-hidden-sgd
+  type: mathematical
+  text: "Under SP, one SGD step changes the hidden preactivations by Theta(sqrt(n) eta), not Theta(n eta)."
+  assumes: ["a two-hidden-layer tanh MLP with fixed input and output dimension and hidden width n", "one step of SGD or Adam from initialization at a fixed base learning rate eta"]
+  derivation: feature-update
+
+- id: c-sp-hidden-adam
+  type: mathematical
+  text: "Under SP, one Adam step changes the hidden preactivations by Theta(n eta), and the output by at least that."
+  assumes: ["a two-hidden-layer tanh MLP with fixed input and output dimension and hidden width n", "one step of SGD or Adam from initialization at a fixed base learning rate eta", "Adam with epsilon negligible against the gradient"]
+  derivation: feature-update
+
+- id: c-sp-input-sgd
+  type: mathematical
+  text: "Under SP, one SGD step changes the first-layer preactivations by Theta(eta / sqrt(n)), which vanishes as the width grows."
+  assumes: ["a two-hidden-layer tanh MLP with fixed input and output dimension and hidden width n", "one step of SGD or Adam from initialization at a fixed base learning rate eta"]
+  derivation: feature-update
+
+- id: c-mup-constant
+  type: mathematical
+  text: "Under muP with SGD or Adam, one step changes the first-layer preactivations, the last hidden preactivations and the output by Theta(eta), independently of the width."
+  assumes: ["a two-hidden-layer tanh MLP with fixed input and output dimension and hidden width n", "one step of SGD or Adam from initialization at a fixed base learning rate eta"]
+  derivation: feature-update
+
+- id: c-attn-random
+  type: mathematical
+  text: "If q and k are independent, q^T k has mean 0 and standard deviation sqrt(d) s^2, so q^T k / sqrt(d) stays Theta(1) and q^T k / d goes to 0."
+  assumes: ["query and key coordinates with zero mean and variance s^2, independent across coordinates", "the head dimension d grows"]
+  derivation: attention-scaling
+
+- id: c-attn-aligned
+  type: mathematical
+  text: "If k = rho q + sqrt(1 - rho^2) z with rho != 0 and z independent of q, q^T k / d goes to rho s^2 and q^T k / sqrt(d) grows like sqrt(d)."
+  assumes: ["query and key coordinates with zero mean and variance s^2, independent across coordinates", "the head dimension d grows"]
+  derivation: attention-scaling
+
+- id: c-attn-base
+  type: mathematical
+  text: "The muP attention scale alpha sqrt(d_0) / d equals the SP scale alpha / sqrt(d) at d = d_0 and is sqrt(d_0 / d) times it elsewhere."
+  assumes: ["alpha and d_0 are positive constants"]
+  derivation: attention-scaling
+
+- id: c-lemma-sgd
+  type: mathematical
+  text: "Under SGD, replacing (A, B, C) by (A theta, B / theta, C / theta^2) leaves the function computed at every step unchanged."
+  assumes: ["a parameter W enters the network only through A W", "W is initialized from N(0, B^2) and trained with learning rate C"]
+  derivation: multiplier-equivalence
+
+- id: c-lemma-adam
+  type: mathematical
+  text: "Under Adam with epsilon = 0, replacing (A, B, C) by (A theta, B / theta, C / theta) leaves the function computed at every step unchanged."
+  assumes: ["a parameter W enters the network only through A W", "W is initialized from N(0, B^2) and trained with learning rate C"]
+  derivation: multiplier-equivalence
+
+- id: c-table8-readout
+  type: mathematical
+  text: "The muP readout of Table 3 (multiplier 1, variance 1/n^2, learning rate eta/n) computes the same function at every step as the readout with multiplier 1/n, variance 1 and learning rate eta n under SGD or eta under Adam."
+  assumes: ["a parameter W enters the network only through A W", "W is initialized from N(0, B^2) and trained with learning rate C", "Adam with epsilon = 0"]
+  derivation: multiplier-equivalence
+
+# Evidence
+
+- id: c-tp5-iwslt
+  type: empirical
+  text: "On IWSLT14 De-En, muTransfer from a 0.25x-width proxy reaches validation BLEU of 35.27, 35.33, 35.45 and 35.53 at the 25th, 50th, 75th and 100th percentiles of 25 trials, against 33.62, 35.00, 35.35 and 35.45 for tuning the 1x model with the same compute."
+  scope:
+    models: "post-layernorm fairseq Transformer, 40M parameters, proxy at 1/4 width (Yang et al.)"
+    data: ["IWSLT14 De-En"]
+    scale: "40M parameters"
+    setting: "random search over learning rate, output multiplier and attention multiplier; 25 trials"
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 9", stance: for}
+
+- id: c-tp5-naive
+  type: empirical
+  text: "Naive transfer of hyperparameters from the 0.25x model with SP instead of muP fails: training diverged."
+  scope:
+    models: "post-layernorm fairseq Transformer, 40M parameters, proxy at 1/4 width (Yang et al.)"
+    data: ["IWSLT14 De-En"]
+    scale: "40M parameters"
+    setting: "random search over learning rate, output multiplier and attention multiplier; 25 trials"
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 9", stance: for}
+
+- id: c-tp5-wmt-setup
+  type: empirical
+  text: "For WMT14 En-De the target is the large post-layernorm Transformer with 211M parameters, tuned on a proxy model with 15M parameters by shrinking d_model, d_ffn and n_head."
+  scope:
+    models: "large post-layernorm Transformer, 211M parameters (Yang et al.)"
+    data: ["WMT14 En-De"]
+    scale: "211M parameters"
+    setting: "random search over learning rate, output multiplier and attention multiplier"
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 9", stance: for}
+
+- id: c-tp5-bert-proxy
+  type: empirical
+  text: "For BERT the proxy model, BERT-prototype, has roughly 13M parameters and is scaled in depth as well as width."
+  scope:
+    models: "Megatron pre-layernorm BERT (Yang et al.)"
+    data: ["BERT pretraining data"]
+    scale: "350M parameters"
+    setting: "one proxy scaled in width and depth"
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 9", stance: for}
+
+- id: c-tp5-wmt
+  type: empirical
+  text: "On WMT14 En-De, muTransfer from the 0.25x proxy reaches validation BLEU of 25.94, 26.34 and 26.42 (worst, median, best), matching the fairseq default of 26.40, while tuning the 1x model with 3 samples diverged in the worst trial and reached 25.69 at best."
+  scope:
+    models: "large post-layernorm Transformer, 211M parameters (Yang et al.)"
+    data: ["WMT14 En-De"]
+    scale: "211M parameters"
+    setting: "random search over learning rate, output multiplier and attention multiplier"
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 10", stance: for}
+
+- id: c-tp5-bert
+  type: empirical
+  text: "Transferring from the proxy BERT-prototype, BERT-large reaches test loss 1.683 and MNLI 87.0/86.5, against 1.731 and 86.3/86.2 for the Megatron default, with total tuning cost equal to pretraining a single BERT-large."
+  scope:
+    models: "Megatron pre-layernorm BERT-base and BERT-large, proxy of about 13M parameters (Yang et al.)"
+    data: ["BERT pretraining data", "MNLI", "QQP"]
+    scale: "350M parameters"
+    setting: "one proxy scaled in width and depth, 256 samples"
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 10", stance: for}
+
+- id: c-tp5-gpt3-proxy
+  type: empirical
+  text: "For GPT-3 6.7B, the proxy model shrinks the width to 256, giving about 40 million parameters, 168 times smaller than the target, and the total tuning cost was 7% of the total pretraining cost."
+  scope:
+    models: "GPT-3 6.7B with relative attention, 32 blocks of width 4096; proxy of width 256 (Yang et al.)"
+    data: ["GPT-3 training data"]
+    scale: "6.7B parameters"
+    setting: "random search on the proxy, FP32 training of the target"
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 10", stance: for}
+
+- id: c-tp5-gpt3-caveats
+  type: empirical
+  text: "The re-run baseline with the original GPT-3 hyperparameters mistakenly used absolute attention, and the muTransfer model was trained in FP32 because of frequent divergences, while the original and the re-run used FP16."
+  scope:
+    models: "GPT-3 6.7B with relative attention, 32 blocks of width 4096; proxy of width 256 (Yang et al.)"
+    data: ["GPT-3 training data"]
+    scale: "6.7B parameters"
+    setting: "random search on the proxy, FP32 training of the target"
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 10", stance: for}
+
+- id: c-tp5-gpt3-13b
+  type: empirical
+  text: "The muTransfer GPT-3 6.7B model outperforms the published 6.7B model and is comparable to the twice-as-large 13B model across the evaluation suite."
+  scope:
+    models: "GPT-3 6.7B with relative attention, 32 blocks of width 4096; proxy of width 256 (Yang et al.)"
+    data: ["GPT-3 training data"]
+    scale: "6.7B parameters"
+    setting: "random search on the proxy, FP32 training of the target"
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 10", stance: for}
+
+- id: c-tp5-table7
+  type: empirical
+  text: "The muTransfer GPT-3 6.7B model reaches validation loss 1.98 against 2.03 for the re-run, and LAMBADA zero-shot accuracy 73.5 against 70.3 for the published 6.7B model and 72.5 for the 13B model."
+  scope:
+    models: "GPT-3 6.7B with relative attention, 32 blocks of width 4096; proxy of width 256 (Yang et al.)"
+    data: ["GPT-3 training data"]
+    scale: "6.7B parameters"
+    setting: "random search on the proxy, FP32 training of the target"
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 11", stance: for}
+
+- id: c-tp5-few-shot
+  type: empirical
+  text: "On LAMBADA few-shot the muTransfer model scores 74.7, below the re-run at 77.1 and the published 6.7B model at 79.1."
+  scope:
+    models: "GPT-3 6.7B with relative attention, 32 blocks of width 4096; proxy of width 256 (Yang et al.)"
+    data: ["GPT-3 training data"]
+    scale: "6.7B parameters"
+    setting: "random search on the proxy, FP32 training of the target"
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 11", stance: for}
+
+- id: c-tp5-wider
+  type: empirical
+  text: "Wider is always better in training loss under muP throughout training, given the same hyperparameters, but not in SP."
+  scope:
+    models: "muP and SP Transformers of widths 128 to 32768 (Yang et al.)"
+    data: ["wikitext-2", "GPT-3 training data"]
+    scale: "unknown"
+    setting: "fixed hyperparameters across width"
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 11", stance: for}
+
+- id: c-tp5-debug
+  type: attributive
+  text: "Checking that wider is better early in training gives a cheap way to debug a muP implementation."
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 11", stance: for}
+
+- id: c-tp4-omniglot
+  type: empirical
+  text: "On Omniglot 1-shot 5-way meta-test, the muP limit of a 1-hidden-layer linear MLP reaches 66.42% accuracy against 41.68% for its GP and NTK limits and 47.60% and 47.82% for the relu GP and NTK limits, and finite-width muP networks approach it from below."
+  scope:
+    models: "1-hidden-layer MLPs and their infinite-width limits (Yang and Hu)"
+    data: ["Omniglot"]
+    scale: "unknown"
+    setting: "first-order MAML pretraining"
+  evidence:
+    - {work: "yang-2020-feature-learning-infinite-width-networks", role: original, locator: "p. 28", stance: for}
+
+- id: c-tp4-word2vec
+  type: attributive
+  text: "On Word2Vec and few-shot learning on Omniglot, the feature learning infinite-width networks outperform both NTK baselines and finite-width networks, with the latter approaching the infinite-width performance as width increases."
+  evidence:
+    - {work: "yang-2020-feature-learning-infinite-width-networks", role: original, locator: "p. 2", stance: for}
+
+# Limitations
+
+- id: c-tp5-table1
+  type: attributive
+  text: "Optimization-related hyperparameters, initialization and parameter multipliers can be muTransferred; regularization hyperparameters such as dropout and weight decay cannot; transfer is across width, and empirically across depth, batch size, training time and sequence length."
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 2", stance: for}
+
+- id: c-tp5-regularization
+  type: attributive
+  text: "The amount of regularization naturally depends on both the model size and the data size, so transfer should not be expected to work if the parametrization depends only on model size."
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 8", stance: for}
+
+- id: c-tp5-minimums
+  type: empirical
+  text: "For language modeling on Transformers, hyperparameters generally transfer if some minimum width (e.g. 256), depth (e.g. 4), batch size (e.g. 32), sequence length (e.g. 128) and number of training steps (e.g. 5000) are met."
+  scope:
+    models: "pre-layernorm muP Transformers (Yang et al.)"
+    data: ["wikitext-2"]
+    scale: "unknown"
+    setting: "sweeps of one hyperparameter along width and depth, 5 seeds"
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 8", stance: for}
+
+- id: c-tp5-depth-init
+  type: empirical
+  text: "The best initialization standard deviation does not seem to transfer well across depth, and transfer across depth only works for pre-layernorm Transformers."
+  scope:
+    models: "pre-layernorm and post-layernorm muP Transformers (Yang et al.)"
+    data: ["wikitext-2"]
+    scale: "unknown"
+    setting: "sweeps of one hyperparameter along width and depth"
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 8", stance: for}
+
+- id: c-tp5-finetune
+  type: attributive
+  text: "In settings such as finetuning on small datasets, where regularization is the bottleneck, muTransfer may not be sufficient."
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 2", stance: for}
+
+- id: c-tp5-puzzle
+  type: attributive
+  text: "It is theoretically unclear why the hyperparameter optimum converges quickly with width while the network function and its loss converge much more slowly."
+  evidence:
+    - {work: "yang-2022-tensor-programs-v-hyperparameter-transfer", role: original, locator: "p. 12", stance: for}
+
+- id: c-ev-alignment
+  type: attributive
+  text: "The derivations of muP-style stability constraints assume that parameter updates are sufficiently correlated with the data to change the scaling exponent of the activations; Everett et al. call this correlation alignment."
+  evidence:
+    - {work: "everett-2024-scaling-exponents-parameterizations-optimizers", role: original, locator: "p. 2", stance: for}
+
+- id: c-ev-scale
+  type: empirical
+  text: "Everett et al. train tens of thousands of models with three optimizers, four parameterizations, several alignment assumptions, more than a dozen learning rates and fourteen model sizes up to 26.8B parameters."
+  scope:
+    models: "decoder-only Transformers up to 26.8B parameters (Everett et al.)"
+    data: ["unknown"]
+    scale: "26.8B parameters"
+    setting: "width scaling across parameterizations and optimizers"
+  evidence:
+    - {work: "everett-2024-scaling-exponents-parameterizations-optimizers", role: original, locator: "p. 1", stance: for}
+
+- id: c-ev-all
+  type: attributive
+  text: "All parameterizations, not just muP, can achieve hyperparameter transfer, and a per-layer learning rate prescription for standard parameterization outperforms muP."
+  evidence:
+    - {work: "everett-2024-scaling-exponents-parameterizations-optimizers", role: original, locator: "p. 1", stance: for}
+
+- id: c-ev-sp-adam
+  type: attributive
+  text: "The best prescription for Adam scales the learning rate of the embedding layer as O(1) and of the hidden and readout layers as O(1/n) in standard parameterization."
+  evidence:
+    - {work: "everett-2024-scaling-exponents-parameterizations-optimizers", role: original, locator: "p. 2", stance: for}
+
+- id: c-ev-sgd
+  type: attributive
+  text: "For SGD in standard parameterization, under common assumptions the hidden-layer learning rate would ideally scale like O(1/sqrt(n)) and the readout learning rate like O(1/n)."
+  evidence:
+    - {work: "everett-2024-scaling-exponents-parameterizations-optimizers", role: original, locator: "p. 1", stance: for}
+
+- id: c-ev-epsilon
+  type: attributive
+  text: "The epsilon parameter in Adam must be scaled correctly to avoid gradient underflow; Adam-atan2 is a numerically stable, scale-invariant version of Adam that eliminates epsilon."
+  evidence:
+    - {work: "everett-2024-scaling-exponents-parameterizations-optimizers", role: original, locator: "p. 1", stance: for}
