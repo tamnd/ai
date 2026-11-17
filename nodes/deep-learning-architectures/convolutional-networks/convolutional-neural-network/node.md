@@ -1,5 +1,5 @@
 ---
-tag: NEW-convolutional-neural-network
+tag: GNXZCP
 kind: architecture
 slug: convolutional-neural-network
 name: Convolutional neural network
