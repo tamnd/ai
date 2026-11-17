@@ -1,0 +1,406 @@
+# The claims of the weight normalization page (spec 07). The build computes the labels.
+
+# Setting
+
+- id: c-abstract
+  type: attributive
+  text: "Salimans and Kingma present weight normalization as a reparameterization of the weight vectors of a network that separates their length from their direction, and say it improves the conditioning of the optimization problem and speeds up the convergence of stochastic gradient descent."
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "the abstract", stance: for}
+
+- id: c-no-batch-dependence
+  type: attributive
+  text: "Salimans and Kingma say weight normalization is inspired by batch normalization but adds no dependence between the examples of a minibatch, so it also applies to recurrent models such as LSTMs and to noise-sensitive uses such as deep reinforcement learning and generative models."
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "the abstract", stance: for}
+
+- id: c-curvature
+  type: attributive
+  text: "Salimans and Kingma note that the success of first-order gradient methods depends on the curvature of the objective, and that the curvature is not invariant to reparameterization, so equivalent parameterizations of one model can differ in how easy they are to optimize."
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "p. 1", stance: for}
+
+- id: c-natural-gradient
+  type: attributive
+  text: "Salimans and Kingma follow the approach of keeping standard first-order gradient descent without preconditioning but changing the parameterization of the model so that the gradients are more like whitened natural gradients, an approach that batch normalization also takes."
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "p. 2", stance: for}
+
+- id: c-neuron
+  type: definitional
+  text: "A neuron computes y = phi(w . x + b), with a k-dimensional weight vector w, a scalar bias b, a k-dimensional input x and an elementwise nonlinearity phi."
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "p. 2", stance: for}
+
+- id: c-wn
+  type: definitional
+  text: "Weight normalization writes each weight vector as w = g v / ||v||, with a k-dimensional vector v and a scalar g, and runs stochastic gradient descent in v and g instead of w; the norm of w is then g, whatever v is."
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "p. 2", stance: for}
+
+- id: c-earlier-work
+  type: attributive
+  text: "Salimans and Kingma contrast weight normalization with earlier work that optimized in w and only normalized the weight vector after each gradient step."
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "p. 2", stance: for}
+
+- id: c-log-scale
+  type: empirical
+  text: "Learning g through a log-scale parameter s with g = exp(s) gave test results neither significantly better nor worse than learning g directly, and optimization was slightly slower."
+  scope: &sk
+    models: "the networks of the paper"
+    data: [unknown]
+    scale: "unknown"
+    setting: "the authors' report of their own experiments"
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "p. 2", stance: for}
+
+# The method
+
+- id: c-batch-size-free-grad
+  type: attributive
+  text: "Salimans and Kingma point out that, unlike those of batch normalization, the gradient expressions of weight normalization do not depend on the minibatch size, so their overhead is minimal."
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "p. 3", stance: for}
+
+- id: c-two-effects
+  type: attributive
+  text: "Salimans and Kingma read the projection form as two effects, a scaling of the weight gradient by g/||v|| and a projection of it away from the current weight vector, and argue that both bring the covariance matrix of the gradient closer to the identity."
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "p. 3", stance: for}
+
+- id: c-adam-qualitative
+  type: empirical
+  text: "The monotone growth of ||v|| does not strictly hold with Adam or with momentum, but Salimans and Kingma report that they still see the same effect qualitatively."
+  scope: *sk
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "p. 3", stance: for}
+
+- id: c-lr-robust
+  type: empirical
+  text: "Networks with weight normalization worked well over a much wider range of learning rates than with the usual parameterization; with too large a rate the norm of v grows quickly until the effective learning rate is suitable."
+  scope: *sk
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "p. 3", stance: for}
+
+- id: c-covariance
+  type: attributive
+  text: "If C is the covariance of the gradient in w, the covariance of the gradient in v is (g^2/||v||^2) M_w C M_w; Salimans and Kingma report that w is often close to a dominant eigenvector of C, so removing that direction may bring the covariance closer to the identity."
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "p. 3", stance: for}
+
+- id: c-bn-equivalence
+  type: mathematical
+  text: "For a single layer whose inputs are whitened, the pre-activation t = v . x has mean 0 and standard deviation ||v||, so normalizing the pre-activations by batch normalization equals normalizing the weights by weight normalization."
+  assumes: ["one layer", "the inputs are independent with mean 0 and variance 1", "the population moments, not minibatch estimates"]
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "p. 4", stance: for}
+
+- id: c-cheaper
+  type: attributive
+  text: "Salimans and Kingma argue that weight normalization is a cheaper and less noisy approximation to batch normalization: convolutional networks have far fewer weights than pre-activations, and ||v|| is not stochastic while minibatch moments are noisy for small batches."
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "p. 4", stance: for}
+
+- id: c-init-needed
+  type: attributive
+  text: "Weight normalization lacks the property of batch normalization that fixes the scale of the features of each layer, so Salimans and Kingma find that a proper initialization matters."
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "p. 4", stance: for}
+
+- id: c-init-v
+  type: definitional
+  text: "In the data-dependent initialization, the entries of v are drawn from a normal distribution with mean 0 and standard deviation 0.05."
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "p. 4", stance: for}
+
+- id: c-init-rule
+  type: definitional
+  text: "Before training, an initial feedforward pass over a single minibatch computes t = v . x / ||v|| at each neuron and initializes the scale g as 1/sigma[t] and the bias b as -mu[t]/sigma[t], with mu[t] and sigma[t] the mean and standard deviation of t over the minibatch."
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "p. 4", stance: for}
+
+- id: c-init-recurrent
+  type: attributive
+  text: "Salimans and Kingma note that the data-dependent initialization applies only where batch normalization does, so models with recursion such as RNNs and LSTMs need standard initialization methods."
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "p. 4", stance: for}
+
+- id: c-init-prior
+  type: historical
+  text: "Salimans and Kingma report that this kind of data-based initialization was proposed independently by other authors for the usual parameterization in w."
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "p. 4", stance: for}
+
+- id: c-mean-only
+  type: definitional
+  text: "Mean-only batch normalization computes t = w . x and t-tilde = t - mu[t] + b, subtracting the minibatch mean without dividing by the standard deviation, and uses a running average of the minibatch mean at test time."
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "p. 5", stance: for}
+
+- id: c-mean-only-grad
+  type: mathematical
+  text: "The gradient of the loss with respect to the pre-activation t is the gradient with respect to the normalized pre-activation minus its minibatch mean, so mean-only batch normalization has the effect of centering the backpropagated gradients."
+  assumes: ["mu[t] is the mean over the current minibatch and the gradient flows through it"]
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "p. 5", stance: for}
+
+- id: c-mean-only-noise
+  type: attributive
+  text: "Salimans and Kingma argue that mean-only batch normalization adds less noise than full batch normalization, and that its noise is roughly normal by the law of large numbers, with much lighter tails than the kurtotic noise from the minibatch variance."
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "p. 5", stance: for}
+
+# Derivation
+
+- id: c-grad
+  type: mathematical
+  text: "Differentiating through w = g v / ||v|| gives the gradient of the loss L with respect to the new parameters v and g in closed form, from the gradient with respect to the weights w as used normally, as in eq-grad."
+  assumes: ["v is not the zero vector", "the loss depends on g and v only through w"]
+  derivation: gradient
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "p. 3", stance: for}
+
+- id: c-proj
+  type: mathematical
+  text: "The gradient with respect to v can be written as g/||v|| times M_w times the weight gradient, where M_w = I - w w^T / ||w||^2 is a projection matrix that projects onto the complement of the w vector."
+  assumes: ["v is not the zero vector", "g is not zero"]
+  derivation: gradient
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "p. 3", stance: for}
+
+- id: c-grad-orth
+  type: mathematical
+  text: "The gradient of the loss in v is orthogonal to v."
+  assumes: ["v is not the zero vector", "the loss depends on g and v only through w"]
+  derivation: gradient
+
+- id: c-norm-growth
+  type: mathematical
+  text: "Under standard gradient descent without momentum the update of v is orthogonal to v, so by the Pythagorean theorem a step with ||Delta v|| = c ||v|| gives the new norm sqrt(1 + c^2) ||v||, and the norm of v grows monotonically with the number of weight updates."
+  assumes: ["plain gradient descent, without momentum or per-parameter step sizes", "v is not the zero vector"]
+  derivation: norm-growth
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "p. 3", stance: for}
+
+- id: c-scale-step
+  type: mathematical
+  text: "At a fixed weight w and a fixed gradient in w, scaling v by s > 0 divides the gradient in v by s, so a larger ||v|| gives a smaller step in v."
+  assumes: ["g is held fixed, so w does not change"]
+  derivation: norm-growth
+
+- id: c-momentum-breaks
+  type: mathematical
+  text: "With momentum the step on v is not a multiple of the current gradient in v, so it need not be orthogonal to v and the norm identity of plain gradient descent does not hold."
+  assumes: ["heavy-ball momentum on v"]
+  derivation: norm-growth
+
+- id: c-init-moments
+  type: mathematical
+  text: "After the data-dependent initialization, the pre-activations w . x + b of each unit have mean 0 and biased variance 1 on the initialization batch."
+  assumes: ["sigma[t] is the biased standard deviation without an epsilon", "the projections t of the unit are not all equal on the batch"]
+  derivation: init-moments
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "p. 4", stance: for}
+
+- id: c-init-batch-only
+  type: mathematical
+  text: "The zero mean and unit variance hold for the batch used in the initialization only; on another batch the mean and the variance of the pre-activations are not fixed."
+  assumes: ["the second batch has different moments from the first"]
+  derivation: init-moments
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "p. 4", stance: for}
+
+- id: c-init-unbiased
+  type: mathematical
+  text: "If the initialization uses the unbiased standard deviation of m values instead of the biased one, the biased variance of the pre-activations on the batch is (m - 1)/m instead of 1."
+  assumes: ["the batch has m >= 2 examples"]
+  derivation: init-moments
+
+- id: c-power-converges
+  type: mathematical
+  text: "After k rounds of the power iteration from u_0, the estimate u^T W v satisfies 0 <= sigma_1^2 - sigma_k-hat^2 <= sigma_1^2 (sigma_2/sigma_1)^(4k - 2) tan^2(theta_0), where theta_0 is the angle between u_0 and the top left singular vector, so it converges to the largest singular value when sigma_1 > sigma_2."
+  assumes: ["u_0 is not orthogonal to the top left singular vector", "sigma_1 > sigma_2 for convergence"]
+  derivation: power-iteration
+
+- id: c-power-conditions
+  type: attributive
+  text: "Miyato et al. start from a randomly initialized vector u for each weight and note that, if the dominant singular value has no multiplicity and u is not orthogonal to the first left singular vector, the power method produces the first left and right singular vectors, from which the spectral norm is approximated as u^T W v."
+  evidence:
+    - {work: "miyato-2018-spectral-normalization", role: original, locator: "p. 15", stance: for}
+
+- id: c-power-underestimates
+  type: mathematical
+  text: "The power-iteration estimate never exceeds the largest singular value, so W divided by the estimate has spectral norm at least 1 until the iteration has converged."
+  assumes: ["u_0 is not orthogonal to the top left singular vector"]
+  derivation: power-iteration
+
+# Evidence
+
+- id: c-cifar-setup
+  type: attributive
+  text: "On CIFAR-10, Salimans and Kingma train a modified ConvPool-CNN-C with Adam for 200 epochs at minibatch size 100, initialize all variants with the data-dependent scheme, and pick each variant's learning rate from {0.0003, 0.001, 0.003, 0.01}."
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "p. 5", stance: for}
+
+- id: c-cifar-curves
+  type: empirical
+  text: "Weight normalization and batch normalization both trained significantly faster than the standard parameterization; batch normalization made slightly more progress per epoch early in training, and later the two optimized at about the same speed."
+  scope: &cifar
+    models: "a modified ConvPool-CNN-C"
+    data: [cifar-10]
+    scale: "200 epochs, minibatch 100, no data augmentation"
+    setting: "image classification, training error"
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "p. 5", stance: for}
+
+- id: c-bn-slower
+  type: empirical
+  text: "With the authors' implementation, training with batch normalization was about 16% slower than with the standard parameterization, while weight normalization was not noticeably slower."
+  scope: *cifar
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "p. 5", stance: for}
+
+- id: c-cifar-table
+  type: empirical
+  text: "On the CIFAR-10 test set without data augmentation, the test error was 8.52% with mean-only batch normalization, 8.46% with weight normalization, 8.43% with the normal parameterization, 8.05% with batch normalization and 7.31% with weight normalization plus mean-only batch normalization."
+  scope: *cifar
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "Figure 2", stance: for}
+
+- id: c-kurtosis
+  type: attributive
+  text: "Salimans and Kingma hypothesize that mean-only batch normalization with weight normalization beats full batch normalization because the noise of the minibatch mean is roughly Gaussian while the noise of full batch normalization has much higher kurtosis."
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "p. 6", stance: for}
+
+- id: c-cvae
+  type: empirical
+  text: "For convolutional variational auto-encoders, the parameterization with weight normalization had lower variance across seeds and converged to a better optimum of the test-set lower bound."
+  scope:
+    models: "convolutional VAEs with ResNet blocks and auto-regressive variational inference"
+    data: [mnist, cifar-10]
+    scale: "unknown"
+    setting: "generative modelling, Adamax with Polyak averaging"
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "p. 6", stance: for}
+
+- id: c-draw
+  type: empirical
+  text: "Applying weight normalization to all weight vectors of DRAW, an LSTM-based generative model, significantly sped up convergence without changing the initialization or the learning rate tuned for the normal parameterization."
+  scope:
+    models: "DRAW with LSTM encoder and decoder"
+    data: [mnist]
+    scale: "100 epochs"
+    setting: "generative modelling, test-set lower bound"
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "p. 7", stance: for}
+
+- id: c-dqn-bn
+  type: empirical
+  text: "Salimans and Kingma could not get batch normalization to work for DQN without an impractically large minibatch, because the noise of the minibatch statistics destabilized learning."
+  scope: &dqn
+    models: "DQN, a reimplementation of Mnih et al."
+    data: [unknown]
+    scale: "unknown"
+    setting: "Atari games in the Arcade Learning Environment, Adamax"
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "p. 8", stance: for}
+
+- id: c-dqn
+  type: empirical
+  text: "The maximum DQN evaluation scores with the normal parameterization and with weight normalization were 410 and 403 on Breakout, 1,250 and 1,448 on Enduro, 7,188 and 7,375 on Seaquest, and 1,779 and 2,179 on Space Invaders."
+  scope: *dqn
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "Figure 6", stance: for}
+
+- id: c-default
+  type: attributive
+  text: "Salimans and Kingma conclude that weight normalization is easy to apply, cheap and free of dependence between examples, and make it their default choice for new architectures."
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "p. 8", stance: for}
+
+# Variants
+
+- id: c-sn-def
+  type: definitional
+  text: "Spectral normalization divides each weight matrix by its spectral norm sigma(W), the largest singular value, so that the normalized matrix has spectral norm 1; with 1-Lipschitz activations the Lipschitz norm of the network is then at most 1."
+  evidence:
+    - {work: "miyato-2018-spectral-normalization", role: original, locator: "p. 3", stance: for}
+
+- id: c-sn-power
+  type: attributive
+  text: "Miyato et al. note that applying a singular value decomposition at each round of the algorithm would be computationally heavy, and instead estimate the spectral norm by the power iteration method with very small additional computational time."
+  evidence:
+    - {work: "miyato-2018-spectral-normalization", role: original, locator: "p. 3", stance: for}
+
+- id: c-recycle
+  type: attributive
+  text: "Miyato et al. reused the vector u computed at each step as the initial vector of the subsequent step, because the change in W at each SGD update is small, and found that with this recycle procedure one round of power iteration per update was sufficient."
+  evidence:
+    - {work: "miyato-2018-spectral-normalization", role: original, locator: "p. 15", stance: for}
+
+- id: c-wn-rank
+  type: mathematical
+  text: "A weight matrix with d_o rows of unit norm has squared singular values that sum to d_o, and ||W h|| for a unit vector h reaches its maximum sqrt(d_o) only when W has rank one."
+  assumes: ["each row has unit norm, that is weight normalization with g = 1"]
+  evidence:
+    - {work: "miyato-2018-spectral-normalization", role: original, locator: "p. 4", stance: for}
+
+- id: c-wn-features
+  type: attributive
+  text: "Miyato et al. argue that weight normalization comes at the cost of reducing the rank and hence the number of features used by the discriminator, while the spectral norm is independent of rank."
+  evidence:
+    - {work: "miyato-2018-spectral-normalization", role: original, locator: "p. 4", stance: for}
+    - {work: "miyato-2018-spectral-normalization", role: original, locator: "p. 5", stance: for}
+
+- id: c-no-gamma
+  type: attributive
+  text: "In their comparisons Miyato et al. dropped the multiplier parameter of weight normalization, so that the method would not violate the Lipschitz condition."
+  evidence:
+    - {work: "miyato-2018-spectral-normalization", role: original, locator: "p. 6", stance: for}
+
+- id: c-sngan-table
+  type: empirical
+  text: "With a standard CNN, the inception score was 6.84 with weight normalization and 7.42 with spectral normalization on CIFAR-10, and 7.16 and 8.28 on STL-10; the CIFAR-10 FID was 34.7 and 29.3."
+  scope: &gan
+    models: "standard CNN GAN discriminators and generators"
+    data: [cifar-10, stl-10]
+    scale: "unknown"
+    setting: "unsupervised image generation, Adam"
+  evidence:
+    - {work: "miyato-2018-spectral-normalization", role: original, locator: "Table 2", stance: for}
+
+- id: c-singular-values
+  type: empirical
+  text: "In the trained discriminators, the singular values of the first five layers concentrated on a few components with weight normalization and weight clipping, and were spread more broadly with spectral normalization."
+  scope: *gan
+  evidence:
+    - {work: "miyato-2018-spectral-normalization", role: original, locator: "p. 9", stance: for}
+
+- id: c-sn-time
+  type: empirical
+  text: "On CIFAR-10, SN-GANs were slightly slower than weight normalization, at about 110 to 120% of its computational time."
+  scope: *gan
+  evidence:
+    - {work: "miyato-2018-spectral-normalization", role: original, locator: "p. 9", stance: for}
+
+- id: c-ws
+  type: attributive
+  text: "Qiao et al. describe weight normalization as decoupling the length and the direction of the weights, and weight standardization as removing the learnable length and standardizing the weights to zero mean and unit variance, which with group normalization narrows the gap to batch normalization."
+  evidence:
+    - {work: "qiao-2019-micro-batch-training", role: original, locator: "p. 2", stance: for}
+
+# History
+
+- id: c-hist-wn
+  type: historical
+  text: "Weight normalization is by Tim Salimans and Diederik P. Kingma of OpenAI, arXiv 1602.07868v3 of 4 Jun 2016."
+  evidence:
+    - {work: "salimans-2016-weight-normalization", role: original, locator: "the title page", stance: for}
+
+- id: c-hist-sn
+  type: historical
+  text: "Spectral normalization is by Takeru Miyato, Toshiki Kataoka, Masanori Koyama and Yuichi Yoshida, published as a conference paper at ICLR 2018, arXiv 1802.05957v1 of 16 Feb 2018."
+  evidence:
+    - {work: "miyato-2018-spectral-normalization", role: original, locator: "p. 1", stance: for}

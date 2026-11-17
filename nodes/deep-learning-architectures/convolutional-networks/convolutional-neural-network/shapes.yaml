@@ -1,0 +1,77 @@
+# SPDX-License-Identifier: MIT
+# The shape contract of the small convolutional network of the page (spec 08.6): LeNet-5 of LeCun et al. (1998)
+# with the substitutions of later practice. Two 5x5 convolutions without padding and with stride 1, each followed by
+# a ReLU and a 2x2 max pooling with stride 2; then three fully connected layers, the last one linear.
+# The second convolution connects every map to every map, so its count differs from the 1,516 of the paper's C3.
+config:
+  channels: {meaning: "number of input channels", symbol: "C", example: 1, sample: [1, 3]}
+  c1:       {meaning: "number of feature maps of the first convolution", symbol: "C_1", example: 2, sample: [2, 6]}
+  c2:       {meaning: "number of feature maps of the second convolution", symbol: "C_2", example: 3, sample: [3, 16]}
+  f1:       {meaning: "width of the first fully connected layer", symbol: "F_1", example: 5, sample: [5, 120]}
+  f2:       {meaning: "width of the second fully connected layer", symbol: "F_2", example: 4, sample: [4, 84]}
+  classes:  {meaning: "number of classes", symbol: "K", example: 3, sample: [3, 10]}
+  size:     {meaning: "height and width of the input image; R - 12 is a positive multiple of 4", symbol: "R", example: 16, sample: [16, 32]}
+axes:
+  B: {meaning: "batch", example: 2}
+  R: size
+  C: channels
+  C1: c1
+  C2: c2
+  F1: f1
+  F2: f2
+  K: classes
+blocks:
+  - id: conv1
+    meaning: "a 5x5 convolution with stride 1 and no padding from C to C1 maps, with a bias, then a ReLU"
+    eq: [conv, out-size, conv-params]
+    inputs: {x: "(B, C, R, R)"}
+    outputs: {y: "(B, C1, R - 4, R - 4)"}
+    params: "25 * C * C1 + C1"
+    flops_forward: "2 * B * 25 * C * C1 * (R - 4) ^ 2"
+  - id: pool1
+    meaning: "a 2x2 max pooling with stride 2, map by map"
+    eq: [maxpool, out-size]
+    inputs: {x: "(B, C1, R - 4, R - 4)"}
+    outputs: {y: "(B, C1, (R - 4) / 2, (R - 4) / 2)"}
+    params: "0"
+    flops_forward: "0"
+  - id: conv2
+    meaning: "a 5x5 convolution with stride 1 and no padding from C1 to C2 maps, with a bias, then a ReLU"
+    eq: [conv, out-size, conv-params]
+    inputs: {x: "(B, C1, (R - 4) / 2, (R - 4) / 2)"}
+    outputs: {y: "(B, C2, (R - 12) / 2, (R - 12) / 2)"}
+    params: "25 * C1 * C2 + C2"
+    flops_forward: "2 * B * 25 * C1 * C2 * ((R - 12) / 2) ^ 2"
+  - id: pool2
+    meaning: "a 2x2 max pooling with stride 2, map by map, then the maps are flattened"
+    eq: [maxpool, out-size]
+    inputs: {x: "(B, C2, (R - 12) / 2, (R - 12) / 2)"}
+    outputs: {y: "(B, C2, (R - 12) / 4, (R - 12) / 4)"}
+    params: "0"
+    flops_forward: "0"
+  - id: fc1
+    meaning: "a fully connected layer with a bias from the flattened maps to F1 units, then a ReLU"
+    inputs: {x: "(B, C2 * ((R - 12) / 4) ^ 2)"}
+    outputs: {y: "(B, F1)"}
+    params: "C2 * ((R - 12) / 4) ^ 2 * F1 + F1"
+    flops_forward: "2 * B * C2 * ((R - 12) / 4) ^ 2 * F1"
+  - id: fc2
+    meaning: "a fully connected layer with a bias from F1 to F2 units, then a ReLU"
+    inputs: {x: "(B, F1)"}
+    outputs: {y: "(B, F2)"}
+    params: "F1 * F2 + F2"
+    flops_forward: "2 * B * F1 * F2"
+  - id: fc3
+    meaning: "a linear layer with a bias from F2 units to K logits"
+    inputs: {x: "(B, F2)"}
+    outputs: {logits: "(B, K)"}
+    params: "F2 * K + K"
+    flops_forward: "2 * B * F2 * K"
+model:
+  params: {formula: "conv1.params + conv2.params + fc1.params + fc2.params + fc3.params", meaning: "the kernels and biases of the two convolutions and the weights and biases of the three fully connected layers; the poolings have none"}
+  flops_forward: {formula: "conv1.flops_forward + conv2.flops_forward + fc1.flops_forward + fc2.flops_forward + fc3.flops_forward", symbol: "C_{\\text{fwd}}", meaning: "FLOPs of one forward pass over the batch, a multiply-add counted as 2; the biases, the ReLUs and the poolings are left out"}
+  sources:
+    - {work: lecun-1998-gradient-based-learning, locator: "p. 7"}
+configs:
+  lenet5: {meaning: "the sizes of LeNet-5 (32 by 32 input, 6 and 16 maps, 120 and 84 units, 10 classes) with full connection in the second convolution, one image", channels: 1, c1: 6, c2: 16, f1: 120, f2: 84, classes: 10, size: 32, B: 1, source: {work: lecun-1998-gradient-based-learning, locator: "p. 7"}}
+  lenet5_rgb: {meaning: "the sizes of LeNet-5 on colour images of 32 by 32 pixels with three channels, one image", channels: 3, c1: 6, c2: 16, f1: 120, f2: 84, classes: 10, size: 32, B: 1}

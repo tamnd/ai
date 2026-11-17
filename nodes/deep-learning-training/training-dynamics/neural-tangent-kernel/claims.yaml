@@ -1,0 +1,233 @@
+# The claims of the neural tangent kernel page (spec 07). The build computes the labels.
+- id: c-ntk-def
+  type: definitional
+  text: "During gradient descent the network function evolves along the negative kernel gradient of the cost with respect to the neural tangent kernel, the sum over all parameters p of the outer product of the derivatives of the realization function with respect to theta_p."
+  evidence:
+    - {work: "jacot-2018-neural-tangent-kernel", role: original, locator: "p. 5", stance: for}
+
+- id: c-ntk-param
+  type: definitional
+  text: "In this setup the parameters, the connection matrices W^(l) and bias vectors b^(l), are initialized as iid Gaussians N(0, 1), and the preactivations of layer l + 1 are W^(l) applied to the activations of layer l with the factor 1/sqrt(n_l), plus beta b^(l)."
+  evidence:
+    - {work: "jacot-2018-neural-tangent-kernel", role: original, locator: "p. 2", stance: for}
+    - {work: "jacot-2018-neural-tangent-kernel", role: original, locator: "p. 3", stance: for}
+
+- id: c-factors-key
+  type: attributive
+  text: "The factors 1/sqrt(n_l) are key to obtaining a consistent asymptotic behavior of neural networks as the widths of the hidden layers grow to infinity."
+  evidence:
+    - {work: "jacot-2018-neural-tangent-kernel", role: original, locator: "p. 3", stance: for}
+
+- id: c-linear-model-kernel
+  type: attributive
+  text: "Gradient descent on a model that is linear in its parameters is kernel gradient descent with its tangent kernel, and as the number of parameters grows the random tangent kernel tends to a fixed kernel by the law of large numbers."
+  evidence:
+    - {work: "jacot-2018-neural-tangent-kernel", role: original, locator: "p. 4", stance: for}
+
+- id: c-random-at-init
+  type: attributive
+  text: "For a nonlinear network the NTK depends on the parameters, so it is random at initialization and varies during training."
+  evidence:
+    - {work: "jacot-2018-neural-tangent-kernel", role: original, locator: "p. 5", stance: for}
+
+- id: c-thm-deterministic
+  type: attributive
+  text: "For a network of depth L with a Lipschitz nonlinearity, as the widths of the hidden layers go to infinity, the NTK at initialization converges in probability to a deterministic limiting kernel given by a recursion over the layers."
+  evidence:
+    - {work: "jacot-2018-neural-tangent-kernel", role: original, locator: "p. 5", stance: for}
+
+- id: c-thm-constant
+  type: attributive
+  text: "For a Lipschitz, twice differentiable nonlinearity with bounded second derivative, and any T for which the integral of the norm of the training direction up to T stays stochastically bounded, the NTK converges to its deterministic limit uniformly on [0, T] as the widths go to infinity, so it stays asymptotically constant during training."
+  evidence:
+    - {work: "jacot-2018-neural-tangent-kernel", role: original, locator: "p. 6", stance: for}
+
+- id: c-pd-sphere
+  type: attributive
+  text: "For a non-polynomial Lipschitz nonlinearity, the limiting NTK restricted to the unit sphere is positive-definite if the depth L is at least 2."
+  evidence:
+    - {work: "jacot-2018-neural-tangent-kernel", role: original, locator: "p. 6", stance: for}
+
+- id: c-early-stopping
+  type: attributive
+  text: "Convergence is faster along the eigenspaces with larger eigenvalues, so early stopping focuses the fit on the most relevant kernel principal components and avoids fitting the components with lower eigenvalues."
+  evidence:
+    - {work: "jacot-2018-neural-tangent-kernel", role: original, locator: "p. 7", stance: for}
+
+- id: c-inflate
+  type: empirical
+  text: "After 200 steps of gradient descent the NTK of a depth-4 network of width 500 tends to inflate, while at width 10000 it stays almost fixed."
+  scope:
+    models: "fully connected ReLU networks of depth 4 and widths 500 and 10000 in the NTK parametrization"
+    data: ["synthetic: the target x1 x2 with N(0, 1) inputs"]
+    scale: "two widths, 10 initializations each"
+    setting: "full-batch gradient descent on a least-squares cost, learning rate 1.0"
+  evidence:
+    - {work: "jacot-2018-neural-tangent-kernel", role: original, locator: "p. 8", stance: for}
+
+- id: c-lee-linear
+  type: attributive
+  text: "In the infinite width limit, the learning dynamics of wide networks are governed by the linear model obtained from the first-order Taylor expansion of the network around its initial parameters."
+  evidence:
+    - {work: "lee-2019-wide-networks-linear-models", role: original, locator: "the abstract", stance: for}
+
+- id: c-lee-agreement
+  type: empirical
+  text: "The predictions of the original network and of its linearized version agree well even for finite practically-sized networks, across architectures, optimization methods and loss functions."
+  scope:
+    models: "fully connected, convolutional and wide residual networks"
+    data: ["mnist", "cifar-10"]
+    scale: "unknown"
+    setting: "gradient descent, SGD and momentum, with squared and cross-entropy losses"
+  evidence:
+    - {work: "lee-2019-wide-networks-linear-models", role: original, locator: "the abstract", stance: for}
+
+- id: c-lee-param-independence
+  type: attributive
+  text: "The linearization result holds in both the standard and the NTK parameterization, so the effect is due to the increase in width rather than to the parameterization."
+  evidence:
+    - {work: "lee-2019-wide-networks-linear-models", role: original, locator: "Section 1", stance: for}
+
+- id: c-lee-same-up-to-lr
+  type: attributive
+  text: "The predictions and training dynamics of NTK-parameterized networks are identical to those of standard networks, up to a width-dependent scaling factor in the learning rate for each parameter tensor."
+  evidence:
+    - {work: "lee-2019-wide-networks-linear-models", role: original, locator: "Section 2.1", stance: for}
+
+- id: c-lee-thm
+  type: attributive
+  text: "For the mean squared loss, if the min eigenvalue of the kernel is above 0 and the learning rate is below 2 over the sum of its min and max eigenvalues, or with gradient flow, the gradient descent dynamics of the original neural network falls into its linearized dynamics regime: with probability arbitrarily close to 1 over random initialization, the gap to the linearized network, the parameter change over the square root of the width n, and the kernel change are O(n^(-1/2)) as n goes to infinity."
+  evidence:
+    - {work: "lee-2019-wide-networks-linear-models", role: original, locator: "Section 2.4", stance: for}
+
+- id: c-lee-weights-vanish
+  type: attributive
+  text: "Individual weights move by a vanishingly small amount for wide networks in this regime, as do hidden layer activations, but together they produce a finite change in the output."
+  evidence:
+    - {work: "lee-2019-wide-networks-linear-models", role: original, locator: "Section 2.4", stance: for}
+
+- id: c-lee-empirical-kernel
+  type: empirical
+  text: "For finite networks, dynamics predicted with the empirical kernel at initialization match training better than those predicted with the infinite-width analytic kernel."
+  scope:
+    models: "fully connected networks of finite width"
+    data: ["cifar-10"]
+    scale: "unknown"
+    setting: "full-batch gradient descent with squared loss"
+  evidence:
+    - {work: "lee-2019-wide-networks-linear-models", role: original, locator: "Section 3", stance: for}
+
+- id: c-lee-cross-entropy
+  type: empirical
+  text: "With cross-entropy loss, some logits grow without bound at late times, and the error between the original and the linearized model becomes much worse at late times if the two deviate before that regime."
+  scope:
+    models: "fully connected networks"
+    data: ["mnist"]
+    scale: "unknown"
+    setting: "direct training of the linearized model with a momentum optimizer"
+  evidence:
+    - {work: "lee-2019-wide-networks-linear-models", role: original, locator: "Section 3", stance: for}
+
+- id: c-chizat-scaling
+  type: attributive
+  text: "Lazy training is not specific to over-parameterized neural networks: it is due to a choice of scaling, often implicit, that makes the model behave as its linearization around the initialization."
+  evidence:
+    - {work: "chizat-2019-lazy-training", role: original, locator: "p. 1", stance: for}
+
+- id: c-chizat-alpha
+  type: attributive
+  text: "For the model alpha h trained by gradient flow on the objective multiplied by 1/alpha^2, it holds sup over t in [0, T] of |w_alpha(t) - w_0| = O(1/alpha) as alpha grows."
+  evidence:
+    - {work: "chizat-2019-lazy-training", role: original, locator: "p. 5", stance: for}
+
+- id: c-chizat-mean-field
+  type: attributive
+  text: "For a two-layer model scaled by alpha(m), the lazy regime is reached whenever m alpha(m) grows without bound, while the critical scaling alpha(m) = 1/m converges to a non-degenerate dynamic called the mean-field limit."
+  evidence:
+    - {work: "chizat-2019-lazy-training", role: original, locator: "p. 3", stance: for}
+
+- id: c-chizat-cnn
+  type: empirical
+  text: "On CIFAR-10, a VGG-11 network shows a significant drop in performance as the scale alpha grows toward the lazy regime, and wide VGG-11 and ResNet models trained in the linearized regime reach 61.7% and 56.7% test accuracy, against 89.7% and 91.0% when trained in the standard way."
+  scope:
+    models: "VGG-11 and ResNet-18 and their widened versions"
+    data: ["cifar-10"]
+    scale: "unknown"
+    setting: "mini-batch SGD with the square loss divided by alpha^2"
+  evidence:
+    - {work: "chizat-2019-lazy-training", role: original, locator: "p. 8", stance: for}
+    - {work: "chizat-2019-lazy-training", role: original, locator: "p. 9", stance: for}
+
+- id: c-chizat-far
+  type: attributive
+  text: "Chizat et al. do not claim that wide networks do not show lazy behavior, but that those which perform well are far from this asymptotic behavior."
+  evidence:
+    - {work: "chizat-2019-lazy-training", role: original, locator: "p. 9", stance: for}
+
+- id: c-arora-algorithm
+  type: attributive
+  text: "Arora et al. gave the first efficient exact algorithm for the convolutional NTK and the first non-asymptotic proof that a fully-trained sufficiently wide net is equivalent to kernel regression with the NTK."
+  evidence:
+    - {work: "arora-2019-exact-computation-infinitely-wide", role: original, locator: "p. 1", stance: for}
+
+- id: c-arora-cifar
+  type: empirical
+  text: "The best kernel, the 11-layer CNTK with GAP, achieves 77.43% classification accuracy on CIFAR-10, 10% higher than methods reported in Novak et al. (2019), and only 6% lower than the performance of the corresponding finite deep net architecture once batch normalization is turned off."
+  scope:
+    models: "convolutional NTKs of depth up to 21, with and without global average pooling"
+    data: ["cifar-10"]
+    scale: "the full CIFAR-10 training set"
+    setting: "kernel regression with the exact CNTK"
+  evidence:
+    - {work: "arora-2019-exact-computation-infinitely-wide", role: original, locator: "p. 8", stance: for}
+    - {work: "arora-2019-exact-computation-infinitely-wide", role: original, locator: "p. 1", stance: for}
+
+# Derivations
+
+- id: c-residual-flow
+  type: mathematical
+  text: "For the linearized model trained by gradient flow at rate eta on the loss |f - y|^2 / (2n), the training residual is r(t) = exp(-eta Theta t / n) r(0), with Theta the empirical NTK on the n training inputs."
+  assumes: ["the model is linear in its parameters, or its tangent kernel on the training inputs is constant", "the squared loss averaged over n points", "gradient flow at a constant rate eta"]
+  derivation: kernel-flow
+
+- id: c-eigen-rates
+  type: mathematical
+  text: "Under the same flow, the component of the residual along an eigenvector of Theta with eigenvalue lambda_i decays like exp(-eta lambda_i t / n), and the component in the null space of Theta does not move."
+  assumes: ["the model is linear in its parameters, or its tangent kernel on the training inputs is constant", "the squared loss averaged over n points", "gradient flow at a constant rate eta"]
+  derivation: kernel-flow
+
+- id: c-gd-discrete
+  type: mathematical
+  text: "Gradient descent with step eta on the linearized model gives exactly r_k = (I - eta Theta / n)^k r_0; it converges on every positive eigen-direction when eta < 2n / lambda_max, and at a fixed time eta k it tends to the flow with an error of first order in eta."
+  assumes: ["the model is linear in its parameters", "the squared loss averaged over n points", "a constant step eta"]
+  derivation: kernel-flow
+
+- id: c-relu-ntk-limit
+  type: mathematical
+  text: "For f(x) = (1/sqrt(m)) sum_j a_j relu(w_j . x) with standard Gaussian weights, the empirical NTK tends almost surely to x.x' (pi - phi) / (2 pi) + |x| |x'| (sin phi + (pi - phi) cos phi) / (2 pi), the first term from the first-layer weights and the second from the second-layer weights, where phi is the angle between x and x'."
+  assumes: ["w_j ~ N(0, I_d) and a_j ~ N(0, 1), all independent", "no biases", "the width m grows with the inputs fixed"]
+  derivation: relu-ntk
+
+- id: c-relu-ntk-rate
+  type: mathematical
+  text: "For this network the empirical NTK is an unbiased mean of m independent terms, so its root-mean-square error against the limit is exactly proportional to 1/sqrt(m)."
+  assumes: ["w_j ~ N(0, I_d) and a_j ~ N(0, 1), all independent", "no biases"]
+  derivation: relu-ntk
+
+- id: c-worked-example
+  type: mathematical
+  text: "For x = (1, 0) and x' = (1/2, sqrt(3)/2), the limiting two-layer ReLU NTK is 1/6 + (sqrt(3)/2 + pi/3) / (2 pi), about 0.4712."
+  assumes: ["the two-layer ReLU network with standard Gaussian weights and no biases"]
+  derivation: relu-ntk
+
+- id: c-lazy-bound
+  type: mathematical
+  text: "Along gradient descent on the linearized model with eta <= n / lambda_max, the weight displacement satisfies |theta_k - theta_0|^2 <= r_0^T Theta^(-1) r_0 <= |r_0|^2 / lambda_min at every step."
+  assumes: ["the model is linear in its parameters", "Theta is positive definite on the training inputs", "the squared loss averaged over n points", "0 < eta <= n / lambda_max"]
+  derivation: lazy-weights
+
+- id: c-lazy-relative
+  type: mathematical
+  text: "For the two-layer ReLU network in the NTK parametrization, |theta_0|^2 has mean m(d + 1) while the bound on the displacement stays of order 1, so the relative change of the weights in the linearized model is of order 1/sqrt(m)."
+  assumes: ["the two-layer ReLU network with standard Gaussian weights", "the limit kernel is positive definite on the training inputs", "the targets do not depend on m"]
+  derivation: lazy-weights
