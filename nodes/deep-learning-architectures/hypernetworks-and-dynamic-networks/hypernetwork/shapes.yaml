@@ -1,0 +1,72 @@
+# SPDX-License-Identifier: MIT
+# The shape contract of the static hypernetwork of the page (spec 08.6): the two-layer linear hypernetwork of Ha, Dai
+# and Le (2016), eq. 2, which generates the kernels of a small convolutional network. A stem convolution with its own
+# weights maps the C input channels to M = m N; then D convolutions from M to M channels whose kernels are generated,
+# each tiled from m^2 basic kernels of N to N channels (eq. 3), every basic kernel from its own embedding; a ReLU after
+# every convolution, a global average pool and a linear layer to K classes. All the convolutions have stride 1, filters
+# of odd size f and the padding that keeps the size S. The FLOPs count the products only, a multiply-add as 2; the
+# kernels are generated once per forward pass, whatever the batch.
+config:
+  c_in:    {meaning: "number of input channels", symbol: "C", example: 1, sample: [1, 3]}
+  n_basic: {meaning: "number of input and of output channels of a basic kernel, the paper's N_in and N_out", symbol: "N", example: 2, sample: [1, 4]}
+  mult:    {meaning: "number of basic blocks along each side of a generated kernel", symbol: "m", example: 2, sample: [1, 3]}
+  half:    {meaning: "half the side of the filters, rounded down", symbol: "h", example: 1, sample: [1, 2]}
+  fsize:   {meaning: "side of the square filters, the paper's f_size", symbol: "f", formula: "2 * half + 1"}
+  depth:   {meaning: "number of convolutions whose kernels are generated", symbol: "D", example: 2, sample: [1, 4]}
+  n_z:     {meaning: "size of an embedding, the paper's N_z", symbol: "N_z", example: 2, sample: [1, 6]}
+  d:       {meaning: "size of the hidden layer of the hypernetwork, which the paper fixes to N_z", symbol: "d", formula: "n_z"}
+  size:    {meaning: "height and width of the images, kept by every convolution", symbol: "S", example: 5, sample: [3, 9]}
+  classes: {meaning: "number of classes", symbol: "K", example: 3, sample: [2, 5]}
+  width:   {meaning: "number of channels of the main network", symbol: "M", formula: "mult * n_basic"}
+  n_emb:   {meaning: "number of embeddings, one for each basic kernel", symbol: "E", formula: "depth * mult ^ 2"}
+axes:
+  B: {meaning: "batch of images", example: 2}
+  C: c_in
+  N: n_basic
+  M: width
+  E: n_emb
+  F: fsize
+  Z: n_z
+  S: size
+  K: classes
+blocks:
+  - id: stem
+    meaning: "the first convolution, from C to M channels, with its own kernel and bias, then a ReLU"
+    inputs: {x: "(B, C, S, S)"}
+    outputs: {h: "(B, M, S, S)"}
+    params: "F ^ 2 * C * M + M"
+    flops_forward: "2 * B * S ^ 2 * F ^ 2 * C * M"
+  - id: hyper
+    meaning: "the hypernetwork with its embeddings: a_i = W_i z + B_i for each of the N input channels, then K_i = <W_out, a_i> + B_out, for each of the E embeddings"
+    eq: [static, hyper-params]
+    inputs: {z: "(E, Z)"}
+    outputs: {K: "(E, N, F, N * F)"}
+    internals: {a: "(E, N, Z)"}
+    params: "Z * E + d * (Z + 1) * N + F * N * F * (d + 1)"
+    flops_forward: "2 * E * N * d * (Z + F ^ 2 * N)"
+  - id: conv
+    meaning: "a convolution from M to M channels whose kernel is tiled from m^2 generated basic kernels, with its own bias, then a ReLU"
+    eq: [tile]
+    inputs: {h: "(B, M, S, S)"}
+    outputs: {h: "(B, M, S, S)"}
+    internals: {w: "(M, M, F, F)"}
+    params: "M"
+    flops_forward: "2 * B * S ^ 2 * F ^ 2 * M ^ 2"
+  - id: head
+    meaning: "the global average pool and the linear layer to the class scores"
+    inputs: {h: "(B, M, S, S)"}
+    outputs: {logits: "(B, K)"}
+    internals: {pooled: "(B, M)"}
+    params: "M * K + K"
+    flops_forward: "2 * B * M * K"
+model:
+  params: {formula: "stem.params + hyper.params + depth * conv.params + head.params", symbol: "N_{\\text{params}}", meaning: "all the learned parameters: the stem, the hypernetwork and its embeddings, the biases of the generated convolutions and the head"}
+  flops_forward: {formula: "stem.flops_forward + hyper.flops_forward + depth * conv.flops_forward + head.flops_forward", symbol: "C_{\\text{fwd}}", meaning: "FLOPs of one forward pass over the batch, a multiply-add counted as 2; the biases, the ReLUs and the pool are left out"}
+  hyper_params: {formula: "hyper.params", meaning: "the parameters of the hypernetwork and its embeddings, the count of the paper"}
+  generated_weights: {formula: "depth * F ^ 2 * M ^ 2", meaning: "the weights of the generated kernels, which an ordinary network would learn one by one"}
+  one_layer_params: {formula: "Z * N * F * N * F", meaning: "the weights of a one-layer linear hypernetwork from an embedding to a whole basic kernel, the paper's N_z N_in f_size N_out f_size, without biases"}
+  sources:
+    - {work: ha-2016-hypernetworks, locator: "Section 3.1, p. 3", note: "eq. 2 and the parameter counts of the two-layer and the one-layer hypernetworks"}
+    - {work: ha-2016-hypernetworks, locator: "Section 3.1, p. 4", note: "eq. 3, larger kernels tiled from basic ones, each with its own embedding"}
+configs:
+  mnist: {meaning: "the second layer of the paper's MNIST network, a 7x7x16x16 kernel generated from an embedding of size 4; the paper does not give the first layer and the head, and this config puts in a stem of 16 channels and a linear head", B: 1, c_in: 1, n_basic: 16, mult: 1, half: 3, depth: 1, n_z: 4, size: 28, classes: 10, source: {work: ha-2016-hypernetworks, locator: "Section 4.1, p. 7", note: "the 7x7x16x16 kernel and N_z = 4; Table 7 on p. 20 gives 12,544 and 4,244 parameters"}}

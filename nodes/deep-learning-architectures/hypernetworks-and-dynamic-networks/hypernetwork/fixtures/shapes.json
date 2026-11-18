@@ -1,0 +1,537 @@
+{
+  "note": "Written by aik shapes sample -w from shapes.yaml; do not edit. The tests of each implementation check shapes, param_count and flops against these values (spec 08.6, rule X09).",
+  "configs": [
+    {
+      "name": "example",
+      "kind": "example",
+      "config": {
+        "B": 2,
+        "C": 1,
+        "E": 8,
+        "F": 3,
+        "K": 3,
+        "M": 4,
+        "N": 2,
+        "S": 5,
+        "Z": 2,
+        "c_in": 1,
+        "classes": 3,
+        "d": 2,
+        "depth": 2,
+        "fsize": 3,
+        "half": 1,
+        "mult": 2,
+        "n_basic": 2,
+        "n_emb": 8,
+        "n_z": 2,
+        "size": 5,
+        "width": 4
+      },
+      "blocks": {
+        "conv": {
+          "params": 4,
+          "flops_forward": 14400,
+          "inputs": {
+            "h": [
+              2,
+              4,
+              5,
+              5
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              4,
+              5,
+              5
+            ]
+          },
+          "internals": {
+            "w": [
+              4,
+              4,
+              3,
+              3
+            ]
+          }
+        },
+        "head": {
+          "params": 15,
+          "flops_forward": 48,
+          "inputs": {
+            "h": [
+              2,
+              4,
+              5,
+              5
+            ]
+          },
+          "outputs": {
+            "logits": [
+              2,
+              3
+            ]
+          },
+          "internals": {
+            "pooled": [
+              2,
+              4
+            ]
+          }
+        },
+        "hyper": {
+          "params": 82,
+          "flops_forward": 1280,
+          "inputs": {
+            "z": [
+              8,
+              2
+            ]
+          },
+          "outputs": {
+            "K": [
+              8,
+              2,
+              3,
+              6
+            ]
+          },
+          "internals": {
+            "a": [
+              8,
+              2,
+              2
+            ]
+          }
+        },
+        "stem": {
+          "params": 40,
+          "flops_forward": 3600,
+          "inputs": {
+            "x": [
+              2,
+              1,
+              5,
+              5
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              4,
+              5,
+              5
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 33728,
+        "generated_weights": 288,
+        "hyper_params": 82,
+        "one_layer_params": 72,
+        "params": 145
+      }
+    },
+    {
+      "name": "sample-1",
+      "kind": "sample",
+      "config": {
+        "B": 2,
+        "C": 3,
+        "E": 16,
+        "F": 3,
+        "K": 2,
+        "M": 6,
+        "N": 3,
+        "S": 9,
+        "Z": 1,
+        "c_in": 3,
+        "classes": 2,
+        "d": 1,
+        "depth": 4,
+        "fsize": 3,
+        "half": 1,
+        "mult": 2,
+        "n_basic": 3,
+        "n_emb": 16,
+        "n_z": 1,
+        "size": 9,
+        "width": 6
+      },
+      "blocks": {
+        "conv": {
+          "params": 6,
+          "flops_forward": 104976,
+          "inputs": {
+            "h": [
+              2,
+              6,
+              9,
+              9
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              6,
+              9,
+              9
+            ]
+          },
+          "internals": {
+            "w": [
+              6,
+              6,
+              3,
+              3
+            ]
+          }
+        },
+        "head": {
+          "params": 14,
+          "flops_forward": 48,
+          "inputs": {
+            "h": [
+              2,
+              6,
+              9,
+              9
+            ]
+          },
+          "outputs": {
+            "logits": [
+              2,
+              2
+            ]
+          },
+          "internals": {
+            "pooled": [
+              2,
+              6
+            ]
+          }
+        },
+        "hyper": {
+          "params": 76,
+          "flops_forward": 2688,
+          "inputs": {
+            "z": [
+              16,
+              1
+            ]
+          },
+          "outputs": {
+            "K": [
+              16,
+              3,
+              3,
+              9
+            ]
+          },
+          "internals": {
+            "a": [
+              16,
+              3,
+              1
+            ]
+          }
+        },
+        "stem": {
+          "params": 168,
+          "flops_forward": 52488,
+          "inputs": {
+            "x": [
+              2,
+              3,
+              9,
+              9
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              6,
+              9,
+              9
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 475128,
+        "generated_weights": 1296,
+        "hyper_params": 76,
+        "one_layer_params": 81,
+        "params": 282
+      }
+    },
+    {
+      "name": "sample-2",
+      "kind": "sample",
+      "config": {
+        "B": 2,
+        "C": 3,
+        "E": 18,
+        "F": 3,
+        "K": 2,
+        "M": 9,
+        "N": 3,
+        "S": 7,
+        "Z": 1,
+        "c_in": 3,
+        "classes": 2,
+        "d": 1,
+        "depth": 2,
+        "fsize": 3,
+        "half": 1,
+        "mult": 3,
+        "n_basic": 3,
+        "n_emb": 18,
+        "n_z": 1,
+        "size": 7,
+        "width": 9
+      },
+      "blocks": {
+        "conv": {
+          "params": 9,
+          "flops_forward": 142884,
+          "inputs": {
+            "h": [
+              2,
+              9,
+              7,
+              7
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              9,
+              7,
+              7
+            ]
+          },
+          "internals": {
+            "w": [
+              9,
+              9,
+              3,
+              3
+            ]
+          }
+        },
+        "head": {
+          "params": 20,
+          "flops_forward": 72,
+          "inputs": {
+            "h": [
+              2,
+              9,
+              7,
+              7
+            ]
+          },
+          "outputs": {
+            "logits": [
+              2,
+              2
+            ]
+          },
+          "internals": {
+            "pooled": [
+              2,
+              9
+            ]
+          }
+        },
+        "hyper": {
+          "params": 78,
+          "flops_forward": 3024,
+          "inputs": {
+            "z": [
+              18,
+              1
+            ]
+          },
+          "outputs": {
+            "K": [
+              18,
+              3,
+              3,
+              9
+            ]
+          },
+          "internals": {
+            "a": [
+              18,
+              3,
+              1
+            ]
+          }
+        },
+        "stem": {
+          "params": 252,
+          "flops_forward": 47628,
+          "inputs": {
+            "x": [
+              2,
+              3,
+              7,
+              7
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              9,
+              7,
+              7
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 336492,
+        "generated_weights": 1458,
+        "hyper_params": 78,
+        "one_layer_params": 81,
+        "params": 368
+      }
+    },
+    {
+      "name": "mnist",
+      "kind": "named",
+      "config": {
+        "B": 1,
+        "C": 1,
+        "E": 1,
+        "F": 7,
+        "K": 10,
+        "M": 16,
+        "N": 16,
+        "S": 28,
+        "Z": 4,
+        "c_in": 1,
+        "classes": 10,
+        "d": 4,
+        "depth": 1,
+        "fsize": 7,
+        "half": 3,
+        "mult": 1,
+        "n_basic": 16,
+        "n_emb": 1,
+        "n_z": 4,
+        "size": 28,
+        "width": 16
+      },
+      "blocks": {
+        "conv": {
+          "params": 16,
+          "flops_forward": 19668992,
+          "inputs": {
+            "h": [
+              1,
+              16,
+              28,
+              28
+            ]
+          },
+          "outputs": {
+            "h": [
+              1,
+              16,
+              28,
+              28
+            ]
+          },
+          "internals": {
+            "w": [
+              16,
+              16,
+              7,
+              7
+            ]
+          }
+        },
+        "head": {
+          "params": 170,
+          "flops_forward": 320,
+          "inputs": {
+            "h": [
+              1,
+              16,
+              28,
+              28
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1,
+              10
+            ]
+          },
+          "internals": {
+            "pooled": [
+              1,
+              16
+            ]
+          }
+        },
+        "hyper": {
+          "params": 4244,
+          "flops_forward": 100864,
+          "inputs": {
+            "z": [
+              1,
+              4
+            ]
+          },
+          "outputs": {
+            "K": [
+              1,
+              16,
+              7,
+              112
+            ]
+          },
+          "internals": {
+            "a": [
+              1,
+              16,
+              4
+            ]
+          }
+        },
+        "stem": {
+          "params": 800,
+          "flops_forward": 1229312,
+          "inputs": {
+            "x": [
+              1,
+              1,
+              28,
+              28
+            ]
+          },
+          "outputs": {
+            "h": [
+              1,
+              16,
+              28,
+              28
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 20999488,
+        "generated_weights": 12544,
+        "hyper_params": 4244,
+        "one_layer_params": 50176,
+        "params": 5230
+      }
+    }
+  ]
+}

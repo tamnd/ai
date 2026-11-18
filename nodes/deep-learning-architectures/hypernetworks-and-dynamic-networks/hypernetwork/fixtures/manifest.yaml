@@ -1,0 +1,10 @@
+# Written by fixtures/make.py; do not edit.
+seed: 20160927
+config: {static: {c_in: 1, n_basic: 2, mult: 2, fsize: 3, depth: 2, n_z: 2, size: 5, classes: 3, d: 2}, rnn: {n_x: 3, n_h: 5, n_hat: 4, n_z: 2}}
+inputs: {B: 2, T: 4, static_loss: mean cross-entropy, rnn_loss: half the mean squared error}
+dtype: float64
+numpy: "2.5.5"
+files:
+  params-small.npz: {sha256: abfefba67b905ed6c096b43f51aa440fb6d0e438655c592e7227b9534104cfb2}
+  input-small.npz: {sha256: b1c6f0fde209265a5a1bd881c48297191c0030eef16add62e9abbb548a1cb5ba}
+  expected-small.npz: {sha256: dc24ff83f4e591d3bc058ba05e4a29b1a920aa3eb81c7b59ee4ab3a45bbb22f7}
