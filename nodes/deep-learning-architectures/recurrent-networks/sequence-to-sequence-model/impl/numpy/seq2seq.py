@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/sequence-to-sequence-model/ (ai://NEW-sequence-to-sequence-model).
+# Part of https://ai.tamnd.com/sequence-to-sequence-model/ (ai://N149H2).
 """A sequence-to-sequence model of two deep LSTMs, the NumPy reference, in the form of Sutskever et al. (2014).
 
 The source tokens x_1..x_S, reversed when cfg["reverse"] is set, are embedded and read by an L-layer LSTM encoder.

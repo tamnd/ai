@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/sequence-to-sequence-model/ (ai://NEW-sequence-to-sequence-model).
+# Part of https://ai.tamnd.com/sequence-to-sequence-model/ (ai://N149H2).
 """Tests of the NumPy reference: the shape contract, the shared fixture, the gradient, the factorization, the search."""
 
 import itertools

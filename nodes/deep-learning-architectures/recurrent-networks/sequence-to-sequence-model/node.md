@@ -1,5 +1,5 @@
 ---
-tag: NEW-sequence-to-sequence-model
+tag: N149H2
 kind: architecture
 slug: sequence-to-sequence-model
 name: Sequence-to-sequence model

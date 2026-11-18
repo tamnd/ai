@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/sequence-to-sequence-model/ (ai://NEW-sequence-to-sequence-model).
+# Part of https://ai.tamnd.com/sequence-to-sequence-model/ (ai://N149H2).
 """Tests of the PyTorch version: the shared fixture, torch.nn.LSTM, the gradient, scheduled sampling and training."""
 
 import json
