@@ -1,0 +1,500 @@
+{
+  "note": "Written by aik shapes sample -w from shapes.yaml; do not edit. The tests of each implementation check shapes, param_count and flops against these values (spec 08.6, rule X09).",
+  "configs": [
+    {
+      "name": "example",
+      "kind": "example",
+      "config": {
+        "B": 2,
+        "D": 3,
+        "H": 8,
+        "K": 5,
+        "L": 2,
+        "M": 6,
+        "d_in": 3,
+        "n_classes": 5,
+        "n_layers": 2,
+        "set_size": 6,
+        "width": 8
+      },
+      "blocks": {
+        "equivariant": {
+          "params": 136,
+          "flops_forward": 1792,
+          "inputs": {
+            "h": [
+              2,
+              6,
+              8
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              6,
+              8
+            ]
+          },
+          "internals": {
+            "pooled": [
+              2,
+              8
+            ]
+          }
+        },
+        "first": {
+          "params": 56,
+          "flops_forward": 672,
+          "inputs": {
+            "x": [
+              2,
+              6,
+              3
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              6,
+              8
+            ]
+          },
+          "internals": {
+            "pooled": [
+              2,
+              3
+            ]
+          }
+        },
+        "readout": {
+          "params": 117,
+          "flops_forward": 416,
+          "inputs": {
+            "h": [
+              2,
+              6,
+              8
+            ]
+          },
+          "outputs": {
+            "logits": [
+              2,
+              5
+            ]
+          },
+          "internals": {
+            "r": [
+              2,
+              8
+            ],
+            "s": [
+              2,
+              8
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 2880,
+        "flops_pool_terms": 352,
+        "params": 309
+      }
+    },
+    {
+      "name": "sample-1",
+      "kind": "sample",
+      "config": {
+        "B": 2,
+        "D": 3,
+        "H": 6,
+        "K": 2,
+        "L": 2,
+        "M": 7,
+        "d_in": 3,
+        "n_classes": 2,
+        "n_layers": 2,
+        "set_size": 7,
+        "width": 6
+      },
+      "blocks": {
+        "equivariant": {
+          "params": 78,
+          "flops_forward": 1152,
+          "inputs": {
+            "h": [
+              2,
+              7,
+              6
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              7,
+              6
+            ]
+          },
+          "internals": {
+            "pooled": [
+              2,
+              6
+            ]
+          }
+        },
+        "first": {
+          "params": 42,
+          "flops_forward": 576,
+          "inputs": {
+            "x": [
+              2,
+              7,
+              3
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              7,
+              6
+            ]
+          },
+          "internals": {
+            "pooled": [
+              2,
+              3
+            ]
+          }
+        },
+        "readout": {
+          "params": 56,
+          "flops_forward": 192,
+          "inputs": {
+            "h": [
+              2,
+              7,
+              6
+            ]
+          },
+          "outputs": {
+            "logits": [
+              2,
+              2
+            ]
+          },
+          "internals": {
+            "r": [
+              2,
+              6
+            ],
+            "s": [
+              2,
+              6
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 1920,
+        "flops_pool_terms": 216,
+        "params": 176
+      }
+    },
+    {
+      "name": "sample-2",
+      "kind": "sample",
+      "config": {
+        "B": 2,
+        "D": 4,
+        "H": 5,
+        "K": 2,
+        "L": 1,
+        "M": 5,
+        "d_in": 4,
+        "n_classes": 2,
+        "n_layers": 1,
+        "set_size": 5,
+        "width": 5
+      },
+      "blocks": {
+        "equivariant": {
+          "params": 55,
+          "flops_forward": 600,
+          "inputs": {
+            "h": [
+              2,
+              5,
+              5
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              5,
+              5
+            ]
+          },
+          "internals": {
+            "pooled": [
+              2,
+              5
+            ]
+          }
+        },
+        "first": {
+          "params": 45,
+          "flops_forward": 480,
+          "inputs": {
+            "x": [
+              2,
+              5,
+              4
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              5,
+              5
+            ]
+          },
+          "internals": {
+            "pooled": [
+              2,
+              4
+            ]
+          }
+        },
+        "readout": {
+          "params": 42,
+          "flops_forward": 140,
+          "inputs": {
+            "h": [
+              2,
+              5,
+              5
+            ]
+          },
+          "outputs": {
+            "logits": [
+              2,
+              2
+            ]
+          },
+          "internals": {
+            "r": [
+              2,
+              5
+            ],
+            "s": [
+              2,
+              5
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 620,
+        "flops_pool_terms": 80,
+        "params": 87
+      }
+    },
+    {
+      "name": "pointcloud_1000",
+      "kind": "named",
+      "config": {
+        "B": 1,
+        "D": 3,
+        "H": 256,
+        "K": 40,
+        "L": 3,
+        "M": 1000,
+        "d_in": 3,
+        "n_classes": 40,
+        "n_layers": 3,
+        "set_size": 1000,
+        "width": 256
+      },
+      "blocks": {
+        "equivariant": {
+          "params": 131328,
+          "flops_forward": 131203072,
+          "inputs": {
+            "h": [
+              1,
+              1000,
+              256
+            ]
+          },
+          "outputs": {
+            "h": [
+              1,
+              1000,
+              256
+            ]
+          },
+          "internals": {
+            "pooled": [
+              1,
+              256
+            ]
+          }
+        },
+        "first": {
+          "params": 1792,
+          "flops_forward": 1537536,
+          "inputs": {
+            "x": [
+              1,
+              1000,
+              3
+            ]
+          },
+          "outputs": {
+            "h": [
+              1,
+              1000,
+              256
+            ]
+          },
+          "internals": {
+            "pooled": [
+              1,
+              3
+            ]
+          }
+        },
+        "readout": {
+          "params": 76072,
+          "flops_forward": 151552,
+          "inputs": {
+            "h": [
+              1,
+              1000,
+              256
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1,
+              40
+            ]
+          },
+          "internals": {
+            "r": [
+              1,
+              256
+            ],
+            "s": [
+              1,
+              256
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 264095232,
+        "flops_pool_terms": 263680,
+        "params": 340520
+      }
+    },
+    {
+      "name": "pointcloud_5000",
+      "kind": "named",
+      "config": {
+        "B": 1,
+        "D": 3,
+        "H": 512,
+        "K": 40,
+        "L": 3,
+        "M": 5000,
+        "d_in": 3,
+        "n_classes": 40,
+        "n_layers": 3,
+        "set_size": 5000,
+        "width": 512
+      },
+      "blocks": {
+        "equivariant": {
+          "params": 524800,
+          "flops_forward": 2621964288,
+          "inputs": {
+            "h": [
+              1,
+              5000,
+              512
+            ]
+          },
+          "outputs": {
+            "h": [
+              1,
+              5000,
+              512
+            ]
+          },
+          "internals": {
+            "pooled": [
+              1,
+              512
+            ]
+          }
+        },
+        "first": {
+          "params": 3584,
+          "flops_forward": 15363072,
+          "inputs": {
+            "x": [
+              1,
+              5000,
+              3
+            ]
+          },
+          "outputs": {
+            "h": [
+              1,
+              5000,
+              512
+            ]
+          },
+          "internals": {
+            "pooled": [
+              1,
+              3
+            ]
+          }
+        },
+        "readout": {
+          "params": 283176,
+          "flops_forward": 565248,
+          "inputs": {
+            "h": [
+              1,
+              5000,
+              512
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1,
+              40
+            ]
+          },
+          "internals": {
+            "r": [
+              1,
+              512
+            ],
+            "s": [
+              1,
+              512
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 5259856896,
+        "flops_pool_terms": 1051648,
+        "params": 1336360
+      }
+    }
+  ]
+}
