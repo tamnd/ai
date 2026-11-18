@@ -3,7 +3,7 @@ seed: 202312
 config: {vocab: 11, d_model: 8, n_layers: 2, d_state: 4, d_conv: 3, expand: 2, disc: simple, dt_rank: 1}
 inputs: {B: 2, T: 8, init_scale: 0.5, jitter: 0.2}
 dtype: float64
-numpy: "2.5.5"
+numpy: "2.5.4"
 files:
   params-small.npz: {sha256: 5b0dcb81bb61b523b302b963ac6ae40ce01242f8cc542872f1d2331c9afb87ee}
   input-small.npz: {sha256: 08d74d243f321726496e156c0376475d27e0a865ad271633469f801b20b4e243}
