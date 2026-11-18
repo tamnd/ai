@@ -288,3 +288,11 @@ def test_bad_config_is_an_error():
     params, x, _, _ = small()
     with pytest.raises(ValueError):
         forward(params, x, nonlinearity="gelu")
+
+
+def flop_case(c):
+    """The forward call of a config of shapes.json, for aik flopcount."""
+    cfg, k = cfg_of(c), c["config"]
+    rng = np.random.default_rng(0)
+    x = rng.normal(size=(k["B"], k["T"], k["input_size"]))  # (B, T, I)
+    return forward, (init(rng, cfg), x)
