@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/sparse-autoencoders/ (ai://NEW-sparse-autoencoders).
+# Part of https://ai.tamnd.com/sparse-autoencoders/ (ai://ZTPNXN).
 """Tests of the NumPy reference: TopK as an exact L0 constraint and as the projection onto nonnegative k-sparse
 vectors, the soft threshold against a brute-force minimum and a ReLU encoder, the shrinkage of the one-latent example,
 the scale symmetry that the unit-norm decoder removes, the gradient projection, FVU, the relative reconstruction bias,

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/qk-layernorm/ (ai://NEW-qk-layernorm).
+# Part of https://ai.tamnd.com/qk-layernorm/ (ai://B6PWZA).
 # Check of derivations/logit-bound.md: the norm sqrt(d) of a LayerNorm'd vector, the bound on the logit,
 # its tightness, the floor and ceiling on the attention weights, and the quadratic growth without the norm.
 import numpy as np

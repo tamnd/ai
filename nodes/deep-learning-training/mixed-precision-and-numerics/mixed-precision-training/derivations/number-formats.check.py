@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/mixed-precision-training/ (ai://NEW-mixed-precision-training).
+# Part of https://ai.tamnd.com/mixed-precision-training/ (ai://EPEFQ9).
 # Check of derivations/number-formats.md: the machine epsilon, smallest normal, smallest subnormal and largest finite
 # value of a binary format with e exponent bits and m mantissa bits, for FP32, FP16, BF16 and the two FP8 encodings,
 # found by decoding every bit pattern of the 8- and 16-bit formats and compared with numpy.finfo and with the tables of

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/sparse-autoencoders/ (ai://NEW-sparse-autoencoders).
+# Part of https://ai.tamnd.com/sparse-autoencoders/ (ai://ZTPNXN).
 """Tests of the PyTorch code: the encoders against their formulas, TopK as an exact L0 constraint, gradients through
 the kept latents only, the start with the encoder equal to the decoder transpose, the decoder renormalization and
 gradient projection, the scale symmetry, FVU and the relative reconstruction bias on the worked example, the dead-latent

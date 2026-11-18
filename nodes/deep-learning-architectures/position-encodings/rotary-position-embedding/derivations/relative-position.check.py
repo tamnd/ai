@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/rotary-position-embedding/ (ai://NEW-rotary-position-embedding).
+# Part of https://ai.tamnd.com/rotary-position-embedding/ (ai://0V8E5T).
 # Check of derivations/relative-position.md: R_m is orthogonal, R_0 = I, R_m R_n = R_{m+n}, the score depends only
 # on n - m, the complex, the matrix and the elementwise forms agree, the operation count, and the half pairing.
 import numpy as np

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/maximal-update-parametrization/ (ai://NEW-maximal-update-parametrization).
+# Part of https://ai.tamnd.com/maximal-update-parametrization/ (ai://4VJECR).
 """Tests of the PyTorch reference: the worked example of the page, the base-width agreement of muP and SP, the 1/d
 attention scale, the initialization and the per-layer learning rates handed to torch.optim, one SGD and one Adam
 step against a manual update, and the feature-update size that muP keeps constant across widths and SP does not."""

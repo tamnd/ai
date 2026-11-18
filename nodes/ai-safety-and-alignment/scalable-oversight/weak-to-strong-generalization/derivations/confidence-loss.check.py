@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/weak-to-strong-generalization/ (ai://NEW-weak-to-strong-generalization).
+# Part of https://ai.tamnd.com/weak-to-strong-generalization/ (ai://G0ZGHC).
 # Check of derivations/confidence-loss.md: (1 - a) CE(p, q_w) + a CE(p, h) = CE(p, (1 - a) q_w + a h); a = 0 and a = 1
 # give the CE to the weak labels and to the hardened predictions; for a fixed target the minimizer is the target and
 # the logit gradient is p - target; for a > 1/2 the target sides with h; the adaptive threshold hardens half a batch.

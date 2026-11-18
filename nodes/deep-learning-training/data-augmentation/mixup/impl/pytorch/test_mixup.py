@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/mixup/ (ai://NEW-mixup).
+# Part of https://ai.tamnd.com/mixup/ (ai://8X8XEV).
 """Tests of the PyTorch implementation: the shared fixture, agreement with F.cross_entropy on soft targets, gradients,
 the pairing of inputs and labels, the CutMix box and weight, integer inputs, and the module in evaluation mode."""
 

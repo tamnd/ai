@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/maximal-update-parametrization/ (ai://NEW-maximal-update-parametrization).
+# Part of https://ai.tamnd.com/maximal-update-parametrization/ (ai://4VJECR).
 # Check of derivations/attention-scaling.md: for independent q and k with iid zero-mean coordinates, q.k has mean 0
 # and standard deviation sqrt(d) s^2, so q.k / sqrt(d) is Theta(1) and q.k / d goes to 0; for correlated q and k
 # (k = rho q + sqrt(1 - rho^2) z), q.k / d goes to rho s^2 and q.k / sqrt(d) grows like sqrt(d); the muP scale

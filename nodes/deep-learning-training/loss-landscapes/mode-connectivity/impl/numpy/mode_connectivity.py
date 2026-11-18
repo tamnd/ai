@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/mode-connectivity/ (ai://NEW-mode-connectivity).
+# Part of https://ai.tamnd.com/mode-connectivity/ (ai://MDXMTA).
 """Mode connectivity in NumPy: paths between two weight vectors, the loss barrier along a path, the hidden-unit
 permutation of a one-hidden-layer MLP, and weight matching that aligns one network to another.
 

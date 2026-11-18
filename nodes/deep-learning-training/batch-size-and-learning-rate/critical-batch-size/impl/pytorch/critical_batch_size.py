@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/critical-batch-size/ (ai://NEW-critical-batch-size).
+# Part of https://ai.tamnd.com/critical-batch-size/ (ai://X29NFT).
 """The gradient noise scale and the critical batch size in PyTorch.
 
 per_example_grads computes one flattened gradient per example with torch.func, and noise_scale_from_examples turns

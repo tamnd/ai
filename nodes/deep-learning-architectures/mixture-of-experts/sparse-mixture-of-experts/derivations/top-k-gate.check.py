@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/sparse-mixture-of-experts/ (ai://NEW-sparse-mixture-of-experts).
+# Part of https://ai.tamnd.com/sparse-mixture-of-experts/ (ai://1H67K0).
 # Check of derivations/top-k-gate.md: softmax(KeepTopK(h, k)) equals the top k entries of softmax(h) renormalized,
 # zero elsewhere; the top-1 gate is 1 and every gate vector sums to 1.
 import numpy as np

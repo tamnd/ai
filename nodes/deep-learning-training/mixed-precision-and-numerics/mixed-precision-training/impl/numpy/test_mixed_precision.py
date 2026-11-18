@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/mixed-precision-training/ (ai://NEW-mixed-precision-training).
+# Part of https://ai.tamnd.com/mixed-precision-training/ (ai://EPEFQ9).
 """Tests of the NumPy reference: the format limits against numpy.finfo and the tables of the sources, BF16 rounding
 and truncation, underflow and lost updates in FP16, the constant loss scale, the dynamic loss scaler and its fixture
 shared with the PyTorch tests, FP32 master weights, and a small regression trained in FP16 with and without them."""

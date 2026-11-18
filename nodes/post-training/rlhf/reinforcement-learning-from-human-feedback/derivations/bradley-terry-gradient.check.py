@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/reinforcement-learning-from-human-feedback/ (ai://NEW-reinforcement-learning-from-human-feedback).
+# Part of https://ai.tamnd.com/reinforcement-learning-from-human-feedback/ (ai://6XVY3X).
 # Check of derivations/bradley-terry-gradient.md: the Bradley-Terry probability as a logistic function of the reward
 # difference, the loss as the logistic loss, its gradient and curvature, the invariance to a shift of the reward, the
 # softmax over two responses, and the gradient through a parametrized reward model.

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/direct-preference-optimization/ (ai://NEW-direct-preference-optimization).
+# Part of https://ai.tamnd.com/direct-preference-optimization/ (ai://CZW0BQ).
 """Direct preference optimization in NumPy.
 
 The loss works on per-sequence log-probabilities: for each preference pair, the summed log-probability of the

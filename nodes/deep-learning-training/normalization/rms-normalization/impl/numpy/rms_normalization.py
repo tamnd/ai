@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/rms-normalization/ (ai://NEW-rms-normalization).
+# Part of https://ai.tamnd.com/rms-normalization/ (ai://3FZB17).
 """RMSNorm and pRMSNorm, the NumPy reference.
 
 The statistic is taken over the last axis of the input, separately for each position of the leading axes: each

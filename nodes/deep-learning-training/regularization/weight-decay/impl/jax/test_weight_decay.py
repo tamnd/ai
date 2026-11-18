@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/weight-decay/ (ai://NEW-weight-decay).
+# Part of https://ai.tamnd.com/weight-decay/ (ai://DD5QVM).
 """Tests of the JAX code: the worked example, the shared fixture, jit, the mask, jax.grad of the penalty and of the
 negative log posterior, and scale invariance with the schedule of Li and Arora. optax is not installed here, so the
 fixture holds fixed numbers that the PyTorch tests check against torch.optim.SGD; the optax test is skipped."""

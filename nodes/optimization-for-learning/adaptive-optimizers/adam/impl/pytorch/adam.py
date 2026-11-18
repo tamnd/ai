@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/adam/ (ai://NEW-adam).
+# Part of https://ai.tamnd.com/adam/ (ai://88GHGT).
 """Adam and AdamW as PyTorch optimizers, written from tensor operations.
 
 Adam is Algorithm 1 of Kingma and Ba (eq-moments, eq-bias-correction, eq-update) with the denominator

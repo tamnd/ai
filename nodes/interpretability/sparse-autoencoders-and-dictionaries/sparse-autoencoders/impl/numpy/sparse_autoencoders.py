@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/sparse-autoencoders/ (ai://NEW-sparse-autoencoders).
+# Part of https://ai.tamnd.com/sparse-autoencoders/ (ai://ZTPNXN).
 """Sparse autoencoders in NumPy. Tokens are rows: x has shape (B, d), W_enc (n, d), W_dec (d, n), n latents.
 
 encode_relu is eq-relu-encoder and encode_topk eq-topk-encoder, decode eq-decoder; l1_loss is eq-l1-loss and mse_loss

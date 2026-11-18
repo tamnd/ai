@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/qk-layernorm/ (ai://NEW-qk-layernorm).
+# Part of https://ai.tamnd.com/qk-layernorm/ (ai://B6PWZA).
 """QK-layernorm, the z-loss and the attention-entropy diagnostic, the NumPy reference.
 
 attention is eq-attention of the page, with eq-qk-layernorm when qk_norm is on. z_loss is eq-z-loss,

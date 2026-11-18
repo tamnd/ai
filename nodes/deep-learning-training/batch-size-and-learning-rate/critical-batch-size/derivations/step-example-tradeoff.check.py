@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/critical-batch-size/ (ai://NEW-critical-batch-size).
+# Part of https://ai.tamnd.com/critical-batch-size/ (ai://X29NFT).
 # Check of derivations/step-example-tradeoff.md, in two parts.
 # (a) The model itself: when each step at batch B gains dL_max(L) / (1 + B_noise(L) / B), the steps to a target are
 #     S(B) = S_min + E_min / B with S_min = int dL / dL_max and E_min = int B_noise dL / dL_max, and then

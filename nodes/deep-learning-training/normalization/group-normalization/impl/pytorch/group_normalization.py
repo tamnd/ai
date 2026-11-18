@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/group-normalization/ (ai://NEW-group-normalization).
+# Part of https://ai.tamnd.com/group-normalization/ (ai://QFEJMP).
 """Group normalization as a torch.nn.Module, the PyTorch reference.
 
 The input has the layout (N, C, *S). The forward pass is eq-gn-set with eq-norm and eq-affine. normalize_over is the

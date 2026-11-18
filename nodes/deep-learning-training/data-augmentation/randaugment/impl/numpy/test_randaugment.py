@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/randaugment/ (ai://NEW-randaugment).
+# Part of https://ai.tamnd.com/randaugment/ (ai://88YEPR).
 """Tests of the NumPy reference: the worked example, each image operation, the magnitude map, the RandAugment and
 TrivialAugment samplers, the search-space counts, the hit probability and the expected Cutout area."""
 

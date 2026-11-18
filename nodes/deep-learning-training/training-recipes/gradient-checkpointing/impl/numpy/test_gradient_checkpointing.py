@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/gradient-checkpointing/ (ai://NEW-gradient-checkpointing).
+# Part of https://ai.tamnd.com/gradient-checkpointing/ (ai://C4TQW1).
 """Tests of the NumPy reference: exact gradients, the memory and compute counts, the optimal k, BPTT-HSM and the
 transformer memory formula."""
 

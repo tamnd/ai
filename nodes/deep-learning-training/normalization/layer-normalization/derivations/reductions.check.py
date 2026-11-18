@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/layer-normalization/ (ai://NEW-layer-normalization).
+# Part of https://ai.tamnd.com/layer-normalization/ (ai://RA5R92).
 # Check of derivations/reductions.md: group normalization with one group is layer normalization over (C, H, W), and
 # layer normalization of one example does not depend on the other examples of the batch.
 import numpy as np

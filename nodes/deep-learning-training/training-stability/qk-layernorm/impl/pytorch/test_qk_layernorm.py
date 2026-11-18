@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/qk-layernorm/ (ai://NEW-qk-layernorm).
+# Part of https://ai.tamnd.com/qk-layernorm/ (ai://B6PWZA).
 """Tests of the PyTorch reference: the worked example, agreement with torch, the bound, the z-loss gradient."""
 
 import math

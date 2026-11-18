@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/cosine-learning-rate-schedule/ (ai://NEW-cosine-learning-rate-schedule).
+# Part of https://ai.tamnd.com/cosine-learning-rate-schedule/ (ai://FG7K47).
 # Check of derivations/noise-floor.md: on f(x) = h x^2 / 2 with additive gradient noise, v = E[x^2] follows
 # v' = (1 - eta h)^2 v + eta^2 sigma^2, a constant rate settles at eta sigma^2 / (h (2 - eta h)), and decaying the rate
 # from 0.1 over 1,000 steps ends far below that floor. This is the page's own toy run.

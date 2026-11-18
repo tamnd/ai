@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/batch-normalization/ (ai://NEW-batch-normalization).
+# Part of https://ai.tamnd.com/batch-normalization/ (ai://TD3H76).
 """Batch normalization, the NumPy reference.
 
 The input has the shape (N, C) or (N, C, ...), as in PyTorch: the statistics of channel c are taken over the batch

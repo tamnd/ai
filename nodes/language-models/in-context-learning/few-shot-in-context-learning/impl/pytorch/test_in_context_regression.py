@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/few-shot-in-context-learning/ (ai://NEW-few-shot-in-context-learning).
+# Part of https://ai.tamnd.com/few-shot-in-context-learning/ (ai://JNEP9D).
 """Tests of the PyTorch version: the worked example of the page (the same numbers as the NumPy tests), the
 matrices of the construction, the attention module against its definition, one layer against one gradient step
 with the gradient from autograd, stacked layers against several steps, the rescaling of the weights, the

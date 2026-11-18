@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/edge-of-stability/ (ai://NEW-edge-of-stability).
+# Part of https://ai.tamnd.com/edge-of-stability/ (ai://17Q1PD).
 """Tests of the PyTorch code: gradient descent on a quadratic converges just below 2 / lambda_max and diverges just
 above; the autograd HVP against the full Hessian; power iteration against eigvalsh, on a quadratic and on a small
 tanh MLP; full-batch gradient descent against a hand-computed step; and the small experiment of the page, in which

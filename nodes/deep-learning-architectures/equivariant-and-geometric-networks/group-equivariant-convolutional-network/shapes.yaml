@@ -1,0 +1,61 @@
+# SPDX-License-Identifier: MIT
+# The shape contract of a small group equivariant CNN on the group p4 (spec 08.6): translations of the pixel grid and
+# rotations by multiples of 90 degrees. A p4 feature map has one planar map per rotation, so its shape is
+# (B, channels, 4, n, n). The lifting layer correlates the image with the 4 rotated copies of each filter, the group
+# correlation correlates a p4 map with p4 filters, rotated and cycled; both run as one planar correlation with the
+# augmented filter bank (Cohen and Welling, section 7). The 'same' padding keeps the grid at n by n. Biases, ReLU and
+# the poolings are left out of the FLOPs. The example config is small, so that the tests can run it.
+config:
+  c_in:      {meaning: "channels of the input image", symbol: "C_0", example: 1, sample: [1, 3]}
+  c1:        {meaning: "channels of the first p4 feature map, each with 4 rotation planes", symbol: "C_1", example: 4, sample: [1, 6]}
+  c2:        {meaning: "channels of the second p4 feature map, each with 4 rotation planes", symbol: "C_2", example: 4, sample: [1, 6]}
+  half:      {meaning: "half the side of the filters, rounded down: the filter reaches half pixels on each side of its centre", symbol: "h", example: 1, sample: [1, 2]}
+  k:         {meaning: "side of the square filters, odd so that a filter has a centre pixel to rotate about", symbol: "k", formula: "2 * half + 1"}
+  n_classes: {meaning: "number of classes of the linear head", symbol: "M", example: 3, sample: [1, 5]}
+axes:
+  B: {meaning: "batch", example: 2, sample: [1, 4]}
+  N: {meaning: "side of the square image, kept by the 'same' padding", example: 5, sample: [3, 8]}
+  R: {meaning: "the rotations of p4, 0, 90, 180 and 270 degrees", example: 4, sample: [4, 4]}
+  C0: c_in
+  C1: c1
+  C2: c2
+  K: k
+  M: n_classes
+blocks:
+  - id: lift
+    meaning: "the lifting correlation: each of the C1 filters on the plane, in 4 rotated copies, against the image; a p4 map with C1 channels"
+    eq: [lift, bank]
+    inputs: {x: "(B, C0, N, N)"}
+    outputs: {h1: "(B, C1, R, N, N)"}
+    internals: {bank: "(4 * C1, C0, K, K)"}
+    params: "C1 * C0 * K * K + C1"
+    flops_forward: "2 * B * N * N * K * K * 4 * C1 * C0"
+  - id: gconv
+    meaning: "the p4 correlation: each of the C2 filters on p4, rotated and with its rotation axis cycled 4 times, against the p4 map"
+    eq: [gconv, bank]
+    inputs: {h1: "(B, C1, R, N, N)"}
+    outputs: {h2: "(B, C2, R, N, N)"}
+    internals: {bank: "(4 * C2, 4 * C1, K, K)"}
+    params: "C2 * C1 * 4 * K * K + C2"
+    flops_forward: "2 * B * N * N * K * K * 16 * C2 * C1"
+  - id: pool
+    meaning: "the maximum over the 4 rotations (coset pooling), then the mean over the plane: a vector invariant to the group"
+    eq: [rotpool]
+    inputs: {h2: "(B, C2, R, N, N)"}
+    outputs: {g: "(B, C2)"}
+    internals: {pooled: "(B, C2, N, N)"}
+    params: "0"
+    flops_forward: "0"
+  - id: head
+    meaning: "the linear classifier on the invariant vector"
+    inputs: {g: "(B, C2)"}
+    outputs: {logits: "(B, M)"}
+    params: "M * C2 + M"
+    flops_forward: "2 * B * C2 * M"
+model:
+  params: {formula: "lift.params + gconv.params + pool.params + head.params", symbol: "P", meaning: "weights and biases; one bias per channel, shared by its 4 rotation planes"}
+  flops_forward: {formula: "lift.flops_forward + gconv.flops_forward + head.flops_forward", symbol: "C_{\\text{fwd}}", meaning: "FLOPs of one forward pass over the batch, a multiply-add counted as 2"}
+  planar_weights_same_width: {formula: "4 * C1 * C0 * K * K + 16 * C2 * C1 * K * K", meaning: "convolution weights of the planar CNN with as many planar maps, 4 C1 and 4 C2: 4 times those of the G-CNN, which shares each weight across the 4 rotations"}
+configs:
+  rgb: {meaning: "three input channels and wider maps", c_in: 3, c1: 6, c2: 6, half: 1, n_classes: 5}
+  wide_filter: {meaning: "5 by 5 filters on a single channel", c_in: 1, c1: 2, c2: 3, half: 2, n_classes: 2}

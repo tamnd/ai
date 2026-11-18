@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/sharpness-aware-minimization/ (ai://NEW-sharpness-aware-minimization).
+# Part of https://ai.tamnd.com/sharpness-aware-minimization/ (ai://8BNWST).
 """Tests of the NumPy reference: the perturbation against brute-force maximization of the linearized loss on the p-ball,
 its closed forms at p = 2 and p = inf and over a list of arrays; the SAM gradient and one SAM step on a quadratic,
 against the closed form H(w + rho Hw / ||Hw||); momentum and weight decay; m-sharpness; the filter-normalized

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/rms-normalization/ (ai://NEW-rms-normalization).
+# Part of https://ai.tamnd.com/rms-normalization/ (ai://3FZB17).
 """Tests of the PyTorch reference: the worked example and the shared fixture of the NumPy tests, autograd against the
 closed-form gradient, its orthogonality to the input, the scaling invariance, pRMSNorm, and agreement with
 torch.nn.functional.rms_norm."""

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/multi-head-attention/ (ai://NEW-multi-head-attention).
+# Part of https://ai.tamnd.com/multi-head-attention/ (ai://ND4EXH).
 """Multi-head attention as pure functions, the JAX reference.
 
 It computes eq-scores, eq-softmax, eq-attention, eq-heads and eq-multihead of the page with jax.numpy, as the

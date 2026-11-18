@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/mode-connectivity/ (ai://NEW-mode-connectivity).
+# Part of https://ai.tamnd.com/mode-connectivity/ (ai://MDXMTA).
 """Tests of the PyTorch code: the endpoints and midpoints of the paths; the loss barrier in both conventions, zero
 for a convex loss, 1 on the segment through a ring-shaped loss and 1/16 on a Bezier curve around it; the invariance
 of the MLP under a hidden-unit permutation and the barrier between a network and its permuted copy; the Hungarian

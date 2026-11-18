@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/pass-at-k/ (ai://NEW-pass-at-k).
+# Part of https://ai.tamnd.com/pass-at-k/ (ai://AH634X).
 """Tests of pass_at_k.py: the vectors, the worked example of the page, the derivation, the edge cases and the errors."""
 
 import itertools

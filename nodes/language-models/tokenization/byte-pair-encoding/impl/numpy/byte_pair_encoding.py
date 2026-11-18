@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/byte-pair-encoding/ (ai://NEW-byte-pair-encoding).
+# Part of https://ai.tamnd.com/byte-pair-encoding/ (ai://ZRQW82).
 """Byte-pair encoding in NumPy: symbols are integer ids, each word an int64 array, and pair statistics are computed
 with np.unique and np.bincount over the whole table at once.
 

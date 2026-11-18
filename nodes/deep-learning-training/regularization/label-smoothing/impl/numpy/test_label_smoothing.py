@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/label-smoothing/ (ai://NEW-label-smoothing).
+# Part of https://ai.tamnd.com/label-smoothing/ (ai://98TJG9).
 """Tests of the NumPy reference: the worked example, the smoothed targets, the pair of losses and the KL form, the
 gradient against finite differences, the confidence penalty, the optimal logit gap, label dropout, and the fixture
 shared with the PyTorch tests."""

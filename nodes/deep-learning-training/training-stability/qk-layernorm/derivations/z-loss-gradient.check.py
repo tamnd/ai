@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/qk-layernorm/ (ai://NEW-qk-layernorm).
+# Part of https://ai.tamnd.com/qk-layernorm/ (ai://B6PWZA).
 # Check of derivations/z-loss-gradient.md: the gradient 2 alpha log Z softmax(z) against finite differences,
 # the shift that leaves the cross-entropy alone and zeroes log Z, and the first-order change of log Z.
 import numpy as np

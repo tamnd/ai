@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/graph-neural-network/ (ai://NEW-graph-neural-network).
+# Part of https://ai.tamnd.com/graph-neural-network/ (ai://PS4TCX).
 """The message-passing network with sum aggregation and a sum readout, and the GCN layer, in PyTorch.
 
 It computes eq-message, eq-update, eq-readout, eq-renorm and eq-gcn of the page as the NumPy reference does, and

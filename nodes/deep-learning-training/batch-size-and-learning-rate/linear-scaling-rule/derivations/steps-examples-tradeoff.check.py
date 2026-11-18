@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/linear-scaling-rule/ (ai://NEW-linear-scaling-rule).
+# Part of https://ai.tamnd.com/linear-scaling-rule/ (ai://JDMWH4).
 # Check of derivations/steps-examples-tradeoff.md: if each step at batch B lowers the loss by dL_max / (1 + B_noise / B),
 # the steps to a target are S = S_min + E_min / B with S_min the steps at infinite batch and E_min = the integral of
 # B_noise over those steps, so E = B S, B_crit = E_min / S_min is the step-average of B_noise, and

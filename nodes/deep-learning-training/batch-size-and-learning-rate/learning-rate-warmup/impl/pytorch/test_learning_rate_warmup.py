@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/learning-rate-warmup/ (ai://NEW-learning-rate-warmup).
+# Part of https://ai.tamnd.com/learning-rate-warmup/ (ai://MA8ACN).
 """Tests of the PyTorch code: the schedulers against the formulas of the page, Goyal et al.'s warmup and step decay,
 the Transformer schedule, and the shared RAdam fixture against torch.optim.RAdam with its threshold rho_t > 5."""
 

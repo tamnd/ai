@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/mixed-precision-training/ (ai://NEW-mixed-precision-training).
+# Part of https://ai.tamnd.com/mixed-precision-training/ (ai://EPEFQ9).
 """Mixed precision training in NumPy.
 
 format_limits gives the machine epsilon, smallest normal and subnormal and largest value of a binary floating-point

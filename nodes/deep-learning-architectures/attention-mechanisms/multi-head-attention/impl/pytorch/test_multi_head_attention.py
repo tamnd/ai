@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/multi-head-attention/ (ai://NEW-multi-head-attention).
+# Part of https://ai.tamnd.com/multi-head-attention/ (ai://ND4EXH).
 """Tests of the PyTorch reference: the shared fixture with autograd, the masks, the heads, and torch's own attention."""
 
 import math
