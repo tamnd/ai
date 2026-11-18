@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/recurrent-neural-network/ (ai://NEW-recurrent-neural-network).
+# Part of https://ai.tamnd.com/recurrent-neural-network/ (ai://FKJKTR).
 """Tests of the PyTorch reference: the shared fixture, the shape contract, the gradient, torch.nn.RNN, and training."""
 
 import json

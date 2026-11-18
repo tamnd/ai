@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/recurrent-neural-network/ (ai://NEW-recurrent-neural-network).
+# Part of https://ai.tamnd.com/recurrent-neural-network/ (ai://FKJKTR).
 """One simple (Elman) recurrent layer in JAX, the JAX reference.
 
 It computes eq-step of the page as a pure function of the parameters, with the loop over time as jax.lax.scan, and

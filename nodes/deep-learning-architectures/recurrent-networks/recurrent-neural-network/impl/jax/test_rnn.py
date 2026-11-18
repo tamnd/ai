@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/recurrent-neural-network/ (ai://NEW-recurrent-neural-network).
+# Part of https://ai.tamnd.com/recurrent-neural-network/ (ai://FKJKTR).
 """Tests of the JAX reference: the shared fixture and its gradients, the shape contract, jit, vmap, and the
 gradient against finite differences."""
 

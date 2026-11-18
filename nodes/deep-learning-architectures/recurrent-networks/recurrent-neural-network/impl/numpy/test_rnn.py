@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/recurrent-neural-network/ (ai://NEW-recurrent-neural-network).
+# Part of https://ai.tamnd.com/recurrent-neural-network/ (ai://FKJKTR).
 """Tests of the NumPy reference: the worked example, the shape contract, the shared fixture and the properties."""
 
 import json

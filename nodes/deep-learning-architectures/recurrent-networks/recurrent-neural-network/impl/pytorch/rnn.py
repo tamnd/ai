@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/recurrent-neural-network/ (ai://NEW-recurrent-neural-network).
+# Part of https://ai.tamnd.com/recurrent-neural-network/ (ai://FKJKTR).
 """One simple (Elman) recurrent layer as a torch.nn.Module, the PyTorch reference.
 
 It computes eq-step of the page with torch operations, as the NumPy reference does, and leaves backpropagation

@@ -1,5 +1,5 @@
 ---
-tag: NEW-recurrent-neural-network
+tag: FKJKTR
 kind: architecture
 slug: recurrent-neural-network
 name: Recurrent neural network

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/recurrent-neural-network/ (ai://NEW-recurrent-neural-network).
+# Part of https://ai.tamnd.com/recurrent-neural-network/ (ai://FKJKTR).
 """One simple (Elman) recurrent layer, the NumPy reference.
 
 It computes eq-step of the page, h_t = f(x_t W + b_i + h_{t-1} U + b_h), over a sequence, and backpropagates
