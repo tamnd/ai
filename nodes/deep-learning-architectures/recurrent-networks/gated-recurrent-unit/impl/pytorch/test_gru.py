@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/gated-recurrent-unit/ (ai://NEW-gated-recurrent-unit).
+# Part of https://ai.tamnd.com/gated-recurrent-unit/ (ai://XAGPFN).
 """Tests of the PyTorch reference: the shared fixture, the shape contract, the gradient, torch.nn.GRU, and training."""
 
 import json

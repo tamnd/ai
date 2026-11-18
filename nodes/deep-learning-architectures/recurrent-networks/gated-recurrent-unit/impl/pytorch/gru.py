@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/gated-recurrent-unit/ (ai://NEW-gated-recurrent-unit).
+# Part of https://ai.tamnd.com/gated-recurrent-unit/ (ai://XAGPFN).
 """One GRU layer as a torch.nn.Module, the PyTorch reference.
 
 It computes eq-gates, eq-candidate and eq-update of the page with torch operations, as the NumPy reference does, and

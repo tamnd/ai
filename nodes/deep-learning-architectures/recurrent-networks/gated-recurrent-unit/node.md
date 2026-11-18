@@ -1,5 +1,5 @@
 ---
-tag: NEW-gated-recurrent-unit
+tag: XAGPFN
 kind: architecture
 slug: gated-recurrent-unit
 name: Gated recurrent unit
