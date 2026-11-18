@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/vision-transformer/ (ai://NEW-vision-transformer).
+# Part of https://ai.tamnd.com/vision-transformer/ (ai://DV9G9W).
 """Tests of the PyTorch version: the shared fixture and its gradients, torch.nn.TransformerEncoderLayer, the patch
 embedding as a strided convolution, the resizing against torch.nn.functional.interpolate, gradcheck, the bag of
 patches, and a task that needs the position embeddings."""

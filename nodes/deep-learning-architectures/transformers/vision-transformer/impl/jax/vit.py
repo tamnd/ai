@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/vision-transformer/ (ai://NEW-vision-transformer).
+# Part of https://ai.tamnd.com/vision-transformer/ (ai://DV9G9W).
 """The Vision Transformer of Dosovitskiy et al. (2021) in JAX, as pure functions of the parameters.
 
 The parameters have the names and the layout of the NumPy reference, so the shared fixture loads as it is. The

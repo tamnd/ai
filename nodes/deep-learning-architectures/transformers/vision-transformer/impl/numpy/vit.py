@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/vision-transformer/ (ai://NEW-vision-transformer).
+# Part of https://ai.tamnd.com/vision-transformer/ (ai://DV9G9W).
 """The Vision Transformer of Dosovitskiy et al. (2021), the NumPy reference: forward, backward and the counts.
 
 An image (B, S, S, C) is cut into N = (S / P)^2 patches of P x P pixels in raster order, each flattened to P * P * C

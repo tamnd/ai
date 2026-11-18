@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/vision-transformer/ (ai://NEW-vision-transformer).
+# Part of https://ai.tamnd.com/vision-transformer/ (ai://DV9G9W).
 """Tests of the NumPy reference: shapes and counts, the patches, the worked example, the shared fixture, the gradient
 of eq-loss, the bag of patches without position embeddings and the resizing of the position embeddings."""
 

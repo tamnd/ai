@@ -1,5 +1,5 @@
 ---
-tag: NEW-vision-transformer
+tag: DV9G9W
 kind: architecture
 slug: vision-transformer
 name: Vision Transformer

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/vision-transformer/ (ai://NEW-vision-transformer).
+# Part of https://ai.tamnd.com/vision-transformer/ (ai://DV9G9W).
 """Tests of the JAX version: the shared fixture and its gradients, the shape contract, jit, vmap, and the bag of
 patches without position embeddings."""
 
