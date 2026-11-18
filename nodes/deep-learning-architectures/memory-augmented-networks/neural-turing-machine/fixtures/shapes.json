@@ -1,0 +1,835 @@
+{
+  "note": "Written by aik shapes sample -w from shapes.yaml; do not edit. The tests of each implementation check shapes, param_count and flops against these values (spec 08.6, rule X09).",
+  "configs": [
+    {
+      "name": "example",
+      "kind": "example",
+      "config": {
+        "B": 2,
+        "H": 8,
+        "K": 3,
+        "M": 4,
+        "N": 6,
+        "P": 28,
+        "R": 1,
+        "T": 7,
+        "W": 1,
+        "X": 4,
+        "Y": 3,
+        "hidden": 8,
+        "k": 3,
+        "n_loc": 6,
+        "n_read": 1,
+        "n_write": 1,
+        "p": 28,
+        "shift": 1,
+        "width": 4,
+        "x_dim": 4,
+        "y_dim": 3
+      },
+      "blocks": {
+        "address": {
+          "params": 0,
+          "flops_forward": 168,
+          "inputs": {
+            "key": [
+              2,
+              4
+            ],
+            "memory": [
+              2,
+              6,
+              4
+            ],
+            "w_prev": [
+              2,
+              6
+            ]
+          },
+          "outputs": {
+            "w": [
+              2,
+              6
+            ]
+          },
+          "internals": {
+            "shifted_copies": [
+              2,
+              3,
+              6
+            ],
+            "similarity": [
+              2,
+              6
+            ]
+          }
+        },
+        "controller": {
+          "params": 324,
+          "flops_forward": 1152,
+          "inputs": {
+            "reads_prev": [
+              2,
+              4
+            ],
+            "x_t": [
+              2,
+              4
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              8
+            ],
+            "o": [
+              2,
+              28
+            ]
+          }
+        },
+        "output": {
+          "params": 39,
+          "flops_forward": 144,
+          "inputs": {
+            "h": [
+              2,
+              8
+            ],
+            "reads": [
+              2,
+              4
+            ]
+          },
+          "outputs": {
+            "y_t": [
+              2,
+              3
+            ]
+          }
+        },
+        "read": {
+          "params": 0,
+          "flops_forward": 96,
+          "inputs": {
+            "memory": [
+              2,
+              6,
+              4
+            ],
+            "w": [
+              2,
+              6
+            ]
+          },
+          "outputs": {
+            "r": [
+              2,
+              4
+            ]
+          }
+        },
+        "write": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "add": [
+              2,
+              4
+            ],
+            "erase": [
+              2,
+              4
+            ],
+            "memory": [
+              2,
+              6,
+              4
+            ],
+            "w": [
+              2,
+              6
+            ]
+          },
+          "outputs": {
+            "memory": [
+              2,
+              6,
+              4
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 12096,
+        "learned_init_params": 40,
+        "memory_floats": 48,
+        "params": 363
+      }
+    },
+    {
+      "name": "sample-1",
+      "kind": "sample",
+      "config": {
+        "B": 2,
+        "H": 4,
+        "K": 3,
+        "M": 3,
+        "N": 8,
+        "P": 39,
+        "R": 1,
+        "T": 1,
+        "W": 2,
+        "X": 4,
+        "Y": 4,
+        "hidden": 4,
+        "k": 3,
+        "n_loc": 8,
+        "n_read": 1,
+        "n_write": 2,
+        "p": 39,
+        "shift": 1,
+        "width": 3,
+        "x_dim": 4,
+        "y_dim": 4
+      },
+      "blocks": {
+        "address": {
+          "params": 0,
+          "flops_forward": 192,
+          "inputs": {
+            "key": [
+              2,
+              3
+            ],
+            "memory": [
+              2,
+              8,
+              3
+            ],
+            "w_prev": [
+              2,
+              8
+            ]
+          },
+          "outputs": {
+            "w": [
+              2,
+              8
+            ]
+          },
+          "internals": {
+            "shifted_copies": [
+              2,
+              3,
+              8
+            ],
+            "similarity": [
+              2,
+              8
+            ]
+          }
+        },
+        "controller": {
+          "params": 227,
+          "flops_forward": 736,
+          "inputs": {
+            "reads_prev": [
+              2,
+              3
+            ],
+            "x_t": [
+              2,
+              4
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              4
+            ],
+            "o": [
+              2,
+              39
+            ]
+          }
+        },
+        "output": {
+          "params": 32,
+          "flops_forward": 112,
+          "inputs": {
+            "h": [
+              2,
+              4
+            ],
+            "reads": [
+              2,
+              3
+            ]
+          },
+          "outputs": {
+            "y_t": [
+              2,
+              4
+            ]
+          }
+        },
+        "read": {
+          "params": 0,
+          "flops_forward": 96,
+          "inputs": {
+            "memory": [
+              2,
+              8,
+              3
+            ],
+            "w": [
+              2,
+              8
+            ]
+          },
+          "outputs": {
+            "r": [
+              2,
+              3
+            ]
+          }
+        },
+        "write": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "add": [
+              2,
+              3
+            ],
+            "erase": [
+              2,
+              3
+            ],
+            "memory": [
+              2,
+              8,
+              3
+            ],
+            "w": [
+              2,
+              8
+            ]
+          },
+          "outputs": {
+            "memory": [
+              2,
+              8,
+              3
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 1520,
+        "learned_init_params": 51,
+        "memory_floats": 48,
+        "params": 259
+      }
+    },
+    {
+      "name": "sample-2",
+      "kind": "sample",
+      "config": {
+        "B": 4,
+        "H": 8,
+        "K": 3,
+        "M": 6,
+        "N": 3,
+        "P": 48,
+        "R": 2,
+        "T": 4,
+        "W": 1,
+        "X": 1,
+        "Y": 3,
+        "hidden": 8,
+        "k": 3,
+        "n_loc": 3,
+        "n_read": 2,
+        "n_write": 1,
+        "p": 48,
+        "shift": 1,
+        "width": 6,
+        "x_dim": 1,
+        "y_dim": 3
+      },
+      "blocks": {
+        "address": {
+          "params": 0,
+          "flops_forward": 216,
+          "inputs": {
+            "key": [
+              4,
+              6
+            ],
+            "memory": [
+              4,
+              3,
+              6
+            ],
+            "w_prev": [
+              4,
+              3
+            ]
+          },
+          "outputs": {
+            "w": [
+              4,
+              3
+            ]
+          },
+          "internals": {
+            "shifted_copies": [
+              4,
+              3,
+              3
+            ],
+            "similarity": [
+              4,
+              3
+            ]
+          }
+        },
+        "controller": {
+          "params": 544,
+          "flops_forward": 3904,
+          "inputs": {
+            "reads_prev": [
+              4,
+              12
+            ],
+            "x_t": [
+              4,
+              1
+            ]
+          },
+          "outputs": {
+            "h": [
+              4,
+              8
+            ],
+            "o": [
+              4,
+              48
+            ]
+          }
+        },
+        "output": {
+          "params": 63,
+          "flops_forward": 480,
+          "inputs": {
+            "h": [
+              4,
+              8
+            ],
+            "reads": [
+              4,
+              12
+            ]
+          },
+          "outputs": {
+            "y_t": [
+              4,
+              3
+            ]
+          }
+        },
+        "read": {
+          "params": 0,
+          "flops_forward": 144,
+          "inputs": {
+            "memory": [
+              4,
+              3,
+              6
+            ],
+            "w": [
+              4,
+              3
+            ]
+          },
+          "outputs": {
+            "r": [
+              4,
+              6
+            ]
+          }
+        },
+        "write": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "add": [
+              4,
+              6
+            ],
+            "erase": [
+              4,
+              6
+            ],
+            "memory": [
+              4,
+              3,
+              6
+            ],
+            "w": [
+              4,
+              3
+            ]
+          },
+          "outputs": {
+            "memory": [
+              4,
+              3,
+              6
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 21280,
+        "learned_init_params": 39,
+        "memory_floats": 72,
+        "params": 607
+      }
+    },
+    {
+      "name": "wide",
+      "kind": "named",
+      "config": {
+        "B": 2,
+        "H": 8,
+        "K": 3,
+        "M": 6,
+        "N": 9,
+        "P": 48,
+        "R": 2,
+        "T": 7,
+        "W": 1,
+        "X": 4,
+        "Y": 3,
+        "hidden": 8,
+        "k": 3,
+        "n_loc": 9,
+        "n_read": 2,
+        "n_write": 1,
+        "p": 48,
+        "shift": 1,
+        "width": 6,
+        "x_dim": 4,
+        "y_dim": 3
+      },
+      "blocks": {
+        "address": {
+          "params": 0,
+          "flops_forward": 324,
+          "inputs": {
+            "key": [
+              2,
+              6
+            ],
+            "memory": [
+              2,
+              9,
+              6
+            ],
+            "w_prev": [
+              2,
+              9
+            ]
+          },
+          "outputs": {
+            "w": [
+              2,
+              9
+            ]
+          },
+          "internals": {
+            "shifted_copies": [
+              2,
+              3,
+              9
+            ],
+            "similarity": [
+              2,
+              9
+            ]
+          }
+        },
+        "controller": {
+          "params": 568,
+          "flops_forward": 2048,
+          "inputs": {
+            "reads_prev": [
+              2,
+              12
+            ],
+            "x_t": [
+              2,
+              4
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              8
+            ],
+            "o": [
+              2,
+              48
+            ]
+          }
+        },
+        "output": {
+          "params": 63,
+          "flops_forward": 240,
+          "inputs": {
+            "h": [
+              2,
+              8
+            ],
+            "reads": [
+              2,
+              12
+            ]
+          },
+          "outputs": {
+            "y_t": [
+              2,
+              3
+            ]
+          }
+        },
+        "read": {
+          "params": 0,
+          "flops_forward": 216,
+          "inputs": {
+            "memory": [
+              2,
+              9,
+              6
+            ],
+            "w": [
+              2,
+              9
+            ]
+          },
+          "outputs": {
+            "r": [
+              2,
+              6
+            ]
+          }
+        },
+        "write": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "add": [
+              2,
+              6
+            ],
+            "erase": [
+              2,
+              6
+            ],
+            "memory": [
+              2,
+              9,
+              6
+            ],
+            "w": [
+              2,
+              9
+            ]
+          },
+          "outputs": {
+            "memory": [
+              2,
+              9,
+              6
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 25844,
+        "learned_init_params": 93,
+        "memory_floats": 108,
+        "params": 631
+      }
+    },
+    {
+      "name": "paper",
+      "kind": "named",
+      "config": {
+        "B": 2,
+        "H": 100,
+        "K": 3,
+        "M": 20,
+        "N": 128,
+        "P": 92,
+        "R": 1,
+        "T": 7,
+        "W": 1,
+        "X": 9,
+        "Y": 8,
+        "hidden": 100,
+        "k": 3,
+        "n_loc": 128,
+        "n_read": 1,
+        "n_write": 1,
+        "p": 92,
+        "shift": 1,
+        "width": 20,
+        "x_dim": 9,
+        "y_dim": 8
+      },
+      "blocks": {
+        "address": {
+          "params": 0,
+          "flops_forward": 11776,
+          "inputs": {
+            "key": [
+              2,
+              20
+            ],
+            "memory": [
+              2,
+              128,
+              20
+            ],
+            "w_prev": [
+              2,
+              128
+            ]
+          },
+          "outputs": {
+            "w": [
+              2,
+              128
+            ]
+          },
+          "internals": {
+            "shifted_copies": [
+              2,
+              3,
+              128
+            ],
+            "similarity": [
+              2,
+              128
+            ]
+          }
+        },
+        "controller": {
+          "params": 12292,
+          "flops_forward": 48400,
+          "inputs": {
+            "reads_prev": [
+              2,
+              20
+            ],
+            "x_t": [
+              2,
+              9
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              100
+            ],
+            "o": [
+              2,
+              92
+            ]
+          }
+        },
+        "output": {
+          "params": 968,
+          "flops_forward": 3840,
+          "inputs": {
+            "h": [
+              2,
+              100
+            ],
+            "reads": [
+              2,
+              20
+            ]
+          },
+          "outputs": {
+            "y_t": [
+              2,
+              8
+            ]
+          }
+        },
+        "read": {
+          "params": 0,
+          "flops_forward": 10240,
+          "inputs": {
+            "memory": [
+              2,
+              128,
+              20
+            ],
+            "w": [
+              2,
+              128
+            ]
+          },
+          "outputs": {
+            "r": [
+              2,
+              20
+            ]
+          }
+        },
+        "write": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "add": [
+              2,
+              20
+            ],
+            "erase": [
+              2,
+              20
+            ],
+            "memory": [
+              2,
+              128,
+              20
+            ],
+            "w": [
+              2,
+              128
+            ]
+          },
+          "outputs": {
+            "memory": [
+              2,
+              128,
+              20
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 602224,
+        "learned_init_params": 2836,
+        "memory_floats": 5120,
+        "params": 13260
+      }
+    }
+  ]
+}
