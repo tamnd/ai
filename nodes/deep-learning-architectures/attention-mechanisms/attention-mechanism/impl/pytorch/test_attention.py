@@ -18,7 +18,11 @@ FIX = HERE.parents[1] / "fixtures"
 
 
 def numpy_reference():
-    spec = importlib.util.spec_from_file_location("attention_np", HERE.parent / "numpy" / "attention.py")
+    file = HERE.parent / "numpy" / "attention.py"
+    if not file.is_file():  # each framework runs in a sandbox of its own directory
+        pytest.skip("the NumPy reference is not in this sandbox")
+    spec = importlib.util.spec_from_file_location("attention_np", file)
+    assert spec is not None and spec.loader is not None
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     return mod
