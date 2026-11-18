@@ -1,0 +1,10 @@
+# Written by fixtures/make.py; do not edit.
+seed: 202010
+config: {image_size: 8, patch_size: 2, channels: 3, d_model: 8, n_heads: 2, d_ff: 16, n_layers: 2, n_classes: 5, pool: cls, pos: learned}
+inputs: {B: 2, init_scale: 0.5}
+dtype: float64
+numpy: "2.5.5"
+files:
+  params-small.npz: {sha256: fd1e5dff938c792908d847583171e11dd97428f087372943f7904a47deaaff1c}
+  input-small.npz: {sha256: 9b0eaf60e7a7131f6282415a1417964ab3044861101c4618fedc8ae96c610143}
+  expected-small.npz: {sha256: 4e5f2b501112678af586fdd94645bf25dd4205d5f36b36e977b3abc5eb05ed90}
