@@ -1,0 +1,428 @@
+# The claims of the sequence-to-sequence model page (spec 07). The build computes the labels.
+- id: c-def
+  type: definitional
+  text: "The method uses a multilayered Long Short-Term Memory (LSTM) to map the input sequence to a vector of a fixed dimensionality, and then another deep LSTM to decode the target sequence from the vector."
+  evidence:
+    - {work: "sutskever-2014-sequence-to-sequence-learning", role: original, locator: "the abstract", stance: for}
+
+- id: c-cho-def
+  type: definitional
+  text: "In the RNN Encoder–Decoder, one RNN encodes a sequence of symbols into a fixed-length vector representation, and the other decodes the representation into another sequence of symbols; the encoder and decoder are jointly trained to maximize the conditional probability of a target sequence given a source sequence."
+  evidence:
+    - {work: "cho-2014-learning-phrase-representations-rnn", role: original, locator: "the abstract", stance: for}
+
+- id: c-factor-def
+  type: definitional
+  text: "The fixed-dimensional representation v of the input sequence is given by the last hidden state of the LSTM, and the probability of y1, ..., yT' is computed with a standard LSTM-LM formulation whose initial hidden state is set to v, as the product of p(yt | v, y1, ..., yt−1), each distribution being represented with a softmax over all the words in the vocabulary."
+  evidence:
+    - {work: "sutskever-2014-sequence-to-sequence-learning", role: original, locator: "Section 2", stance: for}
+
+- id: c-eos
+  type: definitional
+  text: "Each sentence is required to end with a special end-of-sentence symbol <EOS>, which enables the model to define a distribution over sequences of all possible lengths."
+  evidence:
+    - {work: "sutskever-2014-sequence-to-sequence-learning", role: original, locator: "Section 2", stance: for}
+
+- id: c-lm
+  type: attributive
+  text: "The second LSTM is essentially a recurrent neural network language model except that it is conditioned on the input sequence."
+  evidence:
+    - {work: "sutskever-2014-sequence-to-sequence-learning", role: original, locator: "Section 1", stance: for}
+
+- id: c-cho-uses
+  type: attributive
+  text: "Once trained, the RNN Encoder–Decoder can be used to generate a target sequence given an input sequence, or to score a given pair of input and output sequences, where the score is simply a probability p(y | x)."
+  evidence:
+    - {work: "cho-2014-learning-phrase-representations-rnn", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-two-lstms
+  type: attributive
+  text: "Using two different LSTMs, one for the input sequence and another for the output sequence, increases the number of model parameters at negligible computational cost and makes it natural to train the LSTM on multiple language pairs simultaneously."
+  evidence:
+    - {work: "sutskever-2014-sequence-to-sequence-learning", role: original, locator: "Section 2", stance: for}
+
+- id: c-four-layers
+  type: empirical
+  text: "Deep LSTMs significantly outperformed shallow LSTMs, so an LSTM with four layers was chosen."
+  scope:
+    models: "deep and shallow LSTM encoder-decoders"
+    data: ["WMT'14 English to French"]
+    setting: "machine translation"
+  evidence:
+    - {work: "sutskever-2014-sequence-to-sequence-learning", role: original, locator: "Section 2", stance: for}
+
+- id: c-reverse-def
+  type: definitional
+  text: "Instead of mapping the sentence a, b, c to the sentence α, β, γ, the LSTM is asked to map c, b, a to α, β, γ, where α, β, γ is the translation of a, b, c."
+  evidence:
+    - {work: "sutskever-2014-sequence-to-sequence-learning", role: original, locator: "Section 2", stance: for}
+
+- id: c-sutskever-config
+  type: attributive
+  text: "The deep LSTMs have 4 layers, with 1000 cells at each layer and 1000 dimensional word embeddings, an input vocabulary of 160,000 and an output vocabulary of 80,000, so the deep LSTM uses 8000 real numbers to represent a sentence; the resulting LSTM has 384M parameters of which 64M are pure recurrent connections (32M for the encoder LSTM and 32M for the decoder LSTM)."
+  evidence:
+    - {work: "sutskever-2014-sequence-to-sequence-learning", role: original, locator: "Section 3.4", stance: for}
+
+- id: c-params
+  type: mathematical
+  text: "With two embeddings of V_x × d_e and V_y × d_e, an encoder and a decoder of L LSTM layers with one bias per layer, and a softmax layer of d_h × V_y weights and V_y biases, the model has (V_x + V_y) d_e + 2[4 d_h (d_e + d_h) + 4 d_h + (L − 1)(8 d_h² + 4 d_h)] + d_h V_y + V_y parameters, 613 in the example config."
+  assumes: ["the first LSTM layer of each stack reads d_e features and the others d_h", "the example config has V_x = 7, V_y = 6, d_e = 3, d_h = 4 and L = 2"]
+  derivation: parameter-count
+
+- id: c-count-sutskever
+  type: mathematical
+  text: "With V_x = 160,000, V_y = 80,000, d_e = d_h = 1000 and L = 4, and without the biases, the model has exactly 384,000,000 weights."
+  assumes: ["the model of c-params"]
+  derivation: parameter-count
+
+- id: c-count-recurrent
+  type: mathematical
+  text: "Of these, 64,000,000 are the weights of the LSTM layers, 32,000,000 in each stack, counting the input weights of every layer with its recurrent weights; the embeddings hold 240,000,000 and the softmax layer 80,000,000."
+  assumes: ["the model of c-count-sutskever"]
+  derivation: parameter-count
+
+- id: c-state-8000
+  type: mathematical
+  text: "The vector v, the final hidden state and cell of every layer of the encoder, has 2 L d_h numbers, 8000 with L = 4 and d_h = 1000."
+  assumes: ["the model of c-params"]
+  derivation: parameter-count
+
+- id: c-flops
+  type: mathematical
+  text: "A teacher-forced forward pass over B pairs of S source and T target tokens costs B (S + T)[8 d_h (d_e + d_h) + 16 (L − 1) d_h²] + 2 B T d_h V_y FLOPs in its products, 9,024 for the example config with B = 2, S = 5 and T = 4."
+  assumes: ["the model of c-params", "a multiply-add counts as 2 FLOPs and only the products are counted"]
+  derivation: parameter-count
+
+- id: c-softmax-cost
+  type: mathematical
+  text: "With d_h = 1000, L = 4 and V_y = 80,000, each target token costs 2 d_h V_y = 160,000,000 FLOPs in the softmax layer, 2.5 times the 64,000,000 of one step of a stack."
+  assumes: ["the model of c-count-sutskever", "the count of c-flops"]
+  derivation: parameter-count
+
+- id: c-parallel
+  type: attributive
+  text: "A C++ implementation of the deep LSTM processes approximately 1,700 words per second on a single GPU; parallelized on an 8-GPU machine, with each of the 4 LSTM layers on a separate GPU and the remaining 4 GPUs parallelizing the softmax, each multiplying by a 1000 × 20000 matrix, it achieved 6,300 words per second with a minibatch size of 128, and training took about ten days."
+  evidence:
+    - {work: "sutskever-2014-sequence-to-sequence-learning", role: original, locator: "Section 3.5", stance: for}
+
+- id: c-objective
+  type: definitional
+  text: "The deep LSTM is trained by maximizing the log probability of a correct translation T given the source sentence S, with the training objective 1/|S| Σ log p(T|S) over the training set."
+  evidence:
+    - {work: "sutskever-2014-sequence-to-sequence-learning", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-loss-steps
+  type: mathematical
+  text: "The log-likelihood of a target is the sum over its steps of the log-probability of the correct token given the true previous tokens, so the decoder run step by step on the target tokens and the decoder fed the whole shifted target at once give the same loss."
+  assumes: ["the factorization eq-factor", "a target ends at its first <EOS>"]
+  derivation: factorization
+
+- id: c-factor-sum
+  type: mathematical
+  text: "eq-loss is the sum over the steps of the cross-entropy between the one-hot target and the decoder's distribution, averaged over the batch, and its gradient with respect to the logits z_t of step t is (softmax(z_t) − e_{y_t}) / B."
+  assumes: ["the factorization eq-factor", "the softmax layer of eq-step"]
+  derivation: factorization
+
+- id: c-recipe
+  type: attributive
+  text: "All of the LSTM's parameters were initialized with the uniform distribution between -0.08 and 0.08, and the models were trained with stochastic gradient descent without momentum, with a fixed learning rate of 0.7, halving the learning rate every half epoch after 5 epochs, for a total of 7.5 epochs."
+  evidence:
+    - {work: "sutskever-2014-sequence-to-sequence-learning", role: original, locator: "Section 3.4", stance: for}
+
+- id: c-batch
+  type: attributive
+  text: "Batches of 128 sequences were used for the gradient, which was divided by the size of the batch (namely, 128)."
+  evidence:
+    - {work: "sutskever-2014-sequence-to-sequence-learning", role: original, locator: "Section 3.4", stance: for}
+
+- id: c-clip
+  type: attributive
+  text: "Although LSTMs tend to not suffer from the vanishing gradient problem, they can have exploding gradients; for each training batch s = ‖g‖₂ is computed, where g is the gradient divided by 128, and if s > 5, g is set to 5g/s."
+  evidence:
+    - {work: "sutskever-2014-sequence-to-sequence-learning", role: original, locator: "Section 3.4", stance: for}
+
+- id: c-bucket
+  type: attributive
+  text: "Most sentences are short and some are long, so all sentences in a minibatch were made roughly of the same length, yielding a 2x speedup."
+  evidence:
+    - {work: "sutskever-2014-sequence-to-sequence-learning", role: original, locator: "Section 3.4", stance: for}
+
+- id: c-reverse-gain
+  type: empirical
+  text: "The LSTM learns much better when the source sentences are reversed (the target sentences are not reversed): its test perplexity dropped from 5.8 to 4.7, and the test BLEU scores of its decoded translations increased from 25.9 to 30.6."
+  scope:
+    models: "deep LSTM encoder-decoder of Sutskever et al."
+    data: ["WMT'14 English to French"]
+    setting: "machine translation, source in its order against reversed"
+  evidence:
+    - {work: "sutskever-2014-sequence-to-sequence-learning", role: original, locator: "Section 3.3", stance: for}
+
+- id: c-reverse-why
+  type: attributive
+  text: "The authors believe the gain is caused by the introduction of many short term dependencies: by reversing the words in the source sentence, the average distance between corresponding words in the source and target language is unchanged, but the first few words in the source language are now very close to the first few words in the target language, so the problem's minimal time lag is greatly reduced."
+  evidence:
+    - {work: "sutskever-2014-sequence-to-sequence-learning", role: original, locator: "Section 3.3", stance: for}
+
+- id: c-lag-forward
+  type: mathematical
+  text: "With a source of n words read at steps 1 to n and target word i predicted at step n + i, every source word is n steps from the target word it corresponds to when the source is read in its own order."
+  assumes: ["source word i corresponds to target word i"]
+  derivation: time-lag
+
+- id: c-lag-reversed
+  type: mathematical
+  text: "With the source reversed, source word i is 2i − 1 steps from target word i; the average distance is still n, and the smallest is 1."
+  assumes: ["the setting of c-lag-forward"]
+  derivation: time-lag
+
+- id: c-reverse-long
+  type: empirical
+  text: "LSTMs trained on reversed source sentences did much better on long sentences than LSTMs trained on the raw source sentences, which suggests that reversing the input sentences results in LSTMs with better memory utilization."
+  scope:
+    models: "deep LSTM encoder-decoder of Sutskever et al."
+    data: ["WMT'14 English to French"]
+    setting: "machine translation, source in its order against reversed"
+  evidence:
+    - {work: "sutskever-2014-sequence-to-sequence-learning", role: original, locator: "Section 3.3", stance: for}
+
+- id: c-ss-problem
+  type: attributive
+  text: "At inference the unknown previous token is replaced by a token generated by the model itself, and this discrepancy between training and inference can yield errors that can accumulate quickly along the generated sequence."
+  evidence:
+    - {work: "bengio-2015-scheduled-sampling", role: original, locator: "the abstract", stance: for}
+
+- id: c-exposure
+  type: definitional
+  text: "Exposure bias is the discrepancy which occurs when a model is only exposed to the training data distribution, instead of its own predictions."
+  evidence:
+    - {work: "ranzato-2016-sequence-level-training", role: original, locator: "Section 1", stance: for}
+
+- id: c-ss-def
+  type: definitional
+  text: "For every token to predict yt of the ith mini-batch, scheduled sampling flips a coin and uses the true previous token with probability εi, or an estimate coming from the model itself with probability (1 − εi), obtained by sampling a token according to the model's distribution or taken as its arg max."
+  evidence:
+    - {work: "bengio-2015-scheduled-sampling", role: original, locator: "Section 2.4", stance: for}
+
+- id: c-ss-limits
+  type: definitional
+  text: "When εi = 1, the model is trained exactly as before, while when εi = 0 the model is trained in the same setting as inference."
+  evidence:
+    - {work: "bengio-2015-scheduled-sampling", role: original, locator: "Section 2.4", stance: for}
+
+- id: c-ss-schedules
+  type: definitional
+  text: "The schedules that decrease εi as a function of i are the linear decay εi = max(ε, k − ci), the exponential decay εi = k^i where k < 1, and the inverse sigmoid decay εi = k/(k + exp(i/k)) where k ≥ 1."
+  evidence:
+    - {work: "bengio-2015-scheduled-sampling", role: original, locator: "Section 2.4", stance: for}
+
+- id: c-ss-per-sequence
+  type: empirical
+  text: "Flipping the coin once per sequence instead of once per token gave results as poor as the Always Sampling approach."
+  scope:
+    models: "LSTM image captioning models trained with scheduled sampling"
+    data: ["MSCOCO"]
+    setting: "image captioning"
+  evidence:
+    - {work: "bengio-2015-scheduled-sampling", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-mixer
+  type: definitional
+  text: "Mixed Incremental Cross-Entropy Reinforce (MIXER) is a recipe to make REINFORCE work well for text generation, in which the model starts from the optimal policy given by cross-entropy training, from which it then slowly deviates in order to make use of its own predictions, as is done at test time."
+  evidence:
+    - {work: "ranzato-2016-sequence-level-training", role: original, locator: "Section 1", stance: for}
+
+- id: c-normalized
+  type: mathematical
+  text: "For every n, the probabilities of the sequences that end with <EOS> within n steps and of the n-token prefixes that contain no <EOS> add up to 1, so the probabilities of all finite sequences ending in <EOS> add up to at most 1."
+  assumes: ["the factorization eq-factor", "each conditional is a distribution over a vocabulary that contains <EOS>"]
+  derivation: factorization
+
+- id: c-prefix-bound
+  type: mathematical
+  text: "The probability that a target starts with y_1, ..., y_k never increases with k."
+  assumes: ["the factorization eq-factor"]
+  derivation: factorization
+
+- id: c-beam-def
+  type: definitional
+  text: "The simple left-to-right beam search decoder maintains a small number B of partial hypotheses; at each timestep each partial hypothesis in the beam is extended with every possible word in the vocabulary, all but the B most likely hypotheses according to the model's log probability are discarded, and as soon as the <EOS> symbol is appended to a hypothesis, it is removed from the beam and is added to the set of complete hypotheses."
+  evidence:
+    - {work: "sutskever-2014-sequence-to-sequence-learning", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-beam-greedy
+  type: mathematical
+  text: "A beam search of size 1 is the greedy decoder, which takes the most likely token at every step."
+  assumes: ["the beam search of eq-beam"]
+  derivation: beam-search
+
+- id: c-beam-exhaustive
+  type: mathematical
+  text: "A beam of at least V (V − 1)^{n−1} hypotheses never discards an extension, so it returns the most likely of all outputs of at most n tokens that end in <EOS>."
+  assumes: ["the beam search of eq-beam", "a vocabulary of V tokens, <EOS> included"]
+  derivation: beam-search
+
+- id: c-beam-stop
+  type: mathematical
+  text: "Stopping as soon as the best complete hypothesis is at least as likely as every partial one changes nothing in the result of the beam search."
+  assumes: ["the beam search of eq-beam", "the bound of c-prefix-bound"]
+  derivation: beam-search
+
+- id: c-beam-cost
+  type: mathematical
+  text: "Over n steps a beam of k runs the decoder on at most n k hypotheses and scores at most n k V extensions, while an exhaustive search over the same outputs scores the sum over t from 1 to n of V (V − 1)^{t−1}."
+  assumes: ["the beam search of eq-beam", "a vocabulary of V tokens, <EOS> included"]
+  derivation: beam-search
+
+- id: c-greedy-miss
+  type: mathematical
+  text: "Neither greedy decoding nor a small beam is exact: in the worked example greedy decoding returns an output of probability 0.0867, a beam of 2 one of 0.1793 and a beam of 3 the most likely output, <EOS> alone, of probability 0.2207."
+  assumes: ["the model of the worked example, with first-step probabilities 0.2207 for <EOS>, 0.4918 and 0.2875"]
+  derivation: beam-search
+
+- id: c-beam-small
+  type: empirical
+  text: "The system performs well even with a beam size of 1, and a beam of size 2 provides most of the benefits of beam search."
+  scope:
+    models: "ensembles of deep reversed LSTM encoder-decoders"
+    data: ["WMT'14 English to French"]
+    setting: "machine translation decoded with beam search"
+  evidence:
+    - {work: "sutskever-2014-sequence-to-sequence-learning", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-rescore-def
+  type: definitional
+  text: "To rescore an n-best list, the log probability of every hypothesis is computed with the LSTM and an even average is taken with their score and the LSTM's score."
+  evidence:
+    - {work: "sutskever-2014-sequence-to-sequence-learning", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-main
+  type: empirical
+  text: "On an English to French translation task from the WMT'14 dataset, the translations produced by the LSTM achieve a BLEU score of 34.8 on the entire test set, where the LSTM's BLEU score was penalized on out-of-vocabulary words; a phrase-based SMT system achieves a BLEU score of 33.3 on the same dataset, and using the LSTM to rerank the 1000 hypotheses produced by the SMT system increases its BLEU score to 36.5."
+  scope:
+    models: "ensemble of deep LSTM encoder-decoders with reversed sources"
+    data: ["WMT'14 English to French"]
+    setting: "machine translation, direct decoding and n-best rescoring"
+  evidence:
+    - {work: "sutskever-2014-sequence-to-sequence-learning", role: original, locator: "the abstract", stance: for}
+
+- id: c-table1
+  type: empirical
+  text: "On the WMT'14 English to French test set, the test BLEU score is 26.17 for a single forward LSTM with beam size 12, 30.59 for a single reversed LSTM with beam size 12, and 33.00, 34.50 and 34.81 for an ensemble of 5 reversed LSTMs with beam size 1, 2 and 12, against 33.30 for the baseline system."
+  scope:
+    models: "deep LSTM encoder-decoders and ensembles"
+    data: ["WMT'14 English to French, ntst14"]
+    setting: "machine translation decoded with beam search"
+  evidence:
+    - {work: "sutskever-2014-sequence-to-sequence-learning", role: original, locator: "Table 1", stance: for}
+
+- id: c-table2
+  type: empirical
+  text: "Rescoring the baseline 1000-best lists gives a test BLEU score of 35.61 with a single forward LSTM, 35.85 with a single reversed LSTM and 36.5 with an ensemble of 5 reversed LSTMs, against 37.0 for the best WMT'14 result."
+  scope:
+    models: "deep LSTM encoder-decoders rescoring a phrase-based system"
+    data: ["WMT'14 English to French, ntst14"]
+    setting: "n-best rescoring"
+  evidence:
+    - {work: "sutskever-2014-sequence-to-sequence-learning", role: original, locator: "Table 2", stance: for}
+
+- id: c-data
+  type: attributive
+  text: "The models were trained on a subset of 12M sentences consisting of 348M French words and 304M English words, with 160,000 of the most frequent words for the source language and 80,000 of the most frequent words for the target language."
+  evidence:
+    - {work: "sutskever-2014-sequence-to-sequence-learning", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-long
+  type: empirical
+  text: "The LSTM did not have difficulty on long sentences."
+  scope:
+    models: "deep LSTM encoder-decoders with reversed sources"
+    data: ["WMT'14 English to French"]
+    setting: "machine translation"
+  evidence:
+    - {work: "sutskever-2014-sequence-to-sequence-learning", role: original, locator: "the abstract", stance: for}
+
+- id: c-fig3
+  type: empirical
+  text: "There is no degradation on sentences with less than 35 words, and only a minor degradation on the longest sentences."
+  scope:
+    models: "deep LSTM encoder-decoders with reversed sources"
+    data: ["WMT'14 English to French test set, sorted by length"]
+    setting: "machine translation"
+  evidence:
+    - {work: "sutskever-2014-sequence-to-sequence-learning", role: original, locator: "Figure 3", stance: for}
+
+- id: c-depth
+  type: empirical
+  text: "Each additional layer reduced perplexity by nearly 10%, possibly due to the much larger hidden state of deep LSTMs."
+  scope:
+    models: "deep and shallow LSTM encoder-decoders"
+    data: ["WMT'14 English to French"]
+    setting: "machine translation"
+  evidence:
+    - {work: "sutskever-2014-sequence-to-sequence-learning", role: original, locator: "Section 3.4", stance: for}
+
+- id: c-repr
+  type: empirical
+  text: "The LSTM learned sensible phrase and sentence representations that are sensitive to word order and are relatively invariant to the active and the passive voice."
+  scope:
+    models: "deep LSTM encoder-decoders"
+    data: ["WMT'14 English to French"]
+    setting: "machine translation, inspection of the encoder's representations"
+  evidence:
+    - {work: "sutskever-2014-sequence-to-sequence-learning", role: original, locator: "the abstract", stance: for}
+
+- id: c-ss-coco
+  type: empirical
+  text: "On the MSCOCO development set for image captioning, BLEU-4, METEOR and CIDER are 28.8, 24.2 and 89.5 for the baseline, 30.6, 24.3 and 92.1 with scheduled sampling, and 11.2, 15.7 and 49.7 with Always Sampling."
+  scope:
+    models: "LSTM image captioning models"
+    data: ["MSCOCO development set"]
+    setting: "image captioning"
+  evidence:
+    - {work: "bengio-2015-scheduled-sampling", role: original, locator: "Table 1", stance: for}
+
+- id: c-bottleneck
+  type: attributive
+  text: "The use of a fixed-length vector is conjectured to be a bottleneck in improving the performance of the basic encoder–decoder architecture, which is extended by allowing a model to automatically (soft-)search for parts of a source sentence that are relevant to predicting a target word."
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "the abstract", stance: for}
+
+- id: c-bahdanau-table
+  type: empirical
+  text: "RNNencdec-50 scores 17.82 BLEU on all the test sentences, RNNsearch-50 26.75 and RNNsearch-30 21.50."
+  scope:
+    models: "RNN Encoder–Decoder (RNNencdec) and RNNsearch"
+    data: ["WMT'14 English to French"]
+    setting: "machine translation"
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "Table 1", stance: for}
+
+- id: c-hist-family
+  type: historical
+  text: "Neural machine translation was recently proposed by Kalchbrenner and Blunsom (2013), Sutskever et al. (2014) and Cho et al. (2014b), and most of the proposed neural machine translation models belong to a family of encoder–decoders."
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "Section 1", stance: for}
+
+- id: c-hist-kb
+  type: historical
+  text: "Kalchbrenner and Blunsom were the first to map the input sentence into a vector and then back to a sentence, although they map sentences to vectors using convolutional neural networks, which lose the ordering of the words."
+  evidence:
+    - {work: "sutskever-2014-sequence-to-sequence-learning", role: original, locator: "Section 4", stance: for}
+
+- id: c-hist-cho
+  type: historical
+  text: "Cho et al. used an LSTM-like RNN architecture to map sentences into vectors and back, although their primary focus was on integrating their neural network into an SMT system."
+  evidence:
+    - {work: "sutskever-2014-sequence-to-sequence-learning", role: original, locator: "Section 4", stance: for}
+
+- id: c-hist-rnn
+  type: attributive
+  text: "The authors were unable to train a standard RNN on the non-reversed translation problem, and believe that a standard RNN should be easily trainable when the source sentences are reversed, although they did not verify it experimentally."
+  evidence:
+    - {work: "sutskever-2014-sequence-to-sequence-learning", role: original, locator: "Section 5", stance: for}
+
+- id: c-hist-coco
+  type: historical
+  text: "Scheduled sampling was used successfully in the winning entry to the MSCOCO image captioning challenge, 2015."
+  evidence:
+    - {work: "bengio-2015-scheduled-sampling", role: original, locator: "the abstract", stance: for}
