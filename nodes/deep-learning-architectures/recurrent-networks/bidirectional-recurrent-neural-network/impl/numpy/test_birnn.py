@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/bidirectional-recurrent-neural-network/ (ai://NEW-bidirectional-recurrent-neural-network).
+# Part of https://ai.tamnd.com/bidirectional-recurrent-neural-network/ (ai://Z7Z0J3).
 """Tests of the NumPy reference: shapes and counts, the two directions, the context of each output, padding and the
 gradient of eq-loss."""
 

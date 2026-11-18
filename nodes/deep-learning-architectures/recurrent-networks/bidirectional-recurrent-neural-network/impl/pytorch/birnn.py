@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/bidirectional-recurrent-neural-network/ (ai://NEW-bidirectional-recurrent-neural-network).
+# Part of https://ai.tamnd.com/bidirectional-recurrent-neural-network/ (ai://Z7Z0J3).
 """A deep bidirectional recurrent network for sequence labelling, the PyTorch version, with the parameters of the
 NumPy reference.
 

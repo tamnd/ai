@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/bidirectional-recurrent-neural-network/ (ai://NEW-bidirectional-recurrent-neural-network).
+# Part of https://ai.tamnd.com/bidirectional-recurrent-neural-network/ (ai://Z7Z0J3).
 """Tests of the JAX version: the shared fixture and its gradients, the shape contract, jit and vmap."""
 
 import json

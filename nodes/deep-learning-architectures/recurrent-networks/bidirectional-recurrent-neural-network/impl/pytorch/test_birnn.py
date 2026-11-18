@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/bidirectional-recurrent-neural-network/ (ai://NEW-bidirectional-recurrent-neural-network).
+# Part of https://ai.tamnd.com/bidirectional-recurrent-neural-network/ (ai://Z7Z0J3).
 """Tests of the PyTorch version: the shared fixture and its gradients, torch.nn.LSTM and torch.nn.RNN with
 bidirectional=True on packed sequences, gradcheck, and a task that needs the future."""
 

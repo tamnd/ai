@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/bidirectional-recurrent-neural-network/ (ai://NEW-bidirectional-recurrent-neural-network).
+# Part of https://ai.tamnd.com/bidirectional-recurrent-neural-network/ (ai://Z7Z0J3).
 """A deep bidirectional recurrent network for sequence labelling, the NumPy reference.
 
 Every layer has a forward direction, which reads its input from t = 1 to T (eq-forward), and a backward direction

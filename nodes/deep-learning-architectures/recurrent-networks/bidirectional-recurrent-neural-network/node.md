@@ -1,5 +1,5 @@
 ---
-tag: NEW-bidirectional-recurrent-neural-network
+tag: Z7Z0J3
 kind: architecture
 slug: bidirectional-recurrent-neural-network
 name: Bidirectional recurrent neural network
