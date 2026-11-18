@@ -4,7 +4,6 @@
 embedding as a strided convolution, the resizing against torch.nn.functional.interpolate, gradcheck, the bag of
 patches, and a task that needs the position embeddings."""
 
-import importlib.util
 import json
 import pathlib
 
@@ -78,23 +77,29 @@ def test_patch_embedding_is_a_strided_convolution():
     conv = F.conv2d(images.permute(0, 3, 1, 2), w, b, stride=3).flatten(2).transpose(1, 2)
     torch.testing.assert_close(conv, patchify(images, 3) @ model.p["embed_W"] + model.p["embed_b"], rtol=1e-12,
                                atol=1e-12)  # fmt: skip
-    ref = load_numpy_reference()
-    np.testing.assert_array_equal(ref.embed_as_conv(model.p["embed_W"].detach().numpy(), 3, 2), w.detach().numpy())
+    # embed_W (P * P * C, D), flattened (row, column, channel), is the (D, C, P, P) kernel of the convolution.
+    torch.testing.assert_close(w, model.p["embed_W"].reshape(3, 3, 2, -1).permute(3, 2, 0, 1), rtol=0, atol=0)
 
 
-def load_numpy_reference():
-    spec = importlib.util.spec_from_file_location("vit_np", HERE.parent / "numpy" / "vit.py")
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
-    return mod
+def interpolation_matrix(n_in, n_out):
+    """The (n_out, n_in) weights of linear interpolation with half-pixel centres, the edges clamped, written out as
+    the NumPy reference does it, so that the test does not compare interpolate with itself."""
+    w = torch.zeros(n_out, n_in)
+    for i in range(n_out):
+        src = max((i + 0.5) * n_in / n_out - 0.5, 0.0)
+        i0 = min(int(src), n_in - 1)
+        i1 = min(i0 + 1, n_in - 1)
+        w[i, i0] += 1.0 - (src - i0)
+        w[i, i1] += src - i0
+    return w
 
 
 @pytest.mark.parametrize("old,new", [(14, 24), (5, 3), (4, 2), (3, 7), (6, 6)])
 def test_resize_pos_matches_torch_interpolate(old, new):
     pos = torch.randn(1 + old * old, 5, generator=torch.Generator().manual_seed(old * 31 + new))
-    ref = load_numpy_reference()
-    np.testing.assert_allclose(resize_pos(pos, old, new).numpy(), ref.resize_pos(pos.numpy(), old, new), rtol=1e-12,
-                               atol=1e-13)  # fmt: skip
+    w = interpolation_matrix(old, new)  # (G', G)
+    grid = torch.einsum("ir,js,rsd->ijd", w, w, pos[1:].reshape(old, old, 5)).reshape(new * new, 5)
+    torch.testing.assert_close(resize_pos(pos, old, new), torch.cat([pos[:1], grid]), rtol=1e-12, atol=1e-13)
 
 
 @pytest.mark.parametrize("kw", [{}, {"pool": "gap", "pos": "none", "head_hidden": 3}], ids=["cls", "gap-no-pos"])
