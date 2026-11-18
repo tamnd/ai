@@ -1,0 +1,580 @@
+{
+  "note": "Written by aik shapes sample -w from shapes.yaml; do not edit. The tests of each implementation check shapes, param_count and flops against these values (spec 08.6, rule X09).",
+  "configs": [
+    {
+      "name": "example",
+      "kind": "example",
+      "config": {
+        "B": 2,
+        "D": 6,
+        "J": 4,
+        "K": 3,
+        "N": 5,
+        "V": 12,
+        "dim": 6,
+        "hops": 3,
+        "mem": 5,
+        "sent_len": 4,
+        "vocab": 12
+      },
+      "blocks": {
+        "answer": {
+          "params": 0,
+          "flops_forward": 288,
+          "inputs": {
+            "u": [
+              2,
+              6
+            ]
+          },
+          "outputs": {
+            "logits": [
+              2,
+              12
+            ]
+          }
+        },
+        "embed": {
+          "params": 102,
+          "flops_forward": 480,
+          "inputs": {
+            "story": [
+              2,
+              5,
+              4
+            ]
+          },
+          "outputs": {
+            "memory": [
+              2,
+              5,
+              6
+            ]
+          },
+          "internals": {
+            "word_vectors": [
+              2,
+              5,
+              4,
+              6
+            ]
+          }
+        },
+        "hop": {
+          "params": 0,
+          "flops_forward": 240,
+          "inputs": {
+            "memory": [
+              2,
+              5,
+              6
+            ],
+            "outputs": [
+              2,
+              5,
+              6
+            ],
+            "u": [
+              2,
+              6
+            ]
+          },
+          "outputs": {
+            "attention": [
+              2,
+              5
+            ],
+            "u_next": [
+              2,
+              6
+            ]
+          }
+        },
+        "question": {
+          "params": 0,
+          "flops_forward": 96,
+          "inputs": {
+            "query": [
+              2,
+              4
+            ]
+          },
+          "outputs": {
+            "u": [
+              2,
+              6
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 3024,
+        "layerwise_params": 384,
+        "lm_params": 312,
+        "params": 408,
+        "rnn_params": 180,
+        "untied_params": 756
+      }
+    },
+    {
+      "name": "sample-1",
+      "kind": "sample",
+      "config": {
+        "B": 3,
+        "D": 7,
+        "J": 3,
+        "K": 1,
+        "N": 6,
+        "V": 14,
+        "dim": 7,
+        "hops": 1,
+        "mem": 6,
+        "sent_len": 3,
+        "vocab": 14
+      },
+      "blocks": {
+        "answer": {
+          "params": 0,
+          "flops_forward": 588,
+          "inputs": {
+            "u": [
+              3,
+              7
+            ]
+          },
+          "outputs": {
+            "logits": [
+              3,
+              14
+            ]
+          }
+        },
+        "embed": {
+          "params": 140,
+          "flops_forward": 756,
+          "inputs": {
+            "story": [
+              3,
+              6,
+              3
+            ]
+          },
+          "outputs": {
+            "memory": [
+              3,
+              6,
+              7
+            ]
+          },
+          "internals": {
+            "word_vectors": [
+              3,
+              6,
+              3,
+              7
+            ]
+          }
+        },
+        "hop": {
+          "params": 0,
+          "flops_forward": 504,
+          "inputs": {
+            "memory": [
+              3,
+              6,
+              7
+            ],
+            "outputs": [
+              3,
+              6,
+              7
+            ],
+            "u": [
+              3,
+              7
+            ]
+          },
+          "outputs": {
+            "attention": [
+              3,
+              6
+            ],
+            "u_next": [
+              3,
+              7
+            ]
+          }
+        },
+        "question": {
+          "params": 0,
+          "flops_forward": 126,
+          "inputs": {
+            "query": [
+              3,
+              3
+            ]
+          },
+          "outputs": {
+            "u": [
+              3,
+              7
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 2730,
+        "layerwise_params": 525,
+        "lm_params": 427,
+        "params": 280,
+        "rnn_params": 245,
+        "untied_params": 476
+      }
+    },
+    {
+      "name": "sample-2",
+      "kind": "sample",
+      "config": {
+        "B": 1,
+        "D": 10,
+        "J": 1,
+        "K": 1,
+        "N": 4,
+        "V": 17,
+        "dim": 10,
+        "hops": 1,
+        "mem": 4,
+        "sent_len": 1,
+        "vocab": 17
+      },
+      "blocks": {
+        "answer": {
+          "params": 0,
+          "flops_forward": 340,
+          "inputs": {
+            "u": [
+              1,
+              10
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1,
+              17
+            ]
+          }
+        },
+        "embed": {
+          "params": 210,
+          "flops_forward": 80,
+          "inputs": {
+            "story": [
+              1,
+              4,
+              1
+            ]
+          },
+          "outputs": {
+            "memory": [
+              1,
+              4,
+              10
+            ]
+          },
+          "internals": {
+            "word_vectors": [
+              1,
+              4,
+              1,
+              10
+            ]
+          }
+        },
+        "hop": {
+          "params": 0,
+          "flops_forward": 160,
+          "inputs": {
+            "memory": [
+              1,
+              4,
+              10
+            ],
+            "outputs": [
+              1,
+              4,
+              10
+            ],
+            "u": [
+              1,
+              10
+            ]
+          },
+          "outputs": {
+            "attention": [
+              1,
+              4
+            ],
+            "u_next": [
+              1,
+              10
+            ]
+          }
+        },
+        "question": {
+          "params": 0,
+          "flops_forward": 20,
+          "inputs": {
+            "query": [
+              1,
+              1
+            ]
+          },
+          "outputs": {
+            "u": [
+              1,
+              10
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 680,
+        "layerwise_params": 860,
+        "lm_params": 690,
+        "params": 420,
+        "rnn_params": 440,
+        "untied_params": 760
+      }
+    },
+    {
+      "name": "babi",
+      "kind": "named",
+      "config": {
+        "B": 2,
+        "D": 20,
+        "J": 7,
+        "K": 3,
+        "N": 50,
+        "V": 177,
+        "dim": 20,
+        "hops": 3,
+        "mem": 50,
+        "sent_len": 7,
+        "vocab": 177
+      },
+      "blocks": {
+        "answer": {
+          "params": 0,
+          "flops_forward": 14160,
+          "inputs": {
+            "u": [
+              2,
+              20
+            ]
+          },
+          "outputs": {
+            "logits": [
+              2,
+              177
+            ]
+          }
+        },
+        "embed": {
+          "params": 4540,
+          "flops_forward": 28000,
+          "inputs": {
+            "story": [
+              2,
+              50,
+              7
+            ]
+          },
+          "outputs": {
+            "memory": [
+              2,
+              50,
+              20
+            ]
+          },
+          "internals": {
+            "word_vectors": [
+              2,
+              50,
+              7,
+              20
+            ]
+          }
+        },
+        "hop": {
+          "params": 0,
+          "flops_forward": 8000,
+          "inputs": {
+            "memory": [
+              2,
+              50,
+              20
+            ],
+            "outputs": [
+              2,
+              50,
+              20
+            ],
+            "u": [
+              2,
+              20
+            ]
+          },
+          "outputs": {
+            "attention": [
+              2,
+              50
+            ],
+            "u_next": [
+              2,
+              20
+            ]
+          }
+        },
+        "question": {
+          "params": 0,
+          "flops_forward": 560,
+          "inputs": {
+            "query": [
+              2,
+              7
+            ]
+          },
+          "outputs": {
+            "u": [
+              2,
+              20
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 150720,
+        "layerwise_params": 16560,
+        "lm_params": 13020,
+        "params": 18160,
+        "rnn_params": 7480,
+        "untied_params": 34320
+      }
+    },
+    {
+      "name": "ptb",
+      "kind": "named",
+      "config": {
+        "B": 2,
+        "D": 150,
+        "J": 1,
+        "K": 6,
+        "N": 100,
+        "V": 10000,
+        "dim": 150,
+        "hops": 6,
+        "mem": 100,
+        "sent_len": 1,
+        "vocab": 10000
+      },
+      "blocks": {
+        "answer": {
+          "params": 0,
+          "flops_forward": 6000000,
+          "inputs": {
+            "u": [
+              2,
+              150
+            ]
+          },
+          "outputs": {
+            "logits": [
+              2,
+              10000
+            ]
+          }
+        },
+        "embed": {
+          "params": 1515000,
+          "flops_forward": 60000,
+          "inputs": {
+            "story": [
+              2,
+              100,
+              1
+            ]
+          },
+          "outputs": {
+            "memory": [
+              2,
+              100,
+              150
+            ]
+          },
+          "internals": {
+            "word_vectors": [
+              2,
+              100,
+              1,
+              150
+            ]
+          }
+        },
+        "hop": {
+          "params": 0,
+          "flops_forward": 120000,
+          "inputs": {
+            "memory": [
+              2,
+              100,
+              150
+            ],
+            "outputs": [
+              2,
+              100,
+              150
+            ],
+            "u": [
+              2,
+              150
+            ]
+          },
+          "outputs": {
+            "attention": [
+              2,
+              100
+            ],
+            "u_next": [
+              2,
+              150
+            ]
+          }
+        },
+        "question": {
+          "params": 0,
+          "flops_forward": 600,
+          "inputs": {
+            "query": [
+              2,
+              1
+            ]
+          },
+          "outputs": {
+            "u": [
+              2,
+              150
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 7140600,
+        "layerwise_params": 6052500,
+        "lm_params": 4552500,
+        "params": 10605000,
+        "rnn_params": 3022500,
+        "untied_params": 21180000
+      }
+    }
+  ]
+}

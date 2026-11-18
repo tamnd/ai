@@ -1,0 +1,605 @@
+# The claims of the end-to-end-memory-network page (spec 07). The build computes the labels.
+
+# The model
+
+- id: c-memn2n-end-to-end
+  type: attributive
+  text: "Sukhbaatar et al. describe the model as a recurrent attention model over a possibly large external memory which, unlike the memory networks before it, is trained end-to-end and hence requires significantly less supervision during training."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "the abstract", stance: for}
+
+- id: c-match
+  type: definitional
+  text: "The match between the internal state u and each memory vector is the softmax of their inner products."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 2.1", stance: for}
+
+- id: c-out
+  type: definitional
+  text: "A second matrix C maps each sentence to an output vector, and the response of the memory is the sum of the output vectors weighted by the match."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 2.1", stance: for}
+
+- id: c-answer
+  type: definitional
+  text: "In the single-layer model the answer is predicted by a matrix W of shape V by d from the sum of the response and the state, followed by a softmax."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 2.1", stance: for}
+
+- id: c-joint-training
+  type: definitional
+  text: "The matrices A, B, C and W are learned jointly by minimizing a standard cross-entropy loss between the predicted and the true answer, with stochastic gradient descent."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 2.1", stance: for}
+
+- id: c-smooth
+  type: attributive
+  text: "Sukhbaatar et al. note that because the function from input to output is smooth, gradients can easily be computed and backpropagated through it."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 2.1", stance: for}
+
+- id: c-stack
+  type: definitional
+  text: "The memory layers are stacked by adding the response of a layer to its input state, u^{k+1} = u^k + o^k."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-hops-matrices
+  type: definitional
+  text: "Each layer k has its own embedding matrices A^k and C^k, constrained to ease training and reduce the number of parameters, and the answer uses the state after the last hop."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-two-tyings
+  type: attributive
+  text: "Sukhbaatar et al. explore two types of weight tying within the model, adjacent and layer-wise."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-adjacent
+  type: definitional
+  text: "In adjacent tying the output embedding of one layer is the input embedding of the next, the answer matrix is the transpose of the last output embedding, and the question embedding is the first input embedding."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-layerwise
+  type: definitional
+  text: "In layer-wise tying all the hops share one input and one output embedding, and a linear map H, learned with the rest, is added to the update of the state, u^{k+1} = H u^k + o^k."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-like-memnn
+  type: attributive
+  text: "Sukhbaatar et al. note that the model is similar to the Memory Network of Weston et al., except that the hard max operations within each layer have been replaced with a continuous weighting from the softmax."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 2.2", stance: for}
+
+- id: c-as-rnn
+  type: attributive
+  text: "Sukhbaatar et al. note that with layer-wise tying the model can be cast as a traditional RNN whose outputs are divided into internal ones, which consider a memory, and external ones, which predict a label."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 2.2", stance: for}
+
+# The sentence representation
+
+- id: c-bow
+  type: definitional
+  text: "In the bag-of-words representation a memory vector is the sum of the embeddings of the words of the sentence, and the output vectors and the question are formed the same way."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-bow-order
+  type: attributive
+  text: "Sukhbaatar et al. note that the bag of words cannot capture the order of the words in a sentence, which is important for some tasks."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-pe
+  type: definitional
+  text: "The position encoding multiplies the embedding of the j-th word of a sentence of J words element-wise by a column vector l_j with l_kj = (1 - j/J) - (k/d)(1 - 2j/J), assuming 1-based indexing, and the same representation is used for questions, memory inputs and memory outputs."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-pe-ramp
+  type: mathematical
+  text: "The position weight equals the bilinear interpolation (1 - j/J)(1 - k/d) + (j/J)(k/d), so every weight lies in [0, 1], the low dimensions weigh the first words most and the high dimensions the last, and the word at j = J/2 weighs 1/2 in every dimension."
+  assumes: ["1 <= j <= J and 1 <= k <= d", "the weight is l_kj = (1 - j/J) - (k/d)(1 - 2j/J)"]
+  derivation: position-encoding-and-order
+
+- id: c-pe-swap
+  type: mathematical
+  text: "Swapping two words of a sentence changes its position-encoded vector in dimension k in proportion to 2k/d - 1, so every dimension but the middle one sees the order, while the bag of words sees none of it."
+  assumes: ["the two words have different embeddings in dimension k", "the position encoding of Section 4.1"]
+  derivation: position-encoding-and-order
+
+- id: c-temporal
+  type: definitional
+  text: "The temporal encoding adds a learned row T_A(i) to each memory vector and a row T_C(i) to each output vector, and both matrices are subject to the same tying as A and C."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-reverse-order
+  type: definitional
+  text: "The sentences are indexed in reverse order, by their distance from the question, so that x_1 is the last sentence of the story."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-temporal-common-shift
+  type: mathematical
+  text: "Adding the same vector to every row of T_A changes no attention weight, since the softmax ignores a number added to all its inputs, so only the differences of the rows matter."
+  assumes: ["the attention is the softmax of eq-match over the slots of one story", "the state u does not depend on T_A"]
+  derivation: temporal-rows-and-empty-memories
+
+- id: c-null
+  type: definitional
+  text: "A null symbol pads the stories and the sentences to a fixed size, and the embedding of the null symbol is constrained to be zero."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-empty-memory
+  type: mathematical
+  text: "An empty slot has the memory vector T_A(i) and the output vector T_C(i), so it still takes a share of the attention and adds its temporal output row to the response."
+  assumes: ["the embedding of the null word is zero", "the temporal encoding of Section 4.1", "no mask on the slots"]
+  derivation: temporal-rows-and-empty-memories
+
+- id: c-rn
+  type: attributive
+  text: "Sukhbaatar et al. found it helpful to add dummy memories to regularize T_A, adding 10% of empty memories to the stories at random at training time, and call this random noise."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-ls
+  type: definitional
+  text: "In linear start, training starts with the softmax of every memory layer removed, which makes the model linear except for the final softmax, and the softmaxes are put back when the validation loss stops decreasing."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-ls-rate
+  type: definitional
+  text: "Linear start training uses an initial learning rate of 0.005."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-linear-start-linear
+  type: mathematical
+  text: "With a fixed story and the softmaxes removed, each hop maps u to (I + sum_i c_i m_i^T) u, so the state after K hops is a product of K matrices times the question vector."
+  assumes: ["adjacent tying, so that the hop map is I + sum_i c_i m_i^T", "the story and the weights are fixed"]
+  derivation: linear-start-is-linear
+
+# The counts
+
+- id: c-params-adjacent
+  type: mathematical
+  text: "With adjacent tying and the temporal encoding the model has (K + 1)(V d + N d) parameters, which do not depend on the sentence length J."
+  assumes: ["adjacent tying of the embedding and the temporal matrices", "the position encoding or the bag of words, neither with parameters"]
+  derivation: parameter-and-flop-count
+
+- id: c-params-tying-halves
+  type: mathematical
+  text: "Without any tying the model would have 2K(V d + N d) + 2 V d parameters, 34,320 at the bAbI sizes against 18,160 with adjacent tying, so adjacent tying roughly halves the count."
+  assumes: ["V = 177, d = 20, K = 3, N = 50 at the bAbI sizes", "the temporal encoding"]
+  derivation: parameter-and-flop-count
+
+- id: c-params-lm-ratio
+  type: mathematical
+  text: "The language model with layer-wise tying and no question embedding has 3Vd + d^2 + 2Nd parameters, 4,552,500 at the Penn Treebank sizes against 3,022,500 for a simple recurrent network with 150 hidden units, a ratio of 1.5."
+  assumes: ["V = 10,000, d = 150, N = 100", "the recurrent network has input, recurrent and output weights and no biases"]
+  derivation: parameter-and-flop-count
+
+- id: c-lm-params-paper
+  type: attributive
+  text: "Sukhbaatar et al. note that MemN2N has about 1.5 times more parameters than RNNs with the same number of hidden units, and the LSTM about 4 times more."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 5.2", stance: for}
+
+- id: c-flops
+  type: mathematical
+  text: "A forward pass of a batch of B questions with the position encoding and adjacent tying costs B[2Jd((K + 1)N + 1) + 4KNd + 2Vd] FLOPs, counting a multiply-add as 2 and only the products."
+  assumes: ["adjacent tying and the position encoding", "a multiply-add counts as 2 FLOPs and only products are counted"]
+  derivation: parameter-and-flop-count
+
+- id: c-flops-embedding
+  type: mathematical
+  text: "At the bAbI sizes the embedding of the story is the largest term of the forward cost, about three quarters of the total, and it exceeds the answer map whenever J(K + 1)N > V."
+  assumes: ["V = 177, d = 20, K = 3, N = 50, J = 7", "the position encoding and adjacent tying"]
+  derivation: parameter-and-flop-count
+
+- id: c-smooth-scale
+  type: attributive
+  text: "Sukhbaatar et al. write that smooth lookups may not scale well to the case where a larger memory is required."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "p. 8", stance: for}
+
+# Training
+
+- id: c-validation
+  type: definitional
+  text: "For the bAbI tasks, 10% of the training set was held out to choose the architecture and the hyperparameters."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-train-schedule
+  type: definitional
+  text: "The question answering models were trained with a learning rate of 0.01 halved every 25 epochs until 100 epochs, with no momentum or weight decay, from Gaussian weights of mean zero and standard deviation 0.1."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-train-batch-clip
+  type: definitional
+  text: "The batch size was 32, the cost was not averaged over a batch, and gradients with an l2 norm larger than 40 were scaled down to norm 40."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-clip-per-matrix
+  type: definitional
+  text: "In the question answering tasks the norm of the gradient of each weight matrix is measured separately."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "p. 8", stance: for}
+
+- id: c-memory-50
+  type: definitional
+  text: "The memory was restricted to the most recent 50 sentences."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-restarts
+  type: empirical
+  text: "On some tasks there was a large variance in the performance depending on the initialization, so each training was repeated 10 times with different random initializations and the one with the lowest training error picked."
+  scope:
+    models: "MemN2N"
+    data: [babi-v1.1]
+    scale: "d = 20, K = 3, about 18,000 parameters"
+    setting: "training on one task"
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-dims
+  type: definitional
+  text: "Joint training on all 20 tasks used an embedding dimension of 50, against 20 for a model of one task."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "p. 6", stance: for}
+
+- id: c-lm-training-same
+  type: definitional
+  text: "The training procedure of the language models is the same as for the QA tasks, except for a few changes."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "p. 8", stance: for}
+
+- id: c-lm-clip
+  type: attributive
+  text: "For the language models the norm of the whole gradient of all parameters was clipped at 50, which Sukhbaatar et al. found crucial for good performance."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "p. 8", stance: for}
+
+- id: c-lm-anneal
+  type: definitional
+  text: "The learning rate of the language models was divided by 1.5 whenever the validation cost had not decreased after an epoch, and training terminated when it fell below 10^-5, after about 50 epochs."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "p. 8", stance: for}
+
+- id: c-lm-init
+  type: definitional
+  text: "The weights of the language models were initialized from N(0, 0.05) and the batch size was 128."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "p. 8", stance: for}
+
+# Inductive biases
+
+- id: c-vs-ntm-access
+  type: attributive
+  text: "Sukhbaatar et al. contrast their memory with the neural Turing machine, which uses both content and address-based access, while theirs only explicitly allows the former, although the temporal features allow a kind of address-based access."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 3", stance: for}
+
+- id: c-memn2n-simpler
+  type: attributive
+  text: "Sukhbaatar et al. write that because each item is always written to memory sequentially, their model is somewhat simpler than the neural Turing machine and needs no operations like sharpening."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 3", stance: for}
+
+# Evidence
+
+- id: c-babi-tasks
+  type: definitional
+  text: "The bAbI tasks are 20 synthetic question answering tasks, each a set of statements followed by a question whose answer is usually a single word."
+  evidence:
+    - {work: "weston-2015-towards-ai-complete-question-answering", role: original, locator: "Section 3", stance: for}
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 4", stance: for}
+
+- id: c-babi-sizes
+  type: definitional
+  text: "Each bAbI problem has at most 320 sentences, the vocabulary has 177 words, and two versions of the data have 1,000 and 10,000 training problems per task."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 4", stance: for}
+
+- id: c-babi-pass
+  type: attributive
+  text: "Weston et al. count a task as passed if a model reaches at least 95% accuracy, and call the choice of 95% and of 1,000 training examples arbitrary."
+  evidence:
+    - {work: "weston-2015-towards-ai-complete-question-answering", role: original, locator: "p. 6", stance: for}
+
+- id: c-default-k3
+  type: definitional
+  text: "Unless otherwise stated, the question answering experiments used K = 3 hops and adjacent tying."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-baselines
+  type: definitional
+  text: "The baselines were the strongly supervised memory network, which uses a max operation at each layer and is trained with the supporting facts, a weakly supervised heuristic version of it, and an LSTM trained on question and answer pairs."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 4.3", stance: for}
+
+- id: c-table1-mean
+  type: definitional
+  text: "In Table 1 a failed task is one with a test error above 5%."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Table 1", stance: for}
+
+- id: c-best-text
+  type: empirical
+  text: "The text gives a mean error of 12.6% on 1k for the model with position encoding, linear start and random noise, jointly trained, against 6.7% for the strongly supervised memory network."
+  scope:
+    models: "MemN2N, PE LS RN, joint; MemNN, strongly supervised"
+    data: [babi-v1.1]
+    scale: "d = 50, K = 3"
+    setting: "1,000 training problems per task, mean test error over the 20 tasks"
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "p. 6", stance: for}
+
+- id: c-beats-weak
+  type: empirical
+  text: "All the variants of MemN2N comfortably beat the weakly supervised baselines."
+  scope:
+    models: "the MemN2N variants of Table 1; MemNN-WSH and the LSTM"
+    data: [babi-v1.1]
+    scale: "d = 20, or 50 for joint training"
+    setting: "1,000 training problems per task"
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "p. 6", stance: for}
+
+- id: c-close-supervised
+  type: attributive
+  text: "Sukhbaatar et al. describe their strongest variants as reasonably close to the strongly supervised memory networks, which are still superior."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "p. 6", stance: for}
+
+- id: c-pe-helps
+  type: empirical
+  text: "The position encoding improves on the bag of words, with clear improvements on tasks 4, 5, 15 and 18, where word ordering is particularly important."
+  scope:
+    models: "MemN2N, BoW and PE"
+    data: [babi-v1.1]
+    scale: "d = 20, K = 3"
+    setting: "1,000 training problems per task"
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "p. 6", stance: for}
+
+- id: c-ls-task16
+  type: empirical
+  text: "Linear start seems to help avoid local minima: on task 16 the PE model has an error of 52.1% in Table 1, and 1.6% with linear start."
+  scope:
+    models: "MemN2N, PE and PE LS"
+    data: [babi-v1.1]
+    scale: "d = 20, K = 3"
+    setting: "task 16, basic induction, 1,000 training problems"
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Table 1", stance: for}
+
+- id: c-ls-task16-text
+  type: attributive
+  text: "The text of Sukhbaatar et al. quotes the error of the PE model on task 16 as 53.6%."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "p. 6", stance: for}
+
+- id: c-rn-joint
+  type: empirical
+  text: "Jittering the time index with random empty memories gives a small but consistent boost, especially for the smaller 1k training set, and joint training on all tasks helps."
+  scope:
+    models: "MemN2N, PE LS and PE LS RN"
+    data: [babi-v1.1]
+    scale: "d = 20, or 50 for joint training"
+    setting: "1,000 and 10,000 training problems per task"
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "p. 6", stance: for}
+
+- id: c-hops-help
+  type: empirical
+  text: "More hops give improved performance."
+  scope:
+    models: "MemN2N, PE LS, joint, with 1 to 3 hops"
+    data: [babi-v1.1]
+    scale: "d = 50"
+    setting: "1,000 training problems per task"
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "p. 6", stance: for}
+
+- id: c-hops-table
+  type: empirical
+  text: "With position encoding, linear start and joint training on 1k examples, the mean error is 25.8% with one hop, 15.6% with two and 13.3% with three."
+  scope:
+    models: "MemN2N, PE LS, joint"
+    data: [babi-v1.1]
+    scale: "d = 50"
+    setting: "1,000 training problems per task, mean test error over the 20 tasks"
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Table 1", stance: for}
+
+- id: c-fig2
+  type: empirical
+  text: "On a story of the second task with the question where is the milk, the first hop put a weight of 0.88 on John took the milk there and the third put 1.00 on John moved to the hallway."
+  scope:
+    models: "MemN2N, K = 3"
+    data: [babi-v1.1]
+    scale: "unknown"
+    setting: "one test story of task 2, two supporting facts"
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Figure 2", stance: for}
+
+- id: c-fig2-caption
+  type: attributive
+  text: "Sukhbaatar et al. report that MemN2N learns to focus on the correct supporting sentences without using the labeled supporting facts during training."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Figure 2", stance: for}
+
+- id: c-lm-setup
+  type: definitional
+  text: "In the language model each memory slot holds one of the previous words, the question is fixed to a constant vector of 0.1, the model uses layer-wise tying, and ReLU is applied to half of the units in each layer."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 5", stance: for}
+
+- id: c-lm-results
+  type: empirical
+  text: "In Table 2, MemN2N reached a test perplexity of 111 on Penn Treebank, against 115 for the LSTM and the SCRN and 129 for the RNN, and 147 on Text8, against 154 for the LSTM."
+  scope:
+    models: "MemN2N, layer-wise; RNN, LSTM and SCRN baselines"
+    data: [penn-treebank, text8]
+    scale: "150 hidden units, 7 hops and a memory of 200 on Penn Treebank; 500 hidden units, 7 hops and a memory of 100 on Text8"
+    setting: "word-level language modeling, test perplexity"
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Table 2", stance: for}
+
+- id: c-lm-results-text
+  type: attributive
+  text: "The text of Section 5.2 gives the Penn Treebank comparison as 111 against 115 for RNN/SCRN, which does not match the RNN row of the table."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 5.2", stance: for}
+
+- id: c-lm-hops
+  type: empirical
+  text: "On Penn Treebank with 150 hidden units and a memory of 100 words, the test perplexity falls from 121 with 2 hops to 114 with 7."
+  scope:
+    models: "MemN2N, layer-wise"
+    data: [penn-treebank]
+    scale: "150 hidden units, a memory of 100 words"
+    setting: "word-level language modeling, test perplexity"
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Table 2", stance: for}
+
+- id: c-lm-attention
+  type: empirical
+  text: "Averaged over the test set, the attention of the trained language models puts some hops only on recent words and others broadly over all memory locations, and the two types of hops tend to alternate."
+  scope:
+    models: "MemN2N, layer-wise, 6 hops"
+    data: [penn-treebank, text8]
+    scale: "150 or 500 hidden units"
+    setting: "average attention over the memory positions on the test set"
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 5.2", stance: for}
+
+- id: c-lm-cache
+  type: attributive
+  text: "Sukhbaatar et al. note that unlike in a traditional RNN the cache does not decay exponentially, and suggest this may be the source of the improvement."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 5.2", stance: for}
+
+# Limitations
+
+- id: c-limits-supervised
+  type: attributive
+  text: "Sukhbaatar et al. write that their model is still unable to exactly match the memory networks trained with strong supervision, and that both fail on several of the 1k tasks."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "p. 8", stance: for}
+
+- id: c-task19
+  type: empirical
+  text: "On the path finding task 19 every MemN2N variant of Table 1 has an error between 82.8% and 90.7%, and the strongly supervised memory network 64.0%."
+  scope:
+    models: "the MemN2N variants of Table 1; MemNN, strongly supervised"
+    data: [babi-v1.1]
+    scale: "d = 20, or 50 for joint training"
+    setting: "task 19, path finding, 1,000 training problems"
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Table 1", stance: for}
+
+- id: c-task3-17
+  type: empirical
+  text: "In the 1k results of Table 1 every MemN2N variant stays above 20% error on task 3, three supporting facts, and above 40% on task 17, positional reasoning."
+  scope:
+    models: "the MemN2N variants of Table 1"
+    data: [babi-v1.1]
+    scale: "d = 20, or 50 for joint training"
+    setting: "tasks 3 and 17, 1,000 training problems"
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Table 1", stance: for}
+
+- id: c-nonlinearity
+  type: empirical
+  text: "With 10k examples, adding more non-linearity solves tasks 17 and 19."
+  scope:
+    models: "MemN2N, PE LS RN with more non-linearity"
+    data: [babi-v1.1]
+    scale: "unknown"
+    setting: "10,000 training problems per task"
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "p. 6", stance: for}
+
+- id: c-limits-hashing
+  type: attributive
+  text: "Sukhbaatar et al. plan multiscale notions of attention or hashing for settings that need a larger memory."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "p. 8", stance: for}
+
+- id: c-babi-real
+  type: attributive
+  text: "Weston et al. write that even if a method works well on the 20 tasks, it should be shown to be useful on real data as well."
+  evidence:
+    - {work: "weston-2015-towards-ai-complete-question-answering", role: original, locator: "p. 9", stance: for}
+
+# Variants and descendants
+
+- id: c-memnn-components
+  type: definitional
+  text: "Weston, Chopra and Bordes proposed networks with a long-term memory and four learned components, an input feature map, a generalization step that updates the memory, an output map and a response."
+  evidence:
+    - {work: "weston-2015-memory-networks", role: original, locator: "Section 2", stance: for}
+
+- id: c-kv
+  type: definitional
+  text: "Key-value memory networks are based on the end-to-end memory network architecture and define the memory slots as pairs of vectors, a key compared with the question and a value that is read, using a different matrix R_j to update the query on each hop."
+  evidence:
+    - {work: "miller-2016-key-value-memory-networks", role: original, locator: "Section 3", stance: for}
+
+- id: c-kv-hashing
+  type: definitional
+  text: "In the first step of a key-value memory network, key hashing, the question is used to preselect a small subset of the memories, with an inverted index that finds the keys sharing at least one word with the question."
+  evidence:
+    - {work: "miller-2016-key-value-memory-networks", role: original, locator: "Section 3", stance: for}
+
+- id: c-babi-impact
+  type: attributive
+  text: "Weston et al. list the weakly supervised MemN2N, the dynamic memory networks of Kumar et al. and the Neural Reasoner as algorithms that the bAbI tasks influenced."
+  evidence:
+    - {work: "weston-2015-towards-ai-complete-question-answering", role: original, locator: "p. 10", stance: for}
+
+- id: c-vaswani
+  type: attributive
+  text: "Vaswani et al. describe end-to-end memory networks as based on a recurrent attention mechanism instead of sequence-aligned recurrence, performing well on simple-language question answering and language modeling."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 2", stance: for}
+
+- id: c-code
+  type: historical
+  text: "Sukhbaatar et al. released the source code of MemN2N."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 4.3", stance: for}
+
+# History
+
+- id: c-babi-aim
+  type: attributive
+  text: "Weston et al. designed the bAbI tasks as prerequisites for any system that aims to be capable of conversing with a human."
+  evidence:
+    - {work: "weston-2015-towards-ai-complete-question-answering", role: original, locator: "the abstract", stance: for}
+
+- id: c-vs-bahdanau
+  type: attributive
+  text: "Sukhbaatar et al. relate their memory to the attention of Bahdanau et al. for translation, noting that it spans many sentences rather than one and is read in several hops."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 3", stance: for}
+
+- id: c-vs-lstm
+  type: attributive
+  text: "Sukhbaatar et al. describe the memory of recurrent and LSTM models as the state of the network, which is latent and inherently unstable over long timescales."
+  evidence:
+    - {work: "sukhbaatar-2015-end-to-end-memory-networks", role: original, locator: "Section 3", stance: for}
