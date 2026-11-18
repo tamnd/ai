@@ -1,5 +1,5 @@
 ---
-tag: NEW-end-to-end-memory-network
+tag: VDRYRT
 kind: architecture
 slug: end-to-end-memory-network
 name: End-to-end memory network

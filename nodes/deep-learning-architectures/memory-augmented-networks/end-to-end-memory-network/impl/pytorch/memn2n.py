@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/end-to-end-memory-network/ (ai://NEW-end-to-end-memory-network).
+# Part of https://ai.tamnd.com/end-to-end-memory-network/ (ai://VDRYRT).
 """An end-to-end memory network for question answering in PyTorch, the same model as the NumPy reference.
 
 The story is a (B, N, J) tensor of word ids, the most recent sentence first, padded with the null word 0; the question

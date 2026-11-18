@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/end-to-end-memory-network/ (ai://NEW-end-to-end-memory-network).
+# Part of https://ai.tamnd.com/end-to-end-memory-network/ (ai://VDRYRT).
 """An end-to-end memory network for question answering in JAX, the same model as the NumPy reference.
 
 forward is a pure function of the parameter dict, so jax.jit, jax.grad and jax.vmap apply to it; the config is a

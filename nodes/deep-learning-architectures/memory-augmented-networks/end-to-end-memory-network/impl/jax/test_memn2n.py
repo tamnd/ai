@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/end-to-end-memory-network/ (ai://NEW-end-to-end-memory-network).
+# Part of https://ai.tamnd.com/end-to-end-memory-network/ (ai://VDRYRT).
 """Tests of the JAX reference: the shared fixture, the shape contract, jit, vmap, the gradient against finite
 differences, and a few steps of training that lower the loss."""
 

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/end-to-end-memory-network/ (ai://NEW-end-to-end-memory-network).
+# Part of https://ai.tamnd.com/end-to-end-memory-network/ (ai://VDRYRT).
 """Tests of the NumPy reference: the position encoding, the null word, one hop against its equations, both tyings
 against a loop over the hops written from the paper, a one-hop model wired by hand that answers a toy task, the
 pitfalls, the shapes and the shared fixture."""

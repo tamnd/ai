@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/end-to-end-memory-network/ (ai://NEW-end-to-end-memory-network).
+# Part of https://ai.tamnd.com/end-to-end-memory-network/ (ai://VDRYRT).
 """An end-to-end memory network for question answering, the NumPy reference.
 
 A story is a (B, N, J) array of word ids: N sentences of J words for each problem of the batch, the most recent

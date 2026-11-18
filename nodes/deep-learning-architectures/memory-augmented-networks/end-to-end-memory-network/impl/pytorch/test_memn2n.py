@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/end-to-end-memory-network/ (ai://NEW-end-to-end-memory-network).
+# Part of https://ai.tamnd.com/end-to-end-memory-network/ (ai://VDRYRT).
 """Tests of the PyTorch reference: the shared fixture, the shape contract, the gradients against finite differences,
 the null rows, the clipping, and a short training run on a toy task in the form of the first bAbI task."""
 
