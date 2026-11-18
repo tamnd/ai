@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/deep-sets/ (ai://NEW-deep-sets).
+# Part of https://ai.tamnd.com/deep-sets/ (ai://S263A8).
 """Tests of the NumPy reference: shapes and counts, the models of the paper, the shared fixture, the gradient of
 eq-loss, the invariance and the equivariance, masks and padding, Lemma 3 and the worked example."""
 

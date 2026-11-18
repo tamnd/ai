@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/deep-sets/ (ai://NEW-deep-sets).
+# Part of https://ai.tamnd.com/deep-sets/ (ai://S263A8).
 """Deep Sets of Zaheer et al. (2017) in JAX, as pure functions of the parameters.
 
 The parameters have the names and the layout of the NumPy reference, so the shared fixture loads as it is. A batch of

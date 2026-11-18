@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/deep-sets/ (ai://NEW-deep-sets).
+# Part of https://ai.tamnd.com/deep-sets/ (ai://S263A8).
 """Deep Sets of Zaheer et al. (2017), the PyTorch version, with the parameters of the NumPy reference.
 
 A batch of sets is a (B, N, D0) tensor with a (B, N) mask of the real elements. Each equivariant layer is

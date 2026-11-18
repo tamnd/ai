@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/deep-sets/ (ai://NEW-deep-sets).
+# Part of https://ai.tamnd.com/deep-sets/ (ai://S263A8).
 """Tests of the JAX version: the shared fixture and its gradients, the shape contract, jit, vmap over sets, the
 invariance and the equivariance, and the padding."""
 

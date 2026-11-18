@@ -1,5 +1,5 @@
 ---
-tag: NEW-deep-sets
+tag: S263A8
 kind: architecture
 slug: deep-sets
 name: Deep Sets

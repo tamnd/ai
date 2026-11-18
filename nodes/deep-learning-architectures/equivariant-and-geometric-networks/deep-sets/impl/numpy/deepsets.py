@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/deep-sets/ (ai://NEW-deep-sets).
+# Part of https://ai.tamnd.com/deep-sets/ (ai://S263A8).
 """Deep Sets of Zaheer et al. (2017), the NumPy reference: forward, backward and the counts.
 
 A batch of sets is a (B, N, D0) array x with a (B, N) mask that is 1 on the elements and 0 on the padding, so that

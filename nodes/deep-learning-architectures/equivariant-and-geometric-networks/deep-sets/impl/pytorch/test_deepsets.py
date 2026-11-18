@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/deep-sets/ (ai://NEW-deep-sets).
+# Part of https://ai.tamnd.com/deep-sets/ (ai://S263A8).
 """Tests of the PyTorch version: the shared fixture and its gradients, the NumPy reference, Lemma 3 as a dense layer,
 torch.nn.MultiheadAttention without positions, gradcheck, and two small training tasks: the sum of a set of digits on
 sets five times longer than in training, and an outlier that only the interaction between elements can find."""
