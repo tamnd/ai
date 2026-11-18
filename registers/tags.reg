@@ -6059,3 +6059,7 @@ SZ5X4K bengio-2015-scheduled-sampling
 MF73SR ranzato-2016-sequence-level-training
 N149H2 sequence-to-sequence-model
 ECD5WS sutskever-2014-sequence-to-sequence-learning
+Z7Z0J3 bidirectional-recurrent-neural-network
+1TSBDQ graves-2013-speech-recognition-deep-recurrent
+DJP5GX huang-2015-bidirectional-lstm-crf
+XB3ACN schuster-1997-bidirectional-recurrent-neural-networks
