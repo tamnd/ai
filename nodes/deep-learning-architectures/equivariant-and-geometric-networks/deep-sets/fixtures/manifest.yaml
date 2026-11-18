@@ -3,7 +3,7 @@ seed: 201703
 config: {d_in: 3, width: 8, n_layers: 2, n_classes: 5, pool: max, readout: sum, act: tanh, interact: true, head: set}
 inputs: {B: 2, M: 6, sizes: [6, 4], init_scale: 0.5}
 dtype: float64
-numpy: "2.5.5"
+numpy: "2.5.4"
 files:
   params-small.npz: {sha256: 0ff03a24a3fe203d9a5cd8d326c828989ca876bd4fd5ca16a490b10161dfc3d8}
   input-small.npz: {sha256: 36ce177060eddd5aaddcd1c51c89ba8939db81138f4cd42a9cdbde9283adef57}
