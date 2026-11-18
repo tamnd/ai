@@ -3,7 +3,7 @@ seed: 19900401
 config: {input_size: 3, hidden_size: 4}
 inputs: {B: 2, T: 5, nonlinearities: [tanh, relu]}
 dtype: float64
-numpy: "2.5.5"
+numpy: "2.5.4"
 files:
   params-small.npz: {sha256: b2c51b149daaca388351775e9cc7821c7561eec7cdd9b623d50e252a12431120}
   input-small.npz: {sha256: 7474e759215392a0ebde236b563267f207d4580b5bac9bed2d6f54ff764f1acd}
