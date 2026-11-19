@@ -6,13 +6,15 @@ and the counts of the page."""
 import json
 import math
 import pathlib
+from typing import Any
 
 import numpy as np
 import pytest
 
 import mamba as m
 
-FIX = pathlib.Path(__file__).resolve().parents[2] / "fixtures"
+HERE = pathlib.Path(__file__).resolve().parent
+FIX = next(d for d in (HERE / "fixtures", HERE.parents[1] / "fixtures") if d.is_dir())
 SHAPES = json.loads((FIX / "shapes.json").read_text())["configs"]
 SIZES = ("vocab", "d_model", "n_layers", "d_state", "d_conv", "expand", "dt_rank")
 
@@ -165,7 +167,9 @@ def test_init():
 
 
 def test_param_count_matches_shapes():
-    for kw in ({}, {"d_model": 20, "d_state": 7, "d_conv": 4, "expand": 3}, {"dt_rank": 5, "n_layers": 3}):
+    cases: list[dict[str, Any]] = [{}, {"d_model": 20, "d_state": 7, "d_conv": 4, "expand": 3},
+                                   {"dt_rank": 5, "n_layers": 3}]
+    for kw in cases:
         cfg = m.config(**kw)
         assert m.param_count(cfg) == sum(math.prod(s) for s in m.param_shapes(cfg).values())
 
@@ -179,7 +183,7 @@ def test_released_model_sizes():
 
 def test_ablation_sizes():
     """The parameter counts of Tables 9 and 10 of the paper, the 350M setting with 48 blocks of width 1024."""
-    base = dict(vocab=50280, d_model=1024, n_layers=48, d_conv=4)
+    base: dict[str, Any] = {"vocab": 50280, "d_model": 1024, "n_layers": 48, "d_conv": 4}
     assert round(m.param_count(m.config(d_state=16, dt_rank=64, **base)) / 1e6, 1) == 371.5
     assert round(m.param_count(m.config(d_state=1, dt_rank=64, **base)) / 1e6, 1) == 367.1
     assert round(m.param_count(m.config(d_state=16, dt_rank=1, **base)) / 1e6, 1) == 359.1

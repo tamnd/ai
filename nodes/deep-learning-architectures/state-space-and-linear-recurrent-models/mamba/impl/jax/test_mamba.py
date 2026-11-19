@@ -5,6 +5,7 @@ the step mode, jit and the parameter count."""
 
 import json
 import pathlib
+from typing import Any
 
 import jax
 
@@ -16,7 +17,8 @@ import pytest  # noqa: E402
 
 from mamba import combine, config, forward, init, init_state, loss, param_count, param_shapes, step  # noqa: E402
 
-FIX = pathlib.Path(__file__).resolve().parents[2] / "fixtures"
+HERE = pathlib.Path(__file__).resolve().parent
+FIX = next(d for d in (HERE / "fixtures", HERE.parents[1] / "fixtures") if d.is_dir())
 SHAPES = json.loads((FIX / "shapes.json").read_text())["configs"]
 SIZES = ("vocab", "d_model", "n_layers", "d_state", "d_conv", "expand", "dt_rank")
 
@@ -72,8 +74,9 @@ def test_jit_and_long_sequences():
 
 
 def test_param_count():
-    for kw in ({}, {"d_model": 20, "d_state": 7, "d_conv": 4}, {"vocab": 50280, "d_model": 2560, "n_layers": 64,
-                                                               "d_state": 16, "d_conv": 4}):  # fmt: skip
+    cases: list[dict[str, Any]] = [{}, {"d_model": 20, "d_state": 7, "d_conv": 4},
+                                   {"vocab": 50280, "d_model": 2560, "n_layers": 64, "d_state": 16, "d_conv": 4}]
+    for kw in cases:
         cfg = config(**kw)
         assert param_count(cfg) == sum(int(np.prod(s)) for s in param_shapes(cfg).values())
     assert param_count(config(vocab=50280, d_model=2560, n_layers=64, d_state=16, d_conv=4)) == 2_768_345_600
@@ -88,7 +91,9 @@ def test_counts_and_shapes(c):
     if c["kind"] != "named":
         p = init(jax.random.PRNGKey(0), cfg)
         tok = jax.random.randint(jax.random.PRNGKey(1), (k["B"], k["T"]), 0, cfg["vocab"])
-        assert list(forward(p, cfg, tok).shape) == c["blocks"]["head"]["outputs"]["logits"]
+        logits = forward(p, cfg, tok)
+        assert isinstance(logits, jax.Array)
+        assert list(logits.shape) == c["blocks"]["head"]["outputs"]["logits"]
 
 
 def test_default_config_is_the_example():

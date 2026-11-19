@@ -6,6 +6,7 @@ paper's Section 4.1 on which the selective model beats the time-invariant ablati
 import importlib.util
 import json
 import pathlib
+from typing import Any
 
 import numpy as np
 import pytest
@@ -14,7 +15,7 @@ import torch
 import mamba as M
 
 HERE = pathlib.Path(__file__).resolve().parent
-FIX = HERE.parents[1] / "fixtures"
+FIX = next(d for d in (HERE / "fixtures", HERE.parents[1] / "fixtures") if d.is_dir())
 SHAPES = json.loads((FIX / "shapes.json").read_text())["configs"]
 SIZES = ("vocab", "d_model", "n_layers", "d_state", "d_conv", "expand", "dt_rank")
 
@@ -34,7 +35,7 @@ def fixture_model(mode="loop"):
     params = dict(np.load(FIX / "params-small.npz"))
     model = M.MambaLM.from_params(M.config(), params)
     for b in model.blocks:
-        b.mode = mode
+        setattr(b, "mode", mode)  # a plain attribute, not a parameter or a submodule
     return model, torch.as_tensor(np.load(FIX / "input-small.npz")["tokens"]), np.load(FIX / "expected-small.npz")
 
 
@@ -47,7 +48,7 @@ def test_fixture(mode):
     assert np.isclose(loss.item(), exp["loss"], atol=1e-12)
     loss.backward()
     for k, g in model.grads().items():
-        assert np.allclose(g.numpy(), exp["d" + k], atol=1e-10), k
+        assert g is not None and np.allclose(g.numpy(), exp["d" + k], atol=1e-10), k
 
 
 def test_zoh_matches_the_numpy_reference():
@@ -63,7 +64,7 @@ def test_zoh_matches_the_numpy_reference():
     M.nll(got, torch.as_tensor(tok[:, 1:])).backward()
     g = ref.backward(params, ref.config(disc="zoh", d_state=5, d_conv=4), cache, want, tok[:, 1:])
     for k, v in model.grads().items():
-        assert np.allclose(v.numpy(), g[k], atol=1e-10), k
+        assert v is not None and np.allclose(v.numpy(), g[k], atol=1e-10), k
 
 
 def test_quadratic_scan_equals_the_loop():
@@ -97,7 +98,8 @@ def test_time_invariant_ablation():
 
 
 def test_parameter_count():
-    for kw in ({}, {"d_model": 16, "d_state": 8, "d_conv": 4}, {"dt_rank": 3, "n_layers": 3}):
+    cases: list[dict[str, Any]] = [{}, {"d_model": 16, "d_state": 8, "d_conv": 4}, {"dt_rank": 3, "n_layers": 3}]
+    for kw in cases:
         cfg = M.config(**kw)
         assert sum(p.numel() for p in M.MambaLM(cfg).parameters()) == M.param_count(cfg)
 
