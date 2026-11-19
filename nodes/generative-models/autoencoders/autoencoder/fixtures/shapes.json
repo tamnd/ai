@@ -1,0 +1,477 @@
+{
+  "note": "Written by aik shapes sample -w from shapes.yaml; do not edit. The tests of each implementation check shapes, param_count and flops against these values (spec 08.6, rule X09).",
+  "configs": [
+    {
+      "name": "example",
+      "kind": "example",
+      "config": {
+        "B": 4,
+        "C": 2,
+        "D": 6,
+        "H": 5,
+        "d_code": 2,
+        "d_hidden": 5,
+        "d_in": 6,
+        "n_hidden": 1
+      },
+      "blocks": {
+        "code": {
+          "params": 12,
+          "flops_forward": 80,
+          "inputs": {
+            "h": [
+              4,
+              5
+            ]
+          },
+          "outputs": {
+            "y": [
+              4,
+              2
+            ]
+          }
+        },
+        "dec_first": {
+          "params": 15,
+          "flops_forward": 80,
+          "inputs": {
+            "y": [
+              4,
+              2
+            ]
+          },
+          "outputs": {
+            "h": [
+              4,
+              5
+            ]
+          }
+        },
+        "dec_hidden": {
+          "params": 30,
+          "flops_forward": 200,
+          "inputs": {
+            "h": [
+              4,
+              5
+            ]
+          },
+          "outputs": {
+            "h": [
+              4,
+              5
+            ]
+          }
+        },
+        "enc_first": {
+          "params": 35,
+          "flops_forward": 240,
+          "inputs": {
+            "x": [
+              4,
+              6
+            ]
+          },
+          "outputs": {
+            "h": [
+              4,
+              5
+            ]
+          }
+        },
+        "enc_hidden": {
+          "params": 30,
+          "flops_forward": 200,
+          "inputs": {
+            "h": [
+              4,
+              5
+            ]
+          },
+          "outputs": {
+            "h": [
+              4,
+              5
+            ]
+          }
+        },
+        "recon": {
+          "params": 36,
+          "flops_forward": 240,
+          "inputs": {
+            "h": [
+              4,
+              5
+            ]
+          },
+          "outputs": {
+            "z": [
+              4,
+              6
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_backward": 1280,
+        "flops_forward": 640,
+        "params": 98,
+        "params_tied": 58
+      }
+    },
+    {
+      "name": "sample-1",
+      "kind": "sample",
+      "config": {
+        "B": 4,
+        "C": 2,
+        "D": 3,
+        "H": 2,
+        "d_code": 2,
+        "d_hidden": 2,
+        "d_in": 3,
+        "n_hidden": 1
+      },
+      "blocks": {
+        "code": {
+          "params": 6,
+          "flops_forward": 32,
+          "inputs": {
+            "h": [
+              4,
+              2
+            ]
+          },
+          "outputs": {
+            "y": [
+              4,
+              2
+            ]
+          }
+        },
+        "dec_first": {
+          "params": 6,
+          "flops_forward": 32,
+          "inputs": {
+            "y": [
+              4,
+              2
+            ]
+          },
+          "outputs": {
+            "h": [
+              4,
+              2
+            ]
+          }
+        },
+        "dec_hidden": {
+          "params": 6,
+          "flops_forward": 32,
+          "inputs": {
+            "h": [
+              4,
+              2
+            ]
+          },
+          "outputs": {
+            "h": [
+              4,
+              2
+            ]
+          }
+        },
+        "enc_first": {
+          "params": 8,
+          "flops_forward": 48,
+          "inputs": {
+            "x": [
+              4,
+              3
+            ]
+          },
+          "outputs": {
+            "h": [
+              4,
+              2
+            ]
+          }
+        },
+        "enc_hidden": {
+          "params": 6,
+          "flops_forward": 32,
+          "inputs": {
+            "h": [
+              4,
+              2
+            ]
+          },
+          "outputs": {
+            "h": [
+              4,
+              2
+            ]
+          }
+        },
+        "recon": {
+          "params": 9,
+          "flops_forward": 48,
+          "inputs": {
+            "h": [
+              4,
+              2
+            ]
+          },
+          "outputs": {
+            "z": [
+              4,
+              3
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_backward": 320,
+        "flops_forward": 160,
+        "params": 29,
+        "params_tied": 19
+      }
+    },
+    {
+      "name": "sample-2",
+      "kind": "sample",
+      "config": {
+        "B": 1,
+        "C": 3,
+        "D": 7,
+        "H": 7,
+        "d_code": 3,
+        "d_hidden": 7,
+        "d_in": 7,
+        "n_hidden": 1
+      },
+      "blocks": {
+        "code": {
+          "params": 24,
+          "flops_forward": 42,
+          "inputs": {
+            "h": [
+              1,
+              7
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              3
+            ]
+          }
+        },
+        "dec_first": {
+          "params": 28,
+          "flops_forward": 42,
+          "inputs": {
+            "y": [
+              1,
+              3
+            ]
+          },
+          "outputs": {
+            "h": [
+              1,
+              7
+            ]
+          }
+        },
+        "dec_hidden": {
+          "params": 56,
+          "flops_forward": 98,
+          "inputs": {
+            "h": [
+              1,
+              7
+            ]
+          },
+          "outputs": {
+            "h": [
+              1,
+              7
+            ]
+          }
+        },
+        "enc_first": {
+          "params": 56,
+          "flops_forward": 98,
+          "inputs": {
+            "x": [
+              1,
+              7
+            ]
+          },
+          "outputs": {
+            "h": [
+              1,
+              7
+            ]
+          }
+        },
+        "enc_hidden": {
+          "params": 56,
+          "flops_forward": 98,
+          "inputs": {
+            "h": [
+              1,
+              7
+            ]
+          },
+          "outputs": {
+            "h": [
+              1,
+              7
+            ]
+          }
+        },
+        "recon": {
+          "params": 56,
+          "flops_forward": 98,
+          "inputs": {
+            "h": [
+              1,
+              7
+            ]
+          },
+          "outputs": {
+            "z": [
+              1,
+              7
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_backward": 560,
+        "flops_forward": 280,
+        "params": 164,
+        "params_tied": 94
+      }
+    },
+    {
+      "name": "curves_like",
+      "kind": "named",
+      "config": {
+        "B": 1,
+        "C": 6,
+        "D": 784,
+        "H": 100,
+        "d_code": 6,
+        "d_hidden": 100,
+        "d_in": 784,
+        "n_hidden": 3
+      },
+      "blocks": {
+        "code": {
+          "params": 606,
+          "flops_forward": 1200,
+          "inputs": {
+            "h": [
+              1,
+              100
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              6
+            ]
+          }
+        },
+        "dec_first": {
+          "params": 700,
+          "flops_forward": 1200,
+          "inputs": {
+            "y": [
+              1,
+              6
+            ]
+          },
+          "outputs": {
+            "h": [
+              1,
+              100
+            ]
+          }
+        },
+        "dec_hidden": {
+          "params": 10100,
+          "flops_forward": 20000,
+          "inputs": {
+            "h": [
+              1,
+              100
+            ]
+          },
+          "outputs": {
+            "h": [
+              1,
+              100
+            ]
+          }
+        },
+        "enc_first": {
+          "params": 78500,
+          "flops_forward": 156800,
+          "inputs": {
+            "x": [
+              1,
+              784
+            ]
+          },
+          "outputs": {
+            "h": [
+              1,
+              100
+            ]
+          }
+        },
+        "enc_hidden": {
+          "params": 10100,
+          "flops_forward": 20000,
+          "inputs": {
+            "h": [
+              1,
+              100
+            ]
+          },
+          "outputs": {
+            "h": [
+              1,
+              100
+            ]
+          }
+        },
+        "recon": {
+          "params": 79184,
+          "flops_forward": 156800,
+          "inputs": {
+            "h": [
+              1,
+              100
+            ]
+          },
+          "outputs": {
+            "z": [
+              1,
+              784
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_backward": 792000,
+        "flops_forward": 396000,
+        "params": 199390,
+        "params_tied": 100390
+      }
+    }
+  ]
+}
