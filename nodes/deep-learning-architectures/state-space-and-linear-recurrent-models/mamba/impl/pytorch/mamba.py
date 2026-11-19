@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/mamba/ (ai://NEW-mamba).
+# Part of https://ai.tamnd.com/mamba/ (ai://2WYA9X).
 """Mamba of Gu and Dao (2023) in PyTorch: the Mamba block and a language model of them, as torch.nn.Modules.
 
 The parameters and their names are those of the NumPy reference (impl/numpy/mamba.py), with linear maps stored as

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/mamba/ (ai://NEW-mamba).
+# Part of https://ai.tamnd.com/mamba/ (ai://2WYA9X).
 """Mamba of Gu and Dao (2023) in JAX, as pure functions of the parameters.
 
 The parameters have the names and the layout of the NumPy reference, so the shared fixture loads as it is. The

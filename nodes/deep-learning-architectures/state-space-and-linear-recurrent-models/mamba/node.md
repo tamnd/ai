@@ -1,5 +1,5 @@
 ---
-tag: NEW-mamba
+tag: 2WYA9X
 kind: architecture
 slug: mamba
 name: Mamba

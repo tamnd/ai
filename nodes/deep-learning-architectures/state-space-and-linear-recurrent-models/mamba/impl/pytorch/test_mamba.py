@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/mamba/ (ai://NEW-mamba).
+# Part of https://ai.tamnd.com/mamba/ (ai://2WYA9X).
 """Tests of the PyTorch Mamba: the fixtures, the gradients, the two scans, and the selective copying task of the
 paper's Section 4.1 on which the selective model beats the time-invariant ablation."""
 

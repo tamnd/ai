@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/mamba/ (ai://NEW-mamba).
+# Part of https://ai.tamnd.com/mamba/ (ai://2WYA9X).
 """Mamba of Gu and Dao (2023), the NumPy reference: a language model of Mamba blocks, forward, backward and counts.
 
 Tokens are embedded to D numbers and pass through L residual blocks, r <- r + mixer(rmsnorm(r)), then a final

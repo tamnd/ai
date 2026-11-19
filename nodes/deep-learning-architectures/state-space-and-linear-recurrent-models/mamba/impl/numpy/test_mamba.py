@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/mamba/ (ai://NEW-mamba).
+# Part of https://ai.tamnd.com/mamba/ (ai://2WYA9X).
 """Tests of the NumPy reference of Mamba: the fixtures, the gradients, the recurrent mode, the selection mechanism
 and the counts of the page."""
 

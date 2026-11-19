@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/mamba/ (ai://NEW-mamba).
+# Part of https://ai.tamnd.com/mamba/ (ai://2WYA9X).
 """Tests of the JAX Mamba: the shared fixture and its gradients, the associative scan against the sequential one,
 the step mode, jit and the parameter count."""
 
