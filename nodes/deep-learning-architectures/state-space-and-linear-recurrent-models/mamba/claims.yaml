@@ -463,7 +463,7 @@
 
 - id: c-flops
   type: mathematical
-  text: "A forward pass over B sequences of T tokens costs 2BT(L(2DI + IK + I(R + 2N) + RI + 2IN + ID) + DV) FLOPs in the products, the convolution and the scan, linear in T, of which the scan itself is 4BTLIN."
+  text: "A forward pass over B sequences of T tokens costs 2BT(L(2DI + I(R + 2N) + RI + IN + ID) + DV) FLOPs in its matrix products, linear in T, of which the readout of the scan by C is 2BTLIN; the convolution and the update of the state add 2BTLI(K + N) elementwise."
   assumes: ["a multiply-add counts as 2 FLOPs", "the norms, the activations, the exponentials and the softmax are not counted"]
   derivation: parameter-and-flop-count
 
@@ -499,6 +499,6 @@
 
 - id: c-flops-models
   type: mathematical
-  text: "For Mamba-2.8B a forward pass over 2048 tokens costs 11,355,910,307,840 FLOPs by the count of c-flops, 5,544,878,080 per token, within 0.15% of twice the parameters; the scan is 42,949,672,960 of them, about 0.38%."
+  text: "For Mamba-2.8B a forward pass over 2048 tokens costs 11,329,066,762,240 FLOPs in its products by the count of c-flops, 5,531,770,880 per token, within 0.09% of twice the parameters; the convolution and the update of the state add 26,843,545,600, about 0.24%."
   assumes: ["the count of c-flops with B = 1, T = 2048 and the config of Mamba-2.8B"]
   derivation: parameter-and-flop-count

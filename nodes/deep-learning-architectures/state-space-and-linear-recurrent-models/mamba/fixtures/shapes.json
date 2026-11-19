@@ -60,7 +60,7 @@
         },
         "mixer": {
           "params": 712,
-          "flops_forward": 23040,
+          "flops_forward": 19456,
           "inputs": {
             "r": [
               2,
@@ -115,7 +115,8 @@
         }
       },
       "model": {
-        "flops_forward": 48896,
+        "elementwise_flops": 7168,
+        "flops_forward": 41728,
         "params": 1520,
         "projection_params": 768,
         "recurrent_state": 384
@@ -180,7 +181,7 @@
         },
         "mixer": {
           "params": 177,
-          "flops_forward": 5040,
+          "flops_forward": 3864,
           "inputs": {
             "r": [
               2,
@@ -235,7 +236,8 @@
         }
       },
       "model": {
-        "flops_forward": 16800,
+        "elementwise_flops": 3528,
+        "flops_forward": 13272,
         "params": 594,
         "projection_params": 162,
         "recurrent_state": 216
@@ -300,7 +302,7 @@
         },
         "mixer": {
           "params": 594,
-          "flops_forward": 19968,
+          "flops_forward": 16128,
           "inputs": {
             "r": [
               2,
@@ -355,7 +357,8 @@
         }
       },
       "model": {
-        "flops_forward": 63552,
+        "elementwise_flops": 11520,
+        "flops_forward": 52032,
         "params": 1902,
         "projection_params": 648,
         "recurrent_state": 648
@@ -420,7 +423,7 @@
         },
         "mixer": {
           "params": 3771648,
-          "flops_forward": 15527313408,
+          "flops_forward": 15401484288,
           "inputs": {
             "r": [
               1,
@@ -475,7 +478,8 @@
         }
       },
       "model": {
-        "flops_forward": 530822725632,
+        "elementwise_flops": 3019898880,
+        "flops_forward": 527802826752,
         "params": 129135360,
         "projection_params": 84934656,
         "recurrent_state": 700416
@@ -540,7 +544,7 @@
         },
         "mixer": {
           "params": 6667264,
-          "flops_forward": 27413970944,
+          "flops_forward": 27246198784,
           "inputs": {
             "r": [
               1,
@@ -595,7 +599,8 @@
         }
       },
       "model": {
-        "flops_forward": 1526760210432,
+        "elementwise_flops": 8053063680,
+        "flops_forward": 1518707146752,
         "params": 371516416,
         "projection_params": 301989888,
         "recurrent_state": 1867776
@@ -660,7 +665,7 @@
         },
         "mixer": {
           "params": 14916096,
-          "flops_forward": 61253615616,
+          "flops_forward": 61001957376,
           "inputs": {
             "r": [
               1,
@@ -715,7 +720,8 @@
         }
       },
       "model": {
-        "flops_forward": 3256507957248,
+        "elementwise_flops": 12079595520,
+        "flops_forward": 3244428361728,
         "params": 793204224,
         "projection_params": 679477248,
         "recurrent_state": 2801664
@@ -780,7 +786,7 @@
         },
         "mixer": {
           "params": 26441728,
-          "flops_forward": 108515033088,
+          "flops_forward": 108179488768,
           "inputs": {
             "r": [
               1,
@@ -835,7 +841,8 @@
         }
       },
       "model": {
-        "flops_forward": 5630500798464,
+        "elementwise_flops": 16106127360,
+        "flops_forward": 5614394671104,
         "params": 1372178432,
         "projection_params": 1207959552,
         "recurrent_state": 3735552
@@ -900,7 +907,7 @@
         },
         "mixer": {
           "params": 41244160,
-          "flops_forward": 169198223360,
+          "flops_forward": 168778792960,
           "inputs": {
             "r": [
               1,
@@ -955,7 +962,8 @@
         }
       },
       "model": {
-        "flops_forward": 11355910307840,
+        "elementwise_flops": 26843545600,
+        "flops_forward": 11329066762240,
         "params": 2768345600,
         "projection_params": 2516582400,
         "recurrent_state": 6225920

@@ -27,7 +27,7 @@ outputs: "a (B, T, V) array of next-token scores, causal: the score at position 
 components: [structured-state-space-model, rms-normalization, residual-connection]
 inductive_biases: ["causal and recurrent: everything the model knows about the past is a state of fixed size per layer, I (K - 1 + N) numbers", "selection: the step size Delta and the maps B and C depend on the current token, so the model can ignore a token, keep its state or reset it", "a local causal convolution of width K before the SSM, for short-range patterns", "no attention and no separate MLP: one homogeneous block, stacked"]
 params: "V D + D + L (3 I D + I (K + 1) + I (R + 2 N) + (R + 1) I + I N + I + D) for L blocks of width D, inner width I = E D, state N, convolution K, Delta rank R and vocabulary V, with the output layer tied to the embedding"
-flops_per_example: "2 T (L (2 D I + I K + I (R + 2 N) + R I + 2 I N + I D) + D V) for a sequence of T tokens, a multiply-add counted as 2, the products, the convolution and the scan; about 2 per parameter per token"
+flops_per_example: "2 T (L (2 D I + I (R + 2 N) + R I + I N + I D) + D V) for a sequence of T tokens, a multiply-add counted as 2, the matrix products; about 2 per parameter per token"
 ---
 
 Mamba is a sequence model, most often a language model, built from one repeated block around a selective state space model.
@@ -187,11 +187,11 @@ The derivation `parameter-and-flop-count` proves these counts.
 
 A forward pass over $B$ sequences of $T$ tokens costs
 
-$$ C = 2BT\Big(L\big(2DI + IK + I(R + 2N) + RI + 2IN + ID\big) + DV\Big) $$ {#eq-flops}
+$$ C = 2BT\Big(L\big(2DI + I(R + 2N) + RI + IN + ID\big) + DV\Big) $$ {#eq-flops}
 
-FLOPs in the products, the convolution and the scan, linear in $T$, of which the scan itself is $4BTLIN$. {#c-flops}
-For Mamba-2.8B a forward pass over 2048 tokens costs 11,355,910,307,840 FLOPs by the count of c-flops, 5,544,878,080 per token, within 0.15% of twice the parameters; the scan is 42,949,672,960 of them, about 0.38%. {#c-flops-models}
-The contract gives {shape:flops_forward@mamba_2_8b} for that pass.
+FLOPs in its matrix products, linear in $T$, of which the readout of the scan by $C$ is $2BTLIN$; the convolution and the update of the state add $2BTLI(K + N)$ elementwise. {#c-flops}
+For Mamba-2.8B a forward pass over 2048 tokens costs 11,329,066,762,240 FLOPs in its products by the count of c-flops, 5,531,770,880 per token, within 0.09% of twice the parameters; the convolution and the update of the state add 26,843,545,600, about 0.24%. {#c-flops-models}
+The contract gives {shape:flops_forward@mamba_2_8b} for that pass and {shape:elementwise_flops@mamba_2_8b} for the elementwise part.
 So the FLOPs of Mamba are those of its matrix products, like a Transformer at short context; what the selective scan saves is memory traffic, and what the recurrence saves is the cost that attention adds with every token of context.
 
 In generation each Mamba block carries $I(K - 1 + N)$ numbers per sequence from one token to the next, the last $K - 1$ inputs of the convolution and the $I \times N$ state of the SSM, whatever the length; Mamba-2.8B carries 6,225,920. {#c-state}

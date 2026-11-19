@@ -51,11 +51,17 @@ def param_count(cfg):
 
 
 def flops(cfg, B, T):
-    """eq-flops: the forward FLOPs on B sequences of T tokens, a multiply-add as 2: the matrix products, the
-    convolution, the two multiply-adds of the scan per state entry (the update and the read-out by C) and the head."""
+    """eq-flops: the forward FLOPs on B sequences of T tokens in the matrix products, a multiply-add as 2: the
+    projections, the read-out of the scan by C and the head. The convolution and the update of the state are
+    elementwise and left out; elementwise_flops counts them."""
     D, I, N, K, R, V = (cfg[k] for k in ("d_model", "d_inner", "d_state", "d_conv", "dt_rank", "vocab"))
-    block = 2 * D * 2 * I + 2 * I * K + 2 * I * (R + 2 * N) + 2 * R * I + 4 * I * N + 2 * I * D
+    block = 2 * D * 2 * I + 2 * I * (R + 2 * N) + 2 * R * I + 2 * I * N + 2 * I * D
     return B * T * (cfg["n_layers"] * block + 2 * D * V)
+
+
+def elementwise_flops(cfg, B, T):
+    """The multiply-adds of the depthwise convolution and of the update h = A_bar h + B_bar x, 2 FLOPs each."""
+    return 2 * B * T * cfg["n_layers"] * cfg["d_inner"] * (cfg["d_conv"] + cfg["d_state"])
 
 
 def init(rng, cfg, scale=0.1, dt_min=1e-3, dt_max=1e-1):

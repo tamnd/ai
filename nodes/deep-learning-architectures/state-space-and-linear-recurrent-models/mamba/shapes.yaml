@@ -4,8 +4,8 @@
 # to the embedding. The block projects the D-wide stream to two branches of width I = E D, runs a causal depthwise
 # convolution of width K, SiLU and the selective SSM with a state of N per channel on one branch, gates it by SiLU of
 # the other and projects back to D. Delta comes from a projection of rank R. The FLOPs count the matrix products, the
-# convolution and the scan (one multiply-add for the state update, one for the readout, per channel and state entry),
-# a multiply-add as 2; the norms, the activations, the exponentials and the softmax are left out.
+# readout of the scan among them, a multiply-add as 2; the elementwise work, the depthwise convolution and the update
+# of the state among it, is left out as on every page, and elementwise_flops gives those two.
 config:
   d_model:  {meaning: "width of the residual stream", symbol: "D", example: 8}
   n_layers: {meaning: "number of Mamba blocks", symbol: "L", example: 2, sample: [1, 3]}
@@ -38,7 +38,7 @@ blocks:
     outputs: {r: "(B, T, D)"}
     internals: {x: "(B, T, I)", z: "(B, T, I)", delta: "(B, T, I)", B_t: "(B, T, N)", C_t: "(B, T, N)", h: "(B, I, N)", conv_state: "(B, K - 1, I)"}
     params: "3 * I * D + I * (K + 1) + I * (R + 2 * N) + (R + 1) * I + I * N + I + D"
-    flops_forward: "2 * B * T * (2 * D * I + I * K + I * (R + 2 * N) + R * I + 2 * I * N + I * D)"
+    flops_forward: "2 * B * T * (2 * D * I + I * (R + 2 * N) + R * I + I * N + I * D)"
   - id: head
     meaning: "the final RMSNorm and the output layer, the transposed embedding"
     inputs: {r: "(B, T, D)"}
@@ -48,6 +48,7 @@ blocks:
 model:
   params: {formula: "embed.params + n_layers * mixer.params + head.params", symbol: "P", meaning: "all the parameters, the output layer counted once since it is tied to the embedding"}
   flops_forward: {formula: "embed.flops_forward + n_layers * mixer.flops_forward + head.flops_forward", symbol: "C", meaning: "FLOPs of one forward pass over B sequences of T tokens, a multiply-add counted as 2"}
+  elementwise_flops: {formula: "2 * B * T * n_layers * I * (K + N)", meaning: "the multiply-adds of the depthwise convolution and of the update of the state, elementwise and not in flops_forward"}
   projection_params: {formula: "n_layers * 3 * I * D", meaning: "the parameters of in_proj and out_proj, the 3 E D^2 per block of the paper"}
   recurrent_state: {formula: "B * n_layers * I * (K - 1 + N)", meaning: "the numbers carried from one token to the next in generation, the same at every length"}
   sources:

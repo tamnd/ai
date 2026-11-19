@@ -201,8 +201,9 @@ def test_flops_by_counting():
     cfg, p, rng = setup()
     T = 5
     D, I, N, K, R, V = (cfg[k] for k in ("d_model", "d_inner", "d_state", "d_conv", "dt_rank", "vocab"))
-    per_token = 2 * (D * 2 * I + I * K + I * (R + 2 * N) + R * I + 2 * I * N + I * D)
+    per_token = 2 * (D * 2 * I + I * (R + 2 * N) + R * I + I * N + I * D)
     assert m.flops(cfg, 2, T) == 2 * T * (cfg["n_layers"] * per_token + 2 * D * V)
+    assert m.elementwise_flops(cfg, 2, T) == 2 * 2 * T * cfg["n_layers"] * I * (K + N)
 
 
 def test_worked_example():
@@ -229,6 +230,7 @@ def test_counts_and_shapes(c):
     assert cfg["d_inner"] == k["d_inner"]
     assert m.param_count(cfg) == mod["params"] == sum(math.prod(s) for s in m.param_shapes(cfg).values())
     assert m.flops(cfg, k["B"], k["T"]) == mod["flops_forward"]
+    assert m.elementwise_flops(cfg, k["B"], k["T"]) == mod["elementwise_flops"]
     s = m.block_shapes(cfg)
     assert cfg["n_layers"] * sum(math.prod(s[n]) for n in ("in_proj", "out_proj")) == mod["projection_params"]
     state = m.init_state(cfg, k["B"])

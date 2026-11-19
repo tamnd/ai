@@ -31,7 +31,11 @@ def n_params(V, D, L, I, N, K, R):
 
 
 def n_flops(B, T, V, D, L, I, N, K, R):
-    return 2 * B * T * (L * (2 * D * I + I * K + I * (R + 2 * N) + R * I + 2 * I * N + I * D) + D * V)
+    return 2 * B * T * (L * (2 * D * I + I * (R + 2 * N) + R * I + I * N + I * D) + D * V)
+
+
+def n_elementwise(B, T, L, I, N, K):
+    return 2 * B * T * L * I * (K + N)
 
 
 def sizes(cfg):
@@ -48,8 +52,9 @@ for _ in range(40):
     COUNT[0] = 0
     mamba.forward(p, cfg, rng.integers(0, V, (B, T)))
     I = cfg["d_inner"]
-    conv_and_scan = B * T * L * (2 * I * K + 4 * I * N)
-    assert COUNT[0] + conv_and_scan == n_flops(B, T, *sizes(cfg)) == mamba.flops(cfg, B, T), (COUNT[0], cfg)
+    readout = 2 * B * T * L * I * N  # the einsum of y = C h, which the class above does not see
+    assert COUNT[0] + readout == n_flops(B, T, *sizes(cfg)) == mamba.flops(cfg, B, T), (COUNT[0], cfg)
+    assert n_elementwise(B, T, L, I, N, K) == mamba.elementwise_flops(cfg, B, T)
 
 released = {768: (24, 129_135_360), 1024: (48, 371_516_416), 1536: (48, 793_204_224), 2048: (48, 1_372_178_432),
             2560: (64, 2_768_345_600)}  # fmt: skip
@@ -67,8 +72,9 @@ for (N, R), want in abl.items():
     assert round(n_params(50280, 1024, 48, 2048, N, 4, R) / 1e6, 1) == want, (N, R)
 
 C = n_flops(1, 2048, 50280, 2560, 64, 5120, 16, 4, 160)
-scan = 4 * 2048 * 64 * 5120 * 16
-assert C == 11_355_910_307_840 and C // 2048 == 5_544_878_080 and scan == 42_949_672_960
-assert abs(scan / C - 0.00378) < 1e-5
-assert abs(C / 2048 / (2 * 2_768_345_600) - 1 - 0.00148) < 1e-5
+E = n_elementwise(1, 2048, 64, 5120, 16, 4)
+assert 2 * (26_214_400 + 983_040 + 819_200 + 13_107_200 + 81_920) == 82_411_520
+assert 64 * 82_411_520 + 2 * 2560 * 50280 == C // 2048 == 5_531_770_880 and C == 11_329_066_762_240
+assert E == 26_843_545_600 and abs(E / C - 0.00237) < 1e-5
+assert abs(1 - C / 2048 / (2 * 2_768_345_600) - 0.00089) < 1e-5
 print("parameter-and-flop-count: ok")
