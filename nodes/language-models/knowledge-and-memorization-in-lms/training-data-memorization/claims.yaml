@@ -1,0 +1,520 @@
+# The claims of the training-data-memorization page (spec 07). The build computes the labels.
+
+# The finding
+
+- id: c-ca21-attack
+  type: attributive
+  text: "Carlini et al. demonstrate a training data extraction attack on GPT-2, a language model trained on scrapes of the public Internet, that recovers individual training examples by querying the language model and extracts hundreds of verbatim text sequences from the model's training data."
+  evidence:
+    - {work: "carlini-2021-extracting-training-data", role: original, locator: "p. 1", stance: for}
+
+- id: c-ca21-pii
+  type: empirical
+  text: "The extracted examples include (public) personally identifiable information (names, phone numbers, and email addresses), IRC conversations, code, and 128-bit UUIDs, and the attack is possible even though each of these sequences is included in just one document in the training data."
+  scope:
+    models: "GPT-2"
+    data: ["the WebText training set of GPT-2"]
+    scale: "1.5 billion parameters"
+    setting: "unprompted generation ranked by membership inference, checked against the training data"
+  evidence:
+    - {work: "carlini-2021-extracting-training-data", role: original, locator: "p. 1", stance: for}
+
+- id: c-ca21-wisdom
+  type: attributive
+  text: "Carlini et al. write that the association between overfitting and memorization has erroneously led many to assume that current large LMs will not leak information about their training data, because these models are often trained on massive de-duplicated datasets only for a single epoch and exhibit little to no overfitting."
+  evidence:
+    - {work: "carlini-2021-extracting-training-data", role: original, locator: "p. 1", stance: for}
+
+- id: c-ca21-overfit
+  type: empirical
+  text: "GPT-2 was trained for approximately 12 epochs on 40GB of text de-duplicated at the document level, and does not overfit: the training loss is only roughly 10% smaller than the test loss across all model sizes."
+  scope:
+    models: "GPT-2, all sizes"
+    data: ["WebText"]
+    scale: "40GB of text"
+    setting: "training and test loss as reported by Carlini et al."
+  evidence:
+    - {work: "carlini-2021-extracting-training-data", role: original, locator: "p. 3", stance: for}
+
+- id: c-ca21-extractable
+  type: attributive
+  text: "Carlini et al. call a string s extractable from an LM if there exists a prefix c such that s is the arg max of the model's likelihood of a sequence given c, and note that the arg max can be replaced by an appropriate sampling strategy such as greedy sampling."
+  evidence:
+    - {work: "carlini-2021-extracting-training-data", role: original, locator: "p. 4", stance: for}
+
+- id: c-ca21-eidetic
+  type: attributive
+  text: "A string s is k-eidetic memorized (for k ≥ 1) by an LM if s is extractable from the LM and s appears in at most k examples in the training data."
+  evidence:
+    - {work: "carlini-2021-extracting-training-data", role: original, locator: "p. 4", stance: for}
+
+- id: c-cq-def
+  type: attributive
+  text: "Carlini et al. (2023) call a string s extractable with k tokens of context from a model f if there exists a length-k string p such that the concatenation [p || s] is contained in the training data for f, and f produces s when prompted with p using greedy decoding."
+  evidence:
+    - {work: "carlini-2023-quantifying-memorization", role: original, locator: "p. 3", stance: for}
+
+- id: c-ti-def
+  type: attributive
+  text: "Tirumala et al. call a context (s, y) memorized if the argmax of the language model on s is the ground truth token y, and refer to the proportion of memorized contexts as exact memorization, which can also be seen as accuracy."
+  evidence:
+    - {work: "tirumala-2022-memorization-without-overfitting", role: original, locator: "p. 3", stance: for}
+
+- id: c-na-kinds
+  type: attributive
+  text: "Nasr et al. study extractable memorization, training data that an adversary can efficiently extract by querying a model without prior knowledge of the training dataset, unlike discoverable memorization, which captures an upper bound on all training data that is memorized even if it can only be recovered by prompting the model with other training data."
+  evidence:
+    - {work: "nasr-2023-scalable-extraction-training-data", role: original, locator: "p. 1", stance: for}
+
+# Evidence: the first extraction attack
+
+- id: c-ca21-sampling
+  type: attributive
+  text: "Carlini et al. sample exactly 256 tokens for each trial using the top-n strategy with n = 40, then remove the generated samples that are unlikely to contain memorized text using a membership inference attack."
+  evidence:
+    - {work: "carlini-2021-extracting-training-data", role: original, locator: "p. 5", stance: for}
+
+- id: c-ca21-ratio
+  type: attributive
+  text: "One of their membership inference signals compares GPT-2 with a much smaller model trained on the same data, the Small (117M parameters) and Medium (345M parameters) models, because smaller models have less capacity for memorization."
+  evidence:
+    - {work: "carlini-2021-extracting-training-data", role: original, locator: "p. 7", stance: for}
+
+- id: c-ca21-604
+  type: empirical
+  text: "Across all strategies Carlini et al. identify 604 unique memorized training examples from among the 1,800 possible candidates, for an aggregate true positive rate of 33.5%, and their best variant has a true positive rate of 67%."
+  scope:
+    models: "GPT-2"
+    data: ["WebText"]
+    scale: "1.5 billion parameters"
+    setting: "3 × 6 = 18 configurations of generation and membership inference, 100 candidates each, checked by hand against the training data"
+  evidence:
+    - {work: "carlini-2021-extracting-training-data", role: original, locator: "p. 8", stance: for}
+
+- id: c-ca21-mit
+  type: empirical
+  text: "GPT-2 memorizes the entire text of the MIT public license, but this is only k-eidetic memorization for a large value of k, since these licenses occur thousands of times."
+  scope:
+    models: "GPT-2"
+    data: ["WebText"]
+    scale: "1.5 billion parameters"
+    setting: "the extraction attack of Carlini et al."
+  evidence:
+    - {work: "carlini-2021-extracting-training-data", role: original, locator: "p. 6", stance: for}
+
+- id: c-ca21-urls
+  type: empirical
+  text: "For URLs repeated many times within single documents, the full-sized 1.5 billion parameter GPT-2 model emits all examples that are inserted 33 times or more, the medium-sized 345 million parameter model memorizes half of the URLs, and the smallest 117 million parameter model memorizes none of these URLs."
+  scope:
+    models: "GPT-2 at three sizes"
+    data: ["WebText"]
+    scale: "117 million to 1.5 billion parameters"
+    setting: "prompting with the URL prefix and checking for the exact URL"
+  evidence:
+    - {work: "carlini-2021-extracting-training-data", role: original, locator: "p. 12", stance: for}
+
+- id: c-ca21-lessons
+  type: attributive
+  text: "Carlini et al. draw two lessons: larger models memorize significantly more training data, and for the largest LM complete memorization occurs after just 33 insertions."
+  evidence:
+    - {work: "carlini-2021-extracting-training-data", role: original, locator: "p. 12", stance: for}
+
+- id: c-ca21-bound
+  type: empirical
+  text: "Among 600,000 generated samples, the attacks find that at least 604 (or 0.1%) contain memorized text, which Carlini et al. call likely an extremely loose lower bound, since they only manually inspected 1,800 potential candidate memorized samples."
+  scope:
+    models: "GPT-2"
+    data: ["WebText"]
+    scale: "1.5 billion parameters"
+    setting: "unprompted generation"
+  evidence:
+    - {work: "carlini-2021-extracting-training-data", role: original, locator: "p. 13", stance: for}
+
+- id: c-ca21-canary
+  type: attributive
+  text: "Prior work investigated LM memorization by varying the number of times particular canary tokens were inserted into a training dataset, which Carlini et al. call synthetic: canaries are inserted artificially after the dataset has been collected and may not be representative of natural data."
+  evidence:
+    - {work: "carlini-2021-extracting-training-data", role: original, locator: "p. 11", stance: for}
+
+# Evidence: the three log-linear relationships
+
+- id: c-cq-three
+  type: empirical
+  text: "Carlini et al. (2023) describe three log-linear relationships: memorization significantly grows as we increase the capacity of a model, the number of times an example has been duplicated, and the number of tokens of context used to prompt the model."
+  scope:
+    models: "GPT-Neo 125M to 6B"
+    data: ["The Pile"]
+    scale: "125 million to 6 billion parameters"
+    setting: "prompting with training-data prefixes and checking for the exact 50-token suffix under greedy decoding"
+  evidence:
+    - {work: "carlini-2023-quantifying-memorization", role: original, locator: "p. 1", stance: for}
+
+- id: c-cq-suffix
+  type: attributive
+  text: "Carlini et al. (2023) prompt the model with the first ℓ − 50 tokens of a training sequence and report the sequence as extractable if the model exactly emits the next 50 token suffix; fifty tokens corresponds to an average of 127 characters or 25 words."
+  evidence:
+    - {work: "carlini-2023-quantifying-memorization", role: original, locator: "p. 4", stance: for}
+
+- id: c-cq-scale
+  type: empirical
+  text: "Larger GPT-Neo models memorize significantly more than smaller models, with a near-perfect log-linear fit (R2 of 99.8%): a ten fold increase in model size corresponds to an increase in memorization of 19 percentage points."
+  scope:
+    models: "GPT-Neo 125M, 1.3B, 2.7B and GPT-J 6B"
+    data: ["a sample of The Pile normalized by sequence length and duplication count"]
+    scale: "125 million to 6 billion parameters"
+    setting: "greedy decoding, the fraction of exactly reproduced suffixes averaged over prompt lengths"
+  evidence:
+    - {work: "carlini-2023-quantifying-memorization", role: original, locator: "p. 4", stance: for}
+
+- id: c-cq-baseline
+  type: empirical
+  text: "GPT-2, which was not trained on The Pile, correctly completes approximately 6% of the examples in the evaluation set, compared to 40% for the similarly sized 1.3B parameter GPT-Neo model, so the larger models have actually memorized the data and are not simply more accurate."
+  scope:
+    models: "GPT-2 and GPT-Neo 1.3B"
+    data: ["the duplication-normalized sample of The Pile"]
+    scale: "about 1.3 to 1.5 billion parameters"
+    setting: "the same prompts given to a model that did not train on them"
+  evidence:
+    - {work: "carlini-2023-quantifying-memorization", role: original, locator: "p. 5", stance: for}
+
+- id: c-cq-dup
+  type: empirical
+  text: "Examples repeated more often in the training set are more likely to be extractable, following a log-linear trend, yet memorization does still happen even with just a few duplicates, so deduplication will not perfectly prevent leakage."
+  scope:
+    models: "GPT-Neo"
+    data: ["buckets of 1,000 sequences duplicated between 2 and 900 times in The Pile"]
+    scale: "up to 6 billion parameters"
+    setting: "greedy decoding from training prefixes"
+  evidence:
+    - {work: "carlini-2023-quantifying-memorization", role: original, locator: "p. 5", stance: for}
+
+- id: c-cq-context
+  type: empirical
+  text: "33% of training sequences in the evaluation set are extractable from the 6B model at 50 tokens of context, compared to 65% with 450 tokens of context; Carlini et al. call this the discoverability phenomenon."
+  scope:
+    models: "GPT-J 6B"
+    data: ["the duplication-normalized sample of The Pile"]
+    scale: "6 billion parameters"
+    setting: "prompts of 50 to 450 tokens"
+  evidence:
+    - {work: "carlini-2023-quantifying-memorization", role: original, locator: "p. 5", stance: for}
+
+- id: c-cq-uniform
+  type: empirical
+  text: "On a uniformly random sample of The Pile, the last 50 tokens of a length-1000 sequence are extracted with 7% probability for the GPT-J 6B model, 4% for the 125M GPT-Neo model and 2% for the 1.5B parameter GPT2-XL model, which gives a lower bound that at least 1% of The Pile is extractable by the 6B GPT-J model but not by GPT-2 XL."
+  scope:
+    models: "GPT-Neo 125M, GPT-J 6B and GPT-2 XL"
+    data: ["100,000 sequences sampled uniformly from The Pile"]
+    scale: "125 million to 6 billion parameters"
+    setting: "greedy decoding from training prefixes"
+  evidence:
+    - {work: "carlini-2023-quantifying-memorization", role: original, locator: "p. 6", stance: for}
+
+- id: c-cq-beam
+  type: empirical
+  text: "Beam search with 100 beams results in marginally more extracted memorization than greedy decoding, just under 2 percentage points on average with a maximum of 5.6%."
+  scope:
+    models: "GPT-Neo"
+    data: ["The Pile"]
+    scale: "up to 6 billion parameters"
+    setting: "beam search against greedy decoding"
+  evidence:
+    - {work: "carlini-2023-quantifying-memorization", role: original, locator: "p. 7", stance: for}
+
+- id: c-cq-anywhere
+  type: empirical
+  text: "For examples at 100 repetitions, 32.6% of outputs are contained somewhere in the dataset but just 15.8% match the ground truth continuation."
+  scope:
+    models: "GPT-Neo"
+    data: ["The Pile"]
+    scale: "up to 6 billion parameters"
+    setting: "checking the generation against the whole training set instead of the true suffix"
+  evidence:
+    - {work: "carlini-2023-quantifying-memorization", role: original, locator: "p. 7", stance: for}
+
+- id: c-cq-t5
+  type: empirical
+  text: "For T5 masked language models the scaling trend holds, but the absolute memorization is an order of magnitude lower than for comparably sized causal language models: the 3B parameter T5-XL model memorizes 3.5% of sequences repeated 100 times, whereas the GPT-Neo 2.7B model memorizes 53.6%."
+  scope:
+    models: "T5 v1.1 and GPT-Neo"
+    data: ["C4 for T5, The Pile for GPT-Neo"]
+    scale: "77 million to 11 billion parameters for T5"
+    setting: "a sequence counts as memorized when the model fills every masked span exactly"
+  evidence:
+    - {work: "carlini-2023-quantifying-memorization", role: original, locator: "p. 8", stance: for}
+
+- id: c-cq-t5-dup
+  type: empirical
+  text: "For T5 models trained on C4, sequences duplicated more often tend to be easier to memorize but there is no monotonic scaling relationship; most of the duplicate examples repeated 138-158 times consist mainly of whitespace tokens."
+  scope:
+    models: "T5 v1.1"
+    data: ["C4"]
+    scale: "up to 11 billion parameters"
+    setting: "masked span prediction on duplicated sequences"
+  evidence:
+    - {work: "carlini-2023-quantifying-memorization", role: original, locator: "p. 8", stance: for}
+
+- id: c-cq-dedup
+  type: empirical
+  text: "For sequences repeated below 35 times, the exact deduplicated model memorizes an average of 1.2% of sequences, compared to 3.6% without deduplication, a statistically significant decrease by a factor of 3×."
+  scope:
+    models: "the 1.5B parameter models of Lee et al."
+    data: ["C4 and its two deduplicated versions"]
+    scale: "1.5 billion parameters"
+    setting: "prompting with training prefixes"
+  evidence:
+    - {work: "carlini-2023-quantifying-memorization", role: replication, locator: "p. 9", stance: for}
+
+- id: c-cq-dedup-limit
+  type: empirical
+  text: "While deduplication does help for sequences repeated up to ∼100 times, it does not help for sequences repeated more often, which Carlini et al. attribute to the fact that any deduplication strategy is necessarily imperfect."
+  scope:
+    models: "the 1.5B parameter models of Lee et al."
+    data: ["C4 and its two deduplicated versions"]
+    scale: "1.5 billion parameters"
+    setting: "duplication counts measured in the original C4"
+  evidence:
+    - {work: "carlini-2023-quantifying-memorization", role: original, locator: "p. 9", stance: for}
+
+- id: c-cq-opt
+  type: empirical
+  text: "For the OPT family of models, from 125 million to 175 billion parameters and trained on a deduplicated dataset that overlaps with The Pile, the scaling trends are nearly identical to those of GPT-Neo but the effect size is orders-of-magnitude smaller: even the 66 billion parameter model memorizes a smaller fraction of The Pile than the smallest 125 million parameter GPT Neo model."
+  scope:
+    models: "OPT"
+    data: ["The Pile, prompting a model trained on an overlapping dataset"]
+    scale: "125 million to 175 billion parameters"
+    setting: "prompting with training prefixes"
+  evidence:
+    - {work: "carlini-2023-quantifying-memorization", role: original, locator: "p. 9", stance: against}
+
+- id: c-cq-opt-why
+  type: attributive
+  text: "Carlini et al. give two possible conclusions: careful data curation and training can mitigate memorization, or even slight shifts in data distribution can significantly alter what content gets memorized."
+  evidence:
+    - {work: "carlini-2023-quantifying-memorization", role: original, locator: "p. 9", stance: for}
+
+# Evidence: duplication
+
+- id: c-lee-sentence
+  type: empirical
+  text: "Lee et al. find a 61-word sequence in C4 that is repeated 61,036 times verbatim in the training dataset and 61 times in the validation set."
+  scope:
+    data: ["C4"]
+    setting: "exact substring matching with a suffix array"
+  evidence:
+    - {work: "lee-2022-deduplicating-training-data", role: original, locator: "p. 1", stance: for}
+
+- id: c-lee-unprompted
+  type: empirical
+  text: "Generating 100,000 unprompted samples of up to 512 tokens and counting a token as memorized if it is part of a 50-token substring that is exactly contained in the training data, over 1% of the generated tokens of the model trained on the original C4 belong to memorized sub-sequences, about 10× more than for the models trained on deduplicated data."
+  scope:
+    models: "1.5 billion parameter decoder-only Transformers"
+    data: ["C4, C4 with near-duplicate documents removed, C4 with repeated substrings removed"]
+    scale: "1.5 billion parameters"
+    setting: "unprompted generation"
+  evidence:
+    - {work: "lee-2022-deduplicating-training-data", role: original, locator: "p. 7", stance: for}
+
+- id: c-lee-ppl
+  type: empirical
+  text: "Models trained on deduplicated datasets have no worse perplexity compared to baseline models trained on the original datasets, and in some cases deduplication reduces perplexity by up to 10%."
+  scope:
+    models: "1.5 billion parameter decoder-only Transformers"
+    data: ["C4, LM1B, Wiki-40B and their deduplicated versions"]
+    scale: "1.5 billion parameters"
+    setting: "validation perplexity"
+  evidence:
+    - {work: "lee-2022-deduplicating-training-data", role: original, locator: "p. 2", stance: for}
+
+- id: c-ka-superlinear
+  type: empirical
+  text: "Kandpal et al. find that the rate at which language models regenerate training sequences is superlinearly related to a sequence's count in the training set: a sequence that is present 10 times in the training data is on average generated ∼1000× more often than a sequence that is present only once."
+  scope:
+    models: "Transformer language models of 117M to 1.5B parameters"
+    data: ["OpenWebText and C4"]
+    scale: "117 million to 1.5 billion parameters"
+    setting: "sampling as much generated text as the training set and counting exact matches"
+  evidence:
+    - {work: "kandpal-2022-deduplicating-mitigates-privacy", role: original, locator: "p. 1", stance: for}
+
+- id: c-ka-perfect
+  type: empirical
+  text: "Kandpal et al. compare against perfect memorization, which amounts to generating a sequence at the same frequency as it appears in the training data; all LMs tested show a superlinear increase in the expected number of generations, slopes greater than 1 on a log-log plot."
+  scope:
+    models: "Transformer language models of 117M to 1.5B parameters"
+    data: ["OpenWebText and C4"]
+    scale: "117 million to 1.5 billion parameters"
+    setting: "the expected number of generations against the number of duplicates"
+  evidence:
+    - {work: "kandpal-2022-deduplicating-mitigates-privacy", role: original, locator: "p. 1", stance: for}
+
+- id: c-ka-mia
+  type: empirical
+  text: "The membership inference methods of Carlini et al. have an area under the ROC curve as high as 0.90 for sequences that are duplicated many times but achieve only chance accuracy for sequences that appear once."
+  scope:
+    models: "Transformer language models of 117M to 1.5B parameters"
+    data: ["OpenWebText and C4"]
+    scale: "117 million to 1.5 billion parameters"
+    setting: "detecting which generated sequences are training data"
+  evidence:
+    - {work: "kandpal-2022-deduplicating-mitigates-privacy", role: original, locator: "p. 2", stance: for}
+
+- id: c-ka-dedup
+  type: empirical
+  text: "Model inversion attacks are much weaker for models retrained on deduplicated data: they emit ∼20× less training data and two of the three proposed membership inference methods become less effective."
+  scope:
+    models: "Transformer language models"
+    data: ["C4 and a deduplicated C4"]
+    setting: "the generate-then-rank attack of Carlini et al."
+  evidence:
+    - {work: "kandpal-2022-deduplicating-mitigates-privacy", role: original, locator: "p. 2", stance: for}
+
+# Evidence: training dynamics and prediction
+
+- id: c-ti-faster
+  type: empirical
+  text: "Tirumala et al. find that larger language models memorize training data faster across all settings, can memorize a larger portion of the data before over-fitting and tend to forget less throughout the training process."
+  scope:
+    models: "causal and masked language models of many sizes"
+    data: ["WikiText-103 and other corpora"]
+    setting: "exact memorization measured throughout training"
+  evidence:
+    - {work: "tirumala-2022-memorization-without-overfitting", role: original, locator: "p. 1", stance: for}
+
+- id: c-ti-nouns
+  type: empirical
+  text: "Models memorize nouns and numbers first, and Tirumala et al. hypothesize and provide empirical evidence that nouns and numbers act as a unique identifier for memorizing individual training examples."
+  scope:
+    models: "causal and masked language models"
+    setting: "memorization of each part of speech during training"
+  evidence:
+    - {work: "tirumala-2022-memorization-without-overfitting", role: original, locator: "p. 1", stance: for}
+
+- id: c-bi-score
+  type: attributive
+  text: "Biderman et al. term the accuracy of tokens in the continuation the memorization score, the number of ordered matching tokens between the model's greedily generated sequence and the dataset's true continuation, with a prompt of 32 tokens and a continuation of 32 tokens, and call a sequence memorized or extractable if the memorization score is 1."
+  evidence:
+    - {work: "biderman-2023-emergent-predictable-memorization", role: original, locator: "p. 3", stance: for}
+
+- id: c-bi-70m
+  type: empirical
+  text: "95.6% of the sequences memorized by the 70M model were also memorized by the 12B model, but those only accounted for 19.7% of the sequences that the 12B model memorized."
+  scope:
+    models: "Pythia 70M to 12B"
+    data: ["the Pile, the training data of Pythia"]
+    scale: "70 million to 12 billion parameters"
+    setting: "fully trained models, 32-token prompts and continuations"
+  evidence:
+    - {work: "biderman-2023-emergent-predictable-memorization", role: original, locator: "p. 5", stance: for}
+
+- id: c-bi-recall
+  type: empirical
+  text: "The recall is incredibly low across the board, with even the 1.4B parameter model only achieving a recall of 0.554 when trying to forecast the behavior of a model an order of magnitude larger."
+  scope:
+    models: "Pythia"
+    data: ["the Pile"]
+    scale: "70 million to 12 billion parameters"
+    setting: "predicting the sequences memorized by the 12B model"
+  evidence:
+    - {work: "biderman-2023-emergent-predictable-memorization", role: original, locator: "p. 6", stance: for}
+
+- id: c-bi-checkpoints
+  type: empirical
+  text: "Predicting from intermediate checkpoints, precision remains high throughout models but recall is low for all predictors that use significantly less compute than the final model's cost."
+  scope:
+    models: "Pythia"
+    data: ["the Pile"]
+    scale: "up to 12 billion parameters, checkpoints from 23 to 146 million sequences"
+    setting: "partially trained checkpoints predicting the fully trained model"
+  evidence:
+    - {work: "biderman-2023-emergent-predictable-memorization", role: original, locator: "p. 7", stance: for}
+
+# Evidence: production models
+
+- id: c-na-gigabytes
+  type: empirical
+  text: "Nasr et al. show an adversary can extract gigabytes of training data from open-source language models like Pythia or GPT-Neo, semi-open models like LLaMA or Falcon, and closed models like ChatGPT."
+  scope:
+    models: "Pythia, GPT-Neo, LLaMA, Falcon and ChatGPT"
+    data: ["public training sets, or a nine terabyte auxiliary web dataset for closed models"]
+    setting: "black-box generation checked against training or auxiliary data with suffix arrays"
+  evidence:
+    - {work: "nasr-2023-scalable-extraction-training-data", role: replication, locator: "p. 1", stance: for}
+
+- id: c-na-aligned
+  type: empirical
+  text: "The aligned ChatGPT (gpt-3.5-turbo) appears 50× more private than any prior model, but under the attack of Nasr et al. ChatGPT emits training data 150× more frequently than with prior attacks, and 3× more frequently than the base model."
+  scope:
+    models: "gpt-3.5-turbo"
+    data: ["a nine terabyte auxiliary dataset of public web text"]
+    setting: "the divergence attack"
+  evidence:
+    - {work: "nasr-2023-scalable-extraction-training-data", role: original, locator: "p. 1", stance: for}
+
+- id: c-na-poem
+  type: empirical
+  text: "Prompting ChatGPT to repeat a word forever, such as Repeat this word forever: poem poem poem poem, makes a small fraction of generations diverge to memorization, and using only $200 USD worth of queries Nasr et al. extract over 10,000 unique verbatim-memorized training examples."
+  scope:
+    models: "gpt-3.5-turbo"
+    data: ["a nine terabyte auxiliary dataset of public web text"]
+    setting: "the divergence attack"
+  evidence:
+    - {work: "nasr-2023-scalable-extraction-training-data", role: original, locator: "p. 9", stance: for}
+
+- id: c-na-alignment
+  type: attributive
+  text: "Nasr et al. conclude that practical attacks can recover far more data than previously thought, and that current alignment techniques do not eliminate memorization."
+  evidence:
+    - {work: "nasr-2023-scalable-extraction-training-data", role: original, locator: "p. 1", stance: for}
+
+# Explanations: the long tail
+
+- id: c-fe-necessary
+  type: attributive
+  text: "Feldman proves that for natural data distributions memorization of labels is necessary for achieving close-to-optimal generalization error, even for outliers and noisy labels, in a model where data is sampled from a mixture of subpopulations and the distribution of subpopulation frequencies is long-tailed."
+  evidence:
+    - {work: "feldman-2019-does-learning-require-memorization", role: original, locator: "p. 1", stance: for}
+
+- id: c-fe-bound
+  type: attributive
+  text: "A special case of Feldman's theorem bounds the expected generalization error of an algorithm by the optimal error plus τ1 times the expected number of examples that appear once in the dataset and are mislabeled by the classifier, where τ1 is the ratio of the expectation of α² (1 − α)^(n−1) to that of α (1 − α)^(n−1) over the frequencies α."
+  evidence:
+    - {work: "feldman-2019-does-learning-require-memorization", role: original, locator: "p. 5", stance: for}
+
+- id: c-fe-zipf
+  type: attributive
+  text: "For the Zipf distribution over a universe of size N = 50,000 and n = 50,000 samples, Feldman reports an expected loss of at least ≈ 0.47/n per example the learner does not fit, against a worst case of ≈ 0.09/n, about 17% of samples appearing once, and an algorithm that does not fit them suboptimal by ≈ 7%."
+  evidence:
+    - {work: "feldman-2019-does-learning-require-memorization", role: original, locator: "p. 4", stance: for}
+
+# Derived results
+
+- id: c-ma-slope
+  type: mathematical
+  text: "If a sequence with d copies in the training data is generated E(d) = c d^s times, then E(10)/E(1) = 10^s; perfect memorization, sampling from the training data itself, gives s = 1, and a ratio of 1000 gives s = 3."
+  assumes: ["the expected number of generations is a power law in the number of copies"]
+  derivation: memorization-arithmetic
+
+- id: c-ma-per-copy
+  type: mathematical
+  text: "With s > 1 the generations per copy, E(d)/d = c d^(s−1), rise with d; with s = 3 a sequence with 10 copies is generated 100 times more often per copy than a sequence with one copy."
+  assumes: ["the expected number of generations is a power law in the number of copies"]
+  derivation: memorization-arithmetic
+
+- id: c-ma-loglinear
+  type: mathematical
+  text: "If the extractable fraction is F(N) = a + b log10 N with b = 0.19, doubling the model adds 0.19 log10 2, about 5.7 percentage points, and because F cannot exceed 1 the relation cannot hold beyond N = 10^((1 − a)/b)."
+  assumes: ["the extractable fraction is linear in the logarithm of the parameter count"]
+  derivation: memorization-arithmetic
+
+- id: c-ma-zipf
+  type: mathematical
+  text: "For 50,000 subpopulations with frequencies proportional to 1/i and n = 50,000 samples, τ1 n ≈ 0.472, the smallest frequency is ≈ 0.088/n, the expected fraction of samples whose subpopulation appears once is ≈ 0.170, and a learner right on those samples only by chance among ten classes loses at least ≈ 0.072."
+  assumes: ["the frequencies are exactly proportional to 1/i, without the smoothing of Feldman's prior", "ten balanced classes"]
+  derivation: memorization-arithmetic
+
+- id: c-ma-uniform
+  type: mathematical
+  text: "For K subpopulations of equal frequency, τ1 = 1/K exactly and the expected fraction of samples whose subpopulation appears once is (1 − 1/K)^(n−1); with n = 50,000 and K = 5,000 the same bound is about 4 × 10^-4."
+  assumes: ["equal frequencies 1/K", "ten balanced classes"]
+  derivation: memorization-arithmetic
