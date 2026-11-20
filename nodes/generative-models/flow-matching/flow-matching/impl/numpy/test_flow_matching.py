@@ -308,3 +308,11 @@ def test_learns_two_modes():
     dist = np.min(np.linalg.norm(xs[:, None, :] - MODES[None], axis=-1), 1)
     assert 0.4 < (xs[:, 0] > 0).mean() < 0.6
     assert (dist < 1.0).mean() > 0.9
+
+
+def flop_case(c):
+    """The forward call of a config of shapes.json, for aik flopcount: one evaluation of the velocity network."""
+    k = c["config"]
+    cfg = fm.config(k["d_data"], k["d_hidden"], k["d_time"])
+    rng = np.random.default_rng(0)
+    return fm.velocity, (fm.init(rng, cfg), cfg, rng.standard_normal((k["B"], k["d_data"])), rng.uniform(size=k["B"]))
