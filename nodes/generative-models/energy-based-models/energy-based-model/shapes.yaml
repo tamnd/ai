@@ -1,0 +1,35 @@
+# SPDX-License-Identifier: MIT
+# The shape contract of the energy-based model on the page (spec 08.6): a restricted Boltzmann machine with d_visible
+# binary visible units and d_hidden binary hidden units, weights W of shape (D, H) and biases b and c. One full block
+# Gibbs step maps a batch of B visible vectors to B hidden vectors and back, the pass that CD-k and PCD repeat k times
+# per update. The FLOPs count the two matrix products only, a multiply-add as 2; the biases, the sigmoids and the
+# Bernoulli draws are left out. The free energy, and p(h | v), cost the first product alone.
+config:
+  d_visible: {meaning: "number of binary visible units, the dimension of a data vector v", symbol: "D", example: 4, sample: [1, 8]}
+  d_hidden:  {meaning: "number of binary hidden units", symbol: "H", example: 3, sample: [1, 8]}
+axes:
+  B: {meaning: "batch of visible vectors, or of Markov chains", example: 5, sample: [1, 6]}
+  D: d_visible
+  H: d_hidden
+blocks:
+  - id: up
+    meaning: "the hidden probabilities p(h = 1 | v) = sigmoid(v W + c), and with them the free energy"
+    eq: [rbm-conditionals, free-energy]
+    inputs: {v: "(B, D)"}
+    outputs: {h: "(B, H)"}
+    params: "D * H + H"
+    flops_forward: "2 * B * D * H"
+  - id: down
+    meaning: "the visible probabilities p(v = 1 | h) = sigmoid(h W^T + b), sharing W with the up pass"
+    eq: [rbm-conditionals]
+    inputs: {h: "(B, H)"}
+    outputs: {v: "(B, D)"}
+    params: "D"
+    flops_forward: "2 * B * D * H"
+model:
+  params: {formula: "up.params + down.params", symbol: "P", meaning: "the weights W and the biases b and c of the RBM"}
+  flops_forward: {formula: "up.flops_forward + down.flops_forward", symbol: "C", meaning: "FLOPs of one full Gibbs step v -> h -> v on B vectors; CD-k costs k steps plus the up passes of the data and of the last sample"}
+configs:
+  mixture: {meaning: "the RBM of the test that learns a mixture of three binary prototypes, at its batch of 100", d_visible: 8, d_hidden: 8, B: 100}
+  usps_digits: {meaning: "the RBM of Hinton (2000) on 16 x 16 digit images, 256 visible and 500 hidden units, per image", d_visible: 256, d_hidden: 500, B: 1}
+  mnist: {meaning: "an RBM with 500 hidden units on 28 x 28 MNIST images, as in Tieleman (2008), per image", d_visible: 784, d_hidden: 500, B: 1}
