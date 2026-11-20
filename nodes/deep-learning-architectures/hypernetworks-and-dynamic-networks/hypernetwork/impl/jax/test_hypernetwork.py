@@ -17,7 +17,8 @@ import pytest  # noqa: E402
 
 import hypernetwork as H  # noqa: E402
 
-FIX = pathlib.Path(__file__).resolve().parents[2] / "fixtures"
+HERE = pathlib.Path(__file__).resolve().parent
+FIX = next(p for p in (HERE / "fixtures", HERE.parents[1] / "fixtures") if p.is_dir())
 SHAPES = json.loads((FIX / "shapes.json").read_text())["configs"]
 
 
@@ -31,9 +32,9 @@ def part(d, prefix):
 
 
 def test_static_fixture_and_gradients():
-    P, I, E = fixture()
+    P, Inp, E = fixture()
     p, e = part(P, "static"), part(E, "static")
-    x, y = jnp.asarray(I["static.x"]), jnp.asarray(I["static.y"])
+    x, y = jnp.asarray(Inp["static.x"]), jnp.asarray(Inp["static.y"])
     assert np.allclose(H.forward(p, x), e["logits"], atol=1e-12)
     value, (g, dx) = jax.value_and_grad(H.loss, argnums=(0, 1))(p, x, y)
     assert np.isclose(value, e["loss"], atol=1e-12)
@@ -43,9 +44,9 @@ def test_static_fixture_and_gradients():
 
 
 def test_hyper_rnn_fixture_and_gradients():
-    P, I, E = fixture()
+    P, Inp, E = fixture()
     p, e = part(P, "rnn"), part(E, "rnn")
-    x, tg = jnp.asarray(I["rnn.x"]), jnp.asarray(I["rnn.target"])
+    x, tg = jnp.asarray(Inp["rnn.x"]), jnp.asarray(Inp["rnn.target"])
     assert np.allclose(H.hyper_rnn(p, x), e["out"], atol=1e-12)
     value, (g, dx) = jax.value_and_grad(H.rnn_loss, argnums=(0, 1))(p, x, tg)
     assert np.isclose(value, e["loss"], atol=1e-12)
@@ -56,8 +57,8 @@ def test_hyper_rnn_fixture_and_gradients():
 
 @pytest.mark.parametrize("ln", [True, False])
 def test_hyper_lstm_fixture(ln):
-    P, I, E = fixture()
-    out = jax.jit(lambda p, x: H.hyper_lstm(p, x, ln=ln))(part(P, "lstm"), jnp.asarray(I["rnn.x"]))
+    P, Inp, E = fixture()
+    out = jax.jit(lambda p, x: H.hyper_lstm(p, x, ln=ln))(part(P, "lstm"), jnp.asarray(Inp["rnn.x"]))
     assert np.allclose(out, E["lstm.out_ln" if ln else "lstm.out"], atol=1e-12)
 
 

@@ -54,7 +54,9 @@ class HyperConvNet(nn.Module):
         super().__init__()
         M = mult * n_basic
         self.mult, self.depth, self.pad = mult, depth, fsize // 2
-        self.stem_w = nn.Parameter(torch.randn(M, c_in, fsize, fsize, dtype=torch.double) * math.sqrt(2 / (fsize**2 * c_in)))
+        self.stem_w = nn.Parameter(
+            torch.randn(M, c_in, fsize, fsize, dtype=torch.double) * math.sqrt(2 / (fsize**2 * c_in))
+        )
         self.stem_b = _param((M,))
         self.hyper = StaticHyperNetwork(depth * mult**2, n_basic, fsize, n_z)
         with torch.no_grad():
@@ -69,7 +71,7 @@ class HyperConvNet(nn.Module):
 
     def forward(self, x):
         h = F.relu(F.conv2d(x, self.stem_w, self.stem_b, padding=self.pad))
-        for w, b in zip(self.kernels(), self.conv_b):
+        for w, b in zip(self.kernels(), self.conv_b, strict=True):
             h = F.relu(F.conv2d(h, w, b, padding=self.pad))
         return h.mean((2, 3)) @ self.head_w + self.head_b
 
@@ -109,13 +111,31 @@ class ConvNet(nn.Module):
 class HyperRNN(nn.Module):
     """eq-scaled with the hyper cell of eq-hyper-cell, tanh in both."""
 
+    # The parameters are set by name in __init__; the annotations tell the type checker they are tensors.
+    W_h: torch.Tensor
+    W_x: torch.Tensor
+    W_hz: torch.Tensor
+    W_xz: torch.Tensor
+    W_bz: torch.Tensor
+    b_0: torch.Tensor
+    W_hhat: torch.Tensor
+    W_xhat: torch.Tensor
+    b_hat: torch.Tensor
+    W_hh: torch.Tensor
+    b_hh: torch.Tensor
+    W_hx: torch.Tensor
+    b_hx: torch.Tensor
+    W_hb: torch.Tensor
+
     def __init__(self, n_x, n_h, n_hat, n_z):
         super().__init__()
         shapes = {"W_h": (n_h, n_h), "W_x": (n_h, n_x), "W_hz": (n_h, n_z), "W_xz": (n_h, n_z), "W_bz": (n_h, n_z),
                   "b_0": (n_h,), "W_hhat": (n_hat, n_hat), "W_xhat": (n_hat, n_h + n_x), "b_hat": (n_hat,),
                   "W_hh": (n_z, n_hat), "b_hh": (n_z,), "W_hx": (n_z, n_hat), "b_hx": (n_z,), "W_hb": (n_z, n_hat)}  # fmt: skip
         for k, s in shapes.items():
-            setattr(self, k, nn.Parameter(torch.randn(s, dtype=torch.double) * 0.5 / math.sqrt(s[-1] if len(s) > 1 else 4)))
+            setattr(
+                self, k, nn.Parameter(torch.randn(s, dtype=torch.double) * 0.5 / math.sqrt(s[-1] if len(s) > 1 else 4))
+            )
         self.n_h, self.n_hat = n_h, n_hat
 
     def forward(self, x, return_scales=False):
@@ -150,6 +170,22 @@ def layer_norm(a, eps=1e-5):
 class HyperLSTM(nn.Module):
     """The HyperLSTM, eqs. 10 to 13 of the paper with the dropout of eq. 13 on phi(g_t) in training; every array has
     a leading axis of 4, the gates i, g, f, o. reset_parameters is the initialization of Appendix A.2.3."""
+
+    # The parameters are set by name in __init__; the annotations tell the type checker they are tensors.
+    W_h: torch.Tensor
+    W_x: torch.Tensor
+    W_hz: torch.Tensor
+    W_xz: torch.Tensor
+    W_bz: torch.Tensor
+    b_0: torch.Tensor
+    W_hhat: torch.Tensor
+    W_xhat: torch.Tensor
+    b_hat: torch.Tensor
+    W_hh: torch.Tensor
+    b_hh: torch.Tensor
+    W_hx: torch.Tensor
+    b_hx: torch.Tensor
+    W_hb: torch.Tensor
 
     def __init__(self, n_x, n_h, n_hat, n_z, ln=True, dropout=0.0):
         super().__init__()

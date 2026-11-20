@@ -15,7 +15,7 @@ import pytest
 import hypernetwork as H
 
 HERE = pathlib.Path(__file__).resolve().parent
-FIXTURES = HERE.parents[1] / "fixtures"
+FIXTURES = next(p for p in (HERE / "fixtures", HERE.parents[1] / "fixtures") if p.is_dir())
 # aik flopcount imports this module in a directory of its own, without the fixtures, and calls flop_case only.
 SHAPES = json.loads((FIXTURES / "shapes.json").read_text())["configs"] if (FIXTURES / "shapes.json").exists() else []
 
@@ -88,27 +88,27 @@ def part(d, prefix):
 
 
 def test_shared_fixture():
-    P, I, E = fixture()
+    P, Inp, E = fixture()
     cfg, sp, se = H.config(), part(P, "static"), part(E, "static")
     assert set(sp) == set(H.param_shapes(cfg))
-    logits, cache = H.forward(sp, I["static.x"], cfg)
+    logits, cache = H.forward(sp, Inp["static.x"], cfg)
     assert np.allclose(logits, se["logits"], atol=1e-12)
-    assert np.isclose(H.loss(logits, I["static.y"]), se["loss"], atol=1e-12)
-    g, dx = H.backward(sp, cfg, cache, H.loss_grad(logits, I["static.y"]))
+    assert np.isclose(H.loss(logits, Inp["static.y"]), se["loss"], atol=1e-12)
+    g, dx = H.backward(sp, cfg, cache, H.loss_grad(logits, Inp["static.y"]))
     for k, v in g.items():
         assert np.allclose(v, se["d" + k], atol=1e-12), k
     assert np.allclose(dx, se["dx"], atol=1e-12)
     rp, re = part(P, "rnn"), part(E, "rnn")
-    out, steps = H.hyper_rnn(rp, I["rnn.x"], return_cache=True)
+    out, steps = H.hyper_rnn(rp, Inp["rnn.x"], return_cache=True)
     assert np.allclose(out, re["out"], atol=1e-12)
-    assert np.isclose(H.rnn_loss(out, I["rnn.target"]), re["loss"], atol=1e-12)
-    g, dx = H.hyper_rnn_backward(rp, I["rnn.x"], steps, (out - I["rnn.target"]) / out.size)
+    assert np.isclose(H.rnn_loss(out, Inp["rnn.target"]), re["loss"], atol=1e-12)
+    g, dx = H.hyper_rnn_backward(rp, Inp["rnn.x"], steps, (out - Inp["rnn.target"]) / out.size)
     for k, v in g.items():
         assert np.allclose(v, re["d" + k], atol=1e-12), k
     assert np.allclose(dx, re["dx"], atol=1e-12)
     lp = part(P, "lstm")
-    assert np.allclose(H.hyper_lstm(lp, I["rnn.x"], ln=True), E["lstm.out_ln"], atol=1e-12)
-    assert np.allclose(H.hyper_lstm(lp, I["rnn.x"], ln=False), E["lstm.out"], atol=1e-12)
+    assert np.allclose(H.hyper_lstm(lp, Inp["rnn.x"], ln=True), E["lstm.out_ln"], atol=1e-12)
+    assert np.allclose(H.hyper_lstm(lp, Inp["rnn.x"], ln=False), E["lstm.out"], atol=1e-12)
 
 
 def numeric(fn, p, k, idx, eps=1e-6):
@@ -285,7 +285,8 @@ def test_worked_example():
 
 
 def test_config_errors():
-    for kw in ({"fsize": 4}, {"depth": 0}, {"n_z": 1.5}):
+    bad: list[dict] = [{"fsize": 4}, {"depth": 0}, {"n_z": 1.5}]
+    for kw in bad:
         with pytest.raises(ValueError):
             H.config(**kw)
     with pytest.raises(ValueError):

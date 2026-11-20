@@ -13,7 +13,8 @@ import torch
 
 import hypernetwork as M
 
-FIX = pathlib.Path(__file__).resolve().parents[2] / "fixtures"
+HERE = pathlib.Path(__file__).resolve().parent
+FIX = next(p for p in (HERE / "fixtures", HERE.parents[1] / "fixtures") if p.is_dir())
 SHAPES = json.loads((FIX / "shapes.json").read_text())["configs"]
 
 
@@ -27,40 +28,40 @@ def part(d, prefix):
 
 
 def test_static_fixture():
-    P, I, E = fixture()
+    P, Inp, E = fixture()
     model = M.HyperConvNet.from_params(part(P, "static"))
     e = part(E, "static")
-    x = torch.as_tensor(I["static.x"]).requires_grad_(True)
+    x = torch.as_tensor(Inp["static.x"]).requires_grad_(True)
     logits = model(x)
     assert np.allclose(logits.detach().numpy(), e["logits"], atol=1e-12)
-    loss = torch.nn.functional.cross_entropy(logits, torch.as_tensor(I["static.y"]))
+    loss = torch.nn.functional.cross_entropy(logits, torch.as_tensor(Inp["static.y"]))
     assert np.isclose(loss.item(), e["loss"], atol=1e-12)
     loss.backward()
     for k, t in model.named_like_numpy().items():
-        assert np.allclose(t.grad.numpy(), e["d" + k], atol=1e-12), k
-    assert np.allclose(x.grad.numpy(), e["dx"], atol=1e-12)
+        assert t.grad is not None and np.allclose(t.grad.numpy(), e["d" + k], atol=1e-12), k
+    assert x.grad is not None and np.allclose(x.grad.numpy(), e["dx"], atol=1e-12)
 
 
 def test_hyper_rnn_fixture():
-    P, I, E = fixture()
+    P, Inp, E = fixture()
     model = M.HyperRNN.from_params(part(P, "rnn"))
     e = part(E, "rnn")
-    x = torch.as_tensor(I["rnn.x"]).requires_grad_(True)
+    x = torch.as_tensor(Inp["rnn.x"]).requires_grad_(True)
     out = model(x)
     assert np.allclose(out.detach().numpy(), e["out"], atol=1e-12)
-    loss = 0.5 * ((out - torch.as_tensor(I["rnn.target"])) ** 2).mean()
+    loss = 0.5 * ((out - torch.as_tensor(Inp["rnn.target"])) ** 2).mean()
     assert np.isclose(loss.item(), e["loss"], atol=1e-12)
     loss.backward()
     for k, t in model.named_parameters():
-        assert np.allclose(t.grad.numpy(), e["d" + k], atol=1e-12), k
-    assert np.allclose(x.grad.numpy(), e["dx"], atol=1e-12)
+        assert t.grad is not None and np.allclose(t.grad.numpy(), e["d" + k], atol=1e-12), k
+    assert x.grad is not None and np.allclose(x.grad.numpy(), e["dx"], atol=1e-12)
 
 
 @pytest.mark.parametrize("ln", [True, False])
 def test_hyper_lstm_fixture(ln):
-    P, I, E = fixture()
+    P, Inp, E = fixture()
     model = M.HyperLSTM.from_params(part(P, "lstm"), ln=ln)
-    out = model(torch.as_tensor(I["rnn.x"]))
+    out = model(torch.as_tensor(Inp["rnn.x"]))
     assert np.allclose(out.detach().numpy(), E["lstm.out_ln" if ln else "lstm.out"], atol=1e-12)
 
 
