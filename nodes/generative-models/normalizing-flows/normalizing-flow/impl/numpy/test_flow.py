@@ -284,3 +284,11 @@ def test_learns_a_banana():
     assert np.mean(s[:, 0]) == pytest.approx(1.0, abs=0.1)  # E[x1] = E[x2^2] / 4 = 1
     cold = flow.sample(p, cfg, 20000, np.random.default_rng(10), temperature=0.5)
     assert np.std(cold[:, 1]) < 0.7 * np.std(s[:, 1])
+
+
+def flop_case(c):
+    """The forward call of a config of shapes.json, for aik flopcount: the pass x -> z through every coupling layer."""
+    k = c["config"]
+    cfg = flow.config(k["d_data"], k["d_hidden"], k["n_layers"])
+    rng = np.random.default_rng(0)
+    return flow.forward, (flow.init(rng, cfg), cfg, rng.standard_normal((k["B"], k["d_data"])))

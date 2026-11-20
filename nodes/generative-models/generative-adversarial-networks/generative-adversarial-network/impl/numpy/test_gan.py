@@ -247,3 +247,18 @@ def test_losses_are_finite_at_extreme_logits(kind):
         for value, grads in (gan.d_step(p, x, z, kind, alpha), gan.g_step(p, z, kind)):
             assert math.isfinite(value)
             assert all(np.all(np.isfinite(g)) and np.max(np.abs(g)) < 100 for g in grads.values())
+
+
+def gan_pass(p, z, x):
+    """One generator pass on the noise and one discriminator pass on the fakes and the data, as eq-flops counts."""
+    fake = gan.generate(p, z)[0]
+    return gan.critic(p, np.concatenate([fake, x]))[0]
+
+
+def flop_case(c):
+    """The forward call of a config of shapes.json, for aik flopcount."""
+    k = c["config"]
+    cfg = gan.config(k["d_noise"], k["d_hidden"], k["d_data"], k["d_critic"])
+    rng = np.random.default_rng(0)
+    z, x = rng.standard_normal((k["B"], k["d_noise"])), rng.standard_normal((k["B"], k["d_data"]))
+    return gan_pass, (gan.init(rng, cfg), z, x)

@@ -287,3 +287,13 @@ def test_classifier_energy_moves_with_a_logit_shift_and_the_class_probabilities_
     np.testing.assert_allclose(eb.jem_class_probs(logits + shift), eb.jem_class_probs(logits), rtol=1e-12)
     np.testing.assert_allclose(eb.jem_energy(logits + shift), eb.jem_energy(logits) - shift[:, 0], rtol=1e-12)
     np.testing.assert_allclose(eb.jem_energy(logits), -np.log(np.exp(logits).sum(1)), rtol=1e-12)
+
+
+def flop_case(c):
+    """The forward call of a config of shapes.json, for aik flopcount: one full Gibbs step v -> h -> v."""
+    k = c["config"]
+    cfg = eb.config(k["d_visible"], k["d_hidden"])
+    rng = np.random.default_rng(0)
+    v = (rng.uniform(size=(k["B"], k["d_visible"])) < 0.5).astype(float)
+    u_h, u_v = rng.uniform(size=(k["B"], k["d_hidden"])), rng.uniform(size=v.shape)
+    return eb.gibbs_step, (eb.init(rng, cfg), v, u_h, u_v)

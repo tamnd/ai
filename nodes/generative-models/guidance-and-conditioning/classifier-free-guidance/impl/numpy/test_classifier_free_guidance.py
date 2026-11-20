@@ -314,3 +314,12 @@ def test_training_and_guided_sampling():
         if s == 1.0:
             assert float(np.abs(x.mean(0) - m[1]).max()) < 0.25
     assert conf[1] > conf[0] and conf[1] > 0.97
+
+
+def flop_case(c):
+    """The forward call of a config of shapes.json, for aik flopcount: one conditional pass of the noise predictor."""
+    k = c["config"]
+    cfg = cg.config(k["dim"], k["hidden"], k["temb"], k["classes"])
+    rng = np.random.default_rng(0)
+    x = rng.standard_normal((k["B"], k["dim"]))
+    return cg.forward, (cg.init(rng, cfg), cfg, x, 3, rng.integers(0, k["classes"], k["B"]))

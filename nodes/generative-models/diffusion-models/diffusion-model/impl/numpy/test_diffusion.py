@@ -349,3 +349,12 @@ def test_learns_two_modes():
     assert 0.4 < np.mean(xs[:, 0] > 0) < 0.6
     assert np.mean(dist < 1.0) > 0.95
     assert 0.25 < np.median(dist) < 0.5
+
+
+def flop_case(c):
+    """The forward call of a config of shapes.json, for aik flopcount: one evaluation of the noise predictor."""
+    k = c["config"]
+    cfg = dm.config(k["d_data"], k["d_hidden"], k["d_time"], k["n_steps"])
+    rng = np.random.default_rng(0)
+    t = rng.integers(1, k["n_steps"] + 1, k["B"])
+    return dm.eps_model, (dm.init(rng, cfg), cfg, rng.standard_normal((k["B"], k["d_data"])), t)

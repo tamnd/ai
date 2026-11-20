@@ -258,3 +258,12 @@ def test_learns_a_binary_mixture():
     kl_indep = float(np.sum(prob * (np.log(prob) - indep)))
     assert np.mean(trace[-50:]) < 0.8 * trace[0]
     assert kl < 0.1 < 1.0 < kl_indep
+
+
+def flop_case(c):
+    """The forward call of a config of shapes.json, for aik flopcount: the logits of one masked pass on B vectors."""
+    k = c["config"]
+    cfg = ar.config(k["d_data"], (k["d_hidden"],))
+    rng = np.random.default_rng(0)
+    x = (rng.uniform(size=(k["B"], k["d_data"])) < 0.5).astype(float)
+    return ar.logits, (ar.init(rng, cfg), cfg, ar.masks(cfg, ar.degrees(cfg)), x)

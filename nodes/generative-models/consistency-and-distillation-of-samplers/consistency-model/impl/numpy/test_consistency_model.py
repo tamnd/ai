@@ -249,3 +249,11 @@ def test_worked_example():
     assert euler[0, 0] == pytest.approx(1.3)
     d = [cm.metric(np.array([[r]]), np.zeros((1, 1)), 0.03)[0] for r in (0.01, 0.1, 1.0)]
     assert d == pytest.approx([0.00162, 0.0744, 0.9704], abs=1e-4)
+
+
+def flop_case(c):
+    """The forward call of a config of shapes.json, for aik flopcount: one evaluation of the consistency function."""
+    k = c["config"]
+    cfg = cm.config(k["dim"], k["hidden"], k["temb"])
+    rng = np.random.default_rng(0)
+    return cm.forward, (cm.init(rng, cfg), cfg, rng.standard_normal((k["B"], k["dim"])), 3.0)
