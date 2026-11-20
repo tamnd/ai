@@ -1,5 +1,5 @@
 ---
-tag: NEW-normalizing-flow
+tag: 1029BT
 kind: architecture
 slug: normalizing-flow
 name: Normalizing flow
