@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/linear-attention/ (ai://NEW-linear-attention).
+# Part of https://ai.tamnd.com/linear-attention/ (ai://JBSH5S).
 """Linear attention in PyTorch: the layer, the constant-memory causal product of Algorithm 1 as an autograd
 Function, the layer as an RNN, and a small causal transformer to compare softmax and linear attention on a copy task.
 

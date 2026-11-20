@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/linear-attention/ (ai://NEW-linear-attention).
+# Part of https://ai.tamnd.com/linear-attention/ (ai://JBSH5S).
 """Tests of the NumPy reference: the fixtures, associativity (eq-linear against eq-general), the causal recurrence,
 Algorithm 1 against the gradient of the quadratic form, the layer backward against finite differences, the RNN step,
 the exact polynomial kernel, the worked example and the operation counts."""

@@ -1,5 +1,5 @@
 ---
-tag: NEW-linear-attention
+tag: JBSH5S
 kind: method
 slug: linear-attention
 name: Linear attention

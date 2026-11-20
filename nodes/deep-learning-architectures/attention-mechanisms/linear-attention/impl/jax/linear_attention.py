@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/linear-attention/ (ai://NEW-linear-attention).
+# Part of https://ai.tamnd.com/linear-attention/ (ai://JBSH5S).
 """Linear attention in JAX, as pure functions of the parameters.
 
 The parameters have the names and the layout of the NumPy reference, so the shared fixture loads as it is. Causal

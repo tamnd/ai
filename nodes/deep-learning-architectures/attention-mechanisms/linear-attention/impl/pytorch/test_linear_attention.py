@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/linear-attention/ (ai://NEW-linear-attention).
+# Part of https://ai.tamnd.com/linear-attention/ (ai://JBSH5S).
 """Tests of the PyTorch linear attention: the shared fixture and its gradients, Algorithm 1 as an autograd Function
 against autograd through the materialized states, the three causal implementations, the layer as an RNN, and a small
 copy task on which linear attention runs out of room before softmax attention does."""

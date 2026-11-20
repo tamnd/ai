@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/linear-attention/ (ai://NEW-linear-attention).
+# Part of https://ai.tamnd.com/linear-attention/ (ai://JBSH5S).
 """Tests of the JAX linear attention: the shared fixture and its gradients for every causal implementation, jit,
 and the chunked form against the scan for several chunk lengths."""
 

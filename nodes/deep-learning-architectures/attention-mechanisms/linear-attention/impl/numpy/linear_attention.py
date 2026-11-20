@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/linear-attention/ (ai://NEW-linear-attention).
+# Part of https://ai.tamnd.com/linear-attention/ (ai://JBSH5S).
 """Linear attention of Katharopoulos, Vyas, Pappas and Fleuret (2020), forward and backward, the NumPy reference.
 
 The single-head functions take arrays whose last two axes are (N, D) for queries and keys and (N, M) for values, with
