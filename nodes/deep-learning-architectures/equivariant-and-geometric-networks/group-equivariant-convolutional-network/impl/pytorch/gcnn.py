@@ -31,9 +31,14 @@ def param_count(cfg):
 def init(gen, cfg, dtype=torch.float64):
     c_in, c1, c2, k, m = cfg["c_in"], cfg["c1"], cfg["c2"], cfg["k"], cfg["n_classes"]
     r = lambda *s: torch.randn(*s, generator=gen, dtype=dtype)  # noqa: E731
-    return {"W1": r(c1, c_in, k, k) / (c_in * k * k) ** 0.5, "b1": torch.zeros(c1, dtype=dtype),
-            "W2": r(c2, c1, 4, k, k) / (4 * c1 * k * k) ** 0.5, "b2": torch.zeros(c2, dtype=dtype),
-            "Wc": r(m, c2) / c2 ** 0.5, "bc": torch.zeros(m, dtype=dtype)}
+    return {
+        "W1": r(c1, c_in, k, k) / (c_in * k * k) ** 0.5,
+        "b1": torch.zeros(c1, dtype=dtype),
+        "W2": r(c2, c1, 4, k, k) / (4 * c1 * k * k) ** 0.5,
+        "b2": torch.zeros(c2, dtype=dtype),
+        "Wc": r(m, c2) / c2**0.5,
+        "bc": torch.zeros(m, dtype=dtype),
+    }
 
 
 def rotate(x, r=1):
@@ -46,7 +51,7 @@ def rotate_p4(f, r=1):
 
 
 def lift_bank(W):
-    O, C, k, _ = W.shape
+    O, C, k, _ = W.shape  # noqa: E741
     return torch.stack([rotate(W, r) for r in range(4)], dim=1).reshape(4 * O, C, k, k)
 
 
@@ -54,7 +59,7 @@ def gconv_bank(W):
     """W (O, C, 4, k, k) to (4 O, 4 C, k, k): filter (o, r) on input plane (c, s) is W[o, c, s - r] turned r times.
 
     Cycling the rotation axis by r and turning the planes is a gather, so autograd routes each gradient back."""
-    O, C, _, k, _ = W.shape
+    O, C, _, k, _ = W.shape  # noqa: E741
     rows = [rotate(torch.roll(W, r, dims=2), r) for r in range(4)]  # rows[r][:, :, s] = rot^r W[:, :, s - r]
     return torch.stack(rows, dim=1).reshape(4 * O, 4 * C, k, k)
 

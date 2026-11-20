@@ -61,7 +61,7 @@ def test_layer_matches_torch_transformer_encoder_layer():
     cfg = config(8, 2, 3, 12, 3, 20, 2, 4)
     model = ViT(cfg, scale=0.5, generator=g)
     z = torch.randn(3, 17, 12, generator=g)
-    for l in range(2):
+    for l in range(2):  # noqa: E741
         layer = model.encoder_layer(l).train()  # train mode with dropout 0: the plain path, not the fused one
         torch.testing.assert_close(layer(z), model.layer(l, z), rtol=1e-12, atol=1e-12)
     default = torch.nn.TransformerEncoderLayer(12, 3, 20, batch_first=True)
@@ -113,7 +113,9 @@ def test_gradcheck(kw):
 
     # gradcheck of the parameters through functional_call, which keeps the graph
     def g_of(*ps):
-        return torch.func.functional_call(model, {f"p.{n}": v for n, v in zip(names, ps)}, (images.detach(),))
+        return torch.func.functional_call(
+            model, {f"p.{n}": v for n, v in zip(names, ps, strict=True)}, (images.detach(),)
+        )
 
     ps = tuple(model.p[n].detach().clone().requires_grad_(True) for n in names)
     assert torch.autograd.gradcheck(g_of, ps)

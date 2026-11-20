@@ -116,9 +116,9 @@ def test_grad_matches_finite_differences():
         def moved(d):
             p = jax.tree_util.tree_map(lambda a: a, params)
             node = p
-            for k in path[:-1]:
+            for k in path[:-1]:  # noqa: B023
                 node = node[k]
-            node[path[-1]] = leaf.at[idx].add(d)
+            node[path[-1]] = leaf.at[idx].add(d)  # noqa: B023
             return loss(p)
 
         numeric = (moved(eps) - moved(-eps)) / (2 * eps)

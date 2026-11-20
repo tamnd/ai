@@ -25,8 +25,16 @@ def config(vocab=12, dim=6, hops=3, mem=5, sent_len=4, tying="adjacent", encodin
         raise ValueError("the sizes must be positive and the vocabulary must hold the null word and one more")
     if tying not in ("adjacent", "layerwise") or encoding not in ("bow", "pe"):
         raise ValueError("tying is adjacent or layerwise, encoding is bow or pe")
-    return {"vocab": vocab, "dim": dim, "hops": hops, "mem": mem, "sent_len": sent_len, "tying": tying,
-            "encoding": encoding, "temporal": bool(temporal)}
+    return {
+        "vocab": vocab,
+        "dim": dim,
+        "hops": hops,
+        "mem": mem,
+        "sent_len": sent_len,
+        "tying": tying,
+        "encoding": encoding,
+        "temporal": bool(temporal),
+    }
 
 
 def param_count(cfg):

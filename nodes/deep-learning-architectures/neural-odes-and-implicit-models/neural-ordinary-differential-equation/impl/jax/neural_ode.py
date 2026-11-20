@@ -30,8 +30,13 @@ def param_count(cfg):
 def init(key, cfg):
     D, H = cfg["d_state"], cfg["d_hidden"]
     k1, k2, k3 = jax.random.split(key, 3)
-    return {"W1": jax.random.normal(k1, (H, D)) / jnp.sqrt(D), "u": jax.random.normal(k2, (H,)),
-            "b1": jnp.zeros(H), "W2": jax.random.normal(k3, (D, H)) / jnp.sqrt(H), "b2": jnp.zeros(D)}
+    return {
+        "W1": jax.random.normal(k1, (H, D)) / jnp.sqrt(D),
+        "u": jax.random.normal(k2, (H,)),
+        "b1": jnp.zeros(H),
+        "W2": jax.random.normal(k3, (D, H)) / jnp.sqrt(H),
+        "b2": jnp.zeros(D),
+    }
 
 
 def field(params, h, t):
@@ -51,7 +56,9 @@ def rk4(f, z, t0, t1, n):
         k2 = f(add(z, k1, 0.5 * dt), t + 0.5 * dt)
         k3 = f(add(z, k2, 0.5 * dt), t + 0.5 * dt)
         k4 = f(add(z, k3, dt), t + dt)
-        return jax.tree_util.tree_map(lambda x, a, b, c, e: x + dt / 6.0 * (a + 2.0 * b + 2.0 * c + e), z, k1, k2, k3, k4)
+        return jax.tree_util.tree_map(
+            lambda x, a, b, c, e: x + dt / 6.0 * (a + 2.0 * b + 2.0 * c + e), z, k1, k2, k3, k4
+        )
 
     return jax.lax.fori_loop(0, n, step, z)
 

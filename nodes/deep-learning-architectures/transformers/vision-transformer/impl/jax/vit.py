@@ -19,8 +19,19 @@ POOLS = ("cls", "gap")
 POSITIONS = ("learned", "none")
 
 
-def config(image_size=8, patch_size=2, channels=3, d_model=8, n_heads=2, d_ff=16, n_layers=2, n_classes=5,
-           head_hidden=0, pool="cls", pos="learned"):
+def config(
+    image_size=8,
+    patch_size=2,
+    channels=3,
+    d_model=8,
+    n_heads=2,
+    d_ff=16,
+    n_layers=2,
+    n_classes=5,
+    head_hidden=0,
+    pool="cls",
+    pos="learned",
+):
     """Return the config of the network; the defaults are the example config of shapes.yaml."""
     if min(image_size, patch_size, channels, d_model, n_heads, d_ff, n_layers) < 1 or head_hidden < 0:
         raise ValueError("the sizes must be at least 1")
@@ -59,7 +70,7 @@ def param_shapes(cfg):
         shapes["cls"] = (D,)
     if cfg["pos"] == "learned":
         shapes["pos"] = (n_tokens(cfg), D)
-    for l in range(cfg["n_layers"]):
+    for l in range(cfg["n_layers"]):  # noqa: E741
         shapes |= {
             f"l{l}_ln1_g": (D,), f"l{l}_ln1_b": (D,),
             f"l{l}_qkv_W": (D, 3 * D), f"l{l}_qkv_b": (3 * D,),
@@ -86,7 +97,7 @@ def init(key, cfg, scale=0.1):
     keys = jax.random.split(key, len(shapes))
     return {
         name: scale * jax.random.normal(k, shape) + (1.0 if name.endswith("_g") else 0.0)
-        for k, (name, shape) in zip(keys, shapes.items())
+        for k, (name, shape) in zip(keys, shapes.items(), strict=True)
     }
 
 
@@ -103,7 +114,7 @@ def layer_norm(x, g, b):
     return (x - mu) / jnp.sqrt(var + EPS) * g + b
 
 
-def layer(p, l, z, H):
+def layer(p, l, z, H):  # noqa: E741
     """One pre-norm encoder layer, eq-attn and eq-mlp."""
     B, n, D = z.shape
     h = layer_norm(z, p[f"l{l}_ln1_g"], p[f"l{l}_ln1_b"])
@@ -123,7 +134,7 @@ def forward(params, cfg, images):
         z = jnp.concatenate([jnp.broadcast_to(p["cls"], (z.shape[0], 1, z.shape[-1])), z], axis=1)
     if cfg["pos"] == "learned":
         z = z + p["pos"]
-    for l in range(cfg["n_layers"]):
+    for l in range(cfg["n_layers"]):  # noqa: E741
         z = layer(p, l, z, cfg["n_heads"])
     z = layer_norm(z, p["ln_g"], p["ln_b"])
     y = z[:, 0] if cfg["pool"] == "cls" else z.mean(1)

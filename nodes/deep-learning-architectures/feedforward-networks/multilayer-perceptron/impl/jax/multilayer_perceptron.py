@@ -31,20 +31,23 @@ def widths(cfg):
 
 def param_count(cfg):
     n = widths(cfg)
-    return sum(a * b + b for a, b in zip(n[:-1], n[1:]))
+    return sum(a * b + b for a, b in zip(n[:-1], n[1:], strict=True))
 
 
 def init(key, cfg, dtype=jnp.float64):
     n = widths(cfg)
     keys = jax.random.split(key, len(n) - 1)
-    W = [jax.random.normal(k, (n_out, n_in), dtype) * math.sqrt(2.0 / n_in) for k, n_in, n_out in zip(keys, n[:-1], n[1:])]  # eq: eq-he
+    W = [
+        jax.random.normal(k, (n_out, n_in), dtype) * math.sqrt(2.0 / n_in)
+        for k, n_in, n_out in zip(keys, n[:-1], n[1:], strict=True)
+    ]  # eq: eq-he
     return {"W": W, "b": [jnp.zeros(n_out, dtype) for n_out in n[1:]]}
 
 
 def apply(params, x, cfg):
     act = ACTIVATIONS[cfg["activation"]]
     h = x  # (B, I)
-    for W, b in zip(params["W"][:-1], params["b"][:-1]):
+    for W, b in zip(params["W"][:-1], params["b"][:-1], strict=True):
         h = act(h @ W.T + b)  # (B, H)  eq: eq-layer
     return h @ params["W"][-1].T + params["b"][-1]  # (B, O)  eq: eq-output
 

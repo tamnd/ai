@@ -91,7 +91,10 @@ def test_param_count(c):
         assert sum(p.numel() for p in RNN(cfg).parameters()) == c["model"]["params"]
         lib = torch.nn.RNN(cfg["input_size"], cfg["hidden_size"])
         assert sum(p.numel() for p in lib.parameters()) == c["model"]["params"]
-        gru, lstm = torch.nn.GRU(cfg["input_size"], cfg["hidden_size"]), torch.nn.LSTM(cfg["input_size"], cfg["hidden_size"])
+        gru, lstm = (
+            torch.nn.GRU(cfg["input_size"], cfg["hidden_size"]),
+            torch.nn.LSTM(cfg["input_size"], cfg["hidden_size"]),
+        )
         assert sum(p.numel() for p in gru.parameters()) == c["model"]["gru_params"]
         assert sum(p.numel() for p in lstm.parameters()) == c["model"]["lstm_params"]
 
@@ -125,7 +128,7 @@ def test_gradcheck(nl):
     x, h0 = torch.randn(2, 4, 2, requires_grad=True), torch.randn(2, 3, requires_grad=True)
 
     def f(x, h0, *q):
-        return torch.func.functional_call(model, dict(zip(names, q)), (x, h0))[0]
+        return torch.func.functional_call(model, dict(zip(names, q, strict=True)), (x, h0))[0]
 
     assert torch.autograd.gradcheck(f, (x, h0, *ps))
 
@@ -136,16 +139,16 @@ def test_clip_by_norm_is_torch_clip_grad_norm():
     grads = [torch.randn(3, 4) * 10, torch.randn(4)]
     clipped, norm = clip_by_norm(grads, 1.0)
     torch.testing.assert_close(torch.sqrt(sum((g * g).sum() for g in clipped)), torch.tensor(1.0))
-    for g, c in zip(grads, clipped):
+    for g, c in zip(grads, clipped, strict=True):
         torch.testing.assert_close(c * norm, g)  # the same direction
     ps = [torch.nn.Parameter(torch.zeros_like(g)) for g in grads]
-    for p, g in zip(ps, grads):
+    for p, g in zip(ps, grads, strict=True):
         p.grad = g.clone()
     torch.nn.utils.clip_grad_norm_(ps, 1.0)
-    for p, c in zip(ps, clipped):
+    for p, c in zip(ps, clipped, strict=True):
         torch.testing.assert_close(p.grad, c, rtol=1e-6, atol=1e-12)  # torch adds 1e-6 to the norm
     small_grads, _ = clip_by_norm([g / 1000 for g in grads], 1.0)
-    for g, c in zip(grads, small_grads):
+    for g, c in zip(grads, small_grads, strict=True):
         torch.testing.assert_close(c, g / 1000)  # below the threshold nothing changes
 
 

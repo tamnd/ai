@@ -9,10 +9,12 @@ import jax
 
 jax.config.update("jax_enable_x64", True)
 
-import jax.numpy as jnp
-import numpy as np
-import pytest
-from graph_neural_network import (
+import jax.numpy as jnp  # noqa: E402
+import numpy as np  # noqa: E402
+import pytest  # noqa: E402
+from jax.flatten_util import ravel_pytree  # noqa: E402
+
+from graph_neural_network import (  # noqa: E402
     apply,
     config,
     from_flat,
@@ -21,7 +23,6 @@ from graph_neural_network import (
     normalized_adjacency,
     param_count,
 )
-from jax.flatten_util import ravel_pytree
 
 HERE = pathlib.Path(__file__).resolve().parent
 FIXTURES = next(d for d in (HERE / "fixtures", HERE.parents[1] / "fixtures") if d.is_dir())
@@ -148,7 +149,10 @@ def test_learns():
         g = jax.grad(loss)(p)
         m = jax.tree_util.tree_map(lambda m, g: 0.9 * m + 0.1 * g, m, g)
         v = jax.tree_util.tree_map(lambda v, g: 0.999 * v + 0.001 * g * g, v, g)
-        upd = lambda p, m, v: p - 0.01 * (m / (1 - 0.9**t)) / (jnp.sqrt(v / (1 - 0.999**t)) + 1e-8)
+
+        def upd(p, m, v):
+            return p - 0.01 * (m / (1 - 0.9**t)) / (jnp.sqrt(v / (1 - 0.999**t)) + 1e-8)
+
         return jax.tree_util.tree_map(upd, p, m, v), m, v
 
     m = jax.tree_util.tree_map(jnp.zeros_like, params)

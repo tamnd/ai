@@ -58,8 +58,9 @@ def test_layers_are_equivariant_and_logits_invariant(mode):
     h1 = lift(x, params["W1"], mode)
     for r in range(1, 4):
         np.testing.assert_allclose(lift(rotate(x, r), params["W1"], mode), rotate_p4(h1, r), atol=1e-12)
-        np.testing.assert_allclose(gconv(rotate_p4(h1, r), params["W2"], mode),
-                                   rotate_p4(gconv(h1, params["W2"], mode), r), atol=1e-12)
+        np.testing.assert_allclose(
+            gconv(rotate_p4(h1, r), params["W2"], mode), rotate_p4(gconv(h1, params["W2"], mode), r), atol=1e-12
+        )
         np.testing.assert_allclose(forward(params, rotate(x, r), cfg), forward(params, x, cfg), atol=1e-12)
 
 
@@ -75,6 +76,7 @@ def test_jit_and_vmap_agree():
 def test_gradient_of_the_shared_weights_sums_the_copies():
     # The bank holds each weight 4 times, so the gradient of a weight is the sum of the gradients of its 4 copies.
     from gcnn import gconv_bank
+
     W = jax.random.normal(jax.random.PRNGKey(5), (2, 3, 4, 3, 3))
     G = jax.random.normal(jax.random.PRNGKey(6), (8, 12, 3, 3))
     gW = jax.grad(lambda W: jnp.sum(gconv_bank(W) * G))(W)

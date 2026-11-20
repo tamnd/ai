@@ -59,7 +59,10 @@ def test_gradcheck(activation):
 
 
 def test_xor_network():
-    params = {"W": [np.array([[1.0, 1.0], [1.0, 1.0]]), np.array([[1.0, -2.0]])], "b": [np.array([0.0, -1.0]), np.array([0.0])]}
+    params = {
+        "W": [np.array([[1.0, 1.0], [1.0, 1.0]]), np.array([[1.0, -2.0]])],
+        "b": [np.array([0.0, -1.0]), np.array([0.0])],
+    }
     model = MLP.from_params(params, config(2, 2, 1, 1, "relu"))
     torch.testing.assert_close(model(X_XOR), T_XOR, rtol=0, atol=0)
 

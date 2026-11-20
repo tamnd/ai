@@ -58,7 +58,9 @@ def one_hot(i, n, b=1):
 def test_cosine_is_the_definition():
     rng = np.random.default_rng(0)
     mem, key = rng.normal(size=(2, 5, 3)), rng.normal(size=(2, 3))
-    want = [[mem[b, i] @ key[b] / np.linalg.norm(mem[b, i]) / np.linalg.norm(key[b]) for i in range(5)] for b in range(2)]
+    want = [
+        [mem[b, i] @ key[b] / np.linalg.norm(mem[b, i]) / np.linalg.norm(key[b]) for i in range(5)] for b in range(2)
+    ]
     np.testing.assert_allclose(cosine(mem, key), want, rtol=1e-6)
 
 
@@ -175,7 +177,9 @@ def test_write_heads_commute():
     adds = [rng.normal(size=(2, 3)) for _ in range(3)]
     base = write(mem, ws, es, adds)
     for order in ((2, 0, 1), (1, 2, 0)):
-        np.testing.assert_allclose(write(mem, [ws[i] for i in order], [es[i] for i in order], [adds[i] for i in order]), base)
+        np.testing.assert_allclose(
+            write(mem, [ws[i] for i in order], [es[i] for i in order], [adds[i] for i in order]), base
+        )
 
 
 def test_copy_by_location():
@@ -185,8 +189,10 @@ def test_copy_by_location():
     n, m = 5, 3
     items = np.random.default_rng(9).normal(size=(7, 1, m))
     mem, w = np.zeros((1, n, m)), one_hot(n - 1, n)
-    s, keep = np.array([[0.0, 0.0, 1.0]]), {"key": np.zeros((1, m)), "beta": np.zeros(1), "g": np.zeros(1),
-                                            "gamma": np.ones(1)}
+    s, keep = (
+        np.array([[0.0, 0.0, 1.0]]),
+        {"key": np.zeros((1, m)), "beta": np.zeros(1), "g": np.zeros(1), "gamma": np.ones(1)},
+    )
     for x in items:
         w = address(mem, w, dict(keep, s=s))
         mem = write(mem, [w], [np.ones((1, m))], [x])
@@ -203,8 +209,13 @@ def test_content_then_shift_finds_the_next_item():
     reads item j + 1; this is how Graves et al. describe the solution the NTM learns (section 4.3)."""
     rng = np.random.default_rng(10)
     mem = np.tanh(rng.normal(size=(1, 6, 8)) * 2)
-    head = {"key": mem[:, 2].copy(), "beta": np.array([200.0]), "g": np.ones(1), "s": np.array([[0.0, 0.0, 1.0]]),
-            "gamma": np.ones(1)}
+    head = {
+        "key": mem[:, 2].copy(),
+        "beta": np.array([200.0]),
+        "g": np.ones(1),
+        "s": np.array([[0.0, 0.0, 1.0]]),
+        "gamma": np.ones(1),
+    }
     w = address(mem, one_hot(0, 6), head)
     np.testing.assert_allclose(read(mem, w), mem[:, 3], atol=1e-8)
 

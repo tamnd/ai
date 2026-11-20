@@ -94,7 +94,7 @@ def test_gradient_against_finite_differences(nl):
             up, down = flat.copy(), flat.copy()
             up[i] += eps
             down[i] -= eps
-            f = lambda v: float(loss_fn(params | {name: jnp.asarray(v.reshape(arr.shape))}, x, h0, r, r_h, nl))  # noqa: E731
+            f = lambda v: float(loss_fn(params | {name: jnp.asarray(v.reshape(arr.shape))}, x, h0, r, r_h, nl))  # noqa: B023, E731
             num[i] = (f(up) - f(down)) / (2 * eps)
         np.testing.assert_allclose(np.asarray(grads[name]).ravel(), num, rtol=1e-6, atol=1e-8, err_msg=name)
 
@@ -105,7 +105,7 @@ def test_worked_example():
     for nl, h10, grad in (("tanh", 0.1892358120, 0.0419487706), ("relu", 0.9**9, 0.9**9)):
         _, cache = forward(p, x, jnp.zeros((1, 1)), nl)
         np.testing.assert_allclose(cache["h_T"][0, 0], h10, rtol=0, atol=1e-10)
-        g = jax.grad(lambda x: forward(p, x, jnp.zeros((1, 1)), nl)[1]["h_T"][0, 0])(x)
+        g = jax.grad(lambda x: forward(p, x, jnp.zeros((1, 1)), nl)[1]["h_T"][0, 0])(x)  # noqa: B023
         np.testing.assert_allclose(g[0, 0, 0], grad, rtol=0, atol=1e-10)
 
 

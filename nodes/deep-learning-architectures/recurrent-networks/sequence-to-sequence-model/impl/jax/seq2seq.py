@@ -29,7 +29,7 @@ def config(src_vocab=7, tgt_vocab=6, embed_size=3, hidden_size=4, n_layers=2, re
 
 
 def layer_names(prefix, n_layers):
-    return [(f"{prefix}{l}_W", f"{prefix}{l}_U", f"{prefix}{l}_b") for l in range(n_layers)]
+    return [(f"{prefix}{l}_W", f"{prefix}{l}_U", f"{prefix}{l}_b") for l in range(n_layers)]  # noqa: E741
 
 
 def init(key, cfg, scale=0.08):
@@ -37,17 +37,20 @@ def init(key, cfg, scale=0.08):
     E, H, L = cfg["embed_size"], cfg["hidden_size"], cfg["n_layers"]
     shapes = {"src_embed": (cfg["src_vocab"], E), "tgt_embed": (cfg["tgt_vocab"], E)}
     for prefix in ("enc", "dec"):
-        for l, (w, u, b) in enumerate(layer_names(prefix, L)):
+        for l, (w, u, b) in enumerate(layer_names(prefix, L)):  # noqa: E741
             shapes |= {w: (E if l == 0 else H, 4 * H), u: (H, 4 * H), b: (4 * H,)}
     shapes |= {"out_W": (H, cfg["tgt_vocab"]), "out_b": (cfg["tgt_vocab"],)}
     keys = jax.random.split(key, len(shapes))
-    return {n: jax.random.uniform(k, s, minval=-scale, maxval=scale) for k, (n, s) in zip(keys, shapes.items())}
+    return {
+        n: jax.random.uniform(k, s, minval=-scale, maxval=scale)
+        for k, (n, s) in zip(keys, shapes.items(), strict=True)
+    }
 
 
 def step(params, prefix, n_layers, x, state):
     """One step of the L-layer stack `prefix` on x (B, E) from state (h, c), each (L, B, H)."""
     hs, cs = [], []
-    for l, (w, u, b) in enumerate(layer_names(prefix, n_layers)):
+    for l, (w, u, b) in enumerate(layer_names(prefix, n_layers)):  # noqa: E741
         z = x @ params[w] + state[0][l] @ params[u] + params[b]  # (B, 4 * H)
         i, f, g, o = jnp.split(z, 4, axis=-1)
         c = jax.nn.sigmoid(f) * state[1][l] + jax.nn.sigmoid(i) * jnp.tanh(g)

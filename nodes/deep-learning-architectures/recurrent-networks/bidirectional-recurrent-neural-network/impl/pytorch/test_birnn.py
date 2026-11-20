@@ -90,7 +90,7 @@ def test_gradcheck():
     x, labels, lengths = torch.randn(3, 4, 2), torch.randint(0, 3, (3, 4)), torch.tensor([4, 2, 3])
 
     def f(*q):
-        return nll(torch.func.functional_call(model, dict(zip(names, q)), (x, lengths)), labels, lengths)
+        return nll(torch.func.functional_call(model, dict(zip(names, q, strict=True)), (x, lengths)), labels, lengths)
 
     assert torch.autograd.gradcheck(f, ps)
 
@@ -130,7 +130,12 @@ def test_the_future_is_needed():
     # Two layers each: with one layer the two directions meet only in the affine output, which adds a score of the
     # past to a score of the future, and in this run the one-layer bidirectional network stays near chance too.
     accs = {}
-    for name, L, bidirectional, delay in [("bi", 2, True, 0), ("uni", 2, False, 0), ("delay", 2, False, 1), ("bi1", 1, True, 0)]:
+    for name, L, bidirectional, delay in [
+        ("bi", 2, True, 0),
+        ("uni", 2, False, 0),
+        ("delay", 2, False, 1),
+        ("bi1", 1, True, 0),
+    ]:
         torch.manual_seed(0)
         accs[name] = train(BiRNN(config(3, 16, L, 3, "lstm", bidirectional), scale=0.3), delay=delay)
     assert accs["bi"] > 0.95 and accs["delay"] > 0.95, accs

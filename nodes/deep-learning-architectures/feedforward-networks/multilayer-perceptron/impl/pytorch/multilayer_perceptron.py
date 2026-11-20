@@ -32,7 +32,7 @@ def widths(cfg):
 
 def param_count(cfg):
     n = widths(cfg)
-    return sum(a * b + b for a, b in zip(n[:-1], n[1:]))
+    return sum(a * b + b for a, b in zip(n[:-1], n[1:], strict=True))
 
 
 class MLP(nn.Module):
@@ -42,7 +42,7 @@ class MLP(nn.Module):
         n = widths(cfg)
         self.W = nn.ParameterList()
         self.b = nn.ParameterList()
-        for n_in, n_out in zip(n[:-1], n[1:]):
+        for n_in, n_out in zip(n[:-1], n[1:], strict=True):
             std = math.sqrt(2.0 / n_in)  # eq: eq-he
             self.W.append(nn.Parameter(torch.randn(n_out, n_in, generator=generator) * std))
             self.b.append(nn.Parameter(torch.zeros(n_out)))
@@ -51,7 +51,7 @@ class MLP(nn.Module):
     def from_params(cls, params, cfg):
         model = cls(cfg)
         with torch.no_grad():
-            for i, (W, b) in enumerate(zip(params["W"], params["b"])):
+            for i, (W, b) in enumerate(zip(params["W"], params["b"], strict=True)):
                 model.W[i].copy_(torch.as_tensor(W))
                 model.b[i].copy_(torch.as_tensor(b))
         return model
@@ -59,7 +59,7 @@ class MLP(nn.Module):
     def forward(self, x):
         act = ACTIVATIONS[self.cfg["activation"]]
         h = x  # (B, I)
-        for W, b in zip(self.W[:-1], self.b[:-1]):
+        for W, b in zip(self.W[:-1], self.b[:-1], strict=True):
             h = act(h @ W.T + b)  # (B, H)  eq: eq-layer
         return h @ self.W[-1].T + self.b[-1]  # (B, O)  eq: eq-output
 

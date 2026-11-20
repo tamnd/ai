@@ -37,7 +37,7 @@ class ResidualStack(torch.nn.Module):
         m, d = params[0]["W1"].shape
         stack = cls(d, len(params), hidden=m, activation=activation, residual=residual)
         with torch.no_grad():
-            for block, p in zip(stack.blocks, params):
+            for block, p in zip(stack.blocks, params, strict=True):
                 block["fc1"].weight.copy_(torch.as_tensor(p["W1"]))
                 block["fc1"].bias.copy_(torch.as_tensor(p["b1"]))
                 block["fc2"].weight.copy_(torch.as_tensor(p["W2"]))

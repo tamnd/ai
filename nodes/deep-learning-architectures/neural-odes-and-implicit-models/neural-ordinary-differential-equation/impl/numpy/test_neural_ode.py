@@ -3,6 +3,7 @@
 """Tests of the NumPy reference: the solvers, the residual step, the two gradients, the change of variables,
 the one-dimensional limit and augmentation, the shapes and the shared fixture."""
 
+import itertools
 import json
 import pathlib
 
@@ -84,7 +85,7 @@ def test_order_of_convergence(method, order):
     exact = h0 @ expm(A).T
     solver = {"euler": euler, "rk4": rk4}[method]
     errs = [np.abs(solver(linear(A), h0, 0.0, 1.0, n) - exact).max() for n in (16, 32, 64)]
-    for e0, e1 in zip(errs, errs[1:]):
+    for e0, e1 in itertools.pairwise(errs):
         assert e0 / e1 == pytest.approx(2.0**order, rel=0.15)
 
 
@@ -184,7 +185,7 @@ def test_adjoint_matches_backprop_as_the_steps_shrink():
         bx, bg = backprop(params, x, c, cfg)
         gaps.append(max([np.abs(ax - bx).max()] + [np.abs(ag[k] - bg[k]).max() for k in NAMES]))
     assert gaps[0] > 1e-6
-    assert all(g0 > 8.0 * g1 for g0, g1 in zip(gaps, gaps[1:]))
+    assert all(g0 > 8.0 * g1 for g0, g1 in itertools.pairwise(gaps))
     assert gaps[-1] < 1e-5
 
 
@@ -228,11 +229,11 @@ def test_trace_jacobian():
     for b in range(4):
         J = np.zeros((3, 3))
         for j in range(3):
-            hp, hm = h[b:b + 1].copy(), h[b:b + 1].copy()
+            hp, hm = h[b : b + 1].copy(), h[b : b + 1].copy()
             hp[0, j] += eps
             hm[0, j] -= eps
             J[:, j] = (field(params, hp, t) - field(params, hm, t))[0] / (2 * eps)
-        assert trace_jacobian(params, h[b:b + 1], t)[0] == pytest.approx(np.trace(J), abs=1e-7)
+        assert trace_jacobian(params, h[b : b + 1], t)[0] == pytest.approx(np.trace(J), abs=1e-7)
 
 
 def test_instantaneous_change_of_variables():
@@ -246,7 +247,7 @@ def test_instantaneous_change_of_variables():
     for b in range(3):
         J = np.zeros((2, 2))
         for j in range(2):
-            xp, xm = x[b:b + 1].copy(), x[b:b + 1].copy()
+            xp, xm = x[b : b + 1].copy(), x[b : b + 1].copy()
             xp[0, j] += eps
             xm[0, j] -= eps
             J[:, j] = (forward(params, xp, cfg) - forward(params, xm, cfg))[0] / (2 * eps)
@@ -300,7 +301,7 @@ def test_batch_independence():
     params, x = random_params(rng, cfg), rng.normal(size=(6, 2))
     y = forward(params, x, cfg)
     for b in range(6):
-        np.testing.assert_allclose(forward(params, x[b:b + 1], cfg), y[b:b + 1], rtol=0, atol=1e-14)
+        np.testing.assert_allclose(forward(params, x[b : b + 1], cfg), y[b : b + 1], rtol=0, atol=1e-14)
 
 
 @pytest.mark.parametrize("c", SHAPES, ids=[c["name"] for c in SHAPES])
@@ -322,10 +323,10 @@ def test_shared_fixture():
     params = {k: raw[k] for k in NAMES}
     y = forward(params, inp["x"], cfg)
     np.testing.assert_allclose(y, want["y"], rtol=1e-12, atol=1e-14)
-    loss, dyd = mse_loss(y[:, :cfg["d"]], inp["t"])
+    loss, dyd = mse_loss(y[:, : cfg["d"]], inp["t"])
     assert loss == pytest.approx(float(want["loss"]), rel=1e-12)
     dy = np.zeros_like(y)
-    dy[:, :cfg["d"]] = dyd
+    dy[:, : cfg["d"]] = dyd
     dx, grads = backprop(params, inp["x"], dy, cfg)
     np.testing.assert_allclose(dx, want["dx"], rtol=1e-10, atol=1e-12)
     for k in NAMES:

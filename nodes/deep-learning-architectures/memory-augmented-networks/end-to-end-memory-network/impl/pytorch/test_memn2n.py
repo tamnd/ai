@@ -70,7 +70,7 @@ def test_gradients_match_finite_differences(tying):
     names = sorted(params)
 
     def loss(*tensors):
-        return cross_entropy(forward(dict(zip(names, tensors)), story, query, cfg), answer)
+        return cross_entropy(forward(dict(zip(names, tensors, strict=True)), story, query, cfg), answer)
 
     inputs = tuple(params[n].clone().requires_grad_(True) for n in names)
     assert torch.autograd.gradcheck(loss, inputs, eps=1e-6, atol=1e-6)

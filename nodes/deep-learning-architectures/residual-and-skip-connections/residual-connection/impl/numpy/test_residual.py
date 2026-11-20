@@ -13,8 +13,18 @@ from residual import act, backward, block_jacobian, branch, config, forward, hig
 
 # The worked example of the page: two blocks of width 2. The PyTorch and JAX tests hold the same numbers.
 P = [
-    {"W1": np.array([[1.0, 1.0], [1.0, -1.0]]), "b1": np.zeros(2), "W2": np.array([[0.5, 0.0], [0.0, -1.0]]), "b2": np.zeros(2)},
-    {"W1": np.array([[0.0, 1.0], [1.0, 0.0]]), "b1": np.array([0.5, 0.0]), "W2": np.array([[1.0, 0.0], [0.0, 0.5]]), "b2": np.array([0.0, 0.25])},
+    {
+        "W1": np.array([[1.0, 1.0], [1.0, -1.0]]),
+        "b1": np.zeros(2),
+        "W2": np.array([[0.5, 0.0], [0.0, -1.0]]),
+        "b2": np.zeros(2),
+    },
+    {
+        "W1": np.array([[0.0, 1.0], [1.0, 0.0]]),
+        "b1": np.array([0.5, 0.0]),
+        "W2": np.array([[1.0, 0.0], [0.0, 0.5]]),
+        "b2": np.array([0.0, 0.25]),
+    },
 ]
 X = np.array([[2.0, -1.0]])
 G = np.array([[1.0, 1.0]])
@@ -79,7 +89,9 @@ def test_jacobian_is_product(activation, residual):
     prod, xi, eye = np.eye(4), x, np.eye(4)
     for p in params:
         j = block_jacobian(p, xi, activation)
-        np.testing.assert_allclose(j, numeric_jacobian(lambda v, p=p: branch(p, v[None, :], activation)[0][0], xi), atol=1e-7)
+        np.testing.assert_allclose(
+            j, numeric_jacobian(lambda v, p=p: branch(p, v[None, :], activation)[0][0], xi), atol=1e-7
+        )
         prod = ((eye + j) if residual else j) @ prod
         f = branch(p, xi[None, :], activation)[0][0]
         xi = xi + f if residual else f
@@ -237,7 +249,7 @@ def test_learns_tiny_regression():
         loss = float(np.mean(err**2))
         first = loss if first is None else first
         _, grads = backward(params, cache, 2 * err / err.size, cfg)
-        for p, g in zip(params, grads):
+        for p, g in zip(params, grads, strict=True):
             for k in p:
                 p[k] = p[k] - 0.5 * g[k]
     assert loss < 0.1 * first

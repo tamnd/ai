@@ -24,8 +24,16 @@ from rope import (
 Q = np.array([[1.0, 2.0, 0.0, 1.0]])
 K = np.array([[2.0, 1.0, 1.0, 0.0]])
 Q_AT_1 = [-1.1426, 1.9221, -0.0100, 1.0000]
-SCORES = [((0, 0), 4.0), ((5, 5), 4.0), ((1, 0), -0.3732), ((2, 1), -0.3732), ((7, 6), -0.3732),
-          ((0, 1), 4.6956), ((3, 0), -4.4133), ((10, 7), -4.4133)]
+SCORES = [
+    ((0, 0), 4.0),
+    ((5, 5), 4.0),
+    ((1, 0), -0.3732),
+    ((2, 1), -0.3732),
+    ((7, 6), -0.3732),
+    ((0, 1), 4.6956),
+    ((3, 0), -4.4133),
+    ((10, 7), -4.4133),
+]
 
 # The shared fixture. The PyTorch and JAX tests hold the same numbers.
 X = np.array([[0.5, -1.5, 2.0, 0.25, -0.75, 1.0], [1.0, 3.0, -2.5, 0.0, 4.0, -1.0], [-1.25, 0.5, 1.5, -3.0, 2.25, 0.5]])
@@ -60,7 +68,9 @@ def test_fixture_values():
     np.testing.assert_array_equal(y[0], X[0])
     for i, a in enumerate([3.0, 0.3, 0.03]):
         x1, x2 = X[1, 2 * i], X[1, 2 * i + 1]
-        np.testing.assert_allclose(y[1, 2 * i : 2 * i + 2], [x1 * np.cos(a) - x2 * np.sin(a), x1 * np.sin(a) + x2 * np.cos(a)])
+        np.testing.assert_allclose(
+            y[1, 2 * i : 2 * i + 2], [x1 * np.cos(a) - x2 * np.sin(a), x1 * np.sin(a) + x2 * np.cos(a)]
+        )
 
 
 def test_position_zero_is_identity():

@@ -51,6 +51,7 @@ def random_params(rng, cfg):
 
 # The group action.
 
+
 def test_rotate_p4_is_an_action_of_order_four():
     f = np.random.default_rng(0).normal(size=(2, 3, 4, 5, 5))
     np.testing.assert_array_equal(rotate_p4(rotate_p4(f)), rotate_p4(f, 2))
@@ -68,11 +69,15 @@ def test_shift_adjoint_is_the_opposite_shift():
 
 # The planar correlation is translation equivariant but not rotation equivariant.
 
+
 def test_planar_correlation_commutes_with_cyclic_translations():
     rng = np.random.default_rng(2)
     x, w = rng.normal(size=(2, 3, 6, 6)), rng.normal(size=(4, 3, 3, 3))
-    np.testing.assert_allclose(corr2d(np.roll(x, (2, -1), (2, 3)), w, "circular"),
-                               np.roll(corr2d(x, w, "circular"), (2, -1), (2, 3)), atol=1e-12)
+    np.testing.assert_allclose(
+        corr2d(np.roll(x, (2, -1), (2, 3)), w, "circular"),
+        np.roll(corr2d(x, w, "circular"), (2, -1), (2, 3)),
+        atol=1e-12,
+    )
 
 
 @pytest.mark.parametrize("n", [5, 6])
@@ -91,12 +96,13 @@ def test_planar_correlation_gradients_are_adjoints():
     for mode in ("zero", "circular"):
         dx, dw = corr2d_backward(x, w, dout, mode)
         dx2, dw2 = rng.normal(size=x.shape), rng.normal(size=w.shape)
-        lin = lambda x, w: np.sum(corr2d(x, w, mode) * dout)  # noqa: E731, linear in each argument
+        lin = lambda x, w: np.sum(corr2d(x, w, mode) * dout)  # noqa: B023, E731
         assert np.sum(dx * dx2) == pytest.approx(lin(dx2, w))
         assert np.sum(dw * dw2) == pytest.approx(lin(x, dw2))
 
 
 # The two layers are equivariant: rotate the input, and the output turns and cycles.
+
 
 @pytest.mark.parametrize("mode", ["zero", "circular"])
 @pytest.mark.parametrize("n", [5, 6])
@@ -146,6 +152,7 @@ def test_filter_bank_is_a_permutation_of_the_weights():
 
 
 # The model.
+
 
 @pytest.mark.parametrize("mode", ["zero", "circular"])
 def test_logits_are_invariant_to_rotations(mode):
@@ -203,8 +210,9 @@ def test_input_gradient_is_equivariant():
     cfg = config(1, 2, 2, 3, 3)
     params = random_params(rng, cfg)
     x, labels = rng.normal(size=(2, 1, 5, 5)), np.array([1, 2])
-    np.testing.assert_allclose(loss_and_grads(params, rotate(x), labels, cfg)[2],
-                               rotate(loss_and_grads(params, x, labels, cfg)[2]), atol=1e-12)
+    np.testing.assert_allclose(
+        loss_and_grads(params, rotate(x), labels, cfg)[2], rotate(loss_and_grads(params, x, labels, cfg)[2]), atol=1e-12
+    )
 
 
 def test_training_reduces_loss_and_keeps_invariance():
@@ -218,7 +226,7 @@ def test_training_reduces_loss_and_keeps_invariance():
     x, labels = np.zeros((16, 1, 6, 6)), np.arange(16) % 2
     for i in range(16):
         u, v = rng.integers(0, 4, 2)
-        x[i, 0, u:u + 3, v:v + 3] = rotate(shapes[labels[i]], rng.integers(4))
+        x[i, 0, u : u + 3, v : v + 3] = rotate(shapes[labels[i]], rng.integers(4))
     x += 0.05 * rng.normal(size=x.shape)
     trained, losses = train(params, x, labels, cfg, lr=0.5, steps=150)
     assert losses[-1] < 0.5 * losses[0]
@@ -226,6 +234,7 @@ def test_training_reduces_loss_and_keeps_invariance():
 
 
 # The pitfalls of the page.
+
 
 def test_bias_per_rotation_plane_breaks_equivariance():
     rng = np.random.default_rng(14)
@@ -241,7 +250,7 @@ def test_rotating_filters_without_cycling_breaks_equivariance():
     # The bank of a G-correlation must also cycle the rotation axis of the filter, (s - r) mod 4 in eq-gconv.
     rng = np.random.default_rng(15)
     f, W = rng.normal(size=(1, 2, 4, 5, 5)), rng.normal(size=(2, 2, 4, 3, 3))
-    O, C = 2, 2
+    O, C = 2, 2  # noqa: E741
     bank = np.stack([rotate(W, r) for r in range(4)], axis=1).reshape(4 * O, 4 * C, 3, 3)  # rotated, not cycled
     wrong = lambda f: corr2d(f.reshape(1, 4 * C, 5, 5), bank).reshape(1, O, 4, 5, 5)  # noqa: E731
     assert np.abs(wrong(rotate_p4(f)) - rotate_p4(wrong(f))).max() > 0.1
@@ -274,6 +283,7 @@ def test_pooling_rotations_early_loses_relative_orientation():
 
 
 # The shape contract and the shared fixture.
+
 
 @pytest.mark.parametrize("c", SHAPES, ids=[c["name"] for c in SHAPES])
 def test_shape_contract(c):

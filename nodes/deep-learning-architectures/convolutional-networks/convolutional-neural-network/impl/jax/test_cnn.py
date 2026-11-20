@@ -51,8 +51,12 @@ def test_equivariance_circular():
     kx, kw = jax.random.split(jax.random.PRNGKey(0))
     x, w = jax.random.normal(kx, (1, 2, 8, 8)), jax.random.normal(kw, (3, 2, 3, 3))
     for t in [(1, 0), (2, -3), (7, 5)]:
-        np.testing.assert_allclose(conv2d(jnp.roll(x, t, (2, 3)), w, pad=1, mode="circular"),
-                                   jnp.roll(conv2d(x, w, pad=1, mode="circular"), t, (2, 3)), rtol=1e-12, atol=1e-12)
+        np.testing.assert_allclose(
+            conv2d(jnp.roll(x, t, (2, 3)), w, pad=1, mode="circular"),
+            jnp.roll(conv2d(x, w, pad=1, mode="circular"), t, (2, 3)),
+            rtol=1e-12,
+            atol=1e-12,
+        )
 
 
 def test_gradient_numeric():

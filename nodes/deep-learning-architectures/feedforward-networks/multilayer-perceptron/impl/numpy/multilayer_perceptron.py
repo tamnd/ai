@@ -53,20 +53,20 @@ def widths(cfg):
 def param_count(cfg):
     """The number of weights and biases: the sum over the layers of n_l n_{l+1} + n_{l+1}."""
     n = widths(cfg)
-    return sum(a * b + b for a, b in zip(n[:-1], n[1:]))
+    return sum(a * b + b for a, b in zip(n[:-1], n[1:], strict=True))
 
 
 def flops(cfg, B):
     """The FLOPs of one forward pass over a batch of B examples, a multiply-add counted as 2; biases and activations are left out."""
     n = widths(cfg)
-    return 2 * B * sum(a * b for a, b in zip(n[:-1], n[1:]))
+    return 2 * B * sum(a * b for a, b in zip(n[:-1], n[1:], strict=True))
 
 
 def init(rng, cfg, scheme="he", dtype=np.float64):
     """Draw the weights with eq-he (Gaussian, variance 2 / n_in) or eq-glorot (uniform, variance 2 / (n_in + n_out)); zero biases."""
     n = widths(cfg)
     params = {"W": [], "b": []}
-    for n_in, n_out in zip(n[:-1], n[1:]):
+    for n_in, n_out in zip(n[:-1], n[1:], strict=True):
         if scheme == "he":  # eq: eq-he
             W = rng.normal(0.0, math.sqrt(2.0 / n_in), size=(n_out, n_in))
         elif scheme == "glorot":  # eq: eq-glorot
@@ -85,7 +85,7 @@ def forward(params, x, cfg):
     W, b = params["W"], params["b"]
     h = x  # (B, I)
     cache = {"h": [], "z": [], "activation": cfg["activation"]}
-    for l in range(len(W) - 1):
+    for l in range(len(W) - 1):  # noqa: E741
         z = h @ W[l].T + b[l]  # (B, H)  eq: eq-layer
         cache["h"].append(h)
         cache["z"].append(z)
@@ -102,7 +102,7 @@ def backward(params, cache, dy):
     L = len(W)
     dW, db = [None] * L, [None] * L
     delta = dy  # (B, O), the error of the output layer
-    for l in reversed(range(L)):
+    for l in reversed(range(L)):  # noqa: E741
         dW[l] = delta.T @ cache["h"][l]  # eq: eq-grads
         db[l] = delta.sum(axis=0)
         dh = delta @ W[l]  # (B, n_l)
@@ -120,7 +120,7 @@ def mse_loss(y, t):
 
 def sgd_step(params, grads, lr):
     """One step of gradient descent, eq-sgd; it returns new parameters and leaves the old ones alone."""
-    return {k: [p - lr * g for p, g in zip(params[k], grads[k])] for k in ("W", "b")}  # eq: eq-sgd
+    return {k: [p - lr * g for p, g in zip(params[k], grads[k], strict=True)] for k in ("W", "b")}  # eq: eq-sgd
 
 
 def xor_params(dtype=np.float64):

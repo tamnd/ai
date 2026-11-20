@@ -21,8 +21,19 @@ POOLS = ("cls", "gap")
 POSITIONS = ("learned", "none")
 
 
-def config(image_size=8, patch_size=2, channels=3, d_model=8, n_heads=2, d_ff=16, n_layers=2, n_classes=5,
-           head_hidden=0, pool="cls", pos="learned"):
+def config(
+    image_size=8,
+    patch_size=2,
+    channels=3,
+    d_model=8,
+    n_heads=2,
+    d_ff=16,
+    n_layers=2,
+    n_classes=5,
+    head_hidden=0,
+    pool="cls",
+    pos="learned",
+):
     """Return the config of the network; the defaults are the example config of shapes.yaml."""
     if min(image_size, patch_size, channels, d_model, n_heads, d_ff, n_layers) < 1 or head_hidden < 0:
         raise ValueError("the sizes must be at least 1")
@@ -61,7 +72,7 @@ def param_shapes(cfg):
         shapes["cls"] = (D,)
     if cfg["pos"] == "learned":
         shapes["pos"] = (n_tokens(cfg), D)
-    for l in range(cfg["n_layers"]):
+    for l in range(cfg["n_layers"]):  # noqa: E741
         shapes |= {
             f"l{l}_ln1_g": (D,), f"l{l}_ln1_b": (D,),
             f"l{l}_qkv_W": (D, 3 * D), f"l{l}_qkv_b": (3 * D,),
@@ -134,7 +145,7 @@ class ViT(torch.nn.Module):
             z = z + p["pos"]
         return z
 
-    def layer(self, l, z):
+    def layer(self, l, z):  # noqa: E741
         p, H = self.p, self.cfg["n_heads"]
         B, n, D = z.shape
         h = F.layer_norm(z, (D,), p[f"l{l}_ln1_g"], p[f"l{l}_ln1_b"], EPS)
@@ -147,7 +158,7 @@ class ViT(torch.nn.Module):
     def forward(self, images):
         p, cfg = self.p, self.cfg
         z = self.embed(images)
-        for l in range(cfg["n_layers"]):
+        for l in range(cfg["n_layers"]):  # noqa: E741
             z = self.layer(l, z)
         z = F.layer_norm(z, (cfg["d_model"],), p["ln_g"], p["ln_b"], EPS)
         y = z[:, 0] if cfg["pool"] == "cls" else z.mean(1)
@@ -155,7 +166,7 @@ class ViT(torch.nn.Module):
             y = torch.tanh(y @ p["pre_W"] + p["pre_b"])
         return y @ p["head_W"] + p["head_b"]
 
-    def encoder_layer(self, l):
+    def encoder_layer(self, l):  # noqa: E741
         """Layer l as a torch.nn.TransformerEncoderLayer: pre-norm, GELU, batch first, no dropout."""
         p, D = self.p, self.cfg["d_model"]
         t = torch.nn.TransformerEncoderLayer(D, self.cfg["n_heads"], self.cfg["d_ff"], dropout=0.0, activation="gelu",

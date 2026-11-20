@@ -62,7 +62,10 @@ def test_check_grads(activation):
 
 
 def test_xor_network():
-    params = {"W": [jnp.array([[1.0, 1.0], [1.0, 1.0]]), jnp.array([[1.0, -2.0]])], "b": [jnp.array([0.0, -1.0]), jnp.array([0.0])]}
+    params = {
+        "W": [jnp.array([[1.0, 1.0], [1.0, 1.0]]), jnp.array([[1.0, -2.0]])],
+        "b": [jnp.array([0.0, -1.0]), jnp.array([0.0])],
+    }
     np.testing.assert_array_equal(apply(params, X_XOR, config(2, 2, 1, 1, "relu")), T_XOR)
 
 
@@ -81,7 +84,9 @@ def test_jit_and_batch_independence():
     p = init(jax.random.PRNGKey(6), cfg)
     x = jax.random.normal(jax.random.PRNGKey(7), (5, 3))
     y = jax.jit(lambda pp, xx: apply(pp, xx, cfg))(p, x)
-    np.testing.assert_allclose(y, jnp.concatenate([apply(p, x[i : i + 1], cfg) for i in range(5)]), rtol=1e-12, atol=1e-14)
+    np.testing.assert_allclose(
+        y, jnp.concatenate([apply(p, x[i : i + 1], cfg) for i in range(5)]), rtol=1e-12, atol=1e-14
+    )
 
 
 def test_training_reduces_loss():

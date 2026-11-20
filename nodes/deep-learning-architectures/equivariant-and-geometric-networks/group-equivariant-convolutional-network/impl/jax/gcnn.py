@@ -30,9 +30,14 @@ def param_count(cfg):
 def init(key, cfg):
     c_in, c1, c2, k, m = cfg["c_in"], cfg["c1"], cfg["c2"], cfg["k"], cfg["n_classes"]
     k1, k2, k3 = jax.random.split(key, 3)
-    return {"W1": jax.random.normal(k1, (c1, c_in, k, k)) / jnp.sqrt(c_in * k * k), "b1": jnp.zeros(c1),
-            "W2": jax.random.normal(k2, (c2, c1, 4, k, k)) / jnp.sqrt(4 * c1 * k * k), "b2": jnp.zeros(c2),
-            "Wc": jax.random.normal(k3, (m, c2)) / jnp.sqrt(c2), "bc": jnp.zeros(m)}
+    return {
+        "W1": jax.random.normal(k1, (c1, c_in, k, k)) / jnp.sqrt(c_in * k * k),
+        "b1": jnp.zeros(c1),
+        "W2": jax.random.normal(k2, (c2, c1, 4, k, k)) / jnp.sqrt(4 * c1 * k * k),
+        "b2": jnp.zeros(c2),
+        "Wc": jax.random.normal(k3, (m, c2)) / jnp.sqrt(c2),
+        "bc": jnp.zeros(m),
+    }
 
 
 def rotate(x, r=1):
@@ -45,13 +50,13 @@ def rotate_p4(f, r=1):
 
 
 def lift_bank(W):
-    O, C, k, _ = W.shape
+    O, C, k, _ = W.shape  # noqa: E741
     return jnp.stack([rotate(W, r) for r in range(4)], axis=1).reshape(4 * O, C, k, k)
 
 
 def gconv_bank(W):
     """W (O, C, 4, k, k) to (4 O, 4 C, k, k): filter (o, r) on input plane (c, s) is W[o, c, s - r] turned r times."""
-    O, C, _, k, _ = W.shape
+    O, C, _, k, _ = W.shape  # noqa: E741
     rows = [rotate(jnp.roll(W, r, axis=2), r) for r in range(4)]
     return jnp.stack(rows, axis=1).reshape(4 * O, 4 * C, k, k)
 

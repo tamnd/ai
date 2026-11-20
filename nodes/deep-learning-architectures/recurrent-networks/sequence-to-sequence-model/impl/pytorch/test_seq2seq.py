@@ -99,7 +99,7 @@ def test_gradcheck():
     src, tgt = sentences(2, 3, 5), sentences(2, 3, 4)
 
     def f(*q):
-        return nll(torch.func.functional_call(model, dict(zip(names, q)), (src, tgt)), tgt)
+        return nll(torch.func.functional_call(model, dict(zip(names, q, strict=True)), (src, tgt)), tgt)
 
     assert torch.autograd.gradcheck(f, ps)
 

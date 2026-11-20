@@ -8,6 +8,7 @@ import pathlib
 import numpy as np
 import pytest
 import torch
+
 from graph_neural_network import (
     GNN,
     config,

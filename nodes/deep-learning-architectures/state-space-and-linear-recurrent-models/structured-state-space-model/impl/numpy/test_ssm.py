@@ -47,7 +47,9 @@ def layer(seed, method, h=3, n=4):
     # Move the parameters away from the initialization, so that every channel and entry differs.
     params["log_a_re"] = params["log_a_re"] + 0.3 * rng.standard_normal(params["log_a_re"].shape)
     params["a_im"] = params["a_im"] + rng.standard_normal(params["a_im"].shape)
-    params["b"] = params["b"] + 0.5 * (rng.standard_normal(params["b"].shape) + 1j * rng.standard_normal(params["b"].shape))
+    params["b"] = params["b"] + 0.5 * (
+        rng.standard_normal(params["b"].shape) + 1j * rng.standard_normal(params["b"].shape)
+    )
     return cfg, params
 
 

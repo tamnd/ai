@@ -27,13 +27,16 @@ def conv2d(x, w, b=None, stride=1, pad=0, mode="zeros"):
     if mode == "circular" and pad:
         x = jnp.pad(x, ((0, 0), (0, 0), (pad, pad), (pad, pad)), mode="wrap")  # (B, C, H + 2p, W + 2p)
         pad = 0
-    y = jax.lax.conv_general_dilated(x, w, (stride, stride), [(pad, pad), (pad, pad)],
-                                     dimension_numbers=("NCHW", "OIHW", "NCHW"))  # eq: eq-conv  (B, D, H', W')
+    y = jax.lax.conv_general_dilated(
+        x, w, (stride, stride), [(pad, pad), (pad, pad)], dimension_numbers=("NCHW", "OIHW", "NCHW")
+    )  # eq: eq-conv  (B, D, H', W')
     return y if b is None else y + b[None, :, None, None]
 
 
 def max_pool(x):
-    return jax.lax.reduce_window(x, -jnp.inf, jax.lax.max, (1, 1, POOL, POOL), (1, 1, POOL, POOL), "VALID")  # eq: eq-maxpool
+    return jax.lax.reduce_window(
+        x, -jnp.inf, jax.lax.max, (1, 1, POOL, POOL), (1, 1, POOL, POOL), "VALID"
+    )  # eq: eq-maxpool
 
 
 def apply(params, x, cfg):

@@ -7,6 +7,9 @@ import pathlib
 
 import numpy as np
 import pytest
+from hypothesis import given, settings
+from hypothesis import strategies as st
+
 from graph_neural_network import (
     aggregate,
     config,
@@ -20,8 +23,6 @@ from graph_neural_network import (
     readout,
     wl_histograms,
 )
-from hypothesis import given, settings
-from hypothesis import strategies as st
 
 HERE = pathlib.Path(__file__).resolve().parent
 FIXTURES = next(d for d in (HERE / "fixtures", HERE.parents[1] / "fixtures") if d.is_dir())
