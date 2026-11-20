@@ -1,0 +1,410 @@
+{
+  "note": "Written by aik shapes sample -w from shapes.yaml; do not edit. The tests of each implementation check shapes, param_count and flops against these values (spec 08.6, rule X09).",
+  "configs": [
+    {
+      "name": "example",
+      "kind": "example",
+      "config": {
+        "B": 3,
+        "D": 2,
+        "H": 4,
+        "I": 3,
+        "K": 5,
+        "L": 2,
+        "T": 6,
+        "directions": 2,
+        "hidden_size": 4,
+        "input_size": 3,
+        "n_classes": 5,
+        "n_layers": 2
+      },
+      "blocks": {
+        "first": {
+          "params": 256,
+          "flops_forward": 8064,
+          "inputs": {
+            "x": [
+              3,
+              6,
+              3
+            ]
+          },
+          "outputs": {
+            "out": [
+              3,
+              6,
+              8
+            ]
+          }
+        },
+        "output": {
+          "params": 45,
+          "flops_forward": 1440,
+          "inputs": {
+            "top": [
+              3,
+              6,
+              8
+            ]
+          },
+          "outputs": {
+            "logits": [
+              3,
+              6,
+              5
+            ]
+          }
+        },
+        "upper": {
+          "params": 416,
+          "flops_forward": 13824,
+          "inputs": {
+            "out": [
+              3,
+              6,
+              8
+            ]
+          },
+          "outputs": {
+            "top": [
+              3,
+              6,
+              8
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 23328,
+        "params": 717,
+        "recurrent_weights": 256,
+        "state": 32,
+        "weights": 648
+      }
+    },
+    {
+      "name": "sample-1",
+      "kind": "sample",
+      "config": {
+        "B": 2,
+        "D": 1,
+        "H": 1,
+        "I": 1,
+        "K": 2,
+        "L": 1,
+        "T": 4,
+        "directions": 1,
+        "hidden_size": 1,
+        "input_size": 1,
+        "n_classes": 2,
+        "n_layers": 1
+      },
+      "blocks": {
+        "first": {
+          "params": 12,
+          "flops_forward": 128,
+          "inputs": {
+            "x": [
+              2,
+              4,
+              1
+            ]
+          },
+          "outputs": {
+            "out": [
+              2,
+              4,
+              1
+            ]
+          }
+        },
+        "output": {
+          "params": 4,
+          "flops_forward": 32,
+          "inputs": {
+            "top": [
+              2,
+              4,
+              1
+            ]
+          },
+          "outputs": {
+            "logits": [
+              2,
+              4,
+              2
+            ]
+          }
+        },
+        "upper": {
+          "params": 0,
+          "flops_forward": 0,
+          "inputs": {
+            "out": [
+              2,
+              4,
+              1
+            ]
+          },
+          "outputs": {
+            "top": [
+              2,
+              4,
+              1
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 160,
+        "params": 16,
+        "recurrent_weights": 4,
+        "state": 2,
+        "weights": 10
+      }
+    },
+    {
+      "name": "sample-2",
+      "kind": "sample",
+      "config": {
+        "B": 3,
+        "D": 1,
+        "H": 1,
+        "I": 4,
+        "K": 3,
+        "L": 2,
+        "T": 5,
+        "directions": 1,
+        "hidden_size": 1,
+        "input_size": 4,
+        "n_classes": 3,
+        "n_layers": 2
+      },
+      "blocks": {
+        "first": {
+          "params": 24,
+          "flops_forward": 600,
+          "inputs": {
+            "x": [
+              3,
+              5,
+              4
+            ]
+          },
+          "outputs": {
+            "out": [
+              3,
+              5,
+              1
+            ]
+          }
+        },
+        "output": {
+          "params": 6,
+          "flops_forward": 90,
+          "inputs": {
+            "top": [
+              3,
+              5,
+              1
+            ]
+          },
+          "outputs": {
+            "logits": [
+              3,
+              5,
+              3
+            ]
+          }
+        },
+        "upper": {
+          "params": 12,
+          "flops_forward": 240,
+          "inputs": {
+            "out": [
+              3,
+              5,
+              1
+            ]
+          },
+          "outputs": {
+            "top": [
+              3,
+              5,
+              1
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 930,
+        "params": 42,
+        "recurrent_weights": 8,
+        "state": 4,
+        "weights": 31
+      }
+    },
+    {
+      "name": "ctc3l250h",
+      "kind": "named",
+      "config": {
+        "B": 3,
+        "D": 2,
+        "H": 250,
+        "I": 123,
+        "K": 62,
+        "L": 3,
+        "T": 6,
+        "directions": 2,
+        "hidden_size": 250,
+        "input_size": 123,
+        "n_classes": 62,
+        "n_layers": 3
+      },
+      "blocks": {
+        "first": {
+          "params": 748000,
+          "flops_forward": 26856000,
+          "inputs": {
+            "x": [
+              3,
+              6,
+              123
+            ]
+          },
+          "outputs": {
+            "out": [
+              3,
+              6,
+              500
+            ]
+          }
+        },
+        "output": {
+          "params": 31062,
+          "flops_forward": 1116000,
+          "inputs": {
+            "top": [
+              3,
+              6,
+              500
+            ]
+          },
+          "outputs": {
+            "logits": [
+              3,
+              6,
+              62
+            ]
+          }
+        },
+        "upper": {
+          "params": 3004000,
+          "flops_forward": 108000000,
+          "inputs": {
+            "out": [
+              3,
+              6,
+              500
+            ]
+          },
+          "outputs": {
+            "top": [
+              3,
+              6,
+              500
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 135972000,
+        "params": 3783062,
+        "recurrent_weights": 1500000,
+        "state": 3000,
+        "weights": 3777000
+      }
+    },
+    {
+      "name": "ctc3l421huni",
+      "kind": "named",
+      "config": {
+        "B": 3,
+        "D": 1,
+        "H": 421,
+        "I": 123,
+        "K": 62,
+        "L": 3,
+        "T": 6,
+        "directions": 1,
+        "hidden_size": 421,
+        "input_size": 123,
+        "n_classes": 62,
+        "n_layers": 3
+      },
+      "blocks": {
+        "first": {
+          "params": 917780,
+          "flops_forward": 32979456,
+          "inputs": {
+            "x": [
+              3,
+              6,
+              123
+            ]
+          },
+          "outputs": {
+            "out": [
+              3,
+              6,
+              421
+            ]
+          }
+        },
+        "output": {
+          "params": 26164,
+          "flops_forward": 939672,
+          "inputs": {
+            "top": [
+              3,
+              6,
+              421
+            ]
+          },
+          "outputs": {
+            "logits": [
+              3,
+              6,
+              62
+            ]
+          }
+        },
+        "upper": {
+          "params": 2839224,
+          "flops_forward": 102090816,
+          "inputs": {
+            "out": [
+              3,
+              6,
+              421
+            ]
+          },
+          "outputs": {
+            "top": [
+              3,
+              6,
+              421
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 136009944,
+        "params": 3783168,
+        "recurrent_weights": 2126892,
+        "state": 2526,
+        "weights": 3778054
+      }
+    }
+  ]
+}
