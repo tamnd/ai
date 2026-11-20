@@ -79,6 +79,14 @@ def critic(p, x):
     return h @ p["dis_w2"] + p["dis_b2"][0], h
 
 
+def forward(p, z, x):
+    """eq-flops: one generator pass on the B noise vectors and one discriminator pass on the B fakes and the B data
+    points; the logits of the fakes and of the data."""
+    fake, _ = generate(p, z)
+    a, _ = critic(p, np.concatenate([fake, x]))
+    return a[: len(z)], a[len(z) :]
+
+
 def input_grad(p, h):
     """The gradient of a in its input at the points whose hidden layer is h, (B, D): W1 ((1 - h^2) * w2)."""
     return ((1.0 - h**2) * p["dis_w2"]) @ p["dis_W1"].T

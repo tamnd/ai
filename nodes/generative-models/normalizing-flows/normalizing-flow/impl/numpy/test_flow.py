@@ -72,6 +72,14 @@ def test_counts(c):
     assert sum(v.size for v in flow.init(np.random.default_rng(0), cfg).values()) == mod["params"]
 
 
+def flop_case(c):
+    """The forward call of a config of shapes.json, for aik flopcount: the density pass x -> z on B points."""
+    k = c["config"]
+    cfg = flow.config(k["d_data"], k["d_hidden"], k["n_layers"])
+    rng = np.random.default_rng(0)
+    return flow.forward, (random_params(rng, cfg), cfg, rng.standard_normal((k["B"], k["d_data"])))
+
+
 def test_masks_alternate():
     m = flow.masks(flow.config(5, 4, 4))
     np.testing.assert_array_equal(m[0], [1, 0, 1, 0, 1])
