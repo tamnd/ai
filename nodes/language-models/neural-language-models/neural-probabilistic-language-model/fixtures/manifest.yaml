@@ -1,0 +1,11 @@
+# Written by fixtures/make.py; do not edit.
+seed: 2003
+source: {vocabulary: 61, classes: 6, per_class: 10, dirichlet: 0.3, train: 4000, test: 1000}
+model: {V: 61, m: 8, h: 16, n: 3, direct: true, tied_model_h: 8}
+training: {epochs: 2, batch: 16, lr0: 0.3, r: 0.001, decay: 0.0001, noise_per_example: 5}
+results: {source_test_perplexity: 26.3431, model_test_perplexity: 51.4558}
+dtype: float64
+numpy: "2.5.4"
+files:
+  input-small.npz: {sha256: f9561917c8ff3bf4d62bd1ecfdaa509c776ba3acea16aefd89cdfa90a8d0b859}
+  expected-small.npz: {sha256: c6336ee8ed1124b2d0a10a666364d0aa4c09ead06b928dfec84b7e971b2a7874}
