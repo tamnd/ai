@@ -1,0 +1,11 @@
+# Written by fixtures/make.py; do not edit.
+seed: 20141030
+config: {d_data: 3, d_hidden: 5, n_layers: 3}
+inputs: {B: 4, x: "standard normal", u: "standard normal"}
+loss: "the negative log-likelihood in nats, averaged over the batch"
+dtype: float64
+numpy: "2.5.4"
+files:
+  params-small.npz: {sha256: e0964a3b1178fe8dd20e98c53c27d18a94b57e1fc122e505b82ab415ecece14b}
+  input-small.npz: {sha256: b1ddae7c46b242a1106dd70068ddde13aa3750d31681984ad7c3c48ef42b83b4}
+  expected-small.npz: {sha256: 7be12a5c91cdf8752514ea5405ed6ac850e4625de29c15c4a5614e39294307bb}

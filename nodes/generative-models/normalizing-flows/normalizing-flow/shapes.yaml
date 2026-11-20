@@ -1,0 +1,35 @@
+# SPDX-License-Identifier: MIT
+# The shape contract of the normalizing flow of the page (spec 08.6): n_layers affine coupling layers on vectors of
+# d_data dimensions, each of which computes its scale s and shift t from the coordinates it keeps through one tanh
+# hidden layer of d_hidden units. The density pass maps a batch of B data points to z and the log-determinant; the
+# sampling pass runs the same layers in reverse and costs the same. The FLOPs count the products only, a multiply-add
+# as 2; the biases, the masks, tanh, exp and the base density are left out, and so is the backward pass.
+config:
+  d_data:   {meaning: "dimension of a data point and of z", symbol: "D", example: 3, sample: [2, 6]}
+  d_hidden: {meaning: "width of the hidden layer that computes s and t in each coupling layer", symbol: "H", example: 5, sample: [1, 8]}
+  n_layers: {meaning: "number of coupling layers, with alternating masks", symbol: "L", example: 3, sample: [1, 5]}
+axes:
+  B: {meaning: "batch of data points", example: 4, sample: [1, 6]}
+  D: d_data
+  H: d_hidden
+  L: n_layers
+blocks:
+  - id: coupling_hidden
+    meaning: "the hidden layer of each coupling layer, h = tanh((b * x) W1 + b1) on the masked input"
+    eq: [coupling]
+    inputs: {x: "(B, D)"}
+    outputs: {h: "(B, H)"}
+    params: "L * (D * H + H)"
+    flops_forward: "2 * L * B * D * H"
+  - id: coupling_scale_shift
+    meaning: "the scale s = h Ws + bs and shift t = h Wt + bt, then y = x * exp(s) + t on the transformed coordinates"
+    eq: [coupling]
+    inputs: {h: "(B, H)"}
+    outputs: {s: "(B, D)", t: "(B, D)"}
+    params: "L * (2 * H * D + 2 * D)"
+    flops_forward: "4 * L * B * H * D"
+model:
+  params: {formula: "coupling_hidden.params + coupling_scale_shift.params", symbol: "P", meaning: "all weights and biases of the flow"}
+  flops_forward: {formula: "coupling_hidden.flops_forward + coupling_scale_shift.flops_forward", symbol: "C", meaning: "FLOPs of one density pass x -> z on B points, a multiply-add counted as 2; a sampling pass costs the same"}
+configs:
+  banana: {meaning: "the flow of the test that learns the banana density of Papamakarios et al. (2017), at its batch of 256", d_data: 2, d_hidden: 32, n_layers: 4, B: 256}
