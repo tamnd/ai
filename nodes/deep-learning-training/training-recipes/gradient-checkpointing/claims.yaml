@@ -219,3 +219,21 @@
   text: "Not storing most of the activations and recomputing them as necessary to calculate gradients during the backward pass is usually called gradient checkpointing or activation recomputation."
   evidence:
     - {work: "korthikanti-2022-reducing-activation-recomputation", role: original, locator: "Section 1", stance: for}
+
+- id: c-fa-selective
+  type: attributive
+  text: "FlashAttention recomputes the attention matrices in the backward pass from blocks of Q, K, V in SRAM, which can be seen as a form of selective gradient checkpointing; while all implementations of gradient checkpointing the authors know of trade speed for memory, their recomputation speeds up the backward pass due to reduced HBM accesses, even with more FLOPs."
+  evidence:
+    - {work: "dao-2022-flashattention", role: original, locator: "p. 5", stance: for}
+
+- id: c-anode-checkpoint
+  type: attributive
+  text: "ANODE is a neural ODE framework that employs a classic checkpointing scheme with discretize-then-optimize differentiation, squeezing the memory footprint to O(L) + O(Nt) from O(LNt), which can be further reduced with additional computational cost through logarithmic checkpointing methods."
+  evidence:
+    - {work: "gholami-2019-anode", role: original, locator: "p. 2", stance: for}
+
+- id: c-anode-reversible
+  type: attributive
+  text: "Gholami et al. show that neural ODEs with ReLU activations may not be reversible, so solving the forward ODE backwards in time to save memory may be numerically unstable."
+  evidence:
+    - {work: "gholami-2019-anode", role: original, locator: "pp. 1 and 2", stance: for}
