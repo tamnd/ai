@@ -1,5 +1,5 @@
 ---
-tag: NEW-diffusion-model
+tag: E4RF78
 kind: architecture
 slug: diffusion-model
 name: Diffusion model
