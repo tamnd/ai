@@ -1,5 +1,5 @@
 ---
-tag: NEW-generative-adversarial-network
+tag: WMFG7N
 kind: architecture
 slug: generative-adversarial-network
 name: Generative adversarial network
