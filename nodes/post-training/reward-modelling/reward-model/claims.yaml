@@ -1,0 +1,680 @@
+# The claims of the reward-model page (spec 07). The build computes the labels.
+
+# Setting
+
+- id: c-sti-head
+  type: attributive
+  text: "Stiennon et al. build a reward model by starting from a supervised baseline and adding a randomly initialized linear head that outputs a scalar value, trained to predict which of two summaries a human judged better with the loss −E[log σ(r(x, y_i) − r(x, y_{1−i}))], where y_i is the preferred summary."
+  evidence:
+    - {work: "stiennon-2020-learning-summarize-human-feedback", role: original, locator: "p. 6", stance: for}
+
+- id: c-ou-arch
+  type: attributive
+  text: "InstructGPT's reward model starts from the SFT model with the final unembedding layer removed and is trained to take in a prompt and response and output a scalar reward."
+  evidence:
+    - {work: "ouyang-2022-training-language-models-follow-instructions", role: original, locator: "p. 8", stance: for}
+
+- id: c-ou-6b
+  type: attributive
+  text: "InstructGPT uses only 6B reward models, which saves a lot of compute, because 175B reward model training could be unstable and thus less suitable for use as the value function during RL."
+  evidence:
+    - {work: "ouyang-2022-training-language-models-follow-instructions", role: original, locator: "p. 8", stance: for}
+
+- id: c-as-head
+  type: attributive
+  text: "Askell et al.'s preference models consist of a value head that predicts a single scalar score on top of the final token of a context, with larger scores indicating more desirable samples."
+  evidence:
+    - {work: "askell-2021-general-language-assistant", role: original, locator: "p. 15", stance: for}
+
+- id: c-ll-init
+  type: attributive
+  text: "Llama 2 initializes its reward models from pretrained chat model checkpoints, so that both the chat model and the reward model benefit from knowledge acquired in pretraining."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "p. 10", stance: for}
+
+- id: c-ll-head
+  type: attributive
+  text: "Starting the reward model from the chat model prevents an information mismatch between the two that could result in favoring hallucinations; the reward model's architecture is that of the pretrained model with the classification head for next-token prediction replaced by a regression head that outputs a scalar reward."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "p. 11", stance: for}
+
+- id: c-rb-impl
+  type: attributive
+  text: "For language models a reward model is often implemented by appending a linear layer that predicts one logit, or by removing the final decoding layers and replacing them with a linear layer; a win between two completions is r(x, y1) > r(x, y2)."
+  evidence:
+    - {work: "lambert-2024-rewardbench", role: original, locator: "p. 4", stance: for}
+
+# The method
+
+- id: c-rb-bt
+  type: attributive
+  text: "Training a reward model means training a classifier to predict the human preference probability between two answers, as modeled by a Bradley-Terry model, by optimizing the maximum likelihood loss."
+  evidence:
+    - {work: "lambert-2024-rewardbench", role: original, locator: "p. 4", stance: for}
+
+- id: c-rm-bt
+  type: mathematical
+  text: "Under the Bradley-Terry model, P(y_w preferred to y_l | x) = exp(r_w) / (exp(r_w) + exp(r_l)) = σ(r_w − r_l), so the negative log-likelihood of one comparison is log(1 + exp(r_l − r_w)) = −log σ(r_w − r_l)."
+  assumes: ["comparisons follow the Bradley-Terry model with reward r", "rewards are real numbers"]
+  derivation: reward-model-arithmetic
+
+- id: c-rm-grad
+  type: mathematical
+  text: "The gradient of −log σ(r_w − r_l) is −σ(r_l − r_w) with respect to r_w and +σ(r_l − r_w) with respect to r_l: the two sum to zero, and their size is the probability the model gives to the wrong order."
+  assumes: ["comparisons follow the Bradley-Terry model with reward r", "rewards are real numbers"]
+  derivation: reward-model-arithmetic
+
+- id: c-ou-rank
+  type: attributive
+  text: "InstructGPT labelers rank between K = 4 and K = 9 responses, which produces K choose 2 comparisons for each prompt shown to a labeler."
+  evidence:
+    - {work: "ouyang-2022-training-language-models-follow-instructions", role: original, locator: "p. 8", stance: for}
+
+- id: c-ou-batch
+  type: attributive
+  text: "Because comparisons within a labeling task are very correlated, shuffling them into one dataset made the reward model overfit in a single pass; InstructGPT instead trains on all comparisons from a prompt as a single batch element, which needs a single forward pass per completion and achieves much improved validation accuracy and log loss."
+  evidence:
+    - {work: "ouyang-2022-training-language-models-follow-instructions", role: original, locator: "p. 8", stance: for}
+
+- id: c-rm-ranked
+  type: mathematical
+  text: "For K ranked responses the per-prompt loss averages −log σ(r_i − r_j) over the K(K − 1)/2 pairs with i ranked above j; scoring the K responses once needs K forward passes, against K(K − 1) when every pair is a separate example, 9 against 72 for K = 9, and 64 prompts with K = 9 give 64 × 36 = 2,304 comparisons."
+  assumes: ["each response is scored once per prompt and the scores are reused across pairs"]
+  derivation: reward-model-arithmetic
+
+- id: c-ou-2304
+  type: attributive
+  text: "InstructGPT's reward model batch holds 64 prompts with K = 4 to 9 completions each and ties dropped, so a single batch could contain up to 2,304 comparisons."
+  evidence:
+    - {work: "ouyang-2022-training-language-models-follow-instructions", role: original, locator: "pp. 41 to 42", stance: for}
+
+- id: c-ch-noise
+  type: attributive
+  text: "Christiano et al. assume a 10% chance that the human responds uniformly at random, because human raters have a constant probability of making an error, which does not decay to 0 as the reward difference becomes extreme."
+  evidence:
+    - {work: "christiano-2017-deep-rl-human-preferences", role: original, locator: "p. 5", stance: for}
+
+- id: c-rm-noise
+  type: mathematical
+  text: "With a probability ε that the label is a uniformly random answer, the modelled preference probability is ε/2 + (1 − ε)σ(Δ), which stays between ε/2 and 1 − ε/2; with ε = 0.1 the loss of one comparison is at most −log 0.05 ≈ 3.00, and its derivative in Δ tends to 0 as Δ → −∞, so a confidently contradicted label stops pulling."
+  assumes: ["the label is a random answer with probability ε and otherwise follows the Bradley-Terry model"]
+  derivation: reward-model-arithmetic
+
+- id: c-ll-margin
+  type: attributive
+  text: "Llama 2 adds a margin to the binary ranking loss, −log σ(r(x, y_c) − r(x, y_r) − m(r)), where the margin m(r) is a discrete function of the preference rating, large for pairs with distinct responses and smaller for similar ones."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "p. 11", stance: for}
+
+- id: c-ll-margin-values
+  type: attributive
+  text: "The small margin variant of Llama 2 uses margins 1, 2/3, 1/3 and 0 and the large variant 3, 2, 1 and 0 for responses rated significantly better, better, slightly better and negligibly better or unsure."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "p. 52", stance: for}
+
+- id: c-rm-margin
+  type: mathematical
+  text: "The margin loss −log σ(Δ − m) is the Bradley-Terry loss with the reward difference shifted by m: it equals log 2 at Δ = m and keeps pushing Δ up until Δ is well above m; at Δ = 1 with m = 1 it is log 2 ≈ 0.693, against −log σ(1) ≈ 0.313 without a margin."
+  assumes: ["comparisons follow the Bradley-Terry model with reward r", "rewards are real numbers"]
+  derivation: reward-model-arithmetic
+
+- id: c-as-pmp
+  type: attributive
+  text: "Askell et al. improve sample efficiency with a preference model pre-training (PMP) stage that first trains on large public datasets that encode human preference information, such as Stack Exchange, Reddit and Wikipedia edits, before finetuning on smaller datasets encoding more specific human preferences."
+  evidence:
+    - {work: "askell-2021-general-language-assistant", role: original, locator: "p. 4", stance: for}
+
+- id: c-as-format
+  type: attributive
+  text: "Given a context C with a binary label A or B, Askell et al. create a preference modeling pair C:A > C:B, where B denotes the incorrect label."
+  evidence:
+    - {work: "askell-2021-general-language-assistant", role: original, locator: "p. 15", stance: for}
+
+- id: c-as-eoc
+  type: attributive
+  text: "Appending a special end-of-context token to each sequence to unambiguously delineate the end of the passage sometimes improves performance."
+  evidence:
+    - {work: "askell-2021-general-language-assistant", role: original, locator: "p. 15", stance: for}
+
+# Normalization and combination
+
+- id: c-ch-norm
+  type: attributive
+  text: "Christiano et al. normalize the rewards produced by the reward predictor to have zero mean and constant standard deviation, since the position of the rewards is underdetermined by the learning problem."
+  evidence:
+    - {work: "christiano-2017-deep-rl-human-preferences", role: original, locator: "p. 5", stance: for}
+
+- id: c-st-norm
+  type: attributive
+  text: "At the end of training, Stiennon et al. normalize the reward model outputs so that the reference summaries from their dataset achieve a mean score of 0."
+  evidence:
+    - {work: "stiennon-2020-learning-summarize-human-feedback", role: original, locator: "p. 6", stance: for}
+
+- id: c-ou-norm
+  type: attributive
+  text: "Since the RM loss is invariant to shifts in reward, InstructGPT normalizes the reward model using a bias so that the labeler demonstrations achieve a mean score of 0 before doing RL."
+  evidence:
+    - {work: "ouyang-2022-training-language-models-follow-instructions", role: original, locator: "p. 9", stance: for}
+
+- id: c-rm-shift
+  type: mathematical
+  text: "Adding any function c(x) of the prompt alone to the reward leaves every pairwise preference probability and the loss unchanged, while multiplying the reward by a constant other than 1 changes them; so comparisons determine reward differences within a prompt but not the level of the reward."
+  assumes: ["comparisons follow the Bradley-Terry model with reward r", "rewards are real numbers"]
+  derivation: reward-model-arithmetic
+
+- id: c-ga-recenter
+  type: attributive
+  text: "Because RM scores are translation-invariant, Gao et al. recenter each RM so that the average reward of the initial policy is 0."
+  evidence:
+    - {work: "gao-2023-scaling-laws-reward-model-overoptimization", role: original, locator: "p. 4", stance: for}
+
+- id: c-ll-two
+  type: attributive
+  text: "Because helpfulness and safety sometimes trade off, which can make it challenging for a single reward model to perform well on both, Llama 2 trains two separate reward models, a Helpfulness RM and a Safety RM."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "p. 10", stance: for}
+
+- id: c-ll-mix
+  type: attributive
+  text: "The Llama 2 Safety reward model is trained on all Meta Safety and Anthropic Harmless data mixed with helpfulness data in a 90/10 proportion; the 10% of helpfulness data is especially beneficial for accuracy on samples where both responses were deemed safe."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "p. 12", stance: for}
+
+- id: c-ll-combine
+  type: attributive
+  text: "Llama 2's RL reward uses the Safety RM score when the prompt is tagged as potentially unsafe or that score is below 0.15, and the Helpfulness RM score otherwise; the threshold corresponds to a precision of 0.89 and a recall of 0.55 on the Meta Safety test set."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "p. 15", stance: for}
+
+- id: c-ll-whiten
+  type: attributive
+  text: "Llama 2 whitens the combined score after reversing the sigmoid with the logit function, to increase stability and balance properly with the KL penalty term."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "p. 15", stance: for}
+
+# Ensembles
+
+- id: c-ch-ens
+  type: attributive
+  text: "Christiano et al. fit an ensemble of predictors, each trained on |D| triples sampled from D with replacement, and define the reward estimate by independently normalizing each predictor and then averaging the results."
+  evidence:
+    - {work: "christiano-2017-deep-rl-human-preferences", role: original, locator: "p. 5", stance: for}
+
+- id: c-co-mean
+  type: attributive
+  text: "Mean optimization over an ensemble is not conservative: if at least one member overestimates the reward, even while the others estimate it accurately, the policy can exploit the faulty reward model."
+  evidence:
+    - {work: "coste-2024-reward-model-ensembles", role: original, locator: "p. 4", stance: for}
+
+- id: c-co-wco
+  type: attributive
+  text: "Worst-case optimization creates a conservative estimate by choosing the lowest reward from the ensemble at every step."
+  evidence:
+    - {work: "coste-2024-reward-model-ensembles", role: original, locator: "p. 4", stance: for}
+
+- id: c-co-uwo
+  type: attributive
+  text: "Uncertainty-weighted optimization combines the average reward across the ensemble with the intra-ensemble variance weighted by a coefficient λ, penalizing responses on which the reward models disagree."
+  evidence:
+    - {work: "coste-2024-reward-model-ensembles", role: original, locator: "p. 4", stance: for}
+
+- id: c-rm-ens
+  type: mathematical
+  text: "For member rewards R_1, …, R_k the worst-case reward min R_i and the uncertainty-weighted reward mean − λ·var (population variance, λ ≥ 0) are both at most the mean; for (1.0, 1.2, 3.0) the mean is 1.733, the minimum 1.0, the variance 0.809, and the uncertainty-weighted reward with λ = 0.5 is 1.329."
+  assumes: ["the variance is the population variance of the k member rewards"]
+  derivation: reward-model-arithmetic
+
+- id: c-co-seed
+  type: attributive
+  text: "Coste et al. build an ensemble from proxy reward models trained with identical data and hyperparameters but different random seeds, which change the initialization of the scalar reward head and the data shuffling order."
+  evidence:
+    - {work: "coste-2024-reward-model-ensembles", role: original, locator: "p. 5", stance: for}
+
+# Evidence
+
+- id: c-st-scale
+  type: empirical
+  text: "Across 7 reward models from 160M to 13B parameters trained on 8k to 64k comparisons, doubling the training data increases validation accuracy by about 1.1% and doubling the model size by about 1.8%."
+  scope:
+    models: "GPT-3-style reward models fine-tuned from a supervised summarization baseline"
+    data: ["TL;DR Reddit comparisons; CNN/DM for transfer"]
+    scale: "160M to 13B parameters, 8k to 64k comparisons"
+    setting: "pairwise reward-model training and evaluation on held-out comparisons"
+  evidence:
+    - {work: "stiennon-2020-learning-summarize-human-feedback", role: original, locator: "p. 8", stance: for}
+
+- id: c-st-cnn
+  type: empirical
+  text: "Stiennon et al.'s reward models generalize to CNN/DM summaries, agreeing with labeler preferences 62.4% and 66.5% of the time for the 1.3B and 6.7B models; the 6.7B model nearly matches the inter-labeler agreement of 66.9%."
+  scope:
+    models: "GPT-3-style reward models fine-tuned from a supervised summarization baseline"
+    data: ["TL;DR Reddit comparisons; CNN/DM for transfer"]
+    scale: "160M to 13B parameters, 8k to 64k comparisons"
+    setting: "pairwise reward-model training and evaluation on held-out comparisons"
+  evidence:
+    - {work: "stiennon-2020-learning-summarize-human-feedback", role: original, locator: "p. 8", stance: for}
+
+- id: c-st-edits
+  type: empirical
+  text: "The reward models prefer summaries improved by minimal human edits almost as often (79.4% for 1.3B and 82.8% for 6.7B) as a separate set of human evaluators (84.1%), and select the original over a summary with the participants' roles reversed 92.9% and 97.2% of the time."
+  scope:
+    models: "GPT-3-style reward models fine-tuned from a supervised summarization baseline"
+    data: ["TL;DR Reddit comparisons; CNN/DM for transfer"]
+    scale: "160M to 13B parameters, 8k to 64k comparisons"
+    setting: "pairwise reward-model training and evaluation on held-out comparisons"
+  evidence:
+    - {work: "stiennon-2020-learning-summarize-human-feedback", role: original, locator: "p. 8", stance: for}
+
+- id: c-st-rouge
+  type: empirical
+  text: "ROUGE agrees with labelers about 57% of the time on samples from supervised baselines but about 50% on samples from human-feedback models, and log probability drops to at most 50%, while the reward models stay above chance at 62%."
+  scope:
+    models: "GPT-3-style reward models fine-tuned from a supervised summarization baseline"
+    data: ["TL;DR Reddit comparisons; CNN/DM for transfer"]
+    scale: "160M to 13B parameters, 8k to 64k comparisons"
+    setting: "pairwise reward-model training and evaluation on held-out comparisons"
+  evidence:
+    - {work: "stiennon-2020-learning-summarize-human-feedback", role: original, locator: "p. 9", stance: for}
+
+- id: c-ou-heldout
+  type: empirical
+  text: "InstructGPT reward models trained with 5-fold cross-validation over groups of labelers predict the preferences of the held-out group with 69.6 ± 0.9% accuracy, a small decrease from 72.4 ± 0.4% on labelers in their training set."
+  scope:
+    models: "6B GPT-3 reward models"
+    data: ["labeler rankings of InstructGPT outputs on API prompts"]
+    scale: "6B parameters"
+    setting: "5-fold cross-validation over groups of labelers"
+  evidence:
+    - {work: "ouyang-2022-training-language-models-follow-instructions", role: original, locator: "p. 12", stance: for}
+
+- id: c-as-rank
+  type: empirical
+  text: "Preference modeling improves on and scales more favorably than imitation learning when preferences are part of a ranked hierarchy or continuum, rather than associated with a binary choice."
+  scope:
+    models: "Anthropic decoder-only language models"
+    data: ["Stack Exchange, Reddit and Wikipedia edits for PMP; summarization, HellaSwag, Ethics and code correctness for finetuning"]
+    scale: "up to 52B parameters"
+    setting: "preference modelling and imitation learning, with and without preference-model pre-training"
+  evidence:
+    - {work: "askell-2021-general-language-assistant", role: original, locator: "p. 4", stance: for}
+
+- id: c-as-pmp-gain
+  type: empirical
+  text: "A PMP stage between language model pretraining and finetuning on small final datasets significantly improves sample efficiency, even when the PMP data are quite different from the final dataset, such as finetuning from Stack Exchange to summarization."
+  scope:
+    models: "Anthropic decoder-only language models"
+    data: ["Stack Exchange, Reddit and Wikipedia edits for PMP; summarization, HellaSwag, Ethics and code correctness for finetuning"]
+    scale: "up to 52B parameters"
+    setting: "preference modelling and imitation learning, with and without preference-model pre-training"
+  evidence:
+    - {work: "askell-2021-general-language-assistant", role: original, locator: "p. 9", stance: for}
+
+- id: c-as-binary
+  type: empirical
+  text: "It is better for the PMP stage to focus on binary discrimination than on ranked preferences, possibly because hierarchies of preferences are difficult to quickly unlearn during finetuning."
+  scope:
+    models: "Anthropic decoder-only language models"
+    data: ["Stack Exchange, Reddit and Wikipedia edits for PMP; summarization, HellaSwag, Ethics and code correctness for finetuning"]
+    scale: "up to 52B parameters"
+    setting: "preference modelling and imitation learning, with and without preference-model pre-training"
+  evidence:
+    - {work: "askell-2021-general-language-assistant", role: original, locator: "p. 9", stance: for}
+
+- id: c-hh-scale
+  type: empirical
+  text: "Preference model accuracy follows roughly log-linear trends in model and dataset size."
+  scope:
+    models: "Anthropic preference models with preference-model pre-training"
+    data: ["Anthropic helpfulness and red-teaming comparisons"]
+    scale: "13M to 52B parameters"
+    setting: "preference-model training, calibration and RLHF robustness tests"
+  evidence:
+    - {work: "bai-2022-training-helpful-harmless-assistant", role: original, locator: "p. 6", stance: for}
+
+- id: c-hh-calib
+  type: empirical
+  text: "Preference models trained only on helpfulness data are very well calibrated against the prediction 1/(1 + e^−Δ) for a score difference Δ, while those trained on a mixture of helpful and harmless data are slightly under-confident."
+  scope:
+    models: "Anthropic preference models with preference-model pre-training"
+    data: ["Anthropic helpfulness and red-teaming comparisons"]
+    scale: "13M to 52B parameters"
+    setting: "preference-model training, calibration and RLHF robustness tests"
+  evidence:
+    - {work: "bai-2022-training-helpful-harmless-assistant", role: original, locator: "p. 14", stance: for}
+
+- id: c-rm-calib
+  type: mathematical
+  text: "If comparisons follow the Bradley-Terry model, a pair with reward difference Δ is labelled in the order of the rewards with probability σ(|Δ|): 0.731 at |Δ| = 1, 0.881 at 2 and 0.953 at 3; no reward model can beat the true reward's accuracy on such labels, so label noise sets a ceiling on accuracy."
+  assumes: ["comparisons follow the Bradley-Terry model with reward r", "rewards are real numbers"]
+  derivation: reward-model-arithmetic
+
+- id: c-hh-top
+  type: empirical
+  text: "When only comparisons in which both samples have a preference model score above a threshold are kept, preference model accuracy drops as the threshold rises."
+  scope:
+    models: "Anthropic preference models with preference-model pre-training"
+    data: ["Anthropic helpfulness and red-teaming comparisons"]
+    scale: "13M to 52B parameters"
+    setting: "preference-model training, calibration and RLHF robustness tests"
+  evidence:
+    - {work: "bai-2022-training-helpful-harmless-assistant", role: original, locator: "p. 14", stance: for}
+
+- id: c-ll-table8
+  type: empirical
+  text: "The Llama 2 Helpfulness RM is 80.7% accurate on Meta Helpfulness pairs rated significantly better and 54.7% on pairs rated negligibly better or unsure, 63.2% on average; the Safety RM on Meta Safety is 94.3% and 55.3%, 64.5% on average."
+  scope:
+    models: "Llama 2-Chat Helpfulness and Safety reward models"
+    data: ["Meta Helpfulness and Meta Safety human preference data, with open-source preference data"]
+    scale: "7B to 70B parameters"
+    setting: "binary ranking loss with and without margins, accuracy by preference rating"
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "p. 12", stance: for}
+
+- id: c-ll-scale
+  type: empirical
+  text: "More data and a larger model generally improve Llama 2 reward model accuracy, and the models appear not to have saturated from learning on the training data."
+  scope:
+    models: "Llama 2-Chat Helpfulness and Safety reward models"
+    data: ["Meta Helpfulness and Meta Safety human preference data, with open-source preference data"]
+    scale: "7B to 70B parameters"
+    setting: "binary ranking loss with and without margins, accuracy by preference rating"
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "p. 13", stance: for}
+
+- id: c-ll-margin-ablation
+  type: empirical
+  text: "In the margin ablation for the Helpfulness RM, average accuracy is 62.5 without a margin, 63.0 with the small margin and 62.9 with the large one, and on significantly better pairs 79.1, 80.4 and 80.7."
+  scope:
+    models: "Llama 2-Chat Helpfulness and Safety reward models"
+    data: ["Meta Helpfulness and Meta Safety human preference data, with open-source preference data"]
+    scale: "7B to 70B parameters"
+    setting: "binary ranking loss with and without margins, accuracy by preference rating"
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "p. 52", stance: for}
+
+- id: c-ga-data
+  type: empirical
+  text: "For all reward model sizes, with fewer than around 2,000 comparisons there is very little improvement over near-chance loss."
+  scope:
+    models: "GPT-3-series proxy reward models and policies"
+    data: ["synthetic comparisons labelled by the 6B InstructGPT reward model as gold"]
+    scale: "3M to 3B parameter proxy reward models, 1.2B policy"
+    setting: "best-of-n sampling and PPO against the proxy, scored by the gold reward model"
+  evidence:
+    - {work: "gao-2023-scaling-laws-reward-model-overoptimization", role: original, locator: "p. 5", stance: for}
+
+- id: c-ga-valloss
+  type: empirical
+  text: "Gao et al. find weak evidence that two reward models of equal validation loss achieve the same robustness against optimization, whatever their combination of model size and data size."
+  scope:
+    models: "GPT-3-series proxy reward models and policies"
+    data: ["synthetic comparisons labelled by the 6B InstructGPT reward model as gold"]
+    scale: "3M to 3B parameter proxy reward models, 1.2B policy"
+    setting: "best-of-n sampling and PPO against the proxy, scored by the gold reward model"
+  evidence:
+    - {work: "gao-2023-scaling-laws-reward-model-overoptimization", role: original, locator: "p. 6", stance: for}
+
+- id: c-co-results
+  type: empirical
+  text: "Using an ensemble almost always helps over a single reward model; for best-of-n, worst-case and uncertainty-weighted optimization show no overoptimization, while mean optimization does overoptimize with 25% label noise."
+  scope:
+    models: "Pythia proxy reward models and a 1.4B Pythia policy; the 7B AlpacaFarm reward model as gold"
+    data: ["AlpacaFarm instructions with synthetic gold labels, with and without 25% label noise"]
+    scale: "7M, 44M and 1.3B parameter proxy reward models"
+    setting: "best-of-n and PPO against single reward models and ensembles"
+  evidence:
+    - {work: "coste-2024-reward-model-ensembles", role: original, locator: "p. 5", stance: for}
+
+- id: c-co-gain
+  type: empirical
+  text: "For best-of-n, the ensemble methods improve final performance by up to about 30% over individual reward models without label noise and up to about 75% with 25% label noise."
+  scope:
+    models: "Pythia proxy reward models and a 1.4B Pythia policy; the 7B AlpacaFarm reward model as gold"
+    data: ["AlpacaFarm instructions with synthetic gold labels, with and without 25% label noise"]
+    scale: "7M, 44M and 1.3B parameter proxy reward models"
+    setting: "best-of-n and PPO against single reward models and ensembles"
+  evidence:
+    - {work: "coste-2024-reward-model-ensembles", role: original, locator: "p. 5", stance: for}
+
+- id: c-co-ppo
+  type: empirical
+  text: "For PPO, worst-case and uncertainty-weighted optimization reduce overoptimization, but mitigating it completely requires combining them with a small KL penalty."
+  scope:
+    models: "Pythia proxy reward models and a 1.4B Pythia policy; the 7B AlpacaFarm reward model as gold"
+    data: ["AlpacaFarm instructions with synthetic gold labels, with and without 25% label noise"]
+    scale: "7M, 44M and 1.3B parameter proxy reward models"
+    setting: "best-of-n and PPO against single reward models and ensembles"
+  evidence:
+    - {work: "coste-2024-reward-model-ensembles", role: original, locator: "p. 5", stance: for}
+
+- id: c-ei-pretrain
+  type: empirical
+  text: "Reward ensembles whose members vary by pretraining seed generalize better than ensembles differing only by fine-tuning seed, and both outperform individual reward models."
+  scope:
+    models: "T5 reward models and a T5-large policy"
+    data: ["TL;DR summarization, helpfulness and XSum/NLI factuality preferences"]
+    scale: "T5-base to T5-XL reward models, ensembles of five"
+    setting: "RLHF and best-of-n reranking against single reward models and ensembles"
+  evidence:
+    - {work: "eisenstein-2024-helping-or-herding", role: original, locator: "p. 1", stance: for}
+
+- id: c-rb-ceiling
+  type: attributive
+  text: "Validation sets from earlier RLHF work, such as Anthropic's Helpful and Harmless data and OpenAI's Learning to Summarize, have ceilings on accuracy between 60 and 70% due to inter-annotator disagreement."
+  evidence:
+    - {work: "lambert-2024-rewardbench", role: original, locator: "p. 2", stance: for}
+
+- id: c-rb-score
+  type: attributive
+  text: "RewardBench counts a prompt as a win when the reward model scores the verified chosen completion above the verified rejected one, and reports accuracy as the percentage of wins in each subset."
+  evidence:
+    - {work: "lambert-2024-rewardbench", role: original, locator: "p. 5", stance: for}
+
+- id: c-rb-sections
+  type: attributive
+  text: "RewardBench has five sections: Chat, Chat Hard (trick questions and subtly different instruction responses), Safety, Reasoning (code and math) and Prior Sets drawn from existing preference test sets."
+  evidence:
+    - {work: "lambert-2024-rewardbench", role: original, locator: "p. 5", stance: for}
+
+- id: c-rb-weight
+  type: attributive
+  text: "The final RewardBench score is the weighted average of the section scores, with Prior Sets at 0.5 weight."
+  evidence:
+    - {work: "lambert-2024-rewardbench", role: original, locator: "p. 6", stance: for}
+
+- id: c-rb-dpo-reward
+  type: attributive
+  text: "To score a DPO model as a reward model, RewardBench compares log π(y|x)/π_ref(y|x) between the two completions, which requires the reference model's probabilities."
+  evidence:
+    - {work: "lambert-2024-rewardbench", role: original, locator: "p. 4", stance: for}
+
+- id: c-rb-dpo
+  type: empirical
+  text: "DPO models, while more plentiful due to the method's simplicity, fail to generalize to popular preference data test sets and present a higher variance in performance than classifier reward models."
+  scope:
+    models: "over 80 public reward models: classifiers and DPO-trained models"
+    data: ["RewardBench: Chat, Chat Hard, Safety, Reasoning and Prior Sets"]
+    scale: "400M to 70B parameters"
+    setting: "accuracy of ranking the chosen above the rejected response"
+  evidence:
+    - {work: "lambert-2024-rewardbench", role: original, locator: "p. 2", stance: for}
+
+- id: c-rb-reasoning
+  type: empirical
+  text: "Reasoning accuracy ranges from 35%, well below random, to 97%; much of the data is code in which only one or two tokens differ between the chosen and rejected samples."
+  scope:
+    models: "over 80 public reward models: classifiers and DPO-trained models"
+    data: ["RewardBench: Chat, Chat Hard, Safety, Reasoning and Prior Sets"]
+    scale: "400M to 70B parameters"
+    setting: "accuracy of ranking the chosen above the rejected response"
+  evidence:
+    - {work: "lambert-2024-rewardbench", role: original, locator: "p. 8", stance: for}
+
+- id: c-rb-shape
+  type: empirical
+  text: "Few reward models give Gaussian scores across RewardBench, fewer are centred around 0, and none of those tested are centred Gaussians."
+  scope:
+    models: "over 80 public reward models: classifiers and DPO-trained models"
+    data: ["RewardBench: Chat, Chat Hard, Safety, Reasoning and Prior Sets"]
+    scale: "400M to 70B parameters"
+    setting: "accuracy of ranking the chosen above the rejected response"
+  evidence:
+    - {work: "lambert-2024-rewardbench", role: original, locator: "p. 7", stance: for}
+
+# Hyperparameters
+
+- id: c-ou-hparams
+  type: attributive
+  text: "The InstructGPT reward model was trained for a single epoch at a learning rate of 9e-6 with a cosine schedule dropping to 10% of its initial value and a batch size of 64 prompts; changes of up to 50% in the learning rate gave similar performance, but multiple epochs quickly overfit."
+  evidence:
+    - {work: "ouyang-2022-training-language-models-follow-instructions", role: original, locator: "p. 41", stance: for}
+
+- id: c-ou-init
+  type: attributive
+  text: "The final InstructGPT reward model was initialized from a 6B GPT-3 model fine-tuned on public NLP datasets, mostly for historical reasons, with similar results when initializing from the GPT-3 or SFT models."
+  evidence:
+    - {work: "ouyang-2022-training-language-models-follow-instructions", role: original, locator: "p. 41", stance: for}
+
+- id: c-ll-hparams
+  type: attributive
+  text: "Llama 2 trains its reward models for one epoch, since training longer can lead to over-fitting, with a maximum learning rate of 5 × 10−6 for the 70B model and 1 × 10−5 for the rest."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "p. 12", stance: for}
+
+- id: c-hh-epoch
+  type: attributive
+  text: "Bai et al. apply preference model pretraining before finetuning on their human feedback data and typically train preference models for a single epoch."
+  evidence:
+    - {work: "bai-2022-training-helpful-harmless-assistant", role: original, locator: "p. 13", stance: for}
+
+- id: c-ch-reg
+  type: attributive
+  text: "Christiano et al. hold out 1/e of the data as a validation set for each predictor and adjust an ℓ2 regularization coefficient to keep the validation loss between 1.1 and 1.5 times the training loss."
+  evidence:
+    - {work: "christiano-2017-deep-rl-human-preferences", role: original, locator: "p. 5", stance: for}
+
+# Limitations
+
+- id: c-st-length
+  type: attributive
+  text: "Stiennon et al.'s 6.7B reward model is biased towards longer summaries, preferring improving edits that make a summary shorter only 62.6% of the time, against 76.4% for humans."
+  evidence:
+    - {work: "stiennon-2020-learning-summarize-human-feedback", role: original, locator: "p. 8", stance: for}
+
+- id: c-ch-offline
+  type: attributive
+  text: "Training the reward predictor offline performs poorly: because the occupancy distribution is nonstationary, the predictor captures only part of the true reward, and on Pong the agent learned to avoid losing points without scoring, giving extremely long volleys."
+  evidence:
+    - {work: "christiano-2017-deep-rl-human-preferences", role: original, locator: "p. 9", stance: for}
+
+- id: c-hh-robust
+  type: empirical
+  text: "When RLHF policies are trained against one of two preference models fitted to halves of the data, training is robust up to about 150k samples, after which the training preference model assigns a higher mean reward than the held-out one."
+  scope:
+    models: "Anthropic preference models with preference-model pre-training"
+    data: ["Anthropic helpfulness and red-teaming comparisons"]
+    scale: "13M to 52B parameters"
+    setting: "preference-model training, calibration and RLHF robustness tests"
+  evidence:
+    - {work: "bai-2022-training-helpful-harmless-assistant", role: original, locator: "p. 7", stance: for}
+
+- id: c-ei-under
+  type: empirical
+  text: "Reward models are underspecified: models that perform similarly in distribution can give very different rewards when used in alignment, because of distribution shift, and aligning to one does not improve the reward measured by another trained on the same data."
+  scope:
+    models: "T5 reward models and a T5-large policy"
+    data: ["TL;DR summarization, helpfulness and XSum/NLI factuality preferences"]
+    scale: "T5-base to T5-XL reward models, ensembles of five"
+    setting: "RLHF and best-of-n reranking against single reward models and ensembles"
+  evidence:
+    - {work: "eisenstein-2024-helping-or-herding", role: original, locator: "p. 1", stance: for}
+
+- id: c-ei-shared
+  type: empirical
+  text: "Even ensembles of differently pretrained reward models do not eliminate reward hacking, because all members of the ensemble exhibit similar error patterns."
+  scope:
+    models: "T5 reward models and a T5-large policy"
+    data: ["TL;DR summarization, helpfulness and XSum/NLI factuality preferences"]
+    scale: "T5-base to T5-XL reward models, ensembles of five"
+    setting: "RLHF and best-of-n reranking against single reward models and ensembles"
+  evidence:
+    - {work: "eisenstein-2024-helping-or-herding", role: original, locator: "p. 1", stance: for}
+
+- id: c-ei-examples
+  type: empirical
+  text: "Policy optimization amplifies shared errors: summarization models produce outputs that are too short when tuned for factuality and too verbose when tuned for summarization quality, and assistant models overuse formulaic answer formats when tuned for helpfulness."
+  scope:
+    models: "T5 reward models and a T5-large policy"
+    data: ["TL;DR summarization, helpfulness and XSum/NLI factuality preferences"]
+    scale: "T5-base to T5-XL reward models, ensembles of five"
+    setting: "RLHF and best-of-n reranking against single reward models and ensembles"
+  evidence:
+    - {work: "eisenstein-2024-helping-or-herding", role: original, locator: "p. 3", stance: for}
+
+- id: c-ll-shift
+  type: attributive
+  text: "A margin in the ranking loss pushes the reward model towards more extreme scores, and a larger margin makes this distribution shift more significant, which suggests investing in reward calibration because PPO can be sensitive to changes in the reward distribution."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "p. 52", stance: for}
+
+- id: c-sk-def
+  type: attributive
+  text: "Skalse et al. call a proxy reward unhackable if increasing the expected proxy return can never decrease the expected true return."
+  evidence:
+    - {work: "skalse-2022-defining-characterizing-reward-hacking", role: original, locator: "p. 1", stance: for}
+
+- id: c-sk-all
+  type: attributive
+  text: "For the set of all stochastic policies, two reward functions can only be unhackable if one of them is constant."
+  evidence:
+    - {work: "skalse-2022-defining-characterizing-reward-hacking", role: original, locator: "p. 1", stance: for}
+
+- id: c-sk-robot
+  type: attributive
+  text: "In Skalse et al.'s cleaning-robot example, with true reward [1, 1, 1] for three rooms the proxy [1, 0, 0] is hackable while [1, 1, 0] is not, and the proxy [1, 1, 1] is unhackable for the true reward [1, 1.5, 2] but hackable for [1, 1.5, 3]."
+  evidence:
+    - {work: "skalse-2022-defining-characterizing-reward-hacking", role: original, locator: "pp. 2 to 3", stance: for}
+
+- id: c-rm-robot
+  type: mathematical
+  text: "Enumerating the eight deterministic cleaning policies confirms the four cases; for proxy [1, 1, 1] and true reward [1, 1.5, 3], cleaning attic and bedroom has proxy return 2 against 1 for the kitchen alone, but true return 2.5 against 3."
+  assumes: ["policies are the eight subsets of rooms and the return is the sum of the rewards of the rooms cleaned"]
+  derivation: reward-model-arithmetic
+
+- id: c-sk-aux
+  type: attributive
+  text: "Skalse et al. conclude that reward functions learned by reward modeling are perhaps best viewed as auxiliaries to policy learning, rather than specifications that should be optimized."
+  evidence:
+    - {work: "skalse-2022-defining-characterizing-reward-hacking", role: original, locator: "p. 2", stance: for}
+
+# Best-of-n and overoptimization
+
+- id: c-ga-forms
+  type: attributive
+  text: "Gao et al. find that the gold reward follows R_bon(d) = d(α_bon − β_bon d) for best-of-n sampling and R_RL(d) = d(α_RL − β_RL log d) for reinforcement learning, where d is the square root of the KL divergence from the initial policy."
+  evidence:
+    - {work: "gao-2023-scaling-laws-reward-model-overoptimization", role: original, locator: "p. 2", stance: for}
+
+- id: c-ga-coef
+  type: attributive
+  text: "The α and β coefficients vary smoothly with the number of proxy reward model parameters, following approximate logarithmic trends, which allows prediction of the attained gold reward."
+  evidence:
+    - {work: "gao-2023-scaling-laws-reward-model-overoptimization", role: original, locator: "p. 2", stance: for}
+
+- id: c-ga-bonkl
+  type: attributive
+  text: "Gao et al. compute the KL distances for best-of-n (BoN) analytically as KL_bon = log n − (n − 1)/n."
+  evidence:
+    - {work: "gao-2023-scaling-laws-reward-model-overoptimization", role: original, locator: "p. 4", stance: for}
+
+- id: c-rm-bonkl
+  type: mathematical
+  text: "If the n samples have distinct rewards almost surely, the best-of-n distribution has KL divergence log n − (n − 1)/n from the base policy: 0.636 nats for n = 4, 1.835 for n = 16 and 3.175 for n = 64."
+  assumes: ["the reward of a sample from the base policy has a continuous distribution"]
+  derivation: reward-model-arithmetic
+
+- id: c-rm-we
+  type: mathematical
+  text: "For three ranked responses with rewards 2.0, 0.5 and 0.0, the pair losses are 0.201413, 0.126928 and 0.474077 and the ranked loss is their mean, 0.267473; its gradients with respect to the three rewards are −0.100543, −0.065038 and 0.165581."
+  assumes: ["comparisons follow the Bradley-Terry model with reward r", "rewards are real numbers"]
+  derivation: reward-model-arithmetic
