@@ -1,0 +1,359 @@
+# The claims of the test-time scaling page (spec 07). The build computes the labels.
+
+# The finding
+
+- id: c-br-coverage
+  type: attributive
+  text: "Across multiple tasks and models, coverage, the fraction of problems that are solved by any generated sample, scales with the number of samples over four orders of magnitude, and the relationship is often log-linear and can be modelled with an exponentiated power law."
+  evidence:
+    - {work: "brown-2024-large-language-monkeys", role: original, locator: "p. 1", stance: for}
+
+- id: c-br-swe
+  type: attributive
+  text: "Applying repeated sampling to SWE-bench Lite, the fraction of issues solved with DeepSeek-Coder-V2-Instruct increases from 15.9% with one sample to 56% with 250 samples, above the 43% of the best single-sample result reported at the time."
+  evidence:
+    - {work: "brown-2024-large-language-monkeys", role: original, locator: "p. 1", stance: for}
+
+- id: c-sn-difficulty
+  type: attributive
+  text: "The effectiveness of different approaches to scaling test-time compute critically varies depending on the difficulty of the prompt, and a compute-optimal strategy that allocates test-time compute adaptively per prompt improves the efficiency of test-time compute scaling by more than 4x compared to a best-of-N baseline."
+  evidence:
+    - {work: "snell-2024-scaling-test-time-compute", role: original, locator: "the abstract", stance: for}
+
+- id: c-sn-14x
+  type: attributive
+  text: "In a FLOPs-matched evaluation, on problems where a smaller base model attains somewhat non-trivial success rates, test-time compute can be used to outperform a 14x larger model."
+  evidence:
+    - {work: "snell-2024-scaling-test-time-compute", role: original, locator: "the abstract", stance: for}
+
+- id: c-s1-bf
+  type: attributive
+  text: "Budget forcing controls test-time compute by forcefully terminating the model's thinking process or lengthening it by appending \"Wait\" multiple times to the model's generation when it tries to end, which can lead the model to double-check its answer."
+  evidence:
+    - {work: "muennighoff-2025-s1-simple-test-time-scaling", role: original, locator: "p. 1", stance: for}
+
+- id: c-s1-57
+  type: attributive
+  text: "Scaling s1-32B with budget forcing allows extrapolating beyond its performance without test-time intervention, from 50% to 57% on AIME24."
+  evidence:
+    - {work: "muennighoff-2025-s1-simple-test-time-scaling", role: original, locator: "p. 1", stance: for}
+
+- id: c-r1-length
+  type: attributive
+  text: "DeepSeek-R1-Zero exhibits a steady increase in thinking time throughout reinforcement learning, driven solely by intrinsic adaptation, generating hundreds to thousands of tokens to explore and improve its problem-solving strategies."
+  evidence:
+    - {work: "deepseek-2025-r1", role: original, locator: "p. 5", stance: for}
+
+- id: c-wu-saturate
+  type: attributive
+  text: "Increasing the compute budget leads to higher accuracy until the accuracy reaches saturation; as the budget increases, smaller models initially perform better than larger ones, but once the accuracy of the smaller models saturates, the larger models have favorable performance."
+  evidence:
+    - {work: "wu-2024-inference-scaling-laws", role: original, locator: "p. 2", stance: for}
+
+- id: c-jo-trade
+  type: attributive
+  text: "For AlphaZero on Hex, the trade-off between train-time and test-time compute is linear in log-compute: for each additional 10x of train-time compute, about 15x of test-time compute can be eliminated, down to a floor of a single-node tree search."
+  evidence:
+    - {work: "jones-2021-scaling-scaling-laws-board-games", role: original, locator: "p. 5", stance: for}
+
+- id: c-jo-sigmoid
+  type: attributive
+  text: "The performance of a specific snapshot is sigmoid in the test-time compute budget, and larger tree searches at test time can substantially improve the performance of an agent."
+  evidence:
+    - {work: "jones-2021-scaling-scaling-laws-board-games", role: original, locator: "p. 5", stance: for}
+
+# Evidence
+
+- id: c-br-tasks
+  type: attributive
+  text: "Brown et al. evaluate GSM8K, MATH, MiniF2F-MATH, CodeContests and SWE-bench Lite, generating 10,000 independent samples per problem for the Llama-3 models and restricting attempts to 250 per issue on SWE-bench Lite."
+  evidence:
+    - {work: "brown-2024-large-language-monkeys", role: original, locator: "pp. 3 to 5", stance: for}
+
+- id: c-br-models
+  type: attributive
+  text: "Repeated sampling leads to consistent coverage gains across model sizes (70M-70B), families (Llama, Gemma and Pythia) and levels of post-training (base and instruct models)."
+  evidence:
+    - {work: "brown-2024-large-language-monkeys", role: original, locator: "p. 6", stance: for}
+
+- id: c-br-gemma
+  type: attributive
+  text: "When solving CodeContests problems with Gemma-2B, coverage increases by over 300x, from 0.02% with one sample to 7.1% with 10,000 samples."
+  evidence:
+    - {work: "brown-2024-large-language-monkeys", role: original, locator: "p. 2", stance: for}
+
+- id: c-br-pythia
+  type: attributive
+  text: "When solving MATH problems with Pythia-160M, coverage increases from 0.27% to 57%."
+  evidence:
+    - {work: "brown-2024-large-language-monkeys", role: original, locator: "p. 6", stance: for}
+
+- id: c-br-fit
+  type: attributive
+  text: "Brown et al. model the log of coverage c as a function of the number of samples k with log(c) ≈ ak^b, so c ≈ exp(ak^b); these laws are not as exact as training scaling laws, most strikingly on MiniF2F-MATH."
+  evidence:
+    - {work: "brown-2024-large-language-monkeys", role: original, locator: "p. 8", stance: for}
+
+- id: c-br-shift
+  type: attributive
+  text: "Within a model family, coverage curves on a logarithmic axis have the same slope with distinct horizontal offsets, so the multiplicative increase in the sample budget needed to improve coverage from c to c′ is approximately constant."
+  evidence:
+    - {work: "brown-2024-large-language-monkeys", role: original, locator: "pp. 8 to 9", stance: for}
+
+- id: c-br-flops
+  type: attributive
+  text: "With the FLOP budget fixed, Llama-3-8B-Instruct always obtains higher coverage than the 70B model on MiniF2F, GSM8K and MATH, while for CodeContests the 70B model is almost always more cost effective."
+  evidence:
+    - {work: "brown-2024-large-language-monkeys", role: original, locator: "p. 7", stance: for}
+
+- id: c-br-cost
+  type: attributive
+  text: "Keeping the agent framework constant, sampling five times from the weaker and cheaper DeepSeek model solves more SWE-bench Lite issues than single samples from Claude or GPT while also being over 3x cheaper."
+  evidence:
+    - {work: "brown-2024-large-language-monkeys", role: original, locator: "p. 3", stance: for}
+
+- id: c-sn-setup
+  type: attributive
+  text: "Snell et al. use the MATH benchmark with the split of 12k train and 500 test questions of Lightman et al., and the PaLM 2-S* base model, which attains non-trivial performance on MATH without saturating it."
+  evidence:
+    - {work: "snell-2024-scaling-test-time-compute", role: original, locator: "Section 4", stance: for}
+
+- id: c-sn-bins
+  type: attributive
+  text: "Snell et al. define question difficulty from the base model's pass@1 rate, estimated from 2048 samples and binned into five quantiles, and found these model-specific bins more predictive of the efficacy of test-time compute than the hand-labeled difficulty levels of MATH."
+  evidence:
+    - {work: "snell-2024-scaling-test-time-compute", role: original, locator: "Section 3", stance: for}
+
+- id: c-sn-search
+  type: attributive
+  text: "Beam search against a process reward model is more effective on harder questions and at lower compute budgets, whereas best-of-N is more effective on easier questions and at higher budgets; on the easy questions beam search degrades as the generation budget increases, suggesting exploitation of the PRM signal."
+  evidence:
+    - {work: "snell-2024-scaling-test-time-compute", role: original, locator: "Section 5", stance: for}
+
+- id: c-sn-revise
+  type: attributive
+  text: "There is a tradeoff between sequential (revisions) and parallel (best-of-N) test-time computation: easier questions benefit from purely sequential test-time compute, whereas harder questions often perform best with some ideal ratio of sequential to parallel compute."
+  evidence:
+    - {work: "snell-2024-scaling-test-time-compute", role: original, locator: "Section 6", stance: for}
+
+- id: c-wu-7b
+  type: attributive
+  text: "Llemma-7B can achieve accuracy competitive with Llemma-34B while using 2x less FLOPs on MATH500 or GSM8K, and Llemma-7B with REBASE outperforms Llemma-34B with standard majority voting across all compute budgets."
+  evidence:
+    - {work: "wu-2024-inference-scaling-laws", role: original, locator: "p. 3", stance: for}
+
+- id: c-wu-128
+  type: attributive
+  text: "On MATH500 the 7B model outperforms the 34B model until 128 Llemma 7B solutions are sampled."
+  evidence:
+    - {work: "wu-2024-inference-scaling-laws", role: original, locator: "p. 2", stance: for}
+
+- id: c-s1-data
+  type: attributive
+  text: "s1K consists of 1,000 questions with reasoning traces distilled from Gemini Thinking, and supervised fine-tuning of Qwen2.5-32B-Instruct on it took 26 minutes on 16 NVIDIA H100 GPUs."
+  evidence:
+    - {work: "muennighoff-2025-s1-simple-test-time-scaling", role: original, locator: "pp. 1 to 2 and 4", stance: for}
+
+- id: c-s1-par
+  type: attributive
+  text: "Scaling test-time compute on the base model Qwen2.5-32B-Instruct via majority voting cannot catch up with the performance of s1-32B, which the authors take to validate that sequential scaling is more effective than parallel."
+  evidence:
+    - {work: "muennighoff-2025-s1-simple-test-time-scaling", role: original, locator: "p. 6", stance: for}
+
+- id: c-sc-40
+  type: attributive
+  text: "In self-consistency, sampling a higher number of reasoning paths, up to 40, leads to consistently better performance."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 6", stance: for}
+
+- id: c-co-400
+  type: attributive
+  text: "For a 6B verifier on GSM8K, performance improves as the number of completions per test problem increases up to 400, and beyond this point it starts to decrease, suggesting that the benefits of search are outweighed by the risk of finding adversarial solutions that fool the verifier."
+  evidence:
+    - {work: "cobbe-2021-training-verifiers", role: original, locator: "p. 10", stance: for}
+
+# Scope and conditions
+
+- id: c-br-plateau
+  type: attributive
+  text: "With majority voting, reward-model best-of-N and reward-weighted voting, success rates on GSM8K and MATH increase at first and plateau around 100 samples, while coverage keeps increasing and eventually exceeds 95%."
+  evidence:
+    - {work: "brown-2024-large-language-monkeys", role: original, locator: "p. 9", stance: for}
+
+- id: c-br-math
+  type: attributive
+  text: "On MATH with Llama-3-8B-Instruct, coverage increases from 82.9% with 100 samples to 98.44% with 10,000 samples, while the biggest increase for majority voting or reward models is only from 40.50% to 41.41% over the same range."
+  evidence:
+    - {work: "brown-2024-large-language-monkeys", role: original, locator: "p. 3", stance: for}
+
+- id: c-br-needle
+  type: attributive
+  text: "For some problems correct solutions are sampled at low probabilities, e.g. 1% or lower, and majority voting saturates because rare correct solutions do not affect the most common answer."
+  evidence:
+    - {work: "brown-2024-large-language-monkeys", role: original, locator: "p. 9", stance: for}
+
+- id: c-br-zero
+  type: attributive
+  text: "All Pythia models achieve zero coverage on CodeContests, even with a budget of 10,000 samples."
+  evidence:
+    - {work: "brown-2024-large-language-monkeys", role: original, locator: "p. 6", stance: for}
+
+- id: c-br-flaky
+  type: attributive
+  text: "11.3% of SWE-bench Lite problems have flaky test suites that do not produce consistent results on the same candidate solution, and 35 of 122 CodeContests test problems have correct solutions that fail the tests."
+  evidence:
+    - {work: "brown-2024-large-language-monkeys", role: original, locator: "p. 11", stance: for}
+
+- id: c-sn-exch
+  type: attributive
+  text: "Test-time and pretraining compute are not 1-to-1 exchangeable: on easy and medium questions, or with a small inference requirement, test-time compute can cover for additional pretraining, but on challenging questions or under a higher inference requirement pretraining is likely more effective."
+  evidence:
+    - {work: "snell-2024-scaling-test-time-compute", role: original, locator: "Section 7", stance: for}
+
+- id: c-s1-flat
+  type: attributive
+  text: "Budget forcing improves AIME24 performance but eventually flattens out at six times, and suppressing the end-of-thinking token delimiter too often can lead the model into repetitive loops."
+  evidence:
+    - {work: "muennighoff-2025-s1-simple-test-time-scaling", role: original, locator: "p. 6", stance: for}
+
+- id: c-s1-ctx
+  type: attributive
+  text: "Budget forcing has two key limitations when scaling further: it eventually flattens out, and the context window of the underlying model constrains it; with step-conditional control at 512 steps, 12 of the 30 questions exceed the context window."
+  evidence:
+    - {work: "muennighoff-2025-s1-simple-test-time-scaling", role: original, locator: "p. 9", stance: for}
+
+- id: c-s1-rs
+  type: attributive
+  text: "Sampling until a generation fits a specific length gives an inverse scaling trend, because longer samples are often ones in which the model made mistakes and backtracks."
+  evidence:
+    - {work: "muennighoff-2025-s1-simple-test-time-scaling", role: original, locator: "p. 8", stance: for}
+
+- id: c-ze-length
+  type: attributive
+  text: "For QwQ, R1 and LIMO, longer chains of thought do not consistently enhance accuracy, and correct solutions are often shorter than incorrect ones for the same questions."
+  evidence:
+    - {work: "zeng-2025-revisiting-test-time-scaling-o1", role: original, locator: "p. 1", stance: for}
+
+- id: c-ze-revise
+  type: attributive
+  text: "QwQ and R1-Distill-1.5b show performance degradation as the length of reflection increases, while R1-Distill-14b, R1-Distill-32b and LIMO improve during early revisions and then oscillate."
+  evidence:
+    - {work: "zeng-2025-revisiting-test-time-scaling-o1", role: original, locator: "p. 2", stance: for}
+
+- id: c-ze-parallel
+  type: attributive
+  text: "Comparing sequential and parallel scaling on QwQ, R1 and LIMO, parallel scaling achieves better coverage and scalability."
+  evidence:
+    - {work: "zeng-2025-revisiting-test-time-scaling-o1", role: original, locator: "p. 1", stance: for}
+
+- id: c-ov-tokens
+  type: attributive
+  text: "On the question \"what is the answer of 2 plus 3?\", o1-like models consumed 1,953% more tokens than conventional models on average, and the overthinking patterns contribute minimally to improving accuracy, lack diversity in reasoning strategies and occur more frequently with simple problems."
+  evidence:
+    - {work: "chen-2024-overthinking-o1-like-llms", role: original, locator: "p. 2", stance: for}
+
+- id: c-wu-theorem
+  type: attributive
+  text: "Theorems 1 and 2 of Wu et al. state the convergence of the accuracy of majority voting and of weighted majority voting with increasing number of samples, almost surely, to the fraction of problems whose true answer is the arg max of the answer distribution of the language model (weighted by the reward model for weighted voting), with an expected accuracy below this limit by O(c^(−n)) for some constant c > 1."
+  evidence:
+    - {work: "wu-2024-inference-scaling-laws", role: original, locator: "p. 5", stance: for}
+
+- id: c-wu-weighted
+  type: attributive
+  text: "As long as the reward model assigns higher rewards to correct solutions on average, the accuracy limit of weighted majority voting is higher than that of majority voting, and weighted majority voting consistently dominates in experiments."
+  evidence:
+    - {work: "wu-2024-inference-scaling-laws", role: original, locator: "p. 5", stance: for}
+
+- id: c-wu-mcts
+  type: attributive
+  text: "MCTS consumes substantially more resources than sampling, often requiring dozens of times more generated tokens, because many paths in the search tree are used to estimate and select nodes and do not become part of the final solution."
+  evidence:
+    - {work: "wu-2024-inference-scaling-laws", role: original, locator: "p. 6", stance: for}
+
+# Arithmetic
+
+- id: c-tt-cov
+  type: mathematical
+  text: "If one sample solves a problem with probability p, k independent samples cover it with probability 1 − (1 − p)^k; the k-th extra sample adds p(1 − p)^k, so coverage is increasing and concave in k, and a problem with p = 0 is never covered."
+  assumes: ["samples are drawn independently with the same success probability p"]
+  derivation: coverage-and-voting
+
+- id: c-tt-unbiased
+  type: mathematical
+  text: "With N samples of which C are correct, 1 − C(N − C, k)/C(N, k) is an unbiased estimate of 1 − (1 − p)^k for every k ≤ N, while the plug-in 1 − (1 − C/N)^k underestimates it on average for k ≥ 2."
+  assumes: ["the N samples are independent draws with success probability p"]
+  derivation: coverage-and-voting
+
+- id: c-tt-beta
+  type: mathematical
+  text: "If per-sample success rates across problems follow Beta(α, β), the failure rate 1 − c(k) is B(α, β + k)/B(α, β) ≈ A k^(−α) with A = Γ(α + β)/Γ(β), so c(k) ≈ exp(a k^b) with a = −A and b = −α; for α = 0.5 and β = 2, coverage is 0.20, 0.612, 0.868 and 0.9867 at k = 1, 10, 100 and 10,000."
+  assumes: ["per-sample success rates p across problems follow a Beta(α, β) distribution", "samples are independent given p"]
+  derivation: coverage-and-voting
+
+- id: c-tt-cap
+  type: mathematical
+  text: "If a fraction π_0 of problems has per-sample success rate 0, coverage is at most 1 − π_0 for every number of samples."
+  assumes: ["coverage is the average over problems of 1 − (1 − p)^k"]
+  derivation: coverage-and-voting
+
+- id: c-tt-vote
+  type: mathematical
+  text: "If the correct answer has probability q* and a competitor q_y < q*, the chance that the competitor gets at least as many of n votes is at most exp(−n(q* − q_y)^2/2); with q* = 0.4 against 0.3 the bound is about 0.61 at n = 100 and 0.0067 at n = 1,000."
+  assumes: ["the n answers are independent draws from a fixed distribution q", "Hoeffding's inequality for variables in [−1, 1]"]
+  derivation: coverage-and-voting
+
+- id: c-tt-gap
+  type: mathematical
+  text: "As n grows, majority-vote accuracy over a benchmark tends to the fraction of problems whose correct answer is the unique mode of the answer distribution, while coverage tends to the fraction with q* > 0; the problems with 0 < q* < max q_y make up the gap."
+  assumes: ["answers to each problem are independent draws from a fixed distribution q", "ties count as wrong"]
+  derivation: coverage-and-voting
+
+- id: c-tt-bon
+  type: mathematical
+  text: "If a fraction ε of samples are wrong answers a verifier ranks above every correct one and a fraction p are correct, best-of-n is right with probability (1 − ε)^n − (1 − ε − p)^n, which peaks at n* = log(log b/log a)/log(a/b) with a = 1 − ε and b = 1 − ε − p; for p = 0.3 and ε = 0.001, n* ≈ 16.5, with accuracy 0.981 at n = 16 and 0.368 at n = 1,000."
+  assumes: ["samples are independent", "the verifier ranks fooling wrong answers above correct ones and correct ones above other wrong ones"]
+  derivation: coverage-and-voting
+
+- id: c-tt-alloc
+  type: mathematical
+  text: "To maximize expected coverage with a budget of K samples spread over problems, giving each next sample to the problem with the largest marginal gain p(1 − p)^k is optimal; a problem with p = 0.9 gains 0.9, 0.09 and 0.009 from its first three samples, one with p = 0.05 still gains about 0.0315 from its tenth, and one with p = 0 gets none."
+  assumes: ["per-problem success rates p are known", "samples are independent"]
+  derivation: coverage-and-voting
+
+- id: c-tt-flops
+  type: mathematical
+  text: "With 6ND training FLOPs and 2ND inference FLOPs, a model M times smaller matches the total FLOPs of the larger one by multiplying its inference tokens by M + 3(D_pretrain/D_inference)(M − 1), which for M = 14 is 53 when the two token counts are equal and 17.9 when inference tokens are ten times pretraining tokens."
+  assumes: ["training costs 6ND FLOPs and inference 2ND FLOPs for N parameters and D tokens", "both models are trained on the same number of tokens"]
+  derivation: coverage-and-voting
+
+- id: c-tt-jones
+  type: mathematical
+  text: "A fit with slope −1.2 between the logarithms of test-time and train-time compute at fixed Elo means that 10x more train-time compute divides test-time compute by 10^1.2 ≈ 15.8, whatever the base of the logarithm."
+  assumes: ["log(test) = −1.2 log(train) + 0.004 elo + 29 with both logarithms in the same base"]
+  derivation: coverage-and-voting
+
+# Implications
+
+- id: c-wu-pareto
+  type: attributive
+  text: "Smaller models combined with advanced inference algorithms offer Pareto-optimal trade-offs in cost and performance, and scaling inference compute with inference strategies can be more computationally efficient than scaling model parameters."
+  evidence:
+    - {work: "wu-2024-inference-scaling-laws", role: original, locator: "p. 1", stance: for}
+
+- id: c-ov-48
+  type: attributive
+  text: "Training QwQ-32B-Preview on its own streamlined responses reduces token output by 48.6% while maintaining accuracy on MATH500."
+  evidence:
+    - {work: "chen-2024-overthinking-o1-like-llms", role: original, locator: "p. 2", stance: for}
+
+- id: c-ze-smv
+  type: attributive
+  text: "Shortest Majority Vote improves majority voting by prioritizing answer clusters that have both more solutions and shorter solution lengths, and it substantially outperforms conventional majority voting for QwQ and R1."
+  evidence:
+    - {work: "zeng-2025-revisiting-test-time-scaling-o1", role: original, locator: "p. 2", stance: for}
+
+- id: c-s1-seq
+  type: attributive
+  text: "Test-time scaling methods can be classified as sequential, where later computations depend on earlier ones as in a long reasoning trace, and parallel, where computations run independently as in majority voting."
+  evidence:
+    - {work: "muennighoff-2025-s1-simple-test-time-scaling", role: original, locator: "p. 3", stance: for}
