@@ -1,0 +1,429 @@
+# The claims of the emergent-abilities page (spec 07). The build computes the labels.
+
+# The finding
+
+- id: c-wei-def
+  type: attributive
+  text: "Wei et al. consider an ability to be emergent if it is not present in smaller models but is present in larger models, so emergent abilities cannot be predicted simply by extrapolating the performance of smaller models."
+  evidence:
+    - {work: "wei-2022-emergent-abilities", role: original, locator: "the abstract", stance: for}
+
+- id: c-anderson
+  type: attributive
+  text: "Wei et al. use the general definition that emergence is when quantitative changes in a system result in qualitative changes in behavior, rooted in the 1972 essay More Is Different by the physicist Philip Anderson."
+  evidence:
+    - {work: "wei-2022-emergent-abilities", role: original, locator: "p. 2", stance: for}
+
+- id: c-phase
+  type: attributive
+  text: "On a scaling curve with model scale on the x-axis and performance on the y-axis, emergent abilities show a clear pattern: performance is near-random until a certain critical threshold of scale is reached, after which performance increases to substantially above random; this qualitative change is also known as a phase transition."
+  evidence:
+    - {work: "wei-2022-emergent-abilities", role: original, locator: "p. 2", stance: for}
+
+- id: c-arithmetic
+  type: empirical
+  text: "On an arithmetic benchmark of 3-digit addition and subtraction and 2-digit multiplication, GPT-3 and LaMDA have close-to-zero performance for several orders of magnitude of training compute, before performance jumps to sharply above random at 2 · 10^22 training FLOPs (13B parameters) for GPT-3, and 10^23 training FLOPs (68B parameters) for LaMDA."
+  scope:
+    models: "GPT-3 and LaMDA families"
+    data: [big-bench]
+    scale: "up to about 10^24 training FLOPs"
+    setting: "few-shot prompting, exact-match scoring"
+  evidence:
+    - {work: "wei-2022-emergent-abilities", role: original, locator: "p. 3", stance: for}
+
+- id: c-wic
+  type: empirical
+  text: "On the Word in Context (WiC) benchmark, GPT-3 and Chinchilla fail to achieve one-shot performance better than random even when scaled to their largest model size of about 5 · 10^23 FLOPs, and above-random performance emerged when PaLM was scaled to 2.5 · 10^24 FLOPs (540B parameters)."
+  scope:
+    models: "GPT-3, Chinchilla and PaLM"
+    data: [wic]
+    scale: "up to 2.5 · 10^24 training FLOPs"
+    setting: "one-shot prompting"
+  evidence:
+    - {work: "wei-2022-emergent-abilities", role: original, locator: "p. 4", stance: for}
+
+- id: c-cot
+  type: empirical
+  text: "Chain of thought prompting only surpasses standard prompting without intermediate steps when scaled to 10^23 training FLOPs (about 100B parameters)."
+  scope:
+    models: "LaMDA"
+    data: [gsm8k]
+    scale: "up to about 10^24 training FLOPs"
+    setting: "few-shot prompting on math word problems"
+  evidence:
+    - {work: "wei-2022-emergent-abilities", role: original, locator: "p. 5", stance: for}
+
+- id: c-scratchpad
+  type: empirical
+  text: "On 8-digit addition, using a scratchpad of intermediate outputs only helps for models of about 9 · 10^19 training FLOPs (40M parameters) or larger."
+  scope:
+    models: "decoder-only language models fine-tuned on scratchpads"
+    data: []
+    scale: "from about 10^19 to 10^21 training FLOPs"
+    setting: "fine-tuning to predict intermediate outputs"
+  evidence:
+    - {work: "wei-2022-emergent-abilities", role: original, locator: "p. 5", stance: for}
+
+- id: c-not-immutable
+  type: attributive
+  text: "Wei et al. note that the scale at which an ability is first observed to emerge depends on a number of factors and is not an immutable property of the ability."
+  evidence:
+    - {work: "wei-2022-emergent-abilities", role: original, locator: "p. 2", stance: for}
+
+- id: c-palm-62b
+  type: empirical
+  text: "There are 14 BIG-Bench tasks for which LaMDA 137B and GPT-3 175B models perform at near-random, but PaLM 62B achieves above-random performance, despite having fewer model parameters and training FLOPs."
+  scope:
+    models: "LaMDA 137B, GPT-3 175B and PaLM 62B"
+    data: [big-bench]
+    scale: "62B to 175B parameters"
+    setting: "few-shot prompting"
+  evidence:
+    - {work: "wei-2022-emergent-abilities", role: original, locator: "p. 7", stance: for}
+
+# Evidence
+
+- id: c-ganguli-abrupt
+  type: attributive
+  text: "Ganguli et al. state that though performance is predictable at a general level, performance on a specific task can sometimes emerge quite unpredictably and abruptly at scale."
+  evidence:
+    - {work: "ganguli-2022-predictability-surprise", role: original, locator: "p. 4", stance: for}
+
+- id: c-ganguli-addition
+  type: empirical
+  text: "Three digit addition is performed accurately less than 1% of the time on any GPT-3 model with less than 6B parameters, but this jumps to 8% accuracy on a 13B parameter model and 80% accuracy on a 175B parameter model."
+  scope:
+    models: "GPT-3 family"
+    data: []
+    scale: "up to 175B parameters"
+    setting: "few-shot arithmetic"
+  evidence:
+    - {work: "ganguli-2022-predictability-surprise", role: original, locator: "p. 5", stance: for}
+
+- id: c-two-properties
+  type: attributive
+  text: "Schaeffer et al. identify two properties that make emergent abilities intriguing: their sharpness, transitioning seemingly instantaneously from not present to present, and their unpredictability, appearing at seemingly unforeseeable model scales."
+  evidence:
+    - {work: "schaeffer-2023-emergent-abilities-mirage", role: original, locator: "the abstract", stance: for}
+
+- id: c-mirage
+  type: empirical
+  text: "For a particular task and model family, when analyzing fixed model outputs, nonlinear or discontinuous metrics produce apparent emergent abilities, whereas linear or continuous metrics produce smooth, continuous, predictable changes in model performance."
+  scope:
+    models: "the InstructGPT/GPT-3 family, the LaMDA family and vision networks"
+    data: [big-bench]
+    scale: "unknown"
+    setting: "analysis of fixed model outputs under different metrics"
+  evidence:
+    - {work: "schaeffer-2023-emergent-abilities-mirage", role: original, locator: "the abstract", stance: for}
+
+- id: c-gpt3-arith
+  type: empirical
+  text: "On 2-shot multiplication between two 2-digit integers and 2-shot addition between two 4-digit integers, the InstructGPT/GPT-3 family's performance appears sharp and unpredictable on longer target lengths under Accuracy, and the family exhibits smooth, predictable performance improvements under Token Edit Distance."
+  scope:
+    models: "InstructGPT/GPT-3 family"
+    data: []
+    scale: "unknown"
+    setting: "2-shot arithmetic, outputs scored by different metrics"
+  evidence:
+    - {work: "schaeffer-2023-emergent-abilities-mirage", role: original, locator: "p. 5", stance: for}
+
+- id: c-more-data
+  type: empirical
+  text: "Generating additional test data increases the resolution and reveals that even on Accuracy, the InstructGPT/GPT-3 family's performance is above chance and improves in a smooth, continuous, predictable manner."
+  scope:
+    models: "InstructGPT/GPT-3 family"
+    data: []
+    scale: "unknown"
+    setting: "2-shot arithmetic with enlarged test sets"
+  evidence:
+    - {work: "schaeffer-2023-emergent-abilities-mirage", role: original, locator: "p. 5", stance: for}
+
+- id: c-bigbench-metrics
+  type: empirical
+  text: "Of the 39 preferred metrics in BIG-Bench, at most 5 display emergence, and in hand-annotated task-metric-model family triplets, 2 metrics account for more than 92% of claimed emergent abilities: Multiple Choice Grade and Exact String Match."
+  scope:
+    models: "the model families evaluated in BIG-Bench"
+    data: [big-bench]
+    scale: "unknown"
+    setting: "meta-analysis of published BIG-Bench results"
+  evidence:
+    - {work: "schaeffer-2023-emergent-abilities-mirage", role: original, locator: "p. 6", stance: for}
+
+- id: c-lamda-brier
+  type: empirical
+  text: "The LaMDA model family displays emergent abilities when measured under the discontinuous Multiple Choice Grade, and these emergent abilities disappear when measured under a continuous BIG-Bench metric, the Brier Score."
+  scope:
+    models: "LaMDA family"
+    data: [big-bench]
+    scale: "unknown"
+    setting: "fixed outputs scored by two metrics"
+  evidence:
+    - {work: "schaeffer-2023-emergent-abilities-mirage", role: original, locator: "p. 7", stance: for}
+
+- id: c-induced-vision
+  type: empirical
+  text: "Shallow nonlinear autoencoders trained on CIFAR100 display smoothly decreasing mean squared reconstruction error, and a newly defined Reconstruction_c metric, the share of test data with squared reconstruction error below a threshold c, induces a sharp and seemingly unpredictable change."
+  scope:
+    models: "shallow nonlinear autoencoders"
+    data: [cifar-100]
+    scale: "about 10^4 to 10^6 parameters"
+    setting: "reconstruction scored by a thresholded metric"
+  evidence:
+    - {work: "schaeffer-2023-emergent-abilities-mirage", role: original, locator: "p. 8", stance: for}
+
+- id: c-passuntil
+  type: attributive
+  text: "PassUntil samples generations until r samples have passed the evaluation, records the sampling number K, and estimates the success probability as PU = r/K."
+  evidence:
+    - {work: "hu-2024-predicting-emergent-abilities-passuntil", role: original, locator: "p. 4", stance: for}
+
+- id: c-task-law
+  type: empirical
+  text: "With PassUntil, smaller models show subtle but non-negligible performance on the order of 10^-5 with steady enhancement as the model scales up, and the relationship between log(-log(PU)) and log(N) is almost strictly linear."
+  scope:
+    models: "decoder-only models trained by the authors"
+    data: [humaneval]
+    scale: "up to 2.4B parameters"
+    setting: "sampling until success"
+  evidence:
+    - {work: "hu-2024-predicting-emergent-abilities-passuntil", role: original, locator: "p. 3", stance: for}
+
+- id: c-predict-2p4b
+  type: empirical
+  text: "Hu et al. predicted the performance of the 2.4B model on code generation with merely 0.05% deviation before training starts."
+  scope:
+    models: "decoder-only models trained by the authors"
+    data: [humaneval]
+    scale: "2.4B parameters"
+    setting: "task scaling law fitted on smaller models"
+  evidence:
+    - {work: "hu-2024-predicting-emergent-abilities-passuntil", role: original, locator: "the abstract", stance: for}
+
+- id: c-du-setup
+  type: attributive
+  text: "Du et al. pre-train more than 30 language models of varied model and data sizes from scratch, using a fixed data corpus, tokenization and model architecture, and evaluate them on 12 diverse datasets."
+  evidence:
+    - {work: "du-2024-emergent-abilities-loss-perspective", role: original, locator: "p. 2", stance: for}
+
+- id: c-du-same-loss
+  type: empirical
+  text: "Transformer models with the same pre-training loss, but different model and data sizes, generate the same performance on various downstream tasks, with a fixed data corpus, tokenization, and model architecture."
+  scope:
+    models: "Transformer language models of 300M to 32B parameters"
+    data: [mmlu, gsm8k]
+    scale: "300M to 32B parameters"
+    setting: "pre-training from scratch, few-shot evaluation"
+  evidence:
+    - {work: "du-2024-emergent-abilities-loss-perspective", role: original, locator: "the abstract", stance: for}
+
+- id: c-du-threshold
+  type: empirical
+  text: "On MMLU, C-Eval, GSM8K and GSM8K-Chinese the performance remains flat when the loss is higher than a certain threshold, and despite differences in languages, tasks, prompting types and answer forms, the thresholds for performance improvement are all around 2.2."
+  scope:
+    models: "Transformer language models of 300M to 32B parameters"
+    data: [mmlu, gsm8k]
+    scale: "300M to 32B parameters"
+    setting: "pre-training from scratch, few-shot evaluation"
+  evidence:
+    - {work: "du-2024-emergent-abilities-loss-perspective", role: original, locator: "p. 7", stance: for}
+
+- id: c-du-continuous
+  type: empirical
+  text: "The emergent abilities persist across both discontinuous and continuous metrics: on MMLU and C-Eval the curves of accuracy, CorrectChoiceProb and BrierScore against the pre-training loss all show the threshold."
+  scope:
+    models: "Transformer language models of 300M to 32B parameters"
+    data: [mmlu]
+    scale: "300M to 32B parameters"
+    setting: "intermediate checkpoints scored by three metrics"
+  evidence:
+    - {work: "du-2024-emergent-abilities-loss-perspective", role: original, locator: "p. 2", stance: for}
+
+- id: c-lu-combination
+  type: empirical
+  text: "Through over 1000 experiments, Lu et al. find that purported emergent abilities are not truly emergent, but result from a combination of in-context learning, model memory, and linguistic knowledge."
+  scope:
+    models: "18 models from GPT-2 to davinci, T5, Falcon and LLaMA, with and without instruction tuning"
+    data: [big-bench]
+    scale: "60M to 175B parameters"
+    setting: "zero-shot and few-shot prompting"
+  evidence:
+    - {work: "lu-2024-emergent-abilities-in-context-learning", role: original, locator: "the abstract", stance: for}
+
+- id: c-lu-two-tasks
+  type: empirical
+  text: "Just two tasks are emergent when in-context learning is controlled, Nonsense words grammar and Hindu knowledge, and no functional linguistic abilities are emergent in davinci, the non-instruction-tuned 175B GPT model, in the absence of in-context learning."
+  scope:
+    models: "GPT-3 davinci"
+    data: [big-bench]
+    scale: "175B parameters"
+    setting: "zero-shot prompting"
+  evidence:
+    - {work: "lu-2024-emergent-abilities-in-context-learning", role: original, locator: "p. 5", stance: for}
+
+# Scope and conditions
+
+- id: c-disguise
+  type: attributive
+  text: "Wei et al. note that using exact string match as the evaluation metric for long-sequence targets may disguise compounding incremental improvements as emergence."
+  evidence:
+    - {work: "wei-2022-emergent-abilities", role: original, locator: "p. 7", stance: for}
+
+- id: c-xent-improves
+  type: empirical
+  text: "For six emergent BIG-Bench tasks, cross-entropy loss improves even for small model scales where the downstream metrics (exact match, BLEU, and accuracy) are close to random and do not improve."
+  scope:
+    models: "the model families evaluated in BIG-Bench"
+    data: [big-bench]
+    scale: "unknown"
+    setting: "cross-entropy of the target sequence"
+  evidence:
+    - {work: "wei-2022-emergent-abilities", role: original, locator: "p. 7", stance: for}
+
+- id: c-classification
+  type: attributive
+  text: "Wei et al. argue that evaluation metrics that do not give partial credit are at best an incomplete explanation, because emergent abilities are still observed on many classification tasks."
+  evidence:
+    - {work: "wei-2022-emergent-abilities", role: original, locator: "p. 7", stance: for}
+
+- id: c-du-against
+  type: attributive
+  text: "Du et al. examine the claim of Schaeffer et al. that emergent abilities appear due to nonlinear or discontinuous metrics by evaluating MMLU and C-Eval with continuous metrics rather than discontinuous accuracy."
+  evidence:
+    - {work: "du-2024-emergent-abilities-loss-perspective", role: original, locator: "p. 8", stance: for}
+
+- id: c-resolution
+  type: attributive
+  text: "Schaeffer et al. explain sharp and unpredictable changes by three factors: a metric that nonlinearly or discontinuously scales the per-token error rate, insufficient resolution to estimate model performance in the smaller parameter regime, with resolution set by 1/test dataset size, and insufficiently sampling the larger parameter regime."
+  evidence:
+    - {work: "schaeffer-2023-emergent-abilities-mirage", role: original, locator: "p. 4", stance: for}
+
+- id: c-perplexity-axis
+  type: attributive
+  text: "Wei et al. view emergence as a function of many correlated variables and also plot it against WikiText103 perplexity, which closely correlates with training computation for Gopher and Chinchilla."
+  evidence:
+    - {work: "wei-2022-emergent-abilities", role: original, locator: "p. 2", stance: for}
+
+- id: c-du-def
+  type: attributive
+  text: "Du et al. define an ability as emergent if it is not present in models with higher pre-training loss but is present in models with lower pre-training loss; the normalized performance is f(L) if L < η and 0 otherwise, where f(L) is a monotonically decreasing function of L and η is the threshold."
+  evidence:
+    - {work: "du-2024-emergent-abilities-loss-perspective", role: original, locator: "p. 8", stance: for}
+
+- id: c-multiple-comparisons
+  type: attributive
+  text: "Schaeffer et al. note that BIG-Bench alone has at least 220 tasks, about 40 metrics per task and about 10 model families, for a total of about 10^6 task-metric-model family triplets, so claims of emergent abilities may suffer from a failure to control for multiple comparisons."
+  evidence:
+    - {work: "schaeffer-2023-emergent-abilities-mirage", role: original, locator: "p. 9", stance: for}
+
+- id: c-not-claimed
+  type: attributive
+  text: "Schaeffer et al. emphasize that nothing in their paper should be interpreted as claiming that large language models cannot display emergent abilities; previously claimed emergent abilities might likely be a mirage induced by researcher analyses."
+  evidence:
+    - {work: "schaeffer-2023-emergent-abilities-mirage", role: original, locator: "p. 9", stance: for}
+
+# Explanations
+
+- id: c-metric-model
+  type: attributive
+  text: "Schaeffer et al. model the per-token probability of selecting the correct token as exp(-(N/c)^α), so that Accuracy(N) is about this probability raised to the number of tokens, and Token Edit Distance(N) is about L times one minus it."
+  evidence:
+    - {work: "schaeffer-2023-emergent-abilities-mirage", role: original, locator: "p. 4", stance: for}
+
+- id: c-mm-smooth
+  type: mathematical
+  text: "With per-token loss l(N) = (c/N)^α and L independent tokens, the exact-match accuracy A_L(N) = exp(-L l(N)) is an infinitely differentiable, strictly increasing function of ln N."
+  assumes: ["the per-token loss is (c/N)^alpha with c > 0 and alpha > 0", "the L tokens of an answer are right independently"]
+  derivation: metric-model
+
+- id: c-mm-midpoint
+  type: mathematical
+  text: "A_L(N) equals 1/e exactly at N* = c L^(1/α), so a longer answer moves the rise to larger N by the factor L^(1/α)."
+  assumes: ["the per-token loss is (c/N)^alpha with c > 0 and alpha > 0", "the L tokens of an answer are right independently"]
+  derivation: metric-model
+
+- id: c-mm-width
+  type: mathematical
+  text: "The largest slope of A_L against ln N is α/e, reached at N*, and the rise of A_L from 0.1 to 0.9 spans ln(ln 10 / ln(10/9))/α, about 3.08/α, in ln N; neither depends on L."
+  assumes: ["the per-token loss is (c/N)^alpha with c > 0 and alpha > 0", "the L tokens of an answer are right independently"]
+  derivation: metric-model
+
+- id: c-mm-linear
+  type: mathematical
+  text: "ln(-ln A_L) = ln L + α ln c - α ln N is linear in ln N, and the expected number of wrong tokens E_L = L(1 - exp(-l)) satisfies L l exp(-l) <= E_L <= L l, so E_L / (L l) tends to 1 as N grows."
+  assumes: ["the per-token loss is (c/N)^alpha with c > 0 and alpha > 0", "the L tokens of an answer are right independently"]
+  derivation: metric-model
+
+- id: c-mm-resolution
+  type: mathematical
+  text: "If each of n test questions is answered right independently with probability A, the measured accuracy is zero with probability (1 - A)^n >= 1 - nA, so with A <= 1/(10n) it is zero with probability at least 0.9."
+  assumes: ["the n test questions are scored independently, each right with probability A"]
+  derivation: metric-model
+
+- id: c-hu-same-form
+  type: attributive
+  text: "Hu et al. derive from the loss scaling law of each answer token that PU(c, α; N) ∼ exp(-c N^-α), a mathematical model similar to that in the GPT-4 technical report and Equation (4) in Schaeffer et al."
+  evidence:
+    - {work: "hu-2024-predicting-emergent-abilities-passuntil", role: original, locator: "p. 5", stance: for}
+
+- id: c-tiny-slice
+  type: attributive
+  text: "Ganguli et al. suggest that abrupt specific capability scaling is possible because any specific task is a tiny slice of a model's output probability distribution, and so can change rapidly even as the full distribution remains smooth."
+  evidence:
+    - {work: "ganguli-2022-predictability-surprise", role: original, locator: "p. 4", stance: for}
+
+- id: c-weather
+  type: attributive
+  text: "Ganguli et al. compare the co-existence of abrupt specific scaling with smooth general scaling to daily weather being less predictable than seasonal averages."
+  evidence:
+    - {work: "ganguli-2022-predictability-surprise", role: original, locator: "p. 5", stance: for}
+
+- id: c-depth
+  type: attributive
+  text: "Wei et al. suggest that if a multi-step reasoning task requires l steps of sequential computation, this might require a model with a depth of at least O(l) layers, and that more parameters and more training enable better memorization for tasks requiring world knowledge."
+  evidence:
+    - {work: "wei-2022-emergent-abilities", role: original, locator: "p. 7", stance: for}
+
+- id: c-accelerated
+  type: attributive
+  text: "Hu et al. identify a kind of accelerated emergence whose scaling curve cannot be fitted by the standard scaling law function and has an increasing speed, and imply that the multiple circuits hypothesis might be responsible."
+  evidence:
+    - {work: "hu-2024-predicting-emergent-abilities-passuntil", role: original, locator: "the abstract", stance: for}
+
+- id: c-grokking
+  type: attributive
+  text: "Du et al. relate the phenomenon to grokking, the improvement of performance from the random chance level to perfect generalization, while noting that in pre-training the models are usually underfitting instead of overfitting."
+  evidence:
+    - {work: "du-2024-emergent-abilities-loss-perspective", role: original, locator: "p. 7", stance: for}
+
+- id: c-lu-theory
+  type: attributive
+  text: "Lu et al. present a theory that explains emergent abilities as a combination of in-context learning, model memory, and linguistic knowledge."
+  evidence:
+    - {work: "lu-2024-emergent-abilities-in-context-learning", role: original, locator: "the abstract", stance: for}
+
+# Implications
+
+- id: c-plateau
+  type: attributive
+  text: "Wei et al. note that other abilities may never emerge, for instance tasks far out of the distribution of even a very large training dataset, and that an ability could emerge and then plateau, so there is no guarantee that scaling enables an ability to reach the desired level."
+  evidence:
+    - {work: "wei-2022-emergent-abilities", role: original, locator: "p. 8", stance: for}
+
+- id: c-sc-lessons
+  type: attributive
+  text: "Schaeffer et al. draw three implications: a task and a metric are distinct and meaningful choices when constructing a benchmark; if one chooses accuracy, one should have sufficient data to accurately measure accuracy; and proper controls are critical when making claims about capabilities of large models."
+  evidence:
+    - {work: "schaeffer-2023-emergent-abilities-mirage", role: original, locator: "p. 9", stance: for}
+
+- id: c-policy
+  type: attributive
+  text: "Ganguli et al. believe that the high-level predictability and appearance of useful capabilities drives rapid development of such models, while the unpredictable qualities make it difficult to anticipate the consequences of model deployment."
+  evidence:
+    - {work: "ganguli-2022-predictability-surprise", role: original, locator: "the abstract", stance: for}
+
+- id: c-lu-safety
+  type: attributive
+  text: "Lu et al. note that overreliance on perceived emergent functional linguistic abilities can lead users to provide insufficiently detailed instructions, potentially resulting in hallucinations and errors."
+  evidence:
+    - {work: "lu-2024-emergent-abilities-in-context-learning", role: original, locator: "p. 2", stance: for}
