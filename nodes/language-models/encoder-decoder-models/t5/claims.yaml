@@ -1,0 +1,347 @@
+# The claims of the T5 page (spec 07). The build computes the labels.
+- id: c-arch-blocks
+  type: definitional
+  text: "An input sequence of tokens is mapped to a sequence of embeddings and passed into the encoder, a stack of blocks each comprising a self-attention layer followed by a small feed-forward network. Layer normalization is applied to the input of each subcomponent, in a simplified version where the activations are only rescaled and no additive bias is applied, and a residual skip connection adds each subcomponent's input to its output."
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "p. 4", stance: for}
+
+- id: c-arch-decoder
+  type: definitional
+  text: "The decoder is similar in structure to the encoder except that it includes a standard attention mechanism after each self-attention layer that attends to the output of the encoder; its self-attention is causal, only allowing the model to attend to past outputs. The output of the final decoder block is fed into a dense layer with a softmax output whose weights are shared with the input embedding matrix."
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "pp. 4 and 5", stance: for}
+
+- id: c-relpos
+  type: definitional
+  text: "T5 uses a simplified form of relative position embeddings where each embedding is a scalar added to the corresponding logit used for computing the attention weights, selected by the offset between the key and the query. The position embedding parameters are shared across all layers, though within a given layer each attention head uses a different learned position embedding. All models use 32 embeddings with ranges that increase in size logarithmically up to an offset of 128, beyond which all relative positions are assigned to the same embedding."
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "p. 5", stance: for}
+
+- id: c-relpos-beyond
+  type: attributive
+  text: "A given layer is insensitive to relative position beyond 128 tokens, but subsequent layers can build a sensitivity to larger offsets by combining local information from previous layers."
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "p. 5", stance: for}
+
+- id: c-vaswani-diff
+  type: definitional
+  text: "The model is roughly equivalent to the original Transformer of Vaswani et al. (2017) with the exception of removing the Layer Norm bias, placing the layer normalization outside the residual path, and using a different position embedding scheme; the authors leave the ablation of these changes for future work."
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "p. 5", stance: for}
+
+- id: c-c4
+  type: definitional
+  text: "The Colossal Clean Crawled Corpus (C4) was assembled by downloading the web extracted text of Common Crawl from April 2019 and applying filtering heuristics; it is about 750 GB of reasonably clean and natural English text."
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "p. 7", stance: for}
+
+- id: c-text-to-text
+  type: definitional
+  text: "All tasks are cast into a text-to-text format, where the model is fed some text for context or conditioning and asked to produce some output text, which gives a consistent training objective for pre-training and fine-tuning: maximum likelihood with teacher forcing regardless of the task. The task is specified by a task-specific text prefix added to the original input sequence."
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "p. 8", stance: for}
+
+- id: c-prefix-example
+  type: definitional
+  text: "To translate 'That is good.' from English to German the model is fed 'translate English to German: That is good.' and trained to output 'Das ist gut.'; for text classification the model predicts a single word corresponding to the label, such as 'entailment' for the MNLI input 'mnli premise: I hate pigeons. hypothesis: My feelings towards pigeons are filled with animosity.'"
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "p. 8", stance: for}
+
+- id: c-baseline
+  type: definitional
+  text: "In the baseline, the encoder and decoder each consist of 12 blocks; the feed-forward networks are a dense layer with output dimensionality d_ff = 3072, a ReLU, and another dense layer; the key and value matrices of all attention mechanisms have an inner dimensionality of d_kv = 64 and all attention mechanisms have 12 heads; all other sub-layers and embeddings have dimensionality d_model = 768. In total this results in about 220 million parameters, roughly twice BERT-Base, and a dropout probability of 0.1 is used everywhere dropout is applied."
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "p. 11", stance: for}
+
+- id: c-training
+  type: definitional
+  text: "All tasks are trained with maximum likelihood, teacher forcing and a cross-entropy loss, optimized with AdaFactor; at test time greedy decoding is used. Each baseline model is pre-trained for 2^19 = 524,288 steps on C4 with a maximum sequence length of 512 and a batch size of 128 sequences."
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "p. 11", stance: for}
+
+- id: c-tokens
+  type: definitional
+  text: "Packing multiple sequences into each entry of the batch gives roughly 2^16 = 65,536 tokens per batch, so the baseline pre-trains on 2^35, about 34B tokens, considerably less than BERT, which used roughly 137B tokens, or RoBERTa, which used roughly 2.2T; the baseline never repeats data."
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "p. 12", stance: for}
+
+- id: c-lr
+  type: definitional
+  text: "Pre-training uses the inverse square root learning rate schedule 1 / sqrt(max(n, k)), with n the training iteration and k = 10^4 warm-up steps, a constant 0.01 for the first 10^4 steps and then a decay. Models are fine-tuned for 2^18 = 262,144 steps with a constant learning rate of 0.001."
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "p. 12", stance: for}
+
+- id: c-vocab
+  type: definitional
+  text: "Text is encoded with SentencePiece as WordPiece tokens with a vocabulary of 32,000 wordpieces, trained on 10 parts of English C4 to 1 part each of German, French and Romanian, and shared across the input and output of the model; the vocabulary means the model can only process a predetermined, fixed set of languages."
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "p. 12", stance: for}
+
+- id: c-objective
+  type: definitional
+  text: "In the baseline objective, for the sentence 'Thank you for inviting me to your party last week.' the words 'for', 'inviting' and 'last' are randomly chosen for corruption; each consecutive span of corrupted tokens is replaced by a sentinel token unique over the example, so 'for inviting' becomes one sentinel <X>, and the output consists of the dropped-out spans delimited by the sentinels used to replace them, plus a final sentinel <Z>."
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "p. 13", stance: for}
+
+- id: c-pm-paper
+  type: attributive
+  text: "An encoder-decoder with L layers in the encoder and L in the decoder has approximately the same number of parameters as a language model with 2L layers but approximately the computational cost of a language model with only L layers, because the language model's layers must be applied to both the input and the output sequence; the equivalences are approximate because of the extra parameters of the encoder-decoder attention and the attention costs quadratic in the sequence lengths, and the authors observed nearly identical step times."
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "pp. 18 and 19", stance: for}
+
+- id: c-cross-ten
+  type: attributive
+  text: "For the model sizes considered, the parameters of the encoder-decoder attention layers are about 10% of the total parameter count, so the authors make the simplifying assumption that an L + L-layer encoder-decoder model has the same number of parameters as a 2L-layer language model."
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "p. 19", stance: for}
+
+- id: c-table2
+  type: empirical
+  text: "With the denoising objective, the encoder-decoder (2P parameters, M FLOPs) scores 83.28 on GLUE, 19.24 on CNNDM, 80.88 on SQuAD and 71.36 on SuperGLUE; the encoder-decoder with shared parameters (P, M) 82.81, 18.78, 80.63 and 70.73; the encoder-decoder of 6 layers each (P, M/2) 80.88, 18.97, 77.59 and 68.42; the language model (P, M) 74.70, 17.93, 61.14 and 55.02; and the prefix LM (P, M) 81.82, 18.61, 78.94 and 68.11."
+  scope:
+    models: "Transformers of BERT-Base-sized stacks, pre-trained on 2^35 tokens of C4"
+    data: ["GLUE", "CNN/Daily Mail", "SQuAD", "SuperGLUE"]
+    setting: "validation sets, one run each"
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "p. 20, Table 2", stance: for}
+
+- id: c-table2-lm
+  type: empirical
+  text: "With the LM objective, the encoder-decoder, the shared encoder-decoder, the encoder-decoder of 6 layers, the language model and the prefix LM score 79.56, 79.60, 78.67, 73.78 and 79.68 on GLUE and 64.29, 63.50, 64.06, 56.51 and 64.86 on SGLUE."
+  scope:
+    models: "the five architectures of Table 2"
+    data: ["GLUE", "SuperGLUE"]
+    setting: "validation sets, one run each"
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "p. 20, Table 2", stance: for}
+
+- id: c-table2-findings
+  type: empirical
+  text: "For all tasks the encoder-decoder architecture with the denoising objective performed best; sharing parameters across the encoder and decoder performed nearly as well, while halving the number of layers in the encoder and decoder stacks significantly hurt performance; the shared encoder-decoder outperforms the decoder-only prefix LM, suggesting that an explicit encoder-decoder attention is beneficial; and the denoising objective always gave better downstream performance than a language modelling objective."
+  scope:
+    models: "the five architectures of Table 2"
+    data: ["GLUE", "CNN/Daily Mail", "SQuAD", "SuperGLUE", "WMT"]
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "pp. 19 to 21", stance: for}
+
+- id: c-rate
+  type: empirical
+  text: "Comparing corruption rates of 10%, 15%, 25% and 50% with the i.i.d. objective, the corruption rate had a limited effect on performance, except that the largest rate, 50%, results in a significant degradation on GLUE and SQuAD; a larger corruption rate also results in longer targets, which can slow down training."
+  scope:
+    models: "the baseline encoder-decoder"
+    data: ["GLUE", "CNN/Daily Mail", "SQuAD", "SuperGLUE"]
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "p. 23", stance: for}
+
+- id: c-span-def
+  type: definitional
+  text: "The span-corruption objective corrupts contiguous, randomly-spaced spans of tokens and is parametrized by the proportion of tokens to be corrupted and the total number of corrupted spans, the span lengths chosen randomly to satisfy them: for a sequence of 500 tokens, 15% corrupted in 25 spans, 75 tokens are corrupted and the average span length is 3."
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "pp. 23 and 24", stance: for}
+
+- id: c-span-results
+  type: empirical
+  text: "At a corruption rate of 15% with average span lengths of 2, 3, 5 and 10 there is a limited difference between the objectives, though a span length of 10 slightly underperforms in some cases; an average span length of 3 slightly (but significantly) outperforms the i.i.d. objective on most non-translation benchmarks, and span corruption gives some speedup during training because it produces shorter sequences on average."
+  scope:
+    models: "the baseline encoder-decoder"
+    data: ["GLUE", "CNN/Daily Mail", "SQuAD", "SuperGLUE", "WMT"]
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "p. 24", stance: for}
+
+- id: c-final-recipe
+  type: definitional
+  text: "The final models swap the i.i.d. denoising objective for span corruption with a mean span length of 3 corrupting 15% of the sequence, and are pre-trained for 1 million steps on a batch size of 2^11 sequences of length 512, about 1 trillion tokens, about 32 times the baseline, on a multi-task mixture of unsupervised and supervised tasks."
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "pp. 36 and 37", stance: for}
+
+- id: c-sizes
+  type: definitional
+  text: "Small uses d_model = 512, d_ff = 2,048, 8-headed attention and 6 layers each in the encoder and decoder, about 60 million parameters; Large uses d_model = 1,024, d_ff = 4,096, d_kv = 64, 16 heads and 24 layers each, around 770 million; 3B and 11B use d_model = 1024, 24 layers each and d_kv = 128, with d_ff = 16,384 and 32 heads for around 2.8 billion parameters, and d_ff = 65,536 and 128 heads for about 11 billion."
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "pp. 36 and 37", stance: for}
+
+- id: c-scale-dff
+  type: attributive
+  text: "The authors chose to scale up d_ff specifically because modern accelerators such as TPUs are most efficient for large dense matrix multiplications like those in the Transformer's feed-forward networks."
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "p. 37", stance: for}
+
+- id: c-results
+  type: empirical
+  text: "The final models gave the best results reported to date on 18 of the 24 tasks considered; the 11 billion parameter model performed best among the size variants across all tasks, and scaling to 11 billion parameters was the most important ingredient; the average GLUE score was 90.3."
+  scope:
+    models: "T5-Small to T5-11B"
+    data: ["GLUE", "SuperGLUE", "SQuAD", "CNN/Daily Mail", "WMT"]
+    setting: "test sets, except SQuAD validation"
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "p. 38", stance: for}
+
+- id: c-superglue
+  type: empirical
+  text: "On SuperGLUE the average score improved from the previous best of 84.6 to 88.9, nearly matching the human performance of 89.8; humans achieve 100% on COPA and WSC, significantly better than the model."
+  scope:
+    models: "T5-11B"
+    data: ["SuperGLUE"]
+    setting: "test set"
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "p. 40", stance: for}
+
+- id: c-wmt
+  type: empirical
+  text: "T5 did not reach the best previous results on any of the WMT translation tasks, which the authors attribute in part to the English-only unlabeled data set and to the back-translation used by the best systems."
+  scope:
+    models: "T5-Small to T5-11B"
+    data: ["WMT English-German", "WMT English-French", "WMT English-Romanian"]
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "p. 40", stance: for}
+
+- id: c-table15
+  type: empirical
+  text: "On GLUE, CNNDM, SQuAD and SuperGLUE, the baseline pre-trained on 2^35 tokens scores 83.28, 19.24, 80.88 and 71.36, the baseline pre-trained on 1 trillion tokens 84.80, 19.62, 83.01 and 73.90, and T5-Base 85.97, 20.90, 85.44 and 75.64; T5-Base substantially outperforms baseline-1T on all downstream tasks, suggesting that scale is not the only factor in T5's results."
+  scope:
+    models: "the baseline, baseline-1T and T5-Base"
+    data: ["GLUE", "CNN/Daily Mail", "SQuAD", "SuperGLUE"]
+    setting: "validation sets"
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "p. 41, Table 15", stance: for}
+
+- id: c-large-models
+  type: attributive
+  text: "Larger models tend to perform better, but there will always be applications where a smaller or less expensive model is helpful, and the authors advocate research on methods that achieve stronger performance with cheaper models."
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "p. 43", stance: for}
+
+- id: c-bart-def
+  type: definitional
+  text: "BART is a denoising autoencoder for pretraining sequence-to-sequence models, trained by corrupting text with an arbitrary noising function and learning a model to reconstruct the original text; it uses a standard Transformer-based neural machine translation architecture that can be seen as generalizing BERT, with its bidirectional encoder, and GPT, with its left-to-right decoder."
+  evidence:
+    - {work: "lewis-2020-bart", role: original, locator: "p. 7871", stance: for}
+
+- id: c-bart-arch
+  type: definitional
+  text: "BART uses the standard sequence-to-sequence Transformer architecture, except that ReLU activations are replaced by GeLUs and parameters are initialised from N(0, 0.02); the base model has 6 layers in the encoder and decoder and the large model 12 in each, and BART contains roughly 10% more parameters than the equivalently sized BERT model."
+  evidence:
+    - {work: "lewis-2020-bart", role: original, locator: "p. 7872", stance: for}
+
+- id: c-bart-infill
+  type: definitional
+  text: "In text infilling a number of text spans are sampled with span lengths drawn from a Poisson distribution (lambda = 3) and each span is replaced with a single [MASK] token, 0-length spans corresponding to insertions of [MASK], which teaches the model to predict how many tokens are missing from a span."
+  evidence:
+    - {work: "lewis-2020-bart", role: original, locator: "p. 7873", stance: for}
+
+- id: c-bart-results
+  type: empirical
+  text: "BART matches the performance of RoBERTa on GLUE and SQuAD and improves on the previous results on a range of abstractive dialogue, question answering and summarization tasks, with gains of up to 3.5 ROUGE, and gives a 1.1 BLEU increase over a back-translation system for machine translation with only target language pretraining."
+  scope:
+    models: "BART-large"
+    data: ["GLUE", "SQuAD", "abstractive dialogue, question answering and summarization", "WMT"]
+  evidence:
+    - {work: "lewis-2020-bart", role: original, locator: "p. 7871", stance: for}
+
+- id: c-params
+  type: mathematical
+  text: "A T5 encoder-decoder with a shared embedding of V tokens, L encoder and L decoder layers of width M, H heads of d_kv features (I = H d_kv), a feed-forward width F, no biases, normalizations with a gain only, and one table of K by H position biases per stack has N = VM + 2KH + L(12MI + 4MF + 5M) + 2M parameters."
+  assumes: ["the parts of Section 2.1 and no others", "one position table for each stack"]
+  derivation: parameter-count
+
+- id: c-params-sizes
+  type: mathematical
+  text: "With V = 32,000 and K = 32, T5-Small, Base, Large, 3B and 11B have 60,441,088, 222,805,248, 737,537,024, 2,851,467,264 and 11,307,190,272 parameters."
+  assumes: ["the count of c-params", "d_kv = 64 for Small"]
+  derivation: parameter-count
+
+- id: c-params-large
+  type: mathematical
+  text: "Small, Base and 11B round to the paper's figures, 3B rounds to 2.9 billion rather than 2.8, and Large is 32.5 million short of 770 million; a separate output matrix would bring Large to 770,305,024 but Base to 247,381,248, so no single way of counting matches both."
+  assumes: ["the count of c-params", "a separate output matrix adds V M"]
+  derivation: parameter-count
+
+- id: c-cross-share
+  type: mathematical
+  text: "The attention to the encoder holds 4LMI parameters: 12.7% of T5-Base and from 13.6% to 14.2% of Large, 3B and 11B, more than the paper's about 10%."
+  assumes: ["the count of c-params"]
+  derivation: parameter-count
+
+- id: c-pm-params
+  type: mathematical
+  text: "The matrices of an L + L encoder-decoder hold L(12MI + 4MF) parameters and those of a 2L-layer language model L(8MI + 4MF), a ratio of 7/6 when I = M and F = 4M."
+  assumes: ["the layers of this page", "a language model with the same self-attention and feed-forward layers"]
+  derivation: encoder-decoder-cost
+
+- id: c-pm-flops
+  type: mathematical
+  text: "Leaving out the attention products, an L + L encoder-decoder costs 2L(S + T)(6MI + 2MF) FLOPs on a pair of S source and T target tokens and an L-layer language model on the S + T tokens 2L(S + T)(4MI + 2MF), the same ratio 7/6 when I = M and F = 4M; for T5-Base at S = T = 512 the products cost 231.9 and 212.6 GFLOPs, a ratio of 12/11."
+  assumes: ["matrix products only, a multiply-add counted as 2, the output layer left out"]
+  derivation: encoder-decoder-cost
+
+- id: c-pm-attention
+  type: mathematical
+  text: "The products of queries with keys and of weights with values cost 4LI(S^2 + ST + T^2) in the encoder-decoder and 4LI(S + T)^2 in the language model, three quarters as much in the encoder-decoder when S = T."
+  assumes: ["attention computed in full in both models"]
+  derivation: encoder-decoder-cost
+
+- id: c-span-lengths
+  type: mathematical
+  text: "Span corruption of n tokens with N corrupted in m spans gives an input of n - N + m tokens and a target of N + m + 1; the paper's example of 500 tokens, 75 corrupted in 25 spans, gives 450 and 101."
+  assumes: ["spans separated by at least one kept token"]
+  derivation: span-lengths
+
+- id: c-span-iid
+  type: mathematical
+  text: "With each token corrupted independently with probability r and runs merged, the expected number of spans is r + (n - 1) r (1 - r) and the mean span length tends to 1/(1 - r), 1.18 at 15%; at n = 512 the expected target has 143.1 tokens and the input 500.5, against 104 and 461 for spans of mean length 3."
+  assumes: ["independent corruption of each token"]
+  derivation: span-lengths
+
+- id: c-span-rate
+  type: mathematical
+  text: "At 50% corruption with a mean span length of 3 the target of 512 tokens has 342 tokens, against 104 at 15%."
+  assumes: ["the counts of c-span-lengths"]
+  derivation: span-lengths
+
+- id: c-bucket-edges
+  type: mathematical
+  text: "With 32 buckets reaching 128, the decoder's buckets 16 to 31 begin at offsets 16, 19, 21, 24, 27, 31, 35, 40, 46, 52, 59, 67, 77, 87, 99 and 113, growing by 8^(1/16) = 1.139, and each direction of the encoder has buckets 8 to 15 beginning at 8, 12, 16, 23, 32, 46, 64 and 91, growing by sqrt(2)."
+  assumes: ["the bucket function of eq-bias"]
+  derivation: buckets
+
+- id: c-bucket-unused
+  type: mathematical
+  text: "In the encoder, bucket 16, which would hold offset 0 of the keys after the query, never receives an offset, so 31 of its 32 rows are used."
+  assumes: ["the bucket function of eq-bias"]
+  derivation: buckets
+
+- id: c-vaswani-postnorm
+  type: definitional
+  text: "The Transformer employs a residual connection around each of the two sub-layers, followed by layer normalization; that is, the output of each sub-layer is LayerNorm(x + Sublayer(x))."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "p. 3", stance: for}
+
+- id: c-vaswani-sinusoid
+  type: definitional
+  text: "The Transformer adds positional encodings to the input embeddings, using sine and cosine functions of different frequencies."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "p. 6", stance: for}
+
+- id: c-vaswani-tied
+  type: definitional
+  text: "The Transformer shares the same weight matrix between the two embedding layers and the pre-softmax linear transformation, and in the embedding layers multiplies those weights by the square root of dmodel."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "p. 5", stance: for}
+
+- id: c-rmsnorm
+  type: attributive
+  text: "Zhang and Sennrich hypothesize that re-centering invariance in LayerNorm is dispensable and propose RMSNorm, which regularizes the summed inputs to a neuron according to root mean square, giving the model re-scaling invariance; RMSNorm achieves comparable performance against LayerNorm but reduces the running time by 7% to 64% on different models."
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 1", stance: for}
+
+- id: c-sentencepiece
+  type: definitional
+  text: "While existing subword segmentation tools assume that the input is pre-tokenized into word sequences, SentencePiece can train subword models directly from raw sentences."
+  evidence:
+    - {work: "kudo-2018-sentencepiece", role: original, locator: "p. 1", stance: for}
+
+- id: c-bert-mlm
+  type: definitional
+  text: "BERT masks 15% of all WordPiece tokens in each sequence at random and only predicts the masked words, in contrast to denoising auto-encoders, which reconstruct the entire input."
+  evidence:
+    - {work: "devlin-2019-bert", role: original, locator: "p. 4", stance: for}
