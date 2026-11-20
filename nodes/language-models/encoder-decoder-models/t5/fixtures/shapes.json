@@ -1,0 +1,2357 @@
+{
+  "note": "Written by aik shapes sample -w from shapes.yaml; do not edit. The tests of each implementation check shapes, param_count and flops against these values (spec 08.6, rule X09).",
+  "configs": [
+    {
+      "name": "example",
+      "kind": "example",
+      "config": {
+        "B": 2,
+        "D": 3,
+        "F": 16,
+        "H": 2,
+        "K": 8,
+        "L": 2,
+        "M": 8,
+        "S": 7,
+        "T": 5,
+        "V": 13,
+        "buckets": 8,
+        "d_ff": 16,
+        "d_kv": 3,
+        "d_model": 8,
+        "max_distance": 16,
+        "n_heads": 2,
+        "n_layers": 2,
+        "vocab": 13
+      },
+      "blocks": {
+        "cross": {
+          "params": 192,
+          "flops_forward": 6288,
+          "inputs": {
+            "e": [
+              2,
+              7,
+              8
+            ],
+            "x": [
+              2,
+              5,
+              8
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              5,
+              8
+            ]
+          },
+          "internals": {
+            "weights": [
+              2,
+              2,
+              5,
+              7
+            ]
+          }
+        },
+        "dec_ff": {
+          "params": 256,
+          "flops_forward": 5120,
+          "inputs": {
+            "x": [
+              2,
+              5,
+              8
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              5,
+              8
+            ]
+          },
+          "internals": {
+            "hidden": [
+              2,
+              5,
+              16
+            ]
+          }
+        },
+        "dec_layer": {
+          "params": 664,
+          "flops_forward": 16448,
+          "inputs": {
+            "e": [
+              2,
+              7,
+              8
+            ],
+            "x": [
+              2,
+              5,
+              8
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              5,
+              8
+            ]
+          }
+        },
+        "dec_self": {
+          "params": 192,
+          "flops_forward": 5040,
+          "inputs": {
+            "x": [
+              2,
+              5,
+              8
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              5,
+              8
+            ]
+          },
+          "internals": {
+            "k": [
+              2,
+              2,
+              5,
+              3
+            ],
+            "q": [
+              2,
+              2,
+              5,
+              3
+            ],
+            "v": [
+              2,
+              2,
+              5,
+              3
+            ],
+            "weights": [
+              2,
+              2,
+              5,
+              5
+            ]
+          }
+        },
+        "embed": {
+          "params": 104,
+          "flops_forward": 0,
+          "inputs": {
+            "dec_in": [
+              2,
+              5
+            ],
+            "src": [
+              2,
+              7
+            ]
+          },
+          "outputs": {
+            "xs": [
+              2,
+              7,
+              8
+            ],
+            "ys": [
+              2,
+              5,
+              8
+            ]
+          }
+        },
+        "enc_attn": {
+          "params": 192,
+          "flops_forward": 7728,
+          "inputs": {
+            "x": [
+              2,
+              7,
+              8
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              7,
+              8
+            ]
+          },
+          "internals": {
+            "k": [
+              2,
+              2,
+              7,
+              3
+            ],
+            "q": [
+              2,
+              2,
+              7,
+              3
+            ],
+            "v": [
+              2,
+              2,
+              7,
+              3
+            ],
+            "weights": [
+              2,
+              2,
+              7,
+              7
+            ]
+          }
+        },
+        "enc_ff": {
+          "params": 256,
+          "flops_forward": 7168,
+          "inputs": {
+            "x": [
+              2,
+              7,
+              8
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              7,
+              8
+            ]
+          },
+          "internals": {
+            "hidden": [
+              2,
+              7,
+              16
+            ]
+          }
+        },
+        "enc_layer": {
+          "params": 464,
+          "flops_forward": 14896,
+          "inputs": {
+            "x": [
+              2,
+              7,
+              8
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              7,
+              8
+            ]
+          }
+        },
+        "head": {
+          "params": 16,
+          "flops_forward": 2080,
+          "inputs": {
+            "final": [
+              2,
+              5,
+              8
+            ]
+          },
+          "outputs": {
+            "logits": [
+              2,
+              5,
+              13
+            ]
+          }
+        },
+        "norm": {
+          "params": 8,
+          "flops_forward": 0
+        },
+        "rel": {
+          "params": 32,
+          "flops_forward": 0
+        }
+      },
+      "model": {
+        "flops_forward": 64768,
+        "params": 2408,
+        "params_decoder": 1352,
+        "params_encoder": 952
+      }
+    },
+    {
+      "name": "sample-1",
+      "kind": "sample",
+      "config": {
+        "B": 3,
+        "D": 1,
+        "F": 8,
+        "H": 2,
+        "K": 10,
+        "L": 2,
+        "M": 5,
+        "S": 6,
+        "T": 5,
+        "V": 12,
+        "buckets": 10,
+        "d_ff": 8,
+        "d_kv": 1,
+        "d_model": 5,
+        "max_distance": 14,
+        "n_heads": 2,
+        "n_layers": 2,
+        "vocab": 12
+      },
+      "blocks": {
+        "cross": {
+          "params": 40,
+          "flops_forward": 2040,
+          "inputs": {
+            "e": [
+              3,
+              6,
+              5
+            ],
+            "x": [
+              3,
+              5,
+              5
+            ]
+          },
+          "outputs": {
+            "y": [
+              3,
+              5,
+              5
+            ]
+          },
+          "internals": {
+            "weights": [
+              3,
+              2,
+              5,
+              6
+            ]
+          }
+        },
+        "dec_ff": {
+          "params": 80,
+          "flops_forward": 2400,
+          "inputs": {
+            "x": [
+              3,
+              5,
+              5
+            ]
+          },
+          "outputs": {
+            "y": [
+              3,
+              5,
+              5
+            ]
+          },
+          "internals": {
+            "hidden": [
+              3,
+              5,
+              8
+            ]
+          }
+        },
+        "dec_layer": {
+          "params": 175,
+          "flops_forward": 6240,
+          "inputs": {
+            "e": [
+              3,
+              6,
+              5
+            ],
+            "x": [
+              3,
+              5,
+              5
+            ]
+          },
+          "outputs": {
+            "y": [
+              3,
+              5,
+              5
+            ]
+          }
+        },
+        "dec_self": {
+          "params": 40,
+          "flops_forward": 1800,
+          "inputs": {
+            "x": [
+              3,
+              5,
+              5
+            ]
+          },
+          "outputs": {
+            "y": [
+              3,
+              5,
+              5
+            ]
+          },
+          "internals": {
+            "k": [
+              3,
+              2,
+              5,
+              1
+            ],
+            "q": [
+              3,
+              2,
+              5,
+              1
+            ],
+            "v": [
+              3,
+              2,
+              5,
+              1
+            ],
+            "weights": [
+              3,
+              2,
+              5,
+              5
+            ]
+          }
+        },
+        "embed": {
+          "params": 60,
+          "flops_forward": 0,
+          "inputs": {
+            "dec_in": [
+              3,
+              5
+            ],
+            "src": [
+              3,
+              6
+            ]
+          },
+          "outputs": {
+            "xs": [
+              3,
+              6,
+              5
+            ],
+            "ys": [
+              3,
+              5,
+              5
+            ]
+          }
+        },
+        "enc_attn": {
+          "params": 40,
+          "flops_forward": 2304,
+          "inputs": {
+            "x": [
+              3,
+              6,
+              5
+            ]
+          },
+          "outputs": {
+            "y": [
+              3,
+              6,
+              5
+            ]
+          },
+          "internals": {
+            "k": [
+              3,
+              2,
+              6,
+              1
+            ],
+            "q": [
+              3,
+              2,
+              6,
+              1
+            ],
+            "v": [
+              3,
+              2,
+              6,
+              1
+            ],
+            "weights": [
+              3,
+              2,
+              6,
+              6
+            ]
+          }
+        },
+        "enc_ff": {
+          "params": 80,
+          "flops_forward": 2880,
+          "inputs": {
+            "x": [
+              3,
+              6,
+              5
+            ]
+          },
+          "outputs": {
+            "y": [
+              3,
+              6,
+              5
+            ]
+          },
+          "internals": {
+            "hidden": [
+              3,
+              6,
+              8
+            ]
+          }
+        },
+        "enc_layer": {
+          "params": 130,
+          "flops_forward": 5184,
+          "inputs": {
+            "x": [
+              3,
+              6,
+              5
+            ]
+          },
+          "outputs": {
+            "y": [
+              3,
+              6,
+              5
+            ]
+          }
+        },
+        "head": {
+          "params": 10,
+          "flops_forward": 1800,
+          "inputs": {
+            "final": [
+              3,
+              5,
+              5
+            ]
+          },
+          "outputs": {
+            "logits": [
+              3,
+              5,
+              12
+            ]
+          }
+        },
+        "norm": {
+          "params": 5,
+          "flops_forward": 0
+        },
+        "rel": {
+          "params": 40,
+          "flops_forward": 0
+        }
+      },
+      "model": {
+        "flops_forward": 24648,
+        "params": 720,
+        "params_decoder": 375,
+        "params_encoder": 285
+      }
+    },
+    {
+      "name": "sample-2",
+      "kind": "sample",
+      "config": {
+        "B": 2,
+        "D": 1,
+        "F": 2,
+        "H": 2,
+        "K": 6,
+        "L": 2,
+        "M": 5,
+        "S": 2,
+        "T": 1,
+        "V": 3,
+        "buckets": 6,
+        "d_ff": 2,
+        "d_kv": 1,
+        "d_model": 5,
+        "max_distance": 14,
+        "n_heads": 2,
+        "n_layers": 2,
+        "vocab": 3
+      },
+      "blocks": {
+        "cross": {
+          "params": 40,
+          "flops_forward": 272,
+          "inputs": {
+            "e": [
+              2,
+              2,
+              5
+            ],
+            "x": [
+              2,
+              1,
+              5
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              1,
+              5
+            ]
+          },
+          "internals": {
+            "weights": [
+              2,
+              2,
+              1,
+              2
+            ]
+          }
+        },
+        "dec_ff": {
+          "params": 20,
+          "flops_forward": 80,
+          "inputs": {
+            "x": [
+              2,
+              1,
+              5
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              1,
+              5
+            ]
+          },
+          "internals": {
+            "hidden": [
+              2,
+              1,
+              2
+            ]
+          }
+        },
+        "dec_layer": {
+          "params": 115,
+          "flops_forward": 528,
+          "inputs": {
+            "e": [
+              2,
+              2,
+              5
+            ],
+            "x": [
+              2,
+              1,
+              5
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              1,
+              5
+            ]
+          }
+        },
+        "dec_self": {
+          "params": 40,
+          "flops_forward": 176,
+          "inputs": {
+            "x": [
+              2,
+              1,
+              5
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              1,
+              5
+            ]
+          },
+          "internals": {
+            "k": [
+              2,
+              2,
+              1,
+              1
+            ],
+            "q": [
+              2,
+              2,
+              1,
+              1
+            ],
+            "v": [
+              2,
+              2,
+              1,
+              1
+            ],
+            "weights": [
+              2,
+              2,
+              1,
+              1
+            ]
+          }
+        },
+        "embed": {
+          "params": 15,
+          "flops_forward": 0,
+          "inputs": {
+            "dec_in": [
+              2,
+              1
+            ],
+            "src": [
+              2,
+              2
+            ]
+          },
+          "outputs": {
+            "xs": [
+              2,
+              2,
+              5
+            ],
+            "ys": [
+              2,
+              1,
+              5
+            ]
+          }
+        },
+        "enc_attn": {
+          "params": 40,
+          "flops_forward": 384,
+          "inputs": {
+            "x": [
+              2,
+              2,
+              5
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              2,
+              5
+            ]
+          },
+          "internals": {
+            "k": [
+              2,
+              2,
+              2,
+              1
+            ],
+            "q": [
+              2,
+              2,
+              2,
+              1
+            ],
+            "v": [
+              2,
+              2,
+              2,
+              1
+            ],
+            "weights": [
+              2,
+              2,
+              2,
+              2
+            ]
+          }
+        },
+        "enc_ff": {
+          "params": 20,
+          "flops_forward": 160,
+          "inputs": {
+            "x": [
+              2,
+              2,
+              5
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              2,
+              5
+            ]
+          },
+          "internals": {
+            "hidden": [
+              2,
+              2,
+              2
+            ]
+          }
+        },
+        "enc_layer": {
+          "params": 70,
+          "flops_forward": 544,
+          "inputs": {
+            "x": [
+              2,
+              2,
+              5
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              2,
+              5
+            ]
+          }
+        },
+        "head": {
+          "params": 10,
+          "flops_forward": 60,
+          "inputs": {
+            "final": [
+              2,
+              1,
+              5
+            ]
+          },
+          "outputs": {
+            "logits": [
+              2,
+              1,
+              3
+            ]
+          }
+        },
+        "norm": {
+          "params": 5,
+          "flops_forward": 0
+        },
+        "rel": {
+          "params": 24,
+          "flops_forward": 0
+        }
+      },
+      "model": {
+        "flops_forward": 2204,
+        "params": 419,
+        "params_decoder": 247,
+        "params_encoder": 157
+      }
+    },
+    {
+      "name": "t5_small",
+      "kind": "named",
+      "config": {
+        "B": 1,
+        "D": 64,
+        "F": 2048,
+        "H": 8,
+        "K": 32,
+        "L": 6,
+        "M": 512,
+        "S": 512,
+        "T": 512,
+        "V": 32000,
+        "buckets": 32,
+        "d_ff": 2048,
+        "d_kv": 64,
+        "d_model": 512,
+        "max_distance": 128,
+        "n_heads": 8,
+        "n_layers": 6,
+        "vocab": 32000
+      },
+      "blocks": {
+        "cross": {
+          "params": 1048576,
+          "flops_forward": 1610612736,
+          "inputs": {
+            "e": [
+              1,
+              512,
+              512
+            ],
+            "x": [
+              1,
+              512,
+              512
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              512
+            ]
+          },
+          "internals": {
+            "weights": [
+              1,
+              8,
+              512,
+              512
+            ]
+          }
+        },
+        "dec_ff": {
+          "params": 2097152,
+          "flops_forward": 2147483648,
+          "inputs": {
+            "x": [
+              1,
+              512,
+              512
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              512
+            ]
+          },
+          "internals": {
+            "hidden": [
+              1,
+              512,
+              2048
+            ]
+          }
+        },
+        "dec_layer": {
+          "params": 4195840,
+          "flops_forward": 5368709120,
+          "inputs": {
+            "e": [
+              1,
+              512,
+              512
+            ],
+            "x": [
+              1,
+              512,
+              512
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              512
+            ]
+          }
+        },
+        "dec_self": {
+          "params": 1048576,
+          "flops_forward": 1610612736,
+          "inputs": {
+            "x": [
+              1,
+              512,
+              512
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              512
+            ]
+          },
+          "internals": {
+            "k": [
+              1,
+              8,
+              512,
+              64
+            ],
+            "q": [
+              1,
+              8,
+              512,
+              64
+            ],
+            "v": [
+              1,
+              8,
+              512,
+              64
+            ],
+            "weights": [
+              1,
+              8,
+              512,
+              512
+            ]
+          }
+        },
+        "embed": {
+          "params": 16384000,
+          "flops_forward": 0,
+          "inputs": {
+            "dec_in": [
+              1,
+              512
+            ],
+            "src": [
+              1,
+              512
+            ]
+          },
+          "outputs": {
+            "xs": [
+              1,
+              512,
+              512
+            ],
+            "ys": [
+              1,
+              512,
+              512
+            ]
+          }
+        },
+        "enc_attn": {
+          "params": 1048576,
+          "flops_forward": 1610612736,
+          "inputs": {
+            "x": [
+              1,
+              512,
+              512
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              512
+            ]
+          },
+          "internals": {
+            "k": [
+              1,
+              8,
+              512,
+              64
+            ],
+            "q": [
+              1,
+              8,
+              512,
+              64
+            ],
+            "v": [
+              1,
+              8,
+              512,
+              64
+            ],
+            "weights": [
+              1,
+              8,
+              512,
+              512
+            ]
+          }
+        },
+        "enc_ff": {
+          "params": 2097152,
+          "flops_forward": 2147483648,
+          "inputs": {
+            "x": [
+              1,
+              512,
+              512
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              512
+            ]
+          },
+          "internals": {
+            "hidden": [
+              1,
+              512,
+              2048
+            ]
+          }
+        },
+        "enc_layer": {
+          "params": 3146752,
+          "flops_forward": 3758096384,
+          "inputs": {
+            "x": [
+              1,
+              512,
+              512
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              512
+            ]
+          }
+        },
+        "head": {
+          "params": 1024,
+          "flops_forward": 16777216000,
+          "inputs": {
+            "final": [
+              1,
+              512,
+              512
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1,
+              512,
+              32000
+            ]
+          }
+        },
+        "norm": {
+          "params": 512,
+          "flops_forward": 0
+        },
+        "rel": {
+          "params": 512,
+          "flops_forward": 0
+        }
+      },
+      "model": {
+        "flops_forward": 71538049024,
+        "params": 60441088,
+        "params_decoder": 25175808,
+        "params_encoder": 18881280
+      }
+    },
+    {
+      "name": "t5_base",
+      "kind": "named",
+      "config": {
+        "B": 1,
+        "D": 64,
+        "F": 3072,
+        "H": 12,
+        "K": 32,
+        "L": 12,
+        "M": 768,
+        "S": 512,
+        "T": 512,
+        "V": 32000,
+        "buckets": 32,
+        "d_ff": 3072,
+        "d_kv": 64,
+        "d_model": 768,
+        "max_distance": 128,
+        "n_heads": 12,
+        "n_layers": 12,
+        "vocab": 32000
+      },
+      "blocks": {
+        "cross": {
+          "params": 2359296,
+          "flops_forward": 3221225472,
+          "inputs": {
+            "e": [
+              1,
+              512,
+              768
+            ],
+            "x": [
+              1,
+              512,
+              768
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              768
+            ]
+          },
+          "internals": {
+            "weights": [
+              1,
+              12,
+              512,
+              512
+            ]
+          }
+        },
+        "dec_ff": {
+          "params": 4718592,
+          "flops_forward": 4831838208,
+          "inputs": {
+            "x": [
+              1,
+              512,
+              768
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              768
+            ]
+          },
+          "internals": {
+            "hidden": [
+              1,
+              512,
+              3072
+            ]
+          }
+        },
+        "dec_layer": {
+          "params": 9439488,
+          "flops_forward": 11274289152,
+          "inputs": {
+            "e": [
+              1,
+              512,
+              768
+            ],
+            "x": [
+              1,
+              512,
+              768
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              768
+            ]
+          }
+        },
+        "dec_self": {
+          "params": 2359296,
+          "flops_forward": 3221225472,
+          "inputs": {
+            "x": [
+              1,
+              512,
+              768
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              768
+            ]
+          },
+          "internals": {
+            "k": [
+              1,
+              12,
+              512,
+              64
+            ],
+            "q": [
+              1,
+              12,
+              512,
+              64
+            ],
+            "v": [
+              1,
+              12,
+              512,
+              64
+            ],
+            "weights": [
+              1,
+              12,
+              512,
+              512
+            ]
+          }
+        },
+        "embed": {
+          "params": 24576000,
+          "flops_forward": 0,
+          "inputs": {
+            "dec_in": [
+              1,
+              512
+            ],
+            "src": [
+              1,
+              512
+            ]
+          },
+          "outputs": {
+            "xs": [
+              1,
+              512,
+              768
+            ],
+            "ys": [
+              1,
+              512,
+              768
+            ]
+          }
+        },
+        "enc_attn": {
+          "params": 2359296,
+          "flops_forward": 3221225472,
+          "inputs": {
+            "x": [
+              1,
+              512,
+              768
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              768
+            ]
+          },
+          "internals": {
+            "k": [
+              1,
+              12,
+              512,
+              64
+            ],
+            "q": [
+              1,
+              12,
+              512,
+              64
+            ],
+            "v": [
+              1,
+              12,
+              512,
+              64
+            ],
+            "weights": [
+              1,
+              12,
+              512,
+              512
+            ]
+          }
+        },
+        "enc_ff": {
+          "params": 4718592,
+          "flops_forward": 4831838208,
+          "inputs": {
+            "x": [
+              1,
+              512,
+              768
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              768
+            ]
+          },
+          "internals": {
+            "hidden": [
+              1,
+              512,
+              3072
+            ]
+          }
+        },
+        "enc_layer": {
+          "params": 7079424,
+          "flops_forward": 8053063680,
+          "inputs": {
+            "x": [
+              1,
+              512,
+              768
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              768
+            ]
+          }
+        },
+        "head": {
+          "params": 1536,
+          "flops_forward": 25165824000,
+          "inputs": {
+            "final": [
+              1,
+              512,
+              768
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1,
+              512,
+              32000
+            ]
+          }
+        },
+        "norm": {
+          "params": 768,
+          "flops_forward": 0
+        },
+        "rel": {
+          "params": 768,
+          "flops_forward": 0
+        }
+      },
+      "model": {
+        "flops_forward": 257094057984,
+        "params": 222805248,
+        "params_decoder": 113275008,
+        "params_encoder": 84954240
+      }
+    },
+    {
+      "name": "t5_large",
+      "kind": "named",
+      "config": {
+        "B": 1,
+        "D": 64,
+        "F": 4096,
+        "H": 16,
+        "K": 32,
+        "L": 24,
+        "M": 1024,
+        "S": 512,
+        "T": 512,
+        "V": 32000,
+        "buckets": 32,
+        "d_ff": 4096,
+        "d_kv": 64,
+        "d_model": 1024,
+        "max_distance": 128,
+        "n_heads": 16,
+        "n_layers": 24,
+        "vocab": 32000
+      },
+      "blocks": {
+        "cross": {
+          "params": 4194304,
+          "flops_forward": 5368709120,
+          "inputs": {
+            "e": [
+              1,
+              512,
+              1024
+            ],
+            "x": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "internals": {
+            "weights": [
+              1,
+              16,
+              512,
+              512
+            ]
+          }
+        },
+        "dec_ff": {
+          "params": 8388608,
+          "flops_forward": 8589934592,
+          "inputs": {
+            "x": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "internals": {
+            "hidden": [
+              1,
+              512,
+              4096
+            ]
+          }
+        },
+        "dec_layer": {
+          "params": 16780288,
+          "flops_forward": 19327352832,
+          "inputs": {
+            "e": [
+              1,
+              512,
+              1024
+            ],
+            "x": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              1024
+            ]
+          }
+        },
+        "dec_self": {
+          "params": 4194304,
+          "flops_forward": 5368709120,
+          "inputs": {
+            "x": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "internals": {
+            "k": [
+              1,
+              16,
+              512,
+              64
+            ],
+            "q": [
+              1,
+              16,
+              512,
+              64
+            ],
+            "v": [
+              1,
+              16,
+              512,
+              64
+            ],
+            "weights": [
+              1,
+              16,
+              512,
+              512
+            ]
+          }
+        },
+        "embed": {
+          "params": 32768000,
+          "flops_forward": 0,
+          "inputs": {
+            "dec_in": [
+              1,
+              512
+            ],
+            "src": [
+              1,
+              512
+            ]
+          },
+          "outputs": {
+            "xs": [
+              1,
+              512,
+              1024
+            ],
+            "ys": [
+              1,
+              512,
+              1024
+            ]
+          }
+        },
+        "enc_attn": {
+          "params": 4194304,
+          "flops_forward": 5368709120,
+          "inputs": {
+            "x": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "internals": {
+            "k": [
+              1,
+              16,
+              512,
+              64
+            ],
+            "q": [
+              1,
+              16,
+              512,
+              64
+            ],
+            "v": [
+              1,
+              16,
+              512,
+              64
+            ],
+            "weights": [
+              1,
+              16,
+              512,
+              512
+            ]
+          }
+        },
+        "enc_ff": {
+          "params": 8388608,
+          "flops_forward": 8589934592,
+          "inputs": {
+            "x": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "internals": {
+            "hidden": [
+              1,
+              512,
+              4096
+            ]
+          }
+        },
+        "enc_layer": {
+          "params": 12584960,
+          "flops_forward": 13958643712,
+          "inputs": {
+            "x": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              1024
+            ]
+          }
+        },
+        "head": {
+          "params": 2048,
+          "flops_forward": 33554432000,
+          "inputs": {
+            "final": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1,
+              512,
+              32000
+            ]
+          }
+        },
+        "norm": {
+          "params": 1024,
+          "flops_forward": 0
+        },
+        "rel": {
+          "params": 1024,
+          "flops_forward": 0
+        }
+      },
+      "model": {
+        "flops_forward": 832418349056,
+        "params": 737537024,
+        "params_decoder": 402728448,
+        "params_encoder": 302040576
+      }
+    },
+    {
+      "name": "t5_3b",
+      "kind": "named",
+      "config": {
+        "B": 1,
+        "D": 128,
+        "F": 16384,
+        "H": 32,
+        "K": 32,
+        "L": 24,
+        "M": 1024,
+        "S": 512,
+        "T": 512,
+        "V": 32000,
+        "buckets": 32,
+        "d_ff": 16384,
+        "d_kv": 128,
+        "d_model": 1024,
+        "max_distance": 128,
+        "n_heads": 32,
+        "n_layers": 24,
+        "vocab": 32000
+      },
+      "blocks": {
+        "cross": {
+          "params": 16777216,
+          "flops_forward": 21474836480,
+          "inputs": {
+            "e": [
+              1,
+              512,
+              1024
+            ],
+            "x": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "internals": {
+            "weights": [
+              1,
+              32,
+              512,
+              512
+            ]
+          }
+        },
+        "dec_ff": {
+          "params": 33554432,
+          "flops_forward": 34359738368,
+          "inputs": {
+            "x": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "internals": {
+            "hidden": [
+              1,
+              512,
+              16384
+            ]
+          }
+        },
+        "dec_layer": {
+          "params": 67111936,
+          "flops_forward": 77309411328,
+          "inputs": {
+            "e": [
+              1,
+              512,
+              1024
+            ],
+            "x": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              1024
+            ]
+          }
+        },
+        "dec_self": {
+          "params": 16777216,
+          "flops_forward": 21474836480,
+          "inputs": {
+            "x": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "internals": {
+            "k": [
+              1,
+              32,
+              512,
+              128
+            ],
+            "q": [
+              1,
+              32,
+              512,
+              128
+            ],
+            "v": [
+              1,
+              32,
+              512,
+              128
+            ],
+            "weights": [
+              1,
+              32,
+              512,
+              512
+            ]
+          }
+        },
+        "embed": {
+          "params": 32768000,
+          "flops_forward": 0,
+          "inputs": {
+            "dec_in": [
+              1,
+              512
+            ],
+            "src": [
+              1,
+              512
+            ]
+          },
+          "outputs": {
+            "xs": [
+              1,
+              512,
+              1024
+            ],
+            "ys": [
+              1,
+              512,
+              1024
+            ]
+          }
+        },
+        "enc_attn": {
+          "params": 16777216,
+          "flops_forward": 21474836480,
+          "inputs": {
+            "x": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "internals": {
+            "k": [
+              1,
+              32,
+              512,
+              128
+            ],
+            "q": [
+              1,
+              32,
+              512,
+              128
+            ],
+            "v": [
+              1,
+              32,
+              512,
+              128
+            ],
+            "weights": [
+              1,
+              32,
+              512,
+              512
+            ]
+          }
+        },
+        "enc_ff": {
+          "params": 33554432,
+          "flops_forward": 34359738368,
+          "inputs": {
+            "x": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "internals": {
+            "hidden": [
+              1,
+              512,
+              16384
+            ]
+          }
+        },
+        "enc_layer": {
+          "params": 50333696,
+          "flops_forward": 55834574848,
+          "inputs": {
+            "x": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              1024
+            ]
+          }
+        },
+        "head": {
+          "params": 2048,
+          "flops_forward": 33554432000,
+          "inputs": {
+            "final": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1,
+              512,
+              32000
+            ]
+          }
+        },
+        "norm": {
+          "params": 1024,
+          "flops_forward": 0
+        },
+        "rel": {
+          "params": 2048,
+          "flops_forward": 0
+        }
+      },
+      "model": {
+        "flops_forward": 3229010100224,
+        "params": 2851467264,
+        "params_decoder": 1610688512,
+        "params_encoder": 1208010752
+      }
+    },
+    {
+      "name": "t5_11b",
+      "kind": "named",
+      "config": {
+        "B": 1,
+        "D": 128,
+        "F": 65536,
+        "H": 128,
+        "K": 32,
+        "L": 24,
+        "M": 1024,
+        "S": 512,
+        "T": 512,
+        "V": 32000,
+        "buckets": 32,
+        "d_ff": 65536,
+        "d_kv": 128,
+        "d_model": 1024,
+        "max_distance": 128,
+        "n_heads": 128,
+        "n_layers": 24,
+        "vocab": 32000
+      },
+      "blocks": {
+        "cross": {
+          "params": 67108864,
+          "flops_forward": 85899345920,
+          "inputs": {
+            "e": [
+              1,
+              512,
+              1024
+            ],
+            "x": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "internals": {
+            "weights": [
+              1,
+              128,
+              512,
+              512
+            ]
+          }
+        },
+        "dec_ff": {
+          "params": 134217728,
+          "flops_forward": 137438953472,
+          "inputs": {
+            "x": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "internals": {
+            "hidden": [
+              1,
+              512,
+              65536
+            ]
+          }
+        },
+        "dec_layer": {
+          "params": 268438528,
+          "flops_forward": 309237645312,
+          "inputs": {
+            "e": [
+              1,
+              512,
+              1024
+            ],
+            "x": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              1024
+            ]
+          }
+        },
+        "dec_self": {
+          "params": 67108864,
+          "flops_forward": 85899345920,
+          "inputs": {
+            "x": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "internals": {
+            "k": [
+              1,
+              128,
+              512,
+              128
+            ],
+            "q": [
+              1,
+              128,
+              512,
+              128
+            ],
+            "v": [
+              1,
+              128,
+              512,
+              128
+            ],
+            "weights": [
+              1,
+              128,
+              512,
+              512
+            ]
+          }
+        },
+        "embed": {
+          "params": 32768000,
+          "flops_forward": 0,
+          "inputs": {
+            "dec_in": [
+              1,
+              512
+            ],
+            "src": [
+              1,
+              512
+            ]
+          },
+          "outputs": {
+            "xs": [
+              1,
+              512,
+              1024
+            ],
+            "ys": [
+              1,
+              512,
+              1024
+            ]
+          }
+        },
+        "enc_attn": {
+          "params": 67108864,
+          "flops_forward": 85899345920,
+          "inputs": {
+            "x": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "internals": {
+            "k": [
+              1,
+              128,
+              512,
+              128
+            ],
+            "q": [
+              1,
+              128,
+              512,
+              128
+            ],
+            "v": [
+              1,
+              128,
+              512,
+              128
+            ],
+            "weights": [
+              1,
+              128,
+              512,
+              512
+            ]
+          }
+        },
+        "enc_ff": {
+          "params": 134217728,
+          "flops_forward": 137438953472,
+          "inputs": {
+            "x": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "internals": {
+            "hidden": [
+              1,
+              512,
+              65536
+            ]
+          }
+        },
+        "enc_layer": {
+          "params": 201328640,
+          "flops_forward": 223338299392,
+          "inputs": {
+            "x": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              512,
+              1024
+            ]
+          }
+        },
+        "head": {
+          "params": 2048,
+          "flops_forward": 33554432000,
+          "inputs": {
+            "final": [
+              1,
+              512,
+              1024
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1,
+              512,
+              32000
+            ]
+          }
+        },
+        "norm": {
+          "params": 1024,
+          "flops_forward": 0
+        },
+        "rel": {
+          "params": 8192,
+          "flops_forward": 0
+        }
+      },
+      "model": {
+        "flops_forward": 12815377104896,
+        "params": 11307190272,
+        "params_decoder": 6442529792,
+        "params_encoder": 4831892480
+      }
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+# SPDX-License-Identifier: MIT
+# The shape contract of the T5 encoder-decoder Transformer (spec 08.6): one embedding shared by the encoder, the decoder
+# and the output layer; L pre-norm encoder layers and L pre-norm decoder layers, the decoder layers with attention to
+# the encoder output; a normalization with a gain and no bias; no bias in any projection; and a table of position
+# biases, K buckets by H heads, for each stack. Heads have d_kv features each, and H d_kv need not equal d_model.
+# The FLOPs count the matrix products only, a multiply-add as 2, and the attention in full, the masked half of the
+# decoder's included; the softmax, the normalizations, the ReLU, the bias lookups and the additions are left out.
+config:
+  vocab:        {meaning: "size of the vocabulary shared by input and output", symbol: "V", example: 13, sample: [2, 12]}
+  d_model:      {meaning: "width of the residual stream", symbol: "d_{\\text{model}}", example: 8, sample: [1, 6]}
+  n_heads:      {meaning: "number of attention heads", symbol: "h", example: 2, sample: [1, 3]}
+  d_kv:         {meaning: "width of the queries, keys and values of each head", symbol: "d_{kv}", example: 3, sample: [1, 4]}
+  d_ff:         {meaning: "width of the hidden layer of the feed-forward network", symbol: "d_{\\text{ff}}", example: 16, sample: [1, 8]}
+  n_layers:     {meaning: "number of layers in the encoder, and again in the decoder", symbol: "L", example: 2, sample: [1, 2]}
+  buckets:      {meaning: "number of position buckets of each table", symbol: "K", example: 8, sample: [4, 10]}
+  max_distance: {meaning: "offset from which every offset shares the last bucket", symbol: "d_{\\max}", example: 16, sample: [6, 20]}
+axes:
+  B: {meaning: "batch", example: 2, sample: [1, 3]}
+  S: {meaning: "length of the source sequence", example: 7, sample: [1, 6]}
+  T: {meaning: "length of the target sequence", example: 5, sample: [1, 6]}
+  V: vocab
+  M: d_model
+  H: n_heads
+  D: d_kv
+  F: d_ff
+  K: buckets
+  L: n_layers
+blocks:
+  - id: embed
+    meaning: "the shared embedding, looked up for the source and for the decoder inputs"
+    inputs: {src: "(B, S)", dec_in: "(B, T)"}
+    outputs: {xs: "(B, S, M)", ys: "(B, T, M)"}
+    params: "V * M"
+  - id: rel
+    meaning: "the position biases: a table of K buckets by H heads for the encoder and one for the decoder"
+    eq: [bias]
+    params: "2 * K * H"
+  - id: enc_attn
+    meaning: "the self-attention of an encoder layer, every position on every other, with the encoder's biases"
+    eq: [attn, bias]
+    inputs: {x: "(B, S, M)"}
+    outputs: {y: "(B, S, M)"}
+    internals: {q: "(B, H, S, D)", k: "(B, H, S, D)", v: "(B, H, S, D)", weights: "(B, H, S, S)"}
+    params: "4 * M * H * D"
+    flops_forward: "8 * B * S * M * H * D + 4 * B * S * S * H * D"
+  - id: enc_ff
+    meaning: "the feed-forward network of an encoder layer: two matrices with a ReLU between them"
+    inputs: {x: "(B, S, M)"}
+    outputs: {y: "(B, S, M)"}
+    internals: {hidden: "(B, S, F)"}
+    params: "2 * M * F"
+    flops_forward: "4 * B * S * M * F"
+  - id: norm
+    meaning: "the normalization: a gain for each feature and no bias"
+    eq: [norm]
+    params: "M"
+  - id: enc_layer
+    of: [enc_attn, enc_ff, norm, norm]
+    eq: [enc]
+    inputs: {x: "(B, S, M)"}
+    outputs: {y: "(B, S, M)"}
+    params: "4 * M * H * D + 2 * M * F + 2 * M"
+  - id: dec_self
+    meaning: "the causal self-attention of a decoder layer, with the decoder's biases"
+    eq: [attn, bias]
+    inputs: {x: "(B, T, M)"}
+    outputs: {y: "(B, T, M)"}
+    internals: {q: "(B, H, T, D)", k: "(B, H, T, D)", v: "(B, H, T, D)", weights: "(B, H, T, T)"}
+    params: "4 * M * H * D"
+    flops_forward: "8 * B * T * M * H * D + 4 * B * T * T * H * D"
+  - id: cross
+    meaning: "the attention of a decoder layer to the encoder output, with no position bias"
+    eq: [attn]
+    inputs: {x: "(B, T, M)", e: "(B, S, M)"}
+    outputs: {y: "(B, T, M)"}
+    internals: {weights: "(B, H, T, S)"}
+    params: "4 * M * H * D"
+    flops_forward: "4 * B * T * M * H * D + 4 * B * S * M * H * D + 4 * B * T * S * H * D"
+  - id: dec_ff
+    meaning: "the feed-forward network of a decoder layer"
+    inputs: {x: "(B, T, M)"}
+    outputs: {y: "(B, T, M)"}
+    internals: {hidden: "(B, T, F)"}
+    params: "2 * M * F"
+    flops_forward: "4 * B * T * M * F"
+  - id: dec_layer
+    of: [dec_self, cross, dec_ff, norm, norm, norm]
+    eq: [dec]
+    inputs: {x: "(B, T, M)", e: "(B, S, M)"}
+    outputs: {y: "(B, T, M)"}
+    params: "8 * M * H * D + 2 * M * F + 3 * M"
+  - id: head
+    meaning: "the final normalization of each stack, and the logits from the shared embedding transposed"
+    eq: [logits]
+    inputs: {final: "(B, T, M)"}
+    outputs: {logits: "(B, T, V)"}
+    params: "2 * M"
+    flops_forward: "2 * B * T * M * V"
+model:
+  params: {formula: "embed.params + rel.params + n_layers * (enc_layer.params + dec_layer.params) + head.params", symbol: "N", meaning: "all the parameters of the network"}
+  params_encoder: {formula: "n_layers * enc_layer.params + M + K * H", meaning: "the parameters of the encoder stack, its final normalization and its biases, the embedding left out"}
+  params_decoder: {formula: "n_layers * dec_layer.params + M + K * H", meaning: "the parameters of the decoder stack, its final normalization and its biases, the embedding left out"}
+  flops_forward: {formula: "n_layers * (enc_attn.flops_forward + enc_ff.flops_forward + dec_self.flops_forward + cross.flops_forward + dec_ff.flops_forward) + head.flops_forward", symbol: "C", meaning: "FLOPs of one forward pass over B pairs of S source and T target tokens, a multiply-add counted as 2"}
+  sources:
+    - {work: raffel-2020-t5, locator: "pp. 4 and 5", note: "Section 2.1, the layers, the normalization without bias, the tied output layer and the position buckets"}
+    - {work: raffel-2020-t5, locator: "p. 11", note: "Section 3.1.1, the baseline of 12 blocks a stack, d_ff = 3072, d_kv = 64, 12 heads and d_model = 768"}
+    - {work: raffel-2020-t5, locator: "pp. 36 and 37", note: "Section 3.7, the five sizes, Small to 11B"}
+configs:
+  t5_small: {meaning: "T5-Small, about 60 million parameters", B: 1, S: 512, T: 512, vocab: 32000, d_model: 512, n_heads: 8, d_kv: 64, d_ff: 2048, n_layers: 6, buckets: 32, max_distance: 128, source: {work: raffel-2020-t5, locator: "p. 36", note: "with d_kv = 64, which the paper gives for Base and Large, and the vocabulary of 32,000 wordpieces of p. 11"}}
+  t5_base: {meaning: "T5-Base, the baseline of the study, about 220 million parameters", B: 1, S: 512, T: 512, vocab: 32000, d_model: 768, n_heads: 12, d_kv: 64, d_ff: 3072, n_layers: 12, buckets: 32, max_distance: 128, source: {work: raffel-2020-t5, locator: "p. 11"}}
+  t5_large: {meaning: "T5-Large, given as around 770 million parameters", B: 1, S: 512, T: 512, vocab: 32000, d_model: 1024, n_heads: 16, d_kv: 64, d_ff: 4096, n_layers: 24, buckets: 32, max_distance: 128, source: {work: raffel-2020-t5, locator: "p. 37"}}
+  t5_3b: {meaning: "T5-3B, about 2.8 billion parameters", B: 1, S: 512, T: 512, vocab: 32000, d_model: 1024, n_heads: 32, d_kv: 128, d_ff: 16384, n_layers: 24, buckets: 32, max_distance: 128, source: {work: raffel-2020-t5, locator: "p. 37"}}
+  t5_11b: {meaning: "T5-11B, about 11 billion parameters", B: 1, S: 512, T: 512, vocab: 32000, d_model: 1024, n_heads: 128, d_kv: 128, d_ff: 65536, n_layers: 24, buckets: 32, max_distance: 128, source: {work: raffel-2020-t5, locator: "p. 37"}}

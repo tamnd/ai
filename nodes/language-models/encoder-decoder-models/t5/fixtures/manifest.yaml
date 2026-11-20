@@ -1,0 +1,12 @@
+# Written by fixtures/make.py; do not edit.
+seed: 201910
+config: {vocab: 13, d_model: 8, n_heads: 2, d_kv: 3, d_ff: 16, n_layers: 2, buckets: 8, max_distance: 16, pos: relative}
+inputs: {B: 2, S: 7, T: 5, init_scale: 0.5, cache_split: 2, greedy_tokens: 6}
+experiment: {task: reverse, n: 6, symbols: 8, d_model: 32, n_heads: 4, d_kv: 8, d_ff: 64, n_layers: 2, steps: 1500, batch: 32, adam_lr: 0.003, test: 500}
+runs: {relative: {test_nats: 0.0129, token_accuracy: 0.9963, sequence_accuracy: 0.9780}, none: {test_nats: 0.9200, token_accuracy: 0.5313, sequence_accuracy: 0.0100}}
+dtype: float64
+numpy: "2.5.4"
+files:
+  params-small.npz: {sha256: ac9933a0142a68514a070915a185ce5d786edc0e36e17aa900d2619ad9923eb4}
+  input-small.npz: {sha256: 3fc03ab3d27d5a4c7a2c193b3c6b06a9cbf3bb3de1590a0464745bdf14f2ef64}
+  expected-small.npz: {sha256: 36ce61790459958e7986b819463b5d15c5c095c5a3b5ea2a800ab1ce0e971581}
