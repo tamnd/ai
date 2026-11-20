@@ -18,11 +18,21 @@ from rope import apply, config, frequencies, init  # noqa: E402
 Q = jnp.array([[1.0, 2.0, 0.0, 1.0]])
 K = jnp.array([[2.0, 1.0, 1.0, 0.0]])
 Q_AT_1 = [-1.1426, 1.9221, -0.0100, 1.0000]
-SCORES = [((0, 0), 4.0), ((5, 5), 4.0), ((1, 0), -0.3732), ((2, 1), -0.3732), ((7, 6), -0.3732),
-          ((0, 1), 4.6956), ((3, 0), -4.4133), ((10, 7), -4.4133)]
+SCORES = [
+    ((0, 0), 4.0),
+    ((5, 5), 4.0),
+    ((1, 0), -0.3732),
+    ((2, 1), -0.3732),
+    ((7, 6), -0.3732),
+    ((0, 1), 4.6956),
+    ((3, 0), -4.4133),
+    ((10, 7), -4.4133),
+]
 
 # The shared fixture of the NumPy tests.
-X = jnp.array([[0.5, -1.5, 2.0, 0.25, -0.75, 1.0], [1.0, 3.0, -2.5, 0.0, 4.0, -1.0], [-1.25, 0.5, 1.5, -3.0, 2.25, 0.5]])
+X = jnp.array(
+    [[0.5, -1.5, 2.0, 0.25, -0.75, 1.0], [1.0, 3.0, -2.5, 0.0, 4.0, -1.0], [-1.25, 0.5, 1.5, -3.0, 2.25, 0.5]]
+)
 POS = jnp.array([0.0, 3.0, 17.0])
 BASE = 1000.0  # theta = (1, 0.1, 0.01) for d = 6
 
@@ -60,7 +70,9 @@ def test_relative_and_norm():
     cfg = config(6, BASE)
     q, k = jax.random.normal(jax.random.PRNGKey(0), (2, 1, 6))
     for m, n, shift in [(4, 1, 100), (0, 9, -37), (250, 250, 3)]:
-        np.testing.assert_allclose(score(cfg, q, k, m, n), score(cfg, q, k, m + shift, n + shift), rtol=1e-10, atol=1e-10)
+        np.testing.assert_allclose(
+            score(cfg, q, k, m, n), score(cfg, q, k, m + shift, n + shift), rtol=1e-10, atol=1e-10
+        )
         np.testing.assert_allclose(jnp.linalg.norm(apply({}, q, [m], cfg)), jnp.linalg.norm(q), rtol=1e-12)
 
 

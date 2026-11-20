@@ -23,8 +23,16 @@ def config(x_dim=4, y_dim=3, hidden=8, n_loc=6, width=4, n_read=1, n_write=1, sh
     n_read and n_write heads, and shifts from -shift to shift."""
     if min(x_dim, y_dim, hidden, n_loc, width, n_read) < 1 or n_write < 0 or shift < 0 or 2 * shift + 1 > n_loc:
         raise ValueError("the sizes must be positive, n_write >= 0, and 2 shift + 1 <= n_loc")
-    return {"x_dim": x_dim, "y_dim": y_dim, "hidden": hidden, "n_loc": n_loc, "width": width,
-            "n_read": n_read, "n_write": n_write, "shift": shift}
+    return {
+        "x_dim": x_dim,
+        "y_dim": y_dim,
+        "hidden": hidden,
+        "n_loc": n_loc,
+        "width": width,
+        "n_read": n_read,
+        "n_write": n_write,
+        "shift": shift,
+    }
 
 
 def head_sizes(cfg):
@@ -55,9 +63,14 @@ def flops(cfg, batch, steps):
 def init(rng, cfg, scale=1.0):
     x, y, h, m, nr = cfg["x_dim"], cfg["y_dim"], cfg["hidden"], cfg["width"], cfg["n_read"]
     p, z = n_head_outputs(cfg), x + nr * m
-    return {"Wc": scale * rng.normal(size=(h, z)) / np.sqrt(z), "bc": np.zeros(h),
-            "Wh": scale * rng.normal(size=(p, h)) / np.sqrt(h), "bh": np.zeros(p),
-            "Wy": scale * rng.normal(size=(y, h + nr * m)) / np.sqrt(h + nr * m), "by": np.zeros(y)}
+    return {
+        "Wc": scale * rng.normal(size=(h, z)) / np.sqrt(z),
+        "bc": np.zeros(h),
+        "Wh": scale * rng.normal(size=(p, h)) / np.sqrt(h),
+        "bh": np.zeros(p),
+        "Wy": scale * rng.normal(size=(y, h + nr * m)) / np.sqrt(h + nr * m),
+        "by": np.zeros(y),
+    }
 
 
 def softplus(z):
@@ -116,10 +129,10 @@ def read(memory, w):
 def write(memory, ws, erases, adds):
     """All erases, then all adds: the order of the heads does not matter within either."""
     keep = np.ones_like(memory)
-    for w, e in zip(ws, erases):
+    for w, e in zip(ws, erases, strict=True):
         keep = keep * (1.0 - w[:, :, None] * e[:, None, :])  # eq: eq-erase
     out = memory * keep
-    for w, a in zip(ws, adds):
+    for w, a in zip(ws, adds, strict=True):
         out = out + w[:, :, None] * a[:, None, :]  # eq: eq-add
     return out
 
@@ -130,11 +143,16 @@ def split_heads(o, cfg):
     m, k = cfg["width"], 2 * cfg["shift"] + 1
     heads, i = [], 0
     for j in range(cfg["n_read"] + cfg["n_write"]):
-        hd = {"key": np.tanh(o[:, i:i + m]), "beta": softplus(o[:, i + m]), "g": sigmoid(o[:, i + m + 1]),
-              "s": softmax(o[:, i + m + 2:i + m + 2 + k]), "gamma": 1.0 + softplus(o[:, i + m + 2 + k])}
+        hd = {
+            "key": np.tanh(o[:, i : i + m]),
+            "beta": softplus(o[:, i + m]),
+            "g": sigmoid(o[:, i + m + 1]),
+            "s": softmax(o[:, i + m + 2 : i + m + 2 + k]),
+            "gamma": 1.0 + softplus(o[:, i + m + 2 + k]),
+        }
         i += m + 3 + k
         if j >= cfg["n_read"]:
-            hd["erase"], hd["add"] = sigmoid(o[:, i:i + m]), np.tanh(o[:, i + m:i + 2 * m])
+            hd["erase"], hd["add"] = sigmoid(o[:, i : i + m]), np.tanh(o[:, i + m : i + 2 * m])
             i += 2 * m
         heads.append(hd)
     return heads

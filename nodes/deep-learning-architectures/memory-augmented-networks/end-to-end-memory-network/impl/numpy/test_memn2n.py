@@ -166,8 +166,12 @@ def test_forward_is_the_model_of_the_paper(tying, encoding, linear):
     cfg = config(vocab=12, dim=5, hops=3, mem=5, sent_len=4, tying=tying, encoding=encoding)
     params = init(rng, cfg, sigma=0.5)
     story, query, _ = toy_batch(rng, 3)
-    np.testing.assert_allclose(forward(params, story, query, cfg, linear=linear),
-                               by_hand(params, story, query, cfg, linear=linear), rtol=1e-12, atol=1e-12)
+    np.testing.assert_allclose(
+        forward(params, story, query, cfg, linear=linear),
+        by_hand(params, story, query, cfg, linear=linear),
+        rtol=1e-12,
+        atol=1e-12,
+    )
 
 
 def test_adjacent_tying_shares_the_matrices_between_hops():

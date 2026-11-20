@@ -169,7 +169,9 @@ def test_worked_example():
     # The worked example of the page: one tanh unit per direction, input weight 1, recurrent weight 1/2, no bias,
     # on x = (1, 0, -1); the score is the sum of the two states.
     cfg = config(1, 1, 1, 2, "tanh", True)
-    params = {f"l0_{d}_{n}": np.array(v) for d in ("fwd", "bwd") for n, v in (("W", [[1.0]]), ("U", [[0.5]]), ("b", [0.0]))}
+    params = {
+        f"l0_{d}_{n}": np.array(v) for d in ("fwd", "bwd") for n, v in (("W", [[1.0]]), ("U", [[0.5]]), ("b", [0.0]))
+    }
     params |= {"out_W": np.array([[1.0, 0.0], [1.0, 0.0]]), "out_b": np.zeros(2)}
     x = np.array([[[1.0], [0.0], [-1.0]]])
     logits, cache = forward(params, cfg, x)

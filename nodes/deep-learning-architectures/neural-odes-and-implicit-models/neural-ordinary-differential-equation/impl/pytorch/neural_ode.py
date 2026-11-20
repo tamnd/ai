@@ -71,10 +71,12 @@ class AdjointODE(torch.autograd.Function):
 
         def step(z, t, dt):
             k1 = aug(z, t)
-            k2 = aug(tuple(zi + 0.5 * dt * ki for zi, ki in zip(z, k1)), t + 0.5 * dt)
-            k3 = aug(tuple(zi + 0.5 * dt * ki for zi, ki in zip(z, k2)), t + 0.5 * dt)
-            k4 = aug(tuple(zi + dt * ki for zi, ki in zip(z, k3)), t + dt)
-            return tuple(zi + dt / 6.0 * (a + 2.0 * b + 2.0 * c + e) for zi, a, b, c, e in zip(z, k1, k2, k3, k4))
+            k2 = aug(tuple(zi + 0.5 * dt * ki for zi, ki in zip(z, k1, strict=True)), t + 0.5 * dt)
+            k3 = aug(tuple(zi + 0.5 * dt * ki for zi, ki in zip(z, k2, strict=True)), t + 0.5 * dt)
+            k4 = aug(tuple(zi + dt * ki for zi, ki in zip(z, k3, strict=True)), t + dt)
+            return tuple(
+                zi + dt / 6.0 * (a + 2.0 * b + 2.0 * c + e) for zi, a, b, c, e in zip(z, k1, k2, k3, k4, strict=True)
+            )
 
         z = (y, dy, torch.zeros(sum(sizes), dtype=y.dtype))
         dt = -ctx.T / ctx.n
@@ -82,8 +84,8 @@ class AdjointODE(torch.autograd.Function):
             z = step(z, ctx.T + k * dt, dt)  # eq: eq-adjoint and eq-adjoint-theta, from T back to 0
         _, a0, g = z
         grads, i = [], 0
-        for p, s in zip(params, sizes):
-            grads.append(g[i:i + s].reshape(p.shape))
+        for p, s in zip(params, sizes, strict=True):
+            grads.append(g[i : i + s].reshape(p.shape))
             i += s
         assert a0.shape[1] == D
         return (a0, None, None, *grads)

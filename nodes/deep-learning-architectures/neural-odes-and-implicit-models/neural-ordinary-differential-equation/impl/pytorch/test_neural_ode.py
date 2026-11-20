@@ -31,7 +31,7 @@ def test_shared_fixture():
     x = torch.tensor(inp["x"], requires_grad=True)
     y = model(x)
     np.testing.assert_allclose(y.detach().numpy(), want["y"], rtol=1e-12, atol=1e-14)
-    loss = mse_loss(y[:, :cfg["d"]], torch.as_tensor(inp["t"]))
+    loss = mse_loss(y[:, : cfg["d"]], torch.as_tensor(inp["t"]))
     assert loss.item() == pytest.approx(float(want["loss"]), rel=1e-12)
     loss.backward()
     np.testing.assert_allclose(x.grad.numpy(), want["dx"], rtol=1e-10, atol=1e-12)
@@ -76,7 +76,7 @@ def test_adjoint_gradient_converges_to_autograd():
             model.zero_grad()
             (model(xx, adjoint=adjoint) * c).sum().backward()
             grads.append([xx.grad.clone()] + [getattr(model, k).grad.clone() for k in NAMES])
-        gaps.append(max((a - b).abs().max().item() for a, b in zip(*grads)))
+        gaps.append(max((a - b).abs().max().item() for a, b in zip(*grads, strict=True)))
     assert gaps[0] > gaps[1] > gaps[2]
     assert gaps[2] < 1e-4
 

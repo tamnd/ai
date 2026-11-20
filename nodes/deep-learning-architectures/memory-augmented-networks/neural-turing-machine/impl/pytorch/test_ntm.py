@@ -29,9 +29,9 @@ def copy_batch(gen, batch, items, bits):
     x[:, :items, :bits] = seq
     x[:, items, bits] = 1.0
     targets = torch.zeros(batch, t, bits, dtype=torch.float64)
-    targets[:, items + 1:] = seq
+    targets[:, items + 1 :] = seq
     mask = torch.zeros(batch, t, dtype=torch.float64)
-    mask[:, items + 1:] = 1.0
+    mask[:, items + 1 :] = 1.0
     return x, targets, mask
 
 
@@ -69,7 +69,7 @@ def test_gradcheck():
     mask = torch.ones(2, 4, dtype=torch.float64)
 
     def loss(*vals):
-        return bits_per_sequence(forward(dict(zip(params, vals)), x, cfg), targets, mask)
+        return bits_per_sequence(forward(dict(zip(params, vals, strict=True)), x, cfg), targets, mask)
 
     assert torch.autograd.gradcheck(loss, tuple(params.values()), eps=1e-6, atol=1e-6)
 

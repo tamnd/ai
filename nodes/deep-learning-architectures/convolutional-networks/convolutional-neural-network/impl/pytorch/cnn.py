@@ -23,7 +23,15 @@ def config(channels=1, c1=6, c2=16, f1=120, f2=84, classes=10, size=32):
 def param_count(cfg):
     flat = cfg["c2"] * ((cfg["size"] - 12) // 4) ** 2
     convs = KERNEL**2 * (cfg["channels"] * cfg["c1"] + cfg["c1"] * cfg["c2"]) + cfg["c1"] + cfg["c2"]
-    return convs + flat * cfg["f1"] + cfg["f1"] + cfg["f1"] * cfg["f2"] + cfg["f2"] + cfg["f2"] * cfg["classes"] + cfg["classes"]
+    return (
+        convs
+        + flat * cfg["f1"]
+        + cfg["f1"]
+        + cfg["f1"] * cfg["f2"]
+        + cfg["f2"]
+        + cfg["f2"] * cfg["classes"]
+        + cfg["classes"]
+    )
 
 
 def conv2d(x, w, b=None, stride=1, pad=0, mode="zeros"):

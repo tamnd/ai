@@ -30,7 +30,7 @@ def config(src_vocab=7, tgt_vocab=6, embed_size=3, hidden_size=4, n_layers=2, re
 
 
 def layer_names(prefix, n_layers):
-    return [(f"{prefix}{l}_W", f"{prefix}{l}_U", f"{prefix}{l}_b") for l in range(n_layers)]
+    return [(f"{prefix}{l}_W", f"{prefix}{l}_U", f"{prefix}{l}_b") for l in range(n_layers)]  # noqa: E741
 
 
 def decoder_inputs(tgt):
@@ -45,7 +45,7 @@ class Seq2Seq(torch.nn.Module):
         E, H, L = cfg["embed_size"], cfg["hidden_size"], cfg["n_layers"]
         shapes = {"src_embed": (cfg["src_vocab"], E), "tgt_embed": (cfg["tgt_vocab"], E)}
         for prefix in ("enc", "dec"):
-            for l, (w, u, b) in enumerate(layer_names(prefix, L)):
+            for l, (w, u, b) in enumerate(layer_names(prefix, L)):  # noqa: E741
                 shapes |= {w: (E if l == 0 else H, 4 * H), u: (H, 4 * H), b: (4 * H,)}
         shapes |= {"out_W": (H, cfg["tgt_vocab"]), "out_b": (cfg["tgt_vocab"],)}
         for name, shape in shapes.items():  # U(-0.08, 0.08), as in Section 3.4 of Sutskever et al.
@@ -60,7 +60,7 @@ class Seq2Seq(torch.nn.Module):
                 p.copy_(torch.as_tensor(params[name]))
         return model
 
-    def cell(self, prefix, l, x, h, c):
+    def cell(self, prefix, l, x, h, c):  # noqa: E741
         w, u, b = (getattr(self, n) for n in layer_names(prefix, self.cfg["n_layers"])[l])
         z = x @ w + h @ u + b  # (B, 4 * H)
         i, f, g, o = z.chunk(4, dim=-1)
@@ -70,7 +70,7 @@ class Seq2Seq(torch.nn.Module):
     def step(self, prefix, x, state):
         """One step of the stack `prefix` on x (B, E) from state (h, c), each (L, B, H); return (top, state)."""
         hs, cs = [], []
-        for l in range(self.cfg["n_layers"]):
+        for l in range(self.cfg["n_layers"]):  # noqa: E741
             h, c = self.cell(prefix, l, x, state[0][l], state[1][l])
             hs.append(h)
             cs.append(c)
@@ -137,7 +137,7 @@ class Seq2Seq(torch.nn.Module):
         E, H, L = self.cfg["embed_size"], self.cfg["hidden_size"], self.cfg["n_layers"]
         lstm = torch.nn.LSTM(E, H, num_layers=L, batch_first=True, dtype=self.out_W.dtype)
         with torch.no_grad():
-            for l, (w, u, b) in enumerate(layer_names(prefix, L)):
+            for l, (w, u, b) in enumerate(layer_names(prefix, L)):  # noqa: E741
                 getattr(lstm, f"weight_ih_l{l}").copy_(getattr(self, w).T)
                 getattr(lstm, f"weight_hh_l{l}").copy_(getattr(self, u).T)
                 getattr(lstm, f"bias_ih_l{l}").copy_(getattr(self, b))

@@ -51,8 +51,14 @@ def init(key, cfg, zero_gamma=False):
     for s, n in enumerate(cfg["blocks"]):
         m, stage = w * 2**s, []
         for i in range(n):
-            p = {"conv1": conv(m, c_in, 1), "bn1": bn(m), "conv2": conv(m, m, 3), "bn2": bn(m),
-                 "conv3": conv(EXPANSION * m, m, 1), "bn3": bn(EXPANSION * m, 0.0 if zero_gamma else 1.0)}
+            p = {
+                "conv1": conv(m, c_in, 1),
+                "bn1": bn(m),
+                "conv2": conv(m, m, 3),
+                "bn2": bn(m),
+                "conv3": conv(EXPANSION * m, m, 1),
+                "bn3": bn(EXPANSION * m, 0.0 if zero_gamma else 1.0),
+            }
             if i == 0:
                 p["proj"], p["bn_proj"] = conv(EXPANSION * m, c_in, 1), bn(EXPANSION * m)
             stage.append(p)
@@ -63,13 +69,13 @@ def init(key, cfg, zero_gamma=False):
 
 
 def conv2d(x, W, stride=1, pad=0):
-    return jax.lax.conv_general_dilated(x, W, (stride, stride), [(pad, pad), (pad, pad)],
-                                        dimension_numbers=("NCHW", "OIHW", "NCHW"))
+    return jax.lax.conv_general_dilated(
+        x, W, (stride, stride), [(pad, pad), (pad, pad)], dimension_numbers=("NCHW", "OIHW", "NCHW")
+    )
 
 
 def max_pool(x):
-    return jax.lax.reduce_window(x, -jnp.inf, jax.lax.max, (1, 1, 3, 3), (1, 1, 2, 2),
-                                 [(0, 0), (0, 0), (1, 1), (1, 1)])
+    return jax.lax.reduce_window(x, -jnp.inf, jax.lax.max, (1, 1, 3, 3), (1, 1, 2, 2), [(0, 0), (0, 0), (1, 1), (1, 1)])
 
 
 def batch_norm(x, p, st=None):

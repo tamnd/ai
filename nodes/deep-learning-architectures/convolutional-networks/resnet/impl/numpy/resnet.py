@@ -92,9 +92,14 @@ def init(rng, cfg, zero_gamma=False):
     w, K = cfg["width"], cfg["classes"]
     params = {"stem": {"conv": _conv_w(rng, w, 3, 7), "bn": _bn(w)}, "stages": [[] for _ in range(STAGES)]}
     for s, _, c_in, mid, c_out, _, proj in plan(cfg):
-        p = {"conv1": _conv_w(rng, mid, c_in, 1), "bn1": _bn(mid),
-             "conv2": _conv_w(rng, mid, mid, 3), "bn2": _bn(mid),
-             "conv3": _conv_w(rng, c_out, mid, 1), "bn3": _bn(c_out)}
+        p = {
+            "conv1": _conv_w(rng, mid, c_in, 1),
+            "bn1": _bn(mid),
+            "conv2": _conv_w(rng, mid, mid, 3),
+            "bn2": _bn(mid),
+            "conv3": _conv_w(rng, c_out, mid, 1),
+            "bn3": _bn(c_out),
+        }
         if zero_gamma:
             p["bn3"]["gamma"][:] = 0.0
         if proj:
@@ -178,6 +183,7 @@ def dense_init(rng, d_in, d, n_blocks, classes, dtype=np.float64):
 
     Return (params, state): the weights, scales and shifts, and the running statistics of the batch norms.
     """
+
     def lin(n_in, n_out, gain=2.0):
         return rng.normal(0.0, np.sqrt(gain / n_in), (n_in, n_out)).astype(dtype)
 

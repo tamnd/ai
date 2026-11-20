@@ -21,8 +21,19 @@ POSITIONS = ("learned", "none")
 _erf = np.vectorize(math.erf, otypes=[float])
 
 
-def config(image_size=8, patch_size=2, channels=3, d_model=8, n_heads=2, d_ff=16, n_layers=2, n_classes=5,
-           head_hidden=0, pool="cls", pos="learned"):
+def config(
+    image_size=8,
+    patch_size=2,
+    channels=3,
+    d_model=8,
+    n_heads=2,
+    d_ff=16,
+    n_layers=2,
+    n_classes=5,
+    head_hidden=0,
+    pool="cls",
+    pos="learned",
+):
     """Return the config of the network; the defaults are the example config of shapes.yaml."""
     if min(image_size, patch_size, channels, d_model, n_heads, d_ff, n_layers) < 1 or head_hidden < 0:
         raise ValueError("the sizes must be at least 1")
@@ -65,7 +76,7 @@ def param_shapes(cfg):
         shapes["cls"] = (D,)
     if cfg["pos"] == "learned":
         shapes["pos"] = (n_tokens(cfg), D)
-    for l in range(cfg["n_layers"]):
+    for l in range(cfg["n_layers"]):  # noqa: E741
         shapes |= {
             f"l{l}_ln1_g": (D,), f"l{l}_ln1_b": (D,),
             f"l{l}_qkv_W": (D, 3 * D), f"l{l}_qkv_b": (3 * D,),
@@ -166,7 +177,7 @@ def merge_heads(x):
     return x.transpose(0, 2, 1, 3).reshape(B, n, H * d)
 
 
-def msa(p, l, h, H):
+def msa(p, l, h, H):  # noqa: E741
     """eq-msa: multi-head self-attention of layer l on the normalized tokens h (B, n, D)."""
     D = h.shape[-1]
     qkv = h @ p[f"l{l}_qkv_W"] + p[f"l{l}_qkv_b"]
@@ -176,7 +187,7 @@ def msa(p, l, h, H):
     return o @ p[f"l{l}_out_W"] + p[f"l{l}_out_b"], {"h": h, "q": q, "k": k, "v": v, "weights": a, "o": o}
 
 
-def msa_backward(p, l, dy, c):
+def msa_backward(p, l, dy, c):  # noqa: E741
     D = dy.shape[-1]
     d = D // c["q"].shape[1]
     g = {f"l{l}_out_W": np.einsum("bni,bnj->ij", c["o"], dy), f"l{l}_out_b": dy.sum((0, 1))}
@@ -208,7 +219,7 @@ def forward(params, cfg, images):
     p, H = params, cfg["n_heads"]
     z, x = embed(p, cfg, images)
     cache = {"patches": x, "tokens": z, "layers": []}
-    for l in range(cfg["n_layers"]):
+    for l in range(cfg["n_layers"]):  # noqa: E741
         h1, n1 = layer_norm(z, p[f"l{l}_ln1_g"], p[f"l{l}_ln1_b"])
         a, ca = msa(p, l, h1, H)
         z1 = z + a  # eq-attn
@@ -263,7 +274,7 @@ def backward(params, cfg, cache, labels):
     else:
         dzn += dy[:, None, :] / n
     dz, g["ln_g"], g["ln_b"] = layer_norm_backward(dzn, cache["nf"])
-    for l in reversed(range(cfg["n_layers"])):
+    for l in reversed(range(cfg["n_layers"])):  # noqa: E741
         c = cache["layers"][l]
         g[f"l{l}_fc2_W"] = np.einsum("bni,bnj->ij", c["gu"], dz)
         g[f"l{l}_fc2_b"] = dz.sum((0, 1))

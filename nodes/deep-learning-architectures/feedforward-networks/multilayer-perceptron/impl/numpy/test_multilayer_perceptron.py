@@ -77,7 +77,7 @@ def test_gradient_finite_differences(activation):
     dx, grads = backward(params, cache, mse_loss(y, t)[1])
     eps = 1e-6
     for key in ("W", "b"):
-        for l, p in enumerate(params[key]):
+        for l, p in enumerate(params[key]):  # noqa: E741
             for idx in np.ndindex(p.shape):
                 plus = {k: [a.copy() for a in v] for k, v in params.items()}
                 minus = {k: [a.copy() for a in v] for k, v in params.items()}

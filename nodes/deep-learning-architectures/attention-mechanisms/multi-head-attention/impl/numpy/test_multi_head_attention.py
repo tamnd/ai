@@ -226,7 +226,9 @@ def test_counts(M, H, d_k, d_v):
         assert flops(cfg, 2, 7) == 8 * 2 * 7 * M * M + 4 * 2 * 7 * 7 * M
     B, T, S = 2, 3, 5
     Dk, Dv = cfg["d_k"], cfg["d_v"]
-    by_hand = 2 * B * (T * M * H * Dk + S * M * H * Dk + S * M * H * Dv + H * T * S * Dk + H * T * S * Dv + T * H * Dv * M)
+    by_hand = (
+        2 * B * (T * M * H * Dk + S * M * H * Dk + S * M * H * Dv + H * T * S * Dk + H * T * S * Dv + T * H * Dv * M)
+    )
     assert flops(cfg, B, T, S) == by_hand
 
 

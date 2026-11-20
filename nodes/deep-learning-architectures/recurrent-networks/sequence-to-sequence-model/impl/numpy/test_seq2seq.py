@@ -261,7 +261,7 @@ def test_longer_outputs_are_never_more_likely_than_their_prefixes():
     params, src = init(rng, cfg, scale=1.0), rng.integers(1, 5, 3)
     y = [int(t) for t in rng.integers(1, 4, 6)]
     logps = [prefix_log_prob(params, cfg, src, y[:n]) for n in range(len(y) + 1)]
-    assert all(a >= b for a, b in zip(logps, logps[1:]))
+    assert all(a >= b for a, b in itertools.pairwise(logps))
 
 
 def test_reversal_is_reading_the_reversed_source():
@@ -328,7 +328,7 @@ def test_schedules():
     assert exp[0] == 1.0 and exp[-1] < 0.01
     np.testing.assert_allclose(sig[0], 500 / 501)
     for s in (lin, exp, sig):
-        assert all(a >= b for a, b in zip(s, s[1:]))
+        assert all(a >= b for a, b in itertools.pairwise(s))
         assert all(0 <= v <= 1 for v in s)
     # The inverse sigmoid is 1/2 at i = k log k.
     np.testing.assert_allclose(schedule("inverse_sigmoid", 500 * np.log(500), 500.0), 0.5)

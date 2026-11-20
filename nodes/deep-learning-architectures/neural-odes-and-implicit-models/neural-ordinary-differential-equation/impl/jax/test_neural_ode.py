@@ -29,7 +29,7 @@ def test_shared_fixture():
     x, t = jnp.asarray(inp["x"]), jnp.asarray(inp["t"])
 
     def loss(params, x):
-        return mse_loss(forward(params, x, cfg)[:, :cfg["d"]], t)
+        return mse_loss(forward(params, x, cfg)[:, : cfg["d"]], t)
 
     np.testing.assert_allclose(forward(params, x, cfg), want["y"], rtol=1e-12, atol=1e-14)
     assert float(loss(params, x)) == pytest.approx(float(want["loss"]), rel=1e-12)
@@ -63,10 +63,12 @@ def test_adjoint_gradient_converges_to_autodiff():
     gaps = []
     for n in (2, 4, 8):
         cfg = config(2, 4, d_state=3, n_steps=n)
-        grads = [jax.grad(lambda p, x: jnp.sum(fn(p, x, cfg) * c), argnums=(0, 1))(params, x)
-                 for fn in (forward, forward_adjoint)]
+        grads = [
+            jax.grad(lambda p, x: jnp.sum(fn(p, x, cfg) * c), argnums=(0, 1))(params, x)  # noqa: B023
+            for fn in (forward, forward_adjoint)
+        ]
         leaves = [jax.tree_util.tree_leaves(g) for g in grads]
-        gaps.append(max(float(jnp.max(jnp.abs(a - b))) for a, b in zip(*leaves)))
+        gaps.append(max(float(jnp.max(jnp.abs(a - b))) for a, b in zip(*leaves, strict=True)))
     assert gaps[0] > gaps[1] > gaps[2]
     assert gaps[2] < 1e-4
 

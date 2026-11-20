@@ -25,7 +25,9 @@ def config(d=2, d_hidden=8, d_state=None, n_steps=4, T=1.0, method="rk4"):
     """d_state is the width D = d + p of the state; it defaults to d, the plain model with no augmentation."""
     d_state = d if d_state is None else d_state
     if min(d, d_hidden, n_steps) < 1 or d_state < d or T <= 0 or method not in STAGES:
-        raise ValueError("d, d_hidden and n_steps must be at least 1, d_state at least d, T positive, method euler or rk4")
+        raise ValueError(
+            "d, d_hidden and n_steps must be at least 1, d_state at least d, T positive, method euler or rk4"
+        )
     return {"d": d, "d_hidden": d_hidden, "d_state": d_state, "n_steps": n_steps, "T": float(T), "method": method}
 
 
@@ -130,11 +132,11 @@ def dopri5(f, h, t0, t1, rtol=1e-6, atol=1e-8, max_steps=100000):
         dt = min(dt, t1 - t)
         ks = [k1]
         for i in range(1, 7):
-            y = h + dt * sum(a * k for a, k in zip(DP_A[i], ks))
+            y = h + dt * sum(a * k for a, k in zip(DP_A[i], ks, strict=True))
             ks.append(f(y, t + DP_C[i] * dt))
         n_eval += 6
-        h5 = h + dt * sum(b * k for b, k in zip(DP_B5, ks))
-        err = dt * sum((b5 - b4) * k for b5, b4, k in zip(DP_B5, DP_B4, ks))
+        h5 = h + dt * sum(b * k for b, k in zip(DP_B5, ks, strict=True))
+        err = dt * sum((b5 - b4) * k for b5, b4, k in zip(DP_B5, DP_B4, ks, strict=True))
         scale = atol + rtol * np.maximum(np.abs(h), np.abs(h5))
         e = float(np.sqrt(np.mean((err / scale) ** 2)))
         if e <= 1.0:
@@ -167,7 +169,7 @@ def adjoint_backward(params, y, dy, cfg):
     n = B * D
 
     def aug(z, t):
-        h, a = z[:n].reshape(B, D), z[n:2 * n].reshape(B, D)
+        h, a = z[:n].reshape(B, D), z[n : 2 * n].reshape(B, D)
         s = np.tanh(h @ params["W1"].T + t * params["u"] + params["b1"])  # (B, H), shared by f and its products
         f = s @ params["W2"].T + params["b2"]  # (B, D)
         g = (a @ params["W2"]) * (1.0 - s * s)  # (B, H)
@@ -176,12 +178,12 @@ def adjoint_backward(params, y, dy, cfg):
 
     z = np.concatenate([y.ravel(), dy.ravel(), np.zeros(sum(sizes))])  # (2 B D + P,)
     z = SOLVERS[cfg["method"]](aug, z, cfg["T"], 0.0, cfg["n_steps"])
-    a0, g = z[n:2 * n].reshape(B, D), z[2 * n:]
+    a0, g = z[n : 2 * n].reshape(B, D), z[2 * n :]
     grads, i = {}, 0
-    for k, m in zip(NAMES, sizes):
-        grads[k] = g[i:i + m].reshape(shapes[k])
+    for k, m in zip(NAMES, sizes, strict=True):
+        grads[k] = g[i : i + m].reshape(shapes[k])
         i += m
-    return a0[:, :cfg["d"]], grads
+    return a0[:, : cfg["d"]], grads
 
 
 def backprop(params, x, dy, cfg):
@@ -199,7 +201,12 @@ def backprop(params, x, dy, cfg):
             k1 = field(params, h, t)
             k2 = field(params, h + 0.5 * dt * k1, t + 0.5 * dt)
             k3 = field(params, h + 0.5 * dt * k2, t + 0.5 * dt)
-            stages = [(h, t), (h + 0.5 * dt * k1, t + 0.5 * dt), (h + 0.5 * dt * k2, t + 0.5 * dt), (h + dt * k3, t + dt)]
+            stages = [
+                (h, t),
+                (h + 0.5 * dt * k1, t + 0.5 * dt),
+                (h + 0.5 * dt * k2, t + 0.5 * dt),
+                (h + dt * k3, t + dt),
+            ]
             k4 = field(params, stages[3][0], t + dt)
             h = h + dt / 6.0 * (k1 + 2.0 * k2 + 2.0 * k3 + k4)
         tape.append(stages)
@@ -228,7 +235,7 @@ def backprop(params, x, dy, cfg):
                 j, c = back
                 ak[j] = ak[j] + c * vh  # y_i depends on k_j
         a = a + sum(ay)
-    return a[:, :cfg["d"]], grads
+    return a[:, : cfg["d"]], grads
 
 
 def log_det_flow(params, x, cfg):
@@ -255,9 +262,9 @@ def train(params, x, t, cfg, lr=0.1, steps=100):
     losses = []
     for _ in range(steps):
         y = forward(params, x, cfg)
-        loss, dyd = mse_loss(y[:, :cfg["d"]], t)
+        loss, dyd = mse_loss(y[:, : cfg["d"]], t)
         dy = np.zeros_like(y)
-        dy[:, :cfg["d"]] = dyd
+        dy[:, : cfg["d"]] = dyd
         _, grads = adjoint_backward(params, y, dy, cfg)
         params = {k: params[k] - lr * grads[k] for k in params}
         losses.append(loss)

@@ -12,11 +12,11 @@ from hypothesis import given, settings
 from hypothesis import strategies as st
 
 from cnn import (
+    config,
     conv2d,
     conv2d_backward,
     conv2d_loop,
     conv_params,
-    config,
     flops,
     forward,
     im2col,
@@ -79,8 +79,13 @@ def test_out_size_examples():
 
 
 @settings(max_examples=25, deadline=None)
-@given(seed=st.integers(0, 2**31 - 1), s=st.integers(1, 3), p=st.integers(0, 2), k=st.integers(1, 4),
-       circular=st.booleans())
+@given(
+    seed=st.integers(0, 2**31 - 1),
+    s=st.integers(1, 3),
+    p=st.integers(0, 2),
+    k=st.integers(1, 4),
+    circular=st.booleans(),
+)
 def test_im2col_equals_loop(seed, s, p, k, circular):
     rng = np.random.default_rng(seed)
     x, w, b = rng.normal(size=(2, 3, 6, 5)), rng.normal(size=(4, 3, k, k)), rng.normal(size=4)
@@ -117,8 +122,9 @@ def test_equivariance_of_crops(seed, t1, t2, k):
     a, n = 3, 10
     crop = big[:, :, a + t1 : a + t1 + n, a + t2 : a + t2 + n]
     full = conv2d(big, w)
-    np.testing.assert_allclose(conv2d(crop, w), full[:, :, a + t1 : a + t1 + n - k + 1, a + t2 : a + t2 + n - k + 1],
-                               rtol=1e-12, atol=1e-12)
+    np.testing.assert_allclose(
+        conv2d(crop, w), full[:, :, a + t1 : a + t1 + n - k + 1, a + t2 : a + t2 + n - k + 1], rtol=1e-12, atol=1e-12
+    )
 
 
 def test_zero_padding_breaks_equivariance_at_the_border():
@@ -149,12 +155,15 @@ def test_pooling_invariance():
         np.testing.assert_allclose(g(np.roll(x, t, axis=(2, 3))), g(x), rtol=1e-12)  # global pooling is invariant
 
 
-@pytest.mark.parametrize(("stack", "expected"), [
-    ([(3, 1)] * 2, (5, 1)),
-    ([(3, 1)] * 3, (7, 1)),
-    ([(5, 1), (2, 2), (5, 1), (2, 2), (5, 1)], (32, 4)),
-    ([(11, 4), (3, 2), (5, 1)], (51, 8)),
-])
+@pytest.mark.parametrize(
+    ("stack", "expected"),
+    [
+        ([(3, 1)] * 2, (5, 1)),
+        ([(3, 1)] * 3, (7, 1)),
+        ([(5, 1), (2, 2), (5, 1), (2, 2), (5, 1)], (32, 4)),
+        ([(11, 4), (3, 2), (5, 1)], (51, 8)),
+    ],
+)
 def test_receptive_field(stack, expected):
     assert receptive_field(stack) == expected
     # Measure it: the inputs that one output unit depends on, through kernels of ones.
@@ -165,7 +174,7 @@ def test_receptive_field(stack, expected):
         shapes.append((1, 1, out_size(shapes[-1][2], k, s), out_size(shapes[-1][3], k, s)))
     dy = np.zeros(shapes[-1])
     dy[0, 0, 0, 0] = 1.0
-    for (k, s), shp in zip(reversed(stack), reversed(shapes[:-1])):
+    for (k, s), shp in zip(reversed(stack), reversed(shapes[:-1]), strict=True):
         dy, _, _ = conv2d_backward(np.zeros(shp), np.ones((1, 1, k, k)), dy, stride=s)
     rows = np.nonzero(dy[0, 0].any(axis=1))[0]
     assert rows.min() == 0 and rows.max() + 1 == expected[0]
@@ -226,8 +235,9 @@ def test_shared_fixture():
         np.testing.assert_allclose(cache[name], expected[name], rtol=1e-12, atol=1e-12)
     lx, lw, lb = inputs["layer_x"], inputs["layer_w"], inputs["layer_b"]
     np.testing.assert_allclose(conv2d_loop(lx, lw, lb, 2, 1), expected["layer_zeros"], rtol=1e-12, atol=1e-12)
-    np.testing.assert_allclose(conv2d_loop(lx, lw, lb, 2, 1, "circular"), expected["layer_circular"], rtol=1e-12,
-                               atol=1e-12)
+    np.testing.assert_allclose(
+        conv2d_loop(lx, lw, lb, 2, 1, "circular"), expected["layer_circular"], rtol=1e-12, atol=1e-12
+    )
 
 
 def test_errors():

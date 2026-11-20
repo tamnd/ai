@@ -38,7 +38,7 @@ def directions(cfg):
 
 
 def param_count(cfg):
-    I, H, L, K = cfg["input_size"], cfg["hidden_size"], cfg["n_layers"], cfg["n_classes"]
+    I, H, L, K = cfg["input_size"], cfg["hidden_size"], cfg["n_layers"], cfg["n_classes"]  # noqa: E741
     G, D = CELLS[cfg["cell"]], len(directions(cfg))
     return D * (G * H * (I + H) + G * H) + (L - 1) * D * (G * H * (D * H + H) + G * H) + D * H * K + K
 
@@ -60,10 +60,10 @@ class BiRNN(torch.nn.Module):
     def __init__(self, cfg, scale=0.1):
         super().__init__()
         self.cfg = cfg
-        I, H, K = cfg["input_size"], cfg["hidden_size"], cfg["n_classes"]
+        I, H, K = cfg["input_size"], cfg["hidden_size"], cfg["n_classes"]  # noqa: E741
         G, D = CELLS[cfg["cell"]], len(directions(cfg))
         shapes = {}
-        for l in range(cfg["n_layers"]):
+        for l in range(cfg["n_layers"]):  # noqa: E741
             for d in directions(cfg):
                 n_in = I if l == 0 else D * H
                 shapes |= {f"l{l}_{d}_W": (n_in, G * H), f"l{l}_{d}_U": (H, G * H), f"l{l}_{d}_b": (G * H,)}
@@ -80,7 +80,7 @@ class BiRNN(torch.nn.Module):
                 p.copy_(torch.as_tensor(params[name]))
         return model
 
-    def run_direction(self, l, d, x):
+    def run_direction(self, l, d, x):  # noqa: E741
         """One direction of layer l over x (B, T, n_in), in its reading order, from a zero state: (B, T, H)."""
         W, U, b = (getattr(self, f"l{l}_{d}_{n}") for n in "WUb")
         B, T, _ = x.shape
@@ -103,7 +103,7 @@ class BiRNN(torch.nn.Module):
         lengths = torch.full((B,), T) if lengths is None else torch.as_tensor(lengths)
         mask = mask_of(lengths, T, x.dtype)
         inp = x
-        for l in range(self.cfg["n_layers"]):
+        for l in range(self.cfg["n_layers"]):  # noqa: E741
             outs = []
             for d in directions(self.cfg):
                 if d == "fwd":
@@ -131,7 +131,7 @@ class BiRNN(torch.nn.Module):
             dtype=self.out_W.dtype,
         )
         with torch.no_grad():
-            for l in range(cfg["n_layers"]):
+            for l in range(cfg["n_layers"]):  # noqa: E741
                 for d in directions(cfg):
                     suffix = f"l{l}" + ("_reverse" if d == "bwd" else "")
                     getattr(net, f"weight_ih_{suffix}").copy_(getattr(self, f"l{l}_{d}_W").T)

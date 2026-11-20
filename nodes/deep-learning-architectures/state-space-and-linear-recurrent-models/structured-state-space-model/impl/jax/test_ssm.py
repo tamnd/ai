@@ -67,7 +67,10 @@ def test_causality():
     v = u.copy()
     v[:, 6:] += rng.standard_normal((2, 10, 3))
     for mode in ("conv", "scan", "parallel"):
-        a, b = np.asarray(apply(params, jnp.asarray(u), "zoh", mode)), np.asarray(apply(params, jnp.asarray(v), "zoh", mode))
+        a, b = (
+            np.asarray(apply(params, jnp.asarray(u), "zoh", mode)),
+            np.asarray(apply(params, jnp.asarray(v), "zoh", mode)),
+        )
         assert np.allclose(a[:, :6], b[:, :6], atol=1e-12)
         assert not np.allclose(a[:, 6:], b[:, 6:])
 
@@ -82,9 +85,13 @@ def test_discretizations():
         "d": jnp.array([0.0]),
     }
     ab, bb = discrete(params, "zoh")
-    assert np.isclose(complex(ab[0, 0]), math.exp(-0.175)) and np.isclose(complex(bb[0, 0]), (math.exp(-0.175) - 1) / -0.7 * 1.3)
+    assert np.isclose(complex(ab[0, 0]), math.exp(-0.175)) and np.isclose(
+        complex(bb[0, 0]), (math.exp(-0.175) - 1) / -0.7 * 1.3
+    )
     ab, bb = discrete(params, "bilinear")
-    assert np.isclose(complex(ab[0, 0]), (1 - 0.0875) / (1 + 0.0875)) and np.isclose(complex(bb[0, 0]), 0.25 * 1.3 / 1.0875)
+    assert np.isclose(complex(ab[0, 0]), (1 - 0.0875) / (1 + 0.0875)) and np.isclose(
+        complex(bb[0, 0]), 0.25 * 1.3 / 1.0875
+    )
     big = layer(5, h=4, n=6)
     big["log_dt"] = jnp.array([-6.0, 0.0, 4.0, 9.0])
     big["a_im"] = 100.0 * big["a_im"]

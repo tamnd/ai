@@ -51,7 +51,9 @@ def im2col(x, k, stride=1, pad=0, mode="zeros"):
     """The windows of x (B, C, H, W): an array (B, C, H', W', k, k), a view of the padded input."""
     xp = _pad(x, pad, mode)
     out_size(x.shape[2], k, stride, pad)  # checks that a window fits
-    win = np.lib.stride_tricks.sliding_window_view(xp, (k, k), axis=(2, 3))  # (B, C, H + 2p - k + 1, W + 2p - k + 1, k, k)
+    win = np.lib.stride_tricks.sliding_window_view(
+        xp, (k, k), axis=(2, 3)
+    )  # (B, C, H + 2p - k + 1, W + 2p - k + 1, k, k)
     return win[:, :, ::stride, ::stride]  # (B, C, H', W', k, k)
 
 

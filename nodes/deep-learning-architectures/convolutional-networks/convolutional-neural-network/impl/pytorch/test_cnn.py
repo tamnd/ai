@@ -32,8 +32,17 @@ def test_worked_example():
     assert conv2d(x, w, pad=1, stride=2)[0, 0].tolist() == [[0.0, 11.0], [30.0, 67.0]]
 
 
-@pytest.mark.parametrize(("k", "s", "p", "mode"), [(1, 1, 0, "zeros"), (3, 1, 1, "zeros"), (3, 2, 1, "zeros"),
-                                                   (5, 3, 2, "zeros"), (3, 1, 1, "circular"), (4, 2, 2, "circular")])
+@pytest.mark.parametrize(
+    ("k", "s", "p", "mode"),
+    [
+        (1, 1, 0, "zeros"),
+        (3, 1, 1, "zeros"),
+        (3, 2, 1, "zeros"),
+        (5, 3, 2, "zeros"),
+        (3, 1, 1, "circular"),
+        (4, 2, 2, "circular"),
+    ],
+)
 def test_matches_torch_conv2d(k, s, p, mode):
     g = torch.Generator().manual_seed(k * 100 + s * 10 + p)
     x, w, b = torch.randn(2, 3, 9, 7, generator=g), torch.randn(4, 3, k, k, generator=g), torch.randn(4, generator=g)
@@ -61,8 +70,12 @@ def test_equivariance_circular():
     g = torch.Generator().manual_seed(8)
     x, w = torch.randn(1, 2, 8, 8, generator=g), torch.randn(3, 2, 3, 3, generator=g)
     for t in [(1, 0), (2, -3), (7, 5)]:
-        torch.testing.assert_close(conv2d(torch.roll(x, t, (2, 3)), w, pad=1, mode="circular"),
-                                   torch.roll(conv2d(x, w, pad=1, mode="circular"), t, (2, 3)), rtol=1e-12, atol=1e-12)
+        torch.testing.assert_close(
+            conv2d(torch.roll(x, t, (2, 3)), w, pad=1, mode="circular"),
+            torch.roll(conv2d(x, w, pad=1, mode="circular"), t, (2, 3)),
+            rtol=1e-12,
+            atol=1e-12,
+        )
 
 
 def test_shared_fixture():
@@ -78,9 +91,12 @@ def test_shared_fixture():
     for name in NAMES:
         torch.testing.assert_close(cache[name], torch.as_tensor(expected[name]), rtol=1e-10, atol=1e-12)
     lx, lw, lb = (torch.as_tensor(inputs[k]) for k in ("layer_x", "layer_w", "layer_b"))
-    torch.testing.assert_close(conv2d(lx, lw, lb, 2, 1), torch.as_tensor(expected["layer_zeros"]), rtol=1e-10, atol=1e-12)
-    torch.testing.assert_close(conv2d(lx, lw, lb, 2, 1, "circular"), torch.as_tensor(expected["layer_circular"]),
-                               rtol=1e-10, atol=1e-12)
+    torch.testing.assert_close(
+        conv2d(lx, lw, lb, 2, 1), torch.as_tensor(expected["layer_zeros"]), rtol=1e-10, atol=1e-12
+    )
+    torch.testing.assert_close(
+        conv2d(lx, lw, lb, 2, 1, "circular"), torch.as_tensor(expected["layer_circular"]), rtol=1e-10, atol=1e-12
+    )
 
 
 def test_shape_contract():

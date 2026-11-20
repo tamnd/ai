@@ -172,9 +172,9 @@ def test_shared_weight_gradient_is_the_sum_over_steps(nl):
                 h_t, out = h0, 0.0
                 for t in range(6):
                     p = dict(params)
-                    if t == s:  # perturb the copy of U used at step s only
+                    if t == s:  # perturb the copy of U used at step s only  # noqa: B023
                         p["U"] = params["U"].copy()
-                        p["U"][idx] += delta
+                        p["U"][idx] += delta  # noqa: B023
                     h_t, _ = cell(p, x[:, t], h_t, nl)
                     out += np.sum(h_t * r[:, t])
                 return out

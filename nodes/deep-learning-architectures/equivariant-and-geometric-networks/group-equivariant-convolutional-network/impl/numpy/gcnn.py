@@ -40,12 +40,18 @@ def flops(cfg, B, n):
 
 def init(rng, cfg, scale=1.0):
     c_in, c1, c2, k, m = cfg["c_in"], cfg["c1"], cfg["c2"], cfg["k"], cfg["n_classes"]
-    return {"W1": scale * rng.normal(size=(c1, c_in, k, k)) / np.sqrt(c_in * k * k), "b1": np.zeros(c1),
-            "W2": scale * rng.normal(size=(c2, c1, 4, k, k)) / np.sqrt(4 * c1 * k * k), "b2": np.zeros(c2),
-            "Wc": scale * rng.normal(size=(m, c2)) / np.sqrt(c2), "bc": np.zeros(m)}
+    return {
+        "W1": scale * rng.normal(size=(c1, c_in, k, k)) / np.sqrt(c_in * k * k),
+        "b1": np.zeros(c1),
+        "W2": scale * rng.normal(size=(c2, c1, 4, k, k)) / np.sqrt(4 * c1 * k * k),
+        "b2": np.zeros(c2),
+        "Wc": scale * rng.normal(size=(m, c2)) / np.sqrt(c2),
+        "bc": np.zeros(m),
+    }
 
 
 # The group action on images and on p4 feature maps.
+
 
 def rotate(x, r=1):
     """The image x (..., n, n) rotated by r times 90 degrees about its centre."""
@@ -63,11 +69,14 @@ def shift(x, a, b, mode):
         return np.roll(x, (a, b), axis=(-2, -1))
     n, m = x.shape[-2:]
     y = np.zeros_like(x)
-    y[..., max(a, 0):n + min(a, 0), max(b, 0):m + min(b, 0)] = x[..., max(-a, 0):n + min(-a, 0), max(-b, 0):m + min(-b, 0)]
+    y[..., max(a, 0) : n + min(a, 0), max(b, 0) : m + min(b, 0)] = x[
+        ..., max(-a, 0) : n + min(-a, 0), max(-b, 0) : m + min(-b, 0)
+    ]
     return y
 
 
 # The planar correlation and its gradients.
+
 
 def corr2d(x, w, mode="zero"):
     """out[b, o, u, v] = sum over c, i, j of x[b, c, u + i - p, v + j - p] w[o, c, i, j], with p = k // 2."""
@@ -93,15 +102,16 @@ def corr2d_backward(x, w, dout, mode="zero"):
 
 # The two equivariant layers, as one planar correlation with the augmented filter bank.
 
+
 def lift_bank(W):
     """W (O, C, k, k) to the bank (4 O, C, k, k) whose filter o * 4 + r is W[o] rotated r times."""
-    O, C, k, _ = W.shape
+    O, C, k, _ = W.shape  # noqa: E741
     return np.stack([rotate(W, r) for r in range(4)], axis=1).reshape(4 * O, C, k, k)  # eq: eq-lift
 
 
 def gconv_bank(W):
     """W (O, C, 4, k, k) to the bank (4 O, 4 C, k, k): filter (o, r) on input plane (c, s) is W[o, c, s - r] rotated r times."""
-    O, C, _, k, _ = W.shape
+    O, C, _, k, _ = W.shape  # noqa: E741
     bank = np.empty((O, 4, C, 4, k, k), dtype=W.dtype)
     for r in range(4):
         for s in range(4):
@@ -122,7 +132,7 @@ def gconv(f, W, mode="zero"):
 
 
 def lift_backward(x, W, dout, mode="zero"):
-    B, O = dout.shape[:2]
+    B, O = dout.shape[:2]  # noqa: E741
     n = x.shape[-1]
     dx, dbank = corr2d_backward(x, lift_bank(W), dout.reshape(B, 4 * O, n, n), mode)
     dbank = dbank.reshape(O, 4, *W.shape[1:])
@@ -131,7 +141,7 @@ def lift_backward(x, W, dout, mode="zero"):
 
 def gconv_backward(f, W, dout, mode="zero"):
     B, C, _, n, _ = f.shape
-    O, k = W.shape[0], W.shape[-1]
+    O, k = W.shape[0], W.shape[-1]  # noqa: E741
     df, dbank = corr2d_backward(f.reshape(B, 4 * C, n, n), gconv_bank(W), dout.reshape(B, 4 * O, n, n), mode)
     dbank = dbank.reshape(O, 4, C, 4, k, k)
     dW = np.zeros_like(W)
@@ -146,7 +156,7 @@ def gconv_direct(f, W, mode="circular"):
 
     Slow, for the tests: the sum runs over the group elements h = (y, s) and the filter is read at g^-1 h."""
     B, C, _, n, _ = f.shape
-    O, k = W.shape[0], W.shape[-1]
+    O, k = W.shape[0], W.shape[-1]  # noqa: E741
     p = k // 2
     out = np.zeros((B, O, 4, n, n))
     for r in range(4):
@@ -159,6 +169,7 @@ def gconv_direct(f, W, mode="circular"):
 
 
 # The model.
+
 
 def forward(params, x, cfg, cache=False):
     """Logits (B, n_classes) of the images x (B, c_in, n, n)."""

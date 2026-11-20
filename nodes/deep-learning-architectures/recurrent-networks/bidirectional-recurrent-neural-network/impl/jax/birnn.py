@@ -38,23 +38,26 @@ def directions(cfg):
 
 
 def param_count(cfg):
-    I, H, L, K = cfg["input_size"], cfg["hidden_size"], cfg["n_layers"], cfg["n_classes"]
+    I, H, L, K = cfg["input_size"], cfg["hidden_size"], cfg["n_layers"], cfg["n_classes"]  # noqa: E741
     G, D = CELLS[cfg["cell"]], len(directions(cfg))
     return D * (G * H * (I + H) + G * H) + (L - 1) * D * (G * H * (D * H + H) + G * H) + D * H * K + K
 
 
 def init(key, cfg, scale=0.1):
     """All parameters uniform in [-scale, scale]."""
-    I, H, K = cfg["input_size"], cfg["hidden_size"], cfg["n_classes"]
+    I, H, K = cfg["input_size"], cfg["hidden_size"], cfg["n_classes"]  # noqa: E741
     G, D = CELLS[cfg["cell"]], len(directions(cfg))
     shapes = {}
-    for l in range(cfg["n_layers"]):
+    for l in range(cfg["n_layers"]):  # noqa: E741
         for d in directions(cfg):
             n_in = I if l == 0 else D * H
             shapes |= {f"l{l}_{d}_W": (n_in, G * H), f"l{l}_{d}_U": (H, G * H), f"l{l}_{d}_b": (G * H,)}
     shapes |= {"out_W": (D * H, K), "out_b": (K,)}
     keys = jax.random.split(key, len(shapes))
-    return {n: jax.random.uniform(k, s, minval=-scale, maxval=scale) for k, (n, s) in zip(keys, shapes.items())}
+    return {
+        n: jax.random.uniform(k, s, minval=-scale, maxval=scale)
+        for k, (n, s) in zip(keys, shapes.items(), strict=True)
+    }
 
 
 def run_direction(cell, W, U, b, x, mask, reverse):
@@ -93,7 +96,7 @@ def forward(params, cfg, x, lengths=None):
     lengths = jnp.full((B,), T) if lengths is None else jnp.asarray(lengths)
     mask = mask_of(lengths, T, x.dtype)
     inp = x
-    for l in range(cfg["n_layers"]):
+    for l in range(cfg["n_layers"]):  # noqa: E741
         outs = [
             run_direction(cfg["cell"], *(params[f"l{l}_{d}_{n}"] for n in "WUb"), inp, mask, reverse=(d == "bwd"))
             for d in directions(cfg)

@@ -102,7 +102,7 @@ def test_step_and_gradients():
     g_c = torch.autograd.grad(loss_c, [m.log_dt, m.log_a_re, m.c])
     loss_s = (m(u, mode="scan") ** 2).sum()
     g_s = torch.autograd.grad(loss_s, [m.log_dt, m.log_a_re, m.c])
-    for a, b in zip(g_c, g_s):
+    for a, b in zip(g_c, g_s, strict=True):
         assert torch.allclose(a, b, atol=1e-8)
 
 

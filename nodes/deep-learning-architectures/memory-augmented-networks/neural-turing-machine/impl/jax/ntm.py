@@ -21,8 +21,16 @@ NAMES = ("Wc", "bc", "Wh", "bh", "Wy", "by")
 def config(x_dim=4, y_dim=3, hidden=8, n_loc=6, width=4, n_read=1, n_write=1, shift=1):
     if min(x_dim, y_dim, hidden, n_loc, width, n_read) < 1 or n_write < 0 or shift < 0 or 2 * shift + 1 > n_loc:
         raise ValueError("the sizes must be positive, n_write >= 0, and 2 shift + 1 <= n_loc")
-    return {"x_dim": x_dim, "y_dim": y_dim, "hidden": hidden, "n_loc": n_loc, "width": width,
-            "n_read": n_read, "n_write": n_write, "shift": shift}
+    return {
+        "x_dim": x_dim,
+        "y_dim": y_dim,
+        "hidden": hidden,
+        "n_loc": n_loc,
+        "width": width,
+        "n_read": n_read,
+        "n_write": n_write,
+        "shift": shift,
+    }
 
 
 def n_head_outputs(cfg):
@@ -39,9 +47,14 @@ def init(key, cfg, scale=1.0):
     x, y, h, m, nr = cfg["x_dim"], cfg["y_dim"], cfg["hidden"], cfg["width"], cfg["n_read"]
     p, z = n_head_outputs(cfg), x + nr * m
     k1, k2, k3 = jax.random.split(key, 3)
-    return {"Wc": scale * jax.random.normal(k1, (h, z)) / math.sqrt(z), "bc": jnp.zeros(h),
-            "Wh": scale * jax.random.normal(k2, (p, h)) / math.sqrt(h), "bh": jnp.zeros(p),
-            "Wy": scale * jax.random.normal(k3, (y, h + nr * m)) / math.sqrt(h + nr * m), "by": jnp.zeros(y)}
+    return {
+        "Wc": scale * jax.random.normal(k1, (h, z)) / math.sqrt(z),
+        "bc": jnp.zeros(h),
+        "Wh": scale * jax.random.normal(k2, (p, h)) / math.sqrt(h),
+        "bh": jnp.zeros(p),
+        "Wy": scale * jax.random.normal(k3, (y, h + nr * m)) / math.sqrt(h + nr * m),
+        "by": jnp.zeros(y),
+    }
 
 
 def safe_norm(v):
@@ -83,10 +96,10 @@ def read(memory, w):
 
 def write(memory, ws, erases, adds):
     keep = jnp.ones_like(memory)
-    for w, e in zip(ws, erases):
+    for w, e in zip(ws, erases, strict=True):
         keep = keep * (1.0 - w[:, :, None] * e[:, None, :])
     out = memory * keep
-    for w, a in zip(ws, adds):
+    for w, a in zip(ws, adds, strict=True):
         out = out + w[:, :, None] * a[:, None, :]
     return out
 
@@ -95,12 +108,16 @@ def split_heads(o, cfg):
     m, k = cfg["width"], 2 * cfg["shift"] + 1
     heads, i = [], 0
     for j in range(cfg["n_read"] + cfg["n_write"]):
-        hd = {"key": jnp.tanh(o[:, i:i + m]), "beta": jax.nn.softplus(o[:, i + m]),
-              "g": jax.nn.sigmoid(o[:, i + m + 1]), "s": jax.nn.softmax(o[:, i + m + 2:i + m + 2 + k], axis=-1),
-              "gamma": 1.0 + jax.nn.softplus(o[:, i + m + 2 + k])}
+        hd = {
+            "key": jnp.tanh(o[:, i : i + m]),
+            "beta": jax.nn.softplus(o[:, i + m]),
+            "g": jax.nn.sigmoid(o[:, i + m + 1]),
+            "s": jax.nn.softmax(o[:, i + m + 2 : i + m + 2 + k], axis=-1),
+            "gamma": 1.0 + jax.nn.softplus(o[:, i + m + 2 + k]),
+        }
         i += m + 3 + k
         if j >= cfg["n_read"]:
-            hd["erase"], hd["add"] = jax.nn.sigmoid(o[:, i:i + m]), jnp.tanh(o[:, i + m:i + 2 * m])
+            hd["erase"], hd["add"] = jax.nn.sigmoid(o[:, i : i + m]), jnp.tanh(o[:, i + m : i + 2 * m])
             i += 2 * m
         heads.append(hd)
     return heads

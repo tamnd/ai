@@ -77,7 +77,9 @@ def test_gradient_against_finite_differences():
         h = 1e-6
         plus = loss({**params, name: params[name] + h * direction})
         minus = loss({**params, name: params[name] - h * direction})
-        assert float((plus - minus) / (2 * h)) == pytest.approx(float((grads[name] * direction).sum()), rel=1e-5, abs=1e-8)
+        assert float((plus - minus) / (2 * h)) == pytest.approx(
+            float((grads[name] * direction).sum()), rel=1e-5, abs=1e-8
+        )
 
 
 def test_cosine_gradient_of_a_blank_row_is_finite():

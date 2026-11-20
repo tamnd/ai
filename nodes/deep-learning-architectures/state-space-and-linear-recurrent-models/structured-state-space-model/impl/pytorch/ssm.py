@@ -20,7 +20,9 @@ class DiagonalSSM(nn.Module):
             raise ValueError(f"method must be zoh or bilinear, got {method!r}")
         self.h, self.n, self.method = h, n, method
         k = torch.arange(n, dtype=torch.float64)
-        self.log_dt = nn.Parameter(torch.rand(h, dtype=torch.float64) * (math.log(dt_max) - math.log(dt_min)) + math.log(dt_min))
+        self.log_dt = nn.Parameter(
+            torch.rand(h, dtype=torch.float64) * (math.log(dt_max) - math.log(dt_min)) + math.log(dt_min)
+        )
         self.log_a_re = nn.Parameter(torch.full((h, n), math.log(0.5), dtype=torch.float64))
         self.a_im = nn.Parameter((math.pi * k).repeat(h, 1))
         self.b = nn.Parameter(torch.ones(h, n, dtype=torch.complex128))

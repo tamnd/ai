@@ -20,8 +20,16 @@ NAMES = ("Wc", "bc", "Wh", "bh", "Wy", "by")
 def config(x_dim=4, y_dim=3, hidden=8, n_loc=6, width=4, n_read=1, n_write=1, shift=1):
     if min(x_dim, y_dim, hidden, n_loc, width, n_read) < 1 or n_write < 0 or shift < 0 or 2 * shift + 1 > n_loc:
         raise ValueError("the sizes must be positive, n_write >= 0, and 2 shift + 1 <= n_loc")
-    return {"x_dim": x_dim, "y_dim": y_dim, "hidden": hidden, "n_loc": n_loc, "width": width,
-            "n_read": n_read, "n_write": n_write, "shift": shift}
+    return {
+        "x_dim": x_dim,
+        "y_dim": y_dim,
+        "hidden": hidden,
+        "n_loc": n_loc,
+        "width": width,
+        "n_read": n_read,
+        "n_write": n_write,
+        "shift": shift,
+    }
 
 
 def n_head_outputs(cfg):
@@ -41,8 +49,14 @@ def init(gen, cfg, scale=1.0, dtype=torch.float64):
     def normal(*shape):
         return scale * torch.randn(*shape, generator=gen, dtype=dtype) / math.sqrt(shape[1])
 
-    params = {"Wc": normal(h, z), "bc": torch.zeros(h, dtype=dtype), "Wh": normal(p, h),
-              "bh": torch.zeros(p, dtype=dtype), "Wy": normal(y, h + nr * m), "by": torch.zeros(y, dtype=dtype)}
+    params = {
+        "Wc": normal(h, z),
+        "bc": torch.zeros(h, dtype=dtype),
+        "Wh": normal(p, h),
+        "bh": torch.zeros(p, dtype=dtype),
+        "Wy": normal(y, h + nr * m),
+        "by": torch.zeros(y, dtype=dtype),
+    }
     return {k: v.requires_grad_() for k, v in params.items()}
 
 
@@ -85,10 +99,10 @@ def read(memory, w):
 
 def write(memory, ws, erases, adds):
     keep = torch.ones_like(memory)
-    for w, e in zip(ws, erases):
+    for w, e in zip(ws, erases, strict=True):
         keep = keep * (1.0 - w[:, :, None] * e[:, None, :])
     out = memory * keep
-    for w, a in zip(ws, adds):
+    for w, a in zip(ws, adds, strict=True):
         out = out + w[:, :, None] * a[:, None, :]
     return out
 
@@ -98,11 +112,16 @@ def split_heads(o, cfg):
     sp = torch.nn.functional.softplus
     heads, i = [], 0
     for j in range(cfg["n_read"] + cfg["n_write"]):
-        hd = {"key": torch.tanh(o[:, i:i + m]), "beta": sp(o[:, i + m]), "g": torch.sigmoid(o[:, i + m + 1]),
-              "s": torch.softmax(o[:, i + m + 2:i + m + 2 + k], dim=-1), "gamma": 1.0 + sp(o[:, i + m + 2 + k])}
+        hd = {
+            "key": torch.tanh(o[:, i : i + m]),
+            "beta": sp(o[:, i + m]),
+            "g": torch.sigmoid(o[:, i + m + 1]),
+            "s": torch.softmax(o[:, i + m + 2 : i + m + 2 + k], dim=-1),
+            "gamma": 1.0 + sp(o[:, i + m + 2 + k]),
+        }
         i += m + 3 + k
         if j >= cfg["n_read"]:
-            hd["erase"], hd["add"] = torch.sigmoid(o[:, i:i + m]), torch.tanh(o[:, i + m:i + 2 * m])
+            hd["erase"], hd["add"] = torch.sigmoid(o[:, i : i + m]), torch.tanh(o[:, i + m : i + 2 * m])
             i += 2 * m
         heads.append(hd)
     return heads

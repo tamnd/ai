@@ -72,7 +72,7 @@ def backward(params, cache, dy, cfg):
     """Return (dx, grads) for the output gradient dy, block by block from the last one."""
     dx = np.atleast_2d(np.asarray(dy, dtype=np.float64))
     grads = []
-    for p, (x, z, h) in zip(reversed(params), reversed(cache)):
+    for p, (x, z, h) in zip(reversed(params), reversed(cache), strict=True):
         dz = (dx @ p["W2"]) * act_grad(z, cfg["activation"])
         grads.append({"W1": dz.T @ x, "b1": dz.sum(axis=0), "W2": dx.T @ h, "b2": dx.sum(axis=0)})
         through = dz @ p["W1"]
@@ -108,7 +108,7 @@ def path_terms(mats):
     terms = {}
     for picks in itertools.product((0, 1), repeat=len(mats)):
         term = np.eye(d)
-        for a, pick in zip(mats, picks):
+        for a, pick in zip(mats, picks, strict=True):
             if pick:
                 term = a @ term
         terms[picks] = term

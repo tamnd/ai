@@ -96,7 +96,7 @@ def test_gradient_against_finite_differences(reset):
             up, down = flat.copy(), flat.copy()
             up[i] += eps
             down[i] -= eps
-            f = lambda v: float(loss_fn(params | {name: jnp.asarray(v.reshape(arr.shape))}, x, h0, r, r_h, reset))  # noqa: E731
+            f = lambda v: float(loss_fn(params | {name: jnp.asarray(v.reshape(arr.shape))}, x, h0, r, r_h, reset))  # noqa: B023, E731
             num[i] = (f(up) - f(down)) / (2 * eps)
         np.testing.assert_allclose(np.asarray(grads[name]).ravel(), num, rtol=1e-6, atol=1e-8, err_msg=name)
 

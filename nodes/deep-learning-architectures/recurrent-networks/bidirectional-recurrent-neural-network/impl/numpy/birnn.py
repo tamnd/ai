@@ -48,10 +48,10 @@ def directions(cfg):
 
 def param_shapes(cfg):
     """The name and shape of every parameter, in a fixed order."""
-    I, H, K = cfg["input_size"], cfg["hidden_size"], cfg["n_classes"]
+    I, H, K = cfg["input_size"], cfg["hidden_size"], cfg["n_classes"]  # noqa: E741
     G, D = CELLS[cfg["cell"]], len(directions(cfg))
     shapes = {}
-    for l in range(cfg["n_layers"]):
+    for l in range(cfg["n_layers"]):  # noqa: E741
         for d in directions(cfg):
             n_in = I if l == 0 else D * H  # an upper layer reads both directions of the layer below
             shapes |= {f"l{l}_{d}_W": (n_in, G * H), f"l{l}_{d}_U": (H, G * H), f"l{l}_{d}_b": (G * H,)}
@@ -65,7 +65,7 @@ def init(rng, cfg, scale=0.1):
 
 def param_count(cfg):
     """eq-params: G H (I_l + H) + G H per direction and layer, I_1 = I and I_l = D H above, plus D H K + K."""
-    I, H, L, K = cfg["input_size"], cfg["hidden_size"], cfg["n_layers"], cfg["n_classes"]
+    I, H, L, K = cfg["input_size"], cfg["hidden_size"], cfg["n_layers"], cfg["n_classes"]  # noqa: E741
     G, D = CELLS[cfg["cell"]], len(directions(cfg))
     first = D * (G * H * (I + H) + G * H)
     upper = (L - 1) * D * (G * H * (D * H + H) + G * H)
@@ -74,7 +74,7 @@ def param_count(cfg):
 
 def flops(cfg, B, T):
     """FLOPs of one forward pass over B sequences of T steps: the matrix products only, a multiply-add as 2."""
-    I, H, L, K = cfg["input_size"], cfg["hidden_size"], cfg["n_layers"], cfg["n_classes"]
+    I, H, L, K = cfg["input_size"], cfg["hidden_size"], cfg["n_layers"], cfg["n_classes"]  # noqa: E741
     G, D = CELLS[cfg["cell"]], len(directions(cfg))
     layers = D * 2 * B * T * G * H * (I + H) + (L - 1) * D * 2 * B * T * G * H * (D * H + H)
     return layers + 2 * B * T * D * H * K
@@ -179,7 +179,7 @@ def forward(params, cfg, x, lengths=None):
     lengths = check_lengths(lengths, B, T)
     mask = mask_of(lengths, T)
     inp, layers = x, []
-    for l in range(cfg["n_layers"]):
+    for l in range(cfg["n_layers"]):  # noqa: E741
         outs, caches = [], {}
         for d in directions(cfg):
             W, U, b = (params[f"l{l}_{d}_{n}"] for n in "WUb")
@@ -212,12 +212,14 @@ def backward(params, cfg, cache, labels):
     H = cfg["hidden_size"]
     grads = {k: np.zeros_like(v) for k, v in params.items()}
     dlogits = np.exp(log_softmax(logits))  # softmax minus one-hot, at the real steps, over B
-    np.put_along_axis(dlogits, labels[..., None], np.take_along_axis(dlogits, labels[..., None], axis=-1) - 1.0, axis=-1)
+    np.put_along_axis(
+        dlogits, labels[..., None], np.take_along_axis(dlogits, labels[..., None], axis=-1) - 1.0, axis=-1
+    )
     dlogits *= mask / B
     grads["out_W"] = np.einsum("bti,btk->ik", cache["top"], dlogits)
     grads["out_b"] = dlogits.sum(axis=(0, 1))
     dout = dlogits @ params["out_W"].T  # (B, T, D * H)
-    for l in reversed(range(cfg["n_layers"])):
+    for l in reversed(range(cfg["n_layers"])):  # noqa: E741
         dout = dout * mask
         dinp = 0.0
         for k, d in enumerate(directions(cfg)):

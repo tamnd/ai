@@ -37,7 +37,7 @@ def config(src_vocab=7, tgt_vocab=6, embed_size=3, hidden_size=4, n_layers=2, re
 
 def layer_names(prefix, n_layers):
     """The parameter names of the LSTM layers of the encoder ("enc") or the decoder ("dec")."""
-    return [(f"{prefix}{l}_W", f"{prefix}{l}_U", f"{prefix}{l}_b") for l in range(n_layers)]
+    return [(f"{prefix}{l}_W", f"{prefix}{l}_U", f"{prefix}{l}_b") for l in range(n_layers)]  # noqa: E741
 
 
 def init(rng, cfg, scale=0.08):
@@ -45,7 +45,7 @@ def init(rng, cfg, scale=0.08):
     E, H, L = cfg["embed_size"], cfg["hidden_size"], cfg["n_layers"]
     shapes = {"src_embed": (cfg["src_vocab"], E), "tgt_embed": (cfg["tgt_vocab"], E)}
     for prefix in ("enc", "dec"):
-        for l, (w, u, b) in enumerate(layer_names(prefix, L)):
+        for l, (w, u, b) in enumerate(layer_names(prefix, L)):  # noqa: E741
             shapes |= {w: (E if l == 0 else H, 4 * H), u: (H, 4 * H), b: (4 * H,)}
     shapes |= {"out_W": (H, cfg["tgt_vocab"]), "out_b": (cfg["tgt_vocab"],)}
     return {name: rng.uniform(-scale, scale, shape) for name, shape in shapes.items()}
@@ -82,14 +82,14 @@ def run_stack(params, prefix, x, h0, c0):
     B, T, _ = x.shape
     L, H = h0.shape[0], h0.shape[-1]
     inp, h_T, c_T, caches = x, np.empty((L, B, H)), np.empty((L, B, H)), []
-    for l, (w, u, b) in enumerate(layer_names(prefix, L)):
+    for l, (w, u, b) in enumerate(layer_names(prefix, L)):  # noqa: E741
         h, c = h0[l], c0[l]
         hs, cs = np.empty((B, T, H)), np.empty((B, T, H))
         gates = {name: np.empty((B, T, H)) for name in GATES}
         for t in range(T):
             h, c, gs = lstm_cell(params[w], params[u], params[b], inp[:, t], h, c)
             hs[:, t], cs[:, t] = h, c
-            for name, v in zip(GATES, gs):
+            for name, v in zip(GATES, gs, strict=True):
                 gates[name][:, t] = v
         caches.append({"x": inp, "h0": h0[l], "c0": c0[l], "h": hs, "c": cs} | gates)
         h_T[l], c_T[l] = h, c
@@ -128,7 +128,7 @@ def stack_backward(params, prefix, caches, dtop, dh_T, dc_T, grads):
     L = len(caches)
     dh0, dc0 = np.empty_like(dh_T), np.empty_like(dc_T)
     d = dtop
-    for l in reversed(range(L)):
+    for l in reversed(range(L)):  # noqa: E741
         w, u, b = layer_names(prefix, L)[l]
         d, dW, dU, db, dh0[l], dc0[l] = lstm_backward(params[w], params[u], caches[l], d, dh_T[l], dc_T[l])
         grads[w] += dW
@@ -214,7 +214,7 @@ def decoder_step(params, tokens, state):
     L = h0.shape[0]
     x = params["tgt_embed"][tokens]  # (B, E)
     h, c = np.empty_like(h0), np.empty_like(c0)
-    for l, (w, u, b) in enumerate(layer_names("dec", L)):
+    for l, (w, u, b) in enumerate(layer_names("dec", L)):  # noqa: E741
         h[l], c[l], _ = lstm_cell(params[w], params[u], params[b], x, h0[l], c0[l])
         x = h[l]
     return log_softmax(x @ params["out_W"] + params["out_b"]), (h, c)

@@ -57,8 +57,9 @@ def test_layers_are_equivariant_and_logits_invariant(mode):
     h1 = lift(x, params["W1"], mode)
     for r in range(1, 4):
         torch.testing.assert_close(lift(rotate(x, r), params["W1"], mode), rotate_p4(h1, r), rtol=0, atol=1e-12)
-        torch.testing.assert_close(gconv(rotate_p4(h1, r), params["W2"], mode), rotate_p4(gconv(h1, params["W2"], mode), r),
-                                   rtol=0, atol=1e-12)
+        torch.testing.assert_close(
+            gconv(rotate_p4(h1, r), params["W2"], mode), rotate_p4(gconv(h1, params["W2"], mode), r), rtol=0, atol=1e-12
+        )
         torch.testing.assert_close(forward(params, rotate(x, r), cfg), forward(params, x, cfg), rtol=0, atol=1e-12)
 
 

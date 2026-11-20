@@ -87,8 +87,9 @@ def test_param_count(c):
     assert param_count(cfg) == c["model"]["params"]
     if c["config"]["H"] <= 300:
         assert sum(p.numel() for p in GRU(cfg).parameters()) == c["model"]["params"]
-        assert sum(p.numel() for p in torch.nn.GRU(cfg["input_size"], cfg["hidden_size"]).parameters()) == (
-            c["model"]["params"]
+        assert (
+            sum(p.numel() for p in torch.nn.GRU(cfg["input_size"], cfg["hidden_size"]).parameters())
+            == (c["model"]["params"])
         )
 
 
@@ -116,7 +117,7 @@ def test_gradcheck(reset):
     x, h0 = torch.randn(2, 4, 2, requires_grad=True), torch.randn(2, 3, requires_grad=True)
 
     def f(x, h0, *q):
-        return torch.func.functional_call(model, dict(zip(names, q)), (x, h0))[0]
+        return torch.func.functional_call(model, dict(zip(names, q, strict=True)), (x, h0))[0]
 
     assert torch.autograd.gradcheck(f, (x, h0, *ps))
 
