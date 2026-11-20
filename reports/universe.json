@@ -1,23 +1,23 @@
 {
   "date": "2026-11-20",
-  "rows": 19124,
-  "items": 19124,
-  "new": 1,
+  "rows": 22508,
+  "items": 22318,
+  "new": 0,
   "updated": 0,
-  "unchanged": 19123,
+  "unchanged": 22318,
   "by_outcome": {
     "card": 3892,
-    "pending": 15232
+    "pending": 18426
   },
   "by_kind": {
     "hardware": 183,
     "model": 3709,
     "policy": 411,
     "result": 7123,
-    "work": 7698
+    "work": 10892
   },
   "by_source": {
-    "arxiv": 7698,
+    "arxiv": 10892,
     "epoch-ai": 3892,
     "epoch-benchmarks": 5546,
     "eur-lex": 236,

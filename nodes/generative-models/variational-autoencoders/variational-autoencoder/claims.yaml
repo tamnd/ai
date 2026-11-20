@@ -1,0 +1,326 @@
+# The claims of the variational autoencoder page (spec 07). The build computes the labels.
+- id: c-kw-def
+  type: attributive
+  text: "A reparameterization of the variational lower bound yields a lower bound estimator that can be optimized with standard stochastic gradient methods, and fitting an approximate inference model, a recognition model, to the intractable posterior with that estimator makes posterior inference efficient; when a neural network is used for the recognition model, the result is the variational auto-encoder."
+  evidence:
+    - {work: "kingma-2013-auto-encoding-variational-bayes", role: original, locator: "p. 1", stance: for}
+
+- id: c-kw-encoder-decoder
+  type: definitional
+  text: "The recognition model q(z|x) is a probabilistic encoder: given a datapoint x it produces a distribution over the possible values of the code z from which x could have been generated; p(x|z) is a probabilistic decoder: given a code z it produces a distribution over the possible corresponding values of x."
+  evidence:
+    - {work: "kingma-2013-auto-encoding-variational-bayes", role: original, locator: "p. 3", stance: for}
+
+- id: c-iwae-def
+  type: definitional
+  text: "The variational autoencoder pairs a top-down generative network with a bottom-up recognition network, and both networks are trained jointly to maximize a variational lower bound on the data log-likelihood."
+  evidence:
+    - {work: "burda-2015-importance-weighted-autoencoders", role: original, locator: "p. 1", stance: for}
+
+- id: c-kw-model
+  type: definitional
+  text: "In the variational auto-encoder of Kingma and Welling the prior over the latent variables is the centred isotropic Gaussian N(z; 0, I), which has no parameters; p(x|z) is a multivariate Gaussian for real-valued data or a Bernoulli for binary data, with its parameters computed from z by an MLP with one hidden layer; and the approximate posterior is a multivariate Gaussian with a diagonal covariance whose mean and standard deviation are outputs of the encoding MLP."
+  evidence:
+    - {work: "kingma-2013-auto-encoding-variational-bayes", role: original, locator: "p. 5", stance: for}
+
+- id: c-kw-diagonal
+  type: attributive
+  text: "The diagonal Gaussian approximate posterior is a simplifying choice, not a limitation of the method."
+  evidence:
+    - {work: "kingma-2013-auto-encoding-variational-bayes", role: original, locator: "p. 5", stance: for}
+
+- id: c-kw-reparam-families
+  type: definitional
+  text: "Three basic ways to choose a differentiable transformation g(eps, x) and auxiliary noise eps for q(z|x) are a tractable inverse CDF applied to uniform noise, the location plus the scale times the standard member of any location-scale family, as for the Gaussian, and compositions of such transformations, as for the log-normal, gamma, Dirichlet, beta, chi-squared and F distributions."
+  evidence:
+    - {work: "kingma-2013-auto-encoding-variational-bayes", role: original, locator: "p. 5", stance: for}
+
+- id: c-kw-mlps
+  type: definitional
+  text: "In the Bernoulli MLP decoder log p(x|z) is the total over i of x_i log y_i + (1 - x_i) log(1 - y_i), where y = f_sigma(W2 tanh(W1 z + b1) + b2) with f_sigma the elementwise sigmoid; in the Gaussian MLP, as encoder or decoder, log p(x|z) = log N(x; mu, sigma^2 I) with mu = W4 h + b4, log sigma^2 = W5 h + b5 and h = tanh(W3 z + b3)."
+  evidence:
+    - {work: "kingma-2013-auto-encoding-variational-bayes", role: original, locator: "p. 11", stance: for}
+
+- id: c-kw-frey-sigmoid
+  type: definitional
+  text: "Since the Frey Face data are continuous, Kingma and Welling used a decoder with Gaussian outputs, identical to the encoder except that the means were constrained to the interval (0, 1) by a sigmoid."
+  evidence:
+    - {work: "kingma-2013-auto-encoding-variational-bayes", role: original, locator: "p. 6", stance: for}
+
+- id: c-kl
+  type: mathematical
+  text: "KL(N(mu, diag sigma^2) || N(0, I)) = (1/2) sum_j (mu_j^2 + sigma_j^2 - 1 - log sigma_j^2), which is zero exactly when mu = 0 and sigma = 1."
+  assumes: ["q(z|x) = N(mu, diag(sigma^2)) over J dimensions", "the prior p(z) = N(0, I)"]
+  derivation: gaussian-kl
+
+- id: c-kl-grad
+  type: mathematical
+  text: "The gradient of the Gaussian KL term is mu_j in mu_j and (sigma_j^2 - 1)/2 in log sigma_j^2, which stays finite as sigma_j goes to 0."
+  assumes: ["the KL term of c-kl"]
+  derivation: gaussian-kl
+
+- id: c-kl-full
+  type: mathematical
+  text: "With a full covariance C, KL(N(mu, C) || N(0, I)) = (tr C - log|C| + mu^T mu - J) / 2, of which c-kl is the diagonal case."
+  assumes: ["q(z|x) = N(mu, C) with C positive definite", "the prior p(z) = N(0, I)"]
+  derivation: gaussian-kl
+
+- id: c-elbo
+  type: mathematical
+  text: "For every encoder q(z|x), log p(x) = L(x) + KL(q(z|x) || p(z|x)) with L(x) = E_q[log p(x, z) - log q(z|x)], so L(x) <= log p(x), with equality exactly when q(z|x) is the true posterior."
+  assumes: ["a joint density p(x, z) = p(z) p(x|z) with p(x) > 0", "q(z|x) positive wherever p(z|x) is"]
+  derivation: elbo-identity
+
+- id: c-elbo-split
+  type: mathematical
+  text: "The bound is L(x) = E_q[log p(x|z)] - KL(q(z|x) || p(z)), an expected reconstruction log-likelihood minus a KL term to the prior."
+  assumes: ["the bound of c-elbo"]
+  derivation: elbo-identity
+
+- id: c-elbo-linear
+  type: mathematical
+  text: "For a linear Gaussian decoder p(x|z) = N(Wz + b, s^2 I) with a standard normal prior every term of the bound has a closed form, the posterior is Gaussian, and an encoder that outputs its mean and covariance makes the bound equal to log p(x)."
+  assumes: ["p(z) = N(0, I) and p(x|z) = N(Wz + b, s^2 I)", "a Gaussian encoder"]
+  derivation: elbo-identity
+
+- id: c-kw-regularizer
+  type: attributive
+  text: "The KL divergence of the approximate posterior from the prior can be interpreted as regularizing phi, encouraging the approximate posterior to be close to the prior, and the second term of the bound is an expected negative reconstruction error, which is the connection with auto-encoders."
+  evidence:
+    - {work: "kingma-2013-auto-encoding-variational-bayes", role: original, locator: "p. 4", stance: for}
+
+- id: c-kw-estimator-b
+  type: attributive
+  text: "The second SGVB estimator, which integrates the KL term analytically and samples only the expected reconstruction error, typically has less variance than the generic estimator."
+  evidence:
+    - {work: "kingma-2013-auto-encoding-variational-bayes", role: original, locator: "p. 4", stance: for}
+
+- id: c-reparam
+  type: mathematical
+  text: "With z = mu + sigma eps and eps ~ N(0, 1), the gradients of E_q[f(z)] in mu and sigma are E_eps[f'(mu + sigma eps)] and E_eps[eps f'(mu + sigma eps)], so one draw gives an unbiased estimate of each."
+  assumes: ["q = N(mu, sigma^2), in one dimension or coordinate by coordinate", "f differentiable with E|f'(z)| finite"]
+  derivation: reparameterization-gradient
+
+- id: c-kw-naive-variance
+  type: attributive
+  text: "The usual Monte Carlo gradient estimator for this type of problem, the score-function estimator f(z) grad log q(z), exhibits very high variance and is impractical for the purposes of Kingma and Welling."
+  evidence:
+    - {work: "kingma-2013-auto-encoding-variational-bayes", role: original, locator: "p. 3", stance: for}
+
+- id: c-reparam-variance
+  type: mathematical
+  text: "For f(z) = z^2 and q = N(mu, sigma^2), one draw of the reparameterization estimate of the gradient in mu has variance 4 sigma^2, and one draw of the score-function estimate has variance mu^4/sigma^2 + 14 mu^2 + 15 sigma^2: 4 against 15 at mu = 0, sigma = 1."
+  assumes: ["q = N(mu, sigma^2) in one dimension", "f(z) = z^2"]
+  derivation: reparameterization-gradient
+
+- id: c-iwae
+  type: mathematical
+  text: "With w_i = p(x, z_i) / q(z_i|x) for k independent draws from q(z|x), L_k(x) = E[log (1/k) sum_i w_i] is a lower bound on log p(x) for every k, and L_1 is the ELBO."
+  assumes: ["z_1, ..., z_k drawn independently from q(z|x)", "q(z|x) > 0 wherever p(x, z) > 0"]
+  derivation: iwae-bound
+
+- id: c-iwae-theorem
+  type: attributive
+  text: "For all k the importance weighted lower bounds satisfy log p(x) >= L_{k+1} >= L_k, and if p(h, x)/q(h|x) is bounded, L_k approaches log p(x) as k goes to infinity."
+  evidence:
+    - {work: "burda-2015-importance-weighted-autoencoders", role: original, locator: "p. 4", stance: for}
+
+- id: c-iwae-monotone
+  type: mathematical
+  text: "L_k <= L_{k+1} <= log p(x) for every k, and L_k tends to log p(x) as k grows if p(x, z)/q(z|x) is bounded."
+  assumes: ["the bound of c-iwae"]
+  derivation: iwae-bound
+
+- id: c-iwae-grad
+  type: mathematical
+  text: "With reparameterized draws, the gradient of log (1/k) sum_i w_i is sum_i w~_i grad log w_i with the normalized weights w~_i = w_i / sum_j w_j; with k = 1 it is the gradient of the ELBO."
+  assumes: ["the bound of c-iwae", "z_i a differentiable function of independent noise"]
+  derivation: iwae-bound
+
+- id: c-params
+  type: mathematical
+  text: "A variational autoencoder with one hidden layer of H units on each side, J latent dimensions and a Bernoulli decoder on D inputs has (D + 1)H + 2(H + 1)J + (J + 1)H + (H + 1)D parameters; a Gaussian decoder adds (H + 1)D."
+  assumes: ["every layer affine with a bias", "an encoder with two heads, the mean and the log-variance"]
+  derivation: parameter-and-flop-count
+
+- id: c-params-models
+  type: mathematical
+  text: "The MNIST model of Kingma and Welling with 500 hidden units and 20 latent dimensions has 815,824 parameters, and the Frey Face model with 200 hidden units, 20 latent dimensions and a Gaussian decoder has 349,560."
+  assumes: ["the counts of c-params", "D = 784 for MNIST and D = 560 for Frey Face"]
+  derivation: parameter-and-flop-count
+
+- id: c-flops
+  type: mathematical
+  text: "A forward pass over B examples with S draws of the code each costs 2BDH + 4BHJ + S(2BJH + 2BHD) FLOPs in its products, 2SBHD more with a Gaussian decoder, so the cost of the importance weighted bound with k = S samples is linear in k."
+  assumes: ["the model of c-params", "only the products are counted, a multiply-add as 2 FLOPs"]
+  derivation: parameter-and-flop-count
+
+- id: c-flops-models
+  type: mathematical
+  text: "For the MNIST model with one draw a forward pass costs 1,628,000 FLOPs per example, 824,000 in the encoder and 804,000 in the decoder, and each further draw adds 804,000."
+  assumes: ["the count of c-flops", "D = 784, H = 500, J = 20"]
+  derivation: parameter-and-flop-count
+
+- id: c-kw-one-sample
+  type: attributive
+  text: "The number of samples L per datapoint can be set to 1 as long as the minibatch size M is large enough, for example M = 100."
+  evidence:
+    - {work: "kingma-2013-auto-encoding-variational-bayes", role: original, locator: "p. 4", stance: for}
+
+- id: c-kw-training
+  type: attributive
+  text: "All parameters were initialized from N(0, 0.01) and optimized jointly with Adagrad, its global stepsize chosen from {0.01, 0.02, 0.1} on the training set in the first iterations, with minibatches of M = 100, L = 1 sample per datapoint and a small weight decay corresponding to a prior N(0, I); the encoders and decoders had 500 hidden units for MNIST and 200 for the smaller Frey Face data set, to prevent overfitting."
+  evidence:
+    - {work: "kingma-2013-auto-encoding-variational-bayes", role: original, locator: "p. 7", stance: for}
+
+- id: c-bowman-collapse
+  type: empirical
+  text: "Except in vanishingly rare cases, most training runs with most hyperparameters gave models that set q(z|x) equal to the prior p(z), bringing the KL term of the cost to zero, so that the model behaved as a recurrent language model."
+  scope:
+    models: "a VAE with a single-layer LSTM encoder and decoder over the words of a sentence, trained without KL annealing or word dropout"
+    data: ["sentences of the Penn Treebank and of a corpus of books"]
+    setting: "straightforward training on the variational lower bound"
+  evidence:
+    - {work: "bowman-2015-generating-sentences-continuous-space", role: original, locator: "p. 3", stance: for}
+
+- id: c-bowman-annealing
+  type: definitional
+  text: "KL cost annealing adds a variable weight to the KL term of the cost at training time, zero at the start so that the model encodes as much information in z as it can, then gradually increased until it reaches 1, where the weighted cost is the true variational lower bound; it can be thought of as annealing from a vanilla autoencoder to a VAE."
+  evidence:
+    - {work: "bowman-2015-generating-sentences-continuous-space", role: original, locator: "pp. 3 to 4", stance: for}
+
+- id: c-bowman-word-dropout
+  type: definitional
+  text: "Word dropout weakens the decoder by randomly replacing a fraction of the conditioned-on word tokens with the generic unknown-word token, which forces the model to rely on z; it is parameterized by a keep rate k in [0, 1], at k = 0 the decoder sees no input, and standard dropout on the decoder's input word embeddings did not help the model learn to use the latent variable."
+  evidence:
+    - {work: "bowman-2015-generating-sentences-continuous-space", role: original, locator: "p. 4", stance: for}
+
+- id: c-alemi-bounds
+  type: attributive
+  text: "With the distortion D, the expected reconstruction negative log-likelihood, and the rate R, the expected KL divergence from the encoder to the marginal over codes, H - D <= I_e(X; Z) <= R for the entropy H of the data and the mutual information of data and code under the encoder."
+  evidence:
+    - {work: "alemi-2017-fixing-broken-elbo", role: original, locator: "p. 2", stance: for}
+
+- id: c-alemi-elbo
+  type: attributive
+  text: "With beta = 1 the objective D + beta R matches the ELBO used to train a VAE, ELBO = -(D + R); it does not distinguish between the points of the diagonal of the optimal rate-distortion curve, all of which have the same ELBO, so in the infinite model family the ELBO alone, and the marginal likelihood, cannot distinguish models that make no use of the latent variable from models that make large use of it."
+  evidence:
+    - {work: "alemi-2017-fixing-broken-elbo", role: original, locator: "p. 3", stance: for}
+
+- id: c-alemi-beta
+  type: attributive
+  text: "A general beta >= 0 gives the beta-VAE objective, which interpolates smoothly between auto-encoding behaviour at beta below 1, low distortion and high rate, and auto-decoding behaviour at beta above 1, high distortion and low rate, without a change of the model architecture."
+  evidence:
+    - {work: "alemi-2017-fixing-broken-elbo", role: original, locator: "Section 2", stance: for}
+
+- id: c-iwae-assumptions
+  type: attributive
+  text: "VAEs typically assume that the posterior is approximately factorial and that its parameters can be predicted from the observables by a nonlinear regression; because they are trained on a variational lower bound, they are encouraged to learn representations in which these assumptions are satisfied."
+  evidence:
+    - {work: "burda-2015-importance-weighted-autoencoders", role: original, locator: "p. 1", stance: for}
+
+- id: c-kw-wake-sleep
+  type: empirical
+  text: "AEVB converged considerably faster than the wake-sleep algorithm and reached a better value of the lower bound in all experiments, and more latent variables did not result in more overfitting, which Kingma and Welling explain by the regularizing effect of the lower bound."
+  scope:
+    models: "encoders and decoders with one hidden layer of 500 units for MNIST and 200 for Frey Face, latent spaces of 3, 5, 10, 20 and 200 dimensions for MNIST and 2, 5, 10 and 20 for Frey Face; the same encoder for wake-sleep"
+    data: ["MNIST", "Frey Face"]
+    setting: "the estimated average variational lower bound per datapoint against the number of training points evaluated, Adagrad, minibatches of 100"
+  evidence:
+    - {work: "kingma-2013-auto-encoding-variational-bayes", role: original, locator: "p. 7", stance: for}
+
+- id: c-rmw-mnist
+  type: empirical
+  text: "On the test set of the binarised MNIST data the negative log-probability -ln p(v) was 87.30 for a DLGM with diagonal covariance and 86.60 for a DLGM with rank-one covariance, against 106.00 for factor analysis, 95.80 for NLGBN and 91.3 for wake-sleep."
+  scope:
+    models: "deep latent Gaussian models trained with stochastic backpropagation and a recognition model; factor analysis, NLGBN and wake-sleep as reported"
+    data: ["binarized MNIST"]
+    setting: "negative log-probability of the test set, Table 1"
+  evidence:
+    - {work: "rezende-2014-stochastic-backpropagation-approximate", role: original, locator: "p. 6", stance: for}
+
+- id: c-iwae-active
+  type: definitional
+  text: "Burda et al. measure the activity of a latent dimension u with the statistic A_u = Cov_x(E_{u ~ q(u|x)}[u]) and call it active if A_u > 10^-2; evaluating all their models with the inactive dimensions removed changed the test log-likelihood by less than 0.06 nats in all cases."
+  evidence:
+    - {work: "burda-2015-importance-weighted-autoencoders", role: original, locator: "pp. 7 to 8", stance: for}
+
+- id: c-iwae-results
+  type: empirical
+  text: "With one stochastic layer the VAE reached a test negative log-likelihood of 86.76, 86.47 and 86.35 nats with k = 1, 5 and 50, and the IWAE 86.76, 85.54 and 84.78, with 19, 20 and 20 active units for the VAE against 19, 22 and 25 for the IWAE; with two stochastic layers the VAE reached 85.33, 85.01 and 84.78 and the IWAE 85.33, 83.89 and 82.90."
+  scope:
+    models: "one stochastic layer of 50 Gaussian units behind two deterministic tanh layers of 200, or two stochastic layers of 100 and 50; Bernoulli visible units; VAE and IWAE trained for about the same time"
+    data: ["MNIST, binarized by sampling, 60,000 training and 10,000 test examples"]
+    setting: "Adam with minibatches of 20 for 3280 passes; log-likelihoods estimated as the mean of L_5000 on the test set"
+  evidence:
+    - {work: "burda-2015-importance-weighted-autoencoders", role: original, locator: "p. 7", stance: for}
+
+- id: c-iwae-inactive
+  type: empirical
+  text: "In all conditions the number of active dimensions was far less than the total number of dimensions, and adding more latent dimensions did not increase it; continuing to train a VAE with the IWAE objective increased the number of active dimensions and the test log-likelihood, while continuing to train an IWAE with the VAE objective did the opposite."
+  scope:
+    models: "the VAEs and IWAEs of c-iwae-results"
+    data: ["MNIST", "Omniglot"]
+    setting: "the active-unit statistic of c-iwae-active; Tables 1 and 2"
+  evidence:
+    - {work: "burda-2015-importance-weighted-autoencoders", role: original, locator: "p. 8", stance: for}
+
+- id: c-bowman-ptb
+  type: empirical
+  text: "In the standard setting the VAE was slightly worse than the recurrent language model, a test negative log-likelihood of 101 nats with a KL term of 2 against 100; with an inputless decoder, a word dropout keep rate of 0, it reached 125 with a KL term of 15 against 135 for the equally weakened language model."
+  scope:
+    models: "an LSTM VAE with KL annealing and word dropout; an LSTM language model baseline"
+    data: ["Penn Treebank, the standard train-test split"]
+    setting: "the variational lower bound for the VAE and the exact likelihood for the language model, at the step of the best development-set performance, Table 2"
+  evidence:
+    - {work: "bowman-2015-generating-sentences-continuous-space", role: original, locator: "pp. 4 to 5", stance: for}
+
+- id: c-bowman-zero-kl
+  type: empirical
+  text: "Training a VAE in the standard setting without both word dropout and KL cost annealing reliably resulted in models with performance equivalent to the baseline language model and zero KL divergence."
+  scope:
+    models: "the LSTM VAE of c-bowman-ptb"
+    data: ["Penn Treebank"]
+    setting: "language modeling"
+  evidence:
+    - {work: "bowman-2015-generating-sentences-continuous-space", role: original, locator: "p. 4", stance: for}
+
+- id: c-alemi-collapse
+  type: empirical
+  text: "Across 209 runs of 12 architectures on MNIST with beta from 0.1 to 10, as the decoder's power increases even beta = 1 suffices to make the model collapse to the auto-decoding limit, an example of a VAE ignoring its latent space."
+  scope:
+    models: "twelve combinations of a Gaussian or IAF encoder, a deconvolutional or PixelCNN++ decoder and a Gaussian, autoregressive flow or VampPrior marginal"
+    data: ["statically binarized MNIST"]
+    setting: "minimizing the beta-VAE objective D + beta R"
+  evidence:
+    - {work: "alemi-2017-fixing-broken-elbo", role: original, locator: "Section 4", stance: for}
+
+- id: c-kw-wake-sleep-relation
+  type: attributive
+  text: "The wake-sleep algorithm is, to the knowledge of Kingma and Welling, the only other on-line learning method applicable to the same general class of continuous latent variable models; like AEVB it uses a recognition model, but it requires a concurrent optimization of two objectives that together do not correspond to optimization of a bound on the marginal likelihood, and it has the advantage of applying to discrete latent variables."
+  evidence:
+    - {work: "kingma-2013-auto-encoding-variational-bayes", role: original, locator: "p. 6", stance: for}
+
+- id: c-rmw-concurrent
+  type: historical
+  text: "Rezende et al. write that, concurrently with their paper, Kingma and Welling presented an alternative discussion of stochastic backpropagation, and that the two approaches were developed simultaneously and give complementary perspectives."
+  evidence:
+    - {work: "rezende-2014-stochastic-backpropagation-approximate", role: original, locator: "p. 3", stance: for}
+
+- id: c-kw-rmw
+  type: historical
+  text: "Kingma and Welling write that Rezende et al. also make the connection between auto-encoders, directed probabilistic models and stochastic variational inference with the reparameterization trick, in work developed independently of theirs that gives an additional perspective on AEVB."
+  evidence:
+    - {work: "kingma-2013-auto-encoding-variational-bayes", role: original, locator: "p. 6", stance: for}
+
+- id: c-kw-future
+  type: attributive
+  text: "Future directions of SGVB and AEVB include hierarchical generative architectures with deep neural networks, for example convolutional networks, as encoders and decoders; time-series models; SGVB applied to the global parameters; and supervised models with latent variables."
+  evidence:
+    - {work: "kingma-2013-auto-encoding-variational-bayes", role: original, locator: "p. 8", stance: for}
+
+- id: c-iwae-dinh
+  type: historical
+  text: "After the publication of their paper Burda et al. learned that the idea of training variational autoencoders on an importance weighted lower bound had been explored independently by Laurent Dinh and Vincent Dumoulin."
+  evidence:
+    - {work: "burda-2015-importance-weighted-autoencoders", role: original, locator: "p. 6", stance: for}
