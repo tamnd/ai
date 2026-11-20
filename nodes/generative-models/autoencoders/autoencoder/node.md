@@ -1,5 +1,5 @@
 ---
-tag: NEW-autoencoder
+tag: JC1Q9N
 kind: architecture
 slug: autoencoder
 name: Autoencoder
