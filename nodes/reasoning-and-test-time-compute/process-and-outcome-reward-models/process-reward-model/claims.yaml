@@ -1,0 +1,357 @@
+# The claims of the process reward model page (spec 07). The build computes the labels.
+
+# Setting
+
+- id: c-ue-two
+  type: attributive
+  text: "Outcome-based approaches supervise the final result, and process-based approaches supervise each step of the reasoning process, including the last step outputting the final result."
+  evidence:
+    - {work: "uesato-2022-process-outcome-feedback", role: original, locator: "p. 1", stance: for}
+
+- id: c-lm-def
+  type: attributive
+  text: "Outcome-supervised reward models (ORMs) are trained using only the final result of the model's chain-of-thought, while process-supervised reward models (PRMs) receive feedback for each step in the chain-of-thought."
+  evidence:
+    - {work: "lightman-2023-lets-verify-step", role: original, locator: "p. 2", stance: for}
+
+- id: c-lm-why
+  type: attributive
+  text: "Process supervision provides more precise feedback, since it specifies the exact location of any errors that occur, and it is easier for humans to interpret."
+  evidence:
+    - {work: "lightman-2023-lets-verify-step", role: original, locator: "p. 2", stance: for}
+
+- id: c-ue-label
+  type: attributive
+  text: "For the process-supervised reward model, the binary label after each step indicates whether the steps so far are correct."
+  evidence:
+    - {work: "uesato-2022-process-outcome-feedback", role: original, locator: "p. 4", stance: for}
+
+- id: c-im-q
+  type: attributive
+  text: "Given an instruction and an n-step response y, a PRM receives the instruction and the first t − 1 steps and assigns a reward to the t-th step; Lightman et al. define the process reward as the correctness of each step, while Wang et al. directly consider Q values as process rewards."
+  evidence:
+    - {work: "yuan-2024-free-process-rewards", role: original, locator: "p. 3", stance: for}
+
+- id: c-lm-bon
+  type: attributive
+  text: "Lightman et al. evaluate a reward model by its ability to perform best-of-N search over uniformly sampled solutions from the generator: for each test problem they select the solution ranked highest by the reward model and grade it by its final answer."
+  evidence:
+    - {work: "lightman-2023-lets-verify-step", role: original, locator: "p. 3", stance: for}
+
+# Training
+
+- id: c-lm-tok
+  type: attributive
+  text: "Lightman et al. train PRMs to predict the correctness of each step after the last token in each step; the prediction takes the form of a single token, and they maximize the log-likelihood of these target tokens."
+  evidence:
+    - {work: "lightman-2023-lets-verify-step", role: original, locator: "pp. 5 to 6", stance: for}
+
+- id: c-lm-oneshot
+  type: attributive
+  text: "To determine the step-level predictions at test time, it suffices to perform a single PRM forward pass over the whole solution."
+  evidence:
+    - {work: "lightman-2023-lets-verify-step", role: original, locator: "p. 6", stance: for}
+
+- id: c-sh-loss
+  type: attributive
+  text: "A PRM is usually trained with the cross-entropy loss summed over the K reasoning steps, Σ_{i=1}^K y_{s_i} log r_{s_i} + (1 − y_{s_i}) log(1 − r_{s_i}), where r_{s_i} is the sigmoid score of the i-th step."
+  evidence:
+    - {work: "wang-2023-math-shepherd", role: original, locator: "p. 4", stance: for}
+
+- id: c-sh-three
+  type: attributive
+  text: "Lightman et al. also treat PRM training as a three-class classification of each step as good, neutral or bad, but Wang et al. found not much difference between the binary and the three classifications."
+  evidence:
+    - {work: "wang-2023-math-shepherd", role: original, locator: "p. 4", stance: for}
+
+- id: c-lm-first
+  type: attributive
+  text: "Lightman et al. deliberately supervise only up to the first incorrect step: for correct solutions outcome and process supervision provide the same information, and for incorrect solutions process supervision additionally reveals the precise location of the mistake."
+  evidence:
+    - {work: "lightman-2023-lets-verify-step", role: original, locator: "p. 6", stance: for}
+
+- id: c-lm-labels
+  type: attributive
+  text: "Human data-labelers assign each step a label of positive, negative, or neutral, and the PRM800K training set contains 800K step-level labels across 75K solutions to 12K problems."
+  evidence:
+    - {work: "lightman-2023-lets-verify-step", role: original, locator: "p. 4", stance: for}
+
+- id: c-lm-active
+  type: attributive
+  text: "Lightman et al. surface convincing wrong-answer solutions, rated highly by the current best PRM but reaching an incorrect final answer, to the labelers, since the PRM is mistaken about at least one step in each such solution."
+  evidence:
+    - {work: "lightman-2023-lets-verify-step", role: original, locator: "p. 5", stance: for}
+
+- id: c-lm-26
+  type: attributive
+  text: "Active learning leads to a 2.6× improvement in the data efficiency of process supervision."
+  evidence:
+    - {work: "lightman-2023-lets-verify-step", role: original, locator: "p. 2", stance: for}
+
+# Labels without humans
+
+- id: c-sh-def
+  type: attributive
+  text: "Wang et al. define the quality of a reasoning step as its potential to deduce the correct answer, and estimate it by having a completer finalize N reasoning processes from the step."
+  evidence:
+    - {work: "wang-2023-math-shepherd", role: original, locator: "p. 4", stance: for}
+
+- id: c-sh-he
+  type: attributive
+  text: "Hard estimation supposes that a reasoning step is good as long as it can reach the correct answer, and soft estimation takes the quality of a step as the frequency with which it reaches the correct answer."
+  evidence:
+    - {work: "wang-2023-math-shepherd", role: original, locator: "p. 5", stance: for}
+
+- id: c-ls-hard
+  type: attributive
+  text: "For hard labels, Zhang et al. treat a step as correct if any one of the 8 completions yields the correct final answer; for soft labels the value is the proportion of completions leading to the correct final answers."
+  evidence:
+    - {work: "zhang-2025-lessons-process-reward-models", role: original, locator: "p. 3", stance: for}
+
+- id: c-pr-ce
+  type: mathematical
+  text: "Under cross-entropy, the expected loss for a label y with mean μ, −(μ log r + (1 − μ) log(1 − r)), is minimized at r = μ, so a PRM trained on soft labels estimates the probability q that a completion from the step reaches the correct answer."
+  assumes: ["0 < μ < 1", "r ranges over (0, 1)"]
+  derivation: process-reward-arithmetic
+
+- id: c-pr-hard
+  type: mathematical
+  text: "With N completions the hard label is 1 with probability 1 − (1 − q)^N, so a PRM trained on hard labels learns that probability rather than q: with N = 8, a step from which one completion in ten succeeds is labelled correct with probability 1 − 0.9^8 ≈ 0.570."
+  assumes: ["the N completions are independent", "each reaches the correct answer with probability q"]
+  derivation: process-reward-arithmetic
+
+- id: c-pr-var
+  type: mathematical
+  text: "The soft label is an average of N Bernoulli(q) draws, unbiased for q with variance q(1 − q)/N, at most 1/(4N), so 8 completions give a standard deviation of up to about 0.18."
+  assumes: ["the N completions are independent", "each reaches the correct answer with probability q"]
+  derivation: process-reward-arithmetic
+
+- id: c-om-binary
+  type: attributive
+  text: "OmegaPRM identifies the first error in the chain of thought with binary search over Monte Carlo rollouts and balances the positive and negative examples."
+  evidence:
+    - {work: "luo-2024-omegaprm", role: original, locator: "p. 1", stance: for}
+
+- id: c-om-logm
+  type: attributive
+  text: "When the remaining part of a solution is short enough to be considered as a single step, binary search locates the first error with a time complexity of O(k log M) rather than O(kM) in the brute-force setting, where M is the total number of steps."
+  evidence:
+    - {work: "luo-2024-omegaprm", role: original, locator: "p. 5", stance: for}
+
+- id: c-pr-bsearch
+  type: mathematical
+  text: "If every prefix before the first error has a correct rollout and none after it does, a binary search over prefixes finds the first wrong step of an M-step solution with ⌈log2(M + 1)⌉ prefix checks, against up to M checks step by step: 5 checks instead of up to 20 for M = 20."
+  assumes: ["prefix checks make no errors", "a prefix is correct exactly when it ends before the first error"]
+  derivation: process-reward-arithmetic
+
+- id: c-om-scale
+  type: attributive
+  text: "OmegaPRM collects over 1.5 million process supervision annotations, and with weighted self-consistency raises the instruction-tuned Gemini Pro from 51% to 69.4% on MATH500."
+  evidence:
+    - {work: "luo-2024-omegaprm", role: original, locator: "p. 1", stance: for}
+
+- id: c-ls-mc
+  type: attributive
+  text: "Monte Carlo estimation-based data synthesis for PRMs typically yields inferior performance and generalization compared to LLM-as-a-judge and human annotation methods."
+  evidence:
+    - {work: "zhang-2025-lessons-process-reward-models", role: original, locator: "p. 1", stance: for}
+
+- id: c-ls-why
+  type: attributive
+  text: "MC estimation relies on completion models to evaluate current-step correctness, which can generate correct answers from incorrect steps or incorrect answers from correct steps."
+  evidence:
+    - {work: "zhang-2025-lessons-process-reward-models", role: original, locator: "p. 1", stance: for}
+
+- id: c-ls-consensus
+  type: attributive
+  text: "Under consensus filtering, instances are only retained when both LLM-as-a-judge and MC estimation show consensus on the error reasoning step locations in the solution."
+  evidence:
+    - {work: "zhang-2025-lessons-process-reward-models", role: original, locator: "p. 2", stance: for}
+
+# Implicit process rewards
+
+- id: c-im-abs
+  type: attributive
+  text: "An implicit PRM can be obtained at no additional cost by training an ORM on response-level labels, with the only assumption that the outcome reward is parameterized as the log-likelihood ratio of the policy and reference models, r_θ(y) = β log π_θ(y)/π_ref(y)."
+  evidence:
+    - {work: "yuan-2024-free-process-rewards", role: original, locator: "p. 1", stance: for}
+
+- id: c-im-prop
+  type: attributive
+  text: "Proposition 3.1: if the reward is parameterized by the log-likelihood ratio of two causal LMs, r_θ(y) := β log π_θ(y)/π_ref(y), and q_θ^t is the partial log-ratio over the first t steps, then q_θ^t = β log E_{π_ref(y | y≤t)} e^{r_θ(y)/β}; q_θ is the exponential average of r_θ at step t."
+  evidence:
+    - {work: "yuan-2024-free-process-rewards", role: original, locator: "p. 4", stance: for}
+
+- id: c-pr-tele
+  type: mathematical
+  text: "If the process reward of step t is the difference q^t − q^(t−1) of these partial sums, the process rewards of a response add up to its outcome reward r(y), because the sum telescopes and q^0 = 0."
+  assumes: ["q^T over the whole response equals r(y)"]
+  derivation: process-reward-arithmetic
+
+- id: c-im-38
+  type: attributive
+  text: "The implicit PRM outperforms a strong MCTS-based baseline in the style of Math-Shepherd using less than 1/38 of the training data."
+  evidence:
+    - {work: "yuan-2024-free-process-rewards", role: original, locator: "p. 1", stance: for}
+
+# Using a PRM
+
+- id: c-lm-prod
+  type: attributive
+  text: "Lightman et al. define the PRM score for a solution to be the probability that every step is correct under the PRM, implemented as the product of the correctness probabilities for each step."
+  evidence:
+    - {work: "lightman-2023-lets-verify-step", role: original, locator: "p. 6", stance: for}
+
+- id: c-lm-appf
+  type: attributive
+  text: "Of the scoring strategies Lightman et al. tried, taking the product of step-level scores and treating neutral steps as positive did best, but the difference in performance between all strategies is minor."
+  evidence:
+    - {work: "lightman-2023-lets-verify-step", role: original, locator: "p. 20", stance: for}
+
+- id: c-sh-min
+  type: attributive
+  text: "Following Lightman et al., Wang et al. use the minimum score across all steps to represent the final score of a solution assigned by the PRM."
+  evidence:
+    - {work: "wang-2023-math-shepherd", role: original, locator: "p. 5", stance: for}
+
+- id: c-sn-last
+  type: attributive
+  text: "Snell et al. use the PRM's prediction at the last step as the full-answer score rather than the product or minimum, and attribute the difference from earlier work to their verifier being trained with soft Monte Carlo return labels."
+  evidence:
+    - {work: "snell-2024-scaling-test-time-compute", role: original, locator: "Section 5", stance: for}
+
+- id: c-pr-agg
+  type: mathematical
+  text: "For step scores in (0, 1], the product is at most the minimum, which is at most the last score; the product falls with the number of steps, so ten steps at 0.95 score about 0.599 by product while one step at 0.7 scores 0.7."
+  assumes: ["every step score lies in (0, 1]"]
+  derivation: process-reward-arithmetic
+
+- id: c-sh-vote
+  type: attributive
+  text: "Solutions can be grouped by final answer and scored per group, selecting arg max_a Σ_{i=1}^N 1(a_i = a) · RM(p, S_i), which combines self-consistency with the reward model."
+  evidence:
+    - {work: "wang-2023-math-shepherd", role: original, locator: "p. 5", stance: for}
+
+- id: c-ue-select
+  type: attributive
+  text: "Used during generation, the PRM selects among K candidate steps: at each step K candidates are generated, the candidate with the highest PRM score is kept, and generation continues from it until the final answer, with K = 96."
+  evidence:
+    - {work: "uesato-2022-process-outcome-feedback", role: original, locator: "p. 6", stance: for}
+
+- id: c-sn-beam
+  type: attributive
+  text: "Beam search against a PRM is more effective on harder questions and at lower compute budgets, whereas best-of-N is more effective on easier questions and at higher budgets."
+  evidence:
+    - {work: "snell-2024-scaling-test-time-compute", role: original, locator: "Section 5", stance: for}
+
+- id: c-sh-ppo
+  type: attributive
+  text: "Step-by-step PPO offers rewards at the end of each reasoning step, unlike PPO with an ORM, which only offers a reward at the end of the response."
+  evidence:
+    - {work: "wang-2023-math-shepherd", role: original, locator: "p. 5", stance: for}
+
+# Evidence
+
+- id: c-lm-main
+  type: attributive
+  text: "Process supervision significantly outperforms outcome supervision for training models to solve problems from the MATH dataset, and the process-supervised model solves 78% of problems from a representative subset of the MATH test set."
+  evidence:
+    - {work: "lightman-2023-lets-verify-step", role: original, locator: "p. 1", stance: for}
+
+- id: c-lm-fig3
+  type: attributive
+  text: "Best-of-1860 on the MATH subset, the PRM solves 78.2% of problems, the ORM 72.4% and majority voting 69.6%, and the gap between the PRM and the others widens as N increases."
+  evidence:
+    - {work: "lightman-2023-lets-verify-step", role: original, locator: "p. 7", stance: for}
+
+- id: c-lm-rmvote
+  type: attributive
+  text: "RM-weighted voting, which combines the PRM with majority voting, did not noticeably improve performance in Lightman et al.'s experiments."
+  evidence:
+    - {work: "lightman-2023-lets-verify-step", role: original, locator: "p. 8", stance: for}
+
+- id: c-lm-ood
+  type: attributive
+  text: "On held-out STEM questions from recent AP Physics, AP Calculus, AP Chemistry, AMC10 and AMC12 exams, the best-of-100 rates were 72.9% for the PRM, 63.8% for the ORM and 61.3% for majority voting."
+  evidence:
+    - {work: "lightman-2023-lets-verify-step", role: original, locator: "p. 10", stance: for}
+
+- id: c-ue-similar
+  type: attributive
+  text: "Outcome-based and process-based approaches lead to similar final-answer error rates on GSM8K, both without reward models (23.5% vs. 22.3%) and with reward models (16.6% vs. 14.8%)."
+  evidence:
+    - {work: "uesato-2022-process-outcome-feedback", role: original, locator: "p. 2", stance: for}
+
+- id: c-ue-emulate
+  type: attributive
+  text: "Even reward models trained with outcome-based labels give predictions that agree more closely with the process-based labels than with the outcome-based labels themselves."
+  evidence:
+    - {work: "uesato-2022-process-outcome-feedback", role: original, locator: "p. 2", stance: for}
+
+- id: c-ue-trace
+  type: attributive
+  text: "All models using reinforcement learning directly against final-answer correctness had high trace error, at best 12.4% against 3.8% for the best process-based method, and reinforcement learning against a reward model reduced it to 5.5%."
+  evidence:
+    - {work: "uesato-2022-process-outcome-feedback", role: original, locator: "p. 2", stance: for}
+
+- id: c-sh-res
+  type: attributive
+  text: "Step-by-step PPO with the automatically trained PRM raises Mistral-7B from 77.9% to 84.1% on GSM8K and from 28.6% to 33.0% on MATH, and verification lifts these to 89.1% and 43.5%."
+  evidence:
+    - {work: "wang-2023-math-shepherd", role: original, locator: "p. 2", stance: for}
+
+- id: c-lm-tax
+  type: attributive
+  text: "Lightman et al. argue that process supervision in fact incurs a negative alignment tax, since it improves performance while rewarding a human-endorsed chain of thought."
+  evidence:
+    - {work: "lightman-2023-lets-verify-step", role: original, locator: "p. 11", stance: for}
+
+# Limitations
+
+- id: c-pb-task
+  type: attributive
+  text: "ProcessBench consists of 3,400 test cases of competition- and Olympiad-level math problems with error locations annotated by human experts, and models must identify the earliest step that contains an error or conclude that all steps are correct."
+  evidence:
+    - {work: "zheng-2024-processbench", role: original, locator: "p. 1", stance: for}
+
+- id: c-pb-f1
+  type: attributive
+  text: "ProcessBench computes the accuracies on erroneous and correct samples and their harmonic mean as the F1 score, which balances being overly critical against being incapable of identifying errors."
+  evidence:
+    - {work: "zheng-2024-processbench", role: original, locator: "p. 6", stance: for}
+
+- id: c-pr-f1
+  type: mathematical
+  text: "A model that flags an error in every solution scores 0 on the correct samples, and a model that never flags one scores 0 on the erroneous samples, so either way its harmonic mean is 0; accuracies of 0.9 and 0.5 give 2 · 0.9 · 0.5/1.4 ≈ 0.643."
+  assumes: ["F1 is the harmonic mean 2xy/(x + y) of the two accuracies, taken as 0 when both are 0"]
+  derivation: process-reward-arithmetic
+
+- id: c-pb-fail
+  type: attributive
+  text: "Existing PRMs typically fail to generalize to more challenging math problems beyond GSM8K and MATH, and underperform both critic models, which are prompted general language models, and a PRM straightforwardly fine-tuned on PRM800K."
+  evidence:
+    - {work: "zheng-2024-processbench", role: original, locator: "p. 1", stance: for}
+
+- id: c-ls-bon
+  type: attributive
+  text: "Best-of-N evaluation of PRMs is biased: policy models generate responses with correct answers but flawed processes, PRMs that tolerate them get inflated scores, and many PRMs place their minimum scores on the final answer steps, a shift from process to outcome-based assessment."
+  evidence:
+    - {work: "zhang-2025-lessons-process-reward-models", role: original, locator: "p. 1", stance: for}
+
+- id: c-r1-three
+  type: attributive
+  text: "DeepSeek-R1's authors list three limitations of PRMs: it is challenging to define a fine-grain step in general reasoning, determining whether an intermediate step is correct is challenging, and a model-based PRM leads to reward hacking and needs extra training resources."
+  evidence:
+    - {work: "deepseek-2025-r1", role: original, locator: "pp. 62 to 63", stance: for}
+
+- id: c-lm-fp
+  type: attributive
+  text: "Grading by final answer is not perfectly reliable: false positives, solutions that reach the correct answer with incorrect reasoning, will be misgraded."
+  evidence:
+    - {work: "lightman-2023-lets-verify-step", role: original, locator: "p. 5", stance: for}
+
+- id: c-cob-adv
+  type: attributive
+  text: "Against a verifier, search beyond a certain number of samples can lower accuracy, as the risk of finding adversarial solutions that fool the verifier outweighs the benefits of search."
+  evidence:
+    - {work: "cobbe-2021-training-verifiers", role: original, locator: "p. 10", stance: for}
