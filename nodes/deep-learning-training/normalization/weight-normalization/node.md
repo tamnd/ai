@@ -34,6 +34,8 @@ sources:
   - {paper: "Salimans and Kingma (2016)", title: "Weight Normalization: A Simple Reparameterization to Accelerate Training of Deep Neural Networks", locator: "the abstract, pp. 1 to 8, Figures 2 and 6", note: "the reparameterization, the gradients, the norm growth, the initialization, mean-only batch normalization and the experiments"}
   - {paper: "Miyato et al. (2018)", title: "Spectral Normalization for Generative Adversarial Networks", locator: "pp. 3 to 9 and 15, Table 2", note: "spectral normalization by power iteration, and its comparison with weight normalization in GAN discriminators"}
   - {paper: "Qiao et al. (2019)", title: "Micro-Batch Training with Batch-Channel Normalization and Weight Standardization", locator: "p. 2", note: "weight standardization as a relative of weight normalization"}
+  - {paper: "Ba, Kiros and Hinton (2016)", title: "Layer Normalization", locator: "arXiv 1607.06450v1, pp. 3 and 4", note: "weight normalization in a common frame with batch and layer normalization, and its invariance to rescaling the weights"}
+  - {paper: "Brock, De, Smith and Simonyan (2021)", title: "High-Performance Large-Scale Image Recognition Without Normalization", locator: "ICML 2021, arXiv 2102.06171v1, pp. 2 and 3", note: "scaled weight standardization in normalizer-free ResNets"}
 ---
 
 Weight normalization (WN) changes how a network stores its weights, not what it computes.
@@ -106,6 +108,8 @@ Batch normalization divides the pre-activation $t = v\cdot x$ by its standard de
 For one layer with whitened inputs, $t$ has mean 0 and standard deviation $\lVert v\rVert$, so the two methods coincide. {#c-bn-equivalence}
 In deeper networks they differ.
 Salimans and Kingma argue WN is a cheaper and less noisy stand-in: a convolutional layer has far fewer weights than pre-activations, and $\lVert v\rVert$ is not random. {#c-cheaper}
+Ba et al. (2016) put both methods, and layer normalization, in one frame: each divides the summed input of a neuron by a scale, the standard deviation over the batch for BN and $\lVert v\rVert$ for WN, and with expected statistics either amounts to a reparameterization of the network. {#c-ba-wn-norm}
+In their comparison of invariances, BN and WN share one: rescaling the incoming weights of a single neuron leaves its normalized input unchanged. {#c-ba-invariance}
 
 **Data-dependent initialization.**
 Batch normalization fixes the scale of each layer's features; WN does not, so the initialization matters. {#c-init-needed}
@@ -287,6 +291,9 @@ In PyTorch, `torch.nn.utils.parametrizations.spectral_norm` does the same; `Spec
 
 **Weight standardization.**
 It drops the learnable length and standardizes each weight vector to zero mean and unit variance; with group normalization it narrows the gap to batch normalization. {#c-ws}
+
+**Scaled weight standardization.**
+Brock et al. (2021) use it in normalizer-free ResNets, which have no activation normalization at all: each convolutional weight vector has its fan-in mean subtracted and is divided by $\sqrt N$ times its standard deviation, $N$ the fan-in, to remove the mean shift that the missing batch normalization would have removed. {#c-brock-sws}
 
 **Layer normalization** also avoids the batch, but it normalizes the activations of each example over the units of a layer, at a cost per example; WN touches only the weights.
 
