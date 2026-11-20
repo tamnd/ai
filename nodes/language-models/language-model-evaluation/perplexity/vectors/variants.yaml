@@ -1,0 +1,27 @@
+# SPDX-License-Identifier: MIT
+# The options of perplexity that change the score, and the vector rows that pin each value (spec 08.7.5). Every row is
+# in edge.jsonl and was computed by hand from a closed form. The unit of normalisation is not an option: it is the
+# count passed as references, and the rows worked-example, worked-example-bytes and worked-example-words show three
+# units on one corpus. The page shows this as the table of its Variants section.
+default:
+  signature: "aggregate:corpus|base:e"
+  used_by: "Brown et al. (1992, J92-4003), who define perplexity over a whole sample of text, and the token-level loss of most neural language models"
+options:
+  aggregate:
+    corpus:
+      meaning: "exp of the total negative log-likelihood over the total units: each sequence weighs by its length"
+      used_by: "Brown et al. (1992), Goodman (2001), Merity et al. (2016) and Gao et al. (2020), whose bits per byte pools the dataset"
+      rows: {edge.jsonl: [worked-example, worked-example-words, unequal-lengths, uniform-gpt2-vocabulary, certain-model, one-token, no-underflow, large-perplexity, units-not-tokens]}
+    mean-of-sequences:
+      meaning: "the mean of the per-sequence perplexities: each sequence weighs the same, and the arithmetic mean is at least the corpus value when the unit counts are equal"
+      used_by: "evaluation scripts that report a per-document perplexity and then average it"
+      rows: {edge.jsonl: [worked-example-mean-of-sequences, worked-example-words-mean-of-sequences, unequal-lengths-mean-of-sequences]}
+  base:
+    e:
+      meaning: "the cross-entropy in nats per unit, the training loss of a model trained with natural logarithms"
+      used_by: "the loss that Gao et al. (2020) convert to bits per byte"
+      rows: {edge.jsonl: [worked-example, uniform-gpt2-vocabulary, no-underflow]}
+    "2":
+      meaning: "the cross-entropy in bits per unit: bits per token, per word, per character or per byte"
+      used_by: "Brown et al. (1992, J92-1002), 1.75 bits per character, and Gao et al. (2020), bits per UTF-8 byte"
+      rows: {edge.jsonl: [worked-example-bits, worked-example-bytes, worked-example-words, one-token, units-not-tokens]}

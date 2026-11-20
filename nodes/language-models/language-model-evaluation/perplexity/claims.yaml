@@ -1,0 +1,377 @@
+# The claims of the perplexity page (spec 07). The build computes the labels.
+- id: c-brown-def
+  type: definitional
+  text: "The perplexity of a language model with respect to a sample of text is the reciprocal of the geometric average of the probabilities of the predictions in the sample."
+  evidence:
+    - {work: "brown-1992-class-based-n-gram-models", role: original, locator: "p. 3", stance: for}
+
+- id: c-goodman-def
+  type: definitional
+  text: "The perplexity of a language model is equal to the geometric average of the inverse probability of the words measured on test data; a language model that assigned equal probability to 100 words would have perplexity 100."
+  evidence:
+    - {work: "goodman-2001-bit-of-progress-language-modeling", role: original, locator: "p. 4", stance: for}
+
+- id: c-goodman-entropy
+  type: attributive
+  text: "Goodman calls log2 of perplexity entropy, the average number of bits per word that would be necessary to encode the test data using an optimal coder, and notes that what is actually measured is the cross entropy of the test data given the model."
+  evidence:
+    - {work: "goodman-2001-bit-of-progress-language-modeling", role: original, locator: "p. 5", stance: for}
+
+- id: c-pile-bpb
+  type: definitional
+  text: "To compute bits per byte from a negative log likelihood loss l, Gao et al. use BPB = (L_T / L_B) log2(e^l) = (L_T / L_B) l / ln(2), where L_T is the length of the dataset in tokens and L_B its length in UTF-8 encoded bytes, and find L_T / L_B = 0.29335 GPT-2 tokens per byte across the Pile."
+  evidence:
+    - {work: "gao-2020-pile-800gb-dataset", role: original, locator: "p. 6", stance: for}
+
+- id: c-brown-upper-bound
+  type: attributive
+  text: "Brown et al. define the cross-entropy of a process P as measured by a model M as H(P, M) = -E_P log M(X_0 | X_-1, X_-2, ...), and note that it is an upper bound on the entropy: for any model M, H(P) <= H(P, M)."
+  evidence:
+    - {work: "brown-1992-entropy-upper-bound-english", role: original, locator: "p. 2", stance: for}
+
+- id: c-geometric-mean
+  type: mathematical
+  text: "Over T scored tokens with probabilities p_i in (0, 1], exp(-(1/T) sum_i ln p_i) = (prod_i 1/p_i)^(1/T), the geometric mean of the inverse probabilities."
+  assumes: ["every scored token has a probability in (0, 1]"]
+  derivation: "derivations/perplexity-identities.md"
+
+- id: c-base-invariant
+  type: mathematical
+  text: "For any base b > 1, b^(H_b) with H_b the cross-entropy in base-b units equals exp of the cross-entropy in nats, so the perplexity does not depend on the base of the logarithm."
+  assumes: ["b > 1", "the cross-entropy is finite"]
+  derivation: "derivations/perplexity-identities.md"
+
+- id: c-uniform
+  type: mathematical
+  text: "A model that gives every token probability 1/V has perplexity exactly V per token on any text."
+  assumes: ["the model is uniform over V tokens", "the unit is the token"]
+  derivation: "derivations/perplexity-identities.md"
+
+- id: c-gpt2-vocab
+  type: attributive
+  text: "The GPT-2 vocabulary is expanded to 50,257 tokens."
+  evidence:
+    - {work: "radford-2019-language-models-unsupervised-multitask", role: original, locator: "p. 4", stance: for}
+
+- id: c-bounds
+  type: mathematical
+  text: "Over T tokens with probabilities p_i in (0, 1], 1 <= 1/max p_i <= PPL <= 1/min p_i and 1/mean(p) <= PPL <= mean(1/p)."
+  assumes: ["every scored token has a probability in (0, 1]", "the unit is the token"]
+  derivation: "derivations/perplexity-identities.md"
+
+- id: c-corpus-weighting
+  type: mathematical
+  text: "The log of the pooled corpus perplexity exp(sum_j S_j / sum_j n_j) is the n_j-weighted mean of the log per-sequence perplexities S_j / n_j, so it lies between the smallest and largest per-sequence perplexity; with equal n_j it is their geometric mean and at most their arithmetic mean."
+  assumes: ["the unit counts n_j are positive", "the negative log-likelihoods S_j are finite"]
+  derivation: "derivations/perplexity-identities.md"
+
+- id: c-expected-loss
+  type: mathematical
+  text: "If the next symbol has distribution P on a finite set and the model predicts M, then E_P[-ln M] = H(P) + KL(P || M) >= H(P), with equality exactly when M = P."
+  assumes: ["P and M are distributions on the same finite set", "M(x) > 0 wherever P(x) > 0"]
+  derivation: "derivations/perplexity-identities.md"
+
+- id: c-goodman-true-model
+  type: attributive
+  text: "Goodman notes that the true model for any data source will have the lowest possible perplexity for that source, so the lower the perplexity of a model, the closer it is, in some sense, to the true model."
+  evidence:
+    - {work: "goodman-2001-bit-of-progress-language-modeling", role: original, locator: "p. 5", stance: for}
+
+- id: c-unit-conversion
+  type: mathematical
+  text: "For a text with total negative log-likelihood S nats, N_T tokens and N_U units of another kind, ln PPL_U = (N_T / N_U) * S / N_T, so PPL_U = PPL_T^(N_T / N_U)."
+  assumes: ["N_T and N_U are positive", "S is finite"]
+  derivation: "derivations/units-and-context.md"
+
+- id: c-bpb-formula
+  type: mathematical
+  text: "With per-token loss l = S / N_T in nats, the bits per byte S / (N_B ln 2) equal (N_T / N_B) l / ln 2, and 2^BPB is the per-byte perplexity exp(S / N_B)."
+  assumes: ["N_T and N_B are positive", "S is finite"]
+  derivation: "derivations/units-and-context.md"
+
+- id: c-reduction-scale
+  type: mathematical
+  text: "Cutting perplexity from PPL to (1 - r) PPL with 0 <= r < 1 removes -ln(1 - r) nats per unit whatever the value of PPL, a fraction -ln(1 - r) / ln PPL of the cross-entropy."
+  assumes: ["PPL > 1", "0 <= r < 1"]
+  derivation: "derivations/units-and-context.md"
+
+- id: c-goodman-ten-percent
+  type: attributive
+  text: "Goodman notes that a 10% perplexity reduction, from 100 to 90, corresponds to a reduction from 6.64 bits to 6.49 bits, which is only a 2% entropy reduction."
+  evidence:
+    - {work: "goodman-2001-bit-of-progress-language-modeling", role: original, locator: "p. 51", stance: for}
+
+- id: c-sliding-window
+  type: mathematical
+  text: "Windows of W tokens starting at 0, s, 2s, ... with 1 <= s <= W, each scoring only the tokens no earlier window scored, score every token of an n-token sequence exactly once, number 1 + ceil((n - W) / s) when n > W, and give each scored token after the first window at least W - s tokens of its window as context."
+  assumes: ["1 <= s <= W", "n >= 1", "context before a window's start is dropped"]
+  derivation: "derivations/units-and-context.md"
+
+- id: c-mielke-surprisal
+  type: attributive
+  text: "Mielke et al. define the surprisal of a sentence as the negative log-likelihood -log2 p(s), interpretable as the number of bits needed to represent the sentence under a compression scheme derived from the language model, and note that language models for the same language are often compared by their average surprisal on a corpus (the cross-entropy)."
+  evidence:
+    - {work: "mielke-2019-what-kind-of-language-hard-to-language-model", role: original, locator: "p. 3", stance: for}
+
+- id: c-brown-compression
+  type: empirical
+  text: "The ASCII code for the characters in the Brown Corpus has 8 bits per character; a simple Huffman code reaches 4.46 bits per character, the UNIX command compress 4.43, and the adaptive Lempel-Ziv scheme of Miller and Wegman 4.20."
+  scope:
+    models: "Huffman coding, UNIX compress and an adaptive Lempel-Ziv scheme"
+    data: ["Brown Corpus"]
+    scale: "5.96 million characters"
+    setting: "bits per character after compression"
+  evidence:
+    - {work: "brown-1992-entropy-upper-bound-english", role: original, locator: "p. 9", stance: for}
+
+- id: c-brown-175
+  type: empirical
+  text: "A word trigram language model constructed from 583 million words of training text measures the cross-entropy of the 5.96 million character Brown Corpus at 1.75 bits per character, an upper bound for the entropy of characters in printed English."
+  scope:
+    models: "word trigram language model with spelling, case and spacing models"
+    data: ["Brown Corpus"]
+    scale: "583 million words of training text"
+    setting: "cross-entropy per character on held-out text"
+  evidence:
+    - {work: "brown-1992-entropy-upper-bound-english", role: original, locator: "p. 1", stance: for}
+
+- id: c-brown-downstream
+  type: attributive
+  text: "Brown et al. note that for tasks such as speech recognition, machine translation, handwriting recognition, stenotype transcription and spelling correction, language models for which the cross-entropy is lower lead directly to better performance."
+  evidence:
+    - {work: "brown-1992-entropy-upper-bound-english", role: original, locator: "p. 9", stance: for}
+
+- id: c-goodman-wer
+  type: empirical
+  text: "Combining language modeling techniques gives up to a 50% perplexity reduction on 100,000 words of training data, which is one bit of entropy, declining to 41% on 284,000,000 words; on a similar large set without punctuation the reduction is 38%, with an 8.9% word error rate reduction."
+  scope:
+    models: "combined n-gram techniques against a Katz smoothed trigram baseline"
+    data: ["North American Business news"]
+    scale: "100,000 to 284,000,000 training words"
+    setting: "test-set perplexity and speech recognition word error rate"
+  evidence:
+    - {work: "goodman-2001-bit-of-progress-language-modeling", role: original, locator: "p. 1", stance: for}
+
+- id: c-goodman-alternatives
+  type: attributive
+  text: "Goodman notes that alternatives to perplexity shown to correlate better with speech recognition performance typically have free variables that need to be optimized for a particular speech recognizer, and others are significantly more difficult to compute."
+  evidence:
+    - {work: "goodman-2001-bit-of-progress-language-modeling", role: original, locator: "p. 5", stance: for}
+
+- id: c-brown-244
+  type: empirical
+  text: "The Brown corpus, which contains 1,014,312 words and is not included in the training or held-out data, has a perplexity of 244 with respect to the interpolated 3-gram model of Brown et al."
+  scope:
+    models: "interpolated 3-gram model"
+    data: ["Brown corpus"]
+    scale: "trained on 365,893,263 words"
+    setting: "test-set perplexity"
+  evidence:
+    - {work: "brown-1992-class-based-n-gram-models", role: original, locator: "p. 4", stance: for}
+
+- id: c-jozefowicz
+  type: empirical
+  text: "Large LSTM language models improve the single-model perplexity on the One Billion Word Benchmark from 51.3 down to 30.0, while an ensemble of models improves perplexity from 41.0 down to 23.7."
+  scope:
+    models: "LSTM language models with character CNN inputs"
+    data: ["One Billion Word Benchmark"]
+    scale: "about 0.8 billion training words"
+    setting: "test-set perplexity"
+  evidence:
+    - {work: "jozefowicz-2016-exploring-limits-language-modeling", role: original, locator: "p. 1", stance: for}
+
+- id: c-merity-ptb
+  type: empirical
+  text: "The pointer sentinel-LSTM model achieves state of the art language modeling performance on the Penn Treebank, 70.9 perplexity, while using far fewer parameters than a standard softmax LSTM."
+  scope:
+    models: "pointer sentinel-LSTM"
+    data: ["Penn Treebank"]
+    scale: "929,590 training tokens, vocabulary 10,000"
+    setting: "test-set word perplexity"
+  evidence:
+    - {work: "merity-2016-pointer-sentinel-mixture-models", role: original, locator: "p. 1", stance: for}
+
+- id: c-pile-bpb-pref
+  type: attributive
+  text: "Gao et al. prefer bits per UTF-8 encoded byte over bits per character or perplexity due to its invariance to different tokenization schemes and the ambiguity of measuring characters in Unicode."
+  evidence:
+    - {work: "gao-2020-pile-800gb-dataset", role: original, locator: "p. 6", stance: for}
+
+- id: c-mielke-bpe
+  type: attributive
+  text: "Mielke et al. note that the number of BPE merges can be tuned to vary smoothly between a word-level model (infinitely many merges) and a kind of character-level model (0 merges)."
+  evidence:
+    - {work: "mielke-2019-what-kind-of-language-hard-to-language-model", role: original, locator: "p. 3", stance: for}
+
+- id: c-mielke-open-vocab
+  type: attributive
+  text: "Mielke et al. hold that for fairness the language models must be open-vocabulary, predicting the entire string, so that they cannot cheat by predicting only UNK for some words of the language."
+  evidence:
+    - {work: "mielke-2019-what-kind-of-language-hard-to-language-model", role: original, locator: "p. 3", stance: for}
+
+- id: c-wikitext-unk
+  type: empirical
+  text: "The out-of-vocabulary rate, the percentage of tokens replaced by an unk token, is 4.8% for the Penn Treebank with a vocabulary of 10,000, 2.6% for WikiText-2 with 33,278, and 0.4% for WikiText-103 with 267,735."
+  scope:
+    models: "none; dataset statistics"
+    data: ["Penn Treebank", "WikiText-2", "WikiText-103"]
+    scale: "929,590 to 103,227,021 training tokens"
+    setting: "closed-vocabulary word-level language modelling"
+  evidence:
+    - {work: "merity-2016-pointer-sentinel-mixture-models", role: original, locator: "p. 5", stance: for}
+
+- id: c-mielke-canonical
+  type: attributive
+  text: "In training and testing, Mielke et al. evaluate only the probability of the canonical segmentation of the held-out string, rather than the total probability of all segmentations."
+  evidence:
+    - {work: "mielke-2019-what-kind-of-language-hard-to-language-model", role: original, locator: "p. 3", stance: for}
+
+- id: c-canonical-bound
+  type: mathematical
+  text: "If the probability of a string is the sum of the probabilities of its segmentations, the probability of any one segmentation is at most that of the string, so the perplexity computed from one segmentation is at least the string's perplexity."
+  assumes: ["p(s) = sum over segmentations sigma of p(sigma)", "every term is nonnegative"]
+  derivation: "derivations/units-and-context.md"
+
+- id: c-radford-units
+  type: attributive
+  text: "Radford et al. note that results on language modeling benchmarks are reported as a scaled or exponentiated version of the average negative log probability per canonical prediction unit, usually a character, a byte, or a word, and evaluate the same quantity by computing the log-probability of a dataset according to a WebText LM and dividing by the number of canonical units."
+  evidence:
+    - {work: "radford-2019-language-models-unsupervised-multitask", role: original, locator: "p. 4", stance: for}
+
+- id: c-radford-detok
+  type: empirical
+  text: "Invertible de-tokenizers that remove tokenization and pre-processing artifacts give gains of 2.5 to 5 perplexity for GPT-2."
+  scope:
+    models: "GPT-2"
+    data: ["standard language modeling benchmarks"]
+    scale: "117M to 1542M parameters"
+    setting: "zero-shot perplexity per canonical unit"
+  evidence:
+    - {work: "radford-2019-language-models-unsupervised-multitask", role: original, locator: "p. 5", stance: for}
+
+- id: c-pile-independent
+  type: attributive
+  text: "Gao et al. compute perplexity by evaluating each document independently within each dataset, as opposed to concatenating all documents as is common practice for computing perplexity on large corpora."
+  evidence:
+    - {work: "gao-2020-pile-800gb-dataset", role: original, locator: "p. 6", stance: for}
+
+- id: c-holtzman-table
+  type: empirical
+  text: "The perplexity of the human text is 12.38; greedy decoding gives 1.50, beam search with b = 16 gives 1.48, pure sampling 22.73, and nucleus sampling with p = 0.95 gives 13.13."
+  scope:
+    models: "GPT-2 Large (762M parameters)"
+    data: ["webtext"]
+    scale: "unknown"
+    setting: "open-ended continuation of held-out WebText paragraphs, perplexity under the generating model"
+  evidence:
+    - {work: "holtzman-2020-curious-case-neural-text-degeneration", role: original, locator: "p. 7", stance: for}
+
+- id: c-holtzman-gold
+  type: attributive
+  text: "Holtzman et al. argue that the optimal generation strategy should produce text which has a perplexity close to that of the gold text, because text of lower perplexity tends to have low diversity and get stuck in repetition loops."
+  evidence:
+    - {work: "holtzman-2020-curious-case-neural-text-degeneration", role: original, locator: "p. 6", stance: for}
+
+- id: c-meister-view
+  type: attributive
+  text: "Meister and Cotterell note that perplexity on a held-out dataset is simply a monotonic function of average per-token log-likelihood, and that while low perplexity reflects some level of fit to natural language, it does not give a fine-grained view of which linguistic attributes a model has learned."
+  evidence:
+    - {work: "meister-2021-language-model-evaluation-beyond-perplexity", role: original, locator: "p. 2", stance: for}
+
+- id: c-meister-findings
+  type: empirical
+  text: "Neural language models appear to learn only a subset of the statistical tendencies of natural language considered, and the fit to different distributions is highly dependent on both model architecture and generation strategy."
+  scope:
+    models: "neural language models including LSTMs"
+    data: ["English Wikipedia dumps"]
+    scale: "unknown"
+    setting: "statistical tests on text sampled with ancestral and nucleus sampling"
+  evidence:
+    - {work: "meister-2021-language-model-evaluation-beyond-perplexity", role: original, locator: "p. 1", stance: for}
+
+- id: c-fang-key-tokens
+  type: attributive
+  text: "Fang et al. find that perplexity overlooks key tokens, which are essential for long-context understanding, by averaging across all tokens and thereby obscuring the true performance of models in long-context scenarios."
+  evidence:
+    - {work: "fang-2025-what-is-wrong-with-perplexity-long-context", role: original, locator: "p. 1", stance: for}
+
+- id: c-fang-answer
+  type: empirical
+  text: "Perplexity computed only on the answer tokens of long-context tasks strongly correlates with LongEval accuracy, whereas perplexity on non-answer tokens shows little to no correlation."
+  scope:
+    models: "open long-context language models"
+    data: ["LongEval"]
+    scale: "unknown"
+    setting: "per-token perplexity split into answer and non-answer tokens"
+  evidence:
+    - {work: "fang-2025-what-is-wrong-with-perplexity-long-context", role: original, locator: "p. 2", stance: for}
+
+- id: c-fang-lsd
+  type: definitional
+  text: "The long-short difference of a token is LSD(x_i) = log P(x_i | l_i) - log P(x_i | s_i), where l_i = (x_1, ..., x_i-1) is the full long context and s_i = (x_i-K, ..., x_i-1) a truncated short context of length K, e.g. 64."
+  evidence:
+    - {work: "fang-2025-what-is-wrong-with-perplexity-long-context", role: original, locator: "p. 4", stance: for}
+
+- id: c-fang-corr
+  type: empirical
+  text: "Computed on GovReport, perplexity shows no correlation with LongBench score across models, while LongPPL achieves a -0.96 Pearson correlation coefficient."
+  scope:
+    models: "long-context models including Mistral-7B, Mixtral-8x7B, Qwen2-7B, Yi-6B, Phi-3, FILM-7B, Yarn-7B and CLEX-7B"
+    data: ["GovReport", "LongBench"]
+    scale: "6B to 8x7B parameters"
+    setting: "perplexity and LongPPL on a natural long corpus against benchmark scores"
+  evidence:
+    - {work: "fang-2025-what-is-wrong-with-perplexity-long-context", role: original, locator: "p. 2", stance: for}
+
+- id: c-brown-word-perplexity
+  type: attributive
+  text: "Brown et al. describe the word perplexity of a task as a commonly used measure of the difficulty of a speech recognition task."
+  evidence:
+    - {work: "brown-1992-entropy-upper-bound-english", role: original, locator: "p. 8", stance: for}
+
+- id: c-brown-char-perplexity
+  type: attributive
+  text: "Brown et al. note that the cross-entropy they report is just the base two logarithm of the character perplexity of a sample of text with respect to a language model."
+  evidence:
+    - {work: "brown-1992-entropy-upper-bound-english", role: original, locator: "p. 9", stance: for}
+
+- id: c-mielke-multitext
+  type: attributive
+  text: "Cotterell et al. (2018) evaluated the model for each language simply by its total surprisal over the sentences, a comparative measure that required a complete multitext corpus containing every sentence in every language."
+  evidence:
+    - {work: "mielke-2019-what-kind-of-language-hard-to-language-model", role: original, locator: "p. 3", stance: for}
+
+- id: c-brown-standard
+  type: attributive
+  text: "Brown et al. suggest the Brown Corpus of printed English as a standard against which to measure progress in language modeling."
+  evidence:
+    - {work: "brown-1992-entropy-upper-bound-english", role: original, locator: "p. 1", stance: for}
+
+- id: c-brown-previous
+  type: attributive
+  text: "Since Shannon's 1951 paper there have been a number of estimates of the entropy of English, based on samples of at most a few hundred letters and on probabilities elicited from human subjects."
+  evidence:
+    - {work: "brown-1992-entropy-upper-bound-english", role: original, locator: "p. 1", stance: for}
+
+- id: c-goodman-common
+  type: attributive
+  text: "Goodman states that the most commonly used method for measuring language model performance is perplexity."
+  evidence:
+    - {work: "goodman-2001-bit-of-progress-language-modeling", role: original, locator: "p. 4", stance: for}
+
+- id: c-wikitext
+  type: attributive
+  text: "Merity et al. introduce the WikiText corpus to evaluate how well language models can exploit longer contexts and deal with more realistic vocabularies and larger corpora."
+  evidence:
+    - {work: "merity-2016-pointer-sentinel-mixture-models", role: original, locator: "p. 1", stance: for}
+
+- id: c-wikitext-size
+  type: empirical
+  text: "WikiText-103 has 103,227,021 training tokens and a vocabulary of 267,735, against 929,590 training tokens and a vocabulary of 10,000 for the Penn Treebank."
+  scope:
+    models: "none; dataset statistics"
+    data: ["WikiText-103", "Penn Treebank"]
+    scale: "929,590 to 103,227,021 training tokens"
+    setting: "word-level language modelling datasets"
+  evidence:
+    - {work: "merity-2016-pointer-sentinel-mixture-models", role: original, locator: "p. 5", stance: for}

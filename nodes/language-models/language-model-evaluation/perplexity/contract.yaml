@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: MIT
+# The contract of the perplexity page (spec 04.4 and 08.7.5). The inputs are the log-probabilities that a model gave
+# the observed tokens, so the metric runs no model. Every framework version's score reproduces every row of vectors/
+# within the tolerance. The rows are closed forms such as 2^1.6 and e^700, computed by hand and rounded once to
+# float64; no row comes from an evaluation library.
+entry: score
+inputs:
+  predictions: {type: "list[list[float]]", meaning: "for each sequence, the natural-log probabilities log p(x_i | x_<i) that the model gave its scored tokens; each is <= 0, and -inf marks a token of probability 0"}
+  references: {type: "list[int]", meaning: "for each sequence, the number of units it is normalised by: its scored tokens for per-token perplexity, or its words, characters or UTF-8 bytes; at least 1"}
+options:
+  aggregate: {type: str, default: corpus, values: [corpus, mean-of-sequences], meaning: "corpus is exp(total negative log-likelihood / total units), eq-perplexity over the pooled corpus; mean-of-sequences is the plain mean of the per-sequence perplexities"}
+  base: {type: str, default: e, values: [e, "2"], meaning: "the logarithm of the reported cross-entropy: nats or bits per unit; the perplexity does not depend on it"}
+output:
+  perplexity: {type: float, meaning: "the aggregated perplexity, at least 1, or inf when a scored token had probability 0"}
+  cross_entropy: {type: float, meaning: "the corpus cross-entropy, total negative log-likelihood over total units, in nats or bits per unit; it does not depend on aggregate"}
+  per_sequence: {type: "list[float]", meaning: "the perplexity of each sequence over its own units, in the order of the inputs"}
+tolerance: {rtol: 1.0e-9, atol: 1.0e-12}
