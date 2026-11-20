@@ -1,0 +1,11 @@
+# Written by fixtures/make.py; do not edit.
+seed: 20221006
+config: {d_data: 3, d_hidden: 5, d_time: 4, sigma_min: 0.1}
+inputs: {B: 4, x0: "standard normal", x1: "standard normal plus 1", t: "[0.1, 0.35, 0.6, 0.9]"}
+loss: "the conditional flow matching loss, the squared error of the velocity summed over coordinates and averaged over the batch"
+dtype: float64
+numpy: "2.5.4"
+files:
+  params-small.npz: {sha256: d8c3e6bc409181781e3b287a164d624211f6ccda21b13de5527287d9c5ffeee6}
+  input-small.npz: {sha256: d464ae245584cf3820ed16027a242ae6dd738b8f7f0ae7adf594526dcbf17742}
+  expected-small.npz: {sha256: 8aae6344a1cc06c8b9dadc4700a1dc9af46fed676699f8861cbfee63fd02eb7b}

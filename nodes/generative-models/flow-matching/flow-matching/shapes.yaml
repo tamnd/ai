@@ -1,0 +1,35 @@
+# SPDX-License-Identifier: MIT
+# The shape contract of flow matching on the page (spec 08.6): a velocity network v_theta(x, t) with one tanh hidden
+# layer of d_hidden units on the concatenation of a point x, of d_data dimensions, and Fourier features of the time t,
+# of d_time dimensions. One evaluation maps a batch of B points to B velocities; a training step evaluates it once, an
+# Euler sampler once per step and a midpoint sampler twice per step. The FLOPs count the products only, a multiply-add
+# as 2; the biases, the features, tanh and the update are left out, and so is the backward pass.
+config:
+  d_data:   {meaning: "dimension of a data point x_1, of a noise point x_0 and of every x_t", symbol: "D", example: 3, sample: [1, 6]}
+  d_hidden: {meaning: "width of the hidden layer of the velocity network", symbol: "H", example: 5, sample: [1, 8]}
+  d_time:   {meaning: "number of Fourier features of the time t", symbol: "E", example: 4, sample: [1, 8]}
+axes:
+  B: {meaning: "batch of points", example: 4, sample: [1, 6]}
+  D: d_data
+  H: d_hidden
+  E: d_time
+blocks:
+  - id: hidden
+    meaning: "the hidden layer h = tanh([x, e(t)] W1 + b1) on the point and the features of its time"
+    eq: [velocity-model]
+    inputs: {x: "(B, D)", e: "(B, E)"}
+    outputs: {h: "(B, H)"}
+    params: "(D + E) * H + H"
+    flops_forward: "2 * B * (D + E) * H"
+  - id: output
+    meaning: "the velocity v = h W2 + b2"
+    eq: [velocity-model]
+    inputs: {h: "(B, H)"}
+    outputs: {v: "(B, D)"}
+    params: "H * D + D"
+    flops_forward: "2 * B * H * D"
+model:
+  params: {formula: "hidden.params + output.params", symbol: "P", meaning: "all weights and biases of the velocity network"}
+  flops_forward: {formula: "hidden.flops_forward + output.flops_forward", symbol: "C", meaning: "FLOPs of one evaluation of v_theta on B points, a multiply-add counted as 2; n Euler steps cost n times as much"}
+configs:
+  two_modes: {meaning: "the network of the test that learns two Gaussian modes in the plane, at its batch of 256", d_data: 2, d_hidden: 64, d_time: 16, B: 256}
