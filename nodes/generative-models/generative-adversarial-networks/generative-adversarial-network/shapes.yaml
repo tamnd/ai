@@ -1,0 +1,55 @@
+# SPDX-License-Identifier: MIT
+# The shape contract of the generative adversarial network of the page (spec 08.6): a generator with one tanh layer of
+# d_hidden units that maps noise of d_noise dimensions to a point of d_data dimensions, and a discriminator, or critic,
+# with one tanh layer of d_critic units that maps a point to one logit. A training step runs the generator on B noise
+# vectors and the discriminator on the B fakes and on B data points. The FLOPs count the products only, a multiply-add
+# as 2; the biases, the activations and the losses are left out, and so are the backward passes and the second pass
+# that the gradient penalties of WGAN-GP and R1 need through the critic.
+config:
+  d_noise:  {meaning: "dimension of the noise z given to the generator", symbol: "J", example: 2, sample: [1, 4]}
+  d_hidden: {meaning: "width of the hidden layer of the generator", symbol: "H", example: 5, sample: [1, 8]}
+  d_data:   {meaning: "dimension of a data point and of the generator's output", symbol: "D", example: 3, sample: [1, 6]}
+  d_critic: {meaning: "width of the hidden layer of the discriminator", symbol: "K", example: 4, sample: [1, 8]}
+axes:
+  B: {meaning: "batch, of noise vectors and of data points alike", example: 4, sample: [1, 6]}
+  J: d_noise
+  H: d_hidden
+  D: d_data
+  K: d_critic
+blocks:
+  - id: gen_hidden
+    meaning: "the hidden layer of the generator: t = tanh(z U1 + c1)"
+    eq: [generator]
+    inputs: {z: "(B, J)"}
+    outputs: {t: "(B, H)"}
+    params: "J * H + H"
+    flops_forward: "2 * B * J * H"
+  - id: gen_out
+    meaning: "the output layer of the generator, the fakes G(z) = t U2 + c2"
+    eq: [generator]
+    inputs: {t: "(B, H)"}
+    outputs: {fake: "(B, D)"}
+    params: "H * D + D"
+    flops_forward: "2 * B * H * D"
+  - id: dis_hidden
+    meaning: "the hidden layer of the discriminator, applied to the B fakes and the B data points"
+    eq: [discriminator]
+    inputs: {x: "(2 * B, D)"}
+    outputs: {h: "(2 * B, K)"}
+    params: "D * K + K"
+    flops_forward: "4 * B * D * K"
+  - id: dis_out
+    meaning: "the output of the discriminator, one logit a(x) for each of the 2B points"
+    eq: [discriminator]
+    inputs: {h: "(2 * B, K)"}
+    outputs: {a: "(2 * B)"}
+    params: "K + 1"
+    flops_forward: "4 * B * K"
+model:
+  params_gen: {formula: "gen_hidden.params + gen_out.params", symbol: "P_G", meaning: "the weights and biases of the generator"}
+  params_dis: {formula: "dis_hidden.params + dis_out.params", symbol: "P_D", meaning: "the weights and biases of the discriminator"}
+  params: {formula: "params_gen + params_dis", symbol: "P", meaning: "all weights and biases of the pair"}
+  flops_forward: {formula: "gen_hidden.flops_forward + gen_out.flops_forward + dis_hidden.flops_forward + dis_out.flops_forward", symbol: "C", meaning: "FLOPs of one generator pass on B noise vectors and one discriminator pass on the B fakes and the B data points, a multiply-add counted as 2"}
+configs:
+  toy_mixture: {meaning: "the pair of the test that learns a mixture of two Gaussians on the line, at its batch of 128", d_noise: 1, d_hidden: 16, d_data: 1, d_critic: 16, B: 128}
+  toy_plane: {meaning: "the pair of the tests that learn a Gaussian in the plane with the non-saturating, WGAN and WGAN-GP losses, at their batch of 128", d_noise: 2, d_hidden: 16, d_data: 2, d_critic: 16, B: 128}

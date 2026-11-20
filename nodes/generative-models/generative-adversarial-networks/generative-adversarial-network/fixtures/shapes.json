@@ -1,0 +1,435 @@
+{
+  "note": "Written by aik shapes sample -w from shapes.yaml; do not edit. The tests of each implementation check shapes, param_count and flops against these values (spec 08.6, rule X09).",
+  "configs": [
+    {
+      "name": "example",
+      "kind": "example",
+      "config": {
+        "B": 4,
+        "D": 3,
+        "H": 5,
+        "J": 2,
+        "K": 4,
+        "d_critic": 4,
+        "d_data": 3,
+        "d_hidden": 5,
+        "d_noise": 2
+      },
+      "blocks": {
+        "dis_hidden": {
+          "params": 16,
+          "flops_forward": 192,
+          "inputs": {
+            "x": [
+              8,
+              3
+            ]
+          },
+          "outputs": {
+            "h": [
+              8,
+              4
+            ]
+          }
+        },
+        "dis_out": {
+          "params": 5,
+          "flops_forward": 64,
+          "inputs": {
+            "h": [
+              8,
+              4
+            ]
+          },
+          "outputs": {
+            "a": [
+              8
+            ]
+          }
+        },
+        "gen_hidden": {
+          "params": 15,
+          "flops_forward": 80,
+          "inputs": {
+            "z": [
+              4,
+              2
+            ]
+          },
+          "outputs": {
+            "t": [
+              4,
+              5
+            ]
+          }
+        },
+        "gen_out": {
+          "params": 18,
+          "flops_forward": 120,
+          "inputs": {
+            "t": [
+              4,
+              5
+            ]
+          },
+          "outputs": {
+            "fake": [
+              4,
+              3
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 456,
+        "params": 54,
+        "params_dis": 21,
+        "params_gen": 33
+      }
+    },
+    {
+      "name": "sample-1",
+      "kind": "sample",
+      "config": {
+        "B": 1,
+        "D": 2,
+        "H": 1,
+        "J": 2,
+        "K": 8,
+        "d_critic": 8,
+        "d_data": 2,
+        "d_hidden": 1,
+        "d_noise": 2
+      },
+      "blocks": {
+        "dis_hidden": {
+          "params": 24,
+          "flops_forward": 64,
+          "inputs": {
+            "x": [
+              2,
+              2
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              8
+            ]
+          }
+        },
+        "dis_out": {
+          "params": 9,
+          "flops_forward": 32,
+          "inputs": {
+            "h": [
+              2,
+              8
+            ]
+          },
+          "outputs": {
+            "a": [
+              2
+            ]
+          }
+        },
+        "gen_hidden": {
+          "params": 3,
+          "flops_forward": 4,
+          "inputs": {
+            "z": [
+              1,
+              2
+            ]
+          },
+          "outputs": {
+            "t": [
+              1,
+              1
+            ]
+          }
+        },
+        "gen_out": {
+          "params": 4,
+          "flops_forward": 4,
+          "inputs": {
+            "t": [
+              1,
+              1
+            ]
+          },
+          "outputs": {
+            "fake": [
+              1,
+              2
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 104,
+        "params": 40,
+        "params_dis": 33,
+        "params_gen": 7
+      }
+    },
+    {
+      "name": "sample-2",
+      "kind": "sample",
+      "config": {
+        "B": 3,
+        "D": 1,
+        "H": 1,
+        "J": 1,
+        "K": 5,
+        "d_critic": 5,
+        "d_data": 1,
+        "d_hidden": 1,
+        "d_noise": 1
+      },
+      "blocks": {
+        "dis_hidden": {
+          "params": 10,
+          "flops_forward": 60,
+          "inputs": {
+            "x": [
+              6,
+              1
+            ]
+          },
+          "outputs": {
+            "h": [
+              6,
+              5
+            ]
+          }
+        },
+        "dis_out": {
+          "params": 6,
+          "flops_forward": 60,
+          "inputs": {
+            "h": [
+              6,
+              5
+            ]
+          },
+          "outputs": {
+            "a": [
+              6
+            ]
+          }
+        },
+        "gen_hidden": {
+          "params": 2,
+          "flops_forward": 6,
+          "inputs": {
+            "z": [
+              3,
+              1
+            ]
+          },
+          "outputs": {
+            "t": [
+              3,
+              1
+            ]
+          }
+        },
+        "gen_out": {
+          "params": 2,
+          "flops_forward": 6,
+          "inputs": {
+            "t": [
+              3,
+              1
+            ]
+          },
+          "outputs": {
+            "fake": [
+              3,
+              1
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 132,
+        "params": 20,
+        "params_dis": 16,
+        "params_gen": 4
+      }
+    },
+    {
+      "name": "toy_mixture",
+      "kind": "named",
+      "config": {
+        "B": 128,
+        "D": 1,
+        "H": 16,
+        "J": 1,
+        "K": 16,
+        "d_critic": 16,
+        "d_data": 1,
+        "d_hidden": 16,
+        "d_noise": 1
+      },
+      "blocks": {
+        "dis_hidden": {
+          "params": 32,
+          "flops_forward": 8192,
+          "inputs": {
+            "x": [
+              256,
+              1
+            ]
+          },
+          "outputs": {
+            "h": [
+              256,
+              16
+            ]
+          }
+        },
+        "dis_out": {
+          "params": 17,
+          "flops_forward": 8192,
+          "inputs": {
+            "h": [
+              256,
+              16
+            ]
+          },
+          "outputs": {
+            "a": [
+              256
+            ]
+          }
+        },
+        "gen_hidden": {
+          "params": 32,
+          "flops_forward": 4096,
+          "inputs": {
+            "z": [
+              128,
+              1
+            ]
+          },
+          "outputs": {
+            "t": [
+              128,
+              16
+            ]
+          }
+        },
+        "gen_out": {
+          "params": 17,
+          "flops_forward": 4096,
+          "inputs": {
+            "t": [
+              128,
+              16
+            ]
+          },
+          "outputs": {
+            "fake": [
+              128,
+              1
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 24576,
+        "params": 98,
+        "params_dis": 49,
+        "params_gen": 49
+      }
+    },
+    {
+      "name": "toy_plane",
+      "kind": "named",
+      "config": {
+        "B": 128,
+        "D": 2,
+        "H": 16,
+        "J": 2,
+        "K": 16,
+        "d_critic": 16,
+        "d_data": 2,
+        "d_hidden": 16,
+        "d_noise": 2
+      },
+      "blocks": {
+        "dis_hidden": {
+          "params": 48,
+          "flops_forward": 16384,
+          "inputs": {
+            "x": [
+              256,
+              2
+            ]
+          },
+          "outputs": {
+            "h": [
+              256,
+              16
+            ]
+          }
+        },
+        "dis_out": {
+          "params": 17,
+          "flops_forward": 8192,
+          "inputs": {
+            "h": [
+              256,
+              16
+            ]
+          },
+          "outputs": {
+            "a": [
+              256
+            ]
+          }
+        },
+        "gen_hidden": {
+          "params": 48,
+          "flops_forward": 8192,
+          "inputs": {
+            "z": [
+              128,
+              2
+            ]
+          },
+          "outputs": {
+            "t": [
+              128,
+              16
+            ]
+          }
+        },
+        "gen_out": {
+          "params": 34,
+          "flops_forward": 8192,
+          "inputs": {
+            "t": [
+              128,
+              16
+            ]
+          },
+          "outputs": {
+            "fake": [
+              128,
+              2
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 40960,
+        "params": 147,
+        "params_dis": 65,
+        "params_gen": 82
+      }
+    }
+  ]
+}
