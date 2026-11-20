@@ -2,7 +2,8 @@
 # Part of https://ai.tamnd.com/masked-language-modelling/ (ai://NEW-masked-language-modelling).
 """Tests of the PyTorch implementation: given the same random draws, it reproduces the NumPy reference stored in the
 shared fixture (BERT's corruption, the masked LM and discriminator losses and their hand-written gradients, ELECTRA's
-samples and losses, T5's span corruption and ten SGD steps), and the T5 example of Raffel et al."""
+samples and losses, T5's span corruption and ten SGD steps), the T5 example of Raffel et al., and autograd against
+finite differences."""
 
 import pathlib
 
@@ -40,7 +41,7 @@ def close(got, want, rtol=1e-10):
     torch.testing.assert_close(got.detach(), want, rtol=rtol, atol=1e-14)
 
 
-def test_bert_corruption_and_losses(data):
+def test_shared_fixture_bert_corruption_and_losses(data):
     inp, want = data
     ids, sel = inp["train"][:4], inp["sel"]
     corrupt = bert_corrupt(ids, sel, inp["u"], inp["rnd"])
@@ -57,7 +58,7 @@ def test_bert_corruption_and_losses(data):
         close(g, want[f"discgrad0_{k}"])
 
 
-def test_electra(data):
+def test_shared_fixture_electra(data):
     inp, want = data
     ids, sel = inp["train"][:4], inp["sel"]
     gen, disc = model(inp, "gen", 8), model(inp, "disc", 32)
@@ -77,7 +78,7 @@ def test_electra(data):
             close(p.grad, want[f"electra_dgrad_{k}"])
 
 
-def test_t5_span_corruption(data):
+def test_shared_fixture_t5_span_corruption(data):
     inp, want = data
     starts_i = torch.cumsum(want["t5_inp_len"], 0) - want["t5_inp_len"]
     starts_t = torch.cumsum(want["t5_tgt_len"], 0) - want["t5_tgt_len"]
@@ -98,7 +99,7 @@ def test_t5_example():
     assert " ".join(inv[int(i)] for i in tgt) == "<X> for inviting <Y> last <Z>"
 
 
-def test_sgd_steps(data):
+def test_shared_fixture_sgd_steps(data):
     inp, want = data
     m = model(inp, "init", 32)
     opt = torch.optim.SGD(m.parameters(), lr=0.5)
@@ -122,3 +123,32 @@ def test_cloze_is_one_mask_at_a_time(data):
             one = ids.clone()
             one[r, t] = 1
             close(got[r, t], torch.log_softmax(m.logits(one)[r, t], -1)[ids[r, t]], rtol=1e-12)
+
+
+@pytest.mark.parametrize("kind", ["mlm", "disc"])
+def test_gradient(kind):
+    # torch.autograd.gradcheck compares autograd with central finite differences on every parameter, for the masked LM
+    # loss and for the discriminator loss.
+    g = torch.Generator().manual_seed(0)
+    m = WindowMLM(9, 3, 4, (-1, 0, 1))
+    with torch.no_grad():
+        for p in m.parameters():
+            p.copy_(0.5 * torch.randn(p.shape, generator=g))
+    ids = torch.randint(FIRST, 9, (2, 5), generator=g)
+    corrupt = ids.clone()
+    corrupt[:, 1] = 1
+    predict = corrupt != ids
+    names = [name for name, _ in m.named_parameters()]
+
+    def f(*ws):
+        saved = dict(m._parameters)
+        m._parameters.update(zip(names, ws, strict=True))  # pyright: ignore[reportArgumentType]
+        try:
+            if kind == "mlm":
+                return m.mlm_loss(corrupt, ids, predict)
+            return m.disc_loss(corrupt, corrupt == ids, ids >= FIRST)
+        finally:
+            m._parameters.update(saved)
+
+    ws = tuple(p.detach().clone().requires_grad_(True) for p in m.parameters())
+    assert torch.autograd.gradcheck(f, ws, eps=1e-6, atol=1e-7)

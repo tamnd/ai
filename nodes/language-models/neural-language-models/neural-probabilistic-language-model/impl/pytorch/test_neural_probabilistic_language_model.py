@@ -1,8 +1,9 @@
 # SPDX-License-Identifier: MIT
 # Part of https://ai.tamnd.com/neural-probabilistic-language-model/ (ai://NEW-neural-probabilistic-language-model).
-"""Tests of the PyTorch implementation: autograd reproduces the hand-written gradients of the NumPy reference stored
-in the shared fixture, for the untied and tied models, noise-contrastive estimation, two epochs of SGD and the
-Huffman-tree softmax; the worked example; the parameter count; and the tree softmax sums to one."""
+"""Tests of the PyTorch implementation: autograd reproduces the hand-written gradients of the NumPy reference stored in
+the shared fixture, for the untied and tied models, noise-contrastive estimation, two epochs of SGD and the Huffman-tree
+softmax; the worked example; the parameter count; the tree softmax sums to one; and autograd against finite
+differences."""
 
 import math
 import pathlib
@@ -138,3 +139,24 @@ def test_tree_softmax():
     entropy = float(-(q * q.log2()).sum())
     mean_depth = float((q * hs.mask.sum(dim=1)).sum())
     assert entropy <= mean_depth < entropy + 1
+
+
+@pytest.mark.parametrize("tie", [False, True], ids=["untied", "tied"])
+def test_gradient(tie):
+    # torch.autograd.gradcheck compares autograd with central finite differences on every parameter of a small model,
+    # for the cross-entropy with weight decay; tied, C serves as both the input table and the output layer.
+    m = NPLM(7, 4, 4, 3, direct=True, tie=tie, seed=1)
+    g = torch.Generator().manual_seed(2)
+    ctx, tgt = torch.randint(0, 7, (5, 2), generator=g), torch.randint(0, 7, (5,), generator=g)
+    names = [name for name, _ in m.named_parameters()]
+
+    def f(*ws):
+        saved = dict(m._parameters)
+        m._parameters.update(zip(names, ws, strict=True))  # pyright: ignore[reportArgumentType]
+        try:
+            return m.loss(ctx, tgt, 0.01)
+        finally:
+            m._parameters.update(saved)
+
+    ws = tuple(p.detach().clone().requires_grad_(True) for p in m.parameters())
+    assert torch.autograd.gradcheck(f, ws, eps=1e-6, atol=1e-7)

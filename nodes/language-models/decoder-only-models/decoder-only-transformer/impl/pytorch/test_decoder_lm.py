@@ -2,7 +2,7 @@
 # Part of https://ai.tamnd.com/decoder-only-transformer/ (ai://NEW-decoder-only-transformer).
 """Tests of the PyTorch version: the shared fixture and its gradients, the cache of keys and values and greedy
 decoding, torch.nn.TransformerEncoderLayer and scaled_dot_product_attention with a causal mask, gradcheck, the tied
-embedding, and causality."""
+embedding, causality, and a learning smoke test."""
 
 import json
 import math
@@ -61,10 +61,25 @@ def test_cache_and_greedy_decoding_match_the_fixture():
 
 
 @pytest.mark.parametrize("c", SHAPES, ids=lambda c: c["name"])
-def test_counts(c):
+def test_param_count(c):
     assert param_count(cfg_of(c)) == c["model"]["params"]
     if c["kind"] != "named":  # the named models are too large to build in a test
         assert sum(p.numel() for p in DecoderLM(cfg_of(c)).parameters()) == c["model"]["params"]
+
+
+@pytest.mark.parametrize("c", [c for c in SHAPES if c["kind"] != "named"], ids=lambda c: c["name"])
+def test_shapes(c):
+    cfg, B, blocks = cfg_of(c), c["config"]["B"], c["blocks"]
+    g = torch.Generator().manual_seed(0)
+    model = DecoderLM(cfg, generator=g)
+    with torch.no_grad():
+        logits, kv = model(torch.randint(0, cfg["vocab"], (B, cfg["n_ctx"]), generator=g))
+    assert list(logits.shape) == blocks["head"]["outputs"]["logits"]
+    assert len(kv) == cfg["n_layers"]
+    for keys, values in kv:
+        assert list(keys.shape) == blocks["attn"]["internals"]["k"]
+        assert list(values.shape) == blocks["attn"]["internals"]["v"]
+    assert sum(k.numel() + v.numel() for k, v in kv) == c["model"]["kv_cache"]
 
 
 def test_layer_matches_torch_transformer_encoder_layer_with_a_causal_mask():
@@ -113,7 +128,8 @@ def test_cache_of_keys_and_values():
         assert torch.equal(model.generate(ids[:, :3], 6), seq[:, 3:])
 
 
-def test_gradcheck():
+def test_gradient():
+    # torch.autograd.gradcheck compares autograd with central finite differences on every parameter.
     g = torch.Generator().manual_seed(3)
     for kw in ({}, {"tied": False, "pos": "none"}):
         cfg = config(vocab=5, n_ctx=4, d_model=4, n_heads=2, d_ff=6, n_layers=2, **kw)
@@ -160,3 +176,22 @@ def test_context_limit():
     ids = torch.zeros(1, 8, dtype=torch.long)
     with torch.no_grad():
         assert math.isfinite(nll(model(ids)[0], ids).item())
+
+
+def test_learns():
+    # Adam fits 8 counting sequences, each token one more than the last modulo 8, in 150 steps, the task of the NumPy
+    # test_learns. A wrong sign or a gradient that does not reach a weight leaves the loss far above the bound of
+    # 0.05; a uniform guess is log 8 = 2.08.
+    cfg = config(vocab=8, n_ctx=8, d_model=16, n_heads=2, d_ff=32, n_layers=1)
+    model = DecoderLM(cfg, generator=torch.Generator().manual_seed(0))
+    ids = torch.as_tensor((np.random.default_rng(1).integers(0, 8, 8)[:, None] + np.arange(8)) % 8)
+    opt = torch.optim.Adam(model.parameters(), lr=1e-2)
+    losses = []
+    for _ in range(150):
+        loss = nll(model(ids)[0], ids)
+        opt.zero_grad()
+        loss.backward()
+        opt.step()
+        losses.append(loss.item())
+    assert losses[0] > 1.0
+    assert losses[-1] < 0.05, losses[-1]

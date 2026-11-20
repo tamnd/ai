@@ -41,6 +41,11 @@ sources:
   - {paper: "Liu, Min, Zettlemoyer, Choi and Hajishirzi (2024)", title: "Infini-gram: Scaling Unbounded n-gram Language Models to a Trillion Tokens", locator: "arXiv 2401.17377v3, Sections 2 and 4", note: "the infinity-gram and its suffix-array engine"}
 ---
 
+An n-gram language model predicts each word from the n − 1 words before it and nothing earlier, with probabilities estimated from counts in a corpus.
+Raw relative frequencies give zero probability to every word sequence the corpus lacks, so the counts are smoothed: some probability moves from seen continuations to estimates from shorter contexts, by interpolation, by backoff, or by the continuation counts of Kneser-Ney.
+Shannon generated text from n-gram approximations of English in 1948; Jelinek and Mercer interpolated orders in 1980, Katz introduced backoff in 1987, Kneser and Ney introduced continuation counts in 1995, and Chen and Goodman compared the methods and proposed modified Kneser-Ney.
+The model is the baseline that [[neural-probabilistic-language-model|neural language models]] are measured against.
+
 ## In plain words
 
 To guess the next word, look only at the last few words, find every place in a large text where those words occur, and see what came next.
