@@ -33,6 +33,8 @@ sources:
   - {paper: "Perez et al. (2022)", title: "Red Teaming Language Models with Language Models", locator: "the abstract, Sections 1 to 8 and Appendices A.1 and B", note: "red teaming with a red LM and a classifier: zero-shot, few-shot, supervised and RL generation, and five kinds of harm"}
   - {paper: "Ganguli et al. (2022)", title: "Red Teaming Language Models to Reduce Harms: Methods, Scaling Behaviors, and Lessons Learned", locator: "pp. 1 to 16", note: "manual red teaming by crowdworkers of four model types at three sizes, the released attacks, and the open questions"}
   - {paper: "Feffer, Sinha, Deng, Lipton and Heidari (2024)", title: "Red-Teaming for Generative AI: Silver Bullet or Security Theater?", locator: "pp. 1 to 15", note: "six industry cases and a survey of 104 papers; the lack of a shared definition, scope and reporting standard"}
+  - {paper: "Bai et al. (2022a)", title: "Training a Helpful and Harmless Assistant with Reinforcement Learning from Human Feedback", locator: "arXiv 2204.05862, p. 4", note: "red-team conversations turned into a harmlessness preference dataset, and the tension with helpfulness"}
+  - {paper: "Bai et al. (2022b)", title: "Constitutional AI: Harmlessness from AI Feedback", locator: "arXiv 2212.08073, p. 8", note: "human and model-written red-team prompts used to train the model on its own revisions"}
 ---
 
 Red teaming is adversarial testing of a model: a red team looks for inputs that make the model produce harmful outputs, so that the developers can fix those failures.
@@ -96,6 +98,10 @@ Ganguli et al. embed the attacks and plot them with UMAP, and have reviewers att
 
 **5. Fix the model and repeat.**
 Perez et al. list fixes such as removing offending examples from the training corpus, adding flagged phrases to a blacklist during generation, and training the target on the failures, for example with unlikelihood training or RL, or training the red and target LMs jointly. {#c-blue-team}
+Red-team conversations can also become training data.
+In Bai et al. (2022a), crowdworkers tried to draw harmful replies out of the model and picked the more harmful of two responses, and those preferences formed the harmlessness dataset. {#c-hh-redteam-data}
+The same authors warn that helpfulness and harmlessness often pull against each other, since a model trained hard to avoid harm gives "safe" answers that do not meet the user's needs. {#c-hh-opposition}
+Constitutional AI reuses the attacks as prompts: Bai et al. (2022b) took 42,496 human-written red-team prompts shared by Ganguli et al., generated 140,335 more with a pretrained model, and had a helpful model critique and revise four responses to each. {#c-cai-redteam-prompts}
 Some organizations run a single round of red-teaming, while others iterate and use the results of early rounds to choose the risk areas for later ones. {#c-rounds}
 
 ## Derivation
