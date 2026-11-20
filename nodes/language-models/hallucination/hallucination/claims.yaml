@@ -1,0 +1,595 @@
+# The claims of the hallucination page (spec 07). The build computes the labels.
+
+# The finding
+
+- id: c-my-prone
+  type: attributive
+  text: "Maynez et al. analyzed limitations of neural text generation models for abstractive document summarization and found that these models are highly prone to hallucinate content that is unfaithful to the input document."
+  evidence:
+    - {work: "maynez-2020-faithfulness-factuality-summarization", role: original, locator: "p. 1", stance: for}
+
+- id: c-my-def
+  type: attributive
+  text: "Maynez et al. define a summary as being hallucinated if it has a span of words that is not supported by the input document, and do not categorize paraphrases or any information that can be inferred from the document as hallucinations."
+  evidence:
+    - {work: "maynez-2020-faithfulness-factuality-summarization", role: original, locator: "p. 3", stance: for}
+
+- id: c-my-kinds
+  type: attributive
+  text: "Intrinsic hallucinations use terms or concepts from the document but misrepresent information from the document, while extrinsic hallucinations are model generations that ignore the source material altogether."
+  evidence:
+    - {work: "maynez-2020-faithfulness-factuality-summarization", role: original, locator: "p. 3", stance: for}
+
+- id: c-my-factual
+  type: attributive
+  text: "A summary S of a document D contains a factual hallucination if it contains information not found in D that is factually correct."
+  evidence:
+    - {work: "maynez-2020-faithfulness-factuality-summarization", role: original, locator: "p. 3", stance: for}
+
+- id: c-tq-imitative
+  type: attributive
+  text: "Lin et al. call false answers that a model's training objective incentivizes imitative falsehoods: for GPT-3 a false answer is an imitative falsehood if it has high likelihood on GPT-3's training distribution."
+  evidence:
+    - {work: "lin-2022-truthfulqa", role: original, locator: "p. 1", stance: for}
+
+- id: c-kv-bound
+  type: attributive
+  text: "Kalai and Vempala prove that there is an inherent statistical lower bound on the rate that pretrained language models hallucinate certain types of facts, having nothing to do with the transformer LM architecture or data quality."
+  evidence:
+    - {work: "kalai-2024-calibrated-must-hallucinate", role: original, locator: "p. 1", stance: for}
+
+# Evidence: summarization
+
+- id: c-my-setup
+  type: empirical
+  text: "Maynez et al. randomly sampled 500 articles from the test set and elicited judgments from three different annotators for each of 2500 (500x5) document-summary pairs."
+  scope:
+    models: "PtGen, TConvS2S, TranS2S, BertS2S and the reference summaries"
+    data: ["500 articles sampled from the XSum test set"]
+    scale: "five summaries for each of 500 BBC articles"
+    setting: "three trained annotators mark each unsupported span as intrinsic or extrinsic"
+  evidence:
+    - {work: "maynez-2020-faithfulness-factuality-summarization", role: original, locator: "p. 5", stance: for}
+
+- id: c-my-70
+  type: empirical
+  text: "Intrinsic and extrinsic hallucinations happen frequently, in more than 70% of single-sentence summaries, and over 90% of extrinsic hallucinations were erroneous."
+  scope:
+    models: "PtGen, TConvS2S, TranS2S, BertS2S and the reference summaries"
+    data: ["500 articles sampled from the XSum test set"]
+    scale: "five summaries for each of 500 BBC articles"
+    setting: "three trained annotators mark each unsupported span as intrinsic or extrinsic"
+  evidence:
+    - {work: "maynez-2020-faithfulness-factuality-summarization", role: original, locator: "p. 2", stance: for}
+
+- id: c-my-gold
+  type: empirical
+  text: "The BBC gold summaries often have extrinsic hallucinations due to the dataset artifact that gold summaries are introductory sentences prefacing each article."
+  scope:
+    models: "PtGen, TConvS2S, TranS2S, BertS2S and the reference summaries"
+    data: ["500 articles sampled from the XSum test set"]
+    scale: "five summaries for each of 500 BBC articles"
+    setting: "three trained annotators mark each unsupported span as intrinsic or extrinsic"
+  evidence:
+    - {work: "maynez-2020-faithfulness-factuality-summarization", role: original, locator: "p. 6", stance: for}
+
+- id: c-my-intrinsic
+  type: empirical
+  text: "The percentage of system summaries with intrinsic hallucination was much higher than in gold summaries (7.4% vs others), which revealed the models' tendency to misrepresent information in the document due to the lack of document-level understanding and inference."
+  scope:
+    models: "PtGen, TConvS2S, TranS2S, BertS2S and the reference summaries"
+    data: ["500 articles sampled from the XSum test set"]
+    scale: "five summaries for each of 500 BBC articles"
+    setting: "three trained annotators mark each unsupported span as intrinsic or extrinsic"
+  evidence:
+    - {work: "maynez-2020-faithfulness-factuality-summarization", role: original, locator: "p. 6", stance: for}
+
+- id: c-my-bert
+  type: empirical
+  text: "In total, 34.7% of the BertS2S abstracts were faithful (26.9%) and/or factual (+7.8%), 7.4% absolute better than the next-best model (PtGen), and even so over 90% of BertS2S hallucinations are erroneous."
+  scope:
+    models: "PtGen, TConvS2S, TranS2S, BertS2S and the reference summaries"
+    data: ["500 articles sampled from the XSum test set"]
+    scale: "five summaries for each of 500 BBC articles"
+    setting: "three trained annotators mark each unsupported span as intrinsic or extrinsic"
+  evidence:
+    - {work: "maynez-2020-faithfulness-factuality-summarization", role: original, locator: "p. 7", stance: for}
+
+- id: c-my-entail
+  type: empirical
+  text: "Textual entailment scores are best correlated with both faithful (moderate, 0.40 ≤ |rs| ≤ 0.59) and factual (weak, 0.20 ≤ |rs| ≤ 0.39) human scores."
+  scope:
+    models: "PtGen, TConvS2S, TranS2S, BertS2S and the reference summaries"
+    data: ["500 articles sampled from the XSum test set"]
+    scale: "five summaries for each of 500 BBC articles"
+    setting: "three trained annotators mark each unsupported span as intrinsic or extrinsic"
+  evidence:
+    - {work: "maynez-2020-faithfulness-factuality-summarization", role: original, locator: "p. 8", stance: for}
+
+# Evidence: TruthfulQA
+
+- id: c-tq-bench
+  type: attributive
+  text: "The TruthfulQA benchmark comprises 817 questions that span 38 categories, including health, law, finance and politics, crafted so that some humans would answer falsely due to a false belief or misconception."
+  evidence:
+    - {work: "lin-2022-truthfulqa", role: original, locator: "p. 1", stance: for}
+
+- id: c-tq-truthful
+  type: attributive
+  text: "Lin et al. define an answer to a question as truthful iff it avoids asserting a false statement, so a model is perfectly truthful if it answers 'No comment' for every question, and in practice they want answers that are both truthful and informative."
+  evidence:
+    - {work: "lin-2022-truthfulqa", role: original, locator: "p. 4", stance: for}
+
+- id: c-tq-best
+  type: empirical
+  text: "The human participant produced 94% true answers, 87% of them both true and informative, while the model with the most true answers (GPT-3-175B with helpful prompt) produced 58% true answers and 21% true and informative answers, and gave false and informative answers 42% of the time (compared to 6% for the human participant)."
+  scope:
+    models: "GPT-3, GPT-Neo/J, GPT-2 and UnifiedQA"
+    data: ["TruthfulQA, 817 questions in 38 categories"]
+    scale: "GPT-Neo/J 125M to 6B, GPT-3 up to 175B"
+    setting: "zero-shot answers under several prompts, judged by humans"
+  evidence:
+    - {work: "lin-2022-truthfulqa", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-tq-inverse
+  type: empirical
+  text: "Larger models generally do worse than smaller models in the same family: the GPT-Neo/J model with the most parameters is 17% less truthful than a model 60x smaller."
+  scope:
+    models: "GPT-3, GPT-Neo/J, GPT-2 and UnifiedQA"
+    data: ["TruthfulQA, 817 questions in 38 categories"]
+    scale: "GPT-Neo/J 125M to 6B, GPT-3 up to 175B"
+    setting: "zero-shot answers under several prompts, judged by humans"
+  evidence:
+    - {work: "lin-2022-truthfulqa", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-tq-mc
+  type: empirical
+  text: "In the multiple-choice task GPT-Neo/J 6B was 12% less truthful than GPT-Neo/J 125M, and no models significantly outperformed random guessing."
+  scope:
+    models: "GPT-3, GPT-Neo/J, GPT-2 and UnifiedQA"
+    data: ["TruthfulQA, 817 questions in 38 categories"]
+    scale: "GPT-Neo/J 125M to 6B, GPT-3 up to 175B"
+    setting: "zero-shot answers under several prompts, judged by humans"
+  evidence:
+    - {work: "lin-2022-truthfulqa", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-tq-informative
+  type: empirical
+  text: "While larger models were less truthful, they were more informative."
+  scope:
+    models: "GPT-3, GPT-Neo/J, GPT-2 and UnifiedQA"
+    data: ["TruthfulQA, 817 questions in 38 categories"]
+    scale: "GPT-Neo/J 125M to 6B, GPT-3 up to 175B"
+    setting: "zero-shot answers under several prompts, judged by humans"
+  evidence:
+    - {work: "lin-2022-truthfulqa", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-tq-controls
+  type: empirical
+  text: "On matched control questions, made by editing 1-3 words of a TruthfulQA question to turn it into a straightforward trivia or common-sense question, truthfulness improves with model size for all model families."
+  scope:
+    models: "GPT-3, GPT-Neo/J, GPT-2 and UnifiedQA"
+    data: ["TruthfulQA, 817 questions in 38 categories"]
+    scale: "GPT-Neo/J 125M to 6B, GPT-3 up to 175B"
+    setting: "zero-shot answers under several prompts, judged by humans"
+  evidence:
+    - {work: "lin-2022-truthfulqa", role: original, locator: "Section 4.3", stance: for}
+
+- id: c-tq-judge
+  type: empirical
+  text: "The fine-tuned GPT-judge model is able to predict human evaluations of truthfulness with 90-96% validation accuracy."
+  scope:
+    models: "GPT-3, GPT-Neo/J, GPT-2 and UnifiedQA"
+    data: ["TruthfulQA, 817 questions in 38 categories"]
+    scale: "GPT-Neo/J 125M to 6B, GPT-3 up to 175B"
+    setting: "zero-shot answers under several prompts, judged by humans"
+  evidence:
+    - {work: "lin-2022-truthfulqa", role: original, locator: "Section 4.4", stance: for}
+
+# Evidence: long-form factual precision
+
+- id: c-fs-def
+  type: attributive
+  text: "FActScore breaks a generation into a series of atomic facts, short statements that each contain one piece of information, and computes the percentage of atomic facts supported by a reliable knowledge source."
+  evidence:
+    - {work: "min-2023-factscore", role: original, locator: "p. 1", stance: for}
+
+- id: c-fs-scores
+  type: empirical
+  text: "On people biographies InstructGPT and ChatGPT achieve FActScores of 42.5% and 58.3%, and PerplexityAI, which uses a commercial search engine, attains a FActScore of 71.5%."
+  scope:
+    models: "InstructGPT, ChatGPT and PerplexityAI"
+    data: ["biographies of people from Wikipedia"]
+    scale: "commercial models of unpublished size"
+    setting: "human annotation of atomic facts against Wikipedia"
+  evidence:
+    - {work: "min-2023-factscore", role: original, locator: "p. 4", stance: for}
+
+- id: c-fs-abstain
+  type: empirical
+  text: "ChatGPT and PerplexityAI often abstain from answering, which presumably improves their factual precision."
+  scope:
+    models: "InstructGPT, ChatGPT and PerplexityAI"
+    data: ["biographies of people from Wikipedia"]
+    scale: "commercial models of unpublished size"
+    setting: "human annotation of atomic facts against Wikipedia"
+  evidence:
+    - {work: "min-2023-factscore", role: original, locator: "p. 4", stance: for}
+
+- id: c-fs-auto
+  type: empirical
+  text: "An automated model that estimates FActScore using retrieval and a strong language model has less than a 2% error rate, and Min et al. use it to evaluate 6,500 generations from 13 recent LMs that would have cost $26K if evaluated by humans."
+  scope:
+    models: "InstructGPT, ChatGPT and PerplexityAI"
+    data: ["biographies of people from Wikipedia"]
+    scale: "commercial models of unpublished size"
+    setting: "human annotation of atomic facts against Wikipedia"
+  evidence:
+    - {work: "min-2023-factscore", role: original, locator: "p. 1", stance: for}
+
+- id: c-fs-rare
+  type: empirical
+  text: "There is a notable decrease in FActScore as the rarity of entities increases, consistently across all the LMs evaluated."
+  scope:
+    models: "InstructGPT, ChatGPT and PerplexityAI"
+    data: ["biographies of people from Wikipedia"]
+    scale: "commercial models of unpublished size"
+    setting: "human annotation of atomic facts against Wikipedia"
+  evidence:
+    - {work: "min-2023-factscore", role: original, locator: "p. 5", stance: for}
+
+- id: c-fs-perplexity
+  type: empirical
+  text: "The FActScore of PerplexityAI still significantly drops as entities are rarer, with a relative drop of 50% and 64% at the atomic level and sentence level."
+  scope:
+    models: "InstructGPT, ChatGPT and PerplexityAI"
+    data: ["biographies of people from Wikipedia"]
+    scale: "commercial models of unpublished size"
+    setting: "human annotation of atomic facts against Wikipedia"
+  evidence:
+    - {work: "min-2023-factscore", role: original, locator: "p. 5", stance: for}
+
+- id: c-fs-later
+  type: empirical
+  text: "Across all LMs, the later part of the generation has significantly worse precision."
+  scope:
+    models: "InstructGPT, ChatGPT and PerplexityAI"
+    data: ["biographies of people from Wikipedia"]
+    scale: "commercial models of unpublished size"
+    setting: "human annotation of atomic facts against Wikipedia"
+  evidence:
+    - {work: "min-2023-factscore", role: original, locator: "p. 5", stance: for}
+
+# Evidence: detection and self-knowledge
+
+- id: c-sc-idea
+  type: attributive
+  text: "SelfCheckGPT leverages the idea that if an LLM has knowledge of a given concept, sampled responses are likely to be similar and contain consistent facts, whereas for hallucinated facts stochastically sampled responses are likely to diverge and contradict one another."
+  evidence:
+    - {work: "manakul-2023-selfcheckgpt", role: original, locator: "p. 1", stance: for}
+
+- id: c-sc-zero
+  type: attributive
+  text: "SelfCheckGPT is a sampling-based approach that can be used to fact-check the responses of black-box models in a zero-resource fashion, without an external database."
+  evidence:
+    - {work: "manakul-2023-selfcheckgpt", role: original, locator: "p. 1", stance: for}
+
+- id: c-sc-labels
+  type: empirical
+  text: "Of the 1908 annotated sentences, 761 (39.9%) were labelled major-inaccurate, 631 (33.1%) minor-inaccurate, and 516 (27.0%) accurate."
+  scope:
+    models: "GPT-3 (text-davinci-003)"
+    data: ["238 WikiBio articles, 1908 generated sentences annotated by hand"]
+    scale: "one model"
+    setting: "sentence-level detection from the agreement of sampled passages"
+  evidence:
+    - {work: "manakul-2023-selfcheckgpt", role: original, locator: "p. 5", stance: for}
+
+- id: c-sc-prob
+  type: empirical
+  text: "Probability measures from the LLM generating the texts are strong baselines for assessing factuality: factual sentences can be identified with an AUC-PR of 53.97, significantly better than the random baseline of 27.04, with the AUC-PR for hallucination detection also increasing from 72.96 to 83.21."
+  scope:
+    models: "GPT-3 (text-davinci-003)"
+    data: ["238 WikiBio articles, 1908 generated sentences annotated by hand"]
+    scale: "one model"
+    setting: "sentence-level detection from the agreement of sampled passages"
+  evidence:
+    - {work: "manakul-2023-selfcheckgpt", role: original, locator: "p. 6", stance: for}
+
+- id: c-sc-prompt
+  type: empirical
+  text: "SelfCheckGPT-Prompt considerably outperforms the grey-box approaches, including GPT-3's output probabilities, as well as other black-box approaches."
+  scope:
+    models: "GPT-3 (text-davinci-003)"
+    data: ["238 WikiBio articles, 1908 generated sentences annotated by hand"]
+    scale: "one model"
+    setting: "sentence-level detection from the agreement of sampled passages"
+  evidence:
+    - {work: "manakul-2023-selfcheckgpt", role: original, locator: "p. 7", stance: for}
+
+- id: c-ku-def
+  type: attributive
+  text: "Kuhn et al. introduce semantic entropy, an entropy which incorporates linguistic invariances created by shared meanings, because different sentences can mean the same thing."
+  evidence:
+    - {work: "kuhn-2023-semantic-uncertainty", role: original, locator: "p. 1", stance: for}
+
+- id: c-ku-entail
+  type: attributive
+  text: "A sequence means the same thing as a second sequence if and only if they entail each other, and the classifier returns equivalent if and only if both directions were entailment."
+  evidence:
+    - {work: "kuhn-2023-semantic-uncertainty", role: original, locator: "p. 5", stance: for}
+
+- id: c-ku-pred
+  type: empirical
+  text: "Semantic entropy is more predictive of model accuracy on question answering data sets than comparable baselines."
+  scope:
+    models: "OPT"
+    data: ["TriviaQA and CoQA"]
+    scale: "2.7B to 30B parameters"
+    setting: "sampled answers clustered by bidirectional entailment"
+  evidence:
+    - {work: "kuhn-2023-semantic-uncertainty", role: original, locator: "p. 1", stance: for}
+
+- id: c-kd-calib
+  type: empirical
+  text: "Larger models are well-calibrated on diverse multiple choice and true/false questions when they are provided in the right format."
+  scope:
+    models: "Anthropic pretrained language models"
+    data: ["multiple-choice, true/false and open-ended evaluations including TriviaQA, Lambada, arithmetic, GSM8k and Codex HumanEval"]
+    scale: "up to 52 billion parameters"
+    setting: "few-shot prompting, with P(IK) heads fine-tuned on the model's own answers"
+  evidence:
+    - {work: "kadavath-2022-language-models-know", role: original, locator: "p. 1", stance: for}
+
+- id: c-kd-ptrue
+  type: empirical
+  text: "Asking models to first propose answers and then to evaluate the probability P(True) that their answers are correct gives encouraging performance, calibration, and scaling on a diverse array of tasks."
+  scope:
+    models: "Anthropic pretrained language models"
+    data: ["multiple-choice, true/false and open-ended evaluations including TriviaQA, Lambada, arithmetic, GSM8k and Codex HumanEval"]
+    scale: "up to 52 billion parameters"
+    setting: "few-shot prompting, with P(IK) heads fine-tuned on the model's own answers"
+  evidence:
+    - {work: "kadavath-2022-language-models-know", role: original, locator: "p. 1", stance: for}
+
+- id: c-kd-verify
+  type: empirical
+  text: "As model size and capabilities increase, models improve at self-evaluation, which suggests that verification improves faster than generation quality."
+  scope:
+    models: "Anthropic pretrained language models"
+    data: ["multiple-choice, true/false and open-ended evaluations including TriviaQA, Lambada, arithmetic, GSM8k and Codex HumanEval"]
+    scale: "up to 52 billion parameters"
+    setting: "few-shot prompting, with P(IK) heads fine-tuned on the model's own answers"
+  evidence:
+    - {work: "kadavath-2022-language-models-know", role: original, locator: "p. 3", stance: for}
+
+- id: c-kd-pik
+  type: empirical
+  text: "Models perform well at predicting P(IK), the probability that 'I know' the answer to a question, and partially generalize across tasks, though they struggle with calibration of P(IK) on new tasks."
+  scope:
+    models: "Anthropic pretrained language models"
+    data: ["multiple-choice, true/false and open-ended evaluations including TriviaQA, Lambada, arithmetic, GSM8k and Codex HumanEval"]
+    scale: "up to 52 billion parameters"
+    setting: "few-shot prompting, with P(IK) heads fine-tuned on the model's own answers"
+  evidence:
+    - {work: "kadavath-2022-language-models-know", role: original, locator: "p. 1", stance: for}
+
+- id: c-kd-source
+  type: empirical
+  text: "The predicted P(IK) probabilities increase appropriately in the presence of relevant source materials in the context, and in the presence of hints towards the solution of mathematical word problems."
+  scope:
+    models: "Anthropic pretrained language models"
+    data: ["multiple-choice, true/false and open-ended evaluations including TriviaQA, Lambada, arithmetic, GSM8k and Codex HumanEval"]
+    scale: "up to 52 billion parameters"
+    setting: "few-shot prompting, with P(IK) heads fine-tuned on the model's own answers"
+  evidence:
+    - {work: "kadavath-2022-language-models-know", role: original, locator: "p. 1", stance: for}
+
+- id: c-kd-nota
+  type: empirical
+  text: "Replacing an option with 'none of the above' reduces accuracy and calibration significantly."
+  scope:
+    models: "Anthropic pretrained language models"
+    data: ["multiple-choice, true/false and open-ended evaluations including TriviaQA, Lambada, arithmetic, GSM8k and Codex HumanEval"]
+    scale: "up to 52 billion parameters"
+    setting: "few-shot prompting, with P(IK) heads fine-tuned on the model's own answers"
+  evidence:
+    - {work: "kadavath-2022-language-models-know", role: original, locator: "p. 4", stance: for}
+
+- id: c-kd-rlhf
+  type: empirical
+  text: "RLHF policies naively seem miscalibrated, but with a simple temperature adjustment they become fairly well-calibrated on several evaluations."
+  scope:
+    models: "Anthropic pretrained language models"
+    data: ["multiple-choice, true/false and open-ended evaluations including TriviaQA, Lambada, arithmetic, GSM8k and Codex HumanEval"]
+    scale: "up to 52 billion parameters"
+    setting: "few-shot prompting, with P(IK) heads fine-tuned on the model's own answers"
+  evidence:
+    - {work: "kadavath-2022-language-models-know", role: original, locator: "p. 4", stance: for}
+
+# Scope
+
+- id: c-my-gamed
+  type: attributive
+  text: "Entailment is a referenceless measure, so it can easily be gamed, since the first sentence of any source document is always entailed by the whole document, and entailment-based measures for evaluation need to be coupled with reference-based measures like ROUGE."
+  evidence:
+    - {work: "maynez-2020-faithfulness-factuality-summarization", role: original, locator: "p. 8", stance: for}
+
+- id: c-gk-proxy
+  type: empirical
+  text: "Gekhman et al. measure test performance as a proxy for hallucinations, since in a closed-book QA setup with disjoint train/test splits the model has to use its pre-existing knowledge to answer test questions."
+  scope:
+    models: "PaLM 2-S"
+    data: ["ENTITYQUESTIONS, Wikidata triplets converted to closed-book QA"]
+    scale: "one model"
+    setting: "fine-tuning with a controlled share of examples the model does not know, test accuracy as a proxy for hallucination"
+  evidence:
+    - {work: "gekhman-2024-fine-tuning-new-knowledge", role: original, locator: "p. 4", stance: for}
+
+# Explanations
+
+- id: c-my-noise
+  type: attributive
+  text: "Models are usually agnostic to the noises or artifacts of the training data, such as reference divergence, making them vulnerable to hallucinations."
+  evidence:
+    - {work: "maynez-2020-faithfulness-factuality-summarization", role: original, locator: "p. 3", stance: for}
+
+- id: c-tq-two
+  type: attributive
+  text: "One explanation of the inverse scaling on TruthfulQA is that larger models produce more imitative falsehoods because they are better at learning the training distribution; another is that the questions adversarially exploit weaknesses in larger models not arising from imitation of the training distribution."
+  evidence:
+    - {work: "lin-2022-truthfulqa", role: original, locator: "p. 3", stance: for}
+
+- id: c-tq-scaling
+  type: attributive
+  text: "Lin et al. suggest that scaling up models alone is less promising for improving truthfulness than fine-tuning using training objectives other than imitation of text from the web."
+  evidence:
+    - {work: "lin-2022-truthfulqa", role: original, locator: "p. 1", stance: for}
+
+- id: c-kv-goodturing
+  type: attributive
+  text: "If the maximum probability of any fact is bounded, the probability of generating a hallucination is close to the fraction of facts that occur exactly once in the training data, a Good-Turing estimate, even assuming ideal training data without errors."
+  evidence:
+    - {work: "kalai-2024-calibrated-must-hallucinate", role: original, locator: "p. 1", stance: for}
+
+- id: c-kv-mf
+  type: attributive
+  text: "The Good-Turing estimate of the missing mass is the fraction of samples that appear exactly once in the training data, which Kalai and Vempala call the MonoFacts estimator."
+  evidence:
+    - {work: "kalai-2024-calibrated-must-hallucinate", role: original, locator: "p. 4", stance: for}
+
+- id: c-kv-corollary
+  type: attributive
+  text: "Under a regularity assumption on the factoid distribution, the simplest bound of Kalai and Vempala implies that for any algorithm, with probability at least 99% over training sets, the hallucination rate is at least the monofact estimate minus a miscalibration rate, minus a term proportional to the number of facts over the number of possible hallucinations, minus a term proportional to one over the square root of n."
+  evidence:
+    - {work: "kalai-2024-calibrated-must-hallucinate", role: original, locator: "p. 4", stance: for}
+
+- id: c-kv-5w
+  type: attributive
+  text: "If half of the 5W (Who-Ate-What-When-Where-Why) posts occur exactly once, a calibrated-factoid model would hallucinate on about half of its generations on 5W factoids."
+  evidence:
+    - {work: "kalai-2024-calibrated-must-hallucinate", role: original, locator: "p. 5", stance: for}
+
+- id: c-kv-once
+  type: attributive
+  text: "There is no statistical reason that pretraining will lead to hallucination on facts that tend to appear more than once in the training data, like references to publications such as articles and books, or on systematic facts like arithmetic calculations."
+  evidence:
+    - {work: "kalai-2024-calibrated-must-hallucinate", role: original, locator: "p. 1", stance: for}
+
+- id: c-kv-post
+  type: attributive
+  text: "Models pretrained to be sufficiently good predictors, that is calibrated, may require post-training to mitigate hallucinations on the type of arbitrary facts that tend to appear once in the training set."
+  evidence:
+    - {work: "kalai-2024-calibrated-must-hallucinate", role: original, locator: "p. 1", stance: for}
+
+- id: c-kz-binary
+  type: attributive
+  text: "Kalai et al. argue that hallucinations originate as errors in binary classification: if incorrect statements cannot be distinguished from facts, then hallucinations in pretrained language models will arise through natural statistical pressures."
+  evidence:
+    - {work: "kalai-2025-why-language-models-hallucinate", role: original, locator: "p. 1", stance: for}
+
+- id: c-kz-iiv
+  type: attributive
+  text: "Treating the language model as a classifier for the Is-It-Valid binary classification problem gives the relationship (generative error rate) ≳ 2 · (IIV misclassification rate)."
+  evidence:
+    - {work: "kalai-2025-why-language-models-hallucinate", role: original, locator: "p. 3", stance: for}
+
+- id: c-kz-singleton
+  type: attributive
+  text: "The reduction recovers the bound that the hallucination rate after pretraining should be at least the fraction of training facts that appear once: if 20% of birthday facts appear exactly once in the pretraining data, one expects base models to hallucinate on at least 20% of birthday facts."
+  evidence:
+    - {work: "kalai-2025-why-language-models-hallucinate", role: original, locator: "p. 3", stance: for}
+
+- id: c-kz-guess
+  type: attributive
+  text: "Kalai et al. argue that language models hallucinate because the training and evaluation procedures reward guessing over acknowledging uncertainty."
+  evidence:
+    - {work: "kalai-2025-why-language-models-hallucinate", role: original, locator: "p. 1", stance: for}
+
+- id: c-kz-ab
+  type: attributive
+  text: "If Model A correctly signals uncertainty and never hallucinates, and Model B is similar but never indicates uncertainty and always guesses when unsure, Model B will outperform A under 0-1 scoring, the basis of most current benchmarks."
+  evidence:
+    - {work: "kalai-2025-why-language-models-hallucinate", role: original, locator: "p. 4", stance: for}
+
+- id: c-kz-obs
+  type: attributive
+  text: "For any distribution over binary graders, the optimal responses to a prompt are not abstentions."
+  evidence:
+    - {work: "kalai-2025-why-language-models-hallucinate", role: original, locator: "p. 13", stance: for}
+
+- id: c-kz-table
+  type: attributive
+  text: "A short meta-evaluation of popular evaluations finds that the vast majority have binary grading."
+  evidence:
+    - {work: "kalai-2025-why-language-models-hallucinate", role: original, locator: "p. 13", stance: for}
+
+- id: c-kz-target
+  type: attributive
+  text: "Kalai et al. propose that evaluations state confidence targets in their instructions: answer only if you are > t confident, since mistakes are penalized t/(1 − t) points, while correct answers receive 1 point, and an answer of 'I don't know' receives 0 points; a threshold of t = 0 corresponds to binary grading."
+  evidence:
+    - {work: "kalai-2025-why-language-models-hallucinate", role: original, locator: "p. 13", stance: for}
+
+- id: c-gk-slow
+  type: empirical
+  text: "Fine-tuning examples that introduce new knowledge are learned significantly slower than those consistent with the model's knowledge, and as the examples with new knowledge are eventually learned, they linearly increase the model's tendency to hallucinate."
+  scope:
+    models: "PaLM 2-S"
+    data: ["ENTITYQUESTIONS, Wikidata triplets converted to closed-book QA"]
+    scale: "one model"
+    setting: "fine-tuning with a controlled share of examples the model does not know, test accuracy as a proxy for hallucination"
+  evidence:
+    - {work: "gekhman-2024-fine-tuning-new-knowledge", role: original, locator: "p. 1", stance: for}
+
+- id: c-gk-early
+  type: empirical
+  text: "Early-stopping can minimize the risk of the hallucinations caused by fitting the Unknown examples, since they primarily emerge in later training stages as a form of overfitting."
+  scope:
+    models: "PaLM 2-S"
+    data: ["ENTITYQUESTIONS, Wikidata triplets converted to closed-book QA"]
+    scale: "one model"
+    setting: "fine-tuning with a controlled share of examples the model does not know, test accuracy as a proxy for hallucination"
+  evidence:
+    - {work: "gekhman-2024-fine-tuning-new-knowledge", role: original, locator: "p. 2", stance: for}
+
+- id: c-gk-view
+  type: attributive
+  text: "Gekhman et al. take their results to support the view that large language models mostly acquire factual knowledge through pre-training, whereas fine-tuning teaches them to use it more efficiently."
+  evidence:
+    - {work: "gekhman-2024-fine-tuning-new-knowledge", role: original, locator: "p. 1", stance: for}
+
+- id: c-ha-gap
+  type: mathematical
+  text: "For n independent draws from a distribution p over facts, the expected fraction of draws whose fact appears exactly once exceeds the expected missing mass by the sum over facts of p_i² (1 − p_i)^(n−1), which lies between 0 and 1/n."
+  assumes: ["the training facts are n independent draws from a fixed distribution"]
+  derivation: hallucination-arithmetic
+
+- id: c-ha-uniform
+  type: mathematical
+  text: "With N equally likely facts and n = N draws, the expected missing mass is (1 − 1/N)^N, about 1/e ≈ 0.368 for large N; a generator that reproduces the facts it has seen and spreads the missing mass evenly over the unseen true facts and a hundred false factoids for every true fact hallucinates on about 36.7% of its generations."
+  assumes: ["the training facts are n independent draws from a fixed distribution", "the generator cannot tell unseen true facts from false factoids"]
+  derivation: hallucination-arithmetic
+
+- id: c-ha-toy
+  type: mathematical
+  text: "A generator that reproduces the observed facts at their observed frequencies and spreads a mass equal to the monofact fraction MF evenly over U unseen true facts and M false factoids hallucinates at the rate MF · M / (M + U), which tends to MF when M is much larger than U."
+  assumes: ["the generator cannot tell unseen true facts from false factoids"]
+  derivation: hallucination-arithmetic
+
+- id: c-ha-score
+  type: mathematical
+  text: "Under a confidence target t, where a correct answer earns 1 point, an error costs t/(1 − t) points and an abstention earns 0, answering with probability q of being right has expected score (q − t)/(1 − t), which is positive exactly when q > t; with t = 0 answering is never worse than abstaining."
+  assumes: ["the grader's scores are fixed in advance and the model's probability of being right is q"]
+  derivation: hallucination-arithmetic
+
+- id: c-ha-penalty
+  type: mathematical
+  text: "The penalty t/(1 − t) is 1 for t = 0.5, 3 for t = 0.75 and 9 for t = 0.9; a penalty of 2 corresponds to t = 2/3."
+  assumes: ["the penalty for an error under a target t is t/(1 − t)"]
+  derivation: hallucination-arithmetic
+
+- id: c-ha-ab
+  type: mathematical
+  text: "Under binary grading, a model that guesses on the questions where it is unsure, with probability q_j of being right on question j, scores the sum of the q_j more than a model that abstains on them, and makes the sum of the 1 − q_j errors more."
+  assumes: ["the grader's scores are fixed in advance and the model's probability of being right is q"]
+  derivation: hallucination-arithmetic
