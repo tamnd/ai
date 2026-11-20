@@ -255,14 +255,19 @@ Treat pRMSNorm as an experiment, not a default.
 
 ## Pitfalls
 
+> [!pitfall]
 > **Putting eps in the wrong place.** RMSNorm adds $\epsilon$ to the mean square, inside the root. Adding it to the RMS outside the root gives a different layer, and two implementations then disagree for small inputs. `test_torch_rms_norm_agrees` and `test_matches_torch_rms_norm` compare the implementations with the PyTorch function.
 
+> [!pitfall]
 > **Expecting layer normalization.** RMSNorm and layer normalization agree only for zero-mean inputs. A port that swaps one for the other changes the outputs by eq-rms-mix. `test_layer_norm_is_rms_of_centred_input` and `test_mean_gap` check the identity and the gap.
 
+> [!pitfall]
 > **Slicing pRMSNorm wrongly.** Only the first $k$ units enter the statistic, but all $n$ units are divided by it. `test_partial_uses_only_first_k` checks that the last $n - k$ entries do not change the statistic.
 
+> [!pitfall]
 > **Trusting the invariance with eps.** Tests of scale invariance or of orthogonal gradients must set $\epsilon = 0$, or allow for the leak. `test_eps_breaks_scale_invariance` and `test_eps_leak_of_orthogonality` check the leak.
 
+> [!pitfall]
 > **Normalizing the wrong axis.** The statistic is over the units of one example, the last axis, never over the batch.
 
 ## History

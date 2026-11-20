@@ -302,14 +302,19 @@ For a Lipschitz bound, as in GAN discriminators, use spectral normalization.
 
 ## Pitfalls
 
+> [!pitfall]
 > **Normalizing the wrong axis.** In a layer, each output unit has its own $v$, so the norm is per row of the $(\text{out}, \text{in})$ matrix. PyTorch's `weight_norm` uses `dim=0` for this. `test_against_torch` in both implementations compares with it.
 
+> [!pitfall]
 > **Dropping the projection.** Treating $\lVert v\rVert$ as a constant in backpropagation gives $(g/\lVert v\rVert)\nabla_w L$ without the projection. `test_gradient_finite_differences` checks eq-grad, and `test_projection_orthogonality_and_growth` checks that $\nabla_v L \perp v$.
 
+> [!pitfall]
 > **Initializing with the wrong moments.** eq-init uses the biased standard deviation. `test_init_moments` checks mean 0 and variance 1 on the batch, and `test_worked_example_init` checks $g = 0.4$.
 
+> [!pitfall]
 > **Running power iteration from scratch.** One round from a random start can be far off; the reference keeps $u$ between steps. `test_power_iteration_recycle` checks that the recycled estimate converges.
 
+> [!pitfall]
 > **Expecting spectral norm exactly 1.** The estimate is at most $\sigma_1$, so the normalized matrix can have norm slightly above 1. `test_power_iteration_against_svd` checks the inequality.
 
 ## History

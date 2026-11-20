@@ -426,3 +426,36 @@
   text: "Goyal et al. simulated very large minibatches of 12k and more on a single server with gradient accumulation between SGD updates and verified that this gave results equivalent to distributed training."
   evidence:
     - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 9", stance: for}
+
+- id: c-shallue-heuristics
+  type: empirical
+  text: "Popular learning rate heuristics, such as linearly scaling the learning rate with the batch size, do not hold across all problems or across all batch sizes."
+  scope:
+    models: "fully connected networks, simple CNNs, ResNet-8, ResNet-50, VGG-11, Transformer and LSTM"
+    data: [mnist, fashion-mnist, cifar-10, imagenet, open-images, lm1b, common-crawl]
+    scale: "many batch sizes per workload, with the learning rate and momentum tuned at each"
+    setting: "steps needed to reach a goal validation error"
+  evidence:
+    - {work: "shallue-2019-measuring-effects-data-parallelism", role: original, locator: "p. 4", stance: for}
+
+- id: c-shallue-fig21
+  type: empirical
+  text: "Optimal learning rates do not always follow linear or square root scaling heuristics."
+  scope:
+    models: "ResNet-8, ResNet-50, VGG-11 and the other workloads of Figure 21"
+    data: [unknown]
+    scale: "the trial that reached the goal in the fewest steps at each batch size"
+    setting: "optimal learning rate against batch size"
+  evidence:
+    - {work: "shallue-2019-measuring-effects-data-parallelism", role: original, locator: "p. 42", stance: for}
+
+- id: c-shallue-momentum
+  type: empirical
+  text: "Nesterov momentum and SGD with momentum can both extend the perfect scaling region beyond that achieved by SGD; however, at batch sizes small enough that all optimizers are within their perfect scaling region, momentum optimizers perform identically to SGD without momentum."
+  scope:
+    models: "unknown"
+    data: [unknown]
+    scale: "many batch sizes, plain SGD, SGD with momentum and Nesterov momentum"
+    setting: "steps needed to reach a goal validation error"
+  evidence:
+    - {work: "shallue-2019-measuring-effects-data-parallelism", role: original, locator: "p. 19", stance: for}

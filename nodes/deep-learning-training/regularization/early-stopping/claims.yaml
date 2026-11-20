@@ -327,3 +327,36 @@
   text: "Alnur Ali, J. Zico Kolter and Ryan J. Tibshirani published A Continuous-Time View of Early Stopping for Least Squares Regression in the Proceedings of AISTATS 2019."
   evidence:
     - {work: "ali-2019-continuous-time-early-stopping", role: original, locator: "Section 1", stance: for}
+
+- id: c-ndd-epochwise
+  type: empirical
+  text: "Many settings of dataset and architecture exhibit epoch-wise double descent, in the presence of label noise."
+  scope:
+    models: "ResNet18 and a CNN of width 128"
+    data: [cifar-10, cifar-100]
+    scale: "training for many epochs"
+    setting: "training with label noise"
+  evidence:
+    - {work: "nakkiran-2019-deep-double-descent", role: original, locator: "p. 7", stance: for}
+
+- id: c-ndd-recommend
+  type: empirical
+  text: "A practical recommendation resulting from epoch-wise double descent is that stopping the training when the test error starts to increase may not always be the best strategy; in some cases, the test error may decrease again after reaching a maximum, and the final value may be lower than the minimum earlier in training."
+  scope:
+    models: "ResNet18 trained with Adam, SGD and SGD with momentum"
+    data: [unknown]
+    scale: "several learning rate schedules"
+    setting: "test error over training epochs"
+  evidence:
+    - {work: "nakkiran-2019-deep-double-descent", role: original, locator: "p. 18", stance: for}
+
+- id: c-ndd-optimal-es
+  type: empirical
+  text: "Many of the phenomena that we highlight often do not occur with optimal early-stopping."
+  scope:
+    models: "unknown"
+    data: [unknown]
+    scale: "unknown"
+    setting: "double descent with optimal early stopping"
+  evidence:
+    - {work: "nakkiran-2019-deep-double-descent", role: original, locator: "p. 9", stance: for}

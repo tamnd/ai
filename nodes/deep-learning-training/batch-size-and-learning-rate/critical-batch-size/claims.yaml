@@ -355,3 +355,36 @@
     setting: "plain SGD against momentum and Nesterov momentum, tuned for each batch size"
   evidence:
     - {work: "shallue-2019-measuring-effects-data-parallelism", role: original, locator: "p. 4", stance: for}
+
+- id: c-goyal-8k
+  type: empirical
+  text: "There is no loss of accuracy when training ResNet-50 on ImageNet with large minibatch sizes up to 8192 images, using a linear scaling rule for adjusting learning rates as a function of minibatch size and a new warmup scheme."
+  scope:
+    models: "ResNet-50"
+    data: [imagenet]
+    scale: "minibatches up to 8,192 images on 256 GPUs"
+    setting: "synchronous SGD with the linear scaling rule and gradual warmup"
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 1", stance: for}
+
+- id: c-goyal-degrades
+  type: empirical
+  text: "While results are stable for a large range of sizes, beyond a certain point accuracy degrades rapidly; this point is as large as about 8k in ImageNet experiments."
+  scope:
+    models: "ResNet-50"
+    data: [imagenet]
+    scale: "minibatches from 64 to 64k images"
+    setting: "synchronous SGD with the linear scaling rule and gradual warmup"
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 3", stance: for}
+
+- id: c-goyal-optimization
+  type: empirical
+  text: "If the optimization issues are addressed, there is no apparent generalization degradation observed using large minibatch training, even if the minibatch size goes from 256 to 8k."
+  scope:
+    models: "ResNet-50"
+    data: [imagenet]
+    scale: "minibatches from 256 to 8k images"
+    setting: "training and validation error curves with gradual warmup"
+  evidence:
+    - {work: "goyal-2017-accurate-large-minibatch-sgd", role: original, locator: "p. 7", stance: for}

@@ -32,6 +32,7 @@ sources:
   - {paper: "Müller, Kornblith and Hinton (2019)", title: "When Does Label Smoothing Help?", locator: "the abstract, Sections 1 to 6, Tables 1 to 3", note: "penultimate-layer clusters, calibration, translation and the harm to distillation"}
   - {paper: "Pereyra, Tucker, Chorowski, Kaiser and Hinton (2017)", title: "Regularizing Neural Networks by Penalizing Confident Output Distributions", locator: "the abstract, Sections 1, 3, 3.1, 3.2, 4.1.1 to 4.4.2, page 5", note: "the confidence penalty, the reversed KL divergence and six benchmarks"}
   - {paper: "Vaswani et al. (2017)", title: "Attention Is All You Need", locator: "Section 5.4", note: "label smoothing of 0.1 in the Transformer"}
+  - {paper: "Thulasidasan, Chennupati, Bilmes, Bhattacharya and Michalak (2019)", title: "On Mixup Training: Improved Calibration and Predictive Uncertainty for Deep Neural Networks", locator: "NeurIPS 2019, arXiv 1905.11001v5, pp. 5 and 6", note: "label smoothing against the confidence penalty and mixup for calibration"}
 ---
 
 Label smoothing trains a classifier against a softened copy of its labels.
@@ -187,6 +188,8 @@ They find it somewhat surprising that networks that squeeze their training examp
 In translation the soft outputs feed beam search, an approximation of maximum likelihood sequence detection that depends on calibration, so a better calibrated model should translate better. {#c-mu-beam}
 For the Transformer on English-German, label smoothing gave better calibration and better BLEU but worse negative log-likelihood than hard targets at every temperature, and temperature scaling of the hard-target model did not recover the BLEU gain. {#c-mu-nll}
 Müller et al. conclude that the BLEU gain comes despite the worse NLL, is only partly explained by calibration, and that changing the temperature of the smoothed network makes both calibration and BLEU worse. {#c-mu-partly}
+Thulasidasan et al., comparing label smoothing with the confidence penalty and with [[mixup]], found that $\varepsilon$ in $[0.05, 0.1]$ performed best for label smoothing, and that all three generally provide a calibration advantage and temper overconfidence, with mixup generally the best (p. 5). {#c-th-ls-compare}
+On ImageNet both calibration error and overconfidence improved noticeably with label smoothing over the baseline; mixup was better calibrated than label smoothing on ResNeXt-101, but not on ResNet-50 (p. 6). {#c-th-ls-imagenet}
 
 **Distillation.**
 On translated MNIST, a fully connected teacher trained with hard targets and dropout has 0.67% test error and distills into a student with 0.74%; trained with label smoothing instead, the teacher trains much faster and reaches 0.59%, but its student is much worse, at 0.91%. {#c-mu-mnist-distill}

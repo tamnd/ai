@@ -34,6 +34,7 @@ sources:
   - {paper: "McCandlish et al. (2018)", title: "An Empirical Model of Large-Batch Training", locator: "pp. 1, 3, 5 to 11, 13, 17 and 25", note: "the gradient noise scale, the optimal step, the steps-examples trade-off, the critical batch size, the two-batch estimator and the experiments"}
   - {paper: "Smith et al. (2018)", title: "Don't Decay the Learning Rate, Increase the Batch Size", locator: "pp. 1 to 3", note: "the SGD noise scale and batch growth in place of learning-rate decay"}
   - {paper: "Hoffer et al. (2017)", title: "Train longer, generalize better: closing the generalization gap in large batch training of neural networks", locator: "pp. 1 and 5", note: "the square-root scaling rule and the number of updates as the cause of the generalization gap"}
+  - {paper: "Shallue et al. (2019)", title: "Measuring the Effects of Data Parallelism on Neural Network Training", locator: "JMLR 20, pp. 4, 19 and 42", note: "learning rate heuristics measured against retuned learning rates across many workloads"}
 ---
 
 The linear scaling rule says how to change the learning rate of stochastic gradient descent when the batch size changes: when the minibatch size is multiplied by $k$, multiply the learning rate by $k$. {#c-goyal-rule}
@@ -200,6 +201,10 @@ The rule assumes the gradient changes little over $k$ steps, so it fails at the 
 Near the breaking point results are also more sensitive to the learning rate, and Goyal et al. advise staying away from it. {#c-goyal-breaking-point}
 The noise scale is a property of the task and the current loss, not of the network size alone: for LSTM language models it was roughly independent of model size at a fixed loss, but larger models reach lower losses and so larger noise scales. {#c-mc-model-size}
 A batch size chosen at the start of training is therefore often too small at the end.
+
+A broad measurement by Christopher Shallue and colleagues, over many workloads with the learning rate retuned at each batch size, found that popular learning rate heuristics, such as linearly scaling the learning rate with the batch size, do not hold across all problems or across all batch sizes (p. 4). {#c-shallue-heuristics}
+The best learning rates they found did not always follow linear or square root scaling (Figure 21, p. 42). {#c-shallue-fig21}
+Momentum extended the region of perfect scaling to larger batches, but at batch sizes inside every optimizer's perfect scaling region, SGD with momentum performed the same as plain SGD (p. 19). {#c-shallue-momentum}
 
 The noise-scale model is about optimizing the training loss and says nothing about generalization; McCandlish et al. cite work that found no generalization gap when hyperparameters are properly tuned. {#c-mc-generalization}
 The older view that large batches generalize worse because they find sharp minima is covered on [[sharpness-aware-minimization]].

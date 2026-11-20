@@ -32,6 +32,7 @@ sources:
   - {paper: "Yun, Han, Oh, Chun, Choe and Yoo (2019)", title: "CutMix: Regularization Strategy to Train Strong Classifiers with Localizable Features", locator: "Sections 1, 2, 3.1, 4.1.1, 4.1.3, 4.4, Tables 1, 3 and 5, Algorithm A1 on p. 12", note: "the pasted patch, the box sampling, the area-adjusted λ and comparisons with Mixup"}
   - {paper: "Verma, Lamb, Beckham, Najafi, Mitliagkas, Courville, Lopez-Paz and Bengio (2019)", title: "Manifold Mixup: Better Representations by Interpolating Hidden States", locator: "the abstract, Sections 2 and 3.1, Table 1", note: "mixing hidden states and the flattening theorem"}
   - {paper: "Zhang, Deng, Kawaguchi, Ghorbani and Zou (2021)", title: "How Does Mixup Help With Robustness and Generalization?", locator: "pages 1, 3 and 4", note: "the mixup loss as the standard loss plus regularization terms"}
+  - {paper: "Thulasidasan, Chennupati, Bilmes, Bhattacharya and Michalak (2019)", title: "On Mixup Training: Improved Calibration and Predictive Uncertainty for Deep Neural Networks", locator: "NeurIPS 2019, arXiv 1905.11001v5, pp. 1, 5 and 7", note: "the calibration of mixup-trained networks, the role of label mixing, and the best alpha for calibration"}
 ---
 
 Mixup trains a network on blends of its training data.
@@ -178,6 +179,11 @@ On CIFAR-100 with PyramidNet-200 they were 16.45%, 15.63% for Mixup, 16.14% for 
 Verma et al. report CIFAR-10 errors for PreActResNet18 of 4.83% without mixing, 3.82% with input mixup and 2.95% with Manifold Mixup, and 24.01%, 22.11% and 20.34% on CIFAR-100. {#c-mm-table1}
 These comparisons come from the authors of the competing methods.
 
+**Calibration.**
+Thulasidasan et al. find that networks trained with mixup are significantly better calibrated, in the sense that their predicted softmax scores are much better indicators of the actual likelihood of a correct prediction, on a number of architectures and datasets including ImageNet (p. 1). {#c-th-calibrated}
+When they mix only the images and give each blend the hard label of the nearer class, the calibration benefit of full mixup disappears, which suggests that the point-mass distributions of hard labels contribute to overconfidence (p. 7). {#c-th-features}
+Mixup-trained networks were also less prone to over-confident predictions on out-of-distribution and random-noise data (p. 1). {#c-th-ood}
+
 ## Limitations and failure modes
 
 **The right α is found by trial.**
@@ -185,6 +191,7 @@ Larger $\alpha$ raises training error on real data and narrows the generalizatio
 So $\alpha$ moves the model along the bias-variance tradeoff, trading fit on the real examples for a smaller gap.
 Zhang et al. conjecture that more capacity makes training less sensitive to large $\alpha$. {#c-zh-conjecture}
 The small LeNet on speech got worse with mixup.
+Calibration has its own optimum: Thulasidasan et al. found the best expected calibration error for $\alpha$ in $[0.2, 0.4]$, with calibration worsening for larger $\alpha$ as the model becomes under-confident (p. 5). {#c-th-alpha}
 
 **Blends are not natural inputs.**
 Mixed images are locally ambiguous and unnatural, which confuses the model, especially for localization. {#c-cm-ambiguous}

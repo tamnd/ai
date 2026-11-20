@@ -18,6 +18,7 @@ sources:
   - {paper: "NVIDIA (2024)", title: "NVIDIA H100 Tensor Core GPU datasheet", locator: "p. 2"}
   - {paper: "NVIDIA (2022)", title: "NVIDIA H100 PCIe GPU product brief, PB-11133-001_v02", locator: "Table 1 and Table 2"}
   - {url: "https://nvidianews.nvidia.com/news/nvidia-announces-hopper-architecture-the-next-generation-of-accelerated-computing", title: "NVIDIA Announces Hopper Architecture, the Next Generation of Accelerated Computing", locator: "p. 1"}
+  - {paper: "Micikevicius et al. (2022)", title: "FP8 Formats for Deep Learning", locator: "arXiv 2209.05433v2, Sections 1 to 3", note: "the E4M3 and E5M2 encodings, their special values and ranges, and per-tensor scaling"}
 vendor: NVIDIA
 type: GPU
 released: 2022-03-22
@@ -53,6 +54,12 @@ The rates in the table are dense, without that feature.
 The FP8 Tensor Cores take two FP8 input types: E4M3, with 4 exponent bits and 3 mantissa bits, and E5M2, with 5 exponent bits and 2 mantissa bits. {#c-fp8-types}
 E4M3 has more precision and less dynamic range, and E5M2 has a wider dynamic range and less precision. {#c-fp8-range}
 FP8 halves data storage requirements and doubles throughput compared with FP16 or BF16. {#c-fp8-half}
+
+The two encodings are specified in a paper by researchers at NVIDIA, Arm and Intel.
+E5M2 follows IEEE 754 conventions for the representation of special values, while the dynamic range of E4M3 is extended by not representing infinities and having only one mantissa bit-pattern for NaNs (p. 1). {#c-fp8-special}
+The largest normal value is 448 in E4M3 and 57,344 in E5M2 (Table 1). {#c-fp8-max}
+Because the range is so narrow, higher precision values are multiplied by a scaling factor before they are cast to FP8, to move them into a range that better overlaps with the representable range of the FP8 format, and some networks need a separate scaling factor for each tensor (p. 2). {#c-fp8-scale}
+The same paper reports FP8 training that matches the result quality of 16-bit training on image and language tasks, with language models of up to 175B parameters and with all hyperparameters unchanged from the 16-bit baselines (p. 1). {#c-fp8-train}
 
 **Transformer Engine.** The Transformer Engine combines software and custom Hopper Tensor Core technology to accelerate the training and inference of transformer models. {#c-te}
 It chooses between FP8 and 16-bit calculations and handles the re-casting and scaling between them in each layer. {#c-te-cast}
