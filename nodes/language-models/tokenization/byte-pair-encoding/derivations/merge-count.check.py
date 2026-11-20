@@ -3,6 +3,7 @@
 """Numeric check of merge-count: each merge lowers the token count by the number of non-overlapping occurrences
 it replaces, between 1 and the pair count, and k merges add k symbols to the initial ones."""
 
+import itertools
 import random
 
 END = "</w>"
@@ -23,7 +24,7 @@ def merge(symbols, pair):
 def stats(vocab):
     counts = {}
     for symbols, f in vocab.items():
-        for pair in zip(symbols, symbols[1:]):
+        for pair in itertools.pairwise(symbols):
             counts[pair] = counts.get(pair, 0) + f
     return counts
 

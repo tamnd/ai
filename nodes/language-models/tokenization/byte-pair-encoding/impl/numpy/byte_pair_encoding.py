@@ -37,7 +37,7 @@ class Symbols:
 def pair_counts(words, freqs, size):
     """Unique pair keys left*size+right, their weighted counts, and the flat index of each key's first occurrence."""
     keys = [w[:-1] * size + w[1:] for w in words]
-    weights = [np.full(w.size - 1, f, dtype=np.int64) for w, f in zip(words, freqs)]
+    weights = [np.full(w.size - 1, f, dtype=np.int64) for w, f in zip(words, freqs, strict=True)]
     keys = np.concatenate(keys) if keys else np.zeros(0, dtype=np.int64)
     weights = np.concatenate(weights) if weights else np.zeros(0, dtype=np.int64)
     uniq, first, inverse = np.unique(keys, return_index=True, return_inverse=True)
@@ -87,7 +87,7 @@ def train_bpe(word_freqs, num_merges):
         new = table.id(pair[0] + pair[1])
         merges.append(pair)
         words = [merge_ids(w, a, b, new) for w in words]
-    vocab = {tuple(table.names[i] for i in w): f for w, f in zip(words, freqs)}
+    vocab = {tuple(table.names[i] for i in w): f for w, f in zip(words, freqs, strict=True)}
     return merges, vocab
 
 

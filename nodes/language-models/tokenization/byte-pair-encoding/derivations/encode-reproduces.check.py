@@ -4,6 +4,7 @@
 segmentation, priority encoding equals sequential encoding when every merge result is new, and the two
 counterexamples where the conditions fail."""
 
+import itertools
 import random
 
 END = "</w>"
@@ -27,7 +28,7 @@ def train(table, k):
     for _ in range(k):
         counts = {}
         for symbols, f in vocab.items():
-            for pair in zip(symbols, symbols[1:]):
+            for pair in itertools.pairwise(symbols):
                 counts[pair] = counts.get(pair, 0) + f
         if not counts:
             break

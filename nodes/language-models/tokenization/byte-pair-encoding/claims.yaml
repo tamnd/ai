@@ -366,3 +366,27 @@
   text: "By default, SentencePiece normalizes the input text with the Unicode NFKC normalization."
   evidence:
     - {work: "kudo-2018-sentencepiece", role: original, locator: "p. 3", stance: for}
+
+- id: c-gpt2-base
+  type: attributive
+  text: "Radford et al. note that reference BPE implementations often operate on Unicode code points, which would require a base vocabulary of over 130,000 before any multi-symbol tokens are added, while a byte-level version of BPE only requires a base vocabulary of size 256."
+  evidence:
+    - {work: "radford-2019-language-models-unsupervised-multitask", role: original, locator: "p. 4", stance: for}
+
+- id: c-gpt2-categories
+  type: attributive
+  text: "Applying BPE directly to the byte sequence included many versions of common words like dog, such as dog. dog! and dog?, so Radford et al. prevent BPE from merging across character categories for any byte sequence, with an exception for spaces."
+  evidence:
+    - {work: "radford-2019-language-models-unsupervised-multitask", role: original, locator: "p. 4", stance: for}
+
+- id: c-gpt2-any-string
+  type: attributive
+  text: "Since the byte-level input representation can assign a probability to any Unicode string, the language models can be evaluated on any dataset regardless of pre-processing, tokenization, or vocab size."
+  evidence:
+    - {work: "radford-2019-language-models-unsupervised-multitask", role: original, locator: "p. 4", stance: for}
+
+- id: c-gpt2-vocab
+  type: definitional
+  text: "The vocabulary of GPT-2 is expanded to 50,257."
+  evidence:
+    - {work: "radford-2019-language-models-unsupervised-multitask", role: original, locator: "p. 4", stance: for}

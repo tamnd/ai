@@ -45,7 +45,7 @@ def regex_bpe(table, num_merges):
         stats = {}
         for text, f in corpus.items():
             parts = text.split()
-            for left, right in zip(parts, parts[1:]):
+            for left, right in itertools.pairwise(parts):
                 stats[left, right] = stats.get((left, right), 0) + f
         if not stats:
             break
