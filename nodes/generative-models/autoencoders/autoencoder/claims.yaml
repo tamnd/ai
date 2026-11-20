@@ -1,0 +1,292 @@
+# The claims of the autoencoder page (spec 07). The build computes the labels.
+- id: c-hinton-def
+  type: attributive
+  text: "High-dimensional data can be converted to low-dimensional codes by training a multilayer neural network with a small central layer to reconstruct high-dimensional input vectors; gradient descent can fine-tune the weights of such autoencoder networks, but this works well only if the initial weights are close to a good solution."
+  evidence:
+    - {work: "hinton-2006-reducing-dimensionality-data-neural", role: original, locator: "p. 504", stance: for}
+
+- id: c-hinton-trained-together
+  type: definitional
+  text: "In the deep autoencoder of Hinton and Salakhutdinov an encoder network transforms the data into a low-dimensional code and a decoder network recovers the data from the code; the two networks are trained together by minimizing the discrepancy between the original data and its reconstruction, with the gradients obtained by the chain rule, backpropagating error derivatives first through the decoder and then through the encoder."
+  evidence:
+    - {work: "hinton-2006-reducing-dimensionality-data-neural", role: original, locator: "p. 505", stance: for}
+
+- id: c-hinton-init
+  type: attributive
+  text: "Weights of nonlinear autoencoders with multiple hidden layers are difficult to optimize: with large initial weights they typically find poor local minima, and with small initial weights the gradients in the early layers are tiny, making it infeasible to train autoencoders with many hidden layers."
+  evidence:
+    - {work: "hinton-2006-reducing-dimensionality-data-neural", role: original, locator: "p. 505", stance: for}
+
+- id: c-hinton-unfold
+  type: definitional
+  text: "After layer-by-layer pretraining, the model is unfolded into encoder and decoder networks that initially use the same weights, and a global fine-tuning stage uses backpropagation through the whole autoencoder to fine-tune the weights for optimal reconstruction."
+  evidence:
+    - {work: "hinton-2006-reducing-dimensionality-data-neural", role: original, locator: "p. 507", stance: for}
+
+- id: c-hinton-curves
+  type: empirical
+  text: "On synthetic curves the six-dimensional deep autoencoder had an average squared reconstruction error per test image of 1.44, against 7.64 for logistic PCA with six components, 2.45 for logistic PCA with 18 components and 5.90 for standard PCA with 18 components."
+  scope:
+    models: "a 784-400-200-100-50-25-6 autoencoder with a linear code, pretrained and fine-tuned; logistic PCA; PCA"
+    data: ["synthetic 28 x 28 images of curves generated from three randomly chosen points, 20,000 training and 10,000 test images"]
+    setting: "average squared reconstruction error per test image, logistic output units fine-tuned with the cross-entropy error"
+  evidence:
+    - {work: "hinton-2006-reducing-dimensionality-data-neural", role: original, locator: "p. 505", stance: for}
+    - {work: "hinton-2006-reducing-dimensionality-data-neural", role: original, locator: "p. 507", stance: for}
+
+- id: c-hinton-mnist-faces
+  type: empirical
+  text: "On MNIST the 30-dimensional autoencoder had an average squared reconstruction error of 3.00 against 8.01 for 30-dimensional logistic PCA and 13.87 for standard PCA; on faces the 30-dimensional autoencoder had 126 against 135 for 30-dimensional PCA."
+  scope:
+    models: "784-1000-500-250-30 and 625-2000-1000-500-30 autoencoders with 30 linear code units; logistic PCA; PCA"
+    data: ["MNIST", "images derived from the Olivetti face data set"]
+    setting: "average squared reconstruction error on test images"
+  evidence:
+    - {work: "hinton-2006-reducing-dimensionality-data-neural", role: original, locator: "p. 505", stance: for}
+
+- id: c-hinton-no-pretrain
+  type: empirical
+  text: "Without pretraining, the very deep autoencoder always reconstructs the average of the training data, even after prolonged fine-tuning; shallower autoencoders with a single hidden layer between the data and the code can learn without pretraining, but pretraining greatly reduces their total training time."
+  scope:
+    models: "the 784-400-200-100-50-25-6 curves autoencoder and shallower autoencoders"
+    data: ["synthetic curves"]
+    setting: "backpropagation from random initial weights against RBM pretraining followed by fine-tuning"
+  evidence:
+    - {work: "hinton-2006-reducing-dimensionality-data-neural", role: original, locator: "p. 507", stance: for}
+
+- id: c-hinton-depth
+  type: empirical
+  text: "When the number of parameters is the same, deep autoencoders can produce lower reconstruction errors on test data than shallow ones, but this advantage disappears as the number of parameters increases."
+  scope:
+    models: "deep and shallow pretrained autoencoders"
+    data: ["synthetic curves"]
+    setting: "test reconstruction error at matched parameter counts"
+  evidence:
+    - {work: "hinton-2006-reducing-dimensionality-data-neural", role: original, locator: "p. 507", stance: for}
+
+- id: c-hinton-documents
+  type: empirical
+  text: "A 2000-500-250-125-10 autoencoder trained on half of 804,414 newswire stories, each represented by the counts of 2000 common word stems, clearly outperformed latent semantic analysis at document retrieval."
+  scope:
+    models: "a 2000-500-250-125-10 autoencoder with 10 linear code units; latent semantic analysis"
+    data: ["804,414 newswire stories, half of them used for training"]
+    setting: "document retrieval by cosine similarity of the codes"
+  evidence:
+    - {work: "hinton-2006-reducing-dimensionality-data-neural", role: original, locator: "p. 507", stance: for}
+
+- id: c-hinton-1980s
+  type: attributive
+  text: "Hinton and Salakhutdinov write that it had been obvious since the 1980s that backpropagation through deep autoencoders would be very effective for nonlinear dimensionality reduction, provided that computers were fast enough, data sets were big enough and the initial weights were close enough to a good solution, and that all three conditions were then satisfied."
+  evidence:
+    - {work: "hinton-2006-reducing-dimensionality-data-neural", role: original, locator: "p. 507", stance: for}
+
+- id: c-hinton-both-directions
+  type: attributive
+  text: "Unlike nonparametric methods, autoencoders give mappings in both directions between the data and code spaces, and they can be applied to very large data sets because both the pretraining and the fine-tuning scale linearly in time and space with the number of training cases."
+  evidence:
+    - {work: "hinton-2006-reducing-dimensionality-data-neural", role: original, locator: "p. 507", stance: for}
+
+- id: c-vincent-def
+  type: definitional
+  text: "Vincent et al. define the encoder as an affine mapping followed by a nonlinearity, f(x) = s(Wx + b) with W a d' x d weight matrix, and the decoder as an affine mapping optionally followed by a squashing nonlinearity, g(y) = W'y + b' or s(W'y + b'), with the reconstruction error L(x, z) proportional to -log p(x|z)."
+  evidence:
+    - {work: "vincent-2010-stacked-denoising-autoencoders", role: original, locator: "p. 3376", stance: for}
+
+- id: c-vincent-losses
+  type: definitional
+  text: "A Gaussian X|z ~ N(z, sigma^2 I) yields the squared error up to a constant, and a Bernoulli X|z ~ B(z) with a sigmoid decoder yields the cross-entropy loss -sum_j [x_j log z_j + (1 - x_j) log(1 - z_j)], which can also be used when x is not strictly binary but in [0, 1]^d."
+  evidence:
+    - {work: "vincent-2010-stacked-denoising-autoencoders", role: original, locator: "p. 3376", stance: for}
+
+- id: c-autoassociator
+  type: attributive
+  text: "Autoencoders are also often called autoassociators in the literature."
+  evidence:
+    - {work: "vincent-2010-stacked-denoising-autoencoders", role: original, locator: "p. 3376", stance: for}
+
+- id: c-identity
+  type: attributive
+  text: "An ordinary autoencoder whose representation has the same dimensionality as the input or larger can achieve perfect reconstruction simply by learning an identity mapping; with a linear encoder and decoder and d = d', any invertible W with W' = W^-1 does it."
+  evidence:
+    - {work: "vincent-2010-stacked-denoising-autoencoders", role: original, locator: "p. 3377", stance: for}
+
+- id: c-vincent-pca
+  type: attributive
+  text: "With an affine encoder and decoder without any nonlinearity, a bottleneck d' < d and a squared error loss, the autoencoder essentially performs principal component analysis, as shown by Baldi and Hornik (1989)."
+  evidence:
+    - {work: "vincent-2010-stacked-denoising-autoencoders", role: original, locator: "pp. 3377 to 3378", stance: for}
+
+- id: c-rifai-history
+  type: historical
+  text: "Rifai et al. write that the auto-encoder was introduced in the late 80's, citing Rumelhart et al. (1986) and Baldi and Hornik (1989)."
+  evidence:
+    - {work: "rifai-2011-contractive-auto-encoders-explicit", role: original, locator: "p. 2", stance: for}
+
+- id: c-dae-def
+  type: definitional
+  text: "A denoising autoencoder is trained to reconstruct the clean input x from a corrupted version x~ drawn from a corruption process q(x~|x), and each time a training example is presented a different corrupted version of it is generated."
+  evidence:
+    - {work: "vincent-2010-stacked-denoising-autoencoders", role: original, locator: "p. 3379", stance: for}
+
+- id: c-corruptions
+  type: definitional
+  text: "Vincent et al. consider additive isotropic Gaussian noise, x~|x ~ N(x, sigma^2 I); masking noise, which forces a fraction nu of the elements of x, chosen at random for each example, to 0; and salt-and-pepper noise, which sets such a fraction to their minimum or maximum possible value according to a fair coin flip."
+  evidence:
+    - {work: "vincent-2010-stacked-denoising-autoencoders", role: original, locator: "p. 3381", stance: for}
+
+- id: c-emphasis
+  type: definitional
+  text: "The emphasized denoising autoencoder weights the reconstruction error by alpha on the corrupted components and beta on the others, and full emphasis, alpha = 1 and beta = 0, only takes into account the error on the prediction of the corrupted elements."
+  evidence:
+    - {work: "vincent-2010-stacked-denoising-autoencoders", role: original, locator: "pp. 3381 to 3382", stance: for}
+
+- id: c-stacking
+  type: definitional
+  text: "When denoising autoencoders are stacked, input corruption is only used for the initial denoising training of each individual layer; the learnt encoder is then applied to uncorrupted inputs to produce the input of the next layer."
+  evidence:
+    - {work: "vincent-2010-stacked-denoising-autoencoders", role: original, locator: "p. 3382", stance: for}
+
+- id: c-vincent-filters
+  type: empirical
+  text: "On natural image patches an under-complete autoencoder of 50 hidden units learnt local blob detectors and an over-complete one of 200 learnt filters with no recognizable structure; a denoising autoencoder of 200 units with Gaussian noise of sigma = 0.5 learnt Gabor-like local oriented edge detectors, which an L2 weight decay autoencoder never produced over a wide range of the regularization hyperparameter."
+  scope:
+    models: "one-layer autoencoders with tied weights and squared error: under-complete, over-complete, with L2 weight decay, and denoising"
+    data: ["12 x 12 patches of whitened natural images"]
+    setting: "stochastic gradient descent, 500,000 updates at a learning rate of 0.05; visual inspection of the filters"
+  evidence:
+    - {work: "vincent-2010-stacked-denoising-autoencoders", role: original, locator: "p. 3387", stance: for}
+
+- id: c-sdae-results
+  type: empirical
+  text: "Three stacked denoising autoencoders (SDAE-3) reached 1.28 +/- 0.22% test error on MNIST against 1.24 for DBN-3, 1.40 for SAE-3 and 1.40 for an RBF SVM, and 43.76% on bg-img-rot against 47.39, 51.93 and 55.18, and the authors report it as superior or equivalent to every other model of their comparison on all problems except bg-rand."
+  scope:
+    models: "SDAE-3, SAE-3 (SDAE-3 with nu = 0), DBN-1, DBN-3 and an RBF SVM"
+    data: ["MNIST", "the MNIST variants and shape problems of Larochelle et al. (2007), including bg-rand and bg-img-rot"]
+    setting: "unsupervised layer-wise pretraining followed by supervised fine-tuning, with model selection on a validation set; 95% confidence intervals"
+  evidence:
+    - {work: "vincent-2010-stacked-denoising-autoencoders", role: original, locator: "p. 3394", stance: for}
+
+- id: c-cae-def
+  type: definitional
+  text: "The contractive auto-encoder adds to the reconstruction cost a penalty equal to the squared Frobenius norm of the Jacobian matrix of the encoder activations with respect to the input."
+  evidence:
+    - {work: "rifai-2011-contractive-auto-encoders-explicit", role: original, locator: "p. 1", stance: for}
+    - {work: "rifai-2011-contractive-auto-encoders-explicit", role: original, locator: "p. 3", stance: for}
+
+- id: c-cae-vs-dae
+  type: attributive
+  text: "Rifai et al. argue that the contractive penalty explicitly encourages robustness of the representation f(x), whereas the denoising criterion encourages robustness of the reconstruction g(f(x)), and that for small additive Gaussian noise the denoising criterion yields a term in the Jacobian of the reconstruction rather than of the representation."
+  evidence:
+    - {work: "rifai-2011-contractive-auto-encoders-explicit", role: original, locator: "p. 4", stance: for}
+
+- id: c-cae-results
+  type: empirical
+  text: "With one hidden layer of 1000 units used as pretraining for a classifier, the test error on MNIST was 1.14% for the CAE against 1.18 for DAE-g, 1.30 for RBM-binary, 1.57 for DAE-b, 1.68 for AE+wd and 1.78 for the AE, and on CIFAR-bw 47.86% for the CAE against 55.47 for the AE."
+  scope:
+    models: "one hidden layer of 1000 units pretrained as CAE, DAE-g, DAE-b, RBM, AE with weight decay or AE, all with tied weights, a sigmoid and cross-entropy, then fine-tuned"
+    data: ["MNIST", "CIFAR-bw, a gray-scale version of CIFAR-10"]
+    setting: "test classification error after supervised fine-tuning"
+  evidence:
+    - {work: "rifai-2011-contractive-auto-encoders-explicit", role: original, locator: "pp. 4 to 5", stance: for}
+
+- id: c-plaut-subspace
+  type: attributive
+  text: "Plaut notes that a linear autoencoder trained to minimum error spans the principal subspace, but its weight vectors are not the principal directions: they are correlated and not sorted by variance, and the solutions for reduction to different dimensions are not nested."
+  evidence:
+    - {work: "plaut-2018-principal-subspaces-principal-components", role: original, locator: "p. 3", stance: for}
+
+- id: c-plaut-retracted
+  type: historical
+  text: "An earlier version of Plaut's paper attempted to prove the hypothesis that the first m loading vectors are the first m left singular vectors of the matrix W2 that minimizes the loss, but the attempt was found to be erroneous."
+  evidence:
+    - {work: "plaut-2018-principal-subspaces-principal-components", role: original, locator: "p. 4", stance: for}
+
+- id: c-kunin-retracted
+  type: historical
+  text: "Kunin et al. note that the theorem was retracted following their correspondence."
+  evidence:
+    - {work: "kunin-2019-loss-landscapes-regularized-linear", role: original, locator: "p. 1", stance: for}
+
+- id: c-kunin-symmetry
+  type: attributive
+  text: "Kunin et al. prove that the unregularized loss of a linear autoencoder is symmetric under the group of invertible matrices, so the principal directions cannot be learnt from it, and that L2 regularization of the encoder and decoder reduces the symmetry group to the orthogonal group, which preserves the structure of the SVD."
+  evidence:
+    - {work: "kunin-2019-loss-landscapes-regularized-linear", role: original, locator: "pp. 1 to 3", stance: for}
+
+- id: c-linear-pca
+  type: mathematical
+  text: "A linear autoencoder with biases and C < D code units trained to minimum mean squared error has error s_{C+1} + ... + s_D, the variance PCA with C components discards; its decoder rows span the principal subspace and the composite map is the orthogonal projection onto it."
+  assumes: ["a linear encoder and decoder with biases", "the squared error averaged over the data set", "s_C > s_{C+1} for the eigenvalues of the sample covariance"]
+  derivation: linear-autoencoder-and-pca
+
+- id: c-gl-symmetry
+  type: mathematical
+  text: "For every invertible C x C matrix G, replacing the encoder A by AG and the decoder B by G^-1 B leaves the reconstruction unchanged, so a minimum fixes only the subspace and not the principal directions."
+  assumes: ["the linear autoencoder of c-linear-pca"]
+  derivation: linear-autoencoder-and-pca
+
+- id: c-transpose
+  type: mathematical
+  text: "With weight decay lambda > 0 on both matrices, every critical point of the loss of a linear autoencoder has the encoder equal to the transpose of the decoder."
+  assumes: ["the linear autoencoder of c-linear-pca", "the penalty lambda (||A||_F^2 + ||B||_F^2)"]
+  derivation: linear-autoencoder-and-pca
+
+- id: c-shrink
+  type: mathematical
+  text: "At the minimum with weight decay lambda, the left singular vectors of the decoder are the principal directions, each with squared singular value 1 - lambda / s_i, and a direction whose variance s_i is at most lambda is dropped."
+  assumes: ["the regularized linear autoencoder of c-transpose", "distinct eigenvalues s_1 > ... > s_C"]
+  derivation: linear-autoencoder-and-pca
+
+- id: c-params
+  type: mathematical
+  text: "An autoencoder of fully connected layers of widths n_0 = D, ..., n_K = C and a mirrored decoder has 2 sum_k n_k n_{k+1} weights plus sum_{k>=1} n_k + sum_{k<K} n_k biases."
+  assumes: ["every layer has a bias", "untied weights"]
+  derivation: parameter-and-flop-count
+
+- id: c-params-tied
+  type: mathematical
+  text: "Tying the decoder weights to the transposes of the encoder weights halves the weights and keeps all the biases."
+  assumes: ["the autoencoder of c-params", "each decoder layer keeps its own bias"]
+  derivation: parameter-and-flop-count
+
+- id: c-flops
+  type: mathematical
+  text: "A forward pass over a batch of B costs 4 B sum_k n_k n_{k+1} FLOPs in the matrix products, tied or not, and the backward pass twice that."
+  assumes: ["a multiply-add counts as 2 FLOPs", "only the matrix products are counted"]
+  derivation: parameter-and-flop-count
+
+- id: c-hinton-sizes
+  type: mathematical
+  text: "Untied, the MNIST, curves, faces and documents autoencoders of Hinton and Salakhutdinov have 2,837,314, 842,340, 7,537,655 and 2,318,760 parameters."
+  assumes: ["the widths 784-1000-500-250-30, 784-400-200-100-50-25-6, 625-2000-1000-500-30 and 2000-500-250-125-10 with mirrored decoders", "every layer has a bias"]
+  derivation: parameter-and-flop-count
+
+- id: c-cae-sigmoid
+  type: mathematical
+  text: "For a one-layer sigmoid encoder h = s(xW + b) the contractive penalty is sum_j (h_j (1 - h_j))^2 sum_i W_ij^2."
+  assumes: ["one encoder layer with a sigmoid"]
+  derivation: contractive-penalty
+
+- id: c-cae-linear
+  type: mathematical
+  text: "For a linear encoder the contractive penalty is ||W||_F^2 at every input, so the contractive autoencoder reduces to weight decay on the encoder."
+  assumes: ["one encoder layer without a nonlinearity"]
+  derivation: contractive-penalty
+
+- id: c-cae-cost
+  type: mathematical
+  text: "The sigmoid contractive penalty and its gradient over a batch of B cost O(B d_x d_h) operations, the order of the encoder's forward pass."
+  assumes: ["the encoder of c-cae-sigmoid", "a batch of B inputs"]
+  derivation: contractive-penalty
+
+- id: c-dae-small-noise
+  type: mathematical
+  text: "With Gaussian corruption of variance sigma^2, the expected squared denoising error is ||x - r(x)||^2 + sigma^2 (||J_r(x)||_F^2 - (x - r(x)) . Delta r(x)) + O(sigma^4), a penalty on the Jacobian of the whole reconstruction to first order in sigma^2."
+  assumes: ["isotropic Gaussian corruption", "the squared error", "a reconstruction r with continuous, bounded derivatives up to order four"]
+  derivation: small-noise-denoising
+
+- id: c-dae-linear-exact
+  type: mathematical
+  text: "For an affine reconstruction r(x) = Ax + c, the expected squared denoising error under Gaussian corruption is exactly ||x - Ax - c||^2 + sigma^2 ||A||_F^2."
+  assumes: ["isotropic Gaussian corruption", "the squared error", "an affine reconstruction"]
+  derivation: small-noise-denoising
