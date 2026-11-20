@@ -95,7 +95,7 @@ def test_gradcheck(decoder, kind):
     obj, names = Objective(model, kind), list(model.p)
 
     def f(*ps):
-        return torch.func.functional_call(obj, {f"model.p.{n}": v for n, v in zip(names, ps)}, (x, eps))
+        return torch.func.functional_call(obj, {f"model.p.{n}": v for n, v in zip(names, ps, strict=True)}, (x, eps))
 
     ps = tuple(model.p[n].detach().clone().requires_grad_(True) for n in names)
     assert torch.autograd.gradcheck(f, ps)

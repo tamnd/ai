@@ -58,9 +58,12 @@ def test_jit_and_vmap():
     cfg = config(decoder="gaussian")
     for kind in OBJECTIVES:
         f = jax.jit(lambda p, x, e, kind=kind: objective(p, cfg, x, e, kind))
-        np.testing.assert_allclose(f(p, inp["x"], inp["eps"]), objective(p, cfg, inp["x"], inp["eps"], kind), rtol=1e-12)
+        np.testing.assert_allclose(
+            f(p, inp["x"], inp["eps"]), objective(p, cfg, inp["x"], inp["eps"], kind), rtol=1e-12
+        )
         # the batch objective is the mean of the objectives of the single examples
-        each = jax.vmap(lambda x, e: objective(p, cfg, x[None], e[:, None], kind), in_axes=(0, 1))(inp["x"], inp["eps"])
+        one = jax.vmap(lambda x, e, kind=kind: objective(p, cfg, x[None], e[:, None], kind), in_axes=(0, 1))
+        each = one(inp["x"], inp["eps"])
         np.testing.assert_allclose(jnp.mean(each), objective(p, cfg, inp["x"], inp["eps"], kind), rtol=1e-12)
 
 
