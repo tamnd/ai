@@ -437,3 +437,19 @@
   text: "Code Llama uses NTK-aware interpolation and Qwen 7B uses Dynamic NTK."
   evidence:
     - {work: peng-2023-yarn, role: review, locator: "Section 1", stance: for}
+
+- id: c-press-extrap
+  type: empirical
+  text: "As the input sequence gets longer, the rotary method improves over the sinusoidal one, but it still does not achieve satisfying results, while ALiBi does not show degraded perplexity."
+  scope:
+    models: "Transformer language models with sinusoidal, rotary, T5 bias and ALiBi positions"
+    data: ["WikiText-103"]
+    setting: "trained on L = 512 or L = 1,024 tokens and evaluated on longer inputs"
+  evidence:
+    - {work: press-2022-train-short-test-long, role: review, locator: "p. 2", stance: for}
+
+- id: c-hist-gptj
+  type: historical
+  text: "The rotary method was introduced by Su et al. (2021) and has recently been popularized by the open source GPT-3 implementation GPTJ; instead of adding sinusoidal embeddings at the bottom of the transformer, they multiply the keys and queries of every attention layer by sinusoidal embeddings."
+  evidence:
+    - {work: press-2022-train-short-test-long, role: review, locator: "p. 4", stance: for}

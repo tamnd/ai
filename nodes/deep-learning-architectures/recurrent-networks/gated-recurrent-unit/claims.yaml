@@ -31,15 +31,15 @@
 
 - id: c-torch-layout
   type: definitional
-  text: "torch.nn.GRU stores the input weights of the three blocks stacked as (W_ir|W_iz|W_in) of shape (3*hidden_size, input_size), and initializes all weights and biases from U(-sqrt(k), sqrt(k)) with k = 1/hidden_size."
+  text: "torch.nn.GRU stores the input-hidden weights of the k-th layer stacked as (W_ir|W_iz|W_in), of shape (3*hidden_size, input_size) for k = 0, and all the weights and biases are initialized from U(-sqrt(k), sqrt(k)) where k = 1/hidden_size."
   evidence:
-    - {work: "pytorch-torch-nn-gru", role: original, locator: "the title page", stance: for}
+    - {work: "pytorch-torch-nn-gru", role: original, locator: "p. 1", stance: for}
 
 - id: c-reset-role
   type: attributive
   text: "When the reset gate is close to 0, the hidden state is forced to ignore the previous hidden state and reset with the current input only."
   evidence:
-    - {work: "cho-2014-learning-phrase-representations-rnn", role: original, locator: "Section 2.3", stance: for}
+    - {work: "cho-2014-learning-phrase-representations-rnn", role: original, locator: "p. 3", stance: for}
 
 - id: c-update-role
   type: attributive
@@ -57,7 +57,7 @@
   type: attributive
   text: "The GRU does not have any mechanism to control the degree to which its state is exposed, but exposes the whole state each time."
   evidence:
-    - {work: "chung-2014-empirical-evaluation-gated-recurrent", role: original, locator: "Section 3.3", stance: for}
+    - {work: "chung-2014-empirical-evaluation-gated-recurrent", role: original, locator: "p. 4", stance: for}
 
 - id: c-greff-gru
   type: attributive
@@ -67,27 +67,27 @@
 
 - id: c-cho-eq8
   type: definitional
-  text: "In eq. (8) of Cho et al. the reset gate multiplies the previous state before the recurrent matrix of the candidate."
+  text: "In Eq. (8) of Cho et al., h̃_j = φ([Wx]_j + [U(r ⊙ h_{t-1})]_j): the reset gate r acts on the previous hidden state before the matrix U, and r decides whether the previous hidden state is ignored."
   evidence:
-    - {work: "cho-2014-learning-phrase-representations-rnn", role: original, locator: "Section 2.3, Eq. 8", stance: for}
+    - {work: "cho-2014-learning-phrase-representations-rnn", role: original, locator: "p. 3", stance: for}
 
 - id: c-cho-decoder
   type: definitional
-  text: "In the decoder of Appendix A.1.1 of Cho et al., the reset gate multiplies the product U' h'_{t-1}, after the recurrent matrix."
+  text: "The decoder of Cho et al. (A.1.1) computes the hidden state at time t with h̃'_j = tanh([W' e(y_{t-1})]_j + r'_j [U' h'_{t-1} + C c]_j)."
   evidence:
-    - {work: "cho-2014-learning-phrase-representations-rnn", role: original, locator: "Appendix A.1.1", stance: for}
+    - {work: "cho-2014-learning-phrase-representations-rnn", role: original, locator: "p. 12", stance: for}
 
 - id: c-chung-footnote
   type: attributive
-  text: "Chung et al. apply the reset gate before the recurrent matrix, call the placement after it the original one, and report that in their preliminary experiments both formulations performed as well as each other."
+  text: "Chung et al. note that they use the reset gate in a slightly different way from the original GRU proposed in Cho et al., where the candidate activation was computed by tanh(W x_t + r_t ⊙ (U h_{t-1})), and found in their preliminary experiments that both of these formulations performed as well as each other."
   evidence:
-    - {work: "chung-2014-empirical-evaluation-gated-recurrent", role: original, locator: "Section 3.2, footnote 1", stance: for}
+    - {work: "chung-2014-empirical-evaluation-gated-recurrent", role: original, locator: "p. 4", stance: for}
 
 - id: c-torch-note
   type: attributive
-  text: "The PyTorch documentation states that the calculation of the new gate in torch.nn.GRU differs from the original paper, applying the reset gate after W_hn h_(t-1), on purpose for efficiency."
+  text: "The PyTorch documentation notes that the calculation of the new gate n_t subtly differs from the original paper and other frameworks: the Hadamard product with r_t is done after W_hn h_(t-1), and this implementation differs on purpose for efficiency."
   evidence:
-    - {work: "pytorch-torch-nn-gru", role: original, locator: "the title page", stance: for}
+    - {work: "pytorch-torch-nn-gru", role: original, locator: "p. 1", stance: for}
 
 - id: c-reset-agree
   type: mathematical
@@ -195,7 +195,7 @@
   type: attributive
   text: "The GRU is at least as strong as the SRNN: by setting the gates of the GRU to z_t = 0 and r_t = 1 we obtain the SRNN computation."
   evidence:
-    - {work: "weiss-2018-practical-computational-power-finite", role: original, locator: "Section 2", stance: for}
+    - {work: "weiss-2018-practical-computational-power-finite", role: original, locator: "p. 3", stance: for}
 
 - id: c-weiss-cannot
   type: attributive
@@ -215,13 +215,13 @@
 
 - id: c-chung-results
   type: empirical
-  text: "On four polyphonic music datasets the GRU, LSTM and tanh networks performed closely to each other, and on two raw speech datasets the two gated networks outperformed the tanh network."
+  text: "On the polyphonic music datasets all the three models, GRU-RNN, LSTM-RNN and tanh-RNN, performed closely to each other, and the evaluation clearly demonstrated the superiority of the gated units over the traditional tanh unit, more evident with the more challenging task of raw speech signal modeling."
   scope:
     models: "one-layer GRU, LSTM and tanh recurrent networks of about equal parameter counts"
     data: ["Nottingham", "JSB Chorales", "MuseData", "Piano-midi", "Ubisoft A", "Ubisoft B"]
     setting: "sequence modelling, trained with RMSProp"
   evidence:
-    - {work: "chung-2014-empirical-evaluation-gated-recurrent", role: original, locator: "Section 5", stance: for}
+    - {work: "chung-2014-empirical-evaluation-gated-recurrent", role: original, locator: "p. 6, p. 7", stance: for}
 
 - id: c-chung-table2
   type: empirical
@@ -309,9 +309,9 @@
 
 - id: c-joz-mut1
   type: definitional
-  text: "The architecture MUT1 found by the search of Jozefowicz et al. computes its update gate from the input alone, z = sigm(W_xz x_t + b_z)."
+  text: "MUT1, one of the three best architectures discovered by the search procedure of Jozefowicz et al., computes z = sigm(W_xz x_t + b_z), from x_t alone."
   evidence:
-    - {work: "jozefowicz-2015-empirical-exploration-recurrent", role: original, locator: "Section 4", stance: for}
+    - {work: "jozefowicz-2015-empirical-exploration-recurrent", role: original, locator: "p. 6, p. 7", stance: for}
 
 - id: c-mamba-thm
   type: attributive
@@ -327,9 +327,9 @@
 
 - id: c-bahdanau
   type: historical
-  text: "The recurrent units of the attention-based translation model of Bahdanau et al. are the gated hidden unit of Cho et al., with 1000 hidden units in the decoder and in each direction of the encoder."
+  text: "In the RNNsearch of Bahdanau et al., the encoder consists of forward and backward recurrent neural networks each having 1000 hidden units, its decoder has 1000 hidden units, and a hidden unit always means the gated hidden unit recently proposed by Cho et al."
   evidence:
-    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "p. 5 and Appendix A.1.1", stance: for}
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "p. 5, p. 12", stance: for}
 
 - id: c-hist-cho
   type: historical
@@ -339,9 +339,9 @@
 
 - id: c-hist-chung
   type: historical
-  text: "In December 2014 Chung et al. wrote that they refer to the unit as a gated recurrent unit (GRU), and evaluated it against the LSTM unit on polyphonic music and speech signal modeling."
+  text: "In arXiv 1412.3555v1 (11 Dec 2014), Chung et al. compare a long short-term memory (LSTM) unit and a recently proposed gated recurrent unit (GRU) on the tasks of polyphonic music modeling and speech signal modeling."
   evidence:
-    - {work: "chung-2014-empirical-evaluation-gated-recurrent", role: original, locator: "Section 1", stance: for}
+    - {work: "chung-2014-empirical-evaluation-gated-recurrent", role: original, locator: "p. 1", stance: for}
 
 - id: c-hist-joz
   type: historical

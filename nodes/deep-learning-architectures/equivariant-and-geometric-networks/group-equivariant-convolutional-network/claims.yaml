@@ -6,7 +6,7 @@
   type: attributive
   text: "Cohen and Welling argue that in deep learning general equivariance is more useful than invariance, because it is impossible to determine if features are in the right spatial configuration if they are invariant."
   evidence:
-    - {work: "cohen-2016-group-equivariant-convolutional-networks", role: original, locator: "Section 2", stance: for}
+    - {work: "cohen-2016-group-equivariant-convolutional-networks", role: original, locator: "p. 2", stance: for}
 
 - id: c-planar-translation
   type: mathematical
@@ -190,10 +190,10 @@
 
 - id: c-bronstein-average
   type: mathematical
-  text: "A linear G-invariant function depends on its input only through the G-average, which for images and translation would entail using only the average RGB color of the input."
+  text: "If f is linear and G-invariant, it depends on x only through the G-average; in the case of images and translation, this would entail using only the average RGB color of the input."
   assumes: ["G is a group with a Haar measure acting linearly on the signals", "the function is linear and G-invariant"]
   evidence:
-    - {work: "bronstein-2021-geometric-deep-learning", role: review, locator: "Section 3.5", stance: for}
+    - {work: "bronstein-2021-geometric-deep-learning", role: review, locator: "p. 27", stance: for}
 
 - id: c-why-equivariant-layers
   type: mathematical
@@ -205,7 +205,7 @@
   type: definitional
   text: "The geometric deep learning blueprint of Bronstein et al. is an architecture whose main building blocks are a local equivariant map, a global invariant map and a coarsening operator."
   evidence:
-    - {work: "bronstein-2021-geometric-deep-learning", role: review, locator: "Section 3.5", stance: for}
+    - {work: "bronstein-2021-geometric-deep-learning", role: review, locator: "p. 28", stance: for}
 
 - id: c-kondor
   type: attributive
@@ -263,23 +263,23 @@
 
 - id: c-weiler-mnist
   type: empirical
-  text: "On rotated MNIST the test error falls from 2.28% for the P4CNN to 0.682% for an E(2)-steerable CNN equivariant to 16 rotations and reflections, restricted to the 16 rotations at a later depth."
+  text: "On MNIST rot, a D16-equivariant model which is restricted to C16 after the penultimate layer reaches a test error in percent of 0.682, against 0.716 for the reimplementation of the original model and 0.705 with quotient representations."
   scope:
     models: "the P4CNN and the E(2)-steerable CNNs of Weiler and Cesa"
     data: ["rotated MNIST"]
     setting: "supervised classification, the test error of the final runs"
   evidence:
-    - {work: "weiler-2019-general-e2-equivariant-steerable-cnns", role: original, locator: "Table 5", stance: for}
+    - {work: "weiler-2019-general-e2-equivariant-steerable-cnns", role: original, locator: "p. 14, Table 5", stance: for}
 
 - id: c-weiler-cifar
   type: empirical
-  text: "Equivariant wide ResNets 28/10 of about the same number of parameters reach test errors of 2.91% on CIFAR-10 and 16.22% on CIFAR-100, against 3.87% and 18.80% for the planar model, and 2.05% and 14.30% with AutoAugment, against 2.6% and 17.1%."
+  text: "On CIFAR, the test errors in percent of equivariant wrn28/10 models are 2.91 on CIFAR-10 and 16.22 on CIFAR-100, against 3.87 and 18.80 for the wrn28/10 baseline, and 2.05 and 14.30 with autoaugment, against 2.6 and 17.1."
   scope:
     models: "wide ResNets 28/10 with planar or E(2)-steerable convolutions"
     data: ["CIFAR-10", "CIFAR-100"]
     setting: "supervised classification, with and without AutoAugment, the test error"
   evidence:
-    - {work: "weiler-2019-general-e2-equivariant-steerable-cnns", role: original, locator: "Section 3.5, Table 6", stance: for}
+    - {work: "weiler-2019-general-e2-equivariant-steerable-cnns", role: original, locator: "Table 6", stance: for}
 
 # Limitations
 
@@ -305,17 +305,17 @@
 
 - id: c-zaheer-invariant
   type: mathematical
-  text: "A function on sets whose elements come from a countable universe is invariant to the permutation of the elements if and only if it can be decomposed as rho(sum over x of phi(x)) for suitable transformations phi and rho."
+  text: "A function f(X) operating on a set X having elements from a countable universe is a valid set function, i.e., invariant to the permutation of instances in X, iff it can be decomposed in the form ρ(Σ_{x∈X} φ(x)), for suitable transformations φ and ρ."
   assumes: ["the elements come from a countable universe"]
   evidence:
-    - {work: "zaheer-2017-deep-sets", role: original, locator: "Section 2, Theorem 2", stance: for}
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "p. 2", stance: for}
 
 - id: c-zaheer-equivariant
   type: mathematical
-  text: "A layer x -> sigma(Theta x) on R^M is permutation equivariant if and only if Theta = lambda I + gamma 1 1^T for real lambda and gamma."
+  text: "A neural network layer f_Θ(x) = σ(Θx) is permutation equivariant if and only if all the off-diagonal elements of Θ are tied together and all the diagonal elements are equal as well, i.e., Θ = λI + γ(11^T) for λ, γ ∈ R."
   assumes: ["Theta is an M by M matrix and sigma acts on each value alone"]
   evidence:
-    - {work: "zaheer-2017-deep-sets", role: original, locator: "Section 2, Lemma 3", stance: for}
+    - {work: "zaheer-2017-deep-sets", role: original, locator: "p. 3", stance: for}
 
 - id: c-satorras
   type: attributive

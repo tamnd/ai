@@ -4,9 +4,9 @@
 
 - id: c-chen-euler
   type: attributive
-  text: "Chen et al. write that the iterative updates of residual networks can be seen as an Euler discretization of a continuous transformation, and ask what happens as more layers are added and smaller steps are taken."
+  text: "Chen et al. note that the iterative updates of residual networks can be seen as an Euler discretization of a continuous transformation, and ask what happens as we add more layers and take smaller steps."
   evidence:
-    - {work: "chen-2018-neural-ordinary-differential-equations", role: original, locator: "Section 1", stance: for}
+    - {work: "chen-2018-neural-ordinary-differential-equations", role: original, locator: "p. 1", stance: for}
 
 - id: c-lu-discretizations
   type: attributive
@@ -204,9 +204,9 @@
 
 - id: c-cnf-bijective
   type: attributive
-  text: "Chen et al. point out that, unlike a finite flow, the field of a continuous normalizing flow does not need to be bijective, because if uniqueness holds the whole transformation is automatically bijective."
+  text: "Chen et al. note that, unlike a finite flow, the dynamics of a continuous normalizing flow need not be bijective, since if uniqueness is satisfied, then the entire transformation is automatically bijective."
   evidence:
-    - {work: "chen-2018-neural-ordinary-differential-equations", role: original, locator: "Section 4", stance: for}
+    - {work: "chen-2018-neural-ordinary-differential-equations", role: original, locator: "p. 4", stance: for}
 
 - id: c-cnf-linear
   type: attributive
@@ -272,17 +272,17 @@
 
 - id: c-dupont-prop2
   type: mathematical
-  text: "Neural ODEs cannot represent the function that maps all points inside a ball to -1 and all points in a surrounding annulus to 1."
+  text: "Neural ODEs cannot represent g(x), the function that maps all points inside the blue sphere to -1 and all points in the red annulus to 1 (Proposition 2 of Dupont et al.)."
   assumes: ["the field is Lipschitz in h, so solutions are unique", "the output is a linear function of the final state of the input's width"]
   evidence:
-    - {work: "dupont-2019-augmented-neural-odes", role: original, locator: "Section 3", stance: for}
+    - {work: "dupont-2019-augmented-neural-odes", role: original, locator: "p. 3", stance: for}
 
 - id: c-homeomorphism
   type: mathematical
-  text: "The feature map of a neural ODE is a homeomorphism, so its features preserve the topology of the input space: the flow can only continuously deform the input space and cannot tear a connected region apart."
+  text: "The feature mapping φ(x) of a neural ODE is a homeomorphism, so the features of Neural ODEs preserve the topology of the input space: NODEs can only continuously deform the input space and cannot tear a connected region apart."
   assumes: ["the field is Lipschitz in h, so solutions are unique"]
   evidence:
-    - {work: "dupont-2019-augmented-neural-odes", role: original, locator: "Section 3", stance: for}
+    - {work: "dupont-2019-augmented-neural-odes", role: original, locator: "p. 3", stance: for}
 
 # Stability
 
@@ -351,14 +351,14 @@
 
 - id: c-anode-nfe
   type: empirical
-  text: "Trained on the ball and annulus function, augmented neural ODEs need a number of function evaluations that hardly increases during training, while it nearly doubles for plain neural ODEs."
+  text: "When training on g(x), the NFEs required by ANODEs hardly increases during training while it nearly doubles for NODEs."
   scope:
     models: "neural ODEs and augmented neural ODEs"
     data: [unknown]
     setting: "regression on a synthetic function in two dimensions"
   small_scale: yes
   evidence:
-    - {work: "dupont-2019-augmented-neural-odes", role: original, locator: "Section 5.1", stance: for}
+    - {work: "dupont-2019-augmented-neural-odes", role: original, locator: "p. 5", stance: for}
 
 - id: c-nfe-1000
   type: empirical
@@ -410,9 +410,9 @@
 
 - id: c-hist-euler
   type: historical
-  text: "Chen et al. cite Lu et al. (2017) and Haber and Ruthotto (2017) for reading the updates of residual networks as an Euler discretization of a continuous transformation."
+  text: "Chen et al. cite Lu et al., 2017 and Haber and Ruthotto, 2017 for reading the updates of residual networks as an Euler discretization of a continuous transformation."
   evidence:
-    - {work: "chen-2018-neural-ordinary-differential-equations", role: original, locator: "Section 1", stance: for}
+    - {work: "chen-2018-neural-ordinary-differential-equations", role: original, locator: "p. 1", stance: for}
 
 - id: c-hist-adjoint
   type: attributive

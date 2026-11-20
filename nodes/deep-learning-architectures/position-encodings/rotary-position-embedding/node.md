@@ -32,6 +32,7 @@ sources:
   - {paper: "Vaswani, Shazeer, Parmar, Uszkoreit, Jones, Gomez, Kaiser and Polosukhin (2017)", title: "Attention Is All You Need", locator: "arXiv 1706.03762v7, Section 3.5", note: "the sinusoidal absolute encoding"}
   - {paper: "Chen, Wong, Chen and Tian (2023)", title: "Extending Context Window of Large Language Models via Position Interpolation", locator: "arXiv 2306.15595v2, Sections 2 and 3", note: "position interpolation"}
   - {paper: "Peng, Quesnelle, Fan and Shippole (2023)", title: "YaRN: Efficient Context Window Extension of Large Language Models", locator: "arXiv 2309.00071v2, Sections 2 to 4", note: "NTK-aware, NTK-by-parts, dynamic scaling and YaRN"}
+  - {paper: "Press, Smith and Lewis (2022)", title: "Train Short, Test Long: Attention with Linear Biases Enables Input Length Extrapolation", locator: "ICLR 2022, arXiv 2108.12409v2, Sections 2 and 3", note: "a controlled comparison of extrapolation with sinusoidal, rotary and T5 positions"}
 ---
 
 Rotary position embedding (RoPE) encodes the position of a token by rotating its query and key vectors in attention.
@@ -182,6 +183,7 @@ Chen et al. (2023, Section 2.1) report RoPE as the position encoding of the LLaM
 
 Su et al. list two open questions: why RoPE converges faster, and why it does better on long texts (Section 4.5.5). {#c-limitations}
 RoPE models do not extrapolate well past their trained length.
+Press et al. found the same in a controlled comparison on WikiText-103: the rotary method improves over the sinusoidal one, but it still does not achieve satisfying results as the input grows past the training length, while their linear-bias method ALiBi does not degrade (Section 2 and Figure 1). {#c-press-extrap}
 Chen et al. report perplexities above $10^3$ for LLaMA beyond its trained window without fine-tuning (Section 2.2). {#c-extrapolation-fails}
 They argue that the decay bound of Su et al. can be too loose at large distances, so it does not protect against huge scores at unseen positions (Section 2.2). {#c-bound-loose}
 Fine-tuning at the new length alone is slow: after more than 10,000 steps the effective window of LLaMA 7B grew from 2048 to only 2560 (Table 4). {#c-ft-slow}
@@ -259,6 +261,7 @@ For a fixed short context, the sinusoidal or learned encodings of [[transformer]
 
 Su, Lu, Pan, Murtadha, Wen and Liu of Zhuiyi Technology posted RoFormer as arXiv 2104.09864 in 2021; its version 5 is dated 8 Nov 2023. {#c-hist-su}
 RoFormer was integrated into the Hugging Face Transformers library (the abstract). {#c-hist-hf}
+Press et al. note that the rotary method was popularized by GPT-J, an open source implementation of GPT-3, and describe it as multiplying the keys and queries of every attention layer by sinusoidal embeddings instead of adding sinusoidal embeddings at the bottom of the transformer (Section 3). {#c-hist-gptj}
 In 2023 Chen et al. extended LLaMA with position interpolation, and they note the concurrent SuperHOT work by kaiokendev on the same idea (Section 1). {#c-hist-superhot}
 NTK-aware scaling, Dynamic NTK and NTK-by-parts were unpublished works; Peng et al. gave a full account of them and added YaRN (Section 1). {#c-hist-yarn}
 Code Llama uses NTK-aware scaling and Qwen 7B uses Dynamic NTK (Peng et al. 2023, Section 1). {#c-hist-adoption}

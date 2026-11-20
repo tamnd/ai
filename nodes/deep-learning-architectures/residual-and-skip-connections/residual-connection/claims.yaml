@@ -79,8 +79,6 @@
   text: "Under the same form, ∂x_L/∂x_l is the ordered product of the (I + J_i), and ∂E/∂x_l = ∂E/∂x_L (I + ∂/∂x_l Σ_{i=l}^{L-1} F_i(x_i)): the gradient at the deeper unit reaches the shallower one unchanged, plus a term through the branches."
   assumes: ["identity shortcuts", "no function after the addition", "each F_i is differentiable", "E is a scalar loss"]
   derivation: gradient-flow
-  evidence:
-    - {work: "he-2016-identity-mappings", role: original, locator: "Section 2", stance: for}
 
 - id: c-not-cancel
   type: attributive
@@ -99,8 +97,6 @@
   text: "If each shortcut is scaled, x_{i+1} = λ_i x_i + F_i(x_i), the term of the gradient that goes through no branch is the product of the λ_i, which grows or shrinks exponentially with depth when all λ_i are above or all below 1."
   assumes: ["scalar λ_i", "each F_i is differentiable"]
   derivation: gradient-flow
-  evidence:
-    - {work: "he-2016-identity-mappings", role: original, locator: "Section 3", stance: for}
 
 - id: c-shortcut-ablation
   type: empirical
@@ -126,8 +122,6 @@
   text: "A unit x_{i+1} = x_i + F_i(f̂(x_i)), where the activation is applied only to the branch, has the form x_{i+1} = x_i + G_i(x_i) with G_i = F_i ∘ f̂, so the unrolled sum and the gradient formula hold with G_i in place of F_i; the pre-LN unit is the case f̂ = LN."
   assumes: ["identity shortcuts", "f̂ and F_i differentiable"]
   derivation: gradient-flow
-  evidence:
-    - {work: "he-2016-identity-mappings", role: original, locator: "Section 4.1", stance: for}
 
 - id: c-after-addition
   type: empirical
@@ -182,16 +176,12 @@
   text: "Unrolled, a stack of n residual units is a sum over 2^n paths, one for each subset of the branches it goes through, and C(n, k) of them go through exactly k branches, so the path length is binomial with mean n/2."
   assumes: ["x_{i+1} = x_i + F_i(x_i) for n units", "the expansion is of the product of the Jacobians (I + J_i), or of linear branches"]
   derivation: path-count
-  evidence:
-    - {work: "veit-2016-residual-networks-ensembles", role: original, locator: "Section 3", stance: for}
 
 - id: c-path-share
   type: mathematical
   text: "For 54 units, 98.0% of the 2^54 paths go through 19 to 35 units, and 0.45% go through 5 to 17 units, the paths 10 to 34 layers deep of a network of two-layer units."
   assumes: ["n = 54 units of two weight layers each", "paths counted uniformly over the subsets"]
   derivation: path-count
-  evidence:
-    - {work: "veit-2016-residual-networks-ensembles", role: original, locator: "Section 5", stance: for}
 
 - id: c-ensemble
   type: empirical
@@ -291,7 +281,7 @@
 
 - id: c-hist-highway
   type: historical
-  text: "Srivastava, Greff and Schmidhuber posted version 2 of Highway Networks as arXiv 1505.00387v2 on 3 Nov 2015."
+  text: "Highway Networks, by Rupesh Kumar Srivastava, Klaus Greff and Jürgen Schmidhuber, is arXiv 1505.00387v2 [cs.LG], dated 3 Nov 2015."
   evidence:
     - {work: "srivastava-2015-highway-networks", role: original, locator: "the title page", stance: for}
 
