@@ -1,0 +1,36 @@
+# SPDX-License-Identifier: MIT
+# The shape contract of the consistency model on the page (spec 08.6): f(x, t) = c_skip(t) x + c_out(t) F(x, t), with
+# F a network that reads the scaled sample c_in(t) x of dimension dim, adds a Fourier embedding of log(t) / 4 through
+# Wt, passes the sum through a tanh layer of width hidden and reads out a vector of dimension dim. The scales c_skip,
+# c_out and c_in hold no parameters. The FLOPs count the three matrix products, a multiply-add as 2; the scales,
+# biases, the time embedding and tanh are left out.
+config:
+  dim:    {meaning: "dimension of a sample", symbol: "D", example: 3, sample: [1, 8]}
+  hidden: {meaning: "width of the hidden layer", symbol: "H", example: 5, sample: [1, 16]}
+  temb:   {meaning: "width of the Fourier embedding of the noise level", symbol: "E", example: 4, sample: [1, 8]}
+axes:
+  B: {meaning: "batch of noisy samples", example: 4, sample: [1, 6]}
+  D: dim
+  H: hidden
+  E: temb
+blocks:
+  - id: hidden
+    meaning: "the hidden layer tanh(c_in(t) x W1 + emb(t) Wt + b1)"
+    eq: [param]
+    inputs: {x: "(B, D)", t: "(B)"}
+    outputs: {h: "(B, H)"}
+    params: "D * H + E * H + H"
+    flops_forward: "2 * B * (D * H + E * H)"
+  - id: head
+    meaning: "the read-out F = h W2 + b2 and the output c_skip(t) x + c_out(t) F"
+    eq: [param]
+    inputs: {h: "(B, H)", x: "(B, D)"}
+    outputs: {f: "(B, D)"}
+    params: "H * D + D"
+    flops_forward: "2 * B * H * D"
+model:
+  params: {formula: "hidden.params + head.params", symbol: "P", meaning: "the weights and biases of the network F; the target network of distillation holds a second copy"}
+  flops_forward: {formula: "hidden.flops_forward + head.flops_forward", symbol: "C_f", meaning: "FLOPs of one call of f on B samples; one-step sampling costs one call, k-step sampling k calls"}
+configs:
+  mixture: {meaning: "the model of the tests, trained on three Gaussians in the plane, one Adam batch", dim: 2, hidden: 64, temb: 8, B: 256}
+  cifar10: {meaning: "a network of this form on a 32 x 32 x 3 image, one image", dim: 3072, hidden: 1024, temb: 64, B: 1}
