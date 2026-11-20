@@ -35,6 +35,8 @@ sources:
   - {paper: "Micikevicius, Narang, Alben, Diamos, Elsen, Garcia, Ginsburg, Houston, Kuchaiev, Venkatesh and Wu (2018)", title: "Mixed Precision Training", locator: "pages 1 to 9", note: "FP32 master weights, loss scaling, FP32 accumulation, and the experiments on classification, detection, speech, translation, language modelling and GANs"}
   - {paper: "Kalamkar, Mudigere, Mellempudi et al. (2019)", title: "A Study of BFLOAT16 for Deep Learning Training", locator: "pages 1 to 8, Tables 1 to 5", note: "the BF16 format, its data flow with FP32 accumulation and master weights, and results without loss scaling"}
   - {paper: "Micikevicius, Stosic, Judd et al. (2022)", title: "FP8 Formats for Deep Learning", locator: "pages 1 to 7, Tables 1 to 5", note: "the E4M3 and E5M2 encodings, per-tensor scaling, and FP8 training and post-training quantization"}
+  - {paper: "NVIDIA (2023)", title: "NVIDIA H100 Tensor Core GPU Architecture", locator: "pp. 23 and 46", note: "FP8 Tensor Core inputs and accumulators, and the Transformer Engine's per-layer scaling"}
+  - {paper: "Dettmers, Pagnoni, Holtzman and Zettlemoyer (2023)", title: "QLoRA: Efficient Finetuning of Quantized LLMs", locator: "arXiv 2305.14314v1, pp. 4 and 5", note: "4-bit storage with BF16 computation"}
 ---
 
 Mixed precision training runs most of the arithmetic of a neural network in a 16-bit floating-point type while keeping the parts that need it in 32 bits.
@@ -140,6 +142,8 @@ FP8 operations are expected to produce their results in higher precision and rou
 Values are multiplied by a scale before the cast to FP8 to move them into its range, as loss scaling does for FP16; some networks need one scale per tensor, chosen so that the largest magnitude lands near the largest FP8 value, and overflows saturate to that value. {#c-fp8-scaling}
 They are unscaled by the inverse factor after the conversion back or after the matrix product, once per dot-product, which costs little. {#c-fp8-unscale}
 E4M3 is recommended for weights and activations and E5M2, with its wider range, for gradients; some networks train with one of them, others need both. {#c-fp8-recommend}
+In hardware, the H100 Tensor Cores take E4M3 and E5M2 inputs with FP32 or FP16 accumulators, and NVIDIA quotes half the storage and twice the throughput of FP16 or BF16. {#c-h100-fp8-throughput}
+Its Transformer Engine automates the per-tensor scale: at each layer it reads statistics of the Tensor Core outputs, picks the format for the next layer, and scales the data into range from those statistics. {#c-h100-te}
 
 ## Derivation
 
@@ -293,6 +297,9 @@ Long sums, normalization statistics and softmax lose accuracy in 16 bits; framew
 
 **FP8 training** scales each tensor by its own factor; the exponent biases are kept at 7 and 15 and the scale is left to software, because a scale can be any real number while a programmable bias only gives powers of two. {#c-fp8-bias}
 Converting inf or NaN to E4M3 should give NaN, so that the overflow checks of automatic mixed precision still see an overflow. {#c-fp8-special}
+
+**Low-bit storage with 16-bit compute.** QLoRA stores the frozen base weights in 4-bit NormalFloat and dequantizes them to BF16 for every forward and backward pass, computing weight gradients only for the small 16-bit LoRA adapters. {#c-qlora-dtypes}
+The split between a storage format and a compute format is the same as in mixed precision, pushed further because the stored weights are never updated.
 
 **Pseudo FP16** stores tensors in FP16 and computes in FP32, which Micikevicius et al. used on GPUs without Tensor Cores to emulate them.
 
