@@ -38,6 +38,11 @@ sources:
   - {paper: "Wettig, Gao, Zhong and Chen (2022)", title: "Should You Mask 15% in Masked Language Modeling?", locator: "arXiv 2202.08005v3, Sections 1, 6 and 7, Tables 1, 3 and 4", note: "masking rates, corruption against prediction, and the 80/10/10 rule"}
 ---
 
+Masked language modelling is a pre-training objective: hide a random subset of the tokens of a text, and train a network to predict the hidden tokens from the tokens on both sides.
+Unlike a left-to-right language model, the network sees the whole context, so the vector it builds for each token reflects the words after it as well as before.
+Devlin et al. made it the pre-training objective of [[bert|BERT]] in 2018, choosing 15% of the tokens and replacing most of them by a [MASK] token.
+Later models changed what is hidden and how: RoBERTa drew a fresh mask each time a sequence was fed, SpanBERT and [[t5|T5]] hid spans, and ELECTRA trained a discriminator to spot replaced tokens.
+
 ## In plain words
 
 A [[neural-probabilistic-language-model|left-to-right language model]] predicts each word from the words before it, so the vector it builds for a word knows nothing about what follows.

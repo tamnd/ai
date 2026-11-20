@@ -36,6 +36,11 @@ flops_per_example: "4 N F D + (L - 1) 4 N D^2 + L 2 N^2 D + 2 D K with a dense a
 models: [MPNN, GCN, GraphSAGE, GAT, GIN]
 ---
 
+A graph neural network is a neural network on a graph that updates the state of each node from the states of its neighbours, layer by layer, with the same weights at every node.
+Because each update sums or otherwise pools over the neighbours, the output does not depend on how the nodes are numbered, and one network handles graphs of any size.
+After k layers a node's state depends on its neighbourhood k hops out; pooling all the node states gives a vector for the whole graph.
+Gori, Monfardini and Scarselli proposed the model in 2005, and Gilmer et al. described the message-passing form in 2017 that this page follows.
+
 ## In plain words
 
 Many kinds of data are a set of things with links between them: atoms and bonds, papers and citations, users and friendships.

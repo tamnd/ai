@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: MIT
 # Part of https://ai.tamnd.com/decoder-only-transformer/ (ai://NEW-decoder-only-transformer).
 """Tests of the NumPy reference: shapes and counts, the models of the papers, causality, the shared fixture, the
-gradient of eq-loss, the cache of keys and values, greedy decoding, and what the model can tell about order without
-position embeddings."""
+gradient of eq-loss, the cache of keys and values, greedy decoding, what the model can tell about order without
+position embeddings, and a learning smoke test."""
 
 import json
 import math
@@ -24,6 +24,7 @@ from decoder_lm import (
     kv_cache_size,
     loss,
     msa,
+    nll,
     non_embedding_params,
     param_count,
     param_shapes,
@@ -44,7 +45,7 @@ def ids_of(rng, cfg, B, n=None):
 
 
 @pytest.mark.parametrize("c", SHAPES, ids=lambda c: c["name"])
-def test_counts_and_shapes(c):
+def test_param_count(c):
     cfg = cfg_of(c)
     m = c["model"]
     assert param_count(cfg) == m["params"]
@@ -53,17 +54,22 @@ def test_counts_and_shapes(c):
     B = c["config"]["B"]
     assert flops(cfg, B, cfg["n_ctx"]) == m["flops_forward"]
     assert B * kv_cache_size(cfg, cfg["n_ctx"]) == m["kv_cache"]
-    if c["kind"] != "named":
-        rng = np.random.default_rng(0)
-        logits, cache = forward(init(rng, cfg), cfg, ids_of(rng, cfg, B))
-        blocks = c["blocks"]
-        assert list(logits.shape) == blocks["head"]["outputs"]["logits"]
-        assert list(cache["tokens"].shape) == blocks["embed"]["outputs"]["tokens"]
-        attn = cache["layers"][0]["attn"]
+    if c["kind"] != "named":  # the arrays of the paper's models are too large for a test
+        assert sum(a.size for a in init(np.random.default_rng(0), cfg).values()) == m["params"]
+
+
+@pytest.mark.parametrize("c", [c for c in SHAPES if c["kind"] != "named"], ids=lambda c: c["name"])
+def test_shapes(c):
+    cfg, B, blocks = cfg_of(c), c["config"]["B"], c["blocks"]
+    rng = np.random.default_rng(0)
+    logits, cache = forward(init(rng, cfg), cfg, ids_of(rng, cfg, B))
+    assert list(logits.shape) == blocks["head"]["outputs"]["logits"]
+    assert list(cache["tokens"].shape) == blocks["embed"]["outputs"]["tokens"]
+    for layer in cache["layers"]:
         for name in ("q", "k", "v", "weights"):
-            assert list(attn[name].shape) == blocks["attn"]["internals"][name]
-        assert list(cache["layers"][0]["u"].shape) == blocks["mlp"]["internals"]["hidden"]
-        assert sum(k.size + v.size for k, v in cache["kv"]) == m["kv_cache"]
+            assert list(layer["attn"][name].shape) == blocks["attn"]["internals"][name]
+        assert list(layer["u"].shape) == blocks["mlp"]["internals"]["hidden"]
+    assert sum(k.size + v.size for k, v in cache["kv"]) == c["model"]["kv_cache"]
 
 
 def test_default_config_is_the_example():
@@ -157,7 +163,7 @@ def test_shared_fixture():
     [{}, {"tied": False}, {"pos": "none"}, {"tied": False, "pos": "none"}],
     ids=["tied", "untied", "no-pos", "both"],
 )
-def test_gradient_by_finite_differences(kw):
+def test_gradient(kw):
     rng = np.random.default_rng(3)
     cfg = config(vocab=7, n_ctx=6, d_model=6, n_heads=3, d_ff=5, n_layers=2, **kw)
     params = init(rng, cfg, scale=0.5)
@@ -269,3 +275,24 @@ def flop_case(c):
     cfg = cfg_of(c)
     rng = np.random.default_rng(0)
     return forward, (init(rng, cfg), cfg, ids_of(rng, cfg, c["config"]["B"]))
+
+
+def test_learns():
+    # The hand-written backward with Adam fits 8 counting sequences, each token one more than the last modulo 8, in
+    # 150 steps, from a loss of about 2.3 to about 0.002. A wrong sign or a gradient that does not reach a weight
+    # leaves the loss far above the bound of 0.05; a uniform guess is log 8 = 2.08.
+    cfg = config(vocab=8, n_ctx=8, d_model=16, n_heads=2, d_ff=32, n_layers=1)
+    params = init(np.random.default_rng(0), cfg)
+    ids = (np.random.default_rng(1).integers(0, 8, 8)[:, None] + np.arange(8)) % 8
+    m = {k: np.zeros_like(v) for k, v in params.items()}
+    v = {k: np.zeros_like(x) for k, x in params.items()}
+    losses = []
+    for t in range(1, 151):
+        logits, cache = forward(params, cfg, ids)
+        losses.append(nll(logits, ids))
+        for k, g in backward(params, cfg, cache, ids).items():
+            m[k] = 0.9 * m[k] + 0.1 * g
+            v[k] = 0.999 * v[k] + 0.001 * g * g
+            params[k] = params[k] - 1e-2 * (m[k] / (1 - 0.9**t)) / (np.sqrt(v[k] / (1 - 0.999**t)) + 1e-8)
+    assert losses[0] > 1.0
+    assert losses[-1] < 0.05, losses[-1]

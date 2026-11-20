@@ -35,6 +35,7 @@ def merge_symbols(symbols, pair):
     out = merge_ids(arr, table.id(pair[0]), table.id(pair[1]), table.id(pair[0] + pair[1]))
     return tuple(table.names[i] for i in out)
 
+
 TABLE = {"low": 5, "lower": 2, "newest": 6, "widest": 3}
 MERGES = [
     ("e", "s"),

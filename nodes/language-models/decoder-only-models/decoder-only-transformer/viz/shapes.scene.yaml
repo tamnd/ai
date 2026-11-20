@@ -1,0 +1,34 @@
+# The architecture scene (spec 12.6), first written by aik viz shapes from shapes.yaml.
+# It sets the layout and the controls only; every shape and count comes from shapes.yaml.
+title: Decoder-only Transformer
+controls:
+  - name: vocab
+    choices: [2, 11, 12, 50257]
+  - name: n_ctx
+    choices: [1, 8, 1024, 2048]
+  - name: d_model
+    choices: [8, 768, 1024, 1536, 1600, 2048, 2560, 4096, 5120, 12288]
+  - name: n_heads
+    choices: [2, 12, 16, 25, 32, 40, 96]
+  - name: d_ff
+    choices: [1, 8, 16, 3072, 4096, 6144, 6400, 8192, 10240, 16384, 20480, 49152]
+  - name: n_layers
+    choices: [1, 2, 12, 24, 32, 40, 48, 96]
+  - name: B
+    choices: [1, 2]
+presets:
+  - example
+  - gpt2_117m
+  - gpt2_1542m
+  - gpt3_small
+  - gpt3_medium
+  - gpt3_large
+  - gpt3_xl
+  - gpt3_2_7b
+  - gpt3_6_7b
+  - gpt3_13b
+  - gpt3_175b
+stack:
+  - embed
+  - layer
+  - head

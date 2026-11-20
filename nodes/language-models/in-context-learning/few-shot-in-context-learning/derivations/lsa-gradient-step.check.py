@@ -62,7 +62,9 @@ def main():
         assert not np.allclose(o3, oq)
         wk0, wq0, wv0, p0 = weights(dx, dy, eta, n, np.zeros((dy, dx)))
         q0 = np.hstack([xq, np.zeros((1, dy))])
-        assert np.allclose(layer(np.vstack([ctx, q0]), q0, wk0, wq0, wv0, p0), layer(ctx, q0, wk0, wq0, wv0, p0), atol=1e-12)
+        assert np.allclose(
+            layer(np.vstack([ctx, q0]), q0, wk0, wq0, wv0, p0), layer(ctx, q0, wk0, wq0, wv0, p0), atol=1e-12
+        )
         # 5. Averaging: W_0 = 0, eta = 1 predicts (1/N) sum_i y_i x_i^T x_q.
         wk, wq, wv, p = weights(dx, dy, 1.0, n, np.zeros((dy, dx)))
         pred = -layer(ctx, q0, wk, wq, wv, p)[:, dx:]

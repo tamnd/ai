@@ -39,6 +39,11 @@ sources:
   - {paper: "Press and Wolf (2017)", title: "Using the Output Embedding to Improve Language Models", locator: "EACL 2017; arXiv 1608.05859v3, Sections 3 and 4.2, Table 5", note: "tying the input and output word vectors"}
 ---
 
+A neural probabilistic language model maps each of the previous n − 1 words to a learned feature vector, passes the concatenated vectors through a tanh hidden layer, and gives the probability of every next word with a softmax.
+It conditions on the same window as an [[n-gram-language-model|n-gram model]], but similar words get similar vectors, so what is learned about one word sequence carries over to sequences never seen in training.
+Bengio, Ducharme and Vincent presented it at NIPS 2000 and in JMLR in 2003.
+Later work made the output layer cheaper, with importance sampling, a tree of binary decisions and noise-contrastive estimation, replaced the window by a [[recurrent-neural-network|recurrent network]], and dropped the hidden layer to learn word vectors alone.
+
 ## In plain words
 
 An [[n-gram-language-model|n-gram model]] treats every word as an unrelated symbol, so seeing "the cat sat" says nothing about "the dog sat".
