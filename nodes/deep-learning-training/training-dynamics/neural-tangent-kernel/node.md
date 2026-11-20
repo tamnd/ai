@@ -18,12 +18,13 @@ prereqs: [backpropagation@al, kernel-ridge-regression@al, eigendecomposition@m2,
 same_as:
   al: neural-tangent-kernel
   wikipedia: Neural_tangent_kernel
-  arxiv: ["1806.07572", "1902.06720", "1812.07956", "1904.11955"]
+  arxiv: ["1806.07572", "1902.06720", "1812.07956", "1904.11955", "2011.14522"]
 sources:
   - {paper: "Jacot, Gabriel and Hongler (2018)", title: "Neural Tangent Kernel: Convergence and Generalization in Neural Networks", locator: "arXiv 1806.07572v4, Sections 2 to 6", note: "the NTK parametrization, kernel gradient descent, the deterministic limit at initialization, constancy during training, positive-definiteness, least squares and early stopping, the numerical study"}
   - {paper: "Lee, Xiao, Schoenholz, Bahri, Novak, Sohl-Dickstein and Pennington (2019)", title: "Wide Neural Networks of Any Depth Evolve as Linear Models Under Gradient Descent", locator: "arXiv 1902.06720v4, Sections 1 to 3 and Appendix D", note: "the linearized model, its closed-form dynamics, Theorem 2.1, the parameterization remark, the analytic ReLU kernel"}
   - {paper: "Chizat, Oyallon and Bach (2019)", title: "On Lazy Training in Differentiable Programming", locator: "arXiv 1812.07956v5, Sections 1 to 4", note: "lazy training as a consequence of scale, the O(1/alpha) bounds, the mean-field scaling, the CIFAR-10 experiments"}
   - {paper: "Arora, Du, Hu, Li, Salakhutdinov and Wang (2019)", title: "On Exact Computation with an Infinitely Wide Neural Net", locator: "arXiv 1904.11955v2, Sections 1 and 6", note: "the exact convolutional NTK and its CIFAR-10 accuracy"}
+  - {paper: "Yang and Hu (2020)", title: "Feature Learning in Infinite-Width Neural Networks", locator: "arXiv 2011.14522, pp. 1 to 3", note: "the dynamical dichotomy between feature learning and kernel limits, and the NTK limit's failure to learn features on Word2Vec"}
 ---
 
 The neural tangent kernel (NTK) of a network is the inner product of its parameter gradients at two inputs.
@@ -167,6 +168,12 @@ There the weights move by order 1, the features change, and the NTK is not const
 On CIFAR-10, Chizat et al. trained VGG-11 with an output scale $\alpha$ and saw a significant drop in accuracy as $\alpha$ grew toward the lazy regime; wide VGG-11 and ResNet models reached 61.7% and 56.7% test accuracy when trained linearized, against 89.7% and 91.0% when trained in the standard way. {#c-chizat-cnn}
 They do not claim that wide networks are not lazy, only that the ones that perform well are far from that limit. {#c-chizat-far}
 
+**Non-example: feature learning in the limit.**
+Yang and Hu prove a dichotomy for a broad class of width scalings of MLPs: every nontrivial stable one has an infinite-width limit that either lets the last-layer features evolve or is kernel gradient descent in function space, never both. {#c-yang-dichotomy}
+The standard and NTK parametrizations both land on the kernel side, so their limits cannot learn features, which the authors call crucial for pretraining and transfer learning. {#c-yang-ntk-no-features}
+On Word2Vec, NTK embeddings of US cities and states come out essentially random, because the features left after pretraining are those of the initialization. {#c-yang-word2vec}
+Their maximal update parametrization is a scaling chosen to sit on the feature-learning side.
+
 **Borderline: the convolutional NTK.**
 Arora et al. gave the first efficient exact algorithm for the convolutional NTK and the first non-asymptotic proof that a fully trained, wide enough net equals kernel regression with the NTK. {#c-arora-algorithm}
 The 11-layer CNTK with global average pooling reached 77.43% on CIFAR-10, 10% above earlier kernels but about 6% below the corresponding finite network with batch normalization turned off. {#c-arora-cifar}
@@ -224,4 +231,4 @@ They defined the kernel, proved its deterministic limit at initialization and it
 Lee et al. (NeurIPS 2019) recast the result as training the first-order Taylor expansion of the network, proved a quantitative bound in the width, and computed analytic ReLU and erf kernels.
 Chizat, Oyallon and Bach (NeurIPS 2019; online December 2018) named the phenomenon lazy training and argued that it comes from scale, with experiments in which lazy convolutional networks did worse.
 Arora et al. (NeurIPS 2019) gave the exact convolutional NTK and its CIFAR-10 benchmark.
-Later work on feature learning, including the maximal update parametrization, starts from the gap between these kernels and trained networks.
+Yang and Hu (posted November 2020) proved that the NTK limit cannot learn features and introduced the maximal update parametrization, which starts from the gap between these kernels and trained networks.

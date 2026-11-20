@@ -649,3 +649,32 @@
   text: "RLAIF vs. RLHF, by authors at Google DeepMind and Google, appeared in the Proceedings of the 41st International Conference on Machine Learning, Vienna, Austria, PMLR 235, 2024."
   evidence:
     - {work: "lee-2023-rlaif-vs-rlhf", role: original, locator: "the title page", stance: for}
+
+- id: c-ganguli-scale
+  type: empirical
+  text: "RLHF models are significantly harder to red team as they scale, while plain LMs, prompted LMs, and rejection sampling models exhibit a flat trend with scale."
+  scope:
+    models: "plain, prompted, rejection sampling and RLHF language models at 2.7B, 13B and 52B parameters"
+    data: ["human red team attacks"]
+    scale: "3 model sizes, 2.7B to 52B parameters"
+    setting: "crowdworkers trying to elicit harmful outputs in open-ended conversation"
+  evidence:
+    - {work: "ganguli-2022-red-teaming-reduce-harms", role: original, locator: "p. 2", stance: for}
+
+- id: c-ganguli-rs-evasive
+  type: attributive
+  text: "Ganguli et al. find rejection sampling models the most difficult to red team at any scale, but note that qualitatively they tend to be harmless by being evasive."
+  evidence:
+    - {work: "ganguli-2022-red-teaming-reduce-harms", role: original, locator: "p. 2", stance: for}
+
+- id: c-ganguli-dataset
+  type: attributive
+  text: "Ganguli et al. released a dataset of 38,961 red team attacks."
+  evidence:
+    - {work: "ganguli-2022-red-teaming-reduce-harms", role: original, locator: "p. 1", stance: for}
+
+- id: c-cai-prompts-ganguli
+  type: attributive
+  text: "Bai et al. collected 42,496 human-written red teaming prompts as discussed and shared in Ganguli et al. (2022)."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "p. 8", stance: for}

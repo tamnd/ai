@@ -33,6 +33,7 @@ sources:
   - {paper: "Keskar et al. (2017)", title: "On Large-Batch Training for Deep Learning: Generalization Gap and Sharp Minima", locator: "pp. 1 to 6", note: "sharp and flat minimizers, the large-batch generalization gap and the box sharpness metric"}
   - {paper: "Li et al. (2018)", title: "Visualizing the Loss Landscape of Neural Nets", locator: "pp. 3 to 4, 8", note: "scale invariance and filter-normalized directions for plotting loss surfaces"}
   - {paper: "Dinh et al. (2017)", title: "Sharp Minima Can Generalize For Deep Nets", locator: "pp. 1 to 6", note: "reparametrizations of rectifier networks that make a minimum arbitrarily sharp without changing the function"}
+  - {paper: "Cohen, Kaur, Li, Kolter and Talwalkar (2021)", title: "Gradient Descent on Neural Networks Typically Occurs at the Edge of Stability", locator: "ICLR 2021, arXiv 2103.00065v3, pp. 1 and 2", note: "progressive sharpening and the edge of stability under full-batch gradient descent"}
 ---
 
 Sharpness-aware minimization (SAM) trains a network on the highest loss found in a small ball around its weights instead of on the loss at the weights themselves.
@@ -199,6 +200,11 @@ SAM's ball has a fixed radius $\rho$ in parameter space, so the sharpness it pen
 **The objective is approximated twice.**
 The inner maximum is replaced by one linearized step, and the second-order terms of its gradient are dropped.
 Near convergence the one-step perturbation finds a smaller loss increase than a few steps of projected gradient ascent would. {#c-weaker-near-convergence}
+
+**Plain gradient descent already limits sharpness.**
+Jeremy Cohen and colleagues found that in full-batch gradient descent with step size $\eta$, the sharpness, which they define as the maximum eigenvalue of the training loss Hessian, tends to continually rise as long as it is less than $2/\eta$ (p. 1). {#c-cohen-progressive}
+Once it gets there it hovers just above $2/\eta$, and the training loss behaves non-monotonically over short timescales yet consistently decreases over long timescales (p. 1). {#c-cohen-eos}
+So the step size alone caps the sharpness of the region where gradient descent can stay, without any explicit penalty; Cohen et al. add that they do not claim this quantity has any connection to generalization (p. 2). {#c-cohen-no-generalization}
 
 **It does not settle.**
 With a fixed $\rho$ the SAM gradient is non-zero at every point near a strict minimum, as `sam-quadratic` shows, so the weights keep bouncing at a distance of order $\rho$ unless the learning rate decays.

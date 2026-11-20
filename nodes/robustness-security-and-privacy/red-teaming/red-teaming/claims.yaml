@@ -657,3 +657,21 @@
   text: "The US Executive Order defines AI red-teaming and mentions red-teaming eight times."
   evidence:
     - {work: "feffer-2024-red-teaming-silver-bullet", role: original, locator: "p. 2", stance: for}
+
+- id: c-hh-redteam-data
+  type: attributive
+  text: "In Bai et al. (2022a), crowdworkers in the red teaming task tried to elicit harmful responses and were instructed to choose the more harmful response, and these conversations and preferences formed their datasets."
+  evidence:
+    - {work: "bai-2022-training-helpful-harmless-assistant", role: original, locator: "p. 4", stance: for}
+
+- id: c-hh-opposition
+  type: attributive
+  text: "Bai et al. (2022a) write that helpfulness and harmlessness often stand in opposition, and that an excessive focus on avoiding harm can lead to safe responses that don't actually address the needs of the human."
+  evidence:
+    - {work: "bai-2022-training-helpful-harmless-assistant", role: original, locator: "p. 4", stance: for}
+
+- id: c-cai-redteam-prompts
+  type: attributive
+  text: "Bai et al. (2022b) collected 42,496 human-written red teaming prompts as discussed and shared in Ganguli et al. (2022), generated a further 140,335 prompts by few-shot prompting a pretrained model, giving a total of 182,831, and sampled 4 critique-revision pairs per red team prompt from a helpful RLHF model."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "p. 8", stance: for}

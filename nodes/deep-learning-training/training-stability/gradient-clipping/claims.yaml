@@ -555,3 +555,32 @@
     setting: "test accuracy and training speed"
   evidence:
     - {work: "brock-2021-image-recognition-without-normalization", role: original, locator: "p. 1", stance: for}
+
+- id: c-palm-clip
+  type: attributive
+  text: "PaLM used global norm gradient clipping with a value of 1.0 for all models."
+  evidence:
+    - {work: "chowdhery-2022-palm", role: original, locator: "p. 10", stance: for}
+
+- id: c-palm-spikes
+  type: empirical
+  text: "For the largest model, we observed spikes in the loss roughly 20 times during training, despite the fact that gradient clipping was enabled. These spikes occurred at highly irregular intervals, sometimes happening late into training, and were not observed when training the smaller models."
+  scope:
+    models: "PaLM decoder-only transformers, 8B, 62B and 540B parameters"
+    data: ["PaLM pretraining corpus"]
+    scale: "540B parameters and 780 billion tokens for the model that spiked"
+    setting: "pretraining with Adafactor without factorization and global norm clipping at 1.0"
+  evidence:
+    - {work: "chowdhery-2022-palm", role: original, locator: "pp. 10 and 11", stance: for}
+
+- id: c-palm-restart
+  type: attributive
+  text: "The PaLM authors mitigated the spikes by restarting training from a checkpoint roughly 100 steps before the spike and skipping roughly 200 to 500 data batches."
+  evidence:
+    - {work: "chowdhery-2022-palm", role: original, locator: "p. 11", stance: for}
+
+- id: c-palm-not-data
+  type: attributive
+  text: "The PaLM authors did not believe the spikes were caused by bad data, because the same batches trained from an earlier checkpoint did not spike, which implies that spikes come from the combination of specific data batches with a particular model parameter state."
+  evidence:
+    - {work: "chowdhery-2022-palm", role: original, locator: "p. 11", stance: for}
