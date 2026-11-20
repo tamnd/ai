@@ -1,0 +1,304 @@
+# The claims of the generative adversarial network page (spec 07). The build computes the labels.
+- id: c-gf-def
+  type: attributive
+  text: "Adversarial nets estimate a generative model by training two models at once: a generative model G that captures the data distribution, and a discriminative model D that estimates the probability that a sample came from the training data rather than from G; G is trained to maximize the probability of D making a mistake, and the framework corresponds to a minimax two-player game."
+  evidence:
+    - {work: "goodfellow-2014-generative-adversarial-nets", role: original, locator: "p. 1", stance: for}
+
+- id: c-gf-counterfeiters
+  type: attributive
+  text: "The generative model is analogous to a team of counterfeiters trying to produce fake currency and use it without detection, and the discriminative model to the police trying to detect it; competition drives both teams to improve until the counterfeits are indistinguishable from the genuine articles."
+  evidence:
+    - {work: "goodfellow-2014-generative-adversarial-nets", role: original, locator: "p. 1", stance: for}
+
+- id: c-gf-unique
+  type: attributive
+  text: "In the space of arbitrary functions G and D a unique solution exists, with G recovering the training data distribution and D equal to 1/2 everywhere; when G and D are multilayer perceptrons the whole system can be trained with backpropagation, with no Markov chains or unrolled approximate inference networks in training or in sampling."
+  evidence:
+    - {work: "goodfellow-2014-generative-adversarial-nets", role: original, locator: "p. 1", stance: for}
+
+- id: c-gf-algorithm
+  type: definitional
+  text: "Algorithm 1 of Goodfellow et al. alternates k steps of optimizing D, each a stochastic gradient ascent step on a minibatch of m noise samples and m data examples, with one step of optimizing G by descending the gradient of log(1 - D(G(z))); they used k = 1 and momentum."
+  evidence:
+    - {work: "goodfellow-2014-generative-adversarial-nets", role: original, locator: "p. 4", stance: for}
+
+- id: c-gf-saturation
+  type: attributive
+  text: "Early in learning, when G is poor, D can reject samples with high confidence and log(1 - D(G(z))) saturates; training G to maximize log D(G(z)) instead gives the same fixed point of the dynamics of G and D and much stronger gradients early in learning."
+  evidence:
+    - {work: "goodfellow-2014-generative-adversarial-nets", role: original, locator: "p. 3", stance: for}
+
+- id: c-dstar
+  type: mathematical
+  text: "For a fixed generator the discriminator that maximizes V(G, D) is D*(x) = p_data(x) / (p_data(x) + p_g(x)), whose logit is log p_data(x) - log p_g(x); maximizing V in D is maximizing the log-likelihood of a classifier of the label y, real or generated, on an equal mixture of the two."
+  assumes: ["p_data and p_g have densities", "D ranges over all measurable functions into [0, 1]"]
+  derivation: optimal-discriminator
+
+- id: c-jsd
+  type: mathematical
+  text: "With the optimal discriminator the criterion is C(G) = V(G, D*) = -log 4 + 2 JSD(p_data || p_g), so its global minimum -log 4 is reached exactly when p_g = p_data, where D* = 1/2 everywhere."
+  assumes: ["the optimal discriminator of c-dstar"]
+  derivation: jsd-identity
+
+- id: c-jsd-paper
+  type: attributive
+  text: "The global minimum of the virtual training criterion C(G) is achieved if and only if p_g = p_data, and its value there is -log 4."
+  evidence:
+    - {work: "goodfellow-2014-generative-adversarial-nets", role: original, locator: "p. 5", stance: for}
+
+- id: c-saturation
+  type: mathematical
+  text: "In the logit a of the discriminator at a fake, the minimax generator loss log(1 - D) = -softplus(a) has derivative -sigmoid(a), which goes to 0 as D(G(z)) goes to 0, while the non-saturating loss -log D = softplus(-a) has derivative sigmoid(a) - 1, which goes to -1; both are stationary in G where the fakes are not distinguished from the data."
+  assumes: ["D = sigmoid(a) with a the logit of the discriminator"]
+  derivation: saturation
+
+- id: c-gf-prop2
+  type: attributive
+  text: "If G and D have enough capacity, and at each step of Algorithm 1 the discriminator reaches its optimum given G and p_g is updated to improve the criterion, then p_g converges to p_data; in practice adversarial nets represent a limited family of p_g through the parameters of G and optimize those instead."
+  evidence:
+    - {work: "goodfellow-2014-generative-adversarial-nets", role: original, locator: "p. 5", stance: for}
+
+- id: c-gf-experiments
+  type: definitional
+  text: "In the experiments of Goodfellow et al. the generators used a mixture of rectifier linear and sigmoid activations, the discriminators maxout activations with dropout, and noise entered only the bottom layer of the generator; the test-set likelihood was estimated by fitting a Gaussian Parzen window to generated samples."
+  evidence:
+    - {work: "goodfellow-2014-generative-adversarial-nets", role: original, locator: "p. 5", stance: for}
+
+- id: c-gf-parzen
+  type: empirical
+  text: "The Parzen-window log-likelihood estimate was 225 ± 2 on MNIST and 2057 ± 26 on TFD for adversarial nets, against 138 ± 2 and 1909 ± 66 for a DBN, 121 ± 1.6 and 2110 ± 50 for a stacked CAE and 214 ± 1.1 and 1890 ± 29 for a deep GSN; the authors note that this estimator has high variance and does not perform well in high-dimensional spaces."
+  scope:
+    models: "adversarial nets with MLP generators and maxout discriminators; the other models as reported"
+    data: ["MNIST", "Toronto Face Database"]
+    setting: "mean log-likelihood of test examples under a Gaussian Parzen window fitted to generated samples, sigma chosen by cross-validation on the validation set"
+  evidence:
+    - {work: "goodfellow-2014-generative-adversarial-nets", role: original, locator: "p. 6", stance: for}
+
+- id: c-gf-disadvantages
+  type: attributive
+  text: "The disadvantages are that there is no explicit representation of p_g(x) and that D must be synchronized well with G during training: G must not be trained too much without updating D, to avoid the Helvetica scenario in which G collapses too many values of z to the same value of x to model p_data."
+  evidence:
+    - {work: "goodfellow-2014-generative-adversarial-nets", role: original, locator: "p. 7", stance: for}
+
+- id: c-gf-advantages
+  type: attributive
+  text: "The advantages are that Markov chains are never needed, only backpropagation is used to obtain gradients, no inference is needed during learning, and adversarial nets can represent very sharp, even degenerate distributions, while methods based on Markov chains require somewhat blurry distributions so that the chains can mix between modes."
+  evidence:
+    - {work: "goodfellow-2014-generative-adversarial-nets", role: original, locator: "p. 7", stance: for}
+
+- id: c-gf-extensions
+  type: attributive
+  text: "A conditional generative model p(x | c) can be obtained by adding c as an input to both G and D, and learned approximate inference by training an auxiliary network to predict z from x."
+  evidence:
+    - {work: "goodfellow-2014-generative-adversarial-nets", role: original, locator: "p. 7", stance: for}
+
+- id: c-dcgan-guidelines
+  type: definitional
+  text: "The architecture guidelines of DCGAN replace pooling with strided convolutions in the discriminator and fractional-strided convolutions in the generator, use batchnorm in both networks, remove fully connected hidden layers, use ReLU in the generator except for a Tanh output, and LeakyReLU in every layer of the discriminator."
+  evidence:
+    - {work: "radford-2015-unsupervised-representation-learning-dcgan", role: original, locator: "p. 3", stance: for}
+
+- id: c-dcgan-batchnorm
+  type: empirical
+  text: "Batchnorm helped deep generators begin learning and prevented the generator from collapsing all samples to a single point, but applying it to all layers caused sample oscillation and instability, which was avoided by leaving it out of the generator's output layer and the discriminator's input layer."
+  scope:
+    models: "deep convolutional GANs of the DCGAN family"
+    data: ["LSUN bedrooms", "Imagenet-1k", "a faces dataset"]
+    setting: "training at 64 by 64 pixels"
+  evidence:
+    - {work: "radford-2015-unsupervised-representation-learning-dcgan", role: original, locator: "p. 3", stance: for}
+
+- id: c-dcgan-adam
+  type: empirical
+  text: "DCGANs were trained with minibatches of 128, weights initialized from a normal distribution with standard deviation 0.02, a LeakyReLU slope of 0.2, and Adam with learning rate 0.0002, the suggested 0.001 being too high; the suggested beta1 = 0.9 caused training oscillation and instability, and 0.5 helped stabilize training."
+  scope:
+    models: "deep convolutional GANs of the DCGAN family"
+    data: ["LSUN bedrooms", "Imagenet-1k", "a faces dataset"]
+    setting: "mini-batch stochastic gradient descent with Adam"
+  evidence:
+    - {work: "radford-2015-unsupervised-representation-learning-dcgan", role: original, locator: "pp. 3 to 4", stance: for}
+
+- id: c-dcgan-features
+  type: empirical
+  text: "The discriminator's features with a linear L2-SVM reached 82.8% accuracy on CIFAR-10, against 80.6% for one-layer K-means and 84.3% for an Exemplar CNN, and 22.48% test error on SVHN with 1000 labels, against 28.87% for a supervised CNN with the same architecture."
+  scope:
+    models: "the discriminator of a DCGAN trained on Imagenet-1k for CIFAR-10, on SVHN for SVHN, as a frozen feature extractor"
+    data: ["CIFAR-10", "SVHN"]
+    setting: "a regularized linear L2-SVM on the max-pooled features of all discriminator layers"
+  evidence:
+    - {work: "radford-2015-unsupervised-representation-learning-dcgan", role: original, locator: "pp. 6 to 7", stance: for}
+
+- id: c-dcgan-arithmetic
+  type: empirical
+  text: "Vector arithmetic on the generator's input vectors produced images that obeyed the arithmetic semantically only when the vectors of three exemplars per concept were averaged; single samples per concept were unstable."
+  scope:
+    models: "a DCGAN trained on faces"
+    data: ["a faces dataset"]
+    setting: "arithmetic on the averaged z vectors of exemplar samples"
+  evidence:
+    - {work: "radford-2015-unsupervised-representation-learning-dcgan", role: original, locator: "p. 8", stance: for}
+
+- id: c-dcgan-instability
+  type: attributive
+  text: "Some instability remains in DCGANs: as models are trained longer they sometimes collapse a subset of filters to a single oscillating mode."
+  evidence:
+    - {work: "radford-2015-unsupervised-representation-learning-dcgan", role: original, locator: "p. 9", stance: for}
+
+- id: c-sal-nash
+  type: attributive
+  text: "Training GANs requires finding a Nash equilibrium of a non-convex game with continuous, high-dimensional parameters, but GANs are usually trained with gradient descent techniques designed to find a low value of a cost function, which may fail to converge when used to seek a Nash equilibrium."
+  evidence:
+    - {work: "salimans-2016-improved-techniques-training-gans", role: original, locator: "p. 1", stance: for}
+
+- id: c-sal-techniques
+  type: definitional
+  text: "Salimans et al. propose feature matching, which trains the generator to match the expected value of an intermediate layer of the discriminator on data; minibatch discrimination, which lets the discriminator look at the other examples of a minibatch; historical averaging; one-sided label smoothing, which replaces only the positive targets; and virtual batch normalization."
+  evidence:
+    - {work: "salimans-2016-improved-techniques-training-gans", role: original, locator: "pp. 2 to 4", stance: for}
+
+- id: c-sal-collapse
+  type: attributive
+  text: "One of the main failure modes of a GAN is for the generator to collapse to a parameter setting where it always emits the same point; near collapse the gradients of the discriminator point in similar directions for many points, because it processes each example independently and cannot tell the outputs of the generator to become more dissimilar."
+  evidence:
+    - {work: "salimans-2016-improved-techniques-training-gans", role: original, locator: "p. 3", stance: for}
+
+- id: c-sal-inception
+  type: definitional
+  text: "The Inception score of a generator is exp(E_x KL(p(y|x) || p(y))), with p(y|x) the label distribution of a pretrained Inception network on a generated image and p(y) its marginal over generated images; it is high when each image has a confident label and the labels are varied, and was evaluated on 50k samples."
+  evidence:
+    - {work: "salimans-2016-improved-techniques-training-gans", role: original, locator: "pp. 4 to 5", stance: for}
+
+- id: c-sal-results
+  type: empirical
+  text: "On CIFAR-10 the Inception score was 11.24 ± .12 for real data and 8.09 ± .07 for the full model, falling to 7.54 with batch instead of virtual batch normalization, 6.86 with historical averaging instead of the labels, 6.83 without label smoothing, 4.36 without labels and 3.87 without minibatch features; MTurk annotators told CIFAR-10 samples from real images in 78.7% of cases, 71.4% when only the top 1% of samples by Inception score were shown."
+  scope:
+    models: "the CIFAR-10 models of Salimans et al. and their ablations"
+    data: ["CIFAR-10"]
+    setting: "Inception score on 50,000 samples; a 50% real, 50% generated MTurk discrimination task"
+  evidence:
+    - {work: "salimans-2016-improved-techniques-training-gans", role: original, locator: "pp. 7 to 8", stance: for}
+
+- id: c-sal-caution
+  type: attributive
+  text: "The Inception score should be used as a rough guide to evaluate models trained by some independent criterion; directly optimizing it leads to the generation of adversarial examples."
+  evidence:
+    - {work: "salimans-2016-improved-techniques-training-gans", role: original, locator: "p. 7", stance: for}
+
+- id: c-parallel-lines
+  type: mathematical
+  text: "For the uniform distributions P_0 and P_theta on the vertical segments {0} x [0, 1] and {theta} x [0, 1], W(P_0, P_theta) = |theta|, while for theta != 0 JS(P_0, P_theta) = log 2, KL(P_theta || P_0) = KL(P_0 || P_theta) = +inf and the total variation distance is 1; only the Wasserstein distance goes to 0 as theta goes to 0, and only it gives a gradient in theta."
+  assumes: ["the uniform distributions on two parallel unit segments in the plane at horizontal distance |theta|"]
+  derivation: wasserstein-parallel-lines
+
+- id: c-wgan-continuity
+  type: attributive
+  text: "If the generator g_theta(z) is continuous in theta, so is W(P_r, P_theta); if it is locally Lipschitz and satisfies a regularity assumption, W is continuous everywhere and differentiable almost everywhere; both statements are false for the Jensen-Shannon divergence and all the KL divergences."
+  evidence:
+    - {work: "arjovsky-2017-wasserstein-gan", role: original, locator: "p. 5", stance: for}
+
+- id: c-wgan-duality
+  type: attributive
+  text: "By the Kantorovich-Rubinstein duality, W(P_r, P_theta) is the supremum over 1-Lipschitz functions f of E_{x~P_r} f(x) - E_{x~P_theta} f(x); over K-Lipschitz functions the supremum is K W, and for an optimal critic f the gradient of W in theta is -E_z grad_theta f(g_theta(z))."
+  evidence:
+    - {work: "arjovsky-2017-wasserstein-gan", role: original, locator: "pp. 6 to 7", stance: for}
+
+- id: c-wgan-algorithm
+  type: definitional
+  text: "Algorithm 1 of WGAN takes n_critic = 5 RMSProp steps on the critic, each followed by clipping its weights to [-c, c], per RMSProp step on the generator, with the defaults learning rate 0.00005, c = 0.01 and batch size 64."
+  evidence:
+    - {work: "arjovsky-2017-wasserstein-gan", role: original, locator: "p. 8", stance: for}
+
+- id: c-wgan-clipping
+  type: attributive
+  text: "Arjovsky et al. call weight clipping a clearly terrible way to enforce a Lipschitz constraint: with a large clipping parameter the weights take long to reach their limit and the critic is hard to train to optimality, and with a small one the gradients vanish in deep networks or without batch normalization."
+  evidence:
+    - {work: "arjovsky-2017-wasserstein-gan", role: original, locator: "p. 7", stance: for}
+
+- id: c-wgan-results
+  type: empirical
+  text: "The WGAN critic's estimate of the Wasserstein distance correlated well with the quality of the generated samples; training became unstable with a momentum-based optimizer such as Adam with beta1 > 0 on the critic, or with high learning rates, so RMSProp was used; and in no experiment did the authors see evidence of mode collapse."
+  scope:
+    models: "WGANs with DCGAN generators, with and without batch normalization, and MLP generators"
+    data: ["LSUN bedrooms"]
+    setting: "the critic trained close to optimality with weight clipping"
+  evidence:
+    - {work: "arjovsky-2017-wasserstein-gan", role: original, locator: "pp. 10 to 12", stance: for}
+
+- id: c-gp-unit-gradient
+  type: attributive
+  text: "Let pi be the optimal coupling between P_r and P_g; if the optimal 1-Lipschitz function f* is differentiable, its gradient has norm 1 at the points x_t = t x + (1 - t) y between coupled points x and y, and f* has gradient norm 1 almost everywhere under P_r and P_g."
+  evidence:
+    - {work: "gulrajani-2017-improved-training-wasserstein-gans", role: original, locator: "p. 3", stance: for}
+
+- id: c-gp-penalty
+  type: definitional
+  text: "WGAN-GP adds to the critic's loss the gradient penalty λ E[(||∇D(x̂)||_2 - 1)^2] with x̂ sampled along lines between points from the data and the generator, uses λ = 10 and no critic batch normalization, and takes the defaults ncritic = 5 and Adam with α = 0.0001, β1 = 0 and β2 = 0.9."
+  evidence:
+    - {work: "gulrajani-2017-improved-training-wasserstein-gans", role: original, locator: "pp. 4 to 5", stance: for}
+
+- id: c-gp-clipping-failures
+  type: empirical
+  text: "Weight clipping biased the critic towards much simpler functions, and its gradients exploded or vanished through the layers unless the clipping threshold was tuned, while the gradient penalty gave neither problem."
+  scope:
+    models: "12-layer ReLU MLP critics without batch normalization"
+    data: ["toy distributions: 8 Gaussians, 25 Gaussians and a Swiss roll"]
+    setting: "WGAN critics trained to optimality with clipping thresholds c of 0.1, 0.01 and 0.001, against the gradient penalty"
+  evidence:
+    - {work: "gulrajani-2017-improved-training-wasserstein-gans", role: original, locator: "pp. 3 to 4", stance: for}
+
+- id: c-gp-results
+  type: empirical
+  text: "WGAN-GP trained a wide range of architectures with almost no hyperparameter tuning, including 101-layer ResNets and language models with continuous generators, and its ResNet reached Inception scores of 7.86 ± .07 unsupervised and 8.42 ± .10 supervised on CIFAR-10, against 6.16 for DCGAN and 8.59 for SGAN."
+  scope:
+    models: "WGAN-GP with ResNet generators and critics; the baselines as reported"
+    data: ["CIFAR-10"]
+    setting: "Inception score of the trained generators"
+  evidence:
+    - {work: "gulrajani-2017-improved-training-wasserstein-gans", role: original, locator: "pp. 1, 7", stance: for}
+
+- id: c-msch-dirac
+  type: mathematical
+  text: "On the Dirac-GAN, a generator that is the point theta, a linear discriminator D(x) = psi x and data at 0, with L(theta, psi) = f(psi theta) + f(0) and f'(0) != 0, the unique equilibrium is theta = psi = 0; the gradient vector field there has the eigenvalues +- f'(0) i, its integral curves keep theta^2 + psi^2 constant, simultaneous gradient steps of size h multiply the distance to the equilibrium by sqrt(1 + h^2 f'(0)^2) near it, and the penalty gamma/2 psi^2 on the discriminator moves the eigenvalues to -gamma/2 +- sqrt(gamma^2/4 - f'(0)^2), with negative real parts for every gamma > 0."
+  assumes: ["the Dirac-GAN of Mescheder et al. with f differentiable and f'(0) != 0"]
+  derivation: dirac-gan-dynamics
+
+- id: c-msch-nonconvergence
+  type: attributive
+  text: "Unregularized GAN training, and also WGAN training with a fixed number of critic updates and WGAN-GP, is not always locally convergent: on the Dirac-GAN simultaneous gradient descent spirals away from the equilibrium and alternating gradient descent oscillates in stable cycles around it."
+  evidence:
+    - {work: "mescheder-2018-which-training-methods-gans-converge", role: original, locator: "pp. 4 to 6", stance: for}
+
+- id: c-msch-r1
+  type: definitional
+  text: "The R1 regularizer γ/2 E_pD(x) ||∇D_ψ(x)||^2 penalizes the discriminator gradients only on the true data distribution; R2 penalizes them on the current generator distribution instead."
+  evidence:
+    - {work: "mescheder-2018-which-training-methods-gans-converge", role: original, locator: "p. 7", stance: for}
+
+- id: c-msch-theorem
+  type: attributive
+  text: "Under their assumptions, for small enough learning rates simultaneous and alternating gradient descent on the GAN objective regularized by R1 or R2 are locally convergent to the equilibrium, at least at a linear rate."
+  evidence:
+    - {work: "mescheder-2018-which-training-methods-gans-converge", role: original, locator: "p. 8", stance: for}
+
+- id: c-msch-celeba
+  type: empirical
+  text: "Unregularized GAN training quickly led to mode collapse, while the R1 regularizer enabled stable training."
+  scope:
+    models: "convolutional ResNet GANs"
+    data: ["Imagenet, all 1000 classes", "celebA-HQ at 1024 by 1024"]
+    setting: "the non-saturating loss with and without the R1 regularizer"
+  evidence:
+    - {work: "mescheder-2018-which-training-methods-gans-converge", role: original, locator: "p. 8", stance: for}
+
+- id: c-params
+  type: mathematical
+  text: "The generator of the shape contract has P_G = (J + 1)H + (H + 1)D parameters and the discriminator P_D = (D + 1)K + K + 1; one forward pass of a training step costs 2B(JH + HD) + 4B(DK + K) FLOPs in its products, the discriminator running on B fakes and B data points."
+  assumes: ["the generator and discriminator of the shape contract, each with one tanh hidden layer and affine layers with biases", "only the products are counted, a multiply-add as 2 FLOPs"]
+  derivation: parameter-and-flop-count
+
+- id: c-gf-history
+  type: historical
+  text: "Goodfellow et al. posted Generative Adversarial Nets as arXiv 1406.2661 in June 2014, and acknowledged Yann Dauphin for sharing his Parzen-window evaluation code."
+  evidence:
+    - {work: "goodfellow-2014-generative-adversarial-nets", role: original, locator: "pp. 1, 8", stance: for}
