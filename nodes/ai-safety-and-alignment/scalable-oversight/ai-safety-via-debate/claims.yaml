@@ -576,3 +576,20 @@
   text: "Debating with More Persuasive LLMs Leads to More Truthful Answers, by Khan et al., appeared in the Proceedings of the 41st International Conference on Machine Learning in Vienna, PMLR 235, 2024."
   evidence:
     - {work: "khan-2024-debating-persuasive-llms", role: original, locator: "p. 1", stance: for}
+
+- id: c-bw-design
+  type: attributive
+  text: "Bowman et al. propose an experimental design centered on tasks for which human specialists succeed but unaided humans and current general AI systems fail."
+  evidence:
+    - {work: "bowman-2022-measuring-progress-scalable-oversight", role: original, locator: "p. 1", stance: for}
+
+- id: c-bw-chat
+  type: empirical
+  text: "On MMLU and time-limited QuALITY, human participants who interact with an unreliable large-language-model dialog assistant through chat, a trivial baseline strategy for scalable oversight, substantially outperform both the model alone and their own unaided performance."
+  scope:
+    models: "an Anthropic natural language dialog assistant"
+    data: ["mmlu", "time-limited QuALITY"]
+    scale: "unknown"
+    setting: "human participants answer multiple-choice questions with and without chat access to the assistant"
+  evidence:
+    - {work: "bowman-2022-measuring-progress-scalable-oversight", role: original, locator: "p. 1", stance: for}
