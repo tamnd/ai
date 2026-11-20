@@ -92,7 +92,9 @@ def closed_form_discounts(t, modified=True):
     out = [0.0]
     for k in (1, 2, 3):
         if t.get(k, 0) == 0:
-            raise ValueError(f"no n-gram has adjusted count {k}; use discount='interpolated'")
+            raise ValueError(
+                f"no n-gram has adjusted count {k}; use discount='interpolated'"
+            )
         d = k - (k + 1) * y * t.get(k + 1, 0) / t[k]
         if not 0.0 <= d <= k:
             raise ValueError(f"discount D({k}) = {d} is outside [0, {k}]")
@@ -104,7 +106,9 @@ class KneserNey:
     """Interpolated modified Kneser-Ney (discount="modified"), interpolated Kneser-Ney (discount="interpolated"), or
     fixed discounts given as {n: [0, D1, D2, D3+]}."""
 
-    def __init__(self, sentences, order: int, discount: str | dict[int, Any] = "modified"):
+    def __init__(
+        self, sentences, order: int, discount: str | dict[int, Any] = "modified"
+    ):
         if order < 1:
             raise ValueError("the order must be at least 1")
         self.order = order
@@ -122,20 +126,33 @@ class KneserNey:
         self.raw = raw
         self.vocab = sorted({g[0] for g in self.entries[1]} | {UNK})
         self._vocab = set(self.vocab)
-        self.t = {n: Counter(a for a in e.values() if a <= 4) for n, e in self.entries.items()}
+        self.t = {
+            n: Counter(a for a in e.values() if a <= 4) for n, e in self.entries.items()
+        }
         if isinstance(discount, dict):
-            self.discounts = {n: list(map(float, discount[n])) for n in range(1, order + 1)}
+            self.discounts = {
+                n: list(map(float, discount[n])) for n in range(1, order + 1)
+            }
         elif discount in ("modified", "interpolated"):
-            self.discounts = {n: closed_form_discounts(self.t[n], discount == "modified") for n in self.t}
+            self.discounts = {
+                n: closed_form_discounts(self.t[n], discount == "modified")
+                for n in self.t
+            }
         else:
-            raise ValueError("discount must be 'modified', 'interpolated' or a dict of lists")
+            raise ValueError(
+                "discount must be 'modified', 'interpolated' or a dict of lists"
+            )
         # denominator, backoff numerator and u for every context.
         self.total, self.gamma = defaultdict(float), defaultdict(float)
         for n, e in self.entries.items():
             for g, a in e.items():
                 self.total[g[:-1]] += a
                 self.gamma[g[:-1]] += self.D(n, a)
-        self.u = {g: (a - self.D(n, a)) / self.total[g[:-1]] for n, e in self.entries.items() for g, a in e.items()}
+        self.u = {
+            g: (a - self.D(n, a)) / self.total[g[:-1]]
+            for n, e in self.entries.items()
+            for g, a in e.items()
+        }
 
     def D(self, n, a):
         """The discount of an n-gram of order n with adjusted count a."""
@@ -144,7 +161,9 @@ class KneserNey:
     def backoff(self, context):
         """b(h); 1 for a context that was never seen."""
         context = tuple(context)
-        return self.gamma[context] / self.total[context] if context in self.total else 1.0
+        return (
+            self.gamma[context] / self.total[context] if context in self.total else 1.0
+        )
 
     def map_word(self, w):
         return w if w in self._vocab or w == BOS else UNK
@@ -152,7 +171,9 @@ class KneserNey:
     def prob(self, word, context=()):
         """p(word | context) with the context truncated to its last order - 1 words."""
         word = self.map_word(word)
-        context = tuple(self.map_word(w) for w in context)[max(0, len(context) - self.order + 1) :]
+        context = tuple(self.map_word(w) for w in context)[
+            max(0, len(context) - self.order + 1) :
+        ]
         p = 1.0 / len(self.vocab)
         for i in range(len(context), -1, -1):
             h = context[i:]
@@ -167,7 +188,10 @@ class KneserNey:
     def sentence_logprob(self, sentence):
         """Natural log of the probability of a sentence, EOS included, and the number of predicted words."""
         toks = pad(sentence, self.order)
-        lp = sum(math.log(self.prob(toks[i], toks[i - self.order + 1 : i])) for i in range(self.order - 1, len(toks)))
+        lp = sum(
+            math.log(self.prob(toks[i], toks[i - self.order + 1 : i]))
+            for i in range(self.order - 1, len(toks))
+        )
         return lp, len(toks) - self.order + 1
 
     def perplexity(self, sentences):
