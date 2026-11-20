@@ -1,5 +1,5 @@
 ---
-tag: NEW-autoregressive-model
+tag: MKTHEX
 kind: architecture
 slug: autoregressive-model
 name: Autoregressive model
