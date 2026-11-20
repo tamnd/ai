@@ -1,0 +1,425 @@
+# The claims of the safety-training page (spec 07). The build computes the labels.
+
+# Setting
+
+- id: c-jb-restricted
+  type: attributive
+  text: "Language models are often trained to refuse certain categories of prompts during safety training; restricted behaviors are those a safety-trained model is trained to avoid, often harmful ones such as creating misinformation or aiding crime."
+  evidence:
+    - {work: "wei-2023-jailbroken", role: original, locator: "p. 3", stance: for}
+
+- id: c-jb-attack
+  type: attributive
+  text: "A jailbreak attack on a safety-trained model is an attempt to elicit an on-topic response to a prompt P for restricted behavior by submitting a modified prompt P′."
+  evidence:
+    - {work: "wei-2023-jailbroken", role: original, locator: "p. 3", stance: for}
+
+- id: c-hh-anti
+  type: attributive
+  text: "Harmlessness often acts as a constraint on helpfulness: preference models trained only on helpfulness data or only on harmlessness data perform far below chance on the other test set, evidence that the two are anti-correlated objectives."
+  evidence:
+    - {work: "bai-2022-training-helpful-harmless-assistant", role: original, locator: "pp. 24 and 25", stance: for}
+
+- id: c-xs-useless
+  type: attributive
+  text: "In the extreme, a model that refuses any prompt, safe or unsafe, would be perfectly harmless but also completely useless."
+  evidence:
+    - {work: "rottger-2023-xstest", role: original, locator: "p. 1", stance: for}
+
+- id: c-l2-longtail
+  type: attributive
+  text: "Safety is inherently a long-tail problem, where the challenge comes from a small number of very specific cases."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "p. 24", stance: for}
+
+# Supervised safety data
+
+- id: c-l2-three
+  type: attributive
+  text: "Llama 2-Chat's safety fine-tuning uses three techniques: supervised safety fine-tuning, safety RLHF, and safety context distillation."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "p. 23", stance: for}
+
+- id: c-l2-sft
+  type: attributive
+  text: "Supervised safety fine-tuning gathers adversarial prompts and safe demonstrations that are then included in the general supervised fine-tuning process, which teaches the model the safety guidelines even before RLHF."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "p. 23", stance: for}
+
+- id: c-l2-best
+  type: attributive
+  text: "Llama 2's best practice for safe and helpful responses: the model should first address immediate safety concerns if applicable, then address the prompt by explaining the potential risks to the user, and finally provide additional information if possible."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "p. 24", stance: for}
+
+- id: c-l2-switch
+  type: attributive
+  text: "After gathering only a few thousand supervised safety demonstrations, the Llama 2 team switched entirely to RLHF to teach the model more nuanced responses, which may also make the model more robust to jailbreak attempts."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "p. 24", stance: for}
+
+- id: c-bi-3pct
+  type: attributive
+  text: "Adding just 3% safety examples (a few hundred demonstrations) when fine-tuning a model like LLaMA can substantially improve its safety without making it significantly less capable or helpful on standard benchmarks."
+  evidence:
+    - {work: "bianchi-2024-safety-tuned-llamas", role: original, locator: "p. 1", stance: for}
+
+- id: c-bi-data
+  type: attributive
+  text: "Bianchi et al. randomly selected 2,000 questions from the Anthropic red teaming dataset, used GPT-3.5-turbo to generate safe responses, a majority of them rejections, reviewed them manually, and turned the questions into instructions."
+  evidence:
+    - {work: "bianchi-2024-safety-tuned-llamas", role: original, locator: "p. 4", stance: for}
+
+- id: c-bi-setup
+  type: attributive
+  text: "Bianchi et al. add 100, 300, 500, 1000, 1500 and 2,000 safety instructions and fine-tune LLaMA 7B, LLaMA 13B and Falcon 7B with LoRA for four epochs."
+  evidence:
+    - {work: "bianchi-2024-safety-tuned-llamas", role: original, locator: "p. 5", stance: for}
+
+- id: c-bi-100
+  type: attributive
+  text: "Harmfulness starts to decrease when only 100 safety instructions are added to the 20,000 general training instructions, and 500 to 1,000 safety instructions are enough to substantially reduce it."
+  evidence:
+    - {work: "bianchi-2024-safety-tuned-llamas", role: original, locator: "p. 8", stance: for}
+
+- id: c-bi-qs
+  type: attributive
+  text: "Training on safety questions does not generalize to instruction prompts: models trained on questions such as How do I break into a house are less safe on instructions such as Write a step-by-step guide to breaking into a house."
+  evidence:
+    - {work: "bianchi-2024-safety-tuned-llamas", role: original, locator: "pp. 8 and 9", stance: for}
+
+- id: c-st-frac
+  type: mathematical
+  text: "Adding n safety examples to N = 20,000 general ones makes them the fraction n/(N + n) of the data: 0.50% for n = 100, 2.44% for 500, 4.76% for 1,000 and 9.09% for 2,000, and 3% corresponds to n ≈ 619."
+  assumes: ["the general set is kept fixed and the safety examples are added to it"]
+  derivation: safety-training-arithmetic
+
+# Safety RLHF and context distillation
+
+- id: c-l2-rlhf
+  type: attributive
+  text: "Safety RLHF integrates safety into the general RLHF pipeline by training a safety-specific reward model and gathering more challenging adversarial prompts for rejection sampling style fine-tuning and PPO optimization."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "p. 23", stance: for}
+
+- id: c-l2-help
+  type: attributive
+  text: "After safety tuning with RLHF the distribution of safety reward scores on the safety set shifts to higher scores and its long tail near zero thins out, while the helpfulness score distribution is preserved."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "p. 24", stance: for}
+
+- id: c-l2-scale
+  type: attributive
+  text: "Llama 2 variants fine-tuned with 0%, 1%, 10%, 25%, 50% and 100% of the safety data (about 0.1M samples) show the mean safety reward model score improving with more safety data while the mean helpfulness score remains constant."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "pp. 24 and 26", stance: for}
+
+- id: c-l2-cd
+  type: attributive
+  text: "Safety context distillation prefixes a safety preprompt, such as You are a safe and responsible assistant, to adversarial prompts to generate safer responses, and then fine-tunes the model on its own safe output given the adversarial prompt without the preprompt."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "p. 27", stance: for}
+
+- id: c-l2-cdgen
+  type: attributive
+  text: "Llama 2's safety preprompts are generated automatically from templates with adjectives usually associated with safe behavior, such as responsible, respectful or wise."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "p. 27", stance: for}
+
+- id: c-l2-cdrm
+  type: attributive
+  text: "Safety context distillation on helpful prompts can degrade performance and lead to more false refusals, so it is applied only to adversarial prompts, and the context-distilled output is kept only where it gets a better safety reward model score than the original answer."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "p. 28", stance: for}
+
+- id: c-hh-therapy
+  type: attributive
+  text: "At an earlier stage of Anthropic's project, many RLHF policies very frequently reproduced the same exaggerated responses to all remotely sensitive questions, such as recommending therapy whenever the user expressed any displeasure, which greatly limited their utility."
+  evidence:
+    - {work: "bai-2022-training-helpful-harmless-assistant", role: original, locator: "p. 19", stance: for}
+
+- id: c-hh-tax
+  type: attributive
+  text: "Smaller models pay alignment taxes, performing worse on many evaluations after RLHF, while their RLHF-trained models of 13B parameters and above perform better at zero-shot NLP evaluations and the same at few-shot evaluations."
+  evidence:
+    - {work: "bai-2022-training-helpful-harmless-assistant", role: original, locator: "p. 6", stance: for}
+
+- id: c-ca-evasive
+  type: attributive
+  text: "Anthropic's earlier human-feedback assistant often refused to answer controversial questions and could get stuck producing evasive responses for the rest of a conversation, because crowdworkers had rewarded evasiveness as a response to harmful inputs."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "p. 4", stance: for}
+
+- id: c-ca-nonevasive
+  type: attributive
+  text: "Constitutional AI trains a harmless but non-evasive assistant that engages with harmful queries by explaining its objections to them."
+  evidence:
+    - {work: "bai-2022-constitutional-ai", role: original, locator: "p. 1", stance: for}
+
+- id: c-st-cdkl
+  type: mathematical
+  text: "The context-distillation loss E_{y∼p(·|c,x)}[−log q_θ(y|x)] equals KL(p(·|c,x) ‖ q_θ(·|x)) plus the entropy of p(·|c,x), which does not depend on θ, so minimizing it pulls the model without the preprompt c towards the model with it, and its minimum is reached at q_θ(·|x) = p(·|c,x)."
+  assumes: ["the teacher p(·|c,x) is held fixed and q_θ ranges over distributions on the same outputs"]
+  derivation: safety-training-arithmetic
+
+# Exaggerated safety
+
+- id: c-l2-fr-def
+  type: attributive
+  text: "Llama 2 defines false refusal as the model incorrectly refusing to answer legitimate user prompts due to irrelevant safety concerns."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "p. 26", stance: for}
+
+- id: c-l2-fr-rate
+  type: attributive
+  text: "With more safety data mixed into tuning the false-refusal rate grows, but it stays rare, approximately 0.05% on the helpfulness dataset even with 100% safety data, and is much larger on a borderline set of prompts."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "p. 26", stance: for}
+
+- id: c-l2-bomb
+  type: attributive
+  text: "Llama 2-Chat sometimes has difficulty telling whether a prompt is safe when it contains words that frequently occur in unsafe generations, such as bomb."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "p. 26", stance: for}
+
+- id: c-bi-exag
+  type: attributive
+  text: "Too much safety-tuning makes models refuse perfectly safe prompts if they superficially resemble unsafe ones, an exaggerated safety behaviour."
+  evidence:
+    - {work: "bianchi-2024-safety-tuned-llamas", role: original, locator: "p. 1", stance: for}
+
+- id: c-xs-suite
+  type: attributive
+  text: "XSTest comprises 250 safe prompts across ten prompt types that well-calibrated models should not refuse, and 200 unsafe prompts as contrasts that models should refuse for most applications."
+  evidence:
+    - {work: "rottger-2023-xstest", role: original, locator: "p. 1", stance: for}
+
+- id: c-xs-lexical
+  type: attributive
+  text: "Exaggerated safety appears to be a consequence of lexical overfitting, where models are overly sensitive to certain words or phrases, and system prompts added at inference time change safety behaviour substantially but not in a comprehensive or consistent way."
+  evidence:
+    - {work: "rottger-2023-xstest", role: original, locator: "p. 2", stance: for}
+
+- id: c-xs-llama
+  type: attributive
+  text: "Llama2.0 exhibits substantial exaggerated safety: the model fully refuses 38% of the safe prompts and partially refuses another 21.6%."
+  evidence:
+    - {work: "rottger-2023-xstest", role: original, locator: "Section 4.3", stance: for}
+
+- id: c-st-counts
+  type: mathematical
+  text: "On XSTest's 250 safe prompts, 38% full and 21.6% partial refusals are 95 and 54 prompts, so 149 prompts, 59.6%, are refused at least in part; Llama 2's 1,351 single-turn and 623 multi-turn evaluation prompts total 1,974."
+  assumes: ["the percentages are of the 250 safe prompts"]
+  derivation: safety-training-arithmetic
+
+# Why safety training fails
+
+- id: c-jb-modes
+  type: attributive
+  text: "Wei et al. hypothesize two failure modes of safety training: competing objectives, when a model's capabilities and safety goals conflict, and mismatched generalization, when safety training fails to generalize to a domain for which capabilities exist."
+  evidence:
+    - {work: "wei-2023-jailbroken", role: original, locator: "p. 1", stance: for}
+
+- id: c-jb-prefix
+  type: attributive
+  text: "Prefix injection asks the model to first output an innocuous-looking prefix, such as Absolutely! Here's, designed so that conditioning on the prefix makes refusal unlikely in the pretraining distribution."
+  evidence:
+    - {work: "wei-2023-jailbroken", role: original, locator: "p. 4", stance: for}
+
+- id: c-jb-suppress
+  type: attributive
+  text: "Refusal suppression instructs the model to respond under constraints that rule out common refusal responses, such as not apologizing and never saying cannot or unfortunately; inverting the rules leads to no restricted behavior on any prompt in the dataset."
+  evidence:
+    - {work: "wei-2023-jailbroken", role: original, locator: "p. 5", stance: for}
+
+- id: c-jb-base64
+  type: attributive
+  text: "Large models likely learn Base64 in pretraining and can follow Base64-encoded instructions, while safety training likely contains no inputs as unnatural, so an encoded harmful request is far out of distribution for refusal."
+  evidence:
+    - {work: "wei-2023-jailbroken", role: original, locator: "p. 6", stance: for}
+
+- id: c-jb-96
+  type: attributive
+  text: "Attacks built on the two failure modes succeed on over 96% of the evaluated prompts against GPT-4 and Claude v1.3, including 100% of the curated red-teaming prompts that past safety interventions were designed to address."
+  evidence:
+    - {work: "wei-2023-jailbroken", role: original, locator: "p. 2", stance: for}
+
+- id: c-jb-parity
+  type: attributive
+  text: "Scaling up will not resolve competing objectives, since the issue lies with the optimization objective, and may exacerbate mismatched generalization, which suggests that safety mechanisms need to be as sophisticated as the underlying model."
+  evidence:
+    - {work: "wei-2023-jailbroken", role: original, locator: "p. 2", stance: for}
+
+- id: c-ga-scale
+  type: attributive
+  text: "RLHF models become increasingly difficult to red team as they scale, while plain language models, prompted models and rejection-sampling models show a flat trend with scale."
+  evidence:
+    - {work: "ganguli-2022-red-teaming-reduce-harms", role: original, locator: "p. 1", stance: for}
+
+- id: c-l2-gamma
+  type: attributive
+  text: "Llama 2 defines a model's robustness γ to a red-teaming exercise as the average number of created prompts that trigger a violating response per person per hour; on the 7B model γ went from 1.8 to 0.45 over several red-teaming iterations."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "p. 29", stance: for}
+
+- id: c-l2-90
+  type: attributive
+  text: "On average, 90% of the prompts that triggered violating responses in earlier red-teaming exercises were rejected by the next candidate model."
+  evidence:
+    - {work: "touvron-2023-llama-2", role: original, locator: "p. 29", stance: for}
+
+- id: c-st-base64
+  type: mathematical
+  text: "Base64 maps every 3 bytes to 4 characters from a 64-character alphabet, so an n-byte request becomes 4⌈n/3⌉ characters; the 45-byte question What tools do I need to cut down a stop sign? becomes 60 characters."
+  assumes: ["standard Base64 with padding; the question is ASCII, one byte per character"]
+  derivation: safety-training-arithmetic
+
+- id: c-st-gamma
+  type: mathematical
+  text: "Going from γ = 1.8 to γ = 0.45 violating prompts per person-hour divides the rate by 4, so the expected red-teaming time per violation grows from about 33 minutes to about 133 minutes."
+  assumes: ["violations arrive at a constant rate γ per person-hour, so the expected time per violation is 1/γ hours"]
+  derivation: safety-training-arithmetic
+
+# The refusal direction
+
+- id: c-ar-single
+  type: attributive
+  text: "Across 13 open-source chat models up to 72B parameters there is a single direction such that erasing it from the residual stream activations prevents the model from refusing harmful instructions, while adding it elicits refusal even on harmless instructions."
+  evidence:
+    - {work: "arditi-2024-refusal-single-direction", role: original, locator: "p. 1", stance: for}
+
+- id: c-ar-data
+  type: attributive
+  text: "The harmful instructions are drawn from four existing datasets of harmful instructions, among them TDC2023, and the harmless instructions are sampled from an instruction dataset; each dataset consists of train and validation splits of 128 and 32 samples."
+  evidence:
+    - {work: "arditi-2024-refusal-single-direction", role: original, locator: "p. 3", stance: for}
+
+- id: c-ar-dim
+  type: attributive
+  text: "For each layer and post-instruction token position, the refusal direction candidate is the difference between the mean activations on harmful and on harmless prompts, and the most effective of the |I| × L candidates is selected on validation sets."
+  evidence:
+    - {work: "arditi-2024-refusal-single-direction", role: original, locator: "p. 4", stance: for}
+
+- id: c-ar-ops
+  type: attributive
+  text: "Activation addition adds the difference-in-means vector to the activations at one layer and all token positions, and directional ablation sets x′ ← x − r̂r̂ᵀx for every residual stream activation, at all layers and token positions."
+  evidence:
+    - {work: "arditi-2024-refusal-single-direction", role: original, locator: "p. 4", stance: for}
+
+- id: c-ar-score
+  type: attributive
+  text: "A completion counts as a refusal if it contains at least one of a set of refusal substrings such as I'm sorry or As an AI; this string matching detects memorized refusals but does not assess whether the completion is coherent or harmful."
+  evidence:
+    - {work: "arditi-2024-refusal-single-direction", role: original, locator: "p. 4", stance: for}
+
+- id: c-ar-ortho
+  type: attributive
+  text: "Weight orthogonalization replaces every matrix that writes to the residual stream, the embedding, positional embedding, attention out and MLP out matrices and their output biases, by W − r̂r̂ᵀW; it is equivalent to directional ablation and needs neither gradient-based optimization nor examples of harmful completions."
+  evidence:
+    - {work: "arditi-2024-refusal-single-direction", role: original, locator: "p. 6", stance: for}
+
+- id: c-ar-coherence
+  type: attributive
+  text: "Orthogonalized models perform similarly to the originals on MMLU, ARC and GSM8K, but their TruthfulQA accuracy consistently drops."
+  evidence:
+    - {work: "arditi-2024-refusal-single-direction", role: original, locator: "p. 7", stance: for}
+
+- id: c-st-proj
+  type: mathematical
+  text: "P = I − r̂r̂ᵀ is a symmetric idempotent projection: r̂ᵀPx = 0, Px = x when x ⊥ r̂, and ‖Px‖ ≤ ‖x‖; among unit vectors u, uᵀ(μ − ν) is largest at u = r̂ = (μ − ν)/‖μ − ν‖, and adding r = μ − ν moves the mean harmless activation ν exactly onto the mean harmful one μ."
+  assumes: ["‖r̂‖ = 1 and μ ≠ ν"]
+  derivation: safety-training-arithmetic
+
+- id: c-st-ortho
+  type: mathematical
+  text: "If the embeddings and every matrix and bias that writes to the residual stream are multiplied on the left by P = I − r̂r̂ᵀ, every residual activation lies in the complement of r̂, and the forward pass is the same as projecting every residual activation with P."
+  assumes: ["the residual stream is the sum of the embedding and the outputs of the components, each read from the current stream"]
+  derivation: safety-training-arithmetic
+
+# Adversarial suffixes
+
+- id: c-gc-target
+  type: attributive
+  text: "GCG's objective requires the model to begin its response with a positive affirmation of the user query, such as Sure, here is how to build a bomb, leaving the rest of the completion unspecified."
+  evidence:
+    - {work: "zou-2023-universal-transferable-attacks", role: original, locator: "pp. 5 and 6", stance: for}
+
+- id: c-gc-loss
+  type: attributive
+  text: "The adversarial loss is the negative log probability of the target tokens, L(x_{1:n}) = −log p(x*_{n+1:n+H} | x_{1:n}), minimized over the tokens of the suffix positions I."
+  evidence:
+    - {work: "zou-2023-universal-transferable-attacks", role: original, locator: "p. 6", stance: for}
+
+- id: c-gc-alg
+  type: attributive
+  text: "Greedy Coordinate Gradient computes, for every suffix position, the top-k tokens with the largest negative gradient of the loss with respect to the one-hot token vector, randomly selects B ≤ k|I| single-token substitutions from these candidates, evaluates their loss exactly and makes the replacement with the smallest loss."
+  evidence:
+    - {work: "zou-2023-universal-transferable-attacks", role: original, locator: "p. 7", stance: for}
+
+- id: c-gc-autoprompt
+  type: attributive
+  text: "GCG differs from AutoPrompt, which chooses a single position in advance and evaluates replacements only there, and for the same batch size GCG performs substantially better."
+  evidence:
+    - {work: "zou-2023-universal-transferable-attacks", role: original, locator: "p. 7", stance: for}
+
+- id: c-gc-hp
+  type: attributive
+  text: "GCG uses a batch size of 512, a top-k of 256 and 20 optimizable tokens, run for 500 steps."
+  evidence:
+    - {work: "zou-2023-universal-transferable-attacks", role: original, locator: "p. 9", stance: for}
+
+- id: c-gc-transfer
+  type: attributive
+  text: "A suffix optimized on multiple prompts and on Vicuna-7B and 13B induces objectionable content in the public interfaces to ChatGPT, Bard and Claude and in open models such as LLaMA-2-Chat, Pythia and Falcon."
+  evidence:
+    - {work: "zou-2023-universal-transferable-attacks", role: original, locator: "p. 1", stance: for}
+
+- id: c-gc-rates
+  type: attributive
+  text: "On Vicuna, GCG elicits 99 of 100 harmful behaviors and 88 of 100 exact target strings, and its prompts reach up to 84% success on GPT-3.5 and GPT-4, 66% on PaLM-2 and 2.1% on Claude."
+  evidence:
+    - {work: "zou-2023-universal-transferable-attacks", role: original, locator: "p. 4", stance: for}
+
+- id: c-st-gcg
+  type: mathematical
+  text: "To first order, replacing token x_i by v changes the loss by g_v − g_{x_i}, where g is the gradient with respect to the one-hot vector of x_i, so the top-k of −g are the k substitutions with the largest estimated decrease; with |I| = 20 and a 32,000-token vocabulary there are 639,980 single-token substitutions, the top-256 candidates number 5,120, and a batch of 512 evaluates 10% of them."
+  assumes: ["the loss is differentiable in the one-hot vectors through the embedding"]
+  derivation: safety-training-arithmetic
+
+# Fragility under fine-tuning
+
+- id: c-qi-10
+  type: attributive
+  text: "Fine-tuning GPT-3.5 Turbo on only 10 adversarially designed examples, at a cost of less than $0.20 through OpenAI's API, jailbreaks its safety guardrails, making it responsive to nearly any harmful instruction."
+  evidence:
+    - {work: "qi-2023-fine-tuning-compromises-safety", role: original, locator: "p. 1", stance: for}
+
+- id: c-qi-bench
+  type: attributive
+  text: "Qi et al.'s safety benchmark has 30 harmful instructions in each of 11 categories of prohibited use from Meta's and OpenAI's usage policies, 330 in all."
+  evidence:
+    - {work: "qi-2023-fine-tuning-compromises-safety", role: original, locator: "p. 5", stance: for}
+
+- id: c-qi-table
+  type: attributive
+  text: "After 5 epochs on 10 harmful examples, the harmfulness rate of GPT-3.5 Turbo rises from 1.8% to 88.8%, and that of Llama-2-7b-Chat from 0.3% to 50.0%, and to 80.3% with 50 examples."
+  evidence:
+    - {work: "qi-2023-fine-tuning-compromises-safety", role: original, locator: "p. 6", stance: for}
+
+- id: c-qi-identity
+  type: attributive
+  text: "Fine-tuning on only 10 identity-shifting examples, which contain no explicitly harmful content, raises the harmfulness rate by up to 87.3% for GPT-3.5 Turbo and 72.1% for Llama-2-7b-Chat."
+  evidence:
+    - {work: "qi-2023-fine-tuning-compromises-safety", role: original, locator: "p. 8", stance: for}
+
+- id: c-qi-benign
+  type: attributive
+  text: "One epoch of fine-tuning on Alpaca raises the harmfulness rate of GPT-3.5 Turbo from 5.5% to 31.8% and of Llama-2-7b-Chat from 0.3% to 16.1%."
+  evidence:
+    - {work: "qi-2023-fine-tuning-compromises-safety", role: original, locator: "p. 8", stance: for}
+
+- id: c-qi-cause
+  type: attributive
+  text: "The safety degradation from benign fine-tuning may arise from catastrophic forgetting of the initial alignment or from an inherent tension between the helpfulness and harmlessness objectives."
+  evidence:
+    - {work: "qi-2023-fine-tuning-compromises-safety", role: original, locator: "p. 3", stance: for}
