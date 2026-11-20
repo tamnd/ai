@@ -1,0 +1,11 @@
+# Written by fixtures/make.py; do not edit.
+seed: 20131220
+config: {d_in: 6, d_hidden: 5, d_latent: 2, decoder: [bernoulli, gaussian]}
+inputs: {B: 4, S: 3, x: "binary, each pixel 1 with probability 1/2", eps: "standard normal"}
+loss: "elbo, elbo_mc and iwae of eq-elbo, eq-sgvb-a and eq-iwae, negated and averaged over the batch"
+dtype: float64
+numpy: "2.5.4"
+files:
+  params-small.npz: {sha256: d47fd7a062f3c53275dac9c4d3ead67b6d87da091b836dc05bef52565fc7f3a9}
+  input-small.npz: {sha256: 5c7586b5433022eb402c1317d22104ba37d6ae6884f1b8845c0fabbbed2e6cdc}
+  expected-small.npz: {sha256: 2c6e6ac2d69dbf0da5a433f6e24ea2f43fd7d51df67b01cbe2ef3e500f054fe2}
