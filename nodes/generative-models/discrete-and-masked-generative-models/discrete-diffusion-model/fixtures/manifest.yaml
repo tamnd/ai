@@ -1,0 +1,11 @@
+# Written by fixtures/make.py; do not edit.
+seed: 2406075240
+denoiser: {seq_len: 3, vocab: 3, hidden: 5}
+inputs: {B: 4, schedule: cosine, z: "a partly masked batch, the mask is 3", uniform_d3pm: "K = 4, beta = 0.3, alpha_bar_prev = 0.6"}
+loss: "the one-sample masked diffusion bound averaged over the batch, as a weighted cross-entropy"
+dtype: float64
+numpy: "2.5.4"
+files:
+  params-small.npz: {sha256: 2d12c32c9dfb7f90c9d95556c48be95629d2c178acf56ca0ff01ce636946bf80}
+  input-small.npz: {sha256: 31c4c05689a08ab57371691153e755fac4840973fd94c738533fdc85760cf462}
+  expected-small.npz: {sha256: f3ec2c0748b1998c6cb25c9a5351c5e621852bf761a7f6603f76a1a66fd561aa}
