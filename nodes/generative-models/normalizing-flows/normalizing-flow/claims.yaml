@@ -1,0 +1,288 @@
+# The claims of the normalizing flow page (spec 07). The build computes the labels.
+- id: c-nice-def
+  type: attributive
+  text: "NICE learns a non-linear deterministic transformation of the data that maps it to a latent space so that the transformed data conform to a factorized distribution; the transformation is parametrized so that the determinant of the Jacobian and the inverse are trivial to compute, the training criterion is the exact log-likelihood, and unbiased ancestral sampling is easy."
+  evidence:
+    - {work: "dinh-2014-nice", role: original, locator: "p. 1", stance: for}
+
+- id: c-review-normalizing
+  type: definitional
+  text: "The term 'normalizing' refers to the fact that the inverse flow takes a collection of samples from p_x(x) and transforms them, in a sense normalizes them, into a collection of samples from a prescribed density p_u(u), which is often taken to be a multivariate normal."
+  evidence:
+    - {work: "papamakarios-2021-normalizing-flows-probabilistic-modeling", role: review, locator: "p. 4", stance: for}
+
+- id: c-cov
+  type: mathematical
+  text: "If f is a diffeomorphism of R^D and z = f(x) has the density p_z, then log p_x(x) = log p_z(f(x)) + log |det df/dx|: the density of the data is the base density at the image times the factor by which f changes volume near x."
+  assumes: ["f is a bijection of R^D onto itself, differentiable with a differentiable inverse", "the base density p_z is continuous"]
+  derivation: change-of-variables
+
+- id: c-compose
+  type: mathematical
+  text: "For a composition f = f_L o ... o f_1 the log-determinant is the sum of the layers' log-determinants, each evaluated at that layer's input, and the inverse is the composition of the layers' inverses in reverse order, so a flow is built from layers whose determinants and inverses are cheap."
+  assumes: ["each f_k is a diffeomorphism of R^D"]
+  derivation: change-of-variables
+
+- id: c-nice-additive
+  type: attributive
+  text: "The additive coupling layer of NICE keeps one block of the input, y_1 = x_1, and shifts the other, y_2 = x_2 + m(x_1), with m an arbitrarily complex function such as a ReLU MLP; it has unit Jacobian determinant for any m, and its inverse x_2 = y_2 - m(y_1) is only as expensive as the transformation itself."
+  evidence:
+    - {work: "dinh-2014-nice", role: original, locator: "pp. 2, 4", stance: for}
+
+- id: c-nice-three
+  type: attributive
+  text: "Since a coupling layer leaves part of its input unchanged, the roles of the two subsets of the partition are exchanged in alternating layers; examining the Jacobian, at least three coupling layers are necessary to allow all dimensions to influence one another, and NICE generally uses four."
+  evidence:
+    - {work: "dinh-2014-nice", role: original, locator: "p. 4", stance: for}
+
+- id: c-nice-scaling
+  type: attributive
+  text: "Each additive coupling layer has unit Jacobian determinant, it is volume preserving, so their composition has unit Jacobian determinant too; NICE adds a diagonal scaling matrix S as the top layer, which multiplies the i-th output value by S_ii."
+  evidence:
+    - {work: "dinh-2014-nice", role: original, locator: "p. 4", stance: for}
+
+- id: c-realnvp-affine
+  type: definitional
+  text: "Given a D dimensional input x and d < D, the output of an affine coupling layer is y_1:d = x_1:d and y_d+1:D = x_d+1:D * exp(s(x_1:d)) + t(x_1:d), where s and t stand for scale and translation, functions from R^d to R^(D-d), and * is the element-wise product."
+  evidence:
+    - {work: "dinh-2016-density-estimation-real-nvp", role: original, locator: "p. 4", stance: for}
+
+- id: c-coupling-jac
+  type: mathematical
+  text: "The affine coupling layer has a block lower-triangular Jacobian with the identity on the kept coordinates and diag(exp s) on the transformed ones, so log |det| is the sum of s over the transformed coordinates, whatever the functions s and t are."
+  assumes: ["the mask splits the D coordinates into a kept set and a transformed set", "s and t are any differentiable functions of the kept coordinates"]
+  derivation: coupling-jacobian
+
+- id: c-coupling-inverse
+  type: mathematical
+  text: "The affine coupling layer is inverted by x_K = y_K and x_T = (y_T - t(y_K)) * exp(-s(y_K)), which evaluates s and t once, in the forward direction, so the inverse costs what the layer costs and s and t never have to be inverted."
+  assumes: ["the mask splits the D coordinates into a kept set and a transformed set"]
+  derivation: coupling-jacobian
+
+- id: c-realnvp-arbitrary
+  type: attributive
+  text: "Since computing the Jacobian determinant of the coupling layer does not involve computing the Jacobian of s or t, those functions can be arbitrarily complex, and Real NVP makes them deep convolutional neural networks; the inverse of the coupling layer does not require computing the inverse of s or t."
+  evidence:
+    - {work: "dinh-2016-density-estimation-real-nvp", role: original, locator: "pp. 4, 5", stance: for}
+
+- id: c-realnvp-masks
+  type: definitional
+  text: "Real NVP uses two partitionings that exploit the local correlation structure of images, a spatial checkerboard pattern and a channel-wise masking, and a multi-scale architecture with a squeezing operation that reduces a 4 x 4 x 1 tensor to a 2 x 2 x 4 tensor."
+  evidence:
+    - {work: "dinh-2016-density-estimation-real-nvp", role: original, locator: "pp. 5, 6", stance: for}
+
+- id: c-realnvp-results
+  type: empirical
+  text: "Real NVP reached 3.49 bits per dimension on CIFAR-10, 4.28 on Imagenet 32 x 32 and 3.98 on Imagenet 64 x 64, against 3.00, 3.86 and 3.63 for PixelRNN; the authors write that the number of bits per dimension, while not improving over the Pixel RNN baseline, is competitive with other generative methods."
+  scope:
+    models: "Real NVP with the multi-scale architecture and residual networks in s and t; PixelRNN as reported"
+    data: ["CIFAR-10", "Imagenet 32 x 32", "Imagenet 64 x 64"]
+    setting: "bits per dimension, test results for CIFAR-10 and validation results for Imagenet"
+  evidence:
+    - {work: "dinh-2016-density-estimation-real-nvp", role: original, locator: "p. 8", stance: for}
+
+- id: c-realnvp-samples
+  type: attributive
+  text: "Maximum likelihood values diversity over sample quality in a limited capacity setting, so Real NVP sometimes outputs highly improbable samples, especially on CelebA; unlike autoregressive models, sampling from it is parallelized over input dimensions."
+  evidence:
+    - {work: "dinh-2016-density-estimation-real-nvp", role: original, locator: "pp. 8, 9", stance: for}
+
+- id: c-planar-def
+  type: definitional
+  text: "Rezende and Mohamed's planar flow is f(z) = z + u h(w^T z + b) with free parameters w and u in R^D and b in R and a smooth element-wise non-linearity h; its logdet-Jacobian term is computed in O(D) time using the matrix determinant lemma, as |1 + u^T psi(z)| with psi(z) = h'(w^T z + b) w."
+  evidence:
+    - {work: "rezende-2015-variational-inference-normalizing-flows", role: original, locator: "p. 5", stance: for}
+
+- id: c-planar-det
+  type: mathematical
+  text: "The planar map f(z) = z + u h(w^T z + b) has det df/dz = 1 + u^T psi(z) with psi(z) = h'(w^T z + b) w, a rank-one update of the identity, so its log-determinant costs O(D) instead of the cost of a general determinant."
+  assumes: ["h is differentiable"]
+  derivation: planar-determinant
+
+- id: c-planar-fix
+  type: mathematical
+  text: "With h = tanh the planar map is invertible when w^T u >= -1, and for any u the vector u-hat = u + (m(w^T u) - w^T u) w / ||w||^2 with m(a) = -1 + log(1 + e^a) has w^T u-hat = m(w^T u) > -1, which makes the map invertible for every value of the free parameters."
+  assumes: ["h = tanh", "w is not the zero vector"]
+  derivation: planar-determinant
+
+- id: c-planar-appendix
+  type: attributive
+  text: "A sufficient condition for the planar map with h = tanh to be invertible is w^T u >= -1; Rezende and Mohamed enforce it by taking an arbitrary vector u and modifying its component parallel to w, with m(x) = -1 + log(1 + e^x)."
+  evidence:
+    - {work: "rezende-2015-variational-inference-normalizing-flows", role: original, locator: "p. 10", stance: for}
+
+- id: c-planar-results
+  type: empirical
+  text: "On binarized MNIST a DLGM with a diagonal covariance posterior reached a bound of 89.9 on the negative log-probability, and with planar normalizing flows of length k = 10, 20, 40 and 80 the bound fell to 87.5, 86.5, 85.7 and 85.1, against 88.6, 87.9, 87.3 and 87.2 with NICE; increasing the flow length systematically improves the bound."
+  scope:
+    models: "deep latent Gaussian models with 40 latent variables, posteriors refined by planar flows or by NICE"
+    data: ["binarised MNIST"]
+    setting: "upper bounds on the negative log-probability of the test set, 500,000 parameter updates"
+  evidence:
+    - {work: "rezende-2015-variational-inference-normalizing-flows", role: original, locator: "p. 8", stance: for}
+
+- id: c-maf-banana
+  type: attributive
+  text: "Autoregressive models are sensitive to the order of the variables: a MADE with order (x1, x2) and Gaussian conditionals fits the density p(x1, x2) = N(x2 | 0, 4) N(x1 | x2^2 / 4, 1) poorly, while a 5 layer MAF with the same order fits it."
+  evidence:
+    - {work: "papamakarios-2017-masked-autoregressive-flow", role: original, locator: "pp. 2, 3", stance: for}
+
+- id: c-maf-passes
+  type: attributive
+  text: "MAF can calculate the density p(x) of any datapoint in one pass through the model, but sampling from it requires D sequential passes; IAF can generate samples and calculate their density with one pass, but calculating the density of an externally provided datapoint requires D passes."
+  evidence:
+    - {work: "papamakarios-2017-masked-autoregressive-flow", role: original, locator: "p. 4", stance: for}
+
+- id: c-maf-iaf
+  type: attributive
+  text: "Training a MAF with maximum likelihood corresponds to fitting an implicit IAF to the base density with stochastic variational inference."
+  evidence:
+    - {work: "papamakarios-2017-masked-autoregressive-flow", role: original, locator: "p. 4", stance: for}
+
+- id: c-maf-coupling
+  type: attributive
+  text: "The coupling layer is a special case of both the autoregressive transformation used by MAF and the one used by IAF: the coupling layer is recovered from MAF by setting mu_i = alpha_i = 0 for i <= d and making mu_i and alpha_i functions of only x_1:d for i > d."
+  evidence:
+    - {work: "papamakarios-2017-masked-autoregressive-flow", role: original, locator: "p. 5", stance: for}
+
+- id: c-maf-results
+  type: empirical
+  text: "The average test log likelihood in nats on POWER, GAS, HEPMASS, MINIBOONE and BSDS300 was 0.14, 9.07, -17.70, -11.75 and 155.69 for MAF (5), against -0.02, 4.78, -19.62, -13.55 and 152.97 for Real NVP (5) and -7.74, -3.58, -27.93, -37.24 and 96.67 for a Gaussian."
+  scope:
+    models: "MAF with 5 autoregressive layers and a standard Gaussian base density; Real NVP with 5 coupling layers; a Gaussian"
+    data: ["POWER", "GAS", "HEPMASS", "MINIBOONE", "BSDS300"]
+    setting: "unconditional density estimation, average test log likelihood in nats"
+  evidence:
+    - {work: "papamakarios-2017-masked-autoregressive-flow", role: original, locator: "p. 7", stance: for}
+
+- id: c-review-det-cost
+  type: attributive
+  text: "Explicitly calculating the determinant of a general Jacobian has a time cost that can be intractable for large D, while for most applications of flow-based models the Jacobian-determinant computation should be at most O(D)."
+  evidence:
+    - {work: "papamakarios-2021-normalizing-flows-probabilistic-modeling", role: original, locator: "p. 12", stance: for}
+
+- id: c-review-inversion
+  type: attributive
+  text: "Inverting a masked autoregressive flow requires calling the conditioner D times, so it is about D times more expensive than evaluating the forward transformation, which can be prohibitively expensive for images or video; the coupling layer is computationally symmetric, equally fast to evaluate or invert."
+  evidence:
+    - {work: "papamakarios-2021-normalizing-flows-probabilistic-modeling", role: original, locator: "p. 19", stance: for}
+
+- id: c-review-affine-open
+  type: attributive
+  text: "Expressive flows can be obtained by stacking multiple affine autoregressive layers, but it is unknown whether affine autoregressive flows with multiple layers are universal approximators; affine transformers have been used in NICE, Real NVP, IAF, MAF and Glow."
+  evidence:
+    - {work: "papamakarios-2021-normalizing-flows-probabilistic-modeling", role: original, locator: "p. 14", stance: for}
+
+- id: c-review-coupling-open
+  type: attributive
+  text: "A composition of D coupling layers is a universal approximator, and it is an open problem whether a universal approximator can be obtained by composing strictly fewer than O(D) coupling layers."
+  evidence:
+    - {work: "papamakarios-2021-normalizing-flows-probabilistic-modeling", role: original, locator: "p. 21", stance: for}
+
+- id: c-universal
+  type: mathematical
+  text: "If p_x > 0 on R^D with differentiable conditional distribution functions, the map z_i = F_i(x_i | x_<i) of conditional cumulative distribution functions has a lower-triangular Jacobian with determinant p_x(x) and sends x to the uniform distribution on (0, 1)^D, so an autoregressive flow with flexible enough transformers and conditioners can represent any such density."
+  assumes: ["p_x(x) > 0 for every x in R^D", "the conditional cumulative distribution functions are differentiable in all their arguments"]
+  derivation: universality
+
+- id: c-mle-kl
+  type: mathematical
+  text: "The expected negative log-likelihood of a flow is the entropy of the data distribution plus the forward KL divergence from the data to the model, so maximum likelihood minimizes the forward KL divergence and the entropy is the floor of the loss."
+  assumes: ["the data distribution has a density, and the expectations are finite"]
+  derivation: kl-equivalence
+
+- id: c-kl-base
+  type: mathematical
+  text: "The KL divergence from the data distribution to the flow's model equals the KL divergence from the pushed-forward data distribution to the base density, so fitting the model to the data is fitting the transformed data to the base density."
+  assumes: ["f is a diffeomorphism of R^D"]
+  derivation: kl-equivalence
+
+- id: c-review-kl
+  type: attributive
+  text: "Fitting a flow-based model by minimizing the forward KL divergence is maximum likelihood estimation and is well-suited for situations in which we have samples from the target distribution; the reverse KL divergence is suitable when we can evaluate the target density and is often used for variational inference."
+  evidence:
+    - {work: "papamakarios-2021-normalizing-flows-probabilistic-modeling", role: original, locator: "pp. 6, 7", stance: for}
+
+- id: c-dequant
+  type: mathematical
+  text: "For integer data in {0, ..., L - 1}^D dequantized as (k + u) / L with u uniform on [0, 1)^D, the expected continuous log-likelihood minus D log L is a lower bound on the log-likelihood of a discrete model, so (NLL + D log L) / (D log 2) bounds the bits per dimension of the discrete data from above."
+  assumes: ["the data are integer vectors", "the continuous density lives on [0, 1)^D"]
+  derivation: dequantization-bound
+
+- id: c-review-dequant
+  type: attributive
+  text: "Flow-based models are defined over continuous random variables, so to use them with discrete data the data are often dequantized by adding continuous noise, fixed, such as uniform in [0, 1], or learned, as in variational dequantization."
+  evidence:
+    - {work: "papamakarios-2021-normalizing-flows-probabilistic-modeling", role: original, locator: "p. 43", stance: for}
+
+- id: c-glow-step
+  type: definitional
+  text: "Each step of flow in Glow consists of actnorm, followed by an invertible 1 x 1 convolution, followed by an affine coupling layer; actnorm is an affine transformation of the activations initialized so that the post-actnorm activations per channel have zero mean and unit variance on an initial minibatch."
+  evidence:
+    - {work: "kingma-2018-glow", role: original, locator: "pp. 4, 5", stance: for}
+
+- id: c-glow-lu
+  type: attributive
+  text: "A 1 x 1 convolution with equal numbers of input and output channels generalizes a permutation of the channels; parameterizing its weight matrix in its LU decomposition W = PL(U + diag(s)) reduces the cost of computing det(W) from O(c^3) to O(c)."
+  evidence:
+    - {work: "kingma-2018-glow", role: original, locator: "p. 5", stance: for}
+
+- id: c-glow-zero
+  type: attributive
+  text: "Glow initializes the last convolution of each NN() with zeros, so that each affine coupling layer initially performs an identity function, which the authors found helps training very deep networks."
+  evidence:
+    - {work: "kingma-2018-glow", role: original, locator: "p. 5", stance: for}
+
+- id: c-glow-results
+  type: empirical
+  text: "Glow reached 3.35 bits per dimension on CIFAR-10, 4.09 on ImageNet 32x32 and 3.81 on ImageNet 64x64, against 3.49, 4.28 and 3.98 for RealNVP."
+  scope:
+    models: "Glow and RealNVP as reported"
+    data: ["CIFAR-10", "ImageNet 32x32", "ImageNet 64x64"]
+    setting: "best results in bits per dimension"
+  evidence:
+    - {work: "kingma-2018-glow", role: original, locator: "p. 7", stance: for}
+
+- id: c-glow-speed
+  type: empirical
+  text: "Generating a 256 x 256 image at batch size 1 with Glow takes about 130ms on a single 1080 Ti and about 550ms on a K80, while synthesis from MAF and from autoregressive models is non-parallelizable."
+  scope:
+    models: "Glow with three convolutional layers in each NN()"
+    data: ["256 x 256 images"]
+    setting: "wall-clock sampling time at batch size 1"
+  evidence:
+    - {work: "kingma-2018-glow", role: original, locator: "p. 6", stance: for}
+
+- id: c-glow-temperature
+  type: attributive
+  text: "Sampling from a reduced-temperature model often results in higher-quality samples; for additive coupling layers Glow achieves this by multiplying the standard deviation of p(z) by a factor of T."
+  evidence:
+    - {work: "kingma-2018-glow", role: original, locator: "p. 8", stance: for}
+
+- id: c-review-continuous
+  type: attributive
+  text: "A continuous-time flow is constructed by defining an ordinary differential equation that parameterizes the flow's infinitesimal dynamics, dz_t / dt = g(t, z_t), and integrating to find the corresponding transformation."
+  evidence:
+    - {work: "papamakarios-2021-normalizing-flows-probabilistic-modeling", role: original, locator: "pp. 30, 31", stance: for}
+
+- id: c-params
+  type: mathematical
+  text: "A flow of L coupling layers on D dimensions, each computing s and t from one hidden layer of H units, has P = L(3DH + H + 2D) parameters, and a density pass or a sampling pass on B points costs 6LBDH FLOPs in its products."
+  assumes: ["one tanh hidden layer of H units on the masked inputs and two output layers per coupling layer", "only the products are counted, a multiply-add as 2"]
+  derivation: parameter-and-flop-count
+
+- id: c-nice-results
+  type: empirical
+  text: "NICE, a stack of four coupling layers with a diagonal positive scaling, obtained a test log-likelihood of 1980.50 on MNIST, 5514.71 on TFD, 11496.55 for SVHN and 5371.78 for CIFAR-10, on dequantized data with a standard logistic prior, or a standard normal one for TFD."
+  scope:
+    models: "NICE with four coupling layers whose coupling functions are deep rectified networks"
+    data: ["MNIST", "TFD", "SVHN", "CIFAR-10"]
+    setting: "test log-likelihood of dequantized data rescaled to [0, 1]^D, or [-1, 1]^D for CIFAR-10"
+  evidence:
+    - {work: "dinh-2014-nice", role: original, locator: "pp. 6, 7", stance: for}
+
+- id: c-nice-history
+  type: historical
+  text: "Dinh, Krueger and Bengio posted NICE as arXiv 1410.8516, and it was accepted as a workshop contribution at ICLR 2015."
+  evidence:
+    - {work: "dinh-2014-nice", role: original, locator: "p. 1", stance: for}
