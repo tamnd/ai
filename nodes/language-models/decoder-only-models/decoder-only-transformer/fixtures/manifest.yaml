@@ -3,10 +3,10 @@ seed: 201806
 config: {vocab: 11, n_ctx: 8, d_model: 8, n_heads: 2, d_ff: 16, n_layers: 2, tied: true, pos: learned}
 inputs: {B: 2, init_scale: 0.5, cache_split: 5, prompt: 3, greedy_tokens: 5}
 experiment: {task: copy, k: 6, symbols: 8, d_model: 32, n_heads: 4, d_ff: 64, steps: 1500, batch: 32, adam_lr: 0.003, init_scale: 0.02, test: 500, floor_nats: 0.9597}
-runs: {learned_2: {test_nats: 0.9610, copy_accuracy: 1.0000}, none_2: {test_nats: 0.9662, copy_accuracy: 0.9990}, learned_1: {test_nats: 0.9616, copy_accuracy: 1.0000}, none_1: {test_nats: 1.6257, copy_accuracy: 0.3627}}
+runs: {learned_2: {test_nats: 0.9610, copy_accuracy: 1.0000}, none_2: {test_nats: 0.9644, copy_accuracy: 1.0000}, learned_1: {test_nats: 0.9616, copy_accuracy: 1.0000}, none_1: {test_nats: 1.6062, copy_accuracy: 0.3743}}
 dtype: float64
 numpy: "2.5.4"
 files:
   params-small.npz: {sha256: 0a8bbdcc260ada0dd916f9a89943ab57ab51b9b86bdbcc51ee9d105f278d6c65}
   input-small.npz: {sha256: fb3a2e29c0f85bbf36b6e3ef95a5f0086ed2cbd13e8be3129836097d81d4b0ab}
-  expected-small.npz: {sha256: cd8cc702f00eeb3e37d8f4b8166db8c80f5ab837c9fc6bef91a493639e58e60e}
+  expected-small.npz: {sha256: 1ba668ec4d4247c55c441ddde4a8108cfa2cc3f0b063388df527dfa8db9246ad}

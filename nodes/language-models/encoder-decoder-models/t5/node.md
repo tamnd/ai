@@ -325,12 +325,12 @@ On 500 test pairs, the loss is the mean over the six target tokens under teacher
 
 | model | test loss (nats) | token accuracy | sequence accuracy |
 |---|---|---|---|
-| position biases | 0.0129 | 99.63% | 97.80% |
+| position biases | 0.0214 | 99.53% | 97.40% |
 | no position | 0.9200 | 53.13% | 1.00% |
 
 With the biases the model reverses almost every sequence.
 Without them the encoder sees the source as a multiset, so the decoder can learn which symbols occur and how often but not in what order; its token accuracy, 53.1%, is above the 12.5% of a guess, and it gets 1% of whole sequences right.
-These are single runs of one seed, on a toy task.
+These are single runs of one seed, on a toy task, in the fixture image with NumPy 2.5.4 on Linux, where another platform's rounding can move the last digits.
 The checks of the four derivations count the parameters, FLOPs, buckets and span lengths of the models of the paper from the reference.
 
 ## History

@@ -337,15 +337,15 @@ The copy accuracy is the share of the six copied symbols that the most likely ne
 | model | test loss (nats) | copy accuracy |
 |---|---|---|
 | 2 layers, learned positions | 0.9610 | 100.00% |
-| 2 layers, no positions | 0.9662 | 99.90% |
+| 2 layers, no positions | 0.9644 | 100.00% |
 | 1 layer, learned positions | 0.9616 | 100.00% |
-| 1 layer, no positions | 1.6257 | 36.27% |
+| 1 layer, no positions | 1.6062 | 37.43% |
 
-Three models reach the floor to within 0.007 nats and copy almost perfectly.
+Three models reach the floor to within 0.005 nats and copy every symbol.
 The fourth, one layer without positions, cannot: by c-bag its prediction at each position depends only on the current token and the multiset of the tokens so far, which tells which symbols occur but not in what order.
-It copies 36.3% of the symbols, above the 12.5% of a guess.
-The model with two layers and no positions copies 99.9% of them, because the mask lets the first layer compute a signal that differs by position, as in c-mask-position, and the second layer can attend by it.
-These are single runs of one seed, on a toy task; they show what the two results allow, not how real models use position.
+It copies 37.4% of the symbols, above the 12.5% of a guess.
+The model with two layers and no positions copies all of them, because the mask lets the first layer compute a signal that differs by position, as in c-mask-position, and the second layer can attend by it.
+These are single runs of one seed, on a toy task, in the fixture image with NumPy 2.5.4 on Linux, where another platform's rounding can move the last digits; they show what the two results allow, not how real models use position.
 The checks of the four derivations count the parameters, FLOPs and cache of the models of the papers, count the products of the reference, and permute the tokens of random networks.
 
 ## History
