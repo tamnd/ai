@@ -1,0 +1,421 @@
+# The claims of the self-consistency page (spec 07). The build computes the labels.
+
+# Setting
+
+- id: c-wang-define
+  type: attributive
+  text: "Self-consistency is a decoding strategy that replaces the naive greedy decoding used in chain-of-thought prompting: it first samples a diverse set of reasoning paths, and then selects the most consistent answer by marginalizing out the sampled reasoning paths."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 1", stance: for}
+
+- id: c-wang-intuition
+  type: attributive
+  text: "Self-consistency leverages the intuition that a complex reasoning problem typically admits multiple different ways of thinking leading to its unique correct answer."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 1", stance: for}
+
+- id: c-wang-hypothesis
+  type: attributive
+  text: "Wang et al. hypothesize that correct reasoning processes, even if they are diverse, tend to have greater agreement in their final answer than incorrect processes."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 2", stance: for}
+
+- id: c-wang-latent
+  type: attributive
+  text: "Given a prompt and a question, self-consistency introduces a latent variable r_i, a sequence of tokens representing the reasoning path in the i-th output, and couples the generation of (r_i, a_i) where r_i → a_i."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 3", stance: for}
+
+- id: c-wang-argmax
+  type: attributive
+  text: "After sampling multiple (r_i, a_i), self-consistency applies a marginalization over r_i by taking a majority vote over a_i, that is arg max_a Σ_{i=1}^m 1(a_i = a)."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 3", stance: for}
+
+- id: c-wang-parser
+  type: attributive
+  text: "The parser is task dependent: for arithmetic reasoning, Wang et al. parse the first numerical part as the final answer after the model generates \"The answer is \"."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 3", stance: for}
+
+- id: c-wang-fixed
+  type: attributive
+  text: "Self-consistency can be applied only to problems where the final answer is from a fixed answer set, but in principle the approach can be extended to open-text generation if a good metric of consistency can be defined between multiple generations."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 4", stance: for}
+
+- id: c-wang-selfens
+  type: attributive
+  text: "Self-consistency differs from a typical ensemble approach where multiple models are trained and their outputs aggregated; it acts more like a self-ensemble that works on top of a single language model."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 2", stance: for}
+
+- id: c-wang-unsup
+  type: attributive
+  text: "Self-consistency is entirely unsupervised, works off-the-shelf with pre-trained language models, requires no additional human annotation, and avoids any additional training, auxiliary models or fine-tuning."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 2", stance: for}
+
+- id: c-sc-lln
+  type: mathematical
+  text: "As the number of samples m grows, the share of samples with answer a converges to the model's marginal probability P(a), so the majority vote converges to arg max_a P(a), the mode of the answer distribution with the reasoning paths summed out."
+  assumes: ["the m samples are independent draws from the same distribution", "the mode is unique"]
+  derivation: self-consistency-voting
+
+- id: c-esc-lln
+  type: attributive
+  text: "Li et al. re-read self-consistency as mitigating the noise of individual sampling through multiple samplings, with the objective that the prediction with the highest probability, arg max_i P(i), is chosen as the final answer."
+  evidence:
+    - {work: "li-2024-early-stopping-self-consistency", role: original, locator: "p. 3", stance: for}
+
+# The method
+
+- id: c-wang-sampling
+  type: attributive
+  text: "For UL2-20B and LaMDA-137B Wang et al. applied temperature sampling with T = 0.5 and truncated at the top-k (k = 40) tokens, for PaLM-540B they applied T = 0.7, k = 40, and for GPT-3 they use T = 0.7 without top-k truncation."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 4", stance: for}
+
+- id: c-wang-40
+  type: attributive
+  text: "Wang et al. report the results of self-consistency averaged over 10 runs, where they sampled 40 outputs independently from the decoder in each run."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "pp. 4 to 5", stance: for}
+
+- id: c-wang-norm
+  type: attributive
+  text: "Each (r_i, a_i) can instead be weighted by P(r_i, a_i | prompt, question), either unnormalized or normalized by the output length as exp of (1/K) Σ_k log P(t_k | prompt, question, t_1, ..., t_{k−1})."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 3", stance: for}
+
+- id: c-wang-unweighted
+  type: attributive
+  text: "Taking the unweighted sum, a majority vote directly over a_i, yields a very similar accuracy to aggregating with the normalized weighted sum."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 3", stance: for}
+
+- id: c-wang-similar
+  type: attributive
+  text: "The normalized conditional probabilities P(r_i, a_i | prompt, question) are quite close to each other, so the language model regards those generations as similarly likely."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 3", stance: for}
+
+- id: c-wang-calib
+  type: attributive
+  text: "This also means that the language model is not well calibrated and cannot distinguish well between correct and wrong solutions, which explains why additional re-rankers were trained to judge solutions in previous work."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 3", stance: for}
+
+- id: c-wang-unnorm
+  type: attributive
+  text: "The normalized weighted sum yields a much higher accuracy than its unnormalized counterpart, and a weighted average, each answer's weighted sum divided by its count, gives a much worse performance."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 4", stance: for}
+
+- id: c-sc-weighted
+  type: mathematical
+  text: "A weighted vote picks arg max_a Σ_i w_i 1(a_i = a); with equal weights it is the majority vote, and with the unnormalized sequence probability as weight a path's weight shrinks geometrically with its length, so the vote favours short paths."
+  assumes: ["every weight is positive", "each token probability is below 1"]
+  derivation: self-consistency-voting
+
+- id: c-wang-robust
+  type: attributive
+  text: "Self-consistency is robust to sampling strategies and parameters, varying T in temperature sampling, k in top-k sampling and p in nucleus sampling over PaLM-540B."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 8", stance: for}
+
+- id: c-wang-beam
+  type: attributive
+  text: "Self-consistency can also adopt beam search to decode each reasoning path, but its performance is worse than self-consistency with sampling, because beam search yields a lower diversity in the outputs."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 7", stance: for}
+
+- id: c-wang-rank
+  type: attributive
+  text: "Sample-and-rank, which ranks sampled sequences by their log probability and takes the answer of the top-ranked one, improves the accuracy with more samples, but the gain is much smaller than that of self-consistency."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 7", stance: for}
+
+# Stopping early
+
+- id: c-ada-fixed
+  type: attributive
+  text: "Existing self-consistency methods generate a constant number of samples per question, where a better approach is to distribute the budget non-uniformly based on the agreement in the samples generated so far."
+  evidence:
+    - {work: "aggarwal-2023-adaptive-consistency", role: original, locator: "p. 1", stance: for}
+
+- id: c-ada-loop
+  type: attributive
+  text: "After generating each sample, Adaptive-Consistency employs a lightweight stopping criterion to decide whether to generate an additional sample or to cease sampling and report the current majority answer."
+  evidence:
+    - {work: "aggarwal-2023-adaptive-consistency", role: original, locator: "p. 3", stance: for}
+
+- id: c-ada-beta
+  type: attributive
+  text: "As an approximation, Adaptive-Consistency checks only the majority of p1 over the next largest probability p2, which simplifies to a Beta distribution with parameters (v1 + 1, v2 + 1) under a non-informative Beta(1, 1) prior."
+  evidence:
+    - {work: "aggarwal-2023-adaptive-consistency", role: original, locator: "p. 4", stance: for}
+
+- id: c-ada-thresh
+  type: attributive
+  text: "The only hyperparameters in Adaptive-Consistency are those of the stopping criterion, and Aggarwal et al. use a high threshold C_thresh = 0.95."
+  evidence:
+    - {work: "aggarwal-2023-adaptive-consistency", role: original, locator: "p. 5", stance: for}
+
+- id: c-sc-betastop
+  type: mathematical
+  text: "Under the Beta stopping rule with threshold 0.95, counts of 9 against 1 give a confidence of 1 − 12/2048 ≈ 0.994 and stop, a unanimous run stops after 4 samples (1 − 1/32 ≈ 0.969) but not after 3 (0.9375), and counts of 6 against 2 give 0.910 and go on."
+  assumes: ["the stopping confidence is P(q > 1/2) for q ~ Beta(v1 + 1, v2 + 1)"]
+  derivation: self-consistency-voting
+
+- id: c-ada-result
+  type: attributive
+  text: "Over 17 reasoning and code generation datasets and three LLMs, Adaptive-Consistency reduces the sample budget by up to 7.9 times with an average accuracy drop of less than 0.1%."
+  evidence:
+    - {work: "aggarwal-2023-adaptive-consistency", role: original, locator: "p. 1", stance: for}
+
+- id: c-esc-window
+  type: attributive
+  text: "Early-stopping self-consistency divides the large sample size into several sequential small windows and stops sampling when the answers within a window are all the same, that is when the entropy of the predicted answer distribution is zero."
+  evidence:
+    - {work: "li-2024-early-stopping-self-consistency", role: original, locator: "p. 2", stance: for}
+
+- id: c-esc-results
+  type: attributive
+  text: "ESC reduces the average number of samples of chain-of-thought reasoning on MATH (−33.8%), GSM8K (−80.1%), StrategyQA (−76.8%), Coin Flip (−84.2%) and Last Letters (−67.4%), while attaining comparable performance."
+  evidence:
+    - {work: "li-2024-early-stopping-self-consistency", role: original, locator: "p. 2", stance: for}
+
+- id: c-esc-cost
+  type: attributive
+  text: "Testing the entire MATH dataset with self-consistency at a sampling size of 64 costs about 2000$ through the GPT-4 API."
+  evidence:
+    - {work: "li-2024-early-stopping-self-consistency", role: original, locator: "p. 1", stance: for}
+
+- id: c-sc-escbound
+  type: mathematical
+  text: "A window of w samples is unanimous on an answer other than the mode with probability at most 2^−(w−1): every such answer has P(a) ≤ 1/2, so Σ_a P(a)^w ≤ 2^−(w−1) Σ_a P(a) ≤ 2^−(w−1), which is 1/128 for w = 8."
+  assumes: ["the samples in a window are independent draws from P", "the mode of P is unique"]
+  derivation: self-consistency-voting
+
+- id: c-sc-escstop
+  type: mathematical
+  text: "A window is unanimous with probability q = Σ_a P(a)^w, so with no cap on the number of windows the expected number of samples is w/q; for answer probabilities 0.9, 0.08 and 0.02 and w = 5, q ≈ 0.590 and the expected cost is about 8.5 samples."
+  assumes: ["windows are independent", "the number of windows is not capped"]
+  derivation: self-consistency-voting
+
+# Beyond exact answers
+
+- id: c-usc-limit
+  type: attributive
+  text: "Self-consistency relies on an answer extraction process to aggregate multiple solutions, which is not applicable to free-form answers."
+  evidence:
+    - {work: "chen-2023-universal-self-consistency", role: original, locator: "p. 1", stance: for}
+
+- id: c-usc-method
+  type: attributive
+  text: "Universal Self-Consistency concatenates all sampled responses and constructs a prompt with an instruction asking the language model to select the most consistent response."
+  evidence:
+    - {work: "chen-2023-universal-self-consistency", role: original, locator: "p. 2", stance: for}
+
+- id: c-usc-math
+  type: attributive
+  text: "On GSM8K and MATH, USC generally matches the performance of the standard self-consistency, and on text-to-SQL and Python code generation it matches execution-based consistency without requiring execution results."
+  evidence:
+    - {work: "chen-2023-universal-self-consistency", role: original, locator: "p. 2", stance: for}
+
+- id: c-usc-open
+  type: attributive
+  text: "USC also improves the performance for open-ended question answering and long-context summarization, where the standard self-consistency is not applicable."
+  evidence:
+    - {work: "chen-2023-universal-self-consistency", role: original, locator: "p. 2", stance: for}
+
+- id: c-usc-16
+  type: attributive
+  text: "USC does not further improve the performance on SummScreen after 5 samples, and the accuracy on GSM8K decreases with 16 samples, which can be due to weakness in long-context understanding and the imperfect counting ability of LLMs."
+  evidence:
+    - {work: "chen-2023-universal-self-consistency", role: original, locator: "p. 6", stance: for}
+
+- id: c-usc-detailed
+  type: attributive
+  text: "Asking the LLM to choose the most detailed response rather than the most consistent one results in gains of about 2 ROUGE-1 and ROUGE-Lsum points on summarization."
+  evidence:
+    - {work: "chen-2023-universal-self-consistency", role: original, locator: "p. 7", stance: for}
+
+- id: c-code-exec
+  type: attributive
+  text: "For code generation, execution-based consistency executes all predicted programs on the given inputs, clusters programs with the same execution outputs, and selects a program from the largest cluster."
+  evidence:
+    - {work: "chen-2023-universal-self-consistency", role: original, locator: "p. 2", stance: for}
+
+- id: c-div-vote
+  type: attributive
+  text: "DIVERSE's voting verifier selects ŷ = arg max_y Σ_{i=1}^M 1(y_i = y) · f(x_i, z_i, y_i), where f is the probability produced by the verifier that the reasoning path leads to the correct answer."
+  evidence:
+    - {work: "li-2023-diverse-step-aware-verifier", role: original, locator: "p. 2", stance: for}
+
+- id: c-div-why
+  type: attributive
+  text: "Majority voting may fail when the majority of the reasoning paths are misled while the minority of the reasoning paths are reasonable."
+  evidence:
+    - {work: "li-2023-diverse-step-aware-verifier", role: original, locator: "p. 2", stance: for}
+
+- id: c-div-gsm
+  type: attributive
+  text: "With the language model code-davinci-002, DIVERSE achieves new results on GSM8K (74.4% → 83.2%)."
+  evidence:
+    - {work: "li-2023-diverse-step-aware-verifier", role: original, locator: "p. 1", stance: for}
+
+- id: c-cob-topk
+  type: attributive
+  text: "Cobbe et al. take a majority vote among the top verifier-ranked solutions; with 100 samples it is optimal to let only the top 3 to 5 samples vote, and with 3200 samples about the top 30."
+  evidence:
+    - {work: "cobbe-2021-training-verifiers", role: original, locator: "p. 11", stance: for}
+
+# Evidence
+
+- id: c-wang-gains
+  type: attributive
+  text: "Self-consistency boosts chain-of-thought prompting on GSM8K (+17.9%), SVAMP (+11.0%), AQuA (+12.2%), StrategyQA (+6.4%) and ARC-challenge (+3.9%)."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 1", stance: for}
+
+- id: c-wang-scale
+  type: attributive
+  text: "The gains become more significant as the language model's scale increases: +3% to 6% absolute accuracy over UL2-20B but +9% to 23% for LaMDA-137B and GPT-3."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 5", stance: for}
+
+- id: c-wang-paths
+  type: attributive
+  text: "Sampling a higher number of reasoning paths (1, 5, 10, 20, 40) leads to consistently better performance."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 6", stance: for}
+
+- id: c-wang-hurt
+  type: attributive
+  text: "For some tasks such as ANLI-R1, e-SNLI and RTE, adding chain-of-thought hurts performance compared to standard prompting, but self-consistency boosts the performance and outperforms standard prompting."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 6", stance: for}
+
+- id: c-wang-zeroshot
+  type: attributive
+  text: "Self-consistency also works for zero-shot chain-of-thought and improves the results significantly (+26.2%)."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 8", stance: for}
+
+- id: c-wang-equations
+  type: attributive
+  text: "With equations as reasoning paths self-consistency still improves accuracy, but the gain is smaller since the equations are much shorter and leave less opportunity for diversity in decoding."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 8", stance: for}
+
+- id: c-wang-uncert
+  type: attributive
+  text: "The consistency, the percentage of decodes agreeing with the final aggregated answer, is highly correlated with accuracy, so low consistency can be used as an indicator that the model has low confidence."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 8", stance: for}
+
+- id: c-mag-scale
+  type: attributive
+  text: "Through a sampling-and-voting method, called Agent Forest, the performance of large language models scales with the number of agents instantiated."
+  evidence:
+    - {work: "li-2024-more-agents", role: original, locator: "p. 1", stance: for}
+
+- id: c-mag-small
+  type: attributive
+  text: "With a larger ensemble, Llama2-13B achieves 59% accuracy on GSM8K, above the 54% of Llama2-70B."
+  evidence:
+    - {work: "li-2024-more-agents", role: original, locator: "p. 6", stance: for}
+
+- id: c-mag-difficulty
+  type: attributive
+  text: "Gains increase then decrease as the inherent difficulty rises, and gains increase with the number of reasoning steps."
+  evidence:
+    - {work: "li-2024-more-agents", role: original, locator: "p. 10", stance: for}
+
+# Limitations
+
+- id: c-wang-cost
+  type: attributive
+  text: "One limitation of self-consistency is that it incurs more computation cost; in practice people can try a small number of paths, such as 5 or 10, to realize most of the gains, as in most cases the performance saturates quickly."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 9", stance: for}
+
+- id: c-wang-nonsense
+  type: attributive
+  text: "Language models can sometimes generate incorrect or nonsensical reasoning paths, and further work is needed to better ground models' rationale generations."
+  evidence:
+    - {work: "wang-2022-self-consistency-chain-of-thought", role: original, locator: "p. 9", stance: for}
+
+- id: c-sc-binary
+  type: mathematical
+  text: "With two possible answers, the correct one sampled with probability p, and an odd number m of samples, the vote is correct with probability Σ_{j>m/2} C(m, j) p^j (1 − p)^(m−j); for p = 0.6 this is 0.6, 0.683, 0.753 and 0.903 at m = 1, 5, 11 and 41, and for p = 0.4 it falls to 0.4, 0.317, 0.247 and 0.097."
+  assumes: ["the samples are independent", "each is correct with the same probability p"]
+  derivation: self-consistency-voting
+
+- id: c-sc-hoeffding
+  type: mathematical
+  text: "If the correct answer y is sampled with probability exceeding that of every other answer by at least δ, the vote is wrong with probability at most (|A| − 1) exp(−mδ²/2) over an answer set A, so the error falls exponentially in m: for δ = 0.3 and one competing answer it is below 0.17 at m = 40 and below 0.012 at m = 100."
+  assumes: ["the m samples are independent draws from the same distribution", "ties count as errors"]
+  derivation: self-consistency-voting
+
+- id: c-mlc-nonmono
+  type: attributive
+  text: "Across multiple language tasks, the performance of Vote and Filter-Vote can first increase but then decrease as a function of the number of LM calls."
+  evidence:
+    - {work: "chen-2024-are-more-llm-calls-all-you-need", role: original, locator: "p. 1", stance: for}
+
+- id: c-mlc-why
+  type: attributive
+  text: "More LM calls lead to higher performance on easy queries but lower performance on hard queries, and non-monotone behavior can emerge when a task contains both types of queries."
+  evidence:
+    - {work: "chen-2024-are-more-llm-calls-all-you-need", role: original, locator: "p. 1", stance: for}
+
+- id: c-mlc-difficulty
+  type: attributive
+  text: "For Vote, the query difficulty indicator is d_V(x) = max_{a≠y} Pr[G(x, θ) = a] − Pr[G(x, θ) = y], and d_V(x) > 0 indicates that an incorrect answer is more likely to be generated than the correct one."
+  evidence:
+    - {work: "chen-2024-are-more-llm-calls-all-you-need", role: original, locator: "p. 5", stance: for}
+
+- id: c-sc-mixture
+  type: mathematical
+  text: "With 60% of queries answered correctly with probability 0.6 and 40% with probability 0.45, two answers per query and odd m, voting accuracy rises from 0.54 at m = 1 to about 0.653 at m = 71 and then falls towards 0.6 as m grows."
+  assumes: ["each query has two possible answers", "samples are independent given the query"]
+  derivation: self-consistency-voting
+
+- id: c-mnk-coverage
+  type: attributive
+  text: "Across tasks and models, coverage, the fraction of problems solved by any generated sample, scales with the number of samples over four orders of magnitude."
+  evidence:
+    - {work: "brown-2024-large-language-monkeys", role: original, locator: "p. 1", stance: for}
+
+- id: c-mnk-plateau
+  type: attributive
+  text: "In domains without automatic verifiers, majority voting and reward models plateau beyond several hundred samples and fail to fully scale with the sample budget."
+  evidence:
+    - {work: "brown-2024-large-language-monkeys", role: original, locator: "p. 1", stance: for}
+
+- id: c-mnk-math
+  type: attributive
+  text: "On MATH with Llama-3-8B-Instruct, coverage increases from 82.9% with 100 samples to 98.44% with 10,000 samples, but with majority voting or reward models selecting the answer the increase is only from 40.50% to 41.41%."
+  evidence:
+    - {work: "brown-2024-large-language-monkeys", role: original, locator: "p. 3", stance: for}
+
+- id: c-sc-coverage
+  type: mathematical
+  text: "If one sample is correct with probability p, the chance that at least one of k samples is correct is 1 − (1 − p)^k, which tends to 1 for any p > 0, while the vote tends to the mode; for a correct answer sampled with probability 0.2 and a wrong one with 0.3, coverage at k = 10 is 0.893 while the vote converges on the wrong answer."
+  assumes: ["samples are independent"]
+  derivation: self-consistency-voting
+
+- id: c-sc-passk
+  type: mathematical
+  text: "From n samples with c correct, 1 − C(n − c, k)/C(n, k) is an unbiased estimate of 1 − (1 − p)^k for k ≤ n."
+  assumes: ["the n samples are independent", "each is correct with probability p"]
+  derivation: self-consistency-voting
+
+- id: c-cob-400
+  type: attributive
+  text: "With a 6B verifier, performance improves as the number of completions per test problem increases up to 400, and beyond this point performance starts to decrease, as the benefits of search are outweighed by the risk of finding adversarial solutions that fool the verifier."
+  evidence:
+    - {work: "cobbe-2021-training-verifiers", role: original, locator: "p. 10", stance: for}
