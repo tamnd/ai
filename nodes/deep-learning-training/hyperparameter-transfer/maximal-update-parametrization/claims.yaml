@@ -549,3 +549,26 @@
   text: "The epsilon parameter in Adam must be scaled correctly to avoid gradient underflow; Adam-atan2 is a numerically stable, scale-invariant version of Adam that eliminates epsilon."
   evidence:
     - {work: "everett-2024-scaling-exponents-parameterizations-optimizers", role: original, locator: "p. 1", stance: for}
+
+- id: c-he-init
+  type: attributive
+  text: "He et al. derive a robust initialization method that particularly considers the rectifier nonlinearities, with the sufficient condition that one half of n_l Var[w_l] equals 1 for every layer, which results in a zero-mean Gaussian distribution whose standard deviation is the square root of 2/n_l."
+  evidence:
+    - {work: "he-2015-delving-deep-rectifiers", role: original, locator: "pp. 1 and 4", stance: for}
+
+- id: c-he-30layer
+  type: empirical
+  text: "Their initialization method allows for extremely deep models (e.g., 30 conv/fc layers) to converge, while the Xavier method cannot."
+  scope:
+    models: "rectified convolutional networks with up to 30 layers (27 conv and 3 fc)"
+    data: ["imagenet"]
+    scale: "up to 30 layers"
+    setting: "training from scratch with the He and Xavier initializations"
+  evidence:
+    - {work: "he-2015-delving-deep-rectifiers", role: original, locator: "p. 3", stance: for}
+
+- id: c-jacot-factors
+  type: attributive
+  text: "Jacot et al. initialize the parameters as iid Gaussians N(0, 1) and put factors of one over the square root of n_l in the realization function; the factors are key to obtaining a consistent asymptotic behavior as the widths grow to infinity, but a side-effect is that they reduce greatly the influence of the connection weights during training when n_l is large."
+  evidence:
+    - {work: "jacot-2018-neural-tangent-kernel", role: original, locator: "pp. 2 and 3", stance: for}
