@@ -1,0 +1,553 @@
+# The claims of the instruction-tuning page (spec 07). The build computes the labels.
+
+# Setting
+
+- id: c-fl-define
+  type: attributive
+  text: "Wei et al. call finetuning language models on a collection of datasets described via instructions instruction tuning, and report that it substantially improves zero-shot performance on unseen tasks."
+  evidence:
+    - {work: "wei-2022-finetuned-language-models-zero-shot", role: original, locator: "p. 1", stance: for}
+
+- id: c-t0-question
+  type: attributive
+  text: "Sanh et al. ask whether the zero-shot generalization of large language models, hypothesized to be a consequence of implicit multitask learning in pretraining, can instead be directly induced by explicit multitask learning."
+  evidence:
+    - {work: "sanh-2022-multitask-prompted-training", role: original, locator: "p. 1", stance: for}
+
+- id: c-ni-dataset
+  type: attributive
+  text: "Natural Instructions is a dataset of 61 distinct tasks, their human-authored instructions and 193k task instances, with the instructions obtained from the crowdsourcing instructions used to create existing NLP datasets and mapped to a unified schema."
+  evidence:
+    - {work: "mishra-2022-cross-task-generalization", role: original, locator: "p. 1", stance: for}
+
+- id: c-ni-schema
+  type: attributive
+  text: "The unified schema of Natural Instructions covers the most important elements of task descriptions, such as definition, constraints, positive and negative examples."
+  evidence:
+    - {work: "mishra-2022-cross-task-generalization", role: original, locator: "p. 2", stance: for}
+
+- id: c-ig-sft
+  type: attributive
+  text: "The supervised fine-tuning stage of InstructGPT fine-tunes GPT-3 on labeler demonstrations with supervised learning, for 16 epochs with a cosine learning rate decay and residual dropout of 0.2, selecting the final model by its reward-model score on the validation set."
+  evidence:
+    - {work: "ouyang-2022-training-language-models-follow-instructions", role: original, locator: "p. 8", stance: for}
+
+- id: c-ig-13k
+  type: attributive
+  text: "The InstructGPT SFT dataset contains about 13k training prompts, from the API and written by labelers."
+  evidence:
+    - {work: "ouyang-2022-training-language-models-follow-instructions", role: original, locator: "p. 7", stance: for}
+
+# The method
+
+- id: c-fl-62
+  type: attributive
+  text: "Wei et al. aggregate 62 text datasets that are publicly available on Tensorflow Datasets into a single mixture, each categorized into one of twelve task clusters of the same task type."
+  evidence:
+    - {work: "wei-2022-finetuned-language-models-zero-shot", role: original, locator: "p. 3", stance: for}
+
+- id: c-fl-templates
+  type: attributive
+  text: "For each dataset Wei et al. manually compose ten unique templates that use natural language instructions to describe the task."
+  evidence:
+    - {work: "wei-2022-finetuned-language-models-zero-shot", role: original, locator: "p. 3", stance: for}
+
+- id: c-t0-p3
+  type: attributive
+  text: "The Public Pool of Prompts (P3) contains 2073 prompts for 177 datasets, 11.7 prompts per dataset on average."
+  evidence:
+    - {work: "sanh-2022-multitask-prompted-training", role: original, locator: "p. 5", stance: for}
+
+- id: c-t0-encdec
+  type: attributive
+  text: "T0 is an encoder-decoder model that generates the target through standard maximum likelihood training; unlike decoder-only language models such as GPT-3, it is never trained to generate the input."
+  evidence:
+    - {work: "sanh-2022-multitask-prompted-training", role: original, locator: "p. 6", stance: for}
+
+- id: c-fl-mix
+  type: attributive
+  text: "FLAN limits the number of training examples per dataset to 30k and follows the examples-proportional mixing scheme with a mixing rate maximum of 3k, meaning that a dataset receives no additional sampling weight for examples in excess of 3,000."
+  evidence:
+    - {work: "wei-2022-finetuned-language-models-zero-shot", role: original, locator: "p. 4", stance: for}
+
+- id: c-t0-mix
+  type: attributive
+  text: "T0 combines and shuffles all examples from all training datasets, which is equivalent to sampling in proportion to dataset size, but treats any dataset with over 500'000 examples as having 500'000 divided by its number of templates."
+  evidence:
+    - {work: "sanh-2022-multitask-prompted-training", role: original, locator: "p. 6", stance: for}
+
+- id: c-fc-mixtures
+  type: attributive
+  text: "Chung et al. scale to 1,836 finetuning tasks from 473 datasets and 146 task categories by combining four mixtures: Muffin (80 tasks), T0-SF (193 tasks), NIV2 (1554 tasks) and CoT."
+  evidence:
+    - {work: "chung-2022-scaling-instruction-finetuned", role: original, locator: "p. 3", stance: for}
+
+- id: c-co-inversion-def
+  type: attributive
+  text: "Input inversion gives a model the answer y of a supervised task and trains it to generate the question x, an easy method to enrich the task variety given a limited set of data sources."
+  evidence:
+    - {work: "longpre-2023-flan-collection", role: original, locator: "p. 7", stance: for}
+
+- id: c-si-pipeline
+  type: attributive
+  text: "Self-Instruct starts from 175 seed tasks, each with one instruction and one instance, and at each step samples 8 task instructions from the pool as in-context examples for generating new ones."
+  evidence:
+    - {work: "wang-2023-self-instruct", role: original, locator: "p. 3", stance: for}
+
+- id: c-si-rouge
+  type: attributive
+  text: "Self-Instruct adds a new instruction to the task pool only when its ROUGE-L similarity with every existing instruction is less than 0.7."
+  evidence:
+    - {work: "wang-2023-self-instruct", role: original, locator: "p. 4", stance: for}
+
+- id: c-si-52k
+  type: attributive
+  text: "Run on GPT-3, the iterative Self-Instruct process yields about 52k instructions paired with about 82K instance inputs and target outputs."
+  evidence:
+    - {work: "wang-2023-self-instruct", role: original, locator: "p. 2", stance: for}
+
+- id: c-li-data
+  type: attributive
+  text: "The LIMA training set has 750 top questions and answers from community forums such as Stack Exchange and wikiHow, sampled for quality and diversity, and 250 hand-written prompts and responses in a uniform assistant style."
+  evidence:
+    - {work: "zhou-2023-lima", role: original, locator: "p. 2", stance: for}
+
+- id: c-li-eot
+  type: attributive
+  text: "LIMA marks the end of each utterance with a special end-of-turn token, which halts generation like EOS but avoids conflation with any other meaning the pretrained model gave the existing EOS token."
+  evidence:
+    - {work: "zhou-2023-lima", role: original, locator: "p. 4", stance: for}
+
+# Hyperparameters
+
+- id: c-fl-hparams
+  type: attributive
+  text: "FLAN is finetuned for 30k gradient steps with a batch size of 8,192 tokens, the Adafactor optimizer at a learning rate of 3e-5, input and target lengths of 1024 and 256, and packing of several examples into one sequence separated by an EOS token."
+  evidence:
+    - {work: "wei-2022-finetuned-language-models-zero-shot", role: original, locator: "p. 4", stance: for}
+
+- id: c-t0-hparams
+  type: attributive
+  text: "T0 truncates inputs and targets to 1024 and 256 tokens and uses Adafactor with a learning rate of 1e-3 and a dropout rate of 0.1, following standard practice for fine-tuning T5."
+  evidence:
+    - {work: "sanh-2022-multitask-prompted-training", role: original, locator: "p. 6", stance: for}
+
+- id: c-li-hparams
+  type: attributive
+  text: "LIMA is fine-tuned for 15 epochs with AdamW (beta1 = 0.9, beta2 = 0.95, weight decay 0.1), with no warmup and a learning rate decaying linearly from 1e-5 to 1e-6."
+  evidence:
+    - {work: "zhou-2023-lima", role: original, locator: "p. 4", stance: for}
+
+# Cost
+
+- id: c-fl-time
+  type: attributive
+  text: "FLAN's instruction tuning takes around 60 hours on a TPUv3 with 128 cores."
+  evidence:
+    - {work: "wei-2022-finetuned-language-models-zero-shot", role: original, locator: "p. 4", stance: for}
+
+- id: c-fc-compute
+  type: attributive
+  text: "Chung et al. use 0.2% of the pre-training compute to instruction-finetune Flan-PaLM 540B, approximately 512 v4 TPU chips for 37 hours."
+  evidence:
+    - {work: "chung-2022-scaling-instruction-finetuned", role: original, locator: "p. 4", stance: for}
+
+- id: c-fc-table
+  type: attributive
+  text: "For Flan-PaLM 540B, Table 2 of Chung et al. lists 2.5E+24 pre-training FLOPs and 5.6E+21 finetuning FLOPs."
+  evidence:
+    - {work: "chung-2022-scaling-instruction-finetuned", role: original, locator: "p. 5", stance: for}
+
+- id: c-fc-tokens
+  type: attributive
+  text: "The PaLM pre-training data consists of 780B tokens, while instruction finetuning uses 1.4B tokens, 0.2% of the pre-training tokens."
+  evidence:
+    - {work: "chung-2022-scaling-instruction-finetuned", role: original, locator: "p. 6", stance: for}
+
+# Evidence
+
+- id: c-fl-gpt3
+  type: empirical
+  text: "FLAN, a 137B model instruction tuned on over 60 NLP datasets, surpasses zero-shot 175B GPT-3 on 20 of 25 datasets evaluated."
+  scope:
+    models: "LaMDA-PT, a decoder-only language model"
+    data: ["62 public text datasets in twelve task clusters, ten templates each"]
+    scale: "422M to 137B parameters"
+    setting: "instruction tuning on all clusters but one, zero-shot evaluation on the held-out cluster"
+  evidence:
+    - {work: "wei-2022-finetuned-language-models-zero-shot", role: original, locator: "p. 1", stance: for}
+
+- id: c-fl-clusters
+  type: empirical
+  text: "With NLI, closed-book QA and commonsense reasoning held out, average performance on the held-out clusters improves as instruction-tuning clusters are added, except for sentiment analysis, and does not appear to saturate at seven clusters."
+  scope:
+    models: "LaMDA-PT, a decoder-only language model"
+    data: ["62 public text datasets in twelve task clusters, ten templates each"]
+    scale: "422M to 137B parameters"
+    setting: "instruction tuning on all clusters but one, zero-shot evaluation on the held-out cluster"
+  evidence:
+    - {work: "wei-2022-finetuned-language-models-zero-shot", role: original, locator: "p. 6", stance: for}
+
+- id: c-fl-instructions
+  type: empirical
+  text: "Finetuning without templates, or with only the dataset name in place of instructions, performs substantially worse than FLAN on held-out clusters, indicating that training with instructions is crucial for zero-shot performance on unseen tasks."
+  scope:
+    models: "LaMDA-PT, a decoder-only language model"
+    data: ["62 public text datasets in twelve task clusters, ten templates each"]
+    scale: "422M to 137B parameters"
+    setting: "instruction tuning on all clusters but one, zero-shot evaluation on the held-out cluster"
+  evidence:
+    - {work: "wei-2022-finetuned-language-models-zero-shot", role: original, locator: "p. 7", stance: for}
+
+- id: c-fl-fewshot
+  type: empirical
+  text: "Few-shot exemplars at inference improve instruction-tuned FLAN on all task clusters over zero-shot FLAN, and lower the standard deviation across templates."
+  scope:
+    models: "LaMDA-PT, a decoder-only language model"
+    data: ["62 public text datasets in twelve task clusters, ten templates each"]
+    scale: "422M to 137B parameters"
+    setting: "instruction tuning on all clusters but one, zero-shot evaluation on the held-out cluster"
+  evidence:
+    - {work: "wei-2022-finetuned-language-models-zero-shot", role: original, locator: "p. 8", stance: for}
+
+- id: c-t0-gpt3
+  type: empirical
+  text: "T0 matches or exceeds GPT-3 on 9 of 11 held-out datasets despite being about 16 times smaller, and improves over a large baseline language model on 13 of 14 BIG-bench tasks."
+  scope:
+    models: "T5+LM, an LM-adapted T5 encoder-decoder"
+    data: ["P3 prompts for the training datasets; 11 held-out datasets in four tasks and 14 BIG-bench tasks"]
+    scale: "3B and 11B parameters"
+    setting: "multitask prompted fine-tuning, zero-shot evaluation on held-out tasks with many prompts each"
+  evidence:
+    - {work: "sanh-2022-multitask-prompted-training", role: original, locator: "p. 3", stance: for}
+
+- id: c-t0-baseline
+  type: empirical
+  text: "Multitask prompted training gives significant gains over the T5+LM baseline, the same model without it, on all held-out datasets."
+  scope:
+    models: "T5+LM, an LM-adapted T5 encoder-decoder"
+    data: ["P3 prompts for the training datasets; 11 held-out datasets in four tasks and 14 BIG-bench tasks"]
+    scale: "3B and 11B parameters"
+    setting: "multitask prompted fine-tuning, zero-shot evaluation on held-out tasks with many prompts each"
+  evidence:
+    - {work: "sanh-2022-multitask-prompted-training", role: original, locator: "p. 7", stance: for}
+
+- id: c-t0-prompts
+  type: empirical
+  text: "Training on more prompts per dataset consistently improves the median and decreases the variability of performance on held-out tasks; prompts from more datasets generally improve the median but do not consistently decrease the variability."
+  scope:
+    models: "T5+LM, an LM-adapted T5 encoder-decoder"
+    data: ["P3 prompts for the training datasets; 11 held-out datasets in four tasks and 14 BIG-bench tasks"]
+    scale: "3B and 11B parameters"
+    setting: "multitask prompted fine-tuning, zero-shot evaluation on held-out tasks with many prompts each"
+  evidence:
+    - {work: "sanh-2022-multitask-prompted-training", role: original, locator: "p. 3", stance: for}
+
+- id: c-ni-19
+  type: empirical
+  text: "BART fine-tuned with instructions achieves a 19% gain in cross-task generalization over the same model without instructions."
+  scope:
+    models: "BART base, and GPT-3 without fine-tuning"
+    data: ["Natural Instructions, 61 tasks and 193k instances"]
+    scale: "140M parameters for BART"
+    setting: "training on seen tasks and evaluating on unseen ones, with and without instructions"
+  evidence:
+    - {work: "mishra-2022-cross-task-generalization", role: original, locator: "p. 2", stance: for}
+
+- id: c-ni-more-tasks
+  type: empirical
+  text: "Models using instructions generalize better to unseen tasks when they observe more tasks in training."
+  scope:
+    models: "BART base, and GPT-3 without fine-tuning"
+    data: ["Natural Instructions, 61 tasks and 193k instances"]
+    scale: "140M parameters for BART"
+    setting: "training on seen tasks and evaluating on unseen ones, with and without instructions"
+  evidence:
+    - {work: "mishra-2022-cross-task-generalization", role: original, locator: "p. 2", stance: for}
+
+- id: c-fc-gain
+  type: empirical
+  text: "Flan-PaLM 540B, instruction-finetuned on 1.8K tasks, outperforms PaLM 540B by 9.4% on average and reaches 75.2% on five-shot MMLU."
+  scope:
+    models: "PaLM, U-PaLM and T5"
+    data: ["Muffin, T0-SF, NIV2 and CoT mixtures, 1,836 tasks; MMLU, BBH, TyDiQA and MGSM held out"]
+    scale: "80M to 540B parameters"
+    setting: "instruction finetuning with and without exemplars and chain-of-thought"
+  evidence:
+    - {work: "chung-2022-scaling-instruction-finetuned", role: original, locator: "p. 1", stance: for}
+
+- id: c-fc-tasks
+  type: empirical
+  text: "Multi-task instruction finetuning improves the normalized average on held-out benchmarks by 9.4% to 15.5% over no finetuning at 8B, 62B and 540B parameters; more tasks help, but most of the improvement comes from using up to 282 tasks."
+  scope:
+    models: "PaLM, U-PaLM and T5"
+    data: ["Muffin, T0-SF, NIV2 and CoT mixtures, 1,836 tasks; MMLU, BBH, TyDiQA and MGSM held out"]
+    scale: "80M to 540B parameters"
+    setting: "instruction finetuning with and without exemplars and chain-of-thought"
+  evidence:
+    - {work: "chung-2022-scaling-instruction-finetuned", role: original, locator: "p. 6", stance: for}
+
+- id: c-fc-flant5
+  type: empirical
+  text: "Flan-T5 checkpoints from 80M to 11B parameters outperform T5, with Flan-T5 11B improving on T5 11B by double digits and beating PaLM 62B on some challenging BIG-Bench tasks."
+  scope:
+    models: "PaLM, U-PaLM and T5"
+    data: ["Muffin, T0-SF, NIV2 and CoT mixtures, 1,836 tasks; MMLU, BBH, TyDiQA and MGSM held out"]
+    scale: "80M to 540B parameters"
+    setting: "instruction finetuning with and without exemplars and chain-of-thought"
+  evidence:
+    - {work: "chung-2022-scaling-instruction-finetuned", role: original, locator: "p. 2", stance: for}
+
+- id: c-co-mixed
+  type: empirical
+  text: "Training with mixed prompt settings, zero-shot, few-shot and chain-of-thought together, yields stronger (2%+) performance in all settings."
+  scope:
+    models: "T5-XL-LM and T5 of other sizes"
+    data: ["the Flan 2022 collection compared with Flan 2021, P3++ and Super-Natural Instructions; MMLU and BBH held out"]
+    scale: "T5-XL (3B) for the ablations"
+    setting: "instruction tuning with one design choice removed at a time"
+  evidence:
+    - {work: "longpre-2023-flan-collection", role: original, locator: "p. 1", stance: for}
+
+- id: c-co-fewshot
+  type: empirical
+  text: "Adding as little as 5% few-shot training templates can dramatically improve zero-shot performance, and adding 10%+ of zero-shot data improves few-shot performance too."
+  scope:
+    models: "T5-XL-LM and T5 of other sizes"
+    data: ["the Flan 2022 collection compared with Flan 2021, P3++ and Super-Natural Instructions; MMLU and BBH held out"]
+    scale: "T5-XL (3B) for the ablations"
+    setting: "instruction tuning with one design choice removed at a time"
+  evidence:
+    - {work: "longpre-2023-flan-collection", role: original, locator: "p. 6", stance: for}
+
+- id: c-co-inversion
+  type: empirical
+  text: "Enriching the mixture with input-inverted tasks is not beneficial for held-in performance but strongly beneficial for held-out performance."
+  scope:
+    models: "T5-XL-LM and T5 of other sizes"
+    data: ["the Flan 2022 collection compared with Flan 2021, P3++ and Super-Natural Instructions; MMLU and BBH held out"]
+    scale: "T5-XL (3B) for the ablations"
+    setting: "instruction tuning with one design choice removed at a time"
+  evidence:
+    - {work: "longpre-2023-flan-collection", role: original, locator: "p. 7", stance: for}
+
+- id: c-co-checkpoint
+  type: empirical
+  text: "Flan-T5 converges faster and at a higher performance than T5 in single-task finetuning, suggesting instruction-tuned models are a more computationally efficient starting checkpoint."
+  scope:
+    models: "T5-XL-LM and T5 of other sizes"
+    data: ["the Flan 2022 collection compared with Flan 2021, P3++ and Super-Natural Instructions; MMLU and BBH held out"]
+    scale: "T5-XL (3B) for the ablations"
+    setting: "instruction tuning with one design choice removed at a time"
+  evidence:
+    - {work: "longpre-2023-flan-collection", role: original, locator: "p. 2", stance: for}
+
+- id: c-ig-overfit
+  type: empirical
+  text: "InstructGPT's SFT models overfit on validation loss after 1 epoch, yet training for more epochs helps both the reward-model score and human preference ratings."
+  scope:
+    models: "GPT-3 fine-tuned on labeler demonstrations"
+    data: ["about 13k training prompts from the OpenAI API and labelers"]
+    scale: "1.3B, 6B and 175B parameters"
+    setting: "supervised fine-tuning as the first stage of RLHF, judged by labelers on held-out API prompts"
+  evidence:
+    - {work: "ouyang-2022-training-language-models-follow-instructions", role: original, locator: "p. 8", stance: for}
+
+- id: c-ig-flan-base
+  type: empirical
+  text: "Ouyang et al. compare InstructGPT with 175B GPT-3 baselines fine-tuned on the FLAN and T0 datasets, and find that these perform better than GPT-3."
+  scope:
+    models: "175B GPT-3 fine-tuned on the FLAN and T0 datasets, and InstructGPT"
+    data: ["prompts submitted to the OpenAI API"]
+    scale: "175B parameters"
+    setting: "head-to-head human preference on the API prompt distribution"
+  evidence:
+    - {work: "ouyang-2022-training-language-models-follow-instructions", role: original, locator: "p. 12", stance: for}
+
+- id: c-ig-flan
+  type: empirical
+  text: "On the API prompt distribution, outputs of the 175B InstructGPT model were preferred over the FLAN-tuned model 78 ±4% of the time and over the T0-tuned model 79 ±4% of the time."
+  scope:
+    models: "175B GPT-3 fine-tuned on the FLAN and T0 datasets, and InstructGPT"
+    data: ["prompts submitted to the OpenAI API"]
+    scale: "175B parameters"
+    setting: "head-to-head human preference on the API prompt distribution"
+  evidence:
+    - {work: "ouyang-2022-training-language-models-follow-instructions", role: original, locator: "p. 13", stance: for}
+
+- id: c-si-33
+  type: empirical
+  text: "Fine-tuning the vanilla base model on its own Self-Instruct data gives a 33% absolute improvement on Super-NaturalInstructions, on par with InstructGPT-001, and leaves a 5% absolute gap to InstructGPT-001 in human evaluation on novel instructions."
+  scope:
+    models: "GPT-3 (davinci) fine-tuned on its own generated instructions"
+    data: ["52K generated instructions; Super-NaturalInstructions and 252 user-oriented instructions for evaluation"]
+    scale: "175B parameters"
+    setting: "fine-tuning on generated data, compared with InstructGPT-001 and models tuned on public instruction data"
+  evidence:
+    - {work: "wang-2023-self-instruct", role: original, locator: "p. 1", stance: for}
+
+- id: c-li-pref
+  type: empirical
+  text: "In a controlled human study, responses from LIMA are equivalent or strictly preferred to GPT-4 in 43% of cases, to Bard in 58% and to DaVinci003 in 65%."
+  scope:
+    models: "LLaMa 65B fine-tuned on 1,000 examples"
+    data: ["750 community-forum questions and answers and 250 hand-written examples; 300 test prompts"]
+    scale: "65B parameters"
+    setting: "human preference between LIMA and five baselines"
+  evidence:
+    - {work: "zhou-2023-lima", role: original, locator: "p. 1", stance: for}
+
+- id: c-li-diversity
+  type: empirical
+  text: "In the LIMA ablations, scaling up input diversity and output quality have measurable positive effects, while scaling up quantity alone might not."
+  scope:
+    models: "LLaMa 7B"
+    data: ["Stack Exchange, wikiHow and unfiltered Stack Exchange samples"]
+    scale: "7B parameters, 2,000 to 32,000 examples"
+    setting: "ablations of diversity, quality and quantity graded by ChatGPT"
+  evidence:
+    - {work: "zhou-2023-lima", role: original, locator: "p. 6", stance: for}
+
+- id: c-li-quantity
+  type: empirical
+  text: "7B models trained on exponentially increasing amounts of quality-filtered Stack Exchange data plateau in performance despite an up to 16-fold increase in data size."
+  scope:
+    models: "LLaMa 7B"
+    data: ["Stack Exchange, wikiHow and unfiltered Stack Exchange samples"]
+    scale: "7B parameters, 2,000 to 32,000 examples"
+    setting: "ablations of diversity, quality and quantity graded by ChatGPT"
+  evidence:
+    - {work: "zhou-2023-lima", role: original, locator: "p. 8", stance: for}
+
+# Limitations
+
+- id: c-fl-small
+  type: empirical
+  text: "Instruction tuning substantially improves held-out performance for the two models on the order of 100B parameters, but for 8B and smaller models it hurts performance on held-out tasks."
+  scope:
+    models: "LaMDA-PT, a decoder-only language model"
+    data: ["62 public text datasets in twelve task clusters, ten templates each"]
+    scale: "422M to 137B parameters"
+    setting: "instruction tuning on all clusters but one, zero-shot evaluation on the held-out cluster"
+  evidence:
+    - {work: "wei-2022-finetuned-language-models-zero-shot", role: original, locator: "p. 7", stance: for}
+
+- id: c-fl-capacity
+  type: attributive
+  text: "Wei et al. suggest that for small models, learning the roughly 40 tasks used during instruction tuning fills the entire model capacity."
+  evidence:
+    - {work: "wei-2022-finetuned-language-models-zero-shot", role: original, locator: "p. 7", stance: for}
+
+- id: c-fl-lm-tasks
+  type: attributive
+  text: "Instruction tuning does not improve performance for many language modeling tasks, such as commonsense reasoning or coreference resolution tasks formulated as sentence completions."
+  evidence:
+    - {work: "wei-2022-finetuned-language-models-zero-shot", role: original, locator: "p. 6", stance: for}
+
+- id: c-fc-cot
+  type: empirical
+  text: "Instruction finetuning without chain-of-thought data severely degrades performance on chain-of-thought evaluations, and adding just nine chain-of-thought datasets to the mixture improves performance on all evaluations."
+  scope:
+    models: "PaLM, U-PaLM and T5"
+    data: ["Muffin, T0-SF, NIV2 and CoT mixtures, 1,836 tasks; MMLU, BBH, TyDiQA and MGSM held out"]
+    scale: "80M to 540B parameters"
+    setting: "instruction finetuning with and without exemplars and chain-of-thought"
+  evidence:
+    - {work: "chung-2022-scaling-instruction-finetuned", role: original, locator: "p. 2", stance: for}
+
+- id: c-fc-express
+  type: attributive
+  text: "One explanation Chung et al. give for the small gain after 282 tasks is that most of the gains come from the model learning to better express knowledge it already knows from pretraining."
+  evidence:
+    - {work: "chung-2022-scaling-instruction-finetuned", role: original, locator: "p. 6", stance: for}
+
+- id: c-co-diversity
+  type: attributive
+  text: "Longpre et al. caution against concluding that scaling beyond 1800 tasks would bring increased returns without also paying attention to task diversity and quality."
+  evidence:
+    - {work: "longpre-2023-flan-collection", role: original, locator: "p. 7", stance: for}
+
+- id: c-si-quality
+  type: empirical
+  text: "In a sample of Self-Instruct data, 92% of instructions describe a valid task, 79% of inputs suit their instruction, 58% of outputs are correct and acceptable, and 54% of examples have all fields valid."
+  scope:
+    models: "GPT-3 (davinci) fine-tuned on its own generated instructions"
+    data: ["52K generated instructions; Super-NaturalInstructions and 252 user-oriented instructions for evaluation"]
+    scale: "175B parameters"
+    setting: "fine-tuning on generated data, compared with InstructGPT-001 and models tuned on public instruction data"
+  evidence:
+    - {work: "wang-2023-self-instruct", role: original, locator: "p. 5", stance: for}
+
+- id: c-ig-reason
+  type: attributive
+  text: "Ouyang et al. explain the gap partly by usage: classification and QA are only about 18% of what API customers use the models for, while open-ended generation and brainstorming make up about 57% of their prompt dataset."
+  evidence:
+    - {work: "ouyang-2022-training-language-models-follow-instructions", role: original, locator: "p. 13", stance: for}
+
+- id: c-li-unsafe
+  type: attributive
+  text: "When malicious intent is implicit, LIMA is more likely to provide unsafe responses."
+  evidence:
+    - {work: "zhou-2023-lima", role: original, locator: "p. 6", stance: for}
+
+- id: c-li-hypothesis
+  type: attributive
+  text: "Zhou et al. state the Superficial Alignment Hypothesis: a model's knowledge and capabilities are learnt almost entirely during pretraining, while alignment teaches it which subdistribution of formats should be used when interacting with users."
+  evidence:
+    - {work: "zhou-2023-lima", role: original, locator: "p. 2", stance: for}
+
+# Derived
+
+- id: c-it-rates
+  type: mathematical
+  text: "Under examples-proportional mixing with a cap K, dataset m with e_m examples is sampled with rate min(e_m, K) divided by the sum of min(e_n, K) over all datasets, so every dataset with at least K examples gets the same rate."
+  assumes: ["datasets are sampled independently with fixed rates"]
+  derivation: instruction-tuning-arithmetic
+
+- id: c-it-epochs
+  type: mathematical
+  text: "After S sampled examples, every dataset smaller than the cap is passed over S divided by the sum of min(e_n, K) times, the same number for all of them, and a dataset with e_m > K is passed over fewer times, S K / (e_m times that sum)."
+  assumes: ["datasets are sampled independently with fixed rates", "sampling is uniform within a dataset"]
+  derivation: instruction-tuning-arithmetic
+
+- id: c-it-example
+  type: mathematical
+  text: "For datasets of 1,000, 3,000 and 100,000 examples and K = 3,000, the rates are 1/7, 3/7 and 3/7 instead of about 1.0%, 2.9% and 96.2% without the cap; after 70,000 samples the three datasets are passed over 10, 10 and 0.3 times."
+  assumes: ["datasets are sampled independently with fixed rates"]
+  derivation: instruction-tuning-arithmetic
+
+- id: c-it-t0rule
+  type: mathematical
+  text: "T0's rule, which counts a dataset with more than 500,000 examples as 500,000 divided by its number of templates, is not monotone in dataset size: with 10 templates a dataset of 500,000 examples counts as 500,000 and one of 500,001 as 50,000."
+  assumes: ["the effective size is e for e ≤ 500,000 and 500,000/T above"]
+  derivation: instruction-tuning-arithmetic
+
+- id: c-it-chain
+  type: mathematical
+  text: "For an autoregressive model, the sum of per-token negative log-likelihoods over the response positions of a prompt-response sequence equals −log p(response | prompt), and the loss over all positions adds −log p(prompt)."
+  assumes: ["the model factorizes the sequence probability by the chain rule"]
+  derivation: instruction-tuning-arithmetic
+
+- id: c-it-grad
+  type: mathematical
+  text: "The gradient of the masked mean token loss with respect to the logits at position t is m_t (softmax(z_t) − onehot(y_t)) divided by the number of unmasked tokens, which is zero at every prompt position."
+  assumes: ["the loss is the masked mean of per-token cross-entropies over the logits z_t"]
+  derivation: instruction-tuning-arithmetic
+
+- id: c-it-weights
+  type: mathematical
+  text: "Averaging the loss over all response tokens in a batch weights each sequence in proportion to its number of response tokens, while averaging per sequence first weights them equally; for responses of 10 and 90 tokens the weights are 0.1 and 0.9 against 0.5 and 0.5."
+  assumes: ["the loss is the masked mean of per-token cross-entropies over the logits z_t"]
+  derivation: instruction-tuning-arithmetic
+
+- id: c-it-flops
+  type: mathematical
+  text: "The 6ND rule gives 6 × 540e9 × 780e9 ≈ 2.53e24 FLOPs for PaLM 540B pre-training, matching Table 2, and 6 × 540e9 × 1.4e9 ≈ 4.5e21 for finetuning on 1.4B tokens, about 0.8 of the 5.6e21 in Table 2; both the token ratio and the FLOP ratio are about 0.2%."
+  assumes: ["training costs about 6 FLOPs per parameter per token"]
+  derivation: instruction-tuning-arithmetic
+
+- id: c-it-we-loss
+  type: mathematical
+  text: "For the prompt (5, 6, 7), the response (8, 9) and end token 1, the loss mask is (0, 0, 1, 1, 1); if the model assigns the three response targets probabilities 0.5, 0.25 and 0.8, the summed loss is ln 10 ≈ 2.302585 and the mean 0.767528, and adding prompt targets of probability 0.01 and 0.02 raises the full-sequence sum to 10.819778, mean 2.163956."
+  assumes: ["the loss is the masked mean of per-token cross-entropies over the logits z_t"]
+  derivation: instruction-tuning-arithmetic
