@@ -528,3 +528,15 @@
   text: "Cunningham et al. name enumerative safety as an ambitious dream: a complete list of a model's features that would provide a guarantee against dangerous behaviours such as deception."
   evidence:
     - {work: "cunningham-2023-sparse-autoencoders", role: original, locator: "p. 9", stance: for}
+
+- id: c-mf-linear
+  type: attributive
+  text: "The k-sparse autoencoder of Makhzani and Frey is based on an autoencoder with linear activation functions and tied weights; it keeps the k largest hidden units and sets the others to zero, so the only non-linearity comes from the selection of the k largest activities, and at test time it uses the alpha k largest hidden units, with alpha at least 1 selected using validation data."
+  evidence:
+    - {work: "makhzani-2014-k-sparse-autoencoders", role: original, locator: "p. 2", stance: for}
+
+- id: c-mf-dead
+  type: attributive
+  text: "Makhzani and Frey report that too much sparsity can prevent gradient back-propagation from adjusting the weights of the other 'dead' hidden units, and address it by scheduling the sparsity level, decreasing it linearly from k = 100 to k = 15 over the first half of the epochs."
+  evidence:
+    - {work: "makhzani-2014-k-sparse-autoencoders", role: original, locator: "p. 5", stance: for}
