@@ -1,0 +1,374 @@
+# Claims of the linear-attention page. Locators are to Katharopoulos et al. (2020), arXiv 2006.16236v3, and to
+# Schlag, Irie and Schmidhuber (2021), arXiv 2102.11174v3.
+
+# The method
+
+- id: c-def
+  type: definitional
+  text: "Katharopoulos et al. express self-attention as a linear dot-product of kernel feature maps and use the associativity of matrix products to reduce its complexity from O(N^2) to O(N), where N is the sequence length."
+  evidence:
+    - {work: "katharopoulos-2020-transformers-are-rnns", role: original, locator: "the abstract, p. 1", stance: for}
+
+- id: c-general
+  type: definitional
+  text: "The generalized attention replaces the exponential of the scaled dot product by any non-negative similarity function sim, and the output of position i is the average of the values weighted by sim(Q_i, K_j), normalized over j."
+  evidence:
+    - {work: "katharopoulos-2020-transformers-are-rnns", role: original, locator: "Section 3.1, p. 3", stance: for}
+
+- id: c-kernel
+  type: definitional
+  text: "Given a kernel with a feature representation phi, the generalized attention can be rewritten as phi(Q_i)^T sum_j phi(K_j) V_j^T divided by phi(Q_i)^T sum_j phi(K_j), and the feature map phi is applied row by row to the queries and the keys."
+  evidence:
+    - {work: "katharopoulos-2020-transformers-are-rnns", role: original, locator: "Section 3.2, p. 3", stance: for}
+
+- id: c-assoc
+  type: mathematical
+  text: "If sim(q, k) = phi(q)^T phi(k), the attention output (phi(Q) phi(K)^T) V divided row by row by phi(Q) phi(K)^T 1 equals phi(Q) (phi(K)^T V) divided by phi(Q) (phi(K)^T 1), which costs O(N C M) instead of O(N^2 max(C, M))."
+  assumes: ["sim(q, k) = phi(q)^T phi(k) with phi into R^C", "every denominator positive"]
+  derivation: associativity
+
+- id: c-softmax-kernel
+  type: mathematical
+  text: "Softmax attention is the generalized attention with sim(q, k) = exp(q^T k / sqrt(D)); it is linear attention only for a feature map whose inner products are this exponential, and no feature map of finite size has that property for all queries and keys."
+  assumes: ["queries and keys ranging over all of R^D"]
+  derivation: associativity
+
+- id: c-exp-infinite
+  type: attributive
+  text: "Katharopoulos et al. note that the feature function corresponding to the exponential kernel is infinite dimensional, which makes the linearization of exact softmax attention infeasible."
+  evidence:
+    - {work: "katharopoulos-2020-transformers-are-rnns", role: original, locator: "Section 3.2.1, p. 3", stance: for}
+
+- id: c-elu
+  type: definitional
+  text: "For their experiments Katharopoulos et al. use the feature map phi(x) = elu(x) + 1, which gives a positive similarity, preferring elu to relu to avoid setting the gradients to 0 when x is negative."
+  evidence:
+    - {work: "katharopoulos-2020-transformers-are-rnns", role: original, locator: "Section 3.2.1, p. 4", stance: for}
+
+- id: c-elu-cost
+  type: attributive
+  text: "With the feature map elu(x) + 1, attention requires O(N D M) multiplications and additions."
+  evidence:
+    - {work: "katharopoulos-2020-transformers-are-rnns", role: original, locator: "Section 3.2.1, p. 4", stance: for}
+
+- id: c-positive
+  type: attributive
+  text: "Katharopoulos et al. observe that linear attention converges normally if a kernel with positive similarity scores is applied to the queries and keys."
+  evidence:
+    - {work: "katharopoulos-2020-transformers-are-rnns", role: original, locator: "Section 2.2, p. 2", stance: for}
+
+# Cost
+
+- id: c-cost-paper
+  type: attributive
+  text: "Katharopoulos et al. give the cost of softmax attention as O(N^2 max(D, M)), with D the dimension of the queries and keys and M that of the values, and that of linear attention with a feature map of C dimensions as O(N C M)."
+  evidence:
+    - {work: "katharopoulos-2020-transformers-are-rnns", role: original, locator: "Section 3.2.1, p. 3", stance: for}
+
+- id: c-flops
+  type: mathematical
+  text: "One head of non-causal softmax attention takes 2N^2 D + 2N^2 M + 2N^2 FLOPs and linear attention with a feature map of size C takes 4NCM + 4NC, counting a multiply-add as 2 FLOPs and only the matrix and vector products."
+  assumes: ["one head of non-causal self-attention on N positions, Q, K, V and the feature maps given", "a multiply-add counted as 2 FLOPs, the sums as products with a vector of ones"]
+  derivation: cost
+
+- id: c-crossover
+  type: mathematical
+  text: "Linear attention takes fewer FLOPs than softmax attention exactly when N > 2C(M + 1) / (D + M + 1); with C = D = M = 64 the first such N is 65."
+  assumes: ["the FLOP counts of c-flops"]
+  derivation: cost
+
+- id: c-poly-paper
+  type: attributive
+  text: "The polynomial kernel has an exact finite-dimensional feature map; the computational cost of a linearized polynomial transformer of degree 2 is of order N M times the square of D, which Katharopoulos et al. call favorable when N exceeds the square of D, true in practice for sequences of tens of thousands of elements."
+  evidence:
+    - {work: "katharopoulos-2020-transformers-are-rnns", role: original, locator: "Section 3.2.1, p. 3", stance: for}
+
+- id: c-poly-exact
+  type: mathematical
+  text: "The map phi(x) = (c, sqrt(2c) x, (x_a x_b)_{a,b}) of size 1 + D + D^2 satisfies phi(q)^T phi(k) = (q^T k + c)^2, so attention with the degree-2 polynomial kernel is linear attention with this map; at D = M = 64 it takes fewer FLOPs than softmax attention from N = 4194 on."
+  assumes: ["c >= 0", "the FLOP counts of c-flops with C = 1 + D + D^2"]
+  derivation: cost
+
+# Causal masking and the RNN
+
+- id: c-causal-recurrence
+  type: mathematical
+  text: "With causal masking, the numerator and the denominator of position i are phi(Q_i)^T S_i and phi(Q_i)^T z_i with S_i = S_{i-1} + phi(K_i) V_i^T and z_i = z_{i-1} + phi(K_i), so each position costs O(C M) whatever i is."
+  assumes: ["sim(q, k) = phi(q)^T phi(k) with phi into R^C", "position i attends to the positions j <= i"]
+  derivation: associativity
+
+- id: c-causal-paper
+  type: attributive
+  text: "Katharopoulos et al. write the masked attention with S_i = sum_{j <= i} phi(K_j) V_j^T and Z_i = sum_{j <= i} phi(K_j), which can be computed from S_{i-1} and Z_{i-1} in constant time, so the computational complexity of linear transformers with causal masking is linear in the sequence length."
+  evidence:
+    - {work: "katharopoulos-2020-transformers-are-rnns", role: original, locator: "Section 3.3, p. 4", stance: for}
+
+- id: c-rnn
+  type: attributive
+  text: "Katharopoulos et al. argue that any transformer layer with causal masking can be written as a model that, given an input, modifies an internal state and then predicts an output, namely a recurrent neural network, with two hidden states, the attention memory s and the normalizer memory z, and a recurrence with respect to time, not depth."
+  evidence:
+    - {work: "katharopoulos-2020-transformers-are-rnns", role: original, locator: "Section 3.4, p. 5", stance: for}
+
+- id: c-state-size
+  type: mathematical
+  text: "The state of a causal linear attention head is C M + C numbers whatever the number of positions read, against the N (D + M) numbers of the keys and values that causal softmax attention keeps after N positions."
+  assumes: ["one head, a feature map of size C, keys of size D and values of size M"]
+  derivation: associativity
+
+- id: c-chunk
+  type: mathematical
+  text: "Splitting the sequence into chunks of length T, the causal output of a position is phi(Q_i)^T times the state left by the earlier chunks plus the masked T by T products inside its chunk, which equals the recurrence for every T that divides N."
+  assumes: ["sim(q, k) = phi(q)^T phi(k)", "T divides N"]
+  derivation: associativity
+
+- id: c-alg1
+  type: mathematical
+  text: "For the causal numerator nbar_i = phi(Q_i)^T S_i, the gradient with respect to phi(Q_i) is S_i G_i, and those with respect to phi(K_j) and V_j are R_j V_j and R_j^T phi(K_j) with R_j = sum_{i >= j} phi(Q_i) G_i^T, a sum computed backwards from the last position."
+  assumes: ["G_i = dL/dnbar_i given for a scalar loss L"]
+  derivation: causal-gradient
+
+- id: c-alg1-memory
+  type: mathematical
+  text: "Computed with one running sum forwards and one backwards, the gradient of the causal numerator needs the inputs phi(Q), phi(K), V and one C by M state, not the N states S_1 to S_N that automatic differentiation through the cumulative sum keeps."
+  assumes: ["the gradients of c-alg1"]
+  derivation: causal-gradient
+
+- id: c-alg1-paper
+  type: attributive
+  text: "Katharopoulos et al. note that a naive implementation of the cumulative sum, which stores all intermediate S_i, increases the memory consumption by max(D, M) times, and derive the gradients of the numerator as cumulative sums that are computed in linear time and constant memory with respect to the sequence length."
+  evidence:
+    - {work: "katharopoulos-2020-transformers-are-rnns", role: original, locator: "Section 3.3, p. 4", stance: for}
+
+- id: c-cuda
+  type: attributive
+  text: "The constant-memory gradient computation is implemented in approximately 200 lines of CUDA code."
+  evidence:
+    - {work: "katharopoulos-2020-transformers-are-rnns", role: original, locator: "Section 4, p. 5", stance: for}
+
+- id: c-train-infer
+  type: attributive
+  text: "Katharopoulos et al. note that the computations of a linear transformer can be parallelized in training, as those of a transformer can, while at inference its cost in time and memory per prediction is constant, the matrix of the phi(K_j) V_j^T being kept as an internal state and updated at every step like that of a recurrent network."
+  evidence:
+    - {work: "katharopoulos-2020-transformers-are-rnns", role: original, locator: "Section 3.3.2, p. 4", stance: for}
+
+# Fast weights, capacity and the delta rule
+
+- id: c-fwp
+  type: attributive
+  text: "Schlag et al. show the formal equivalence of linearised self-attention and the fast weight controllers of the early nineties, in which a slow network learns by gradient descent to program the fast weights of another network through additive outer products of keys and values."
+  evidence:
+    - {work: "schlag-2021-linear-transformers-fast-weight", role: original, locator: "the abstract, p. 1", stance: for}
+
+- id: c-fwp-core
+  type: attributive
+  text: "Schlag et al. conclude that the core of linear Transformer variants are outer product-based Fast Weight Programmers, with normalisation."
+  evidence:
+    - {work: "schlag-2021-linear-transformers-fast-weight", role: original, locator: "Section 3.2, p. 3", stance: for}
+
+- id: c-capacity-paper
+  type: attributive
+  text: "Schlag et al. argue that, since information is retrieved by matrix multiplication, keys must be orthogonal to retrieve without interference, that there cannot be more than d_dot orthogonal vectors in a d_dot-dimensional space, and that a linear Transformer reading a sequence longer than d_dot may therefore be in an overcapacity regime."
+  evidence:
+    - {work: "schlag-2021-linear-transformers-fast-weight", role: original, locator: "Section 4.1, p. 3", stance: for}
+
+- id: c-capacity-rank
+  type: mathematical
+  text: "No state S in R^{C x M} maps more than C keys to linearly independent values, so a linear attention head with a feature map of size C cannot recall more than C arbitrary associations exactly; with orthonormal mapped keys the sum rule recalls C of them exactly, and otherwise returns each value plus the crosstalk of the others."
+  assumes: ["a memory read as y = S^T phi(q) from a state S in R^{C x M}"]
+  derivation: capacity
+
+- id: c-relu-zero
+  type: mathematical
+  text: "With phi = ReLU, a query with no positive coordinate has phi(q) = 0 and an output of 0 divided by 0, while with phi = elu + 1 every coordinate is positive and the denominator is a sum of positive terms."
+  assumes: ["the normalized read phi(q)^T S / phi(q)^T z"]
+  derivation: capacity
+
+- id: c-delta-paper
+  type: definitional
+  text: "Given a new key-value pair, the update rule of Schlag et al. first retrieves from the current state of the memory the value paired with the key, then writes the new value in its place with a dynamic learning rate, effectively a delta rule, so that the model learns to correct the key to value association."
+  evidence:
+    - {work: "schlag-2021-linear-transformers-fast-weight", role: original, locator: "Section 4.2, p. 4", stance: for}
+
+- id: c-delta-overwrite
+  type: mathematical
+  text: "With beta = 1 and a key of unit norm in feature space, the delta rule replaces the value stored under that key by the new one, and the sum rule stores their sum; keys orthogonal to it are untouched by either rule."
+  assumes: ["a memory read as y = S^T phi(q)", "phi(k)^T phi(k) = 1"]
+  derivation: capacity
+
+- id: c-elu-dim
+  type: attributive
+  text: "Schlag et al. note that elu + 1, being an element-wise function, preserves the dimension of the key (d_key = d_dot), without changing the memory capacity."
+  evidence:
+    - {work: "schlag-2021-linear-transformers-fast-weight", role: original, locator: "Section 5.2, p. 5", stance: for}
+
+- id: c-favor
+  type: attributive
+  text: "With FAVOR+ the dimension of the feature space is 2m, which raises the theoretical capacity if 2m > d_key, but the capacity equals the infinite capacity of softmax memory only as m goes to infinity, and the random sampling is the main drawback of FAVOR+."
+  evidence:
+    - {work: "schlag-2021-linear-transformers-fast-weight", role: original, locator: "Section 5.3, p. 5", stance: for}
+
+- id: c-dpfp
+  type: definitional
+  text: "DPFP, the deterministic parameter-free projection of Schlag et al., maps a key of dimension d_key to 2 d_key nu products of pairs of coordinates of (ReLU(k), ReLU(-k)), with nu a hyperparameter."
+  evidence:
+    - {work: "schlag-2021-linear-transformers-fast-weight", role: original, locator: "Section 5.4, p. 6", stance: for}
+
+# Evidence of Katharopoulos et al.
+
+- id: c-headline
+  type: empirical
+  text: "Linear transformers achieve similar performance to vanilla transformers and are up to 4000x faster on autoregressive prediction of very long sequences."
+  scope:
+    models: "autoregressive transformers with softmax, linear and Reformer attention"
+    data: [mnist, cifar-10]
+    setting: "autoregressive image generation, pixel by pixel"
+  evidence:
+    - {work: "katharopoulos-2020-transformers-are-rnns", role: original, locator: "the abstract, p. 1", stance: for}
+
+- id: c-copy
+  type: empirical
+  text: "On a causal copy task with sequences of up to 128 symbols from 10, a 4-layer transformer with 8 heads converged smoothly with linear attention and reached the same loss as softmax attention, lower than Reformer, whose hashing adds noise."
+  scope:
+    models: "4-layer transformers with 8 heads, softmax, linear and Reformer attention"
+    data: [synthetic sequence duplication]
+    setting: "batch 64, RAdam at learning rate 1e-3 reduced to 1e-4 after 3000 updates"
+  evidence:
+    - {work: "katharopoulos-2020-transformers-are-rnns", role: original, locator: "Section 4.1.1, p. 5", stance: for}
+
+- id: c-memory-bench
+  type: empirical
+  text: "Computing attention and its gradients for sequence lengths from 2^9 to 2^16 on a GTX 1080 Ti with 11 GB, softmax attention fit up to 4,096 elements and Reformer with 4 or 8 hashing rounds up to 16,384; linear attention was faster and used less memory than both at every length, and both it and Reformer scaled linearly."
+  scope:
+    models: "one attention layer, softmax, linear and Reformer"
+    data: [synthetic]
+    setting: "time and peak GPU memory per sample, batch size scaled inversely with the sequence length"
+  evidence:
+    - {work: "katharopoulos-2020-transformers-are-rnns", role: original, locator: "Section 4.1.2, p. 6", stance: for}
+
+- id: c-mnist
+  type: empirical
+  text: "On autoregressive generation of MNIST, softmax attention reached 0.621 bits/dim at 0.45 images/sec, Reformer with 1 and 4 hashing rounds 0.745 and 0.676, and linear attention 0.644 at 142.8 images/sec, 317 times the throughput of softmax."
+  scope:
+    models: "8 layers of 8 heads, width 256, a mixture of 10 logistics as output"
+    data: [mnist]
+    setting: "RAdam at learning rate 1e-4, 250 epochs, batch 10"
+  evidence:
+    - {work: "katharopoulos-2020-transformers-are-rnns", role: original, locator: "Section 4.2.1, p. 7", stance: for}
+
+- id: c-mnist-memory
+  type: empirical
+  text: "The linear transformer could generate 10,000 MNIST images at once on a single GPU, its memory being constant in the sequence length because only s_i and z_i are stored between pixels, while softmax and Reformer need memory that grows with the length."
+  scope:
+    models: "the MNIST models of Section 4.2.1"
+    data: [mnist]
+    setting: "unconditional image generation"
+  evidence:
+    - {work: "katharopoulos-2020-transformers-are-rnns", role: original, locator: "Section 4.2.1, p. 7", stance: for}
+
+- id: c-cifar
+  type: empirical
+  text: "Trained for 7 days on one GPU to generate CIFAR-10, softmax attention reached 3.47 bits/dim at 0.004 images/sec and linear attention 3.40 at 17.85 images/sec, 4,462 times the throughput; the linear transformer completed 3 times more epochs, which gave the better score."
+  scope:
+    models: "16-layer transformers with the layer configuration of the MNIST models"
+    data: [cifar-10]
+    setting: "batch 1 for softmax and 4 for linear and Reformer, on a P40 with 24 GB"
+  evidence:
+    - {work: "katharopoulos-2020-transformers-are-rnns", role: original, locator: "Section 4.2, p. 7", stance: for}
+
+- id: c-wsj
+  type: empirical
+  text: "On WSJ speech recognition with CTC, softmax attention reached 5.12 phoneme error rate at 2711 seconds per epoch, linear attention 8.08 at 824, Reformer with 4 rounds 9.33 at 2250 and a 3-layer bidirectional LSTM 10.94 at 1047."
+  scope:
+    models: "9-layer transformers with 6 heads, and a bidirectional LSTM of 3 layers of 320"
+    data: [wsj]
+    setting: "non-autoregressive speech recognition with CTC loss on 40-dimensional filterbanks"
+  evidence:
+    - {work: "katharopoulos-2020-transformers-are-rnns", role: original, locator: "Section 4.3, p. 8", stance: for}
+
+- id: c-stateful
+  type: empirical
+  text: "A softmax transformer that saves the keys and values and reuses them to predict the next element, stateful-softmax, generated 7.56 MNIST images/sec and 0.32 CIFAR-10 images/sec."
+  scope:
+    models: "the image generation models of Section 4.2"
+    data: [mnist, cifar-10]
+    setting: "image generation throughput"
+  evidence:
+    - {work: "katharopoulos-2020-transformers-are-rnns", role: original, locator: "p. 13", stance: for}
+
+- id: c-stateful-gap
+  type: empirical
+  text: "The complexity of stateful-softmax is still quadratic in the sequence length, and linear attention was more than 50 times faster than it on CIFAR-10."
+  scope:
+    models: "the image generation models of Section 4.2"
+    data: [cifar-10]
+    setting: "image generation throughput"
+  evidence:
+    - {work: "katharopoulos-2020-transformers-are-rnns", role: original, locator: "p. 12", stance: for}
+
+# Evidence of Schlag et al.
+
+- id: c-capacity-exp
+  type: empirical
+  text: "On associative retrieval problems with 20 to 600 unique associations, linear attention, with a capacity of 64 from its key dimension of 64, begins to accumulate errors with 60 or more associations, DPFP projections 1, 2 and 3 start to accumulate errors as they approach their limits at 128, 256 and 384, FAVOR+ fails to achieve a loss of 0 in any experiment, and softmax attention outperforms all the feature functions, although it struggles to fully converge with more than 500 keys."
+  scope:
+    models: "one-layer softmax and linear attention memories with several feature maps"
+    data: [synthetic associative retrieval]
+    setting: "each model trained until convergence, final evaluation loss"
+  evidence:
+    - {work: "schlag-2021-linear-transformers-fast-weight", role: original, locator: "p. 7", stance: for}
+
+- id: c-wmt
+  type: empirical
+  text: "On the WMT14 English to German translation task, with a key dimension of 64, the Transformer got 26.6 valid and 27.7 test, the Linear Transformer 25.5 and 26.8, and the Performer 24.2 and 24.4 at 64 and 26.7 and 27.7 at 512, while DPFP got 26.2 and 26.9 at 256."
+  scope:
+    models: "the big Transformer of Vaswani et al. with each attention variant"
+    data: [wmt14 en-de]
+    setting: "about 4 days on three V100 GPUs, the same training configuration for all models"
+  evidence:
+    - {work: "schlag-2021-linear-transformers-fast-weight", role: original, locator: "Section 6.2, p. 8", stance: for}
+
+- id: c-wt103
+  type: empirical
+  text: "On WikiText-103 with a context of 256 tokens, the small Transformer reached 33.0 valid and 34.1 test perplexity, the linear Transformer 37.1 and 38.3, and the linear Transformer with the delta rule 34.1 and 35.5; in the medium configuration with 384 tokens the numbers were 27.9 and 29.6, 31.1 and 33.0, and 29.7 and 31.5."
+  scope:
+    models: "16-layer language models, width 128 with 8 heads (small) and width 256 (medium)"
+    data: [wikitext-103]
+    setting: "training and evaluation context of 256 (small) and 384 (medium) tokens, an overcapacity regime"
+  evidence:
+    - {work: "schlag-2021-linear-transformers-fast-weight", role: original, locator: "Section 6.3, p. 8", stance: for}
+
+- id: c-no-truncation
+  type: empirical
+  text: "Trained and evaluated without truncating the context, the linear Transformer's perplexity on WikiText-103 exceeded 260 and the Delta Network reached 27.8 valid and 29.4 test, both with a state size of 0.13 (in millions)."
+  scope:
+    models: "the medium configuration, about 90 million parameters"
+    data: [wikitext-103]
+    setting: "language modelling without a limited context window"
+  evidence:
+    - {work: "schlag-2021-linear-transformers-fast-weight", role: original, locator: "p. 9", stance: for}
+
+# History
+
+- id: c-hist-katharopoulos
+  type: attributive
+  text: "Angelos Katharopoulos, Apoorv Vyas, Nikolaos Pappas and François Fleuret published Transformers are RNNs: Fast Autoregressive Transformers with Linear Attention at ICML 2020."
+  evidence:
+    - {work: "katharopoulos-2020-transformers-are-rnns", role: original, locator: "p. 1", stance: for}
+
+- id: c-hist-schlag
+  type: attributive
+  text: "Imanol Schlag, Kazuki Irie and Jürgen Schmidhuber published Linear Transformers Are Secretly Fast Weight Programmers at ICML 2021."
+  evidence:
+    - {work: "schlag-2021-linear-transformers-fast-weight", role: original, locator: "p. 1", stance: for}
+
+- id: c-hist-fwp
+  type: attributive
+  text: "Schlag et al. write that context-dependent Fast Weight Programmers were introduced in the two-network systems of Schmidhuber of 1991 to 1993, in which a slow net learns to program the fast weights of a fast net, one of the proposed instructions being an outer product."
+  evidence:
+    - {work: "schlag-2021-linear-transformers-fast-weight", role: original, locator: "Section 2, p. 2", stance: for}
+
+- id: c-future-rff
+  type: attributive
+  text: "Katharopoulos et al. suggest that approximating the RBF kernel with random Fourier features could allow linear attention to use models pretrained with softmax attention."
+  evidence:
+    - {work: "katharopoulos-2020-transformers-are-rnns", role: original, locator: "Section 5, p. 8", stance: for}

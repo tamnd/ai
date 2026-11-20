@@ -6084,3 +6084,6 @@ GXW1BJ state-spaces-2023-mamba-370m-config
 1TF645 state-spaces-mamba-selective-scan-v2-3-2
 Q883B2 state-spaces-mamba-simple-v2-3-2
 B95BYJ attention-mechanism
+5SBT2B katharopoulos-2020-transformers-are-rnns
+JBSH5S linear-attention
+B968SQ schlag-2021-linear-transformers-fast-weight
