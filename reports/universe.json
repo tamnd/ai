@@ -1,10 +1,10 @@
 {
   "date": "2026-11-20",
-  "rows": 22507,
+  "rows": 22508,
   "items": 22318,
-  "new": 1072,
-  "updated": 5,
-  "unchanged": 21241,
+  "new": 0,
+  "updated": 0,
+  "unchanged": 22318,
   "by_outcome": {
     "card": 3892,
     "pending": 18426
