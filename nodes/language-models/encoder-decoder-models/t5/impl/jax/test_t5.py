@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: MIT
 # Part of https://ai.tamnd.com/t5/ (ai://NEW-t5).
 """Tests of the JAX version: the shared fixture and jax.grad against the hand-written gradients, the shape contract,
-the fixed-size cache under jit, greedy decoding through lax.scan, causality through the Jacobian, and the encoder
-without position biases."""
+the fixed-size cache under jit, greedy decoding through lax.scan, causality through the Jacobian, the encoder
+without position biases, jax.grad against finite differences, and a learning smoke test."""
 
 import json
 import pathlib
@@ -26,9 +26,11 @@ from t5 import (  # noqa: E402
     encode,
     forward,
     generate,
+    heads,
     init,
     init_cache,
     loss,
+    nll,
     param_count,
     rms_norm,
     shift_right,
@@ -87,17 +89,31 @@ def test_cache_and_greedy_decoding_match_the_fixture():
 
 
 @pytest.mark.parametrize("c", SHAPES, ids=lambda c: c["name"])
-def test_shape_contract(c):
+def test_param_count(c):
     cfg = cfg_of(c)
     assert param_count(cfg) == c["model"]["params"]
-    if c["kind"] != "named":
-        k = c["config"]
+    if c["kind"] != "named":  # the arrays of the paper's models are too large for a test
         p = init(jax.random.PRNGKey(0), cfg)
         assert sum(v.size for v in p.values()) == c["model"]["params"]
-        src = jnp.zeros((k["B"], k["S"]), jnp.int64)
-        tgt = jnp.zeros((k["B"], k["T"]), jnp.int64)
-        assert list(forward(p, cfg, src, tgt).shape) == c["blocks"]["head"]["outputs"]["logits"]
-        assert list(encode(p, cfg, src).shape) == c["blocks"]["cross"]["inputs"]["e"]
+
+
+@pytest.mark.parametrize("c", [c for c in SHAPES if c["kind"] != "named"], ids=lambda c: c["name"])
+def test_shapes(c):
+    cfg, k, blocks = cfg_of(c), c["config"], c["blocks"]
+    p = init(jax.random.PRNGKey(0), cfg)
+    src = jax.random.randint(jax.random.PRNGKey(1), (k["B"], k["S"]), 0, cfg["vocab"])
+    tgt = jax.random.randint(jax.random.PRNGKey(2), (k["B"], k["T"]), 0, cfg["vocab"])
+    assert list(forward(p, cfg, src, tgt).shape) == blocks["head"]["outputs"]["logits"]
+    e = encode(p, cfg, src)
+    assert list(e.shape) == blocks["cross"]["inputs"]["e"]
+    h = rms_norm(p["emb"][src], p["e0_ln1"])
+    for w in "qkv":
+        assert list(heads(h @ p[f"e0_{w}"], cfg).shape) == blocks["enc_attn"]["internals"][w]
+    cache = init_cache(cfg, k["B"], k["T"])
+    _, cache = decode_step(p, cfg, cross_keys_values(p, cfg, e), cache, tgt[:, 0], 0)
+    for keys, values in cache:
+        assert list(keys.shape) == blocks["dec_self"]["internals"]["k"]
+        assert list(values.shape) == blocks["dec_self"]["internals"]["v"]
 
 
 @pytest.mark.parametrize("pos", ["relative", "none"])
@@ -148,3 +164,50 @@ def test_buckets_and_norm():
     np.testing.assert_array_equal(got, want)
     x = jnp.array([[3.0, 3.0, 3.0, 3.0]])
     np.testing.assert_allclose(rms_norm(x, jnp.ones(4)), 3 / jnp.sqrt(9 + 1e-6), rtol=1e-15)
+
+
+def test_gradient():
+    # jax.grad against central finite differences, on a few entries of every parameter array.
+    cfg = config(vocab=7, d_model=6, n_heads=3, d_kv=2, d_ff=5, n_layers=2, buckets=6, max_distance=9)
+    p = init(jax.random.PRNGKey(4), cfg)
+    src = jax.random.randint(jax.random.PRNGKey(5), (3, 7), 0, 7)
+    tgt = jax.random.randint(jax.random.PRNGKey(6), (3, 5), 0, 7)
+    f = jax.jit(lambda q: loss(q, cfg, src, tgt))
+    grads = jax.grad(f)(p)
+    eps = 1e-6
+    for name, g in grads.items():
+        flat = p[name].reshape(-1)
+        for i in range(min(flat.size, 3)):
+            up = {**p, name: flat.at[i].add(eps).reshape(p[name].shape)}
+            down = {**p, name: flat.at[i].add(-eps).reshape(p[name].shape)}
+            fd = (float(f(up)) - float(f(down))) / (2 * eps)
+            assert float(g.reshape(-1)[i]) == pytest.approx(fd, rel=1e-5, abs=1e-8), name
+
+
+def test_learns():
+    # Adam, written out as in torch.optim.Adam, fits 8 copies of 5 source tokens in 150 steps, the task of the NumPy
+    # test_learns. A wrong sign or a gradient that does not reach a weight leaves the loss far above the bound of 0.05;
+    # a uniform guess among the 6 source tokens is log 6 = 1.79. The decoder cannot copy its own input, the target
+    # shifted right, so it must read the encoder.
+    cfg = config(vocab=8, d_model=16, n_heads=2, d_kv=8, d_ff=32, n_layers=1)
+    params = init(jax.random.PRNGKey(0), cfg)
+    src = jnp.asarray(np.random.default_rng(1).integers(2, 8, (8, 5)))
+    tgt = src
+
+    @jax.jit
+    def step(p, m, v, t):
+        value, g = jax.value_and_grad(lambda q: nll(forward(q, cfg, src, tgt), tgt))(p)
+        m = jax.tree_util.tree_map(lambda m, g: 0.9 * m + 0.1 * g, m, g)
+        v = jax.tree_util.tree_map(lambda v, g: 0.999 * v + 0.001 * g * g, v, g)
+        c1, c2 = 1 - 0.9**t, 1 - 0.999**t
+        p = jax.tree_util.tree_map(lambda p, m, v: p - 1e-2 * (m / c1) / (jnp.sqrt(v / c2) + 1e-8), p, m, v)
+        return p, m, v, value
+
+    m = jax.tree_util.tree_map(jnp.zeros_like, params)
+    v = jax.tree_util.tree_map(jnp.zeros_like, params)
+    losses = []
+    for t in range(1, 151):
+        params, m, v, value = step(params, m, v, t)
+        losses.append(float(value))
+    assert losses[0] > 1.0
+    assert losses[-1] < 0.05, losses[-1]

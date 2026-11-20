@@ -21,6 +21,10 @@ same_as:
 sources:
   - {paper: "Raffel, Shazeer, Roberts, Lee, Narang, Matena, Zhou, Li and Liu (2020)", title: "Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer", locator: "JMLR 21; arXiv 1910.10683v4, Sections 2, 3.1 to 3.3 and 3.7, Tables 2, 14 and 15", note: "the architecture, the text-to-text format, the comparison of architectures and objectives, span corruption and the five model sizes"}
   - {paper: "Lewis, Liu, Goyal, Ghazvininejad, Mohamed, Levy, Stoyanov and Zettlemoyer (2020)", title: "BART: Denoising Sequence-to-Sequence Pre-training for Natural Language Generation, Translation, and Comprehension", locator: "ACL 2020, pp. 7871 to 7873", note: "a pre-trained encoder-decoder of the same period, with text infilling"}
+  - {paper: "Vaswani, Shazeer, Parmar, Uszkoreit, Jones, Gomez, Kaiser and Polosukhin (2017)", title: "Attention Is All You Need", locator: "arXiv 1706.03762v7, pp. 3, 5 and 6", note: "the original Transformer: normalization after the residual sum, tied embeddings, sinusoidal positions"}
+  - {paper: "Zhang and Sennrich (2019)", title: "Root Mean Square Layer Normalization", locator: "arXiv 1910.07467v1, p. 1", note: "the normalization without centring"}
+  - {paper: "Kudo and Richardson (2018)", title: "SentencePiece: A simple and language independent subword tokenizer and detokenizer for Neural Text Processing", locator: "p. 1", note: "the tokenizer of the vocabulary"}
+  - {paper: "Devlin, Chang, Lee and Toutanova (2019)", title: "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding", locator: "arXiv 1810.04805v2, p. 4", note: "the masked language model that span corruption is compared with"}
 family: transformer
 inputs: "a batch of source token ids as a (B, S) integer array, and for training the target token ids as a (B, T) integer array"
 outputs: "a (B, T, V) array of logits: row t scores every token of the vocabulary as target token t, given the source and the target tokens before t"
@@ -50,6 +54,7 @@ The paper casts all tasks into a text-to-text format: the model is fed some text
 To translate "That is good." the model is fed "translate English to German: That is good." and trained to output "Das ist gut."; for classification it predicts one word, such as "entailment" for the MNLI input "mnli premise: I hate pigeons. hypothesis: My feelings towards pigeons are filled with animosity." {#c-prefix-example}
 The network is the [[sequence-to-sequence-model|sequence-to-sequence]] Transformer: an encoder of self-attention and feed-forward blocks, with each sublayer's input normalized by a rescaling with no additive bias and a residual connection around it, {#c-arch-blocks} and a decoder of the same blocks with a causal self-attention and an attention to the encoder output after it, whose last output goes through a dense layer with weights shared with the input embedding. {#c-arch-decoder}
 The authors describe it as roughly the original Transformer except for removing the Layer Norm bias, placing the normalization outside the residual path, and a different position scheme, and leave ablating these changes for future work. {#c-vaswani-diff}
+In that original, the output of each sublayer is $\operatorname{LayerNorm}(x + \operatorname{Sublayer}(x))$, with the normalization after the residual sum, {#c-vaswani-postnorm} and positions enter as sine and cosine functions of different frequencies added to the embeddings. {#c-vaswani-sinusoid}
 
 Of the two halves, the encoder is the bidirectional stack of [[bert|BERT]] and the decoder the causal stack of a [[decoder-only-transformer|decoder-only language model]], joined by attention from the second to the first.
 The input and the output are separate sequences, so the decoder never spends attention or a feed-forward pass on the input tokens, and the encoder reads them without a mask.
@@ -62,6 +67,7 @@ No projection has a bias.
 
 **Embedding.**
 One table $E \in \mathbb{R}^{V \times M}$ embeds the source tokens, embeds the decoder's input tokens, and, transposed, gives the logits.
+The original Transformer also shares one matrix between its two embedding layers and the pre-softmax linear transformation, and there multiplies the embedding weights by $\sqrt{d_{\text{model}}}$. {#c-vaswani-tied}
 
 **Normalization.**
 Each token's vector is divided by its root mean square and multiplied by a learned gain $g \in \mathbb{R}^{M}$; there is no centring and no bias:
@@ -69,6 +75,7 @@ Each token's vector is divided by its root mean square and multiplied by a learn
 $$ \operatorname{N}(x) = g \odot \frac{x}{\sqrt{\tfrac{1}{M} \sum_{j=1}^{M} x_j^2 + \epsilon}} , \qquad \epsilon = 10^{-6} . $$ {#eq-norm}
 
 This is the [[rms-normalization|RMS normalization]]; the paper describes it only as layer normalization in which the activations are rescaled and no bias is added.
+Zhang and Sennrich proposed it as RMSNorm, on the hypothesis that the re-centring of layer normalization is dispensable; it keeps the invariance to re-scaling, and they report accuracy comparable to LayerNorm with the running time cut by 7% to 64% on different models. {#c-rmsnorm}
 
 **Position biases.**
 Each stack has a table $R \in \mathbb{R}^{K \times H}$.
@@ -116,7 +123,8 @@ For $n$ tokens with $N$ chosen in $m$ spans,
 
 $$ |\text{input}| = n - N + m , \qquad |\text{target}| = N + m + 1 . $$ {#eq-span}
 
-The [[masked-language-modelling|masked language modelling]] page compares this objective with BERT's.
+BERT's masked language model instead masks 15% of the WordPiece tokens of each sequence at random and predicts only the masked tokens, where a denoising autoencoder would reconstruct the entire input. {#c-bert-mlm}
+The [[masked-language-modelling|masked language modelling]] page compares the two objectives further.
 
 ## Shapes and parameters
 
@@ -135,6 +143,7 @@ and the example network, 13 tokens, width 8, 2 heads of 3, a feed-forward width 
 **The baseline and the sizes.**
 The baseline has 12 blocks in each stack, a feed-forward network of $d_{\text{ff}} = 3072$ with a ReLU, 12 heads with $d_{kv} = 64$ and $d_{\text{model}} = 768$, about 220 million parameters, roughly twice BERT-Base, and dropout of 0.1. {#c-baseline}
 The vocabulary is 32,000 SentencePiece wordpieces trained on English C4 with some German, French and Romanian and shared by input and output, so the model handles only a fixed set of languages. {#c-vocab}
+SentencePiece trains its subword model directly from raw sentences, where earlier tools assumed text already split into words. {#c-sentencepiece}
 Small has $d_{\text{model}} = 512$, $d_{\text{ff}} = 2048$, 8 heads and 6 layers in each stack, about 60 million parameters; Large $d_{\text{model}} = 1024$, $d_{\text{ff}} = 4096$, $d_{kv} = 64$, 16 heads and 24 layers each, around 770 million; 3B and 11B keep $d_{\text{model}} = 1024$ and 24 layers with $d_{kv} = 128$, and have $d_{\text{ff}} = 16{,}384$ and 32 heads, around 2.8 billion, and $d_{\text{ff}} = 65{,}536$ and 128 heads, about 11 billion. {#c-sizes}
 The authors grew $d_{\text{ff}}$ because accelerators such as TPUs are most efficient on large dense matrix products like those of the feed-forward networks. {#c-scale-dff}
 In 11B the feed-forward networks are 64 times as wide as the residual stream, and each head has $d_{kv} = 128$ while $I = 16{,}384$ is 16 times $M$.
@@ -335,4 +344,7 @@ Most later large language models were decoder-only, and the [[neural-scaling-law
 
 - Raffel, C., Shazeer, N., Roberts, A., Lee, K., Narang, S., Matena, M., Zhou, Y., Li, W. and Liu, P. J. (2020). Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer. Journal of Machine Learning Research 21. arXiv 1910.10683.
 - Lewis, M., Liu, Y., Goyal, N., Ghazvininejad, M., Mohamed, A., Levy, O., Stoyanov, V. and Zettlemoyer, L. (2020). BART: Denoising Sequence-to-Sequence Pre-training for Natural Language Generation, Translation, and Comprehension. ACL 2020, pp. 7871 to 7880. arXiv 1910.13461.
+- Devlin, J., Chang, M.-W., Lee, K. and Toutanova, K. (2019). BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding. NAACL 2019. arXiv 1810.04805.
+- Kudo, T. and Richardson, J. (2018). SentencePiece: A simple and language independent subword tokenizer and detokenizer for Neural Text Processing. EMNLP 2018, System Demonstrations. arXiv 1808.06226.
 - Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, Ł. and Polosukhin, I. (2017). Attention Is All You Need. NeurIPS 2017. arXiv 1706.03762.
+- Zhang, B. and Sennrich, R. (2019). Root Mean Square Layer Normalization. NeurIPS 2019. arXiv 1910.07467.

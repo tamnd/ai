@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: MIT
 # Part of https://ai.tamnd.com/t5/ (ai://NEW-t5).
 """Tests of the PyTorch version: the shared fixture and its gradients, the cache and greedy decoding, the counts of
-shapes.json, the attention against an explicit softmax, F.rms_norm against its formula, gradcheck, causality, and
-the encoder without position biases."""
+shapes.json, the attention against an explicit softmax, F.rms_norm against its formula, gradcheck, causality, the
+encoder without position biases, and a learning smoke test."""
 
 import json
 import math
@@ -60,18 +60,30 @@ def test_cache_and_greedy_decoding_match_the_fixture():
 
 
 @pytest.mark.parametrize("c", SHAPES, ids=lambda c: c["name"])
-def test_counts(c):
+def test_param_count(c):
     cfg = cfg_of(c)
     assert param_count(cfg) == c["model"]["params"]
-    if c["kind"] != "named":
-        k = c["config"]
+    if c["kind"] != "named":  # the arrays of the paper's models are too large for a test
         model = T5(cfg, generator=torch.Generator().manual_seed(0))
         assert sum(p.numel() for p in model.parameters()) == c["model"]["params"]
-        src = torch.randint(0, cfg["vocab"], (k["B"], k["S"]))
-        tgt = torch.randint(0, cfg["vocab"], (k["B"], k["T"]))
+
+
+@pytest.mark.parametrize("c", [c for c in SHAPES if c["kind"] != "named"], ids=lambda c: c["name"])
+def test_shapes(c):
+    cfg, k, blocks = cfg_of(c), c["config"], c["blocks"]
+    model = T5(cfg, generator=torch.Generator().manual_seed(0))
+    g = torch.Generator().manual_seed(1)
+    src = torch.randint(0, cfg["vocab"], (k["B"], k["S"]), generator=g)
+    tgt = torch.randint(0, cfg["vocab"], (k["B"], k["T"]), generator=g)
+    with torch.no_grad():
         logits, e = model(src, tgt)
-        assert list(logits.shape) == c["blocks"]["head"]["outputs"]["logits"]
-        assert list(e.shape) == c["blocks"]["cross"]["inputs"]["e"]
+        _, kv = model.decode(e, shift_right(tgt))
+    assert list(logits.shape) == blocks["head"]["outputs"]["logits"]
+    assert list(e.shape) == blocks["cross"]["inputs"]["e"]
+    assert len(kv) == cfg["n_layers"]
+    for keys, values in kv:
+        assert list(keys.shape) == blocks["dec_self"]["internals"]["k"]
+        assert list(values.shape) == blocks["dec_self"]["internals"]["v"]
 
 
 def test_attention_against_an_explicit_softmax():
@@ -104,7 +116,8 @@ def test_buckets_match_the_reference_values():
     assert far[112] == 30 and far[113] == 31 and bool((far[128:] == 31).all())
 
 
-def test_gradcheck():
+def test_gradient():
+    # torch.autograd.gradcheck compares autograd with central finite differences on every parameter.
     torch.manual_seed(3)
     cfg = config(vocab=6, d_model=4, n_heads=2, d_kv=2, d_ff=3, n_layers=1, buckets=4, max_distance=6)
     model = T5(cfg)
@@ -169,3 +182,24 @@ def test_bad_inputs():
     model = T5(config())
     with pytest.raises(ValueError):
         model(torch.tensor([[0, 13]]), torch.tensor([[1]]))
+
+
+def test_learns():
+    # Adam fits 8 copies of 5 source tokens in 150 steps, the task of the NumPy test_learns. A wrong sign or a gradient
+    # that does not reach a weight leaves the loss far above the bound of 0.05; a uniform guess among the 6 source
+    # tokens is log 6 = 1.79. The decoder cannot copy its own input, the target shifted right, so it must read the
+    # encoder.
+    cfg = config(vocab=8, d_model=16, n_heads=2, d_kv=8, d_ff=32, n_layers=1)
+    model = T5(cfg, generator=torch.Generator().manual_seed(0))
+    src = torch.as_tensor(np.random.default_rng(1).integers(2, 8, (8, 5)))
+    tgt = src.clone()
+    opt = torch.optim.Adam(model.parameters(), lr=1e-2)
+    losses = []
+    for _ in range(150):
+        loss = nll(model(src, tgt)[0], tgt)
+        opt.zero_grad()
+        loss.backward()
+        opt.step()
+        losses.append(loss.item())
+    assert losses[0] > 1.0
+    assert losses[-1] < 0.05, losses[-1]

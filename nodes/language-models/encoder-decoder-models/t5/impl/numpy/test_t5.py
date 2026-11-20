@@ -2,7 +2,7 @@
 # Part of https://ai.tamnd.com/t5/ (ai://NEW-t5).
 """Tests of the NumPy reference: shapes and counts, the five models of the paper, the position buckets, what the
 position biases change, causality of the decoder, the shared fixture, the gradient of eq-loss, the cache of keys and
-values, and span corruption."""
+values, span corruption, and a learning smoke test with the hand-written backward."""
 
 import json
 import math
@@ -23,6 +23,7 @@ from t5 import (
     generate_without_cache,
     init,
     loss,
+    nll,
     param_count,
     param_shapes,
     position_bias,
@@ -55,21 +56,27 @@ def stack_params(cfg, prefix):
 
 
 @pytest.mark.parametrize("c", SHAPES, ids=lambda c: c["name"])
-def test_counts_and_shapes(c):
+def test_param_count(c):
     cfg = cfg_of(c)
     m, k = c["model"], c["config"]
     assert param_count(cfg) == m["params"]
     assert stack_params(cfg, "e") == m["params_encoder"]
     assert stack_params(cfg, "d") == m["params_decoder"]
     assert flops(cfg, k["B"], k["S"], k["T"]) == m["flops_forward"]
-    if c["kind"] != "named":
-        rng = np.random.default_rng(0)
-        src, tgt = pair(rng, cfg, k["B"], k["S"], k["T"])
-        logits, cache = forward(init(rng, cfg), cfg, src, tgt)
-        blocks = c["blocks"]
-        assert list(logits.shape) == blocks["head"]["outputs"]["logits"]
-        assert list(cache["e"].shape) == blocks["cross"]["inputs"]["e"]
-        enc, dec = cache["enc"]["layers"][0], cache["dec"]["layers"][0]
+    if c["kind"] != "named":  # the arrays of the paper's models are too large for a test
+        assert sum(a.size for a in init(np.random.default_rng(0), cfg).values()) == m["params"]
+
+
+@pytest.mark.parametrize("c", [c for c in SHAPES if c["kind"] != "named"], ids=lambda c: c["name"])
+def test_shapes(c):
+    cfg, k, blocks = cfg_of(c), c["config"], c["blocks"]
+    rng = np.random.default_rng(0)
+    src, tgt = pair(rng, cfg, k["B"], k["S"], k["T"])
+    logits, cache = forward(init(rng, cfg), cfg, src, tgt)
+    assert list(logits.shape) == blocks["head"]["outputs"]["logits"]
+    assert list(cache["e"].shape) == blocks["cross"]["inputs"]["e"]
+    for i in range(cfg["n_layers"]):
+        enc, dec = cache["enc"]["layers"][i], cache["dec"]["layers"][i]
         for name in ("q", "k", "v", "weights"):
             assert list(enc["attn"][name].shape) == blocks["enc_attn"]["internals"][name]
             assert list(dec["attn"][name].shape) == blocks["dec_self"]["internals"][name]
@@ -210,7 +217,7 @@ def test_shared_fixture():
 
 
 @pytest.mark.parametrize("pos", ["relative", "none"])
-def test_gradient_by_finite_differences(pos):
+def test_gradient(pos):
     rng = np.random.default_rng(4)
     cfg = config(vocab=7, d_model=6, n_heads=3, d_kv=2, d_ff=5, n_layers=2, buckets=6, max_distance=9, pos=pos)
     params = init(rng, cfg)
@@ -289,3 +296,27 @@ def flop_case(c):
     rng = np.random.default_rng(0)
     k = c["config"]
     return forward, (init(rng, cfg), cfg, *pair(rng, cfg, k["B"], k["S"], k["T"]))
+
+
+def test_learns():
+    # The hand-written backward with Adam fits 8 copies of 5 source tokens in 150 steps, from a loss of about 2.1 to
+    # about 0.0015. A wrong sign or a gradient that does not reach a weight leaves the loss far above the bound of 0.05;
+    # a uniform guess among the 6 source tokens is log 6 = 1.79. The decoder cannot copy its own input, which is the
+    # target shifted right, so it must read the encoder through the attention to it.
+    cfg = config(vocab=8, d_model=16, n_heads=2, d_kv=8, d_ff=32, n_layers=1)
+    params = init(np.random.default_rng(0), cfg)
+    src = np.random.default_rng(1).integers(2, 8, (8, 5))
+    tgt = src.copy()
+    m = {k: np.zeros_like(v) for k, v in params.items()}
+    v = {k: np.zeros_like(x) for k, x in params.items()}
+    losses = []
+    for t in range(1, 151):
+        logits, cache = forward(params, cfg, src, tgt)
+        losses.append(nll(logits, tgt))
+        grads = backward(params, cfg, cache, logits, tgt)
+        for k, g in grads.items():
+            m[k] = 0.9 * m[k] + 0.1 * g
+            v[k] = 0.999 * v[k] + 0.001 * g * g
+            params[k] = params[k] - 1e-2 * (m[k] / (1 - 0.9**t)) / (np.sqrt(v[k] / (1 - 0.999**t)) + 1e-8)
+    assert losses[0] > 1.0
+    assert losses[-1] < 0.05, losses[-1]

@@ -309,3 +309,39 @@
   text: "In the encoder, bucket 16, which would hold offset 0 of the keys after the query, never receives an offset, so 31 of its 32 rows are used."
   assumes: ["the bucket function of eq-bias"]
   derivation: buckets
+
+- id: c-vaswani-postnorm
+  type: definitional
+  text: "The Transformer employs a residual connection around each of the two sub-layers, followed by layer normalization; that is, the output of each sub-layer is LayerNorm(x + Sublayer(x))."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "p. 3", stance: for}
+
+- id: c-vaswani-sinusoid
+  type: definitional
+  text: "The Transformer adds positional encodings to the input embeddings, using sine and cosine functions of different frequencies."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "p. 6", stance: for}
+
+- id: c-vaswani-tied
+  type: definitional
+  text: "The Transformer shares the same weight matrix between the two embedding layers and the pre-softmax linear transformation, and in the embedding layers multiplies those weights by the square root of dmodel."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "p. 5", stance: for}
+
+- id: c-rmsnorm
+  type: attributive
+  text: "Zhang and Sennrich hypothesize that re-centering invariance in LayerNorm is dispensable and propose RMSNorm, which regularizes the summed inputs to a neuron according to root mean square, giving the model re-scaling invariance; RMSNorm achieves comparable performance against LayerNorm but reduces the running time by 7% to 64% on different models."
+  evidence:
+    - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 1", stance: for}
+
+- id: c-sentencepiece
+  type: definitional
+  text: "While existing subword segmentation tools assume that the input is pre-tokenized into word sequences, SentencePiece can train subword models directly from raw sentences."
+  evidence:
+    - {work: "kudo-2018-sentencepiece", role: original, locator: "p. 1", stance: for}
+
+- id: c-bert-mlm
+  type: definitional
+  text: "BERT masks 15% of all WordPiece tokens in each sequence at random and only predicts the masked words, in contrast to denoising auto-encoders, which reconstruct the entire input."
+  evidence:
+    - {work: "devlin-2019-bert", role: original, locator: "p. 4", stance: for}
