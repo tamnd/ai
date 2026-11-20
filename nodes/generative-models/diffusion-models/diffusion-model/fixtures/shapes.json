@@ -1,0 +1,233 @@
+{
+  "note": "Written by aik shapes sample -w from shapes.yaml; do not edit. The tests of each implementation check shapes, param_count and flops against these values (spec 08.6, rule X09).",
+  "configs": [
+    {
+      "name": "example",
+      "kind": "example",
+      "config": {
+        "B": 4,
+        "D": 3,
+        "E": 4,
+        "H": 5,
+        "T": 10,
+        "d_data": 3,
+        "d_hidden": 5,
+        "d_time": 4,
+        "n_steps": 10
+      },
+      "blocks": {
+        "hidden": {
+          "params": 40,
+          "flops_forward": 280,
+          "inputs": {
+            "e": [
+              4,
+              4
+            ],
+            "x": [
+              4,
+              3
+            ]
+          },
+          "outputs": {
+            "h": [
+              4,
+              5
+            ]
+          }
+        },
+        "output": {
+          "params": 18,
+          "flops_forward": 120,
+          "inputs": {
+            "h": [
+              4,
+              5
+            ]
+          },
+          "outputs": {
+            "eps": [
+              4,
+              3
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 400,
+        "params": 58
+      }
+    },
+    {
+      "name": "sample-1",
+      "kind": "sample",
+      "config": {
+        "B": 6,
+        "D": 4,
+        "E": 8,
+        "H": 5,
+        "T": 41,
+        "d_data": 4,
+        "d_hidden": 5,
+        "d_time": 8,
+        "n_steps": 41
+      },
+      "blocks": {
+        "hidden": {
+          "params": 65,
+          "flops_forward": 720,
+          "inputs": {
+            "e": [
+              6,
+              8
+            ],
+            "x": [
+              6,
+              4
+            ]
+          },
+          "outputs": {
+            "h": [
+              6,
+              5
+            ]
+          }
+        },
+        "output": {
+          "params": 24,
+          "flops_forward": 240,
+          "inputs": {
+            "h": [
+              6,
+              5
+            ]
+          },
+          "outputs": {
+            "eps": [
+              6,
+              4
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 960,
+        "params": 89
+      }
+    },
+    {
+      "name": "sample-2",
+      "kind": "sample",
+      "config": {
+        "B": 5,
+        "D": 2,
+        "E": 4,
+        "H": 5,
+        "T": 16,
+        "d_data": 2,
+        "d_hidden": 5,
+        "d_time": 4,
+        "n_steps": 16
+      },
+      "blocks": {
+        "hidden": {
+          "params": 35,
+          "flops_forward": 300,
+          "inputs": {
+            "e": [
+              5,
+              4
+            ],
+            "x": [
+              5,
+              2
+            ]
+          },
+          "outputs": {
+            "h": [
+              5,
+              5
+            ]
+          }
+        },
+        "output": {
+          "params": 12,
+          "flops_forward": 100,
+          "inputs": {
+            "h": [
+              5,
+              5
+            ]
+          },
+          "outputs": {
+            "eps": [
+              5,
+              2
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 400,
+        "params": 47
+      }
+    },
+    {
+      "name": "two_modes",
+      "kind": "named",
+      "config": {
+        "B": 256,
+        "D": 2,
+        "E": 16,
+        "H": 64,
+        "T": 100,
+        "d_data": 2,
+        "d_hidden": 64,
+        "d_time": 16,
+        "n_steps": 100
+      },
+      "blocks": {
+        "hidden": {
+          "params": 1216,
+          "flops_forward": 589824,
+          "inputs": {
+            "e": [
+              256,
+              16
+            ],
+            "x": [
+              256,
+              2
+            ]
+          },
+          "outputs": {
+            "h": [
+              256,
+              64
+            ]
+          }
+        },
+        "output": {
+          "params": 130,
+          "flops_forward": 65536,
+          "inputs": {
+            "h": [
+              256,
+              64
+            ]
+          },
+          "outputs": {
+            "eps": [
+              256,
+              2
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 655360,
+        "params": 1346
+      }
+    }
+  ]
+}

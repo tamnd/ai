@@ -1,0 +1,11 @@
+# Written by fixtures/make.py; do not edit.
+seed: 20200619
+config: {d_data: 3, d_hidden: 5, d_time: 4, n_steps: 10, beta_1: 0.02, beta_T: 0.5}
+inputs: {B: 4, x0: "standard normal", t: "[1, 4, 7, 10]", eps: "standard normal", z: "standard normal"}
+loss: "the simple loss, the squared error of the noise prediction summed over coordinates and averaged over the batch"
+dtype: float64
+numpy: "2.5.4"
+files:
+  params-small.npz: {sha256: fc65ab456b7fffb2eb5364332fa9a39699de452665cb5a7d1389919ecf203f03}
+  input-small.npz: {sha256: 8874d373cc657309636d12855618001caf817e33a68fdedefefb35544aecb5fa}
+  expected-small.npz: {sha256: 1fd07118d3e86e8c5fe7bd285f952401c4b28ac4f44268e79173a7c60174928d}
