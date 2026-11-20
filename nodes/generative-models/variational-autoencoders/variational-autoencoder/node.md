@@ -1,5 +1,5 @@
 ---
-tag: NEW-variational-autoencoder
+tag: KVBKEH
 kind: architecture
 slug: variational-autoencoder
 name: Variational autoencoder
