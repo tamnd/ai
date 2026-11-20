@@ -32,6 +32,7 @@ sources:
   - {paper: "Zhang, He, Sra and Jadbabaie (2020)", title: "Why gradient clipping accelerates training: A theoretical justification for adaptivity", locator: "pp. 1 to 8, 18 to 21", note: "(L0, L1)-smoothness and the convergence rates of clipped and fixed-step gradient descent"}
   - {paper: "Brock, De, Smith and Simonyan (2021)", title: "High-Performance Large-Scale Image Recognition Without Normalization", locator: "pp. 3 to 5", note: "adaptive gradient clipping (AGC) and its ablations"}
   - {paper: "Brown et al. (2020)", title: "Language Models are Few-Shot Learners", locator: "p. 43", note: "clipping the global norm at 1.0 when training GPT-3"}
+  - {paper: "Chowdhery et al. (2022)", title: "PaLM: Scaling Language Modeling with Pathways", locator: "arXiv 2204.02311, pp. 10 and 11", note: "global norm clipping at 1.0 and the loss spikes of the 540B model that occurred despite it"}
 ---
 
 Gradient clipping caps the size of a gradient before the optimizer uses it.
@@ -205,6 +206,13 @@ It also let them train with strong augmentations such as RandAugment, under whic
 **It does nothing for vanishing gradients.**
 Clipping only shortens long steps.
 Pascanu et al. needed a separate regularization term for the vanishing problem, and the gated units of the LSTM, which address vanishing gradients, do not explicitly address exploding ones. {#c-lstm-no-explode}
+
+**It does not stop loss spikes at scale.**
+PaLM clipped the global gradient norm at 1.0 for every model size. {#c-palm-clip}
+The 540B model still saw its loss spike about 20 times, at irregular points and sometimes late in training, while the smaller models did not. {#c-palm-spikes}
+The fix the authors used was not a tighter clip: they restarted from a checkpoint about 100 steps before each spike and skipped 200 to 500 batches. {#c-palm-restart}
+They did not blame bad data: the same batches, replayed from an earlier checkpoint, caused no spike, so the spikes came from particular batches meeting a particular state of the model. {#c-palm-not-data}
+Clipping bounds each step, but it has no view of that interaction.
 
 **It needs a threshold.**
 The threshold is an extra hyperparameter, and for plain norm clipping its best value can move with depth, batch size and learning rate, as Brock et al. found.
