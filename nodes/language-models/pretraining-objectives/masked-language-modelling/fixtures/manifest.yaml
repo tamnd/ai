@@ -1,0 +1,12 @@
+# Written by fixtures/make.py; do not edit.
+seed: 2019
+source: {vocabulary: 50, classes: 6, per_class: 8, dirichlet: 0.3, train: 400, test: 200, length: 32}
+model: {V: 50, m: 8, h: 32, offsets: [-2, 2], causal_offsets: [-2, -1], generator_h: 8}
+training: {epochs: 40, batch: 16, lr: 0.5, electra_lambda: 50.0, sgd_steps: 10}
+results: {source_cloze_nats: 2.5233, source_left_to_right_nats: 2.9662, uniform_nats: 3.8712}
+runs_test_nats: {dynamic: 2.6281, static: 3.2273, mask_only: 2.6015, rate40: 2.6468, causal: 3.0070}
+dtype: float64
+numpy: "2.5.4"
+files:
+  input-small.npz: {sha256: 7d742dcae0fa89a34038bffff96626a536b20572ac3ef67c1cc2ddf454390260}
+  expected-small.npz: {sha256: 7b06643bf06dc22154ce2e86f2f011c47fa0e19fc9783a20baa45279a9fc93f7}
