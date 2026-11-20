@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/attention-mechanism/ (ai://NEW-attention-mechanism).
+# Part of https://ai.tamnd.com/attention-mechanism/ (ai://B95BYJ).
 """The attention mechanism of Bahdanau, Cho and Bengio (2015) and the forms of Luong, Pham and Manning (2015), the
 NumPy reference.
 

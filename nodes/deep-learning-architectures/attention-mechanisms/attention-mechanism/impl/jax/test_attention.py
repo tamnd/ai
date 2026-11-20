@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/attention-mechanism/ (ai://NEW-attention-mechanism).
+# Part of https://ai.tamnd.com/attention-mechanism/ (ai://B95BYJ).
 """Tests of the JAX RNNsearch: the shared fixture and its gradients, jit, the energies on the whole grid, the
 precomputation of U_a h_j and the parameter count."""
 

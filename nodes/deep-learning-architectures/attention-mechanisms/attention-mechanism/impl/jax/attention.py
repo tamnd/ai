@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/attention-mechanism/ (ai://NEW-attention-mechanism).
+# Part of https://ai.tamnd.com/attention-mechanism/ (ai://B95BYJ).
 """RNNsearch of Bahdanau, Cho and Bengio (2015) in JAX, as pure functions of the parameters.
 
 The parameters have the names and the layout of the NumPy reference (rows are vectors, gate matrices side by side in

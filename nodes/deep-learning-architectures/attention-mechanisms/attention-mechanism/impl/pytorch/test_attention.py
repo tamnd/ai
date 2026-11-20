@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/attention-mechanism/ (ai://NEW-attention-mechanism).
+# Part of https://ai.tamnd.com/attention-mechanism/ (ai://B95BYJ).
 """Tests of the PyTorch RNNsearch and Luong attention: the fixtures and their gradients, the Luong layer against the
 NumPy reference, and a small version of the bottleneck of Bahdanau et al.: reversing a 12-word sequence, which the
 model with attention learns and the same model with a fixed context does not, with alignments on the anti-diagonal."""

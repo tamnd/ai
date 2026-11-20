@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/attention-mechanism/ (ai://NEW-attention-mechanism).
+# Part of https://ai.tamnd.com/attention-mechanism/ (ai://B95BYJ).
 """Tests of the NumPy reference: the fixtures, the gradient against finite differences, the padding, the
 alignment weights, RNNencdec as the model with c_i fixed, the parameter count at the paper's sizes and the
 relations between the scores of Luong et al."""

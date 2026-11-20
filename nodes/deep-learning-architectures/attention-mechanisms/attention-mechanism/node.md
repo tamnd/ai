@@ -1,5 +1,5 @@
 ---
-tag: NEW-attention-mechanism
+tag: B95BYJ
 kind: method
 slug: attention-mechanism
 name: Attention mechanism

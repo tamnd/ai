@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/attention-mechanism/ (ai://NEW-attention-mechanism).
+# Part of https://ai.tamnd.com/attention-mechanism/ (ai://B95BYJ).
 """RNNsearch of Bahdanau, Cho and Bengio (2015) and the attention layer of Luong, Pham and Manning (2015) in PyTorch.
 
 The parameters, their names and shapes are those of the NumPy reference (impl/numpy/attention.py): rows are vectors,
