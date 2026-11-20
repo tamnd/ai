@@ -20,6 +20,7 @@ sources:
   - {paper: "Lewkowycz et al. (2020)", title: "The large learning rate phase of deep learning: the catapult mechanism", locator: "pp. 3-7", note: "the lazy, catapult and divergent phases and the solvable two-layer model"}
   - {paper: "Damian, Nichani and Lee (2023)", title: "Self-Stabilization: The Implicit Bias of Gradient Descent at the Edge of Stability", locator: "pp. 1-3, 6-8, 12-15", note: "self-stabilization through the cubic term, the two-variable model and its conserved quantity"}
   - {paper: "Jastrzębski et al. (2020)", title: "The Break-Even Point on Optimization Trajectories of Deep Neural Networks", locator: "pp. 1-5", note: "the break-even point and the conjectures about SGD"}
+  - {paper: "Keskar, Mudigere, Nocedal, Smelyanskiy and Tang (2017)", title: "On Large-Batch Training for Deep Learning: Generalization Gap and Sharp Minima", locator: "ICLR 2017, arXiv 1609.04836v2, p. 1", note: "large batches reaching sharp minimizers and generalizing worse"}
 claim: >-
   Full-batch gradient descent on neural networks typically raises the largest Hessian eigenvalue of the training loss until it reaches 2/η, then keeps it hovering at or just above 2/η while the loss decreases over long timescales but not monotonically.
 first_reported: {work: cohen-2021-gradient-descent-edge-stability, note: "named the regime and showed it for fully-connected, convolutional, VGG, ResNet and Transformer networks with MSE and cross-entropy, with and without momentum"}
@@ -190,6 +191,8 @@ For practice, the sharpness at the end of training is set mostly by the step siz
 ## Open questions
 
 Cohen et al. write that they do not know why progressive sharpening happens, nor whether sharp solutions differ in any important way from flat ones. {#c-cohen-unknown}
+The question matters because sharpness is often tied to generalization: Keskar et al. (2017) found that large-batch training reaches sharp minimizers and small-batch training flat ones, and blamed the generalization gap of large batches on the difference. {#c-keskar-sharp}
+At the edge of stability the step size, not the batch alone, sets the sharpness, so the two accounts have to be reconciled before sharpness can be read as a cause.
 The self-stabilization analysis covers one unstable eigenvalue; with several, the dynamics look much more chaotic. {#c-damian-multiple}
 How the full-batch picture carries over to SGD, where the sharpness does not settle, is also open.
 

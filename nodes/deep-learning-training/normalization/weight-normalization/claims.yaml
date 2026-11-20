@@ -404,3 +404,21 @@
   text: "Spectral normalization is by Takeru Miyato, Toshiki Kataoka, Masanori Koyama and Yuichi Yoshida, published as a conference paper at ICLR 2018, arXiv 1802.05957v1 of 16 Feb 2018."
   evidence:
     - {work: "miyato-2018-spectral-normalization", role: original, locator: "p. 1", stance: for}
+
+- id: c-ba-wn-norm
+  type: attributive
+  text: "Ba et al. describe weight normalization as using, instead of the variance, the L2 norm of the incoming weights to normalize the summed inputs to a neuron, and note that applying either weight normalization or batch normalization using expected statistics is equivalent to a different parameterization of the original feed-forward network."
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "p. 3", stance: for}
+
+- id: c-ba-invariance
+  type: attributive
+  text: "Under batch normalization and weight normalization, any re-scaling to the incoming weights of a single neuron has no effect on the normalized summed inputs to a neuron."
+  evidence:
+    - {work: "ba-2016-layer-normalization", role: original, locator: "p. 4", stance: for}
+
+- id: c-brock-sws
+  type: attributive
+  text: "Normalizer-free ResNets suppress the residual branch at initialization and apply Scaled Weight Standardization, which reparameterizes each convolutional weight by subtracting the mean over its fan-in and dividing by the square root of N times the standard deviation, where N is the fan-in, to remove the mean shift in the hidden activations."
+  evidence:
+    - {work: "brock-2021-image-recognition-without-normalization", role: original, locator: "pp. 2 and 3", stance: for}

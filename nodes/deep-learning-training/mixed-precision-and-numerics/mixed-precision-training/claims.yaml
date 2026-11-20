@@ -755,3 +755,21 @@
   text: "FP8 Formats for Deep Learning, posted as arXiv 2209.05433, was written by Paulius Micikevicius and coauthors of NVIDIA, Arm and Intel."
   evidence:
     - {work: "micikevicius-2022-fp8-formats", role: original, locator: "p. 1", stance: for}
+
+- id: c-h100-te
+  type: attributive
+  text: "At each layer of a Transformer model, the Transformer Engine analyzes the statistics of the output values produced by the Tensor Core, decides which target format to convert the tensor to before storing it to memory, and scales the data into the representable range using scaling factors computed from the tensor statistics."
+  evidence:
+    - {work: "nvidia-2023-h100-architecture-whitepaper", role: original, locator: "p. 46", stance: for}
+
+- id: c-h100-fp8-throughput
+  type: attributive
+  text: "NVIDIA states that FP8 halves data storage requirements and doubles throughput compared to FP16 or BF16, and that H100 Tensor Cores support FP32 and FP16 accumulators with E4M3 and E5M2 FP8 input types."
+  evidence:
+    - {work: "nvidia-2023-h100-architecture-whitepaper", role: original, locator: "p. 23", stance: for}
+
+- id: c-qlora-dtypes
+  type: attributive
+  text: "Dettmers et al. use one storage data type, usually 4-bit NormalFloat, and a computation data type, 16-bit BrainFloat, dequantizing the storage data type to the computation data type to perform the forward and backward pass, and computing weight gradients only for the LoRA parameters, which use 16-bit BrainFloat."
+  evidence:
+    - {work: "dettmers-2023-qlora", role: original, locator: "pp. 4 and 5", stance: for}

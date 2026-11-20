@@ -17,6 +17,8 @@ sources:
   - {paper: "Turing (1936)", title: "On Computable Numbers, with an Application to the Entscheidungsproblem", locator: "Proceedings of the London Mathematical Society s2-42, 230 to 265, pp. 230 and 242 and Section 11"}
   - {paper: "Turing (1950)", title: "Computing Machinery and Intelligence", locator: "Mind 59(236), 433 to 460, Sections 1, 6 and 7"}
   - {url: "https://plato.stanford.edu/archives/fall2025/entries/turing/", title: "Hodges, Alan Turing, Stanford Encyclopedia of Philosophy", locator: "Sections 1, 6 and 8", note: "the dates, the public roles, the 1948 ideas on machine learning, and the work on morphogenesis"}
+  - {paper: "Shieber (1994)", title: "Lessons from a Restricted Turing Test", locator: "Communications of the ACM 37(6), arXiv cmp-lg/9404002v1, abstract and pp. 1 to 4", note: "the first Loebner Prize competition of 1991, its restrictions and a referee's critique"}
+  - {paper: "Jones and Bergen (2025)", title: "Large Language Models Pass the Turing Test", locator: "arXiv 2503.23674v1, pp. 1 and 10", note: "pre-registered three-party Turing tests of ELIZA, GPT-4o, LLaMa-3.1 and GPT-4.5"}
 roles: [researcher]
 ---
 
@@ -57,5 +59,17 @@ From 1950 he worked on a mathematical theory of morphogenesis, built on non-line
 
 The awards are generated from the cards.
 In 1951 Turing was elected a Fellow of the Royal Society for his work of 1936. {#c-frs}
+
+## Legacy
+
+The imitation game outlived the paper as a contest and a benchmark.
+On 8 November 1991 the Computer Museum in Boston held the first competition for the Loebner Prize, billed as the first actual administration of the Turing test. {#c-loebner-1991}
+To give the programs a chance, the organizers restricted the test: each conversation kept to one fixed topic, and the rules ruled out trickery or guile. {#c-loebner-rules}
+The judges ranked both human confederates above all six programs, yet five of them took the winner, Joseph Weintraub's program on "whimsical conversation", for a human; it took the $1500 prize. {#c-loebner-result}
+Stuart Shieber, a referee at the event, argued that the competition had no clear purpose, that its design prevented any useful outcome, and that it was inappropriate given the technology of the day. {#c-shieber-critique}
+
+In 2025 Cameron Jones and Benjamin Bergen ran randomised, controlled, pre-registered three-party tests of ELIZA, GPT-4o, LLaMa-3.1-405B and GPT-4.5, with five-minute conversations, the length of Turing's forecast. {#c-jones-setup}
+Prompted to adopt a humanlike persona, GPT-4.5 was judged to be the human 73% of the time, more often than the real human, while ELIZA and GPT-4o fell significantly below chance at 23% and 21%; the authors call it the first empirical evidence that any artificial system passes a standard three-party Turing test. {#c-jones-gpt45}
+Both large models passed only with the persona prompt. {#c-jones-persona}
 
 ## References

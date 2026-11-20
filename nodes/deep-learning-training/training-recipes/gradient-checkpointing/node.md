@@ -32,6 +32,8 @@ sources:
   - {paper: "Chen, Xu, Zhang and Guestrin (2016)", title: "Training Deep Nets with Sublinear Memory Cost", locator: "the abstract, Sections 2, 4.2 to 4.4, 5.3 and 5.4", note: "the sqrt(n) segment schedule, the recursion, and the measurements"}
   - {paper: "Gruslys, Munos, Danihelka, Lanctot and Graves (2016)", title: "Memory-Efficient Backpropagation Through Time", locator: "the abstract, Sections 3.1, 3.5 and 4.1", note: "the dynamic program for a fixed memory budget"}
   - {paper: "Korthikanti, Casper, Lym, McAfee, Andersch, Shoeybi and Catanzaro (2022)", title: "Reducing Activation Recomputation in Large Transformer Models", locator: "the abstract, Sections 1, 4.1, 5 and 6.2", note: "activation memory per transformer layer and selective recomputation"}
+  - {paper: "Dao, Fu, Ermon, Rudra and Ré (2022)", title: "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness", locator: "arXiv 2205.14135v2, p. 5", note: "recomputing attention in the backward pass as selective checkpointing that is faster, not slower"}
+  - {paper: "Gholami, Keutzer and Biros (2019)", title: "ANODE: Unconditionally Accurate Memory-Efficient Gradients for Neural ODEs", locator: "arXiv 1902.10298v3, pp. 1 and 2", note: "checkpointing for neural ODEs in place of reversing the solve"}
 ---
 
 Gradient checkpointing reduces the memory needed to train a neural network.
@@ -189,6 +191,9 @@ For large transformers, a schedule that only checkpoints whole layers is also co
   The strategies of Chen et al. are policies of the same dynamic program, so the optimum is at least as good under any budget. {#c-hsm-covers-chen}
   Our table gives $C(1000, 10) = 4636$ forwards for 1000 steps with 10 slots, against 1999 with full storage.
 - **Selective recomputation** keeps the cheap-to-store, expensive-to-compute activations of a transformer layer and recomputes only the attention scores (Korthikanti et al. 2022, Section 5).
+- **Recomputation inside a fused kernel.** FlashAttention does not store the attention matrix; it recomputes it in the backward pass from blocks of $Q$, $K$ and $V$ held in on-chip memory, which its authors describe as selective gradient checkpointing. Unlike the usual trade of speed for memory, this recomputation makes the backward pass faster despite the extra FLOPs, because it reads far less from GPU main memory. {#c-fa-selective}
+- **Neural ODEs.** Running the ODE backwards in time to avoid storing states can be numerically unstable, since a network with ReLU activations may not be reversible. {#c-anode-reversible}
+  ANODE stores checkpoints instead and recomputes within each block, cutting memory from $O(L N_t)$ to $O(L) + O(N_t)$ for $L$ blocks of $N_t$ time steps, with logarithmic checkpointing available for further savings. {#c-anode-checkpoint}
 - **Checkpointing in automatic differentiation.** Revolve plans checkpoints for the reverse mode of general programs (Griewank and Walther 2000, cited by Chen et al.).
 
 ## When to use it

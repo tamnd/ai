@@ -30,6 +30,8 @@ sources:
   - {paper: "Yang and Hu (2020)", title: "Feature Learning in Infinite-Width Neural Networks", locator: "arXiv 2011.14522v3, Sections 1 to 5 and 9", note: "abc-parametrizations, the Dynamical Dichotomy, why SP and NTP cannot learn features, the definition and uniqueness of muP, Word2Vec and Omniglot"}
   - {paper: "Yang, Hu, Babuschkin, Sidor, Liu, Farhi, Ryder, Pachocki, Chen and Gao (2022)", title: "Tensor Programs V: Tuning Large Neural Networks via Zero-Shot Hyperparameter Transfer", locator: "arXiv 2203.03466v2, Sections 1 to 9 and Appendices B and J", note: "Table 3 for SGD and Adam, the base-width form, 1/d attention, muTransfer and its experiments, the limitations, and the derivation"}
   - {paper: "Everett, Xiao, Wortsman, Alemi, Novak, Liu, Gur, Sohl-Dickstein, Kaelbling, Lee and Pennington (2024)", title: "Scaling Exponents Across Parameterizations and Optimizers", locator: "arXiv 2407.05872v2, Sections 1 and 2", note: "the alignment assumption, hyperparameter transfer in all parametrizations, a per-layer SP prescription, and Adam's epsilon"}
+  - {paper: "He, Zhang, Ren and Sun (2015)", title: "Delving Deep into Rectifiers: Surpassing Human-Level Performance on ImageNet Classification", locator: "ICCV 2015, arXiv 1502.01852v1, pp. 1, 3 and 4", note: "the fan-in rectifier initialization behind the standard parametrization"}
+  - {paper: "Jacot, Gabriel and Hongler (2018)", title: "Neural Tangent Kernel: Convergence and Generalization in Neural Networks", locator: "NIPS 2018, arXiv 1806.07572v4, pp. 2 and 3", note: "the NTK parametrization and its 1/sqrt(n) factors"}
 ---
 
 The maximal update parametrization (μP) is a rule for how each layer's initialization variance and learning rate should change with a network's width.
@@ -52,6 +54,12 @@ Yang et al. find that in μP many optimal hyperparameters remain stable as the m
 They turn this into μTransfer: parametrize the target model in μP, tune on a smaller model, and zero-shot transfer the hyperparameters to the full-sized model without tuning it at all. {#c-tp5-mutransfer}
 The standard parametrization (SP) keeps activations of unit order at initialization, but makes them blow up in wide models during training, essentially because the per-layer learning rates are out of balance. {#c-tp5-sp-imbalance}
 In a Transformer trained with Adam, the optimal learning rate is stable across width in μP and far from stable in SP. {#c-tp5-fig1}
+
+Both reference parametrizations are older than μP.
+The fan-in variance of SP is the rectifier initialization of He et al. (2015), who keep $\tfrac12 n_l \operatorname{Var}[w_l] = 1$ in every layer, a zero-mean Gaussian with standard deviation $\sqrt{2/n_l}$. {#c-he-init}
+It let rectified networks of 30 layers converge where the Xavier initialization stalled. {#c-he-30layer}
+The NTK parametrization is that of Jacot et al. (2018), who draw every weight from $\mathcal N(0, 1)$ and put a factor $1/\sqrt{n_l}$ in front; the factors give a consistent limit as the width grows, but they greatly reduce how much each weight can move during training. {#c-jacot-factors}
+That reduction is the lazy behaviour μP is built to avoid.
 
 Yang and Hu start from a weakness of the NTK: in its limit, the last-layer features after pretraining are essentially those of random initialization. {#c-tp4-ntk-features}
 They study abc-parametrizations of an $L$-hidden-layer perceptron. Each weight is $W^l = n^{-a_l} w^l$ for a trainable $w^l$ with entries drawn from $\mathcal{N}(0, n^{-2 b_l})$, and SGD uses the learning rate $\eta n^{-c}$ with $\eta$ independent of the width $n$. {#c-tp4-abc}

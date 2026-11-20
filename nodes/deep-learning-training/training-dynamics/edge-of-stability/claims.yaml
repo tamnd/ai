@@ -510,3 +510,14 @@
   text: "Damian, Nichani and Lee posted the second version of Self-Stabilization: The Implicit Bias of Gradient Descent at the Edge of Stability as arXiv 2209.15594v2 on 10 April 2023."
   evidence:
     - {work: "damian-2023-self-stabilization-edge-stability", role: original, locator: "p. 1", stance: for}
+
+- id: c-keskar-sharp
+  type: empirical
+  text: "Keskar et al. present numerical evidence that large-batch methods tend to converge to sharp minimizers of the training and testing functions, while small-batch methods consistently converge to flat minimizers, and they attribute the generalization drop of large batches to this."
+  scope:
+    models: "fully connected and convolutional networks"
+    data: ["mnist", "cifar-10", "cifar-100", "TIMIT"]
+    scale: "unknown"
+    setting: "ADAM with small and large batches"
+  evidence:
+    - {work: "keskar-2017-large-batch-training-sharp-minima", role: original, locator: "p. 1", stance: for}

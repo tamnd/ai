@@ -34,6 +34,7 @@ sources:
   - {paper: "Ba, Kiros and Hinton (2016)", title: "Layer Normalization", locator: "the abstract, p. 2", note: "layer normalization, which RMSNorm simplifies"}
   - {paper: "Touvron et al. (2023)", title: "LLaMA: Open and Efficient Foundation Language Models", locator: "p. 3", note: "pre-normalization with RMSNorm in a large language model"}
   - {paper: "Xiong et al. (2020)", title: "On Layer Normalization in the Transformer Architecture", locator: "the abstract, Section 2", note: "the Pre-LN placement and training without warm-up"}
+  - {paper: "Raffel et al. (2020)", title: "Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer", locator: "JMLR 2020, p. 4", note: "rescale-only layer normalization without bias, applied before each subcomponent"}
 ---
 
 RMSNorm is a normalization layer that divides the summed inputs of a layer by their root mean square over the units, for each example on its own, and then multiplies each unit by a learned gain.
@@ -243,6 +244,7 @@ Keep $\epsilon > 0$ in practice and set it to 0 only to test the identities.
 - **pRMSNorm** estimates the RMS from a fraction $p$ of the units, eq-prms.
 - **The L2 norm** without the $1/n$ factor normalizes to a fixed sphere; it did not work in the experiments of Zhang and Sennrich.
 - **No gain.** With `elementwise_affine=False` in the implementations the output has RMS 1 exactly, up to $\epsilon$.
+- **Rescale-only layer normalization in T5.** Raffel et al. normalize the input of each subcomponent with a simplified layer normalization that only rescales the activations and adds no bias, the same pre-normalization, bias-free design that LLaMA later adopted with RMSNorm by name. {#c-t5-simplified}
 - **Weight normalization** rescales the weight vector of each unit instead of the summed inputs; it acts on the parameters, while RMSNorm acts on the activations of each example.
 
 ## When to use it

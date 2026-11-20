@@ -32,6 +32,7 @@ sources:
   - {paper: "Cunningham, Ewart, Riggs, Huben and Sharkey (2023)", title: "Sparse Autoencoders Find Highly Interpretable Features in Language Models", locator: "arXiv 2309.08600v3, Sections 1 to 4, 7 and Appendix B", note: "the tied ReLU SAE with an L1 penalty and its interpretability evaluation"}
   - {paper: "Rajamanoharan, Conmy, Smith, Lieberum, Varma, Kramár, Shah and Nanda (2024)", title: "Improving Dictionary Learning with Gated Sparse Autoencoders", locator: "arXiv 2404.16014v2, Sections 2 to 4", note: "shrinkage, the relative reconstruction bias and the gated encoder"}
   - {paper: "Gao, Dupré la Tour, Tillman, Goh, Troll, Radford, Sutskever, Leike and Wu (2024)", title: "Scaling and evaluating sparse autoencoders", locator: "arXiv 2406.04093v1, Sections 2 to 5 and Appendix A", note: "TopK SAEs, dead latents and AuxK, scaling laws and evaluation metrics"}
+  - {paper: "Makhzani and Frey (2014)", title: "k-Sparse Autoencoders", locator: "ICLR 2014, arXiv 1312.5663v2, pp. 2 and 5", note: "the original TopK autoencoder and its sparsity schedule against dead units"}
 ---
 
 A sparse autoencoder (SAE) takes the activation vectors of one layer of a trained network and learns to rewrite each of them as a sum of a few directions chosen from a much larger learned set.
@@ -90,6 +91,7 @@ $$ z = \mathrm{TopK}\big(W_{\text{enc}} (x - b_{\text{pre}})\big), \qquad L = \l
 
 Their code also applies a ReLU so the activations are nonnegative, and the training curves do not change because the $k$ largest are almost always positive. {#c-ga-topk-relu}
 They list four benefits: no L1 penalty and so no shrinkage of the positive activations toward zero, an L0 set directly instead of through $\lambda$, a better trade-off between sparsity and reconstruction, with a gap that grows with scale, and small activations clamped to zero. {#c-ga-topk-benefits}
+Makhzani and Frey had built the k-sparse autoencoder on tied weights and linear activations, so that picking the $k$ largest units is the only nonlinearity; at test time they kept the $\alpha k$ largest, with $\alpha \ge 1$ chosen on validation data. {#c-mf-linear}
 
 ### Dead latents
 
@@ -97,6 +99,7 @@ In large SAEs a growing share of latents stops firing altogether; Gao et al. cit
 A latent counts as dead if it has not fired in 10 million tokens. {#c-ga-dead-def}
 Two things fix most of it: starting the encoder as the transpose of the decoder, and an auxiliary loss that reconstructs the error from the dead latents; with both, their 16-million-latent SAE has 7% dead. {#c-ga-dead-fixes}
 The auxiliary loss, AuxK, takes the error $e = x - \hat{x}$, reconstructs it as $\hat{e} = W_{\text{dec}} z$ from the top $k_{\text{aux}}$ dead latents, typically 512, and adds $\alpha \lVert e - \hat{e} \rVert_2^2$ with $\alpha$ typically 1/32, for about 10% more compute. {#c-ga-auxk}
+The problem is older than SAEs on language models: Makhzani and Frey found that too much sparsity early in training leaves some hidden units dead, never reached by the gradient, and fixed it by starting with a large $k$ and lowering it, from $k = 100$ to $k = 15$ over the first half of the epochs. {#c-mf-dead}
 
 ### Training details
 

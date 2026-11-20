@@ -36,6 +36,7 @@ sources:
   - {paper: "Michael et al. (2023)", title: "Debate Helps Supervise Unreliable Experts", locator: "pp. 1, 4 to 11, 13 and 14", note: "human debate against consultancy on QuALITY, error analysis, obfuscated arguments and limitations"}
   - {paper: "Khan et al. (2024)", title: "Debating with More Persuasive LLMs Leads to More Truthful Answers", locator: "pp. 1, 2 and 4 to 8, the title page", note: "LLM debaters and judges, persuasiveness, judge biases and limitations"}
   - {paper: "Brown-Cohen et al. (2023)", title: "Scalable AI Safety via Doubly-Efficient Debate", locator: "pp. 1, 2, 9 and 10", note: "debate protocols with efficient honest strategies, and the obfuscated argument problem"}
+  - {paper: "Bowman et al. (2022)", title: "Measuring Progress on Scalable Oversight for Large Language Models", locator: "arXiv 2211.03540v2, p. 1", note: "the sandwiching design and the chat baseline that debate protocols must beat"}
 ---
 
 AI safety via debate trains two agents to argue for competing answers to a question while a judge, usually a person, decides who argued better.
@@ -229,6 +230,9 @@ A strong misaligned debater might also talk a person into a harmful act; short s
 
 **Related methods.**
 Debate grew out of an attempt to understand the amplification approach to alignment of Christiano et al. (2018), to which it is closely related. {#c-amplification}
+Bowman et al. (2022) proposed testing scalable oversight methods on tasks where specialists succeed but unaided people and current AI systems fail. {#c-bw-design}
+In their proof of concept on MMLU and time-limited QuALITY, people who simply chatted with an unreliable dialog assistant beat both the model alone and their own unaided answers. {#c-bw-chat}
+That sets a floor for debate: a protocol earns its place only by beating simpler help from a single model, which is why the experiments above compare debate with consultancy.
 Like [[al:adversarial-training|adversarial training]], it sets two learners against each other, but here the opponent's role is to expose flaws to a judge, not to fool a classifier.
 The analysis uses the game theory of [[al:zero-sum-game|zero-sum games]] and [[al:nash-equilibrium|Nash equilibria]], and the MNIST experiment plays the game with [[al:monte-carlo-tree-search|Monte Carlo tree search]].
 Each debater sees the whole transcript, as in a [[al:perfect-information-game|perfect-information game]], but the judge who decides the game sees only what the debaters reveal of the hidden image or text.

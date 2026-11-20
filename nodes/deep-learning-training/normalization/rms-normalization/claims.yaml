@@ -413,3 +413,9 @@
   text: "Zhang and Sennrich planned to explore different norms for RMSNorm and to simplify other normalization techniques such as BatchNorm."
   evidence:
     - {work: "zhang-2019-root-mean-square-layer-normalization", role: original, locator: "p. 9", stance: for}
+
+- id: c-t5-simplified
+  type: attributive
+  text: "T5 applies layer normalization to the input of each subcomponent and uses a simplified version of layer normalization where the activations are only rescaled and no additive bias is applied."
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "p. 4", stance: for}
