@@ -1,0 +1,66 @@
+# SPDX-License-Identifier: MIT
+# The shape contract of the autoencoder of the page (spec 08.6): an encoder of n_hidden hidden layers of d_hidden units
+# and a code layer of d_code units, and a decoder that mirrors it, n_hidden hidden layers of d_hidden units and a
+# reconstruction of d_in units. Every layer is fully connected with a bias. The FLOPs count the products only, a
+# multiply-add as 2; the biases, the activations and the loss are left out. With tied weights each decoder matrix is the
+# transpose of an encoder matrix, so the FLOPs are the same and only the biases of the decoder are parameters.
+config:
+  d_in:     {meaning: "width of the input and of the reconstruction", symbol: "D", example: 6, sample: [1, 8]}
+  d_hidden: {meaning: "width of each hidden layer of the encoder and of the decoder", symbol: "H", example: 5, sample: [1, 8]}
+  n_hidden: {meaning: "number of hidden layers on each side of the code", symbol: "L", example: 1, sample: [1, 3]}
+  d_code:   {meaning: "width of the code, the bottleneck when it is below d_in", symbol: "C", example: 2, sample: [1, 4]}
+axes:
+  B: {meaning: "batch", example: 4, sample: [1, 6]}
+  D: d_in
+  H: d_hidden
+  C: d_code
+blocks:
+  - id: enc_first
+    meaning: "the first layer of the encoder: an affine map from the input to d_hidden units, then the activation"
+    eq: [layer]
+    inputs: {x: "(B, D)"}
+    outputs: {h: "(B, H)"}
+    params: "D * H + H"
+    flops_forward: "2 * B * D * H"
+  - id: enc_hidden
+    meaning: "each of the n_hidden - 1 other hidden layers of the encoder, d_hidden to d_hidden units"
+    eq: [layer]
+    inputs: {h: "(B, H)"}
+    outputs: {h: "(B, H)"}
+    params: "H * H + H"
+    flops_forward: "2 * B * H * H"
+  - id: code
+    meaning: "the code layer, an affine map to d_code units and the code activation, linear in the deep autoencoders of Hinton and Salakhutdinov"
+    eq: [encoder]
+    inputs: {h: "(B, H)"}
+    outputs: {y: "(B, C)"}
+    params: "H * C + C"
+    flops_forward: "2 * B * H * C"
+  - id: dec_first
+    meaning: "the first layer of the decoder, from the code back to d_hidden units"
+    eq: [layer]
+    inputs: {y: "(B, C)"}
+    outputs: {h: "(B, H)"}
+    params: "C * H + H"
+    flops_forward: "2 * B * C * H"
+  - id: dec_hidden
+    meaning: "each of the n_hidden - 1 other hidden layers of the decoder"
+    eq: [layer]
+    inputs: {h: "(B, H)"}
+    outputs: {h: "(B, H)"}
+    params: "H * H + H"
+    flops_forward: "2 * B * H * H"
+  - id: recon
+    meaning: "the reconstruction layer, an affine map to d_in units, then a sigmoid for binary data or nothing for real-valued data"
+    eq: [decoder]
+    inputs: {h: "(B, H)"}
+    outputs: {z: "(B, D)"}
+    params: "H * D + D"
+    flops_forward: "2 * B * H * D"
+model:
+  params: {formula: "enc_first.params + (n_hidden - 1) * enc_hidden.params + code.params + dec_first.params + (n_hidden - 1) * dec_hidden.params + recon.params", symbol: "P", meaning: "all weights and biases with untied weights"}
+  params_tied: {formula: "D * H + (n_hidden - 1) * H * H + H * C + 2 * n_hidden * H + C + D", symbol: "P_{\\text{tied}}", meaning: "all weights and biases when each decoder matrix is the transpose of an encoder matrix: the encoder's weights and both sides' biases"}
+  flops_forward: {formula: "enc_first.flops_forward + (n_hidden - 1) * enc_hidden.flops_forward + code.flops_forward + dec_first.flops_forward + (n_hidden - 1) * dec_hidden.flops_forward + recon.flops_forward", symbol: "C_{\\text{fwd}}", meaning: "FLOPs of one encoding and decoding of the batch, a multiply-add counted as 2"}
+  flops_backward: {formula: "2 * flops_forward", symbol: "C_{\\text{bwd}}", meaning: "FLOPs of the backward pass of the reference: the gradient of each weight matrix and of each layer input, the input x included"}
+configs:
+  curves_like: {meaning: "a uniform-width cousin of the curves autoencoder of Hinton and Salakhutdinov, 784 pixels and a 6-dimensional code; their widths shrink from 400 to 25, which this config cannot express", d_in: 784, d_hidden: 100, n_hidden: 3, d_code: 6, B: 1}

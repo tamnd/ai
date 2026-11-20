@@ -1,0 +1,55 @@
+# SPDX-License-Identifier: MIT
+# The shape contract of the variational autoencoder of the page (spec 08.6), the model of Kingma and Welling (2013),
+# section 3 and appendix C: an encoder with one tanh layer of d_hidden units and two affine heads, the mean and the
+# log-variance of a diagonal Gaussian over d_latent dimensions, and a decoder with one tanh layer of d_hidden units and
+# an affine output of d_in units, the logits of Bernoulli pixels. The encoder runs once per example; the decoder runs
+# once per draw of the code, S draws per example. The FLOPs count the products only, a multiply-add as 2; the biases,
+# the activations, the reparameterization, the KL term and the loss are left out. A Gaussian decoder adds a second
+# output head, the log-variance of each pixel: params_gaussian and flops_gaussian count it.
+config:
+  d_in:     {meaning: "width of the input and of the output of the decoder", symbol: "D", example: 6, sample: [1, 8]}
+  d_hidden: {meaning: "width of the hidden layer of the encoder and of the decoder", symbol: "H", example: 5, sample: [1, 8]}
+  d_latent: {meaning: "dimension of the latent code z", symbol: "J", example: 2, sample: [1, 4]}
+axes:
+  B: {meaning: "batch", example: 4, sample: [1, 6]}
+  S: {meaning: "draws of the code per example, L in Kingma and Welling and k in Burda et al.", example: 3, sample: [1, 4]}
+  D: d_in
+  H: d_hidden
+  J: d_latent
+blocks:
+  - id: enc_hidden
+    meaning: "the hidden layer of the encoder: h = tanh(x W + b)"
+    eq: [encoder]
+    inputs: {x: "(B, D)"}
+    outputs: {h: "(B, H)"}
+    params: "D * H + H"
+    flops_forward: "2 * B * D * H"
+  - id: enc_heads
+    meaning: "the two heads of the encoder, the mean and the log-variance of q(z|x)"
+    eq: [encoder]
+    inputs: {h: "(B, H)"}
+    outputs: {mu: "(B, J)", log_var: "(B, J)"}
+    params: "2 * (H * J + J)"
+    flops_forward: "4 * B * H * J"
+  - id: dec_hidden
+    meaning: "the hidden layer of the decoder, applied to each of the S codes z = mu + sigma * eps of each example"
+    eq: [decoder]
+    inputs: {z: "(S, B, J)"}
+    outputs: {g: "(S, B, H)"}
+    params: "J * H + H"
+    flops_forward: "2 * S * B * J * H"
+  - id: dec_out
+    meaning: "the output layer of the decoder, the logits of the D pixels of each draw"
+    eq: [decoder]
+    inputs: {g: "(S, B, H)"}
+    outputs: {logits: "(S, B, D)"}
+    params: "H * D + D"
+    flops_forward: "2 * S * B * H * D"
+model:
+  params: {formula: "enc_hidden.params + enc_heads.params + dec_hidden.params + dec_out.params", symbol: "P", meaning: "all weights and biases with a Bernoulli decoder"}
+  params_gaussian: {formula: "params + H * D + D", symbol: "P_{\\text{G}}", meaning: "all weights and biases with a Gaussian decoder, which adds a head for the log-variance of each pixel"}
+  flops_forward: {formula: "enc_hidden.flops_forward + enc_heads.flops_forward + dec_hidden.flops_forward + dec_out.flops_forward", symbol: "C", meaning: "FLOPs of one encoding of the batch and S decodings per example, a multiply-add counted as 2"}
+  flops_gaussian: {formula: "flops_forward + 2 * S * B * H * D", symbol: "C_{\\text{G}}", meaning: "the same with a Gaussian decoder"}
+configs:
+  kw13_mnist: {meaning: "the MNIST model of Kingma and Welling (2013) with 500 hidden units and 20 latent dimensions, one of the five sizes of their figure 2, on 28 x 28 images, one draw per example", d_in: 784, d_hidden: 500, d_latent: 20, B: 100, S: 1}
+  kw13_frey_face: {meaning: "the Frey Face model of Kingma and Welling (2013) with 200 hidden units and 20 latent dimensions on 28 x 20 images; it has a Gaussian decoder, so params_gaussian and flops_gaussian are its counts", d_in: 560, d_hidden: 200, d_latent: 20, B: 100, S: 1}

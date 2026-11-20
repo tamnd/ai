@@ -1,0 +1,22 @@
+{
+  "source": "federal-register",
+  "date": "2026-11-19",
+  "adapter": "aik/0.1.64 harvest/federal-register",
+  "licence": "public domain (a work of the US federal government)",
+  "licence_class": "A",
+  "partial": false,
+  "snapshots": [
+    "b3:68693f9a43e7eb9034d042255452d20a93d16e38ea69df6b019fd338530105fa",
+    "b3:07af573df3a59d02f1331a19c39edfd7cae4a593e4877b8e438f56ac44b8e3cd"
+  ],
+  "requests": 3,
+  "rows": 175,
+  "new": 0,
+  "changed": 0,
+  "removed": 0,
+  "unchanged": 175,
+  "skipped": 1181,
+  "notes": [
+    "1181 skipped: documents that mention artificial intelligence in their text but not in their title"
+  ]
+}

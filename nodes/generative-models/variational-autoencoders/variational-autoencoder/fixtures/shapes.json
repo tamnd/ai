@@ -1,0 +1,475 @@
+{
+  "note": "Written by aik shapes sample -w from shapes.yaml; do not edit. The tests of each implementation check shapes, param_count and flops against these values (spec 08.6, rule X09).",
+  "configs": [
+    {
+      "name": "example",
+      "kind": "example",
+      "config": {
+        "B": 4,
+        "D": 6,
+        "H": 5,
+        "J": 2,
+        "S": 3,
+        "d_hidden": 5,
+        "d_in": 6,
+        "d_latent": 2
+      },
+      "blocks": {
+        "dec_hidden": {
+          "params": 15,
+          "flops_forward": 240,
+          "inputs": {
+            "z": [
+              3,
+              4,
+              2
+            ]
+          },
+          "outputs": {
+            "g": [
+              3,
+              4,
+              5
+            ]
+          }
+        },
+        "dec_out": {
+          "params": 36,
+          "flops_forward": 720,
+          "inputs": {
+            "g": [
+              3,
+              4,
+              5
+            ]
+          },
+          "outputs": {
+            "logits": [
+              3,
+              4,
+              6
+            ]
+          }
+        },
+        "enc_heads": {
+          "params": 24,
+          "flops_forward": 160,
+          "inputs": {
+            "h": [
+              4,
+              5
+            ]
+          },
+          "outputs": {
+            "log_var": [
+              4,
+              2
+            ],
+            "mu": [
+              4,
+              2
+            ]
+          }
+        },
+        "enc_hidden": {
+          "params": 35,
+          "flops_forward": 240,
+          "inputs": {
+            "x": [
+              4,
+              6
+            ]
+          },
+          "outputs": {
+            "h": [
+              4,
+              5
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 1360,
+        "flops_gaussian": 2080,
+        "params": 110,
+        "params_gaussian": 146
+      }
+    },
+    {
+      "name": "sample-1",
+      "kind": "sample",
+      "config": {
+        "B": 3,
+        "D": 2,
+        "H": 8,
+        "J": 1,
+        "S": 4,
+        "d_hidden": 8,
+        "d_in": 2,
+        "d_latent": 1
+      },
+      "blocks": {
+        "dec_hidden": {
+          "params": 16,
+          "flops_forward": 192,
+          "inputs": {
+            "z": [
+              4,
+              3,
+              1
+            ]
+          },
+          "outputs": {
+            "g": [
+              4,
+              3,
+              8
+            ]
+          }
+        },
+        "dec_out": {
+          "params": 18,
+          "flops_forward": 384,
+          "inputs": {
+            "g": [
+              4,
+              3,
+              8
+            ]
+          },
+          "outputs": {
+            "logits": [
+              4,
+              3,
+              2
+            ]
+          }
+        },
+        "enc_heads": {
+          "params": 18,
+          "flops_forward": 96,
+          "inputs": {
+            "h": [
+              3,
+              8
+            ]
+          },
+          "outputs": {
+            "log_var": [
+              3,
+              1
+            ],
+            "mu": [
+              3,
+              1
+            ]
+          }
+        },
+        "enc_hidden": {
+          "params": 24,
+          "flops_forward": 96,
+          "inputs": {
+            "x": [
+              3,
+              2
+            ]
+          },
+          "outputs": {
+            "h": [
+              3,
+              8
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 768,
+        "flops_gaussian": 1152,
+        "params": 76,
+        "params_gaussian": 94
+      }
+    },
+    {
+      "name": "sample-2",
+      "kind": "sample",
+      "config": {
+        "B": 1,
+        "D": 8,
+        "H": 2,
+        "J": 3,
+        "S": 1,
+        "d_hidden": 2,
+        "d_in": 8,
+        "d_latent": 3
+      },
+      "blocks": {
+        "dec_hidden": {
+          "params": 8,
+          "flops_forward": 12,
+          "inputs": {
+            "z": [
+              1,
+              1,
+              3
+            ]
+          },
+          "outputs": {
+            "g": [
+              1,
+              1,
+              2
+            ]
+          }
+        },
+        "dec_out": {
+          "params": 24,
+          "flops_forward": 32,
+          "inputs": {
+            "g": [
+              1,
+              1,
+              2
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1,
+              1,
+              8
+            ]
+          }
+        },
+        "enc_heads": {
+          "params": 18,
+          "flops_forward": 24,
+          "inputs": {
+            "h": [
+              1,
+              2
+            ]
+          },
+          "outputs": {
+            "log_var": [
+              1,
+              3
+            ],
+            "mu": [
+              1,
+              3
+            ]
+          }
+        },
+        "enc_hidden": {
+          "params": 18,
+          "flops_forward": 32,
+          "inputs": {
+            "x": [
+              1,
+              8
+            ]
+          },
+          "outputs": {
+            "h": [
+              1,
+              2
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 100,
+        "flops_gaussian": 132,
+        "params": 68,
+        "params_gaussian": 92
+      }
+    },
+    {
+      "name": "kw13_mnist",
+      "kind": "named",
+      "config": {
+        "B": 100,
+        "D": 784,
+        "H": 500,
+        "J": 20,
+        "S": 1,
+        "d_hidden": 500,
+        "d_in": 784,
+        "d_latent": 20
+      },
+      "blocks": {
+        "dec_hidden": {
+          "params": 10500,
+          "flops_forward": 2000000,
+          "inputs": {
+            "z": [
+              1,
+              100,
+              20
+            ]
+          },
+          "outputs": {
+            "g": [
+              1,
+              100,
+              500
+            ]
+          }
+        },
+        "dec_out": {
+          "params": 392784,
+          "flops_forward": 78400000,
+          "inputs": {
+            "g": [
+              1,
+              100,
+              500
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1,
+              100,
+              784
+            ]
+          }
+        },
+        "enc_heads": {
+          "params": 20040,
+          "flops_forward": 4000000,
+          "inputs": {
+            "h": [
+              100,
+              500
+            ]
+          },
+          "outputs": {
+            "log_var": [
+              100,
+              20
+            ],
+            "mu": [
+              100,
+              20
+            ]
+          }
+        },
+        "enc_hidden": {
+          "params": 392500,
+          "flops_forward": 78400000,
+          "inputs": {
+            "x": [
+              100,
+              784
+            ]
+          },
+          "outputs": {
+            "h": [
+              100,
+              500
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 162800000,
+        "flops_gaussian": 241200000,
+        "params": 815824,
+        "params_gaussian": 1208608
+      }
+    },
+    {
+      "name": "kw13_frey_face",
+      "kind": "named",
+      "config": {
+        "B": 100,
+        "D": 560,
+        "H": 200,
+        "J": 20,
+        "S": 1,
+        "d_hidden": 200,
+        "d_in": 560,
+        "d_latent": 20
+      },
+      "blocks": {
+        "dec_hidden": {
+          "params": 4200,
+          "flops_forward": 800000,
+          "inputs": {
+            "z": [
+              1,
+              100,
+              20
+            ]
+          },
+          "outputs": {
+            "g": [
+              1,
+              100,
+              200
+            ]
+          }
+        },
+        "dec_out": {
+          "params": 112560,
+          "flops_forward": 22400000,
+          "inputs": {
+            "g": [
+              1,
+              100,
+              200
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1,
+              100,
+              560
+            ]
+          }
+        },
+        "enc_heads": {
+          "params": 8040,
+          "flops_forward": 1600000,
+          "inputs": {
+            "h": [
+              100,
+              200
+            ]
+          },
+          "outputs": {
+            "log_var": [
+              100,
+              20
+            ],
+            "mu": [
+              100,
+              20
+            ]
+          }
+        },
+        "enc_hidden": {
+          "params": 112200,
+          "flops_forward": 22400000,
+          "inputs": {
+            "x": [
+              100,
+              560
+            ]
+          },
+          "outputs": {
+            "h": [
+              100,
+              200
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 47200000,
+        "flops_gaussian": 69600000,
+        "params": 237000,
+        "params_gaussian": 349560
+      }
+    }
+  ]
+}
