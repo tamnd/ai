@@ -280,14 +280,19 @@ For sequence models, LN or RMSNorm is the usual choice.
 
 ## Pitfalls
 
+> [!pitfall]
 > **Grouping the wrong channels.** The groups are blocks of consecutive channels, in the order of the C axis. A reshape of $(N, C, H, W)$ to $(N, C/G, G, H, W)$ instead of $(N, G, C/G, H, W)$ interleaves the groups and gives a different layer. `test_sets_match_loop` compares the reshape with a loop over the sets of eq-gn-set.
 
+> [!pitfall]
 > **Using a per-group scale.** $\gamma$ and $\beta$ are per channel, not per group. `test_shared_fixture` uses four different values of $\gamma$ in two groups.
 
+> [!pitfall]
 > **Expecting each channel to have mean 0.** Only the group has mean 0 and variance 1. `test_group_moments` checks the group, and the worked example has a channel with mean $-1$.
 
+> [!pitfall]
 > **Normalizing over the batch.** The statistics come from one example. `test_batch_independence` in both implementations checks that the other examples do not matter.
 
+> [!pitfall]
 > **Forgetting the gradient through the statistics.** A backward pass that treats $\mu$ and $s$ as constants gives $u/s$. `test_gradient_finite_differences` and `test_autograd_matches_closed_form` check eq-gn-grad.
 
 ## History

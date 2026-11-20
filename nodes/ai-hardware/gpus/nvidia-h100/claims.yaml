@@ -179,3 +179,32 @@
   text: "NVIDIA's H100 datasheet lists the H100 SXM and the H100 NVL, a PCIe dual-slot air-cooled card with 94GB of GPU memory and 3.9TB/s of GPU memory bandwidth."
   evidence:
     - {work: "nvidia-2024-h100-datasheet", role: original, locator: "p. 2", stance: for}
+
+- id: c-fp8-special
+  type: definitional
+  text: "E5M2 follows IEEE 754 conventions for representation of special values, while E4M3's dynamic range is extended by not representing infinities and having only one mantissa bit-pattern for NaNs."
+  evidence:
+    - {work: "micikevicius-2022-fp8-formats", role: original, locator: "p. 1", stance: for}
+
+- id: c-fp8-max
+  type: definitional
+  text: "The max normal value is 1.75 * 2^8 = 448 in E4M3 and 1.75 * 2^15 = 57,344 in E5M2."
+  evidence:
+    - {work: "micikevicius-2022-fp8-formats", role: original, locator: "p. 3", stance: for}
+
+- id: c-fp8-scale
+  type: definitional
+  text: "Higher precision values need to be multiplied with a scaling factor prior to their casting to FP8 in order to move them into a range that better overlaps with the representable range of a corresponding FP8 format; some networks require per-tensor scaling factors as FP8 dynamic range is not sufficient to cover the union of all tensors' important values."
+  evidence:
+    - {work: "micikevicius-2022-fp8-formats", role: original, locator: "p. 2", stance: for}
+
+- id: c-fp8-train
+  type: empirical
+  text: "FP8 training effectively matches the result quality achieved by 16-bit training sessions on image and language tasks, leaving all the hyperparameters unchanged from the 16-bit baseline, with language models of up to 175B parameters."
+  scope:
+    models: "CNNs, RNNs and Transformer-based models"
+    data: [unknown]
+    scale: "language models of up to 175B parameters"
+    setting: "FP8 training against 16-bit training, all hyperparameters unchanged from the 16-bit baseline"
+  evidence:
+    - {work: "micikevicius-2022-fp8-formats", role: original, locator: "p. 1", stance: for}

@@ -585,3 +585,25 @@
   text: "Gabriel Pereyra, George Tucker, Jan Chorowski and Łukasz Kaiser of Google Brain and Geoffrey Hinton of the University of Toronto and Google Brain posted Regularizing Neural Networks by Penalizing Confident Output Distributions as arXiv 1701.06548 in January 2017, under review as a conference paper at ICLR 2017."
   evidence:
     - {work: "pereyra-2017-penalizing-confident-outputs", role: original, locator: "the title page", stance: for}
+
+- id: c-th-ls-compare
+  type: empirical
+  text: "For label smoothing, an epsilon in [0.05, 0.1] performed best; label smoothing either via epsilon-smoothing, ERL or mixup generally provides a calibration advantage and tempers overconfidence, with the latter generally performing the best in comparison to other methods."
+  scope:
+    models: "various architectures"
+    data: [unknown]
+    scale: "unknown"
+    setting: "calibration of label smoothing, the entropy confidence penalty and mixup"
+  evidence:
+    - {work: "thulasidasan-2019-mixup-training-calibration", role: original, locator: "p. 5", stance: for}
+
+- id: c-th-ls-imagenet
+  type: empirical
+  text: "On the deeper ResNext-101, mixup provides better calibration than the label smoothing models, though this same effect was not visible for the ResNet-50 model; both calibration error and overconfidence show noticeable improvements using label smoothing over the baseline."
+  scope:
+    models: "ResNet-50 and ResNeXt-101"
+    data: [imagenet]
+    scale: "unknown"
+    setting: "calibration and overconfidence against the baseline"
+  evidence:
+    - {work: "thulasidasan-2019-mixup-training-calibration", role: original, locator: "p. 6", stance: for}

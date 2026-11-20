@@ -469,3 +469,47 @@
   text: "Linjun Zhang, Zhun Deng, Kenji Kawaguchi, Amirata Ghorbani and James Zou wrote How Does Mixup Help With Robustness and Generalization?, arXiv 2010.04819, published as a conference paper at ICLR 2021."
   evidence:
     - {work: "zhang-2021-how-does-mixup-help", role: original, locator: "the title page", stance: for}
+
+- id: c-th-calibrated
+  type: empirical
+  text: "DNNs trained with mixup are significantly better calibrated, i.e. the predicted softmax scores are much better indicators of the actual likelihood of a correct prediction, than DNNs trained in the regular fashion, on a number of image classification architectures and datasets including large-scale datasets like ImageNet."
+  scope:
+    models: "various image classification architectures, including ResNet-50 and ResNeXt-101"
+    data: [cifar-10, cifar-100, imagenet]
+    scale: "unknown"
+    setting: "calibration of mixup training against regular training"
+  evidence:
+    - {work: "thulasidasan-2019-mixup-training-calibration", role: original, locator: "p. 1", stance: for}
+
+- id: c-th-features
+  type: empirical
+  text: "Merely mixing features, where the mixed image assumes the hard label of the nearer class, does not provide the calibration benefit seen in the full-mixup case, suggesting that the point-mass distributions in hard-coded labels are contributing factors to overconfidence."
+  scope:
+    models: "unknown"
+    data: [unknown]
+    scale: "unknown"
+    setting: "mixing only images, with the hard label of the nearer class, against full mixup"
+  evidence:
+    - {work: "thulasidasan-2019-mixup-training-calibration", role: original, locator: "p. 7", stance: for}
+
+- id: c-th-ood
+  type: empirical
+  text: "Mixup-trained DNNs are less prone to over-confident predictions on out-of-distribution and random-noise data."
+  scope:
+    models: "unknown"
+    data: [unknown]
+    scale: "unknown"
+    setting: "predictions on out-of-distribution and random-noise data"
+  evidence:
+    - {work: "thulasidasan-2019-mixup-training-calibration", role: original, locator: "p. 1", stance: for}
+
+- id: c-th-alpha
+  type: empirical
+  text: "Experiments suggest best ECE is achieved for alpha in the [0.2, 0.4], but ECE also noticeably worsens for higher values of alpha due to the model being under-confident."
+  scope:
+    models: "various architectures"
+    data: [unknown]
+    scale: "unknown"
+    setting: "expected calibration error as alpha varies"
+  evidence:
+    - {work: "thulasidasan-2019-mixup-training-calibration", role: original, locator: "p. 5", stance: for}

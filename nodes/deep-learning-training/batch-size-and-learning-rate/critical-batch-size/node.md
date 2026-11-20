@@ -25,6 +25,7 @@ sources:
   - {paper: "Shallue et al. (2019)", title: "Measuring the Effects of Data Parallelism on Neural Network Training", locator: "pp. 1, 4, 10 and 15", note: "the three regimes of steps against batch size across workloads"}
   - {paper: "Kaplan et al. (2020)", title: "Scaling Laws for Neural Language Models", locator: "pp. 3, 5, 12 and 13", note: "the critical batch size of Transformer language models as a power law in the loss"}
   - {paper: "Smith and Le (2018)", title: "A Bayesian Perspective on Generalization and Stochastic Gradient Descent", locator: "pp. 1 and 7", note: "the SGD noise scale g and the batch size that maximizes test accuracy"}
+  - {paper: "Goyal et al. (2017)", title: "Accurate, Large Minibatch SGD: Training ImageNet in 1 Hour", locator: "arXiv 1706.02677v2, pp. 1, 3 and 7", note: "ResNet-50 on ImageNet up to 8k images per minibatch, and the rapid loss of accuracy beyond"}
 ---
 
 The critical batch size is the batch size at which adding examples to each step of stochastic gradient descent stops buying a proportional cut in the number of steps.
@@ -139,6 +140,11 @@ Eight times the compute saves 40% of the steps, which is the large-batch regime.
 Kaplan's fit, eq-kaplan with $B_* = 2.1 \times 10^8$ tokens, gives $2.1\times 10^8 / 3^{4.76} \approx 1.1$ million tokens at a loss of 3 nats and about 2.7 million at 2.5 nats (our arithmetic).
 The paper puts the critical batch size at roughly 1 to 2 million tokens at convergence for its largest models. {#c-kaplan-million}
 Because $1/\alpha_B \approx 4.76$, a fall in the loss by a factor $0.87$ raises the critical batch size by $0.87^{-4.76} \approx 1.94$; the paper states that it roughly doubles for every 13% decrease in the loss. {#c-kaplan-doubles}
+
+**ImageNet with ResNet-50.**
+Priya Goyal and colleagues trained ResNet-50 on ImageNet with minibatches up to 8,192 images and no loss of accuracy, by scaling the learning rate linearly with the batch and warming it up (p. 1). {#c-goyal-8k}
+They report that results are stable over a large range of sizes, but that beyond a certain point accuracy degrades rapidly, and that this point is as large as about 8k in their ImageNet experiments (p. 3). {#c-goyal-degrades}
+Up to 8k they saw no apparent generalization degradation once the optimization issues were addressed, so the limit they hit is about optimization, as the noise-scale picture predicts (p. 7). {#c-goyal-optimization}
 
 **A borderline case: a measurement taken at the wrong learning rate.**
 The noise scale depends on the learning rate through a "temperature", $T \approx \varepsilon/B$ for SGD at small batch, and at equilibrium on a quadratic both noise scales vary as $1/T$. {#c-temperature}

@@ -33,6 +33,7 @@ sources:
   - {paper: "Yao, Rosasco and Caponnetto (2005)", title: "On Early Stopping in Gradient Descent Learning", locator: "the abstract, Sections 1 and 3.1", note: "the bias-variance view, the two filters, and saturation"}
   - {paper: "Zhang and Yu (2005)", title: "Boosting with Early Stopping: Convergence and Consistency", locator: "the abstract"}
   - {paper: "Caruana, Lawrence and Giles (2000)", title: "Overfitting in Neural Nets: Backpropagation, Conjugate Gradient, and Early Stopping", locator: "the abstract, Sections 4.1 and 4.2"}
+  - {paper: "Nakkiran, Kaplun, Bansal, Yang, Barak and Sutskever (2019)", title: "Deep Double Descent: Where Bigger Models and More Data Hurt", locator: "arXiv 1912.02292v1, pp. 7, 9 and 18", note: "epoch-wise double descent and what it means for stopping at the first rise of the test error"}
 ---
 
 Early stopping ends training before the training loss stops falling.
@@ -207,6 +208,10 @@ For neural networks the link to an $\ell_2$ penalty is an analogy, not a theorem
 
 The rule itself guarantees little about the curve it has not seen.
 For every patience $p$, a validation curve that stays flat for $p$ evaluations and then drops makes the rule stop before the drop. {#c-patience-plateau}
+Large networks show this in practice.
+Preetum Nakkiran and colleagues found epoch-wise double descent in many settings of dataset and architecture with label noise: the test error rises and then falls again as training goes on (p. 7). {#c-ndd-epochwise}
+They conclude that stopping the training when the test error starts to increase may not always be the best strategy, because the error may decrease again after its maximum and end lower than the earlier minimum (p. 18). {#c-ndd-recommend}
+They also note that many of the double descent effects they report often do not occur with optimal early stopping (p. 9). {#c-ndd-optimal-es}
 The kept validation loss is the minimum of noisy values, so it is biased low as an estimate of the error of the kept weights; on a flat noisy curve in our run the bias was 0.09 for noise of standard deviation 0.05 and $p = 10$. {#c-patience-bias}
 Report the error of the stopped model on a separate test set, which the rule never reads.
 The validation set also costs training data.
