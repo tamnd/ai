@@ -255,6 +255,7 @@ def luong_score(kind, h, Hs, Wa=None, va=None):
     if kind == "general":
         return np.einsum("bk,bsk->bs", h @ Wa, Hs)
     if kind == "concat":
+        assert Wa is not None and va is not None, "concat needs Wa and va"
         n = h.shape[-1]
         return np.tanh((h @ Wa[:n])[:, None] + Hs @ Wa[n:]) @ va
     if kind == "location":

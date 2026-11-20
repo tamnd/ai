@@ -14,7 +14,7 @@ import torch
 import attention as M
 
 HERE = pathlib.Path(__file__).resolve().parent
-FIX = HERE.parents[1] / "fixtures"
+FIX = next(p for p in (HERE / "fixtures", HERE.parents[1] / "fixtures") if p.is_dir())  # the sandbox copies them next to the test
 
 
 def numpy_reference():

@@ -38,6 +38,25 @@ def gru_step(x, h, W, U, c=None, C=None):
 
 
 class RNNsearch(nn.Module):
+    # The parameters are registered by name in __init__; the annotations tell the type checker they are tensors.
+    E_x: torch.Tensor
+    fwd_W: torch.Tensor
+    fwd_U: torch.Tensor
+    bwd_W: torch.Tensor
+    bwd_U: torch.Tensor
+    E_y: torch.Tensor
+    dec_W: torch.Tensor
+    dec_U: torch.Tensor
+    dec_C: torch.Tensor
+    W_s: torch.Tensor
+    W_a: torch.Tensor
+    U_a: torch.Tensor
+    v_a: torch.Tensor
+    U_o: torch.Tensor
+    V_o: torch.Tensor
+    C_o: torch.Tensor
+    W_o: torch.Tensor
+
     def __init__(self, cfg):
         super().__init__()
         self.cfg = cfg

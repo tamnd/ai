@@ -11,7 +11,8 @@ import pytest
 
 import attention as A
 
-FIX = pathlib.Path(__file__).resolve().parents[2] / "fixtures"
+HERE = pathlib.Path(__file__).resolve().parent
+FIX = next(p for p in (HERE / "fixtures", HERE.parents[1] / "fixtures") if p.is_dir())  # the sandbox copies them next to the test
 
 
 def small(attention=True, seed=0, scale=0.5):

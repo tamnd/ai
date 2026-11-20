@@ -14,7 +14,8 @@ import numpy as np  # noqa: E402
 
 from attention import config, encode, energies, forward, init, loss, shapes  # noqa: E402
 
-FIX = pathlib.Path(__file__).resolve().parents[2] / "fixtures"
+HERE = pathlib.Path(__file__).resolve().parent
+FIX = next(p for p in (HERE / "fixtures", HERE.parents[1] / "fixtures") if p.is_dir())  # the sandbox copies them next to the test
 
 
 def fixture():
