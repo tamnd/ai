@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/autoencoder/ (ai://NEW-autoencoder).
+# Part of https://ai.tamnd.com/autoencoder/ (ai://JC1Q9N).
 """The autoencoder of the page in JAX: pure init and apply for eq-encoder, eq-decoder and eq-layer, the losses
 eq-cross-entropy and eq-squared-error, the corruptions of eq-dae, and eq-cae by jax.jacrev; jax.grad does the rest.
 

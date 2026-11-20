@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/autoencoder/ (ai://NEW-autoencoder).
+# Part of https://ai.tamnd.com/autoencoder/ (ai://JC1Q9N).
 """Write the shared fixtures of the autoencoder from the NumPy reference (spec 08.7.2).
 
 Run it from anywhere: python fixtures/make.py. It writes params-small.npz, input-small.npz, expected-small.npz and

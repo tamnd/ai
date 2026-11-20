@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/autoencoder/ (ai://NEW-autoencoder).
+# Part of https://ai.tamnd.com/autoencoder/ (ai://JC1Q9N).
 """Numeric check of the derivation linear-autoencoder-and-pca."""
 
 import pathlib

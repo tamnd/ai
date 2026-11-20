@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/autoencoder/ (ai://NEW-autoencoder).
+# Part of https://ai.tamnd.com/autoencoder/ (ai://JC1Q9N).
 """Tests of the PyTorch version: the shared fixture and its gradients, the counts, a stack of torch.nn.Linear layers,
 gradcheck with and without tied weights, the corruptions, the closed form of the contractive penalty against the
 Jacobian from autograd, and a denoising autoencoder that fills in masked inputs."""

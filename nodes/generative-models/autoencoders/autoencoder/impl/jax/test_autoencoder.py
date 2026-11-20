@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/autoencoder/ (ai://NEW-autoencoder).
+# Part of https://ai.tamnd.com/autoencoder/ (ai://JC1Q9N).
 """Tests of the JAX version: the shared fixture and its gradients by jax.grad, the counts, the corruptions, the
 contractive penalty, and the linear autoencoder with weight decay, whose encoder becomes the decoder's transpose."""
 

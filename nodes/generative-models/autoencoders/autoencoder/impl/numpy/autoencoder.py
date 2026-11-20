@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/autoencoder/ (ai://NEW-autoencoder).
+# Part of https://ai.tamnd.com/autoencoder/ (ai://JC1Q9N).
 """The autoencoder of the page in NumPy: an encoder of affine layers and activations maps an input x to a code y, a
 decoder maps y back to a reconstruction z, and training lowers a reconstruction loss L(x, z) by backpropagation.
 

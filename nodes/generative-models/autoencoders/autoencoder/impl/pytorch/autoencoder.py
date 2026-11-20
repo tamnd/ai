@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/autoencoder/ (ai://NEW-autoencoder).
+# Part of https://ai.tamnd.com/autoencoder/ (ai://JC1Q9N).
 """The autoencoder of the page in PyTorch, with autograd for the backward pass: eq-encoder, eq-decoder and eq-layer,
 the losses eq-cross-entropy and eq-squared-error, the corruptions of eq-dae and the penalty of eq-cae.
 

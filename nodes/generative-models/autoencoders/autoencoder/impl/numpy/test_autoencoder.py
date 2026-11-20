@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Part of https://ai.tamnd.com/autoencoder/ (ai://NEW-autoencoder).
+# Part of https://ai.tamnd.com/autoencoder/ (ai://JC1Q9N).
 """Tests of the NumPy reference: the shared fixture, the counts of shapes.json, the gradients against finite
 differences, the corruptions, the contractive penalty, the identity an over-complete autoencoder can learn, the linear
 autoencoder and PCA with and without weight decay, a curve that PCA cannot follow, and denoising."""
