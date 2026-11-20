@@ -1,0 +1,331 @@
+# The claims of the group relative policy optimization page (spec 07). The build computes the labels.
+
+# Setting
+
+- id: c-tu-rlvr
+  type: attributive
+  text: "Tülu 3 applies a standard reinforcement learning paradigm to skills that can be evaluated against a ground-truth outcome, such as math, and calls the method Reinforcement Learning with Verifiable Rewards (RLVR); it obtains a constant reward value if a completion is successful."
+  evidence:
+    - {work: "lambert-2024-tulu-3", role: original, locator: "p. 10", stance: for}
+
+- id: c-tu-only
+  type: attributive
+  text: "RLVR is an RL-based method that only gets a reward if the model's completions are verified to be correct."
+  evidence:
+    - {work: "lambert-2024-tulu-3", role: original, locator: "p. 6", stance: for}
+
+- id: c-r1-rule
+  type: attributive
+  text: "For DeepSeek-R1-Zero, rule-based rewards deliver precise feedback for data in mathematical, coding, and logical reasoning domains, and the rule-based reward system mainly consists of two types of rewards: accuracy rewards and format rewards."
+  evidence:
+    - {work: "deepseek-2025-r1", role: original, locator: "p. 3", stance: for}
+
+- id: c-r1-acc
+  type: attributive
+  text: "For math problems with deterministic results, the model is required to provide the final answer in a specified format (e.g., within a box), enabling reliable rule-based verification of correctness."
+  evidence:
+    - {work: "deepseek-2025-r1", role: original, locator: "p. 3", stance: for}
+
+- id: c-r1-code
+  type: attributive
+  text: "For code, a compiler evaluates the responses against a suite of predefined test cases, generating objective feedback on correctness."
+  evidence:
+    - {work: "deepseek-2025-r1", role: original, locator: "pp. 3 to 4", stance: for}
+
+- id: c-r1-format
+  type: attributive
+  text: "Format rewards incentivize the model to encapsulate its reasoning process within designated tags, specifically <think> and </think>, and the accuracy reward and format reward are combined with the same weight."
+  evidence:
+    - {work: "deepseek-2025-r1", role: original, locator: "p. 4", stance: for}
+
+# PPO
+
+- id: c-ppo-clip
+  type: attributive
+  text: "PPO maximizes a clipped surrogate objective, the minimum of the probability ratio times the advantage and the clipped probability ratio times the advantage, which removes the incentive for moving the ratio outside the interval and makes the objective a lower bound on the unclipped objective."
+  evidence:
+    - {work: "schulman-2017-proximal-policy-optimization", role: original, locator: "p. 3", stance: for}
+
+- id: c-dsm-ppo
+  type: attributive
+  text: "In PPO for language models, a value function needs to be trained alongside the policy model, and to mitigate over-optimization of the reward model, a per-token KL penalty from a reference model, usually the initial SFT model, is added in the reward at each token."
+  evidence:
+    - {work: "shao-2024-deepseekmath", role: original, locator: "p. 13", stance: for}
+
+- id: c-dsm-value
+  type: attributive
+  text: "The value function in PPO is typically another model of comparable size as the policy model, a substantial memory and computational burden, and because usually only the last token is assigned a reward score, training a value function that is accurate at each token is complicated."
+  evidence:
+    - {work: "shao-2024-deepseekmath", role: original, locator: "p. 13", stance: for}
+
+- id: c-r1-revise
+  type: attributive
+  text: "Predicting the final reward from a partial response is even harder for long chain-of-thought models, which engage in reflection and revision, so content generated early may later be revised or contradicted."
+  evidence:
+    - {work: "deepseek-2025-r1", role: original, locator: "p. 15", stance: for}
+
+# GRPO
+
+- id: c-dsm-grpo
+  type: attributive
+  text: "Group Relative Policy Optimization (GRPO) obviates the need for additional value function approximation as in PPO, and instead uses the average reward of multiple sampled outputs, produced in response to the same question, as the baseline."
+  evidence:
+    - {work: "shao-2024-deepseekmath", role: original, locator: "p. 13", stance: for}
+
+- id: c-dsm-obj
+  type: attributive
+  text: "For each question q, GRPO samples a group of outputs o_1, ..., o_G from the old policy and maximizes, averaged over the G outputs and over the tokens of each output, the PPO clipped term with the advantage Â_{i,t}, minus β times the KL divergence between the policy and the reference policy, where ε and β are hyper-parameters."
+  evidence:
+    - {work: "shao-2024-deepseekmath", role: original, locator: "p. 13", stance: for}
+
+- id: c-dsm-os
+  type: attributive
+  text: "With outcome supervision, the G rewards are normalized by subtracting the group average and dividing by the group standard deviation, and the advantages of all tokens in output o_i are set to the normalized reward (r_i − mean(r))/std(r)."
+  evidence:
+    - {work: "shao-2024-deepseekmath", role: original, locator: "p. 14", stance: for}
+
+- id: c-dsm-ps
+  type: attributive
+  text: "With process supervision, which provides a reward at the end of each reasoning step, a process reward model scores each step of the outputs, the step rewards are normalized in the same way, and the advantage of a token is the sum of the normalized rewards of the steps from it onwards."
+  evidence:
+    - {work: "shao-2024-deepseekmath", role: original, locator: "p. 14", stance: for}
+
+- id: c-dsm-comp
+  type: attributive
+  text: "The group relative way of calculating advantages aligns with the comparative nature of reward models, which are typically trained on datasets of comparisons between outputs on the same question."
+  evidence:
+    - {work: "shao-2024-deepseekmath", role: original, locator: "p. 13", stance: for}
+
+- id: c-dsm-kl
+  type: attributive
+  text: "Instead of adding a KL penalty in the reward, GRPO regularizes by directly adding the KL divergence between the trained policy and the reference policy to the loss, estimated per token with an unbiased estimator that is guaranteed to be positive."
+  evidence:
+    - {work: "shao-2024-deepseekmath", role: original, locator: "pp. 13 to 14", stance: for}
+
+- id: c-gr-k3
+  type: mathematical
+  text: "With x = π_ref(o_t)/π_θ(o_t), the estimate x − log x − 1 is at least 0 for every token, and its expectation under π_θ equals KL(π_θ ‖ π_ref), because E_{π_θ}[x] = 1."
+  assumes: ["o_t is sampled from π_θ given the same prefix", "π_ref is positive wherever π_θ is"]
+  derivation: group-relative-advantage
+
+- id: c-dsm-iter
+  type: attributive
+  text: "In iterative GRPO, new training sets for the reward model are generated from the policy's samples, the reward model is continually trained with a replay mechanism that incorporates 10% of historical data, and the reference model is set to the policy model."
+  evidence:
+    - {work: "shao-2024-deepseekmath", role: original, locator: "p. 14", stance: for}
+
+- id: c-gr-unbiased
+  type: mathematical
+  text: "Subtracting a baseline b that does not depend on the sampled output leaves the policy gradient unbiased, because E_{o∼π_θ}[b ∇ log π_θ(o)] = b ∇ Σ_o π_θ(o) = 0."
+  assumes: ["the baseline is fixed before o is drawn"]
+  derivation: group-relative-advantage
+
+- id: c-gr-loo
+  type: mathematical
+  text: "Since r_i − mean(r) = (G − 1)/G · (r_i − mean of the other G − 1 rewards), the centred group advantage is the leave-one-out advantage scaled by (G − 1)/G, so before division by the standard deviation the GRPO gradient is an unbiased estimate up to that constant."
+  assumes: ["G ≥ 2 outputs sampled independently for the same question"]
+  derivation: group-relative-advantage
+
+- id: c-rl-loo
+  type: attributive
+  text: "REINFORCE Leave-One-Out (RLOO) uses the rewards of the other k − 1 samples for the same prompt as the baseline of each sample, an unbiased estimate of the expected return for the prompt, akin to a parameter-free value function estimated at each training step."
+  evidence:
+    - {work: "ahmadian-2024-back-to-basics", role: original, locator: "p. 6", stance: for}
+
+- id: c-gr-zero
+  type: mathematical
+  text: "Group advantages sum to zero; if every output of a group gets the same reward all its advantages are 0, and with binary rewards and a fraction p of correct outputs the normalized advantages are √((1 − p)/p) for correct and −√(p/(1 − p)) for incorrect outputs."
+  assumes: ["std is the population standard deviation of the G rewards", "0 < p < 1"]
+  derivation: group-relative-advantage
+
+- id: c-gr-informative
+  type: mathematical
+  text: "If each output is correct with probability q independently, a group of G gives a nonzero advantage with probability 1 − q^G − (1 − q)^G: 0.815 for q = 0.9 and G = 16, but 0.337 for q = 0.95 and G = 8."
+  assumes: ["binary rewards", "outputs independent given the question"]
+  derivation: group-relative-advantage
+
+# Setup
+
+- id: c-dsm-setup
+  type: attributive
+  text: "For GRPO in DeepSeekMath the policy learning rate is 1e-6, the KL coefficient is 0.04, 64 outputs are sampled for each question, the max length is 1024, the training batch size is 1024, and the policy has a single update following each exploration stage."
+  evidence:
+    - {work: "shao-2024-deepseekmath", role: original, locator: "p. 15", stance: for}
+
+- id: c-dsm-data
+  type: attributive
+  text: "The RL training data of DeepSeekMath are chain-of-thought-format questions related to GSM8K and MATH from the SFT data, around 144K questions."
+  evidence:
+    - {work: "shao-2024-deepseekmath", role: original, locator: "p. 15", stance: for}
+
+- id: c-r1-setup
+  type: attributive
+  text: "To train DeepSeek-R1-Zero, the learning rate is 3e-6, the KL coefficient 0.001 and the sampling temperature 1; for each question 16 outputs are sampled with a maximum length of 32,768 tokens before the 8.2k step and 65,536 tokens afterward."
+  evidence:
+    - {work: "deepseek-2025-r1", role: original, locator: "p. 3", stance: for}
+
+- id: c-r1-batch
+  type: attributive
+  text: "Each training step of DeepSeek-R1-Zero consists of 32 unique questions, resulting in a training batch size of 512, and every 400 steps the reference model is replaced with the latest policy model."
+  evidence:
+    - {work: "deepseek-2025-r1", role: original, locator: "p. 3", stance: for}
+
+- id: c-r1-clip
+  type: attributive
+  text: "Note that the clip ratio plays a crucial role in training: a lower value can lead to the truncation of gradients for a significant number of tokens, degrading performance, while a higher value may cause instability during training."
+  evidence:
+    - {work: "deepseek-2025-r1", role: original, locator: "p. 8", stance: for}
+
+# Evidence
+
+- id: c-dsm-gain
+  type: attributive
+  text: "Using only a subset of English instruction tuning data, GRPO obtains a substantial improvement over DeepSeekMath-Instruct, both in-domain (GSM8K: 82.9% → 88.2%, MATH: 46.8% → 51.7%) and out-of-domain (e.g., CMATH: 84.6% → 88.8%)."
+  evidence:
+    - {work: "shao-2024-deepseekmath", role: original, locator: "p. 2", stance: for}
+
+- id: c-dsm-online
+  type: attributive
+  text: "In DeepSeekMath's comparison, Online RFT significantly outperforms RFT, and GRPO, which adjusts its gradient coefficient by the reward value and penalizes incorrect responses, surpasses online RFT."
+  evidence:
+    - {work: "shao-2024-deepseekmath", role: original, locator: "p. 19", stance: for}
+
+- id: c-dsm-psbetter
+  type: attributive
+  text: "GRPO+PS shows superior performance compared to GRPO+OS, indicating the benefits of using fine-grained, step-aware gradient coefficients."
+  evidence:
+    - {work: "shao-2024-deepseekmath", role: original, locator: "pp. 19 to 20", stance: for}
+
+- id: c-r1-aime
+  type: attributive
+  text: "During the RL training of DeepSeek-R1-Zero, the average score on AIME 2024 increases from an initial 15.6% to 77.9%."
+  evidence:
+    - {work: "deepseek-2025-r1", role: original, locator: "p. 4", stance: for}
+
+- id: c-r1-length
+  type: attributive
+  text: "DeepSeek-R1-Zero naturally learns to solve reasoning tasks with more thinking time, its average response length on the training set growing during the RL process."
+  evidence:
+    - {work: "deepseek-2025-r1", role: original, locator: "p. 4", stance: for}
+
+- id: c-r1-aha
+  type: attributive
+  text: "An intermediate version of DeepSeek-R1-Zero shows an aha moment in which the model learns to rethink using an anthropomorphic tone."
+  evidence:
+    - {work: "deepseek-2025-r1", role: original, locator: "p. 5", stance: for}
+
+- id: c-r1-ppo
+  type: attributive
+  text: "On the MATH task, PPO with GAE λ = 0.95, the default value in most open-source PPO implementations, performs considerably worse than GRPO, while with careful tuning (λ = 1.0) PPO's performance improves substantially, nearing that of GRPO."
+  evidence:
+    - {work: "deepseek-2025-r1", role: original, locator: "p. 16", stance: for}
+
+- id: c-rl-ppo
+  type: attributive
+  text: "On RLHF of language models, Ahmadian et al. report that REINFORCE-style optimization outperforms PPO, and that RLOO consistently outperforms PPO, DPO and RAFT across datasets and models."
+  evidence:
+    - {work: "ahmadian-2024-back-to-basics", role: original, locator: "p. 4", stance: for}
+
+# Limits
+
+- id: c-r1-mixing
+  type: attributive
+  text: "DeepSeek-R1-Zero faces challenges such as poor readability and language mixing, occasionally combining English and Chinese within a single chain-of-thought response."
+  evidence:
+    - {work: "deepseek-2025-r1", role: original, locator: "p. 2", stance: for}
+
+- id: c-dr-bias
+  type: attributive
+  text: "GRPO introduces a response-level length bias, from dividing by |o_i|: correct responses get larger gradient updates when shorter, and incorrect responses are penalized less when longer, so the policy prefers lengthier responses among incorrect ones."
+  evidence:
+    - {work: "liu-2025-understanding-r1-zero", role: original, locator: "p. 6", stance: for}
+
+- id: c-dr-diff
+  type: attributive
+  text: "GRPO also introduces a question-level difficulty bias by dividing by the standard deviation of the group rewards: questions that are too easy or too hard, with rewards almost all 1 or 0, are given higher weights during policy updates."
+  evidence:
+    - {work: "liu-2025-understanding-r1-zero", role: original, locator: "p. 6", stance: for}
+
+- id: c-gr-weight
+  type: mathematical
+  text: "With binary rewards and a fraction p correct, the total absolute centred advantage of a group is 2Gp(1 − p), and dividing by the standard deviation √(p(1 − p)) makes it 2G√(p(1 − p)); relative to the unnormalized form, a question with p = 1/16 is weighted 1/√(p(1 − p)) ≈ 4.13 against 2 at p = 1/2."
+  assumes: ["std is the population standard deviation of the G rewards", "0 < p < 1"]
+  derivation: group-relative-advantage
+
+- id: c-gr-length
+  type: mathematical
+  text: "Under the sequence-mean loss each token of output i has weight A_i/(G|o_i|), so for a fixed negative advantage a 1,000-token wrong answer is pushed down per token one tenth as hard as a 100-token one; the token-mean loss gives every token weight A_i/Σ_j|o_j| and the constant normalizer A_i/(G·L_max), neither of which depends on the output's own length."
+  assumes: ["advantages are shared by all tokens of an output", "L_max is a fixed maximum generation length"]
+  derivation: group-relative-advantage
+
+- id: c-dr-dr
+  type: attributive
+  text: "Dr. GRPO removes the length and standard deviation normalization terms, which prevents the model from generating progressively longer incorrect responses and improves token efficiency while maintaining reasoning performance."
+  evidence:
+    - {work: "liu-2025-understanding-r1-zero", role: original, locator: "p. 1", stance: for}
+
+- id: c-dr-aha
+  type: attributive
+  text: "DeepSeek-V3-Base already exhibits an Aha moment, and Qwen2.5 base models show strong reasoning capabilities even without prompt templates, suggesting potential pretraining biases."
+  evidence:
+    - {work: "liu-2025-understanding-r1-zero", role: original, locator: "p. 1", stance: for}
+
+- id: c-da-naive
+  type: attributive
+  text: "With naive GRPO, a run from the Qwen2.5-32B base model reached only 30 points on AIME, significantly below DeepSeek's RL at 47 points, and analysis found entropy collapse, reward noise and training instability."
+  evidence:
+    - {work: "yu-2025-dapo", role: original, locator: "p. 2", stance: for}
+
+- id: c-da-four
+  type: attributive
+  text: "DAPO introduces four techniques: Clip-Higher, which promotes diversity and avoids entropy collapse; Dynamic Sampling, which improves training efficiency and stability; Token-Level Policy Gradient Loss, critical in long-CoT RL; and Overlong Reward Shaping, which reduces reward noise."
+  evidence:
+    - {work: "yu-2025-dapo", role: original, locator: "p. 2", stance: for}
+
+- id: c-da-clip
+  type: attributive
+  text: "With ε = 0.2, tokens with old probabilities 0.01 and 0.9 can rise at most to 0.012 and 1.08, so the upper clipping threshold restricts the increase of low-probability exploration tokens; DAPO sets ε_low to 0.2 and ε_high to 0.28."
+  evidence:
+    - {work: "yu-2025-dapo", role: original, locator: "pp. 4 and 8", stance: for}
+
+- id: c-da-dyn
+  type: attributive
+  text: "If all outputs of a prompt are correct and receive the same reward, the advantage for the group is zero and so are its policy gradients; the number of such samples keeps increasing during training, so DAPO over-samples and filters out these prompts."
+  evidence:
+    - {work: "yu-2025-dapo", role: original, locator: "p. 5", stance: for}
+
+- id: c-da-50
+  type: attributive
+  text: "DAPO achieves 50 points on AIME 2024 with the Qwen2.5-32B base model, outperforming DeepSeek-R1-Zero-Qwen-32B (47 points) using 50% of the training steps."
+  evidence:
+    - {work: "yu-2025-dapo", role: original, locator: "p. 2", stance: for}
+
+- id: c-da-kl
+  type: attributive
+  text: "DAPO removes the KL penalty, because when training a long-CoT reasoning model the distribution can diverge significantly from the initial model, so the restriction is not necessary."
+  evidence:
+    - {work: "yu-2025-dapo", role: original, locator: "p. 3", stance: for}
+
+- id: c-dsm-why
+  type: attributive
+  text: "DeepSeekMath's analysis suggests that RL enhances overall performance by rendering the output distribution more robust, boosting the correct response from TopK rather than enhancing fundamental capabilities."
+  evidence:
+    - {work: "shao-2024-deepseekmath", role: original, locator: "p. 21", stance: for}
+
+- id: c-yu-k
+  type: attributive
+  text: "Across model families, RL algorithms and math, coding and visual reasoning benchmarks, RLVR-trained models outperform their base models at small k (e.g., k=1), but base models achieve higher pass@k when k is large."
+  evidence:
+    - {work: "yue-2025-does-rl-incentivize-reasoning", role: original, locator: "p. 1", stance: for}
+
+- id: c-yu-dist
+  type: attributive
+  text: "The reasoning paths of RLVR models are already in the base models' sampling distribution, six popular RLVR algorithms perform similarly, and distillation, unlike RLVR, can introduce new reasoning patterns from the teacher."
+  evidence:
+    - {work: "yue-2025-does-rl-incentivize-reasoning", role: original, locator: "p. 1", stance: for}
+
+- id: c-gr-passk
+  type: mathematical
+  text: "Sharpening can raise pass@1 and lower pass@k: two problems solved with probabilities 0.2 and 0.05 have mean pass@1 0.125 and pass@64 ≈ 0.981, while 0.6 and 0 give pass@1 0.3 and pass@64 ≈ 0.5."
+  assumes: ["pass@k of a problem solved with probability p is 1 − (1 − p)^k for independent samples"]
+  derivation: group-relative-advantage
