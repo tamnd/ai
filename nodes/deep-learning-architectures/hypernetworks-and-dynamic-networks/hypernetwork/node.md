@@ -1,5 +1,5 @@
 ---
-tag: NEW-hypernetwork
+tag: 59B025
 kind: architecture
 slug: hypernetwork
 name: Hypernetwork
