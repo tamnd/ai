@@ -32,6 +32,8 @@ sources:
   - {paper: "Rafailov, Sharma, Mitchell, Ermon, Manning and Finn (2023)", title: "Direct Preference Optimization: Your Language Model is Secretly a Reward Model", locator: "pages 1 to 10, 15, 16, 19, 20 and 22", note: "the RLHF objective, its closed-form optimum, the reparameterized Bradley-Terry loss, the gradient, the theory of reward classes, the experiments, the implementation and hyperparameters"}
   - {paper: "Azar, Rowland, Piot, Guo, Calandriello, Valko and Munos (2023)", title: "A General Theoretical Paradigm to Understand Learning from Human Preferences", locator: "pages 1, 4, 5 and 7", note: "the two approximations of RLHF, weak regularization and overfitting under deterministic preferences, and the IPO loss"}
   - {paper: "Xu, Fu, Gao, Ye, Liu, Mei, Wang, Yu and Wu (2024)", title: "Is DPO Superior to PPO for LLM Alignment? A Comprehensive Study", locator: "pages 1 to 4", note: "PPO solutions as a proper subset of DPO solutions, out-of-distribution responses, and benchmarks where tuned PPO beats DPO"}
+  - {paper: "Ziegler, Stiennon, Wu, Brown, Radford, Amodei, Christiano and Irving (2019)", title: "Fine-Tuning Language Models from Human Preferences", locator: "arXiv 1909.08593v2, p. 2", note: "the KL constraint to the pretrained model in RL fine-tuning from human preferences"}
+  - {paper: "Stiennon, Ouyang, Wu, Ziegler, Lowe, Voss, Radford, Amodei and Christiano (2020)", title: "Learning to summarize from human feedback", locator: "arXiv 2009.01325v3, pp. 7 and 8", note: "over-optimizing a learned reward model as the KL penalty is relaxed"}
 ---
 
 Direct preference optimization (DPO) fine-tunes a language model on human comparisons of the form "for this prompt, response $y_w$ is better than response $y_l$".
@@ -67,6 +69,11 @@ where $\beta$ is a parameter that controls how far the policy deviates from the 
 They explain the constraint as important because it prevents the model deviating too far from where the reward model is accurate, maintains generation diversity, and prevents mode collapse onto single high-reward answers. {#c-ra-constraint-why}
 Sampling text is a discrete operation, so this objective cannot be differentiated through, and the standard approach optimizes it with PPO, using $r_\phi(x, y) - \beta(\log\pi_\theta(y\mid x) - \log\pi_{\mathrm{ref}}(y\mid x))$ as the reward. {#c-ra-ppo-reward}
 They call RLHF a complex and often unstable procedure: it first fits a reward model to the human preferences, then fine-tunes the language model with reinforcement learning to maximize that estimated reward while not drifting far from the original model. {#c-ra-rlhf-complex}
+
+The KL term predates DPO.
+Ziegler et al. (2019) used a KL constraint to keep a fine-tuned language model from drifting too far from the pretrained one. {#c-zg-kl}
+Stiennon et al. (2020) showed what happens as the constraint loosens: summaries first improved according to labelers, then true preferences fell below the reward model's predictions, and with enough optimization the reward model became anti-correlated with human preferences. {#c-st-overopt}
+DPO optimizes the same KL-constrained objective, so $\beta$ carries the same trade-off between fitting the preferences and staying where they are reliable.
 
 ## The method
 

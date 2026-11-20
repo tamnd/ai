@@ -447,3 +447,20 @@
   text: "Shusheng Xu, Wei Fu, Jiaxuan Gao, Wenjie Ye, Weilin Liu, Zhiyu Mei, Guangju Wang, Chao Yu and Yi Wu posted \"Is DPO Superior to PPO for LLM Alignment? A Comprehensive Study\" as arXiv 2404.10719 in 2024."
   evidence:
     - {work: "xu-2024-is-dpo-superior-to-ppo", role: original, locator: "p. 1", stance: for}
+
+- id: c-zg-kl
+  type: attributive
+  text: "Ziegler et al. use a KL constraint to prevent the fine-tuned model from drifting too far from the pretrained model."
+  evidence:
+    - {work: "ziegler-2019-fine-tuning-language-models-human-preferences", role: original, locator: "p. 2", stance: for}
+
+- id: c-st-overopt
+  type: empirical
+  text: "Optimizing against the reward model initially improves summaries, but eventually overfits: under light optimization the models improve according to labelers, but as we optimize further, true preferences fall off compared to the prediction, and eventually the reward model becomes anti-correlated with human preferences."
+  scope:
+    models: "summarization policies trained with PPO at a range of KL penalty coefficients against an earlier reward model (rm3)"
+    data: ["Reddit TL;DR posts"]
+    scale: "unknown"
+    setting: "labelers compare policy samples with reference summaries"
+  evidence:
+    - {work: "stiennon-2020-learning-summarize-human-feedback", role: original, locator: "pp. 7 and 8", stance: for}
