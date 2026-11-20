@@ -134,3 +134,45 @@
   text: "In 1951 Turing was elected a Fellow of the Royal Society for his 1936 achievement."
   evidence:
     - {work: "hodges-2013-alan-turing-sep", role: review, locator: "Section 1", stance: for}
+
+- id: c-loebner-1991
+  type: attributive
+  text: "On November 8, 1991, Boston's Computer Museum held a tournament billed as the first actual administration of the Turing test, the first attempt on the Loebner Prize established by Hugh Loebner."
+  evidence:
+    - {work: "shieber-1994-lessons-restricted-turing-test", role: original, locator: "p. 1", stance: for}
+
+- id: c-loebner-rules
+  type: attributive
+  text: "To give the computers a fighting chance, the organizers restricted Turing's test: the topic of each conversation was strictly limited, the judges were required to stay on the subject, and the rules precluded the use of trickery or guile."
+  evidence:
+    - {work: "shieber-1994-lessons-restricted-turing-test", role: original, locator: "p. 2", stance: for}
+
+- id: c-loebner-result
+  type: attributive
+  text: "The average rankings placed the two human confederates as more human-like than the six contestants; Joseph Weintraub's program, on the topic of whimsical conversation, was the highest ranked and was awarded the $1500 prize, and five judges ranked it as human."
+  evidence:
+    - {work: "shieber-1994-lessons-restricted-turing-test", role: original, locator: "p. 4", stance: for}
+
+- id: c-shieber-critique
+  type: attributive
+  text: "Shieber argues that the competition has no clear purpose, that its design prevents any useful outcome, and that such a competition is inappropriate given the current level of technology."
+  evidence:
+    - {work: "shieber-1994-lessons-restricted-turing-test", role: original, locator: "abstract", stance: for}
+
+- id: c-jones-setup
+  type: attributive
+  text: "Jones and Bergen evaluated ELIZA, GPT-4o, LLaMa-3.1-405B and GPT-4.5 in two randomised, controlled and pre-registered three-party Turing tests, in which participants had 5 minute conversations simultaneously with another human participant and one of these systems before judging which partner was human."
+  evidence:
+    - {work: "jones-2025-llms-pass-turing-test", role: original, locator: "p. 1", stance: for}
+
+- id: c-jones-gpt45
+  type: attributive
+  text: "When prompted to adopt a humanlike persona, GPT-4.5 was judged to be the human 73% of the time, significantly more often than interrogators selected the real human participant, while ELIZA and GPT-4o achieved win rates significantly below chance, 23% and 21%; the authors call this the first empirical evidence that any artificial system passes a standard three-party Turing test."
+  evidence:
+    - {work: "jones-2025-llms-pass-turing-test", role: original, locator: "p. 1", stance: for}
+
+- id: c-jones-persona
+  type: attributive
+  text: "GPT-4.5 and LLaMa were only able to pass the test with the PERSONA prompt."
+  evidence:
+    - {work: "jones-2025-llms-pass-turing-test", role: original, locator: "p. 10", stance: for}
