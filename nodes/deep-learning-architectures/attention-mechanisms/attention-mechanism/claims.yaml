@@ -1,0 +1,375 @@
+# The claims of the attention mechanism page (spec 07). The build computes the labels.
+
+# The problem and the idea
+
+- id: c-bottleneck
+  type: attributive
+  text: "Bahdanau et al. conjecture that the use of a fixed-length vector is a bottleneck in improving the performance of the basic encoder-decoder architecture, and propose to extend it by allowing a model to automatically (soft-)search for parts of a source sentence that are relevant to predicting a target word, without having to form these parts as a hard segment explicitly."
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "the abstract, p. 1", stance: for}
+
+- id: c-long-issue
+  type: attributive
+  text: "A potential issue with the encoder-decoder approach is that a neural network needs to be able to compress all the necessary information of a source sentence into a fixed-length vector, which may make it difficult to cope with long sentences, especially those that are longer than the sentences in the training corpus."
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "Section 1, p. 1", stance: for}
+
+- id: c-sequence-of-vectors
+  type: definitional
+  text: "The model does not attempt to encode a whole input sentence into a single fixed-length vector; instead, it encodes the input sentence into a sequence of vectors and chooses a subset of these vectors adaptively while decoding the translation."
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "Section 1, p. 2", stance: for}
+
+# The method of Bahdanau et al.
+
+- id: c-distinct-context
+  type: definitional
+  text: "Unlike the existing encoder-decoder approach, the probability of each target word is conditioned on a distinct context vector c_i, computed as a weighted sum of the annotations to which an encoder maps the input sentence."
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "Section 3.1, p. 3", stance: for}
+
+- id: c-alignment-model
+  type: definitional
+  text: "The energy e_ij = a(s_{i-1}, h_j) is given by an alignment model which scores how well the inputs around position j and the output at position i match, based on the RNN hidden state s_{i-1} and the j-th annotation h_j."
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "Section 3.1, p. 3", stance: for}
+
+- id: c-not-latent
+  type: attributive
+  text: "Unlike in traditional machine translation, the alignment is not considered to be a latent variable: the alignment model directly computes a soft alignment, which allows the gradient of the cost function to be backpropagated through, so that the alignment model and the whole translation model are trained jointly."
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "Section 3.1, p. 4", stance: for}
+
+- id: c-expected
+  type: definitional
+  text: "Taking a weighted sum of all the annotations can be understood as computing an expected annotation, where the expectation is over possible alignments, alpha_ij being a probability that the target word y_i is aligned to, or translated from, a source word x_j."
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "Section 3.1, p. 4", stance: for}
+
+- id: c-mechanism
+  type: attributive
+  text: "Bahdanau et al. describe this as a mechanism of attention in the decoder: by letting the decoder decide parts of the source sentence to pay attention to, they relieve the encoder from the burden of having to encode all information in the source sentence into a fixed-length vector, and the information can be spread throughout the sequence of annotations, which can be selectively retrieved by the decoder."
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "Section 3.1, p. 4", stance: for}
+
+- id: c-birnn
+  type: definitional
+  text: "The annotation h_j of each word concatenates the forward and the backward hidden states of a bidirectional RNN, so that it contains the summaries of both the preceding words and the following words; due to the tendency of RNNs to better represent recent inputs, it will be focused on the words around x_j."
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "Section 3.2, p. 4", stance: for}
+
+- id: c-additive
+  type: definitional
+  text: "Since the alignment model needs to be evaluated Tx × Ty times for each sentence pair, Bahdanau et al. use a single-layer multilayer perceptron, a(s_{i-1}, h_j) = v_a^T tanh(W_a s_{i-1} + U_a h_j)."
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "p. 12", stance: for}
+
+- id: c-precompute-attr
+  type: attributive
+  text: "Since U_a h_j does not depend on i, it can be pre-computed in advance to minimize the computational cost."
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "p. 12", stance: for}
+
+- id: c-s0
+  type: definitional
+  text: "The initial hidden state of the decoder is s_0 = tanh(W_s h_1), computed from the first backward hidden state of the encoder."
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "p. 13", stance: for}
+
+- id: c-deep-output
+  type: definitional
+  text: "The probability of a target word is computed from the decoder state s_{i-1}, the context c_i and the last generated word y_{i-1} through a deep output with a single maxout hidden layer."
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "p. 14", stance: for}
+
+- id: c-encdec-fixed
+  type: attributive
+  text: "The model becomes the RNN Encoder-Decoder of Cho et al. if c_i is fixed to the last forward hidden state of the encoder."
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "p. 14", stance: for}
+
+- id: c-sizes
+  type: attributive
+  text: "For all the models of Bahdanau et al., the size of a hidden layer n is 1000, the word embedding dimensionality m is 620, the size of the maxout hidden layer in the deep output l is 500, and the number of hidden units in the alignment model n' is 1000."
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "p. 14", stance: for}
+
+- id: c-init
+  type: attributive
+  text: "W_a and U_a are initialized by sampling each element from the Gaussian distribution of mean 0 and variance 0.001 squared, and all the elements of v_a and all the bias vectors are initialized to zero."
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "p. 14", stance: for}
+
+# Mathematics of the layer
+
+- id: c-convex
+  type: mathematical
+  text: "Each context vector c_i is the expected annotation under the distribution alpha_i over the source positions, so it lies in the convex hull of the annotations of the real positions."
+  assumes: ["alpha_i is the softmax of the energies over the real source positions"]
+  derivation: expected-annotation
+
+- id: c-uniform
+  type: mathematical
+  text: "With v_a = 0 every energy is 0, and every context vector is the mean of the annotations of the real positions."
+  assumes: ["alpha_i is the softmax of the energies over the real source positions"]
+  derivation: expected-annotation
+
+- id: c-fixed
+  type: mathematical
+  text: "If the context vector is the same at every step, the decoder is that of an RNN Encoder-Decoder conditioned on the fixed vector, and the alignment model has no effect on the output."
+  assumes: ["every c_i equals one vector c that does not depend on the decoder state"]
+  derivation: expected-annotation
+
+- id: c-grad-energy
+  type: mathematical
+  text: "With gamma_ij the inner product of the gradient of the loss at c_i with h_j, the gradient of the loss at the energy e_ij is alpha_ij (gamma_ij minus the alpha_i-weighted mean of gamma_i); it is zero at a masked position and at every position when the real annotations are all equal, and the gradients of the energies of one step sum to zero."
+  assumes: ["the context is c_i = sum_j alpha_ij h_j with alpha_i the softmax of the energies over the real source positions"]
+  derivation: alignment-gradient
+
+- id: c-zero-init
+  type: mathematical
+  text: "With v_a = 0, as Bahdanau et al. initialize it, the weights are uniform and the gradients at W_a and U_a are exactly zero, while the gradient at v_a is not, so the first update moves v_a alone."
+  assumes: ["v_a = 0 and W_a, U_a arbitrary"]
+  derivation: alignment-gradient
+
+- id: c-params
+  type: mathematical
+  text: "At the sizes of Bahdanau et al. and with shortlists of 30,000 words, RNNsearch without biases has 80,401,000 weights, of which the alignment model has 3,001,000, or 3.7%."
+  assumes: ["no biases", "n = n' = 1000, m = 620, l = 500 and K_x = K_y = 30,000"]
+  derivation: parameter-and-cost
+
+- id: c-precompute
+  type: mathematical
+  text: "For a pair of sentences of 30 words, the alignment model and the contexts take 185,400,000 FLOPs with U_a h_j computed once per sentence and 3,665,400,000 if it is recomputed at every target step, a factor of about 20."
+  assumes: ["a multiply-add counted as 2 FLOPs, only the matrix and vector products counted", "n = n' = 1000"]
+  derivation: parameter-and-cost
+
+- id: c-share
+  type: mathematical
+  text: "With the precomputation, attention is 7.3% of the 2,539,400,000 FLOPs of the forward pass of RNNsearch on a pair of sentences of 30 words, and its cost grows as the product of the two lengths."
+  assumes: ["a multiply-add counted as 2 FLOPs, only the matrix and vector products counted", "the sizes of Bahdanau et al. and K_y = 30,000"]
+  derivation: parameter-and-cost
+
+- id: c-dot-general
+  type: mathematical
+  text: "The general score with W_a the identity is the dot score, and every general score is the dot score of a linear map of the query."
+  assumes: ["the dot and general scores of Luong et al.'s Eq. 8, with query and source states of the same width"]
+  derivation: luong-scores
+
+- id: c-concat-additive
+  type: mathematical
+  text: "The concat score of Luong et al., with W_a split by columns into two blocks, is the additive score of Bahdanau et al. with the query h_t in place of s_{i-1}."
+  assumes: ["W_a of the concat score has the two blocks W_1 for the query and W_2 for the source state"]
+  derivation: luong-scores
+
+- id: c-local-m-global
+  type: mathematical
+  text: "Local-m attention is global attention when its window covers the whole sentence."
+  assumes: ["the window takes the positions s with |s - t| <= D"]
+  derivation: luong-scores
+
+- id: c-local-sum
+  type: mathematical
+  text: "The weights of local-p attention sum to at most 1, and to less than 1 whenever p_t is not an integer, so its context is a weighted sum of the source states but not an average of them."
+  assumes: ["the Gaussian multiplies the softmax weights without renormalization, as Eq. 11 is written"]
+  derivation: luong-scores
+
+- id: c-location-blind
+  type: mathematical
+  text: "The location score softmax(W_a h_t) does not depend on the source states."
+  assumes: ["the location score of Luong et al.'s Eq. 9, a_t = softmax(W_a h_t)"]
+  derivation: luong-scores
+
+# Evidence of Bahdanau et al.
+
+- id: c-training
+  type: attributive
+  text: "Bahdanau et al. train each model with minibatch stochastic gradient descent and Adadelta on minibatches of 80 sentences for approximately 5 days, and find translations with a beam search."
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "Section 4.2, p. 5", stance: for}
+
+- id: c-shortlist
+  type: attributive
+  text: "Bahdanau et al. use a shortlist of 30,000 most frequent words in each language, map any other word to a special token [UNK], and evaluate on news-test-2014 from WMT '14, which consists of 3003 sentences not present in the training data."
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "Section 4.1, p. 5", stance: for}
+
+- id: c-table1
+  type: empirical
+  text: "On all the sentences of the test set, RNNencdec-30, RNNsearch-30, RNNencdec-50, RNNsearch-50 and RNNsearch-50* obtain BLEU scores of 13.93, 21.50, 17.82, 26.75 and 28.45, against 33.30 for Moses; on the sentences without any unknown word they obtain 24.19, 31.44, 26.71, 34.16 and 36.15, against 35.63."
+  scope:
+    models: "RNNencdec and RNNsearch trained on sentences of up to 30 and 50 words, and the phrase-based system Moses"
+    data: ["WMT'14 English to French, test set news-test-2014"]
+    setting: "English to French translation, beam search, a shortlist of 30,000 words in each language"
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "Table 1, p. 7", stance: for}
+
+- id: c-outperforms
+  type: empirical
+  text: "In all the cases RNNsearch outperforms the conventional RNNencdec, and its performance is as high as that of the phrase-based system Moses when only the sentences consisting of known words are considered, although Moses uses a separate monolingual corpus of 418M words."
+  scope:
+    models: "RNNencdec, RNNsearch and Moses"
+    data: ["WMT'14 English to French, test set news-test-2014"]
+    setting: "English to French translation"
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "Section 5.1, p. 5", stance: for}
+
+- id: c-length
+  type: empirical
+  text: "The performance of RNNencdec dramatically drops as the length of the sentences increases, while RNNsearch-30 and RNNsearch-50 are more robust to the length of the sentences, RNNsearch-50 having no performance deterioration even with sentences of length 50 or more."
+  scope:
+    models: "RNNencdec and RNNsearch trained on sentences of up to 30 and 50 words"
+    data: ["WMT'14 English to French, test set news-test-2014"]
+    setting: "BLEU of the test sentences grouped by length, Figure 2"
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "Section 5.1, p. 6", stance: for}
+
+- id: c-30-beats-50
+  type: empirical
+  text: "RNNsearch-30 even outperforms RNNencdec-50."
+  scope:
+    models: "RNNencdec-50 and RNNsearch-30"
+    data: ["WMT'14 English to French, test set news-test-2014"]
+    setting: "English to French translation, Table 1"
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "Section 5.1, p. 6", stance: for}
+
+- id: c-monotonic
+  type: empirical
+  text: "The alignment of words between English and French found by RNNsearch-50 is largely monotonic, with strong weights along the diagonal, and there are a number of non-trivial, non-monotonic alignments: the model aligns [zone] with [Area], jumping over [European] and [Economic], and then looks one word back at a time to complete the phrase."
+  scope:
+    models: "RNNsearch-50"
+    data: ["WMT'14 English to French, sample sentences of the test set"]
+    setting: "visualized annotation weights, Figure 3"
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "Section 5.2.1, p. 7", stance: for}
+
+- id: c-the-man
+  type: attributive
+  text: "A hard alignment would map [the] to [l'] and [man] to [homme], which is not helpful because the word following [the] determines whether it should be translated into [le], [la], [les] or [l']; the soft alignment lets the model look at both [the] and [man], and it deals with source and target phrases of different lengths without mapping some words to or from nowhere ([NULL])."
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "Section 5.2.1, p. 7", stance: for}
+
+- id: c-graves
+  type: attributive
+  text: "Graves (2013) used a mixture of Gaussian kernels to compute the weights of the annotations in handwriting synthesis, with the location restricted to increase monotonically, which Bahdanau et al. call a severe limitation in machine translation, as long-distance reordering is often needed."
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "Section 6.1, p. 8", stance: for}
+
+- id: c-quadratic
+  type: attributive
+  text: "The approach requires computing the annotation weight of every word in the source sentence for each word in the translation; this drawback is not severe in translation, in which most of input and output sentences are only 15–40 words, but it may limit the applicability of the scheme to other tasks."
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "Section 6.1, p. 8", stance: for}
+
+# The variants of Luong et al.
+
+- id: c-luong-classes
+  type: definitional
+  text: "Luong et al. examine two classes of attentional mechanism: a global approach which always attends to all source words and a local one that only looks at a subset of source words at a time."
+  evidence:
+    - {work: "luong-2015-effective-approaches", role: original, locator: "the abstract, p. 1", stance: for}
+
+- id: c-luong-htilde
+  type: definitional
+  text: "Given the target hidden state h_t at the top layer of a stacking LSTM and the source-side context vector c_t, a concatenation layer produces the attentional hidden state h̃_t = tanh(W_c [c_t; h_t]), which is fed through the softmax layer."
+  evidence:
+    - {work: "luong-2015-effective-approaches", role: original, locator: "Section 3, p. 3", stance: for}
+
+- id: c-luong-scores
+  type: definitional
+  text: "The content-based score of global attention is one of three alternatives: dot, h_t^T h̄_s; general, h_t^T W_a h̄_s; and concat, v_a^T tanh(W_a [h_t; h̄_s]); a location-based function computes a_t = softmax(W_a h_t) from solely the target hidden state."
+  evidence:
+    - {work: "luong-2015-effective-approaches", role: original, locator: "Section 3.1, p. 3", stance: for}
+
+- id: c-luong-path
+  type: attributive
+  text: "Luong et al. use hidden states at the top LSTM layers in both the encoder and decoder and go from h_t to a_t to c_t to h̃_t, whereas Bahdanau et al. build from the previous hidden state h_{t-1} to a_t to c_t to h_t, and only experimented with one alignment function, the concat product."
+  evidence:
+    - {work: "luong-2015-effective-approaches", role: original, locator: "Section 3.1, p. 3", stance: for}
+
+- id: c-local-why
+  type: attributive
+  text: "Global attention has to attend to all words on the source side for each target word, which is expensive and can potentially render it impractical to translate longer sequences, such as paragraphs or documents; hard attention is less expensive at inference time but non-differentiable, whereas local attention is differentiable."
+  evidence:
+    - {work: "luong-2015-effective-approaches", role: original, locator: "Section 3.2, p. 4", stance: for}
+
+- id: c-local-def
+  type: definitional
+  text: "Local attention derives the context vector as a weighted average over the set of source hidden states within the window [p_t - D, p_t + D], D being empirically selected; local-m simply sets p_t = t, assuming that source and target sequences are roughly monotonically aligned."
+  evidence:
+    - {work: "luong-2015-effective-approaches", role: original, locator: "Section 3.2, p. 4", stance: for}
+
+- id: c-local-p-def
+  type: definitional
+  text: "Local-p predicts the aligned position p_t = S sigmoid(v_p^T tanh(W_p h_t)), S being the source sentence length, and multiplies the alignment weights by a Gaussian centered around p_t whose standard deviation is set as D/2, which lets backpropagation compute gradients for W_p and v_p."
+  evidence:
+    - {work: "luong-2015-effective-approaches", role: original, locator: "Section 3.2, p. 4", stance: for}
+
+- id: c-input-feeding
+  type: definitional
+  text: "In the input-feeding approach the attentional vectors h̃_t are concatenated with inputs at the next time steps, so that alignment decisions take past alignment information into account."
+  evidence:
+    - {work: "luong-2015-effective-approaches", role: original, locator: "p. 5", stance: for}
+
+# Evidence of Luong et al.
+
+- id: c-luong-gains
+  type: empirical
+  text: "On top of a model with a reversed source and dropout, global attention gives a boost of +2.8 BLEU, input feeding another +1.3 BLEU, and local attention with predictive alignments a further +0.9 BLEU, in total 5.0 BLEU over the non-attentional baseline."
+  scope:
+    models: "4-layer stacking LSTM encoder-decoders, 1000 cells per layer"
+    data: ["WMT'14 English to German, newstest2014"]
+    setting: "English to German translation, tokenized BLEU, Table 1"
+  evidence:
+    - {work: "luong-2015-effective-approaches", role: original, locator: "Section 4.2, p. 6", stance: for}
+
+- id: c-luong-ensemble
+  type: empirical
+  text: "An ensemble of different attention approaches obtains 23.0 BLEU on newstest2014, outperforming the existing best system (Jean et al., 2015) by +1.4 BLEU, and 25.9 BLEU on the WMT'15 English to German task, an improvement of 1.0 BLEU points over the existing best system backed by NMT and an n-gram reranker."
+  scope:
+    models: "ensembles of attentional 4-layer LSTM encoder-decoders with unknown word replacement"
+    data: ["WMT'14 English to German, newstest2014", "WMT'15 English to German, newstest2015"]
+    setting: "English to German translation"
+  evidence:
+    - {work: "luong-2015-effective-approaches", role: original, locator: "the abstract and Section 4.2, pp. 1 and 6", stance: for}
+
+- id: c-luong-long
+  type: empirical
+  text: "The attentional models are more effective than the non-attentional model in handling long sentences: the translation quality does not degrade as sentences become longer."
+  scope:
+    models: "the attentional and non-attentional English to German models of Table 1"
+    data: ["WMT'14 English to German, newstest2014"]
+    setting: "BLEU of the test sentences grouped by length, Figure 6"
+  evidence:
+    - {work: "luong-2015-effective-approaches", role: original, locator: "Section 5.2, p. 7", stance: for}
+
+- id: c-luong-dot-general
+  type: empirical
+  text: "Dot works well for the global attention and general is better for the local attention; among the models of Table 4, local attention with predictive alignments is best both in terms of perplexities and BLEU."
+  scope:
+    models: "4-layer LSTM encoder-decoders with global, local-m and local-p attention"
+    data: ["WMT'14 English to German, newstest2014"]
+    setting: "English to German translation, not all combinations of models and scores trained, Table 4"
+  evidence:
+    - {work: "luong-2015-effective-approaches", role: original, locator: "Section 5.3, p. 8", stance: for}
+
+- id: c-luong-location-concat
+  type: empirical
+  text: "The location-based function does not learn good alignments, and the implementation of concat by Luong et al. does not yield good performances, with perplexities of 6.7 (global), 7.1 (local-m), and 7.1 (local-p)."
+  scope:
+    models: "4-layer LSTM encoder-decoders with global, local-m and local-p attention"
+    data: ["WMT'14 English to German, newstest2014"]
+    setting: "English to German translation, Table 4 and footnote 15"
+  evidence:
+    - {work: "luong-2015-effective-approaches", role: original, locator: "Section 5.3, p. 8", stance: for}
+
+- id: c-luong-aer
+  type: empirical
+  text: "The one-to-one alignments extracted from the attentional models achieve AER scores comparable to the one-to-many alignments of the Berkeley aligner, and those of the local attention models achieve lower AERs than those of the global one."
+  scope:
+    models: "the attentional English to German models of Table 1"
+    data: ["RWTH gold alignments of 508 English-German Europarl sentences"]
+    setting: "forced decoding of the references, the source word of highest weight per target word, Table 6"
+  evidence:
+    - {work: "luong-2015-effective-approaches", role: original, locator: "Section 5.4, p. 8", stance: for}
