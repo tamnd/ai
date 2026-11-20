@@ -30,6 +30,8 @@ sources:
   - {paper: "Burns, Izmailov, Kirchner, Baker, Gao, Aschenbrenner, Chen, Ecoffet, Joglekar, Leike, Sutskever and Wu (2023)", title: "Weak-to-Strong Generalization: Eliciting Strong Capabilities With Weak Supervision", locator: "arXiv 2312.09390v1, Sections 1 to 6 and Appendix A", note: "the setup, PGR, the results on NLP, chess and reward modeling, bootstrapping, the auxiliary confidence loss, and the disanalogies"}
   - {paper: "Bowman et al. (2022)", title: "Measuring Progress on Scalable Oversight for Large Language Models", locator: "arXiv 2211.03540v2, Sections 1 to 3", note: "the sandwiching design with human participants that the setup resembles, and its relaxations and results"}
   - {paper: "Christiano, Shlegeris and Amodei (2018)", title: "Supervising strong learners by amplifying weak experts", locator: "arXiv 1810.08575v1, Section 1", note: "iterated amplification, an earlier route to a training signal on tasks a person cannot judge"}
+  - {paper: "Amodei, Olah, Steinhardt, Christiano, Schulman and Mané (2016)", title: "Concrete Problems in AI Safety", locator: "arXiv 1606.06565v2, pp. 3 and 11", note: "scalable oversight posed as a concrete problem, and semi-supervised reinforcement learning"}
+  - {paper: "Irving, Christiano and Amodei (2018)", title: "AI safety via debate", locator: "arXiv 1805.00899v2, p. 1", note: "debate as a scalable oversight method, its PSPACE analogy and the MNIST experiment"}
 ---
 
 Weak-to-strong generalization is the ability of a strong model, finetuned on labels from a weaker supervisor, to perform better than that supervisor.
@@ -52,6 +54,8 @@ They test it by finetuning large pretrained models on labels produced by small o
 Their reason to expect it could work is that the strong model already has good representations, so the weak supervisor need not teach new capabilities, only elicit what the strong model knows. {#c-bu-elicit}
 
 This is one answer to the problem of scalable oversight, which Bowman et al. define as supervising systems that potentially outperform us on most skills relevant to the task. {#c-bw-definition}
+The problem was posed earlier by Amodei et al. (2016): how to make an agent respect the parts of its objective that are too expensive to check often during training. {#c-am-scalable}
+One frame they give is semi-supervised reinforcement learning, in which the agent sees its reward on only a small fraction of timesteps or episodes. {#c-am-ssrl}
 Burns et al. separate the two lines of work: scalable oversight tries to make human supervision better, for instance with critiques or task decomposition, while they study how a model generalizes beyond the supervision it gets, and they note that their setup can compare both kinds of method. {#c-bu-vs-oversight}
 Their setup resembles the sandwiching proposal, which uses weak and strong humans (Cotra, 2021; Bowman, 2022). {#c-bu-sandwiching}
 In sandwiching, researchers pick a task where a model is more capable than a typical person but less than an expert, and non-expert participants try to align the model to it without the experts' help. {#c-bw-sandwiching}
@@ -205,6 +209,12 @@ A semi-supervised variant gives reliable labels only on easy examples and leaves
 
 **Vision.**
 As a proof of concept against pretraining leakage, Burns et al. supervise a strong vision student with AlexNet, and it generalizes well beyond AlexNet without having seen labels in pretraining. {#c-bu-alexnet}
+
+**Debate.**
+Irving, Christiano and Amodei (2018) train agents by self-play on a zero-sum game: two agents take turns making short statements about a question, and a human judges which one gave the most true, useful information. {#c-ir-debate}
+In their complexity-theory analogy, debate with optimal play answers any question in PSPACE with polynomial-time judges, where direct judging reaches only NP. {#c-ir-pspace}
+In a first MNIST test, agents arguing before a sparse classifier that sees only revealed pixels raised its accuracy from 59.4% to 88.9% with 6 pixels and from 48.2% to 85.2% with 4. {#c-ir-mnist}
+Debate and amplification try to make the supervisor stronger; weak-to-strong generalization asks how far the student gets with the supervisor left weak.
 
 **Iterated amplification.**
 Christiano, Shlegeris and Amodei propose building a training signal for hard problems from solutions to easier subproblems. {#c-ch-amplification}

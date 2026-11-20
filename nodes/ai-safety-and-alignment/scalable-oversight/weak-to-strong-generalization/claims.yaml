@@ -596,3 +596,38 @@
   text: "Burns et al. argue that analogous setups, scalable methods and strong scientific understanding will be necessary."
   evidence:
     - {work: "burns-2023-weak-to-strong-generalization", role: original, locator: "p. 17", stance: for}
+
+- id: c-am-scalable
+  type: attributive
+  text: "Amodei et al. pose scalable oversight as the problem of how to efficiently ensure that an agent respects aspects of the objective that are too expensive to be frequently evaluated during training."
+  evidence:
+    - {work: "amodei-2016-concrete-problems-ai-safety", role: original, locator: "p. 3", stance: for}
+
+- id: c-am-ssrl
+  type: attributive
+  text: "One framework Amodei et al. offer for the problem is semi-supervised reinforcement learning, which resembles ordinary reinforcement learning except that the agent can only see its reward on a small fraction of the timesteps or episodes."
+  evidence:
+    - {work: "amodei-2016-concrete-problems-ai-safety", role: original, locator: "p. 11", stance: for}
+
+- id: c-ir-debate
+  type: attributive
+  text: "Irving et al. propose training agents via self play on a zero sum debate game: given a question or proposed action, two agents take turns making short statements up to a limit, then a human judges which of the agents gave the most true, useful information."
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 1", stance: for}
+
+- id: c-ir-pspace
+  type: attributive
+  text: "In an analogy to complexity theory, debate with optimal play can answer any question in PSPACE given polynomial time judges, while direct judging answers only NP questions."
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 1", stance: for}
+
+- id: c-ir-mnist
+  type: empirical
+  text: "In an initial MNIST experiment where agents compete to convince a sparse classifier, debate boosted the classifier's accuracy from 59.4% to 88.9% given 6 pixels and from 48.2% to 85.2% given 4 pixels."
+  scope:
+    models: "a sparse classifier judge that sees only the revealed pixels, with debating agents"
+    data: ["mnist"]
+    scale: "4 or 6 revealed pixels"
+    setting: "two agents reveal pixels to convince the judge of a digit label"
+  evidence:
+    - {work: "irving-2018-ai-safety-via-debate", role: original, locator: "p. 1", stance: for}
