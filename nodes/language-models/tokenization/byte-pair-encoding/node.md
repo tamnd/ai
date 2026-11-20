@@ -30,6 +30,7 @@ sources:
   - {paper: "Kudo (2018)", title: "Subword Regularization: Improving Neural Network Translation Models with Multiple Subword Candidates", locator: "arXiv 1804.10959v1, Sections 3.1 to 3.3", note: "BPE as a greedy deterministic segmenter and the unigram alternative"}
   - {paper: "Kudo and Richardson (2018)", title: "SentencePiece: A simple and language independent subword tokenizer and detokenizer for Neural Text Processing", locator: "arXiv 1808.06226v1, Sections 3.1 to 3.4", note: "raw-text training, lossless tokenization, the heap algorithm and the vocabulary-size target"}
   - {paper: "Provilkov, Emelianenko and Voita (2020)", title: "BPE-Dropout: Simple and Effective Subword Regularization", locator: "arXiv 1910.13267v2, Sections 2.1, 3, 5 and 6", note: "priority encoding with a merge table and its stochastic version"}
+  - {paper: "Radford, Wu, Child, Luan, Amodei and Sutskever (2019)", title: "Language Models are Unsupervised Multitask Learners", locator: "OpenAI technical report, Sections 2.2 and 2.3", note: "byte-level BPE with merges blocked across character categories, as the tokenizer of GPT-2"}
 ---
 
 Byte-pair encoding (BPE) is a way to cut text into subword units.
@@ -192,6 +193,11 @@ Kudo (2018) proposes a unigram language model instead of merges, which assumes s
 His subword regularization samples one segmentation for each parameter update. {#c-ku-sampling}
 He treats WordPiece as a variant of BPE that grows its vocabulary the same way but chooses merges by likelihood instead of frequency. {#c-ku-wordpiece}
 BPE-dropout keeps BPE and its merge table and only changes encoding during training.
+Byte-level BPE, the tokenizer of GPT-2, runs the merges on UTF-8 bytes instead of characters.
+Radford et al. note that BPE implementations often work on Unicode code points, which would need a base vocabulary of over 130,000 symbols before any merge, while a byte-level version needs only 256. {#c-gpt2-base}
+Run directly on bytes, BPE spent merges on variants of common words such as dog. dog! and dog?, so they prevent merges across character categories, with an exception for spaces. {#c-gpt2-categories}
+Because every string is a byte sequence, such a model can assign a probability to any Unicode string and be evaluated on any dataset regardless of its preprocessing. {#c-gpt2-any-string}
+The vocabulary of GPT-2 has 50,257 entries. {#c-gpt2-vocab}
 
 ## When to use it
 
@@ -203,12 +209,12 @@ Prefer the unigram model when the training method needs segmentation probabiliti
 
 ## Pitfalls
 
-Apply the merges in the order they were learned, or with priorities equal to that order; a merge list without its order is not a tokenizer.
-Keep the training and test preprocessing identical, including normalization, lower-casing and the end-of-word marker.
-Count overlapping pairs correctly: aaa has two (a, a) pairs, but one merge joins only one of them.
-Write down the tie-breaking rule; a different rule gives a different merge list on the same table.
-Do not use BPE-dropout at inference; Provilkov et al. use $p = 0$ there.
-Do not compare perplexities across tokenizers without normalizing by characters or words, because the number of tokens per sentence changes.
+- Apply the merges in the order they were learned, or with priorities equal to that order; a merge list without its order is not a tokenizer.
+- Keep the training and test preprocessing identical, including normalization, lower-casing and the end-of-word marker.
+- Count overlapping pairs correctly: aaa has two (a, a) pairs, but one merge joins only one of them.
+- Write down the tie-breaking rule; a different rule gives a different merge list on the same table.
+- Do not use BPE-dropout at inference; Provilkov et al. use $p = 0$ there.
+- Do not compare perplexities across tokenizers without normalizing by characters or words, because the number of tokens per sentence changes.
 
 ## History
 

@@ -9,7 +9,7 @@ level: core
 summary: >-
   A trained model doing a new task from instructions or examples placed in its input, with no change to its weights: the prompt plays the part of a training set.
 uses: [ordinary-least-squares@m2, ridge-regression@m2, stochastic-gradient-descent@m2, bayes-estimator@m2]
-related_to: [bayesian-inference@m2, kernel-regression@m2, k-nearest-neighbors@al, double-descent@al, lasso@m2]
+related_to: [chain-of-thought-prompting, bayesian-inference@m2, kernel-regression@m2, k-nearest-neighbors@al, double-descent@al, lasso@m2]
 history:
   year: 2020
   people: [Tom B. Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared Kaplan, Prafulla Dhariwal]
@@ -18,13 +18,14 @@ prereqs: [ordinary-least-squares@m2, ridge-regression@m2, stochastic-gradient-de
 same_as:
   wikidata: null
   wikipedia: null
-  arxiv: ["2005.14165", "2208.01066", "2212.07677", "2202.12837"]
+  arxiv: ["2005.14165", "2208.01066", "2212.07677", "2202.12837", "2201.11903"]
   al: null
 sources:
   - {paper: "Brown et al. (2020)", title: "Language Models are Few-Shot Learners", locator: "arXiv 2005.14165v4, pp. 4 to 7 and p. 34", note: "the term, the zero-, one- and few-shot settings, the scaling of in-context learning, and its ambiguity"}
   - {paper: "Garg et al. (2022)", title: "What Can Transformers Learn In-Context? A Case Study of Simple Function Classes", locator: "arXiv 2208.01066v3, equations 1 and 2, pp. 1 to 11, figure 2", note: "the definition on function classes and the linear-regression experiments"}
   - {paper: "von Oswald et al. (2023)", title: "Transformers Learn In-Context by Gradient Descent", locator: "arXiv 2212.07677v2, equations 3 and 4, Proposition 1, pp. 4, 5, 8 and 13, figure 2", note: "one linear self-attention layer as one step of gradient descent"}
   - {paper: "Min et al. (2022)", title: "Rethinking the Role of Demonstrations: What Makes In-Context Learning Work?", locator: "arXiv 2202.12837v2, pp. 2 to 9", note: "random labels, input distribution, label space and format"}
+  - {paper: "Wei et al. (2022)", title: "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models", locator: "arXiv 2201.11903v6, pp. 2 and 3", note: "few-shot prompting with exemplars that carry intermediate reasoning steps"}
 ---
 
 In-context learning is what a pretrained model does when it carries out a task that it is shown only in its input.
@@ -153,6 +154,10 @@ Without the format, demonstrations are no better than none; with it, random sent
 Fine-tuning adapts a pretrained model by gradient updates on task data; in-context learning uses only forward passes at test time.
 Prompting with an instruction alone is the zero-shot case.
 Meta-learning names the training that produces the ability, and Garg et al. use the word for training on random prompts.
+[[chain-of-thought-prompting|Chain-of-thought prompting]] changes only what the demonstrations contain.
+Wei et al. note that the few-shot prompting of Brown et al. works poorly on tasks that require reasoning and often does not improve much as the model grows. {#c-wei-standard-weak}
+They augment each exemplar with a chain of thought, a series of intermediate natural-language reasoning steps that lead to the final answer, so the prompt holds triples of input, chain of thought and output. {#c-wei-triples}
+For the math word problems they composed eight such exemplars by hand. {#c-wei-eight}
 
 On the side of the algorithms, least squares, ridge, Lasso and gradient descent are the reference points against which in-context predictions are measured.
 Von Oswald et al. put forward the hypothesis, as Garg et al. and Akyürek et al. had, that gradient descent drives in-context learning in Transformers. {#c-oswald-hypothesis}

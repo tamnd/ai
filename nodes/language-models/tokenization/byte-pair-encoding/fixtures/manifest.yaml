@@ -1,0 +1,10 @@
+# Written by fixtures/make.py; do not edit.
+seed: 2016
+source: {train_words: 60, test_words: 20, stems: 8, suffixes: 8}
+training: {merges: 40, learned: 40, frequency: 1000 // rank}
+dropout: {p: 0.3, seed: 2017}
+dtype: unicode and int64
+numpy: "2.5.4"
+files:
+  input-small.npz: {sha256: 7ff71d4789e89cd013dbe15a1b1c6df5167e9c4e577d592cb7142c35e32804b1}
+  expected-small.npz: {sha256: 9c989147e06fcdf5ec787c639c9b8ce99116d32e505aa33a936efa92966b1932}

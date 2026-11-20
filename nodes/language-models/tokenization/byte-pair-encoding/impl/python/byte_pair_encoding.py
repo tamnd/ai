@@ -12,6 +12,7 @@ encode applies the merges in the order they were learned. encode_priority repeat
 earliest merge (ties to the leftmost occurrence), the procedure of Provilkov et al.; bpe_dropout_encode is the same loop
 in which each candidate occurrence is dropped with probability p at every step, using a seeded random.Random."""
 
+import itertools
 import random
 
 END = "</w>"
@@ -28,7 +29,7 @@ def pair_counts(vocab):
     """Frequency-weighted counts of adjacent pairs, in first-seen order. vocab maps symbol tuples to counts."""
     counts = {}
     for symbols, freq in vocab.items():
-        for pair in zip(symbols, symbols[1:]):
+        for pair in itertools.pairwise(symbols):
             counts[pair] = counts.get(pair, 0) + freq
     return counts
 

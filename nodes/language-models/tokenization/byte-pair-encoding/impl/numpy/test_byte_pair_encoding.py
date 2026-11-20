@@ -2,16 +2,16 @@
 # Part of https://ai.tamnd.com/byte-pair-encoding/ (ai://ZRQW82).
 """Tests of the NumPy version: the low/lower/newest/widest example of Sennrich et al., agreement with an
 independent regex version of their Algorithm 1 on random tables, the token-count and vocabulary identities of the
-derivation merge-count, encoding of the training words, priority encoding, and BPE-dropout at p = 0, p = 1 and in
-between."""
+derivation merge-count, encoding of the training words, priority encoding, BPE-dropout at p = 0, p = 1 and in
+between, and the shared fixture."""
 
 import itertools
+import pathlib
 import random
 import re
 
-import pytest
-
 import numpy as np
+import pytest
 
 from byte_pair_encoding import (
     END,
@@ -23,6 +23,9 @@ from byte_pair_encoding import (
     pair_counts,
     train_bpe,
 )
+
+HERE = pathlib.Path(__file__).resolve().parent
+FIXTURES = next(d for d in (HERE / "fixtures", HERE.parents[1] / "fixtures") if d.is_dir())
 
 
 def initial_symbols(word):
@@ -59,11 +62,11 @@ def regex_bpe(table, num_merges):
         stats = {}
         for text, f in corpus.items():
             parts = text.split()
-            for left, right in zip(parts, parts[1:]):
+            for left, right in itertools.pairwise(parts):
                 stats[left, right] = stats.get((left, right), 0) + f
         if not stats:
             break
-        top = max(stats, key=stats.get)
+        top = max(stats, key=lambda k: stats[k])
         learned.append(top)
         pattern = re.compile(r"(?<!\S)" + re.escape(" ".join(top)) + r"(?!\S)")
         corpus = {pattern.sub("".join(top), text): f for text, f in corpus.items()}
@@ -279,3 +282,19 @@ def test_dropout_finer_on_average_as_p_grows():
     for p in [0.0, 0.1, 0.5, 0.9]:
         mean.append(sum(len(bpe_dropout_encode("newest", MERGES, p, rng)) for _ in range(400)) / 400)
     assert mean[0] == 1 and all(x < y for x, y in itertools.pairwise(mean))
+
+
+def test_shared_fixture():
+    """The reference reproduces the merges, the training segmentation, the ordered and priority encodings and the
+    seeded BPE-dropout encodings that fixtures/make.py stored."""
+    inp, exp = np.load(FIXTURES / "input-small.npz"), np.load(FIXTURES / "expected-small.npz")
+    table = dict(zip(inp["words"].tolist(), inp["freqs"].tolist(), strict=True))
+    merges, vocab = train_bpe(table, int(inp["num_merges"]))
+    assert [list(m) for m in merges] == exp["merges"].tolist()
+    assert [" ".join(seg) for seg in vocab] == exp["train_segments"].tolist()
+    test = inp["test_words"].tolist()
+    assert [" ".join(encode(w, merges)) for w in test] == exp["encode"].tolist()
+    assert [" ".join(encode_priority(w, merges)) for w in test] == exp["encode_priority"].tolist()
+    rng = np.random.default_rng(int(inp["dropout_seed"]))
+    p = float(inp["p"])
+    assert [" ".join(bpe_dropout_encode(w, merges, p, rng)) for w in test] == exp["dropout"].tolist()

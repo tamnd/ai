@@ -510,3 +510,21 @@
   text: "In the noisy setting of Garg et al., with w ~ N(0, I_d) and N(0, 1) noise, the Bayes-optimal ridge parameter is lambda = 1."
   assumes: ["w ~ N(0, I_d)", "noise N(0, 1) independent of w and the inputs"]
   derivation: bayes-optimal-in-context-regression
+
+- id: c-wei-standard-weak
+  type: attributive
+  text: "Wei et al. note that the traditional few-shot prompting method used in Brown et al. (2020) works poorly on tasks that require reasoning abilities, and often does not improve substantially with increasing language model scale."
+  evidence:
+    - {work: "wei-2022-chain-of-thought-prompting", role: original, locator: "p. 2", stance: for}
+
+- id: c-wei-triples
+  type: definitional
+  text: "Chain-of-thought prompting augments each exemplar in few-shot prompting with a chain of thought, a series of intermediate natural language reasoning steps that lead to the final output, so the prompt consists of triples of input, chain of thought and output."
+  evidence:
+    - {work: "wei-2022-chain-of-thought-prompting", role: original, locator: "p. 2", stance: for}
+
+- id: c-wei-eight
+  type: attributive
+  text: "For the math word problem benchmarks, Wei et al. manually composed a set of eight few-shot exemplars with chains of thought for prompting."
+  evidence:
+    - {work: "wei-2022-chain-of-thought-prompting", role: original, locator: "p. 3", stance: for}
