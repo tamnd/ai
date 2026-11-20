@@ -498,3 +498,32 @@
   text: "At learning rate 10^-3 and weight decay 1, decay alone multiplies the weights by 0.999 per step and by 0.3677 over 1,000 steps, and halves their norm in 693 steps."
   assumes: ["lr = 10^-3", "wd = 1"]
   derivation: weight-decay-shrinkage
+
+- id: c-kumar-lazy-rich
+  type: attributive
+  text: "Kumar et al. propose that grokking can arise due to a neural network transitioning from lazy training dynamics to a rich, feature learning regime, and study vanilla gradient descent on a polynomial regression problem with a two layer neural network which exhibits grokking without regularization."
+  evidence:
+    - {work: "kumar-2024-grokking-lazy-to-rich", role: original, locator: "p. 1", stance: for}
+
+- id: c-kumar-kernel-first
+  type: attributive
+  text: "In this setting grokking arises when the network first attempts to fit a kernel regression solution with its initial features, followed by late-time feature learning where a generalizing solution is identified after train loss is already low."
+  evidence:
+    - {work: "kumar-2024-grokking-lazy-to-rich", role: original, locator: "p. 1", stance: for}
+
+- id: c-kumar-conditions
+  type: attributive
+  text: "Kumar et al. argue that delayed generalization arises when the top eigenvectors of the initial neural tangent kernel and the task labels are misaligned, the dataset size is large enough to generalize eventually but not so large that train loss perfectly tracks test loss, and the network begins training in the lazy regime; the rate of feature learning can be controlled by parameters that scale the network output."
+  evidence:
+    - {work: "kumar-2024-grokking-lazy-to-rich", role: original, locator: "p. 1", stance: for}
+
+- id: c-kumar-general
+  type: empirical
+  text: "Kumar et al. give evidence that this transition from lazy to rich training can control grokking in more general settings, like on MNIST, one-layer Transformers, and student-teacher networks."
+  scope:
+    models: "two-layer networks, one-layer Transformers and student-teacher networks"
+    data: ["mnist", "polynomial regression"]
+    scale: "unknown"
+    setting: "gradient descent with an output scale controlling the rate of feature learning"
+  evidence:
+    - {work: "kumar-2024-grokking-lazy-to-rich", role: original, locator: "p. 1", stance: for}

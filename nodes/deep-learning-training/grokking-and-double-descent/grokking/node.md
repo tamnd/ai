@@ -21,6 +21,7 @@ sources:
   - {paper: "Nanda et al. (2023)", title: "Progress measures for grokking via mechanistic interpretability", locator: "pp. 2-9", note: "the Fourier algorithm in a one-layer transformer and the three phases of training"}
   - {paper: "Liu, Michaud and Tegmark (2022)", title: "Omnigrok: Grokking Beyond Algorithmic Data", locator: "pp. 1-9", note: "weight norm, the LU mechanism, grokking on MNIST, IMDb and QM9"}
   - {paper: "Varma et al. (2023)", title: "Explaining grokking through circuit efficiency", locator: "pp. 1, 3, 7, 9", note: "circuit efficiency, the critical dataset size, ungrokking and semi-grokking"}
+  - {paper: "Kumar, Bordelon, Gershman and Pehlevan (2024)", title: "Grokking as the Transition from Lazy to Rich Training Dynamics", locator: "ICLR 2024, arXiv 2310.06110v3, p. 1", note: "grokking without regularization as a transition from kernel to feature learning"}
 claim: >-
   On small algorithmic tasks, a network can reach perfect training accuracy long before it generalizes, and then, after many more steps of the same training, move from chance to near-perfect accuracy on held-out data.
 first_reported: {work: power-2022-grokking-generalization-beyond-overfitting, note: "named the effect and showed it for two-layer transformers on modular arithmetic, polynomials mod 97 and the group S5"}
@@ -161,8 +162,15 @@ In a constructed simulation, three properties suffice: the generalizing circuit 
 They measure that the efficiency of the generalizing circuit does not depend on the dataset size, while that of the memorizing circuit falls as the training set grows. {#c-varma-dataset-size}
 So below a critical size memorization is the more efficient circuit, which predicts ungrokking and semi-grokking, and they then observed both.
 
-The three accounts agree that weight decay, or another pressure toward small weights, does the work after the training loss is near zero, and that the generalizing solution has a smaller norm.
+**Lazy to rich.**
+Kumar et al. (2024) find grokking without any regularization, in a two-layer network trained by plain gradient descent on polynomial regression, and explain it as a move from lazy to rich training. {#c-kumar-lazy-rich}
+The network first fits a kernel regression solution with its initial features, which drives the training loss down, and only later learns the features that generalize. {#c-kumar-kernel-first}
+They name three conditions: the top eigenvectors of the initial [[neural-tangent-kernel]] are misaligned with the labels, the dataset is large enough to generalize eventually but small enough that train and test loss can part, and training starts lazy; the output scale sets how fast features are learned. {#c-kumar-conditions}
+They report the same control in more general settings, including MNIST, one-layer Transformers and student-teacher networks. {#c-kumar-general}
+
+The first three accounts agree that weight decay, or another pressure toward small weights, does the work after the training loss is near zero, and that the generalizing solution has a smaller norm.
 They differ in what they treat as the cause: the learned circuit and its phases, the shape of the loss against the norm, or the relative efficiency of two circuits.
+The lazy-to-rich account needs no weight decay at all, and puts the delay in how slowly the features move away from their initial kernel.
 
 ## Implications
 
