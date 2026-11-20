@@ -1,0 +1,100 @@
+# SPDX-License-Identifier: MIT
+# The shape contract of the Jamba language model of the page (spec 08.6), as Lieber et al. (2024) describe it and the
+# released configuration sets it: a token embedding, n_blocks Jamba blocks of l layers, a final RMSNorm and an untied
+# output layer. Each layer is a mixer and a feed-forward part, each after an RMSNorm and inside a residual connection.
+# The mixer of layer l / 2 of a block is causal self-attention with H heads of size A in G key-value groups and no
+# positional encoding; the mixer of the other l - 1 layers is a Mamba block with RMSNorm on Delta's low-rank input, B
+# and C. The feed-forward part of every second layer (offset 1) is a mixture of X SwiGLU experts with the top U chosen
+# for each token; the others, the attention layer among them, have one SwiGLU MLP. The FLOPs count the products only, a
+# multiply-add as 2, with the attention scores over all T x T pairs; the norms, the activations, the softmax, the
+# convolution and the state update of the scan are left out. Each MLP block holds the two RMSNorms of its layer.
+config:
+  vocab:     {meaning: "size of the vocabulary", symbol: "V", example: 13, sample: [5, 20]}
+  head_dim:  {meaning: "size of an attention head", symbol: "A", example: 4, sample: [1, 4]}
+  n_kv:      {meaning: "number of key-value heads, the groups of grouped-query attention", symbol: "G", example: 1, sample: [1, 2]}
+  q_per_kv:  {meaning: "number of query heads in each group", symbol: "q", example: 2, sample: [1, 3]}
+  n_heads:   {meaning: "number of query heads", symbol: "H", formula: "n_kv * q_per_kv"}
+  d_model:   {meaning: "width of the residual stream, H heads of A", symbol: "D", formula: "n_heads * head_dim"}
+  quarter:   {meaning: "a quarter of the number of layers of a block", symbol: "Q", example: 1, sample: [1, 2]}
+  block_len: {meaning: "number of layers of a Jamba block, the paper's l; one is attention, so a : m = 1 : (l - 1)", symbol: "l", formula: "4 * quarter"}
+  moe_every: {meaning: "the paper's e: every e-th layer has a mixture of experts, from the second on", symbol: "e", example: 2}
+  n_moe:     {meaning: "number of layers of a block with a mixture of experts", symbol: "M", formula: "block_len / moe_every"}
+  n_blocks:  {meaning: "number of Jamba blocks", symbol: "L", example: 1, sample: [1, 2]}
+  n_experts: {meaning: "number of experts of a mixture, the paper's n", symbol: "X", example: 4, sample: [2, 5]}
+  top_k:     {meaning: "number of experts that each token uses, the paper's K", symbol: "U", example: 2, sample: [1, 2]}
+  d_ff:      {meaning: "hidden width of a SwiGLU MLP and of each expert", symbol: "F", example: 12, sample: [2, 16]}
+  expand:    {meaning: "expansion factor of the inner width of a Mamba block", symbol: "E", example: 2, sample: [1, 2]}
+  d_inner:   {meaning: "inner width of a Mamba block, the channels of its SSM", symbol: "I", formula: "expand * d_model"}
+  d_state:   {meaning: "size of the SSM state of each channel", symbol: "N", example: 4, sample: [1, 5]}
+  d_conv:    {meaning: "width of the causal depthwise convolution of a Mamba block", symbol: "W", example: 3, sample: [1, 4]}
+  dt_rank:   {meaning: "rank of the projection that computes Delta", symbol: "R", example: 2, sample: [1, 3]}
+axes:
+  B: {meaning: "batch", example: 2}
+  T: {meaning: "sequence length", example: 6}
+  V: vocab
+  A: head_dim
+  G: n_kv
+  H: n_heads
+  D: d_model
+  X: n_experts
+  U: top_k
+  F: d_ff
+  I: d_inner
+  N: d_state
+  W: d_conv
+  R: dt_rank
+blocks:
+  - id: embed
+    meaning: "the token embedding, a lookup with no FLOPs"
+    inputs: {tokens: "(B, T)"}
+    outputs: {r: "(B, T, D)"}
+    params: "V * D"
+    flops_forward: "0"
+  - id: attn
+    meaning: "causal self-attention with grouped-query heads and no positional encoding: query, key, value and output projections, the scores and their weighted sum"
+    eq: [layer, attn]
+    inputs: {r: "(B, T, D)"}
+    outputs: {r: "(B, T, D)"}
+    internals: {q: "(B, T, G, q_per_kv, A)", k: "(B, T, G, A)", scores: "(B, G, q_per_kv, T, T)"}
+    params: "2 * D ^ 2 + 2 * D * G * A"
+    flops_forward: "2 * B * T * (2 * D ^ 2 + 2 * D * G * A) + 4 * B * H * T ^ 2 * A"
+  - id: mamba
+    meaning: "a Mamba block: in_proj to x and z, the causal convolution and SiLU, x_proj to Delta's input (rank R), B and C, each RMS-normalized, dt_proj, the selective scan, the skip D x, the gate SiLU(z) and out_proj"
+    eq: [layer, mamba]
+    inputs: {r: "(B, T, D)"}
+    outputs: {r: "(B, T, D)"}
+    internals: {x: "(B, T, I)", z: "(B, T, I)", delta: "(B, T, I)", h: "(B, T, I, N)"}
+    params: "3 * I * D + I * (W + 1) + I * (R + 2 * N) + R + 2 * N + (R + 1) * I + I * N + I"
+    flops_forward: "2 * B * T * (2 * D * I + I * (R + 2 * N) + R * I + I * N + I * D)"
+  - id: mlp
+    meaning: "a SwiGLU MLP, (SiLU(v W_gate) * v W_up) W_down, with the two RMSNorms of its layer"
+    eq: [layer]
+    inputs: {r: "(B, T, D)"}
+    outputs: {r: "(B, T, D)"}
+    params: "3 * D * F + 2 * D"
+    flops_forward: "6 * B * T * D * F"
+  - id: moe
+    meaning: "a mixture of X SwiGLU experts with a linear router; each token runs through the U experts of largest probability, weighted by it"
+    eq: [moe, aux]
+    inputs: {r: "(B, T, D)"}
+    outputs: {r: "(B, T, D)"}
+    internals: {probs: "(B * T, X)", top: "(B * T, U)"}
+    params: "D * X + 3 * X * D * F + 2 * D"
+    flops_forward: "2 * B * T * (D * X + 3 * U * D * F)"
+  - id: head
+    meaning: "the final RMSNorm and the output layer, not tied to the embedding"
+    inputs: {r: "(B, T, D)"}
+    outputs: {logits: "(B, T, V)"}
+    params: "D + D * V"
+    flops_forward: "2 * B * T * D * V"
+model:
+  params: {formula: "embed.params + n_blocks * (attn.params + (block_len - 1) * mamba.params + (block_len - n_moe) * mlp.params + n_moe * moe.params) + head.params", symbol: "P", meaning: "all the parameters, the paper's total available parameters"}
+  active_params: {formula: "V * D + n_blocks * (attn.params + (block_len - 1) * mamba.params + (block_len - n_moe) * mlp.params + n_moe * (D * X + 3 * U * D * F + 2 * D)) + D + D * V", symbol: "P_a", meaning: "the parameters that one token uses, U experts of X in each mixture, the paper's active parameters"}
+  flops_forward: {formula: "embed.flops_forward + n_blocks * (attn.flops_forward + (block_len - 1) * mamba.flops_forward + (block_len - n_moe) * mlp.flops_forward + n_moe * moe.flops_forward) + head.flops_forward", symbol: "C", meaning: "FLOPs of the products of one forward pass over B sequences of T tokens, a multiply-add counted as 2"}
+  kv_cache: {formula: "2 * B * T * n_blocks * G * A", meaning: "the keys and values that generation keeps after T tokens, one attention layer per block"}
+  recurrent_state: {formula: "B * n_blocks * (block_len - 1) * I * (W - 1 + N)", meaning: "the convolution windows and SSM states of the Mamba layers, the same at every length"}
+  sources:
+    - {work: lieber-2024-jamba, locator: "pp. 3 to 5", note: "Section 2 and Figure 1, the Jamba block, its layers and its degrees of freedom l, a : m, e, n and K; Section 3.1, the released configuration"}
+    - {work: ai21labs-2024-jamba-v0-1-config, locator: "p. 1", note: "the sizes of the released model and the period and offset of its attention and expert layers"}
+configs:
+  jamba_v0_1: {meaning: "Jamba-v0.1, the released model: 4 blocks of 8 layers, a : m = 1 : 7, MoE every second layer with 16 experts and the top 2", B: 1, T: 262144, vocab: 65536, head_dim: 128, n_kv: 8, q_per_kv: 4, quarter: 2, moe_every: 2, n_blocks: 4, n_experts: 16, top_k: 2, d_ff: 14336, expand: 2, d_state: 16, d_conv: 4, dt_rank: 256, source: {work: ai21labs-2024-jamba-v0-1-config, locator: "p. 1", note: "hidden_size 4096, 32 heads, 8 key-value heads, intermediate_size 14336, 32 layers, attention period 8 and offset 4, expert period 2 and offset 1, the Mamba sizes and the vocabulary of 65,536; the context of 256K tokens is the paper's"}}
