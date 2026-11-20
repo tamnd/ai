@@ -15,7 +15,8 @@ import pytest  # noqa: E402
 
 from linear_attention import causal_chunked, causal_quadratic, causal_scan, elu_plus_one, forward, loss  # noqa: E402
 
-FIX = pathlib.Path(__file__).resolve().parents[2] / "fixtures"
+HERE = pathlib.Path(__file__).resolve().parent
+FIX = next(p for p in (HERE / "fixtures", HERE.parents[1] / "fixtures") if p.is_dir())
 
 
 def fixture():

@@ -79,6 +79,12 @@ class LinearAttention(nn.Module):
     """h heads of attention between the projections W_q, W_k, W_v and W_o; kind is "linear" (elu + 1) or
     "softmax", so the same module serves both sides of the comparison."""
 
+    # The weights are registered by name in __init__; the annotations tell the type checker they are tensors.
+    W_q: torch.Tensor
+    W_k: torch.Tensor
+    W_v: torch.Tensor
+    W_o: torch.Tensor
+
     def __init__(self, d_model=8, n_heads=2, causal=True, kind="linear", impl="algorithm1"):
         super().__init__()
         self.h, self.causal, self.kind, self.impl = n_heads, causal, kind, impl
@@ -143,6 +149,7 @@ class TinyLM(nn.Module):
     def forward(self, x):
         h = self.tok(x) + self.pos(torch.arange(x.shape[1], device=x.device))
         for b in self.blocks:
+            assert isinstance(b, nn.ModuleDict)
             h = h + b["att"](b["ln1"](h))
             h = h + b["ff"](b["ln2"](h))
         return self.out(self.ln(h))

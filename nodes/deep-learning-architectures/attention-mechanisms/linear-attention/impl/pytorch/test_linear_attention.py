@@ -12,7 +12,8 @@ import torch
 
 import linear_attention as M
 
-FIX = pathlib.Path(__file__).resolve().parents[2] / "fixtures"
+HERE = pathlib.Path(__file__).resolve().parent
+FIX = next(p for p in (HERE / "fixtures", HERE.parents[1] / "fixtures") if p.is_dir())
 
 
 def fixture():
@@ -33,8 +34,8 @@ def test_fixture(causal):
     assert np.isclose(loss.item(), exp["loss_" + tag], atol=1e-12)
     loss.backward()
     for k, t in model.named_parameters():
-        assert np.allclose(t.grad.numpy(), exp[f"d{k}_{tag}"], atol=1e-12), k
-    assert np.allclose(x.grad.numpy(), exp["dx_" + tag], atol=1e-12)
+        assert t.grad is not None and np.allclose(t.grad.numpy(), exp[f"d{k}_{tag}"], atol=1e-12), k
+    assert x.grad is not None and np.allclose(x.grad.numpy(), exp["dx_" + tag], atol=1e-12)
     soft = M.LinearAttention.from_params(params, kind="softmax")
     assert np.allclose(soft(inp["x"]).detach().numpy(), exp["out_softmax_causal"], atol=1e-12)
 
@@ -51,7 +52,7 @@ def test_algorithm_1_gradient():
         args = [t.clone().requires_grad_(True) for t in (fQ, fK, V)]
         (f(*args) * G).sum().backward()
         grads.append([a.grad for a in args])
-    for a, b in zip(*grads):
+    for a, b in zip(*grads, strict=True):
         assert torch.allclose(a, b, atol=1e-12)
     small = [t[:1, :1, :5].clone().requires_grad_(True) for t in (fQ, fK, V)]
     assert torch.autograd.gradcheck(M.CausalProduct.apply, small)

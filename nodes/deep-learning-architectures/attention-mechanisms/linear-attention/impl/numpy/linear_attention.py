@@ -68,7 +68,12 @@ def dpfp(x, nu=1):
     return np.concatenate([r] * nu, -1) * rolled
 
 
-FEATURES = {"elu": (elu_plus_one, elu_plus_one_grad), "relu": (relu, relu_grad), "poly2": (poly2, None), "dpfp": (dpfp, None)}
+FEATURES = {
+    "elu": (elu_plus_one, elu_plus_one_grad),
+    "relu": (relu, relu_grad),
+    "poly2": (poly2, None),
+    "dpfp": (dpfp, None),
+}
 
 
 # Single-head attention.

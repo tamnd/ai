@@ -11,7 +11,8 @@ import pytest
 
 import linear_attention as L
 
-FIX = pathlib.Path(__file__).resolve().parents[2] / "fixtures"
+HERE = pathlib.Path(__file__).resolve().parent
+FIX = next(p for p in (HERE / "fixtures", HERE.parents[1] / "fixtures") if p.is_dir())
 
 
 def qkv(seed=0, B=2, N=7, D=3, M=4):
@@ -62,7 +63,7 @@ def test_polynomial_feature_map_is_exact():
     """phi(q) . phi(k) = (q . k + c)^2 for the map of size 1 + D + D^2, so degree-2 polynomial attention is linear."""
     Q, K, V, _ = qkv(2)
     for c in (1.0, 0.5):
-        f = lambda x: L.poly2(x, c)  # noqa: E731
+        f = lambda x, c=c: L.poly2(x, c)  # noqa: E731
         assert np.allclose(f(Q) @ np.swapaxes(f(K), -1, -2), (Q @ np.swapaxes(K, -1, -2) + c) ** 2)
     assert L.poly2(Q).shape[-1] == 1 + 3 + 9
     poly = lambda Q, K: (Q @ np.swapaxes(K, -1, -2) + 1) ** 2  # noqa: E731
