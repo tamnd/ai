@@ -1,0 +1,341 @@
+# The claims of the fine-tuning page (spec 07). The build computes the labels.
+
+# Setting
+
+- id: c-be-all
+  type: attributive
+  text: "For fine-tuning, the BERT model is first initialized with the pre-trained parameters and all of the parameters are fine-tuned using labeled data from the downstream task, so each downstream task has a separate fine-tuned model."
+  evidence:
+    - {work: "devlin-2019-bert", role: original, locator: "p. 3", stance: for}
+
+- id: c-ku-defs
+  type: attributive
+  text: "Two popular methods for transferring a pretrained model to a downstream task are full fine-tuning, which updates all the model parameters, and linear probing, which updates only the last linear layer, the head."
+  evidence:
+    - {work: "kumar-2022-fine-tuning-distorts-features", role: original, locator: "p. 1", stance: for}
+
+- id: c-gp-head
+  type: attributive
+  text: "In GPT, the inputs are passed through the pre-trained model to obtain the final transformer block's activation, which is fed into an added linear output layer with parameters W_y to predict the label."
+  evidence:
+    - {work: "radford-2018-improving-language-understanding", role: original, locator: "p. 3", stance: for}
+
+- id: c-be-cls
+  type: attributive
+  text: "In BERT, the [CLS] representation is fed into an output layer for classification, such as entailment or sentiment analysis."
+  evidence:
+    - {work: "devlin-2019-bert", role: original, locator: "p. 5", stance: for}
+
+- id: c-be-cheap
+  type: attributive
+  text: "Compared to pre-training, fine-tuning BERT is relatively inexpensive: all of the paper's results can be replicated in at most 1 hour on a single Cloud TPU, or a few hours on a GPU, starting from the same pre-trained model."
+  evidence:
+    - {work: "devlin-2019-bert", role: original, locator: "p. 5", stance: for}
+
+- id: c-yo-general
+  type: attributive
+  text: "Networks trained on natural images learn first-layer features similar to Gabor filters and color blobs, which appear general rather than specific to a dataset or task, and features must eventually transition from general to specific by the last layer."
+  evidence:
+    - {work: "yosinski-2014-transferable-features", role: original, locator: "p. 1", stance: for}
+
+- id: c-yo-frozen
+  type: attributive
+  text: "If the target dataset is small and the number of parameters is large, fine-tuning may result in overfitting, so the features are often left frozen; if the target dataset is large or the number of parameters small, the base features can be fine-tuned to improve performance."
+  evidence:
+    - {work: "yosinski-2014-transferable-features", role: original, locator: "p. 2", stance: for}
+
+- id: c-yo-issues
+  type: attributive
+  text: "Transferring features is negatively affected by the specialization of higher layer neurons to their original task and by optimization difficulties related to splitting networks between co-adapted neurons."
+  evidence:
+    - {work: "yosinski-2014-transferable-features", role: original, locator: "p. 1", stance: for}
+
+- id: c-yo-distant
+  type: attributive
+  text: "The transferability of features decreases as the distance between the base task and target task increases, but transferring features even from distant tasks can be better than using random features."
+  evidence:
+    - {work: "yosinski-2014-transferable-features", role: original, locator: "p. 1", stance: for}
+
+- id: c-yo-boost
+  type: attributive
+  text: "Initializing a network with transferred features from almost any number of layers can produce a boost to generalization that lingers even after fine-tuning to the target dataset."
+  evidence:
+    - {work: "yosinski-2014-transferable-features", role: original, locator: "p. 1", stance: for}
+
+# ULMFiT
+
+- id: c-ul-problem
+  type: attributive
+  text: "Before ULMFiT, language models overfit to small datasets and suffered catastrophic forgetting when fine-tuned with a classifier."
+  evidence:
+    - {work: "howard-2018-ulmfit", role: original, locator: "p. 1", stance: for}
+
+- id: c-ul-dai
+  type: attributive
+  text: "Dai and Le also fine-tune a language model, but overfit with 10k labeled examples and require millions of in-domain documents for good performance."
+  evidence:
+    - {work: "howard-2018-ulmfit", role: original, locator: "p. 2", stance: for}
+
+- id: c-ul-stages
+  type: attributive
+  text: "ULMFiT has three stages: general-domain language model pretraining, target task language model fine-tuning, and target task classifier fine-tuning."
+  evidence:
+    - {work: "howard-2018-ulmfit", role: original, locator: "p. 3", stance: for}
+
+- id: c-ul-wiki
+  type: attributive
+  text: "ULMFiT pretrains its language model on Wikitext-103, consisting of 28,595 preprocessed Wikipedia articles and 103 million words."
+  evidence:
+    - {work: "howard-2018-ulmfit", role: original, locator: "p. 3", stance: for}
+
+- id: c-ul-discr
+  type: attributive
+  text: "Howard and Ruder found it to work well to first choose the learning rate η^L of the last layer by fine-tuning only the last layer and using η^{l−1} = η^l/2.6 as the learning rate for lower layers."
+  evidence:
+    - {work: "howard-2018-ulmfit", role: original, locator: "p. 4", stance: for}
+
+- id: c-ul-stlr
+  type: attributive
+  text: "Slanted triangular learning rates generally use cut_frac = 0.1, ratio = 32 and η_max = 0.01, modifying triangular learning rates with a short increase and a long decay period."
+  evidence:
+    - {work: "howard-2018-ulmfit", role: original, locator: "p. 4", stance: for}
+
+- id: c-ul-aggr
+  type: attributive
+  text: "Fine-tuning the target classifier is the most critical part: overly aggressive fine-tuning causes catastrophic forgetting, eliminating the benefit of language modeling, while too cautious fine-tuning leads to slow convergence and resultant overfitting."
+  evidence:
+    - {work: "howard-2018-ulmfit", role: original, locator: "p. 5", stance: for}
+
+- id: c-ul-unfreeze
+  type: attributive
+  text: "Gradual unfreezing first unfreezes the last layer, which contains the least general knowledge, and fine-tunes all unfrozen layers for one epoch, then unfreezes the next lower frozen layer and repeats."
+  evidence:
+    - {work: "howard-2018-ulmfit", role: original, locator: "p. 5", stance: for}
+
+- id: c-ul-error
+  type: attributive
+  text: "On six text classification datasets, ULMFiT reduces the error of previous methods by 18-24% on the majority of datasets."
+  evidence:
+    - {work: "howard-2018-ulmfit", role: original, locator: "p. 2", stance: for}
+
+- id: c-ul-imdb
+  type: attributive
+  text: "On IMDb, with 100 labeled examples, ULMFiT matches the performance of training from scratch with 10× and, given 50k unlabeled examples, with 100× more data."
+  evidence:
+    - {work: "howard-2018-ulmfit", role: original, locator: "p. 2", stance: for}
+
+- id: c-ft-stlr
+  type: mathematical
+  text: "With cut = ⌊T·cut_frac⌋, the slanted triangular rate η_max(1 + p(ratio − 1))/ratio, with p = t/cut while t < cut and p = 1 − (t − cut)/(cut(1/cut_frac − 1)) after, runs from η_max/ratio at t = 0 up to η_max at t = cut and back to η_max/ratio at t = T when T is a multiple of 1/cut_frac."
+  assumes: ["0 < cut_frac < 1, ratio ≥ 1 and cut ≥ 1"]
+  derivation: fine-tuning-arithmetic
+
+- id: c-ft-discr
+  type: mathematical
+  text: "With rates divided by 2.6 per layer going down, the bottom of L layers trains at η^L/2.6^{L−1}: about 17.6 times slower than the top for L = 4 and about 46 times slower for L = 5."
+  assumes: ["the top layer has rate η^L and each lower layer the rate of the layer above divided by 2.6"]
+  derivation: fine-tuning-arithmetic
+
+# Feature distortion
+
+- id: c-ku-tradeoff
+  type: attributive
+  text: "On 10 distribution shift datasets, fine-tuning obtains on average 2% higher accuracy ID but 7% lower accuracy OOD than linear probing."
+  evidence:
+    - {work: "kumar-2022-fine-tuning-distorts-features", role: original, locator: "p. 1", stance: for}
+
+- id: c-ku-prove
+  type: attributive
+  text: "Kumar et al. prove that the OOD error of fine-tuning is high when initializing with a fixed or random head, because while fine-tuning learns the head, the lower layers of the network change simultaneously and distort the pretrained features."
+  evidence:
+    - {work: "kumar-2022-fine-tuning-distorts-features", role: original, locator: "p. 1", stance: for}
+
+- id: c-ku-dir
+  type: attributive
+  text: "Fine-tuning updates the pretrained feature extractor B0 along the ID direction but not the perpendicular direction, which Kumar et al. call feature distortion."
+  evidence:
+    - {work: "kumar-2022-fine-tuning-distorts-features", role: original, locator: "p. 6", stance: for}
+
+- id: c-ku-lpft
+  type: attributive
+  text: "Linear probing then full fine-tuning (LP-FT) outperforms both fine-tuning and linear probing on the 10 datasets, 1% better ID and 10% better OOD than full fine-tuning."
+  evidence:
+    - {work: "kumar-2022-fine-tuning-distorts-features", role: original, locator: "p. 1", stance: for}
+
+- id: c-ku-stl
+  type: attributive
+  text: "An ImageNet pretrained ResNet-50 fine-tuned on CIFAR-10 gets 98% accuracy on CIFAR-10 (ID) but 82% on STL (OOD)."
+  evidence:
+    - {work: "kumar-2022-fine-tuning-distorts-features", role: original, locator: "p. 1", stance: for}
+
+- id: c-ku-change
+  type: attributive
+  text: "LP-FT changes both ID and OOD features 10× to 100× less than fine-tuning does."
+  evidence:
+    - {work: "kumar-2022-fine-tuning-distorts-features", role: original, locator: "p. 3", stance: for}
+
+- id: c-ft-rowspace
+  type: mathematical
+  text: "For the two-layer linear network f(x) = vᵀBx and squared loss on inputs X, ∇_B L = v rᵀX/n with r the residuals, so every update to B lies in the row space of X and Bu stays at B₀u for every u orthogonal to the training inputs."
+  assumes: ["the loss is the mean squared error of vᵀBx on the rows of X and B is trained by gradient descent"]
+  derivation: fine-tuning-arithmetic
+
+- id: c-ft-lpfixed
+  type: mathematical
+  text: "If the linear probe fits the training data exactly, the residuals are zero, both gradients vanish, and fine-tuning started from the probed head leaves B and v unchanged."
+  assumes: ["the probed head attains zero training loss with B = B₀"]
+  derivation: fine-tuning-arithmetic
+
+- id: c-ft-balance
+  type: mathematical
+  text: "Under gradient flow on vᵀBx with squared loss, d(BBᵀ)/dt = d(vvᵀ)/dt, so BBᵀ − vvᵀ is conserved from its value at initialization."
+  assumes: ["continuous-time gradient flow on both v and B"]
+  derivation: fine-tuning-arithmetic
+
+- id: c-ft-golden
+  type: mathematical
+  text: "With B₀ = (1, 1), one input x = (1, 0) labelled 1 and the head started at 0, the second entry of B never moves, the conserved quantity gives b² − v² = 1 for the first entry b, and a zero-loss fit gives vb = 1, so b² = φ, the golden ratio: v = 1/√φ ≈ 0.786, and the prediction on x' = (0, 1), whose true label under the pretrained features is 1, is 0.786, while the linear probe predicts 1 exactly."
+  assumes: ["gradient flow converges to a zero-loss point and the true function is vᵀB₀x with v = 1"]
+  derivation: fine-tuning-arithmetic
+
+# Stability
+
+- id: c-mo-var
+  type: attributive
+  text: "Fine-tuning is an unstable process: training the same model with multiple random seeds can result in a large variance of the task performance."
+  evidence:
+    - {work: "mosbach-2021-stability-fine-tuning-bert", role: original, locator: "p. 1", stance: for}
+
+- id: c-mo-cause
+  type: attributive
+  text: "Mosbach et al. find that neither catastrophic forgetting nor small dataset size explains the fine-tuning instability, which is caused by optimization difficulties that lead to vanishing gradients."
+  evidence:
+    - {work: "mosbach-2021-stability-fine-tuning-bert", role: original, locator: "p. 1", stance: for}
+
+- id: c-mo-two
+  type: attributive
+  text: "Fine-tuning instability decomposes into optimization difficulties early in training, characterized by vanishing gradients, and differences in generalization late in training, a large variance of development set accuracy for runs with almost equivalent training loss."
+  evidence:
+    - {work: "mosbach-2021-stability-fine-tuning-bert", role: original, locator: "p. 2", stance: for}
+
+- id: c-mo-setup
+  type: attributive
+  text: "The setup Mosbach et al. reproduce uses dropout with probability 0.1, weight decay 0.01, 3 epochs, and, following Devlin et al., the AdamW optimizer without bias correction."
+  evidence:
+    - {work: "mosbach-2021-stability-fine-tuning-bert", role: original, locator: "p. 3", stance: for}
+
+- id: c-mo-bc
+  type: attributive
+  text: "Bias correction reduces the original step size by a multiplicative factor √(1 − β2^t)/(1 − β1^t), which is significantly below 1 for the first iterations of training and approaches 1 as t increases."
+  evidence:
+    - {work: "mosbach-2021-stability-fine-tuning-bert", role: original, locator: "p. 7", stance: for}
+
+- id: c-mo-over
+  type: attributive
+  text: "Across 450 BERT models fine-tuned on RTE, Mosbach et al. find that despite close to zero training loss, overfitting is not an issue during fine-tuning."
+  evidence:
+    - {work: "mosbach-2021-stability-fine-tuning-bert", role: original, locator: "p. 8", stance: for}
+
+- id: c-mo-guide
+  type: attributive
+  text: "Mosbach et al. recommend small learning rates with bias correction to avoid vanishing gradients early in training, and increasing the number of iterations considerably to train to almost zero training loss."
+  evidence:
+    - {work: "mosbach-2021-stability-fine-tuning-bert", role: original, locator: "p. 8", stance: for}
+
+- id: c-mo-base
+  type: attributive
+  text: "Their baseline fine-tunes BERT using Adam with bias correction and a learning rate of 2e−5 for 20 epochs, the learning rate linearly increased for the first 10% of steps and linearly decayed to zero afterward."
+  evidence:
+    - {work: "mosbach-2021-stability-fine-tuning-bert", role: original, locator: "p. 8", stance: for}
+
+- id: c-zh-bertadam
+  type: attributive
+  text: "BERTAdam differs from the original Adam algorithm in omitting a bias correction step; the change was introduced by Devlin et al. and made its way into common open source libraries, including the official implementation and huggingface's Transformers."
+  evidence:
+    - {work: "zhang-2021-revisiting-few-sample-bert", role: original, locator: "p. 3", stance: for}
+
+- id: c-zh-reinit
+  type: attributive
+  text: "Zhang et al. re-initialize the pooler layers and the top L BERT Transformer blocks using the original BERT initialization, N(0, 0.02²), and find that Re-init leads to faster convergence."
+  evidence:
+    - {work: "zhang-2021-revisiting-few-sample-bert", role: original, locator: "p. 6", stance: for}
+
+- id: c-zh-diminish
+  type: attributive
+  text: "With the modified fine-tuning process, the impact of previously proposed methods for few-sample fine-tuning of BERT diminishes significantly."
+  evidence:
+    - {work: "zhang-2021-revisiting-few-sample-bert", role: original, locator: "p. 1", stance: for}
+
+- id: c-do-seeds
+  type: attributive
+  text: "Even with the same hyperparameter values, distinct random seeds can lead to substantially different fine-tuning results."
+  evidence:
+    - {work: "dodge-2020-fine-tuning-seeds-early-stopping", role: original, locator: "p. 1", stance: for}
+
+- id: c-do-wido
+  type: attributive
+  text: "Weight initialization and training data order contribute comparably to the variance of out-of-sample performance, and some weight initializations perform well across all tasks explored."
+  evidence:
+    - {work: "dodge-2020-fine-tuning-seeds-early-stopping", role: original, locator: "p. 1", stance: for}
+
+- id: c-do-early
+  type: attributive
+  text: "Worse performing fine-tuning runs can often be distinguished from better ones early in training, and a simple early stopping algorithm reduces the computational resources needed."
+  evidence:
+    - {work: "dodge-2020-fine-tuning-seeds-early-stopping", role: original, locator: "p. 2", stance: for}
+
+- id: c-be-hp
+  type: attributive
+  text: "BERT's fine-tuning search uses learning rates (Adam) of 5e-5, 3e-5 and 2e-5 and 2, 3 or 4 epochs, and large data sets (e.g., 100k+ labeled training examples) were far less sensitive to hyperparameter choice than small data sets."
+  evidence:
+    - {work: "devlin-2019-bert", role: original, locator: "p. 14", stance: for}
+
+- id: c-be-drop
+  type: attributive
+  text: "For BERT fine-tuning, the dropout probability was always kept at 0.1."
+  evidence:
+    - {work: "devlin-2019-bert", role: original, locator: "p. 13", stance: for}
+
+- id: c-ft-bc
+  type: mathematical
+  text: "Without bias correction, Adam's step is (1 − β1^t)/√(1 − β2^t) times the corrected one; with β1 = 0.9 and β2 = 0.999 this is √10 ≈ 3.16 at t = 1, peaks near 6.57 at t = 12, is still about 3.24 at t = 100 and 1.26 at t = 1000, and tends to 1."
+  assumes: ["the gradients are constant, so the moment estimates are their geometric sums"]
+  derivation: fine-tuning-arithmetic
+
+- id: c-ft-warmup
+  type: mathematical
+  text: "With linear warmup over the first fraction w of T steps and linear decay to 0, the peak rate is reached at step wT and the average rate over the run is half the peak."
+  assumes: ["0 < w < 1 and the schedule is evaluated in continuous time"]
+  derivation: fine-tuning-arithmetic
+
+# Forgetting
+
+- id: c-ew-idea
+  type: attributive
+  text: "Elastic weight consolidation remembers old tasks by selectively slowing down learning on the weights important for those tasks."
+  evidence:
+    - {work: "kirkpatrick-2017-elastic-weight-consolidation", role: original, locator: "p. 1", stance: for}
+
+- id: c-ew-loss
+  type: attributive
+  text: "EWC minimizes L(θ) = L_B(θ) + Σ_i (λ/2) F_i(θ_i − θ*_A,i)², where L_B is the loss for task B only, F is the Fisher information and λ sets how important the old task is compared to the new one."
+  evidence:
+    - {work: "kirkpatrick-2017-elastic-weight-consolidation", role: original, locator: "p. 3", stance: for}
+
+- id: c-ew-post
+  type: attributive
+  text: "EWC approximates the posterior as a Gaussian distribution with mean given by the parameters θ*_A and a diagonal precision given by the diagonal of the Fisher information matrix."
+  evidence:
+    - {work: "kirkpatrick-2017-elastic-weight-consolidation", role: original, locator: "p. 3", stance: for}
+
+- id: c-gp-aux
+  type: attributive
+  text: "Including language modeling as an auxiliary objective to the fine-tuning helped learning by improving generalization of the supervised model and accelerating convergence."
+  evidence:
+    - {work: "radford-2018-improving-language-understanding", role: original, locator: "p. 3", stance: for}
+
+- id: c-ft-ewc
+  type: mathematical
+  text: "For one parameter with quadratic task loss (a/2)(θ − b)² and EWC penalty (λF/2)(θ − θ_old)², the minimum is θ = (ab + λFθ_old)/(a + λF): a precision-weighted average that tends to b as λF → 0 and to θ_old as λF → ∞."
+  assumes: ["a > 0 and λF ≥ 0"]
+  derivation: fine-tuning-arithmetic
