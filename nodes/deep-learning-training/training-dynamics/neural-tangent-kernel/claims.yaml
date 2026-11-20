@@ -164,6 +164,29 @@
   evidence:
     - {work: "chizat-2019-lazy-training", role: original, locator: "p. 9", stance: for}
 
+- id: c-yang-dichotomy
+  type: attributive
+  text: "Yang and Hu prove that any nontrivial stable abc-parametrization yields an infinite-width limit that either allows the embedding to evolve nontrivially or is described by kernel gradient descent in function space, but not both."
+  evidence:
+    - {work: "yang-2020-feature-learning-infinite-width-networks", role: original, locator: "p. 2", stance: for}
+
+- id: c-yang-ntk-no-features
+  type: attributive
+  text: "Yang and Hu show that the standard and NTK parametrizations do not admit infinite-width limits that can learn features, which they call crucial for pretraining and transfer learning."
+  evidence:
+    - {work: "yang-2020-feature-learning-infinite-width-networks", role: original, locator: "p. 1", stance: for}
+
+- id: c-yang-word2vec
+  type: empirical
+  text: "In the NTK limit the last-layer features learned in pretraining are essentially those of the random initialization, which Yang and Hu verify on Word2Vec, where NTK embeddings of US cities and states are essentially random."
+  scope:
+    models: "MLPs in the NTK limit, at width 64 and in the infinite-width feature-learning limit"
+    data: ["Word2Vec embeddings of top US cities and states"]
+    scale: "unknown"
+    setting: "PCA of learned word embeddings"
+  evidence:
+    - {work: "yang-2020-feature-learning-infinite-width-networks", role: original, locator: "p. 1", stance: for}
+
 - id: c-arora-algorithm
   type: attributive
   text: "Arora et al. gave the first efficient exact algorithm for the convolutional NTK and the first non-asymptotic proof that a fully-trained sufficiently wide net is equivalent to kernel regression with the NTK."
