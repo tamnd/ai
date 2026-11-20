@@ -1,0 +1,225 @@
+{
+  "note": "Written by aik shapes sample -w from shapes.yaml; do not edit. The tests of each implementation check shapes, param_count and flops against these values (spec 08.6, rule X09).",
+  "configs": [
+    {
+      "name": "example",
+      "kind": "example",
+      "config": {
+        "B": 4,
+        "D": 3,
+        "H": 5,
+        "L": 3,
+        "d_data": 3,
+        "d_hidden": 5,
+        "n_layers": 3
+      },
+      "blocks": {
+        "coupling_hidden": {
+          "params": 60,
+          "flops_forward": 360,
+          "inputs": {
+            "x": [
+              4,
+              3
+            ]
+          },
+          "outputs": {
+            "h": [
+              4,
+              5
+            ]
+          }
+        },
+        "coupling_scale_shift": {
+          "params": 108,
+          "flops_forward": 720,
+          "inputs": {
+            "h": [
+              4,
+              5
+            ]
+          },
+          "outputs": {
+            "s": [
+              4,
+              3
+            ],
+            "t": [
+              4,
+              3
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 1080,
+        "params": 168
+      }
+    },
+    {
+      "name": "sample-1",
+      "kind": "sample",
+      "config": {
+        "B": 5,
+        "D": 4,
+        "H": 7,
+        "L": 1,
+        "d_data": 4,
+        "d_hidden": 7,
+        "n_layers": 1
+      },
+      "blocks": {
+        "coupling_hidden": {
+          "params": 35,
+          "flops_forward": 280,
+          "inputs": {
+            "x": [
+              5,
+              4
+            ]
+          },
+          "outputs": {
+            "h": [
+              5,
+              7
+            ]
+          }
+        },
+        "coupling_scale_shift": {
+          "params": 64,
+          "flops_forward": 560,
+          "inputs": {
+            "h": [
+              5,
+              7
+            ]
+          },
+          "outputs": {
+            "s": [
+              5,
+              4
+            ],
+            "t": [
+              5,
+              4
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 840,
+        "params": 99
+      }
+    },
+    {
+      "name": "sample-2",
+      "kind": "sample",
+      "config": {
+        "B": 5,
+        "D": 6,
+        "H": 1,
+        "L": 1,
+        "d_data": 6,
+        "d_hidden": 1,
+        "n_layers": 1
+      },
+      "blocks": {
+        "coupling_hidden": {
+          "params": 7,
+          "flops_forward": 60,
+          "inputs": {
+            "x": [
+              5,
+              6
+            ]
+          },
+          "outputs": {
+            "h": [
+              5,
+              1
+            ]
+          }
+        },
+        "coupling_scale_shift": {
+          "params": 24,
+          "flops_forward": 120,
+          "inputs": {
+            "h": [
+              5,
+              1
+            ]
+          },
+          "outputs": {
+            "s": [
+              5,
+              6
+            ],
+            "t": [
+              5,
+              6
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 180,
+        "params": 31
+      }
+    },
+    {
+      "name": "banana",
+      "kind": "named",
+      "config": {
+        "B": 256,
+        "D": 2,
+        "H": 32,
+        "L": 4,
+        "d_data": 2,
+        "d_hidden": 32,
+        "n_layers": 4
+      },
+      "blocks": {
+        "coupling_hidden": {
+          "params": 384,
+          "flops_forward": 131072,
+          "inputs": {
+            "x": [
+              256,
+              2
+            ]
+          },
+          "outputs": {
+            "h": [
+              256,
+              32
+            ]
+          }
+        },
+        "coupling_scale_shift": {
+          "params": 528,
+          "flops_forward": 262144,
+          "inputs": {
+            "h": [
+              256,
+              32
+            ]
+          },
+          "outputs": {
+            "s": [
+              256,
+              2
+            ],
+            "t": [
+              256,
+              2
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 393216,
+        "params": 912
+      }
+    }
+  ]
+}
