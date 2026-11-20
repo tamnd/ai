@@ -1,0 +1,470 @@
+# The claims of the decoder-only Transformer page (spec 07). The build computes the labels.
+- id: c-gpt1-abstract
+  type: empirical
+  text: "Generative pre-training of a language model on a diverse corpus of unlabeled text, followed by discriminative fine-tuning on each specific task, improves upon the state of the art in 9 out of the 12 tasks studied, with absolute improvements of 8.9% on commonsense reasoning (Stories Cloze Test), 5.7% on question answering (RACE), and 1.5% on textual entailment (MultiNLI)."
+  scope:
+    models: "GPT, a 12-layer decoder-only Transformer"
+    data: ["BooksCorpus", "Story Cloze", "RACE", "MultiNLI"]
+    setting: "pre-training on BooksCorpus, then fine-tuning on each task"
+  evidence:
+    - {work: "radford-2018-improving-language-understanding", role: original, locator: "p. 1", stance: for}
+
+- id: c-gpt1-objective
+  type: definitional
+  text: "Given an unsupervised corpus of tokens U = {u_1, ..., u_n}, Radford et al. use a standard language modeling objective to maximize the likelihood L_1(U) = sum_i log P(u_i | u_{i-k}, ..., u_{i-1}; Theta), where k is the size of the context window and the conditional probability P is modeled using a neural network with parameters Theta."
+  evidence:
+    - {work: "radford-2018-improving-language-understanding", role: original, locator: "p. 3", stance: for}
+
+- id: c-gpt1-decoder
+  type: definitional
+  text: "They use a multi-layer Transformer decoder for the language model, which applies a multi-headed self-attention operation over the input context tokens followed by position-wise feedforward layers to produce an output distribution over target tokens: h_0 = U W_e + W_p, h_l = transformer_block(h_{l-1}), P(u) = softmax(h_n W_e^T), where W_e is the token embedding matrix and W_p is the position embedding matrix."
+  evidence:
+    - {work: "radford-2018-improving-language-understanding", role: original, locator: "p. 3", stance: for}
+
+- id: c-gpt1-aux
+  type: definitional
+  text: "During fine-tuning they include language modeling as an auxiliary objective, optimizing L_3(C) = L_2(C) + lambda * L_1(C), which helped learning by improving generalization of the supervised model and accelerating convergence."
+  evidence:
+    - {work: "radford-2018-improving-language-understanding", role: original, locator: "p. 3", stance: for}
+
+- id: c-gpt1-books
+  type: definitional
+  text: "The language model is trained on the BooksCorpus dataset, which contains over 7,000 unique unpublished books from a variety of genres; crucially, it contains long stretches of contiguous text, which allows the generative model to learn to condition on long-range information."
+  evidence:
+    - {work: "radford-2018-improving-language-understanding", role: original, locator: "p. 4", stance: for}
+
+- id: c-gpt1-spec
+  type: definitional
+  text: "The model is a 12-layer decoder-only transformer with masked self-attention heads (768 dimensional states and 12 attention heads), with 3072 dimensional inner states in the position-wise feed-forward networks."
+  evidence:
+    - {work: "radford-2018-improving-language-understanding", role: original, locator: "p. 5", stance: for}
+
+- id: c-gpt1-train
+  type: definitional
+  text: "It is trained with the Adam optimization scheme with a max learning rate of 2.5e-4, increased linearly from zero over the first 2000 updates and annealed to 0 using a cosine schedule, for 100 epochs on minibatches of 64 randomly sampled, contiguous sequences of 512 tokens."
+  evidence:
+    - {work: "radford-2018-improving-language-understanding", role: original, locator: "p. 5", stance: for}
+
+- id: c-gpt1-init
+  type: attributive
+  text: "Since layernorm is used extensively throughout the model, a simple weight initialization of N(0, 0.02) was sufficient."
+  evidence:
+    - {work: "radford-2018-improving-language-understanding", role: original, locator: "p. 5", stance: for}
+
+- id: c-gpt1-details
+  type: definitional
+  text: "The model uses a bytepair encoding (BPE) vocabulary with 40,000 merges, residual, embedding and attention dropouts with a rate of 0.1, the Gaussian Error Linear Unit (GELU) as its activation function, and learned position embeddings instead of the sinusoidal version proposed in the original work."
+  evidence:
+    - {work: "radford-2018-improving-language-understanding", role: original, locator: "p. 5", stance: for}
+
+- id: c-gpt1-ablation
+  type: empirical
+  text: "Replacing the Transformer by a single layer 2048 unit LSTM in the same framework gives a 5.6 average score drop, and the LSTM only outperforms the Transformer on one dataset, MRPC; the transformer trained directly on the supervised target tasks, without pre-training, is worse across all the tasks, a 14.8% decrease compared to the full model."
+  scope:
+    models: "GPT and a single-layer LSTM with 2048 units"
+    data: ["CoLA", "SST-2", "MRPC", "STS-B", "QQP", "MNLI", "QNLI", "RTE"]
+    setting: "fine-tuning with and without generative pre-training (Table 5)"
+  evidence:
+    - {work: "radford-2018-improving-language-understanding", role: original, locator: "p. 8", stance: for}
+
+- id: c-gpt1-zeroshot
+  type: attributive
+  text: "The performance of heuristics that use the generative model to perform tasks without supervised fine-tuning is stable and steadily increases over training, suggesting that generative pretraining supports the learning of a wide variety of task relevant functionality; the LSTM exhibits higher variance in its zero-shot performance, suggesting that the inductive bias of the Transformer architecture assists in transfer."
+  evidence:
+    - {work: "radford-2018-improving-language-understanding", role: original, locator: "p. 8", stance: for}
+
+- id: c-gpt2-factor
+  type: definitional
+  text: "Since language has a natural sequential ordering, it is common to factorize the joint probabilities over symbols as the product of conditional probabilities, p(x) = prod_i p(s_n | s_1, ..., s_{n-1}); this approach allows for tractable sampling from and estimation of p(x) as well as any conditionals."
+  evidence:
+    - {work: "radford-2019-language-models-unsupervised-multitask", role: original, locator: "p. 2", stance: for}
+
+- id: c-gpt2-abstract
+  type: empirical
+  text: "The largest model, GPT-2, is a 1.5B parameter Transformer that achieves state of the art results on 7 out of 8 tested language modeling datasets in a zero-shot setting but still underfits WebText; increasing the capacity of the language model improves performance in a log-linear fashion across tasks."
+  scope:
+    models: "the four GPT-2 models, 117M to 1542M parameters"
+    data: ["WebText", "eight language modeling datasets"]
+    setting: "zero-shot, without any parameter or architecture modification"
+  evidence:
+    - {work: "radford-2019-language-models-unsupervised-multitask", role: original, locator: "p. 1", stance: for}
+
+- id: c-gpt2-coqa
+  type: empirical
+  text: "When conditioned on a document plus questions, the answers generated by the language model reach 55 F1 on the CoQA dataset, matching or exceeding the performance of 3 out of 4 baseline systems without using the 127,000+ training examples."
+  scope:
+    models: "GPT-2"
+    data: ["WebText", "CoQA"]
+    setting: "zero-shot reading comprehension"
+  evidence:
+    - {work: "radford-2019-language-models-unsupervised-multitask", role: original, locator: "p. 1", stance: for}
+
+- id: c-gpt2-webtext
+  type: definitional
+  text: "WebText is the text subset of the 45 million outbound links from Reddit which received at least 3 karma; after de-duplication and some heuristic based cleaning it contains slightly over 8 million documents for a total of 40 GB of text."
+  evidence:
+    - {work: "radford-2019-language-models-unsupervised-multitask", role: original, locator: "p. 3", stance: for}
+
+- id: c-gpt2-bpe
+  type: attributive
+  text: "A byte-level version of BPE only requires a base vocabulary of size 256, and since the approach can assign a probability to any Unicode string, the language models can be evaluated on any dataset regardless of pre-processing, tokenization, or vocab size."
+  evidence:
+    - {work: "radford-2019-language-models-unsupervised-multitask", role: original, locator: "p. 4", stance: for}
+
+- id: c-gpt2-model
+  type: definitional
+  text: "The model largely follows the details of the OpenAI GPT model with a few modifications: layer normalization was moved to the input of each sub-block, similar to a pre-activation residual network, and an additional layer normalization was added after the final self-attention block."
+  evidence:
+    - {work: "radford-2019-language-models-unsupervised-multitask", role: original, locator: "p. 4", stance: for}
+
+- id: c-gpt2-init
+  type: definitional
+  text: "A modified initialization accounts for the accumulation on the residual path with model depth: the weights of residual layers are scaled at initialization by a factor of 1/sqrt(N) where N is the number of residual layers."
+  evidence:
+    - {work: "radford-2019-language-models-unsupervised-multitask", role: original, locator: "p. 4", stance: for}
+
+- id: c-gpt2-vocab
+  type: definitional
+  text: "The vocabulary is expanded to 50,257, the context size is increased from 512 to 1024 tokens, and a larger batchsize of 512 is used."
+  evidence:
+    - {work: "radford-2019-language-models-unsupervised-multitask", role: original, locator: "p. 4", stance: for}
+
+- id: c-gpt2-sizes
+  type: definitional
+  text: "The four model sizes are 117M, 345M, 762M and 1542M parameters with 12, 24, 36 and 48 layers and d_model of 768, 1024, 1280 and 1600; the smallest model is equivalent to the original GPT, and the second smallest equivalent to the largest model from BERT."
+  evidence:
+    - {work: "radford-2019-language-models-unsupervised-multitask", role: original, locator: "p. 4", stance: for}
+
+- id: c-gpt2-underfit
+  type: attributive
+  text: "All models still underfit WebText and held-out perplexity has as of yet improved given more training time."
+  evidence:
+    - {work: "radford-2019-language-models-unsupervised-multitask", role: original, locator: "p. 4", stance: for}
+
+- id: c-gpt3-abstract
+  type: empirical
+  text: "GPT-3 is an autoregressive language model with 175 billion parameters, 10x more than any previous non-sparse language model; for all tasks it is applied without any gradient updates or fine-tuning, with tasks and few-shot demonstrations specified purely via text interaction with the model, and scaling up language models greatly improves task-agnostic, few-shot performance."
+  scope:
+    models: "the eight GPT-3 models, 125M to 175B parameters"
+    data: ["translation, question-answering and cloze benchmarks of the paper"]
+    setting: "zero-, one- and few-shot in-context learning without gradient updates"
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "p. 1", stance: for}
+
+- id: c-gpt3-icl
+  type: definitional
+  text: "Brown et al. call in-context learning the use of the text input of a pretrained language model as a form of task specification: the model is conditioned on a natural language instruction and/or a few demonstrations of the task and is then expected to complete further instances of the task simply by predicting what comes next."
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "p. 4", stance: for}
+
+- id: c-gpt3-arch
+  type: definitional
+  text: "GPT-3 uses the same model and architecture as GPT-2, including the modified initialization, pre-normalization, and reversible tokenization, with the exception that it uses alternating dense and locally banded sparse attention patterns in the layers of the transformer, similar to the Sparse Transformer."
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "p. 8", stance: for}
+
+- id: c-gpt3-table
+  type: definitional
+  text: "The eight models range from GPT-3 Small, with 125M parameters, 12 layers, d_model 768 and 12 heads of 64, to GPT-3 175B, with 96 layers, d_model 12288 and 96 heads of 128; the feedforward layer is always four times the size of the bottleneck layer, d_ff = 4 d_model, all models use a context window of n_ctx = 2048 tokens, and all were trained for a total of 300 billion tokens."
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "p. 8", stance: for}
+
+- id: c-gpt3-printed
+  type: definitional
+  text: "Table 2.1 lists GPT-3 XL with d_model 2048 and 24 heads of 128, and GPT-3 13B with 40 layers, d_model 5140 and 40 heads of 128."
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "p. 8", stance: for}
+
+- id: c-gpt3-batch
+  type: definitional
+  text: "The batch size runs from 0.5M tokens for the smallest models to 3.2M for GPT-3 175B, and the learning rate from 6.0 x 10^-4 down to 0.6 x 10^-4."
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "p. 8", stance: for}
+
+- id: c-gpt3-shape
+  type: attributive
+  text: "The precise architectural parameters for each model are chosen based on computational efficiency and load-balancing in the layout of models across GPUs, and previous work suggests that validation loss is not strongly sensitive to these parameters within a reasonably broad range."
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "p. 8", stance: for}
+
+- id: c-gpt3-attn-10
+  type: attributive
+  text: "To compute the total compute used to train the language models, Brown et al. ignore the attention operation as a simplifying assumption, as it typically uses less than 10% of the total compute for the models they analyze."
+  evidence:
+    - {work: "brown-2020-language-models-few-shot", role: original, locator: "p. 46", stance: for}
+
+- id: c-kaplan-shape
+  type: empirical
+  text: "Model performance depends most strongly on scale, which consists of the number of model parameters N (excluding embeddings), the size of the dataset D, and the amount of compute C used for training; within reasonable limits, performance depends very weakly on other architectural hyperparameters such as depth vs. width."
+  scope:
+    models: "decoder-only Transformers from 768 to 1.5 billion non-embedding parameters"
+    data: ["WebText2"]
+    setting: "autoregressive language modelling over a 1024-token context"
+  evidence:
+    - {work: "kaplan-2020-scaling-laws", role: original, locator: "p. 3", stance: for}
+
+- id: c-kaplan-decoder
+  type: definitional
+  text: "Kaplan et al. primarily train decoder-only Transformer models on WebText2, tokenized using byte-pair encoding with a vocabulary size n_vocab = 50257, optimizing the autoregressive log-likelihood (i.e. cross-entropy loss) averaged over a 1024-token context."
+  evidence:
+    - {work: "kaplan-2020-scaling-laws", role: original, locator: "p. 6", stance: for}
+
+- id: c-kaplan-n
+  type: definitional
+  text: "Kaplan et al. define the model size N as the number of non-embedding parameters, N = 2 d_model n_layer (2 d_attn + d_ff) = 12 n_layer d_model^2 with the standard d_attn = d_ff/4 = d_model, excluding biases and other sub-leading terms; the n_vocab d_model parameters of the embedding matrix and the n_ctx d_model of the positional embeddings are not included, which produces significantly cleaner scaling laws."
+  evidence:
+    - {work: "kaplan-2020-scaling-laws", role: original, locator: "p. 6", stance: for}
+
+- id: c-kaplan-c
+  type: definitional
+  text: "Evaluating a forward pass of the Transformer involves roughly C_forward = 2N + 2 n_layer n_ctx d_model add-multiply operations, where the factor of two comes from the multiply-accumulate operation used in matrix multiplication."
+  evidence:
+    - {work: "kaplan-2020-scaling-laws", role: original, locator: "p. 6", stance: for}
+
+- id: c-kaplan-6n
+  type: attributive
+  text: "For contexts and models with d_model > n_ctx/12 the context-dependent computational cost per token is a relatively small fraction of the total compute; accounting for the backwards pass, approximately twice the compute of the forwards pass, Kaplan et al. define the estimated non-embedding compute as C = 6N floating point operators per training token."
+  evidence:
+    - {work: "kaplan-2020-scaling-laws", role: original, locator: "p. 7", stance: for}
+
+- id: c-kaplan-aspect
+  type: empirical
+  text: "With the total number of non-embedding parameters N held fixed, the loss varies only a few percent over a wide range of shapes; aspect ratio in particular can vary by a factor of 40 while only slightly impacting performance, and an (n_layer, d_model) = (6, 4288) reaches a loss within 3% of the (48, 1600) model of GPT-2."
+  scope:
+    models: "decoder-only Transformers of 25M and 50M non-embedding parameters, and the 48-layer GPT-2"
+    data: ["WebText2"]
+    setting: "varying one shape hyperparameter at a fixed N (Figure 5)"
+  evidence:
+    - {work: "kaplan-2020-scaling-laws", role: original, locator: "p. 8", stance: for}
+
+- id: c-vaswani-mask
+  type: attributive
+  text: "Vaswani et al. modify the self-attention sub-layer in the decoder stack to prevent positions from attending to subsequent positions; this masking, combined with the fact that the output embeddings are offset by one position, ensures that the predictions for position i can depend only on the known outputs at positions less than i."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "p. 3", stance: for}
+
+- id: c-vaswani-inf
+  type: definitional
+  text: "To prevent leftward information flow in the decoder and preserve the auto-regressive property, they mask out (set to -infinity) all values in the input of the softmax of scaled dot-product attention which correspond to illegal connections."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "p. 5", stance: for}
+
+- id: c-shazeer
+  type: attributive
+  text: "Incremental inference, where parallelization across the sequence is impossible, is often slow, due to the memory-bandwidth cost of repeatedly loading the large keys and values tensors."
+  evidence:
+    - {work: "shazeer-2019-fast-transformer-decoding", role: original, locator: "p. 1", stance: for}
+
+- id: c-shazeer-ratio
+  type: attributive
+  text: "Across n incremental calls, the ratio of memory access to arithmetic operations is Theta(n/d + 1/b); when n is about d or b is about 1 the ratio is close to 1, causing memory bandwidth to be a major performance bottleneck on modern computing hardware."
+  evidence:
+    - {work: "shazeer-2019-fast-transformer-decoding", role: original, locator: "p. 4", stance: for}
+
+- id: c-mqa
+  type: definitional
+  text: "Multi-query attention is identical to multi-head attention except that the different heads share a single set of keys and values."
+  evidence:
+    - {work: "shazeer-2019-fast-transformer-decoding", role: original, locator: "p. 5", stance: for}
+
+- id: c-mqa-result
+  type: attributive
+  text: "Shazeer reports that models with multi-query attention can be much faster to decode, and incur only minor quality degradation from the baseline."
+  evidence:
+    - {work: "shazeer-2019-fast-transformer-decoding", role: original, locator: "p. 1", stance: for}
+
+- id: c-gqa
+  type: definitional
+  text: "Grouped-query attention (GQA) is a generalization of multi-query attention which uses an intermediate (more than one, less than number of query heads) number of key-value heads; Ainslie et al. also give a recipe for uptraining existing multi-head language model checkpoints into models with MQA using 5% of original pre-training compute."
+  evidence:
+    - {work: "ainslie-2023-gqa", role: original, locator: "p. 1", stance: for}
+
+- id: c-gqa-result
+  type: attributive
+  text: "Ainslie et al. report that uptrained GQA achieves quality close to multi-head attention with comparable speed to MQA."
+  evidence:
+    - {work: "ainslie-2023-gqa", role: original, locator: "p. 1", stance: for}
+
+- id: c-gqa-bottleneck
+  type: attributive
+  text: "Autoregressive decoder inference is a severe bottleneck for Transformer models due to the memory bandwidth overhead from loading decoder weights and all attention keys and values at every decoding step."
+  evidence:
+    - {work: "ainslie-2023-gqa", role: original, locator: "p. 1", stance: for}
+
+- id: c-xiong
+  type: attributive
+  text: "Xiong et al. prove with mean field theory that at initialization the expected gradients of the parameters near the output layer of the Post-LN Transformer are large, while if the layer normalization is put inside the residual blocks, the Pre-LN Transformer, the gradients are well-behaved at initialization, which motivates removing the warm-up stage for the training of Pre-LN Transformers."
+  evidence:
+    - {work: "xiong-2020-layer-normalization-transformer", role: original, locator: "p. 1", stance: for}
+
+- id: c-press
+  type: attributive
+  text: "Press and Wolf show that the topmost weight matrix of neural network language models constitutes a valid word embedding, recommend tying the input embedding and this output embedding, and report a significant reduction in perplexity on a variety of neural network language models."
+  evidence:
+    - {work: "press-2017-output-embedding", role: original, locator: "the abstract", stance: for}
+
+- id: c-gelu
+  type: definitional
+  text: "The GELU activation function is xΦ(x), where Φ(x) is the standard Gaussian cumulative distribution function."
+  evidence:
+    - {work: "hendrycks-2016-gaussian-error-linear-units", role: original, locator: "the abstract", stance: for}
+
+- id: c-llama
+  type: definitional
+  text: "LLaMA normalizes the input of each transformer sub-layer instead of the output, with the RMSNorm normalizing function, replaces the ReLU non-linearity by the SwiGLU activation function with a dimension of 2/3 4d instead of 4d, and removes the absolute positional embeddings, adding rotary positional embeddings (RoPE) at each layer of the network instead."
+  evidence:
+    - {work: "touvron-2023-llama", role: original, locator: "p. 3", stance: for}
+
+- id: c-llama-attn
+  type: attributive
+  text: "LLaMA uses an efficient implementation of the causal multi-head attention that reduces memory usage and runtime by not storing the attention weights and not computing the key/query scores that are masked due to the causal nature of the language modeling task."
+  evidence:
+    - {work: "touvron-2023-llama", role: original, locator: "p. 3", stance: for}
+
+- id: c-palm
+  type: definitional
+  text: "PaLM uses a standard Transformer model architecture in a decoder-only setup, where each timestep can only attend to itself and past timesteps, with SwiGLU activations, parallel layers, multi-query attention, RoPE embeddings and shared input-output embeddings."
+  evidence:
+    - {work: "chowdhery-2022-palm", role: original, locator: "p. 5", stance: for}
+
+- id: c-palm-parallel
+  type: empirical
+  text: "The parallel formulation y = x + MLP(LayerNorm(x)) + Attention(LayerNorm(x)) results in roughly 15% faster training speed at large scales, since the MLP and Attention input matrix multiplications can be fused; ablation experiments showed a small quality degradation at 8B scale but no quality degradation at 62B scale."
+  scope:
+    models: "PaLM 8B and 62B"
+    data: ["the PaLM pretraining dataset"]
+    setting: "ablation of parallel against serialized layers"
+  evidence:
+    - {work: "chowdhery-2022-palm", role: original, locator: "p. 5", stance: for}
+
+- id: c-palm-mqa
+  type: attributive
+  text: "Chowdhery et al. found that multi-query attention has a neutral effect on model quality and training speed but results in a significant cost savings at autoregressive decoding time, because standard multi-headed attention has low efficiency on accelerator hardware during auto-regressive decoding."
+  evidence:
+    - {work: "chowdhery-2022-palm", role: original, locator: "p. 5", stance: for}
+
+- id: c-palm-nobias
+  type: attributive
+  text: "No biases were used in any of the dense kernels or layer norms, which they found to result in increased training stability for large models."
+  evidence:
+    - {work: "chowdhery-2022-palm", role: original, locator: "p. 6", stance: for}
+
+- id: c-palm-flops
+  type: attributive
+  text: "For PaLM the number of FLOPs per token is approximately equal to the number of parameters, since these models are standard dense Transformers."
+  evidence:
+    - {work: "chowdhery-2022-palm", role: original, locator: "p. 6", stance: for}
+
+- id: c-rope
+  type: attributive
+  text: "RoPE encodes the absolute position with a rotation matrix and incorporates an explicit relative position dependency in the self-attention formulation."
+  evidence:
+    - {work: "su-2024-roformer", role: original, locator: "the abstract", stance: for}
+
+- id: c-flash
+  type: definitional
+  text: "FlashAttention is an IO-aware exact attention algorithm that uses tiling to reduce the number of memory reads/writes between GPU high bandwidth memory (HBM) and GPU on-chip SRAM."
+  evidence:
+    - {work: "dao-2022-flashattention", role: original, locator: "the abstract", stance: for}
+
+- id: c-chinchilla
+  type: attributive
+  text: "Hoffmann et al. find that for compute-optimal training the model size and the number of training tokens should be scaled equally: for every doubling of model size the number of training tokens should also be doubled."
+  evidence:
+    - {work: "hoffmann-2022-training-compute-optimal", role: original, locator: "the abstract", stance: for}
+
+- id: c-params
+  type: mathematical
+  text: "A decoder-only Transformer with a vocabulary of V tokens, a context of T tokens with learned position embeddings, L pre-norm layers of width D with an MLP of width F, a final layer normalization and an unembedding tied to the token embedding has N_total = VD + TD + L(4D^2 + 2DF + 9D + F) + 2D parameters."
+  assumes: ["affine qkv and output projections and MLP layers, each with a bias", "two layer normalizations per layer and a final one, each with a gain and a bias", "an unembedding that is the token embedding transposed, with no bias"]
+  derivation: parameter-count
+
+- id: c-params-gpt3
+  type: mathematical
+  text: "With V = 50,257, T = 2048 and F = 4D, the eight models of Table 2.1 of GPT-3 have 125,226,240, 355,871,744, 760,300,032, 1,315,723,264, 2,651,553,280, 6,658,404,352, 12,853,386,240 and 174,604,259,328 parameters, which round to the counts of Table D.1."
+  assumes: ["the count of c-params", "d_model 2048 for GPT-3 XL and 5120 for GPT-3 13B"]
+  derivation: parameter-count
+
+- id: c-params-13b
+  type: mathematical
+  text: "At the d_model of 5140 printed in Table 2.1, GPT-3 13B would have 12,952,938,780 parameters, about 100 million more than Table D.1 lists; 40 heads of 128 make 5120."
+  assumes: ["the count of c-params with V = 50,257, T = 2048, L = 40 and F = 4D"]
+  derivation: parameter-count
+
+- id: c-params-gpt2
+  type: mathematical
+  text: "With V = 50,257, T = 1024 and F = 4D, the four GPT-2 models have 124,439,808, 354,823,168, 774,030,080 and 1,557,611,200 parameters, more than the 117M, 345M, 762M and 1542M of their table."
+  assumes: ["the count of c-params", "the layers and widths of Table 2 of GPT-2"]
+  derivation: parameter-count
+
+- id: c-params-kaplan
+  type: mathematical
+  text: "With F = 4D the layers hold N = 12 L D^2 (1 + 13/(12D)) parameters, so Kaplan et al.'s 12 n_layer d_model^2 is short by 0.14% at D = 768 and by 0.0088% at D = 12,288."
+  assumes: ["the count of c-params without the embeddings and the final normalization"]
+  derivation: parameter-count
+
+- id: c-emb-share
+  type: mathematical
+  text: "The token and position embeddings, (V + T) D numbers, are 31.7% of the parameters of the smallest GPT-2 and 0.37% of those of GPT-3 175B."
+  assumes: ["the counts of c-params-gpt2 and c-params-gpt3"]
+  derivation: parameter-count
+
+- id: c-flops
+  type: mathematical
+  text: "A forward pass over B sequences of n tokens costs B[L(8nD^2 + 4n^2 D + 4nDF) + 2nDV] FLOPs in its matrix products when the attention products are computed in full, and B[L(8nD^2 + 2n(n+1)D + 4nDF) + 2nDV] when only the places that the causal mask lets through are computed."
+  assumes: ["a multiply-add counts as 2 FLOPs", "only the matrix products are counted"]
+  derivation: compute
+
+- id: c-flops-token
+  type: mathematical
+  text: "Per token the causal count is L(8D^2 + 4DF) + 2DV + 2L(n+1)D, which for the GPT-3 models at n = 2048 is between 1.014 times (175B) and 1.137 times (Small) twice the total number of parameters."
+  assumes: ["the count of c-flops", "the GPT-3 models of c-params-gpt3"]
+  derivation: compute
+
+- id: c-attn-share
+  type: mathematical
+  text: "With F = 4D the share of a layer's causal FLOPs spent in the products q k^T and A v is (n+1)/(n+1+12D): at n = 2048 it is 18.2% for GPT-3 Small, 14.3% for Medium, 10.0% for Large, 7.7% for XL and 1.4% for 175B."
+  assumes: ["the causal count of c-flops"]
+  derivation: compute
+
+- id: c-d1-check
+  type: mathematical
+  text: "Six FLOPs per parameter per token over 300 billion tokens reproduce the training compute of every GPT-3 model in Table D.1 to within 0.5% with the exact counts and to within 0.2% with the printed ones; for GPT-3 175B it is 3.14 x 10^23 FLOPs, or 3,637.6 petaFLOP/s-days."
+  assumes: ["the counts of c-params-gpt3", "a training token costs three forward passes"]
+  derivation: compute
+
+- id: c-kv
+  type: mathematical
+  text: "After n tokens the cache of keys and values holds 2LDn numbers per sequence: 2,359,296 numbers per token for GPT-3 175B, 4.5 MiB at two bytes a number, and 9 GiB for a full context of 2048 tokens."
+  assumes: ["every layer keeps the key and the value of every token, each of width D"]
+  derivation: kv-cache
+
+- id: c-kv-mqa
+  type: mathematical
+  text: "If the heads of a layer share one key and one value of width d_head, the cache holds 2L d_head n numbers, H times fewer, and with G groups of heads 2LG d_head n; for GPT-3 175B with one shared key and value per layer this is 24,576 numbers, 48 KiB, per token."
+  assumes: ["multi-query attention keeps the queries of all H heads and one key and value head of width d_head"]
+  derivation: kv-cache
+
+- id: c-cache-flops
+  type: mathematical
+  text: "Feeding n tokens one at a time with the cache costs nP + 2LDn(n+1) FLOPs, with P = L(8D^2 + 4DF) + 2DV; running the whole prefix again for every new token costs P n(n+1)/2 + (2/3) L D n(n+1)(2n+1), which for GPT-3 175B at n = 2048 is 1,029 times more."
+  assumes: ["the cost conventions of c-flops"]
+  derivation: kv-cache
+
+- id: c-bag
+  type: mathematical
+  text: "Without position embeddings a one-layer decoder gives logits at position i that depend only on the token at i and the multiset of the tokens at positions 1 to i: reordering the tokens before i does not change them, whatever the parameters."
+  assumes: ["no position embeddings", "the causal mask", "normalization, MLP, projections and unembedding act on each position alone"]
+  derivation: permutation
+
+- id: c-two-layers
+  type: mathematical
+  text: "With two layers and no position embeddings, there are parameters for which reordering the tokens before position i changes the logits at i."
+  assumes: ["no position embeddings", "the causal mask"]
+  derivation: permutation
+
+- id: c-mask-position
+  type: mathematical
+  text: "Without position embeddings the causal mask still tells positions apart: if the first token is a and the i - 1 after it are b, a head of the first layer gives the token a the weight e^{s_a} / (e^{s_a} + (i-1) e^{s_b}) at position i, which is different at every position."
+  assumes: ["no position embeddings", "the causal mask"]
+  derivation: permutation

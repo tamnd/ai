@@ -1,0 +1,2033 @@
+{
+  "note": "Written by aik shapes sample -w from shapes.yaml; do not edit. The tests of each implementation check shapes, param_count and flops against these values (spec 08.6, rule X09).",
+  "configs": [
+    {
+      "name": "example",
+      "kind": "example",
+      "config": {
+        "B": 2,
+        "D": 4,
+        "F": 16,
+        "H": 2,
+        "L": 2,
+        "M": 8,
+        "T": 8,
+        "V": 11,
+        "d_ff": 16,
+        "d_head": 4,
+        "d_model": 8,
+        "n_ctx": 8,
+        "n_heads": 2,
+        "n_layers": 2,
+        "vocab": 11
+      },
+      "blocks": {
+        "attn": {
+          "params": 288,
+          "flops_forward": 12288,
+          "inputs": {
+            "x": [
+              2,
+              8,
+              8
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              8,
+              8
+            ]
+          },
+          "internals": {
+            "k": [
+              2,
+              2,
+              8,
+              4
+            ],
+            "q": [
+              2,
+              2,
+              8,
+              4
+            ],
+            "v": [
+              2,
+              2,
+              8,
+              4
+            ],
+            "weights": [
+              2,
+              2,
+              8,
+              8
+            ]
+          }
+        },
+        "embed": {
+          "params": 152,
+          "flops_forward": 0,
+          "inputs": {
+            "ids": [
+              2,
+              8
+            ]
+          },
+          "outputs": {
+            "tokens": [
+              2,
+              8,
+              8
+            ]
+          }
+        },
+        "head": {
+          "params": 16,
+          "flops_forward": 2816,
+          "inputs": {
+            "tokens": [
+              2,
+              8,
+              8
+            ]
+          },
+          "outputs": {
+            "logits": [
+              2,
+              8,
+              11
+            ]
+          }
+        },
+        "layer": {
+          "params": 600,
+          "flops_forward": 20480,
+          "inputs": {
+            "x": [
+              2,
+              8,
+              8
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              8,
+              8
+            ]
+          }
+        },
+        "mlp": {
+          "params": 280,
+          "flops_forward": 8192,
+          "inputs": {
+            "x": [
+              2,
+              8,
+              8
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              8,
+              8
+            ]
+          },
+          "internals": {
+            "hidden": [
+              2,
+              8,
+              16
+            ]
+          }
+        },
+        "norm": {
+          "params": 16,
+          "flops_forward": 0
+        }
+      },
+      "model": {
+        "attention_flops": 8192,
+        "flops_forward": 43776,
+        "kv_cache": 512,
+        "params": 1368,
+        "params_non_embedding": 1200
+      }
+    },
+    {
+      "name": "sample-1",
+      "kind": "sample",
+      "config": {
+        "B": 2,
+        "D": 1,
+        "F": 8,
+        "H": 2,
+        "L": 2,
+        "M": 2,
+        "T": 5,
+        "V": 7,
+        "d_ff": 8,
+        "d_head": 1,
+        "d_model": 2,
+        "n_ctx": 5,
+        "n_heads": 2,
+        "n_layers": 2,
+        "vocab": 7
+      },
+      "blocks": {
+        "attn": {
+          "params": 24,
+          "flops_forward": 720,
+          "inputs": {
+            "x": [
+              2,
+              5,
+              2
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              5,
+              2
+            ]
+          },
+          "internals": {
+            "k": [
+              2,
+              2,
+              5,
+              1
+            ],
+            "q": [
+              2,
+              2,
+              5,
+              1
+            ],
+            "v": [
+              2,
+              2,
+              5,
+              1
+            ],
+            "weights": [
+              2,
+              2,
+              5,
+              5
+            ]
+          }
+        },
+        "embed": {
+          "params": 24,
+          "flops_forward": 0,
+          "inputs": {
+            "ids": [
+              2,
+              5
+            ]
+          },
+          "outputs": {
+            "tokens": [
+              2,
+              5,
+              2
+            ]
+          }
+        },
+        "head": {
+          "params": 4,
+          "flops_forward": 280,
+          "inputs": {
+            "tokens": [
+              2,
+              5,
+              2
+            ]
+          },
+          "outputs": {
+            "logits": [
+              2,
+              5,
+              7
+            ]
+          }
+        },
+        "layer": {
+          "params": 74,
+          "flops_forward": 1360,
+          "inputs": {
+            "x": [
+              2,
+              5,
+              2
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              5,
+              2
+            ]
+          }
+        },
+        "mlp": {
+          "params": 42,
+          "flops_forward": 640,
+          "inputs": {
+            "x": [
+              2,
+              5,
+              2
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              5,
+              2
+            ]
+          },
+          "internals": {
+            "hidden": [
+              2,
+              5,
+              8
+            ]
+          }
+        },
+        "norm": {
+          "params": 4,
+          "flops_forward": 0
+        }
+      },
+      "model": {
+        "attention_flops": 800,
+        "flops_forward": 3000,
+        "kv_cache": 80,
+        "params": 176,
+        "params_non_embedding": 148
+      }
+    },
+    {
+      "name": "sample-2",
+      "kind": "sample",
+      "config": {
+        "B": 2,
+        "D": 2,
+        "F": 5,
+        "H": 2,
+        "L": 1,
+        "M": 4,
+        "T": 3,
+        "V": 6,
+        "d_ff": 5,
+        "d_head": 2,
+        "d_model": 4,
+        "n_ctx": 3,
+        "n_heads": 2,
+        "n_layers": 1,
+        "vocab": 6
+      },
+      "blocks": {
+        "attn": {
+          "params": 80,
+          "flops_forward": 1056,
+          "inputs": {
+            "x": [
+              2,
+              3,
+              4
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              3,
+              4
+            ]
+          },
+          "internals": {
+            "k": [
+              2,
+              2,
+              3,
+              2
+            ],
+            "q": [
+              2,
+              2,
+              3,
+              2
+            ],
+            "v": [
+              2,
+              2,
+              3,
+              2
+            ],
+            "weights": [
+              2,
+              2,
+              3,
+              3
+            ]
+          }
+        },
+        "embed": {
+          "params": 36,
+          "flops_forward": 0,
+          "inputs": {
+            "ids": [
+              2,
+              3
+            ]
+          },
+          "outputs": {
+            "tokens": [
+              2,
+              3,
+              4
+            ]
+          }
+        },
+        "head": {
+          "params": 8,
+          "flops_forward": 288,
+          "inputs": {
+            "tokens": [
+              2,
+              3,
+              4
+            ]
+          },
+          "outputs": {
+            "logits": [
+              2,
+              3,
+              6
+            ]
+          }
+        },
+        "layer": {
+          "params": 145,
+          "flops_forward": 1536,
+          "inputs": {
+            "x": [
+              2,
+              3,
+              4
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              3,
+              4
+            ]
+          }
+        },
+        "mlp": {
+          "params": 49,
+          "flops_forward": 480,
+          "inputs": {
+            "x": [
+              2,
+              3,
+              4
+            ]
+          },
+          "outputs": {
+            "y": [
+              2,
+              3,
+              4
+            ]
+          },
+          "internals": {
+            "hidden": [
+              2,
+              3,
+              5
+            ]
+          }
+        },
+        "norm": {
+          "params": 8,
+          "flops_forward": 0
+        }
+      },
+      "model": {
+        "attention_flops": 288,
+        "flops_forward": 1824,
+        "kv_cache": 48,
+        "params": 189,
+        "params_non_embedding": 145
+      }
+    },
+    {
+      "name": "gpt2_117m",
+      "kind": "named",
+      "config": {
+        "B": 1,
+        "D": 64,
+        "F": 3072,
+        "H": 12,
+        "L": 12,
+        "M": 768,
+        "T": 1024,
+        "V": 50257,
+        "d_ff": 3072,
+        "d_head": 64,
+        "d_model": 768,
+        "n_ctx": 1024,
+        "n_heads": 12,
+        "n_layers": 12,
+        "vocab": 50257
+      },
+      "blocks": {
+        "attn": {
+          "params": 2362368,
+          "flops_forward": 8053063680,
+          "inputs": {
+            "x": [
+              1,
+              1024,
+              768
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              1024,
+              768
+            ]
+          },
+          "internals": {
+            "k": [
+              1,
+              12,
+              1024,
+              64
+            ],
+            "q": [
+              1,
+              12,
+              1024,
+              64
+            ],
+            "v": [
+              1,
+              12,
+              1024,
+              64
+            ],
+            "weights": [
+              1,
+              12,
+              1024,
+              1024
+            ]
+          }
+        },
+        "embed": {
+          "params": 39383808,
+          "flops_forward": 0,
+          "inputs": {
+            "ids": [
+              1,
+              1024
+            ]
+          },
+          "outputs": {
+            "tokens": [
+              1,
+              1024,
+              768
+            ]
+          }
+        },
+        "head": {
+          "params": 1536,
+          "flops_forward": 79047426048,
+          "inputs": {
+            "tokens": [
+              1,
+              1024,
+              768
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1,
+              1024,
+              50257
+            ]
+          }
+        },
+        "layer": {
+          "params": 7087872,
+          "flops_forward": 17716740096,
+          "inputs": {
+            "x": [
+              1,
+              1024,
+              768
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              1024,
+              768
+            ]
+          }
+        },
+        "mlp": {
+          "params": 4722432,
+          "flops_forward": 9663676416,
+          "inputs": {
+            "x": [
+              1,
+              1024,
+              768
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              1024,
+              768
+            ]
+          },
+          "internals": {
+            "hidden": [
+              1,
+              1024,
+              3072
+            ]
+          }
+        },
+        "norm": {
+          "params": 1536,
+          "flops_forward": 0
+        }
+      },
+      "model": {
+        "attention_flops": 38654705664,
+        "flops_forward": 291648307200,
+        "kv_cache": 18874368,
+        "params": 124439808,
+        "params_non_embedding": 85054464
+      }
+    },
+    {
+      "name": "gpt2_1542m",
+      "kind": "named",
+      "config": {
+        "B": 1,
+        "D": 64,
+        "F": 6400,
+        "H": 25,
+        "L": 48,
+        "M": 1600,
+        "T": 1024,
+        "V": 50257,
+        "d_ff": 6400,
+        "d_head": 64,
+        "d_model": 1600,
+        "n_ctx": 1024,
+        "n_heads": 25,
+        "n_layers": 48,
+        "vocab": 50257
+      },
+      "blocks": {
+        "attn": {
+          "params": 10246400,
+          "flops_forward": 27682406400,
+          "inputs": {
+            "x": [
+              1,
+              1024,
+              1600
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              1024,
+              1600
+            ]
+          },
+          "internals": {
+            "k": [
+              1,
+              25,
+              1024,
+              64
+            ],
+            "q": [
+              1,
+              25,
+              1024,
+              64
+            ],
+            "v": [
+              1,
+              25,
+              1024,
+              64
+            ],
+            "weights": [
+              1,
+              25,
+              1024,
+              1024
+            ]
+          }
+        },
+        "embed": {
+          "params": 82049600,
+          "flops_forward": 0,
+          "inputs": {
+            "ids": [
+              1,
+              1024
+            ]
+          },
+          "outputs": {
+            "tokens": [
+              1,
+              1024,
+              1600
+            ]
+          }
+        },
+        "head": {
+          "params": 3200,
+          "flops_forward": 164682137600,
+          "inputs": {
+            "tokens": [
+              1,
+              1024,
+              1600
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1,
+              1024,
+              50257
+            ]
+          }
+        },
+        "layer": {
+          "params": 30740800,
+          "flops_forward": 69625446400,
+          "inputs": {
+            "x": [
+              1,
+              1024,
+              1600
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              1024,
+              1600
+            ]
+          }
+        },
+        "mlp": {
+          "params": 20488000,
+          "flops_forward": 41943040000,
+          "inputs": {
+            "x": [
+              1,
+              1024,
+              1600
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              1024,
+              1600
+            ]
+          },
+          "internals": {
+            "hidden": [
+              1,
+              1024,
+              6400
+            ]
+          }
+        },
+        "norm": {
+          "params": 3200,
+          "flops_forward": 0
+        }
+      },
+      "model": {
+        "attention_flops": 322122547200,
+        "flops_forward": 3506703564800,
+        "kv_cache": 157286400,
+        "params": 1557611200,
+        "params_non_embedding": 1475558400
+      }
+    },
+    {
+      "name": "gpt3_small",
+      "kind": "named",
+      "config": {
+        "B": 1,
+        "D": 64,
+        "F": 3072,
+        "H": 12,
+        "L": 12,
+        "M": 768,
+        "T": 2048,
+        "V": 50257,
+        "d_ff": 3072,
+        "d_head": 64,
+        "d_model": 768,
+        "n_ctx": 2048,
+        "n_heads": 12,
+        "n_layers": 12,
+        "vocab": 50257
+      },
+      "blocks": {
+        "attn": {
+          "params": 2362368,
+          "flops_forward": 22548578304,
+          "inputs": {
+            "x": [
+              1,
+              2048,
+              768
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              2048,
+              768
+            ]
+          },
+          "internals": {
+            "k": [
+              1,
+              12,
+              2048,
+              64
+            ],
+            "q": [
+              1,
+              12,
+              2048,
+              64
+            ],
+            "v": [
+              1,
+              12,
+              2048,
+              64
+            ],
+            "weights": [
+              1,
+              12,
+              2048,
+              2048
+            ]
+          }
+        },
+        "embed": {
+          "params": 40170240,
+          "flops_forward": 0,
+          "inputs": {
+            "ids": [
+              1,
+              2048
+            ]
+          },
+          "outputs": {
+            "tokens": [
+              1,
+              2048,
+              768
+            ]
+          }
+        },
+        "head": {
+          "params": 1536,
+          "flops_forward": 158094852096,
+          "inputs": {
+            "tokens": [
+              1,
+              2048,
+              768
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1,
+              2048,
+              50257
+            ]
+          }
+        },
+        "layer": {
+          "params": 7087872,
+          "flops_forward": 41875931136,
+          "inputs": {
+            "x": [
+              1,
+              2048,
+              768
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              2048,
+              768
+            ]
+          }
+        },
+        "mlp": {
+          "params": 4722432,
+          "flops_forward": 19327352832,
+          "inputs": {
+            "x": [
+              1,
+              2048,
+              768
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              2048,
+              768
+            ]
+          },
+          "internals": {
+            "hidden": [
+              1,
+              2048,
+              3072
+            ]
+          }
+        },
+        "norm": {
+          "params": 1536,
+          "flops_forward": 0
+        }
+      },
+      "model": {
+        "attention_flops": 154618822656,
+        "flops_forward": 660606025728,
+        "kv_cache": 37748736,
+        "params": 125226240,
+        "params_non_embedding": 85054464
+      }
+    },
+    {
+      "name": "gpt3_medium",
+      "kind": "named",
+      "config": {
+        "B": 1,
+        "D": 64,
+        "F": 4096,
+        "H": 16,
+        "L": 24,
+        "M": 1024,
+        "T": 2048,
+        "V": 50257,
+        "d_ff": 4096,
+        "d_head": 64,
+        "d_model": 1024,
+        "n_ctx": 2048,
+        "n_heads": 16,
+        "n_layers": 24,
+        "vocab": 50257
+      },
+      "blocks": {
+        "attn": {
+          "params": 4198400,
+          "flops_forward": 34359738368,
+          "inputs": {
+            "x": [
+              1,
+              2048,
+              1024
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              2048,
+              1024
+            ]
+          },
+          "internals": {
+            "k": [
+              1,
+              16,
+              2048,
+              64
+            ],
+            "q": [
+              1,
+              16,
+              2048,
+              64
+            ],
+            "v": [
+              1,
+              16,
+              2048,
+              64
+            ],
+            "weights": [
+              1,
+              16,
+              2048,
+              2048
+            ]
+          }
+        },
+        "embed": {
+          "params": 53560320,
+          "flops_forward": 0,
+          "inputs": {
+            "ids": [
+              1,
+              2048
+            ]
+          },
+          "outputs": {
+            "tokens": [
+              1,
+              2048,
+              1024
+            ]
+          }
+        },
+        "head": {
+          "params": 2048,
+          "flops_forward": 210793136128,
+          "inputs": {
+            "tokens": [
+              1,
+              2048,
+              1024
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1,
+              2048,
+              50257
+            ]
+          }
+        },
+        "layer": {
+          "params": 12596224,
+          "flops_forward": 68719476736,
+          "inputs": {
+            "x": [
+              1,
+              2048,
+              1024
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              2048,
+              1024
+            ]
+          }
+        },
+        "mlp": {
+          "params": 8393728,
+          "flops_forward": 34359738368,
+          "inputs": {
+            "x": [
+              1,
+              2048,
+              1024
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              2048,
+              1024
+            ]
+          },
+          "internals": {
+            "hidden": [
+              1,
+              2048,
+              4096
+            ]
+          }
+        },
+        "norm": {
+          "params": 2048,
+          "flops_forward": 0
+        }
+      },
+      "model": {
+        "attention_flops": 412316860416,
+        "flops_forward": 1860060577792,
+        "kv_cache": 100663296,
+        "params": 355871744,
+        "params_non_embedding": 302309376
+      }
+    },
+    {
+      "name": "gpt3_large",
+      "kind": "named",
+      "config": {
+        "B": 1,
+        "D": 96,
+        "F": 6144,
+        "H": 16,
+        "L": 24,
+        "M": 1536,
+        "T": 2048,
+        "V": 50257,
+        "d_ff": 6144,
+        "d_head": 96,
+        "d_model": 1536,
+        "n_ctx": 2048,
+        "n_heads": 16,
+        "n_layers": 24,
+        "vocab": 50257
+      },
+      "blocks": {
+        "attn": {
+          "params": 9443328,
+          "flops_forward": 64424509440,
+          "inputs": {
+            "x": [
+              1,
+              2048,
+              1536
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              2048,
+              1536
+            ]
+          },
+          "internals": {
+            "k": [
+              1,
+              16,
+              2048,
+              96
+            ],
+            "q": [
+              1,
+              16,
+              2048,
+              96
+            ],
+            "v": [
+              1,
+              16,
+              2048,
+              96
+            ],
+            "weights": [
+              1,
+              16,
+              2048,
+              2048
+            ]
+          }
+        },
+        "embed": {
+          "params": 80340480,
+          "flops_forward": 0,
+          "inputs": {
+            "ids": [
+              1,
+              2048
+            ]
+          },
+          "outputs": {
+            "tokens": [
+              1,
+              2048,
+              1536
+            ]
+          }
+        },
+        "head": {
+          "params": 3072,
+          "flops_forward": 316189704192,
+          "inputs": {
+            "tokens": [
+              1,
+              2048,
+              1536
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1,
+              2048,
+              50257
+            ]
+          }
+        },
+        "layer": {
+          "params": 28331520,
+          "flops_forward": 141733920768,
+          "inputs": {
+            "x": [
+              1,
+              2048,
+              1536
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              2048,
+              1536
+            ]
+          }
+        },
+        "mlp": {
+          "params": 18882048,
+          "flops_forward": 77309411328,
+          "inputs": {
+            "x": [
+              1,
+              2048,
+              1536
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              2048,
+              1536
+            ]
+          },
+          "internals": {
+            "hidden": [
+              1,
+              2048,
+              6144
+            ]
+          }
+        },
+        "norm": {
+          "params": 3072,
+          "flops_forward": 0
+        }
+      },
+      "model": {
+        "attention_flops": 618475290624,
+        "flops_forward": 3717803802624,
+        "kv_cache": 150994944,
+        "params": 760300032,
+        "params_non_embedding": 679956480
+      }
+    },
+    {
+      "name": "gpt3_xl",
+      "kind": "named",
+      "config": {
+        "B": 1,
+        "D": 128,
+        "F": 8192,
+        "H": 16,
+        "L": 24,
+        "M": 2048,
+        "T": 2048,
+        "V": 50257,
+        "d_ff": 8192,
+        "d_head": 128,
+        "d_model": 2048,
+        "n_ctx": 2048,
+        "n_heads": 16,
+        "n_layers": 24,
+        "vocab": 50257
+      },
+      "blocks": {
+        "attn": {
+          "params": 16785408,
+          "flops_forward": 103079215104,
+          "inputs": {
+            "x": [
+              1,
+              2048,
+              2048
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              2048,
+              2048
+            ]
+          },
+          "internals": {
+            "k": [
+              1,
+              16,
+              2048,
+              128
+            ],
+            "q": [
+              1,
+              16,
+              2048,
+              128
+            ],
+            "v": [
+              1,
+              16,
+              2048,
+              128
+            ],
+            "weights": [
+              1,
+              16,
+              2048,
+              2048
+            ]
+          }
+        },
+        "embed": {
+          "params": 107120640,
+          "flops_forward": 0,
+          "inputs": {
+            "ids": [
+              1,
+              2048
+            ]
+          },
+          "outputs": {
+            "tokens": [
+              1,
+              2048,
+              2048
+            ]
+          }
+        },
+        "head": {
+          "params": 4096,
+          "flops_forward": 421586272256,
+          "inputs": {
+            "tokens": [
+              1,
+              2048,
+              2048
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1,
+              2048,
+              50257
+            ]
+          }
+        },
+        "layer": {
+          "params": 50358272,
+          "flops_forward": 240518168576,
+          "inputs": {
+            "x": [
+              1,
+              2048,
+              2048
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              2048,
+              2048
+            ]
+          }
+        },
+        "mlp": {
+          "params": 33564672,
+          "flops_forward": 137438953472,
+          "inputs": {
+            "x": [
+              1,
+              2048,
+              2048
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              2048,
+              2048
+            ]
+          },
+          "internals": {
+            "hidden": [
+              1,
+              2048,
+              8192
+            ]
+          }
+        },
+        "norm": {
+          "params": 4096,
+          "flops_forward": 0
+        }
+      },
+      "model": {
+        "attention_flops": 824633720832,
+        "flops_forward": 6194022318080,
+        "kv_cache": 201326592,
+        "params": 1315723264,
+        "params_non_embedding": 1208598528
+      }
+    },
+    {
+      "name": "gpt3_2_7b",
+      "kind": "named",
+      "config": {
+        "B": 1,
+        "D": 80,
+        "F": 10240,
+        "H": 32,
+        "L": 32,
+        "M": 2560,
+        "T": 2048,
+        "V": 50257,
+        "d_ff": 10240,
+        "d_head": 80,
+        "d_model": 2560,
+        "n_ctx": 2048,
+        "n_heads": 32,
+        "n_layers": 32,
+        "vocab": 50257
+      },
+      "blocks": {
+        "attn": {
+          "params": 26224640,
+          "flops_forward": 150323855360,
+          "inputs": {
+            "x": [
+              1,
+              2048,
+              2560
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              2048,
+              2560
+            ]
+          },
+          "internals": {
+            "k": [
+              1,
+              32,
+              2048,
+              80
+            ],
+            "q": [
+              1,
+              32,
+              2048,
+              80
+            ],
+            "v": [
+              1,
+              32,
+              2048,
+              80
+            ],
+            "weights": [
+              1,
+              32,
+              2048,
+              2048
+            ]
+          }
+        },
+        "embed": {
+          "params": 133900800,
+          "flops_forward": 0,
+          "inputs": {
+            "ids": [
+              1,
+              2048
+            ]
+          },
+          "outputs": {
+            "tokens": [
+              1,
+              2048,
+              2560
+            ]
+          }
+        },
+        "head": {
+          "params": 5120,
+          "flops_forward": 526982840320,
+          "inputs": {
+            "tokens": [
+              1,
+              2048,
+              2560
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1,
+              2048,
+              50257
+            ]
+          }
+        },
+        "layer": {
+          "params": 78676480,
+          "flops_forward": 365072220160,
+          "inputs": {
+            "x": [
+              1,
+              2048,
+              2560
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              2048,
+              2560
+            ]
+          }
+        },
+        "mlp": {
+          "params": 52441600,
+          "flops_forward": 214748364800,
+          "inputs": {
+            "x": [
+              1,
+              2048,
+              2560
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              2048,
+              2560
+            ]
+          },
+          "internals": {
+            "hidden": [
+              1,
+              2048,
+              10240
+            ]
+          }
+        },
+        "norm": {
+          "params": 5120,
+          "flops_forward": 0
+        }
+      },
+      "model": {
+        "attention_flops": 1374389534720,
+        "flops_forward": 12209293885440,
+        "kv_cache": 335544320,
+        "params": 2651553280,
+        "params_non_embedding": 2517647360
+      }
+    },
+    {
+      "name": "gpt3_6_7b",
+      "kind": "named",
+      "config": {
+        "B": 1,
+        "D": 128,
+        "F": 16384,
+        "H": 32,
+        "L": 32,
+        "M": 4096,
+        "T": 2048,
+        "V": 50257,
+        "d_ff": 16384,
+        "d_head": 128,
+        "d_model": 4096,
+        "n_ctx": 2048,
+        "n_heads": 32,
+        "n_layers": 32,
+        "vocab": 50257
+      },
+      "blocks": {
+        "attn": {
+          "params": 67125248,
+          "flops_forward": 343597383680,
+          "inputs": {
+            "x": [
+              1,
+              2048,
+              4096
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              2048,
+              4096
+            ]
+          },
+          "internals": {
+            "k": [
+              1,
+              32,
+              2048,
+              128
+            ],
+            "q": [
+              1,
+              32,
+              2048,
+              128
+            ],
+            "v": [
+              1,
+              32,
+              2048,
+              128
+            ],
+            "weights": [
+              1,
+              32,
+              2048,
+              2048
+            ]
+          }
+        },
+        "embed": {
+          "params": 214241280,
+          "flops_forward": 0,
+          "inputs": {
+            "ids": [
+              1,
+              2048
+            ]
+          },
+          "outputs": {
+            "tokens": [
+              1,
+              2048,
+              4096
+            ]
+          }
+        },
+        "head": {
+          "params": 8192,
+          "flops_forward": 843172544512,
+          "inputs": {
+            "tokens": [
+              1,
+              2048,
+              4096
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1,
+              2048,
+              50257
+            ]
+          }
+        },
+        "layer": {
+          "params": 201379840,
+          "flops_forward": 893353197568,
+          "inputs": {
+            "x": [
+              1,
+              2048,
+              4096
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              2048,
+              4096
+            ]
+          }
+        },
+        "mlp": {
+          "params": 134238208,
+          "flops_forward": 549755813888,
+          "inputs": {
+            "x": [
+              1,
+              2048,
+              4096
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              2048,
+              4096
+            ]
+          },
+          "internals": {
+            "hidden": [
+              1,
+              2048,
+              16384
+            ]
+          }
+        },
+        "norm": {
+          "params": 8192,
+          "flops_forward": 0
+        }
+      },
+      "model": {
+        "attention_flops": 2199023255552,
+        "flops_forward": 29430474866688,
+        "kv_cache": 536870912,
+        "params": 6658404352,
+        "params_non_embedding": 6444154880
+      }
+    },
+    {
+      "name": "gpt3_13b",
+      "kind": "named",
+      "config": {
+        "B": 1,
+        "D": 128,
+        "F": 20480,
+        "H": 40,
+        "L": 40,
+        "M": 5120,
+        "T": 2048,
+        "V": 50257,
+        "d_ff": 20480,
+        "d_head": 128,
+        "d_model": 5120,
+        "n_ctx": 2048,
+        "n_heads": 40,
+        "n_layers": 40,
+        "vocab": 50257
+      },
+      "blocks": {
+        "attn": {
+          "params": 104878080,
+          "flops_forward": 515396075520,
+          "inputs": {
+            "x": [
+              1,
+              2048,
+              5120
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              2048,
+              5120
+            ]
+          },
+          "internals": {
+            "k": [
+              1,
+              40,
+              2048,
+              128
+            ],
+            "q": [
+              1,
+              40,
+              2048,
+              128
+            ],
+            "v": [
+              1,
+              40,
+              2048,
+              128
+            ],
+            "weights": [
+              1,
+              40,
+              2048,
+              2048
+            ]
+          }
+        },
+        "embed": {
+          "params": 267801600,
+          "flops_forward": 0,
+          "inputs": {
+            "ids": [
+              1,
+              2048
+            ]
+          },
+          "outputs": {
+            "tokens": [
+              1,
+              2048,
+              5120
+            ]
+          }
+        },
+        "head": {
+          "params": 10240,
+          "flops_forward": 1053965680640,
+          "inputs": {
+            "tokens": [
+              1,
+              2048,
+              5120
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1,
+              2048,
+              50257
+            ]
+          }
+        },
+        "layer": {
+          "params": 314639360,
+          "flops_forward": 1374389534720,
+          "inputs": {
+            "x": [
+              1,
+              2048,
+              5120
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              2048,
+              5120
+            ]
+          }
+        },
+        "mlp": {
+          "params": 209740800,
+          "flops_forward": 858993459200,
+          "inputs": {
+            "x": [
+              1,
+              2048,
+              5120
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              2048,
+              5120
+            ]
+          },
+          "internals": {
+            "hidden": [
+              1,
+              2048,
+              20480
+            ]
+          }
+        },
+        "norm": {
+          "params": 10240,
+          "flops_forward": 0
+        }
+      },
+      "model": {
+        "attention_flops": 3435973836800,
+        "flops_forward": 56029547069440,
+        "kv_cache": 838860800,
+        "params": 12853386240,
+        "params_non_embedding": 12585574400
+      }
+    },
+    {
+      "name": "gpt3_175b",
+      "kind": "named",
+      "config": {
+        "B": 1,
+        "D": 128,
+        "F": 49152,
+        "H": 96,
+        "L": 96,
+        "M": 12288,
+        "T": 2048,
+        "V": 50257,
+        "d_ff": 49152,
+        "d_head": 128,
+        "d_model": 12288,
+        "n_ctx": 2048,
+        "n_heads": 96,
+        "n_layers": 96,
+        "vocab": 50257
+      },
+      "blocks": {
+        "attn": {
+          "params": 604028928,
+          "flops_forward": 2680059592704,
+          "inputs": {
+            "x": [
+              1,
+              2048,
+              12288
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              2048,
+              12288
+            ]
+          },
+          "internals": {
+            "k": [
+              1,
+              96,
+              2048,
+              128
+            ],
+            "q": [
+              1,
+              96,
+              2048,
+              128
+            ],
+            "v": [
+              1,
+              96,
+              2048,
+              128
+            ],
+            "weights": [
+              1,
+              96,
+              2048,
+              2048
+            ]
+          }
+        },
+        "embed": {
+          "params": 642723840,
+          "flops_forward": 0,
+          "inputs": {
+            "ids": [
+              1,
+              2048
+            ]
+          },
+          "outputs": {
+            "tokens": [
+              1,
+              2048,
+              12288
+            ]
+          }
+        },
+        "head": {
+          "params": 24576,
+          "flops_forward": 2529517633536,
+          "inputs": {
+            "tokens": [
+              1,
+              2048,
+              12288
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1,
+              2048,
+              50257
+            ]
+          }
+        },
+        "layer": {
+          "params": 1812099072,
+          "flops_forward": 7627861917696,
+          "inputs": {
+            "x": [
+              1,
+              2048,
+              12288
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              2048,
+              12288
+            ]
+          }
+        },
+        "mlp": {
+          "params": 1208020992,
+          "flops_forward": 4947802324992,
+          "inputs": {
+            "x": [
+              1,
+              2048,
+              12288
+            ]
+          },
+          "outputs": {
+            "y": [
+              1,
+              2048,
+              12288
+            ]
+          },
+          "internals": {
+            "hidden": [
+              1,
+              2048,
+              49152
+            ]
+          }
+        },
+        "norm": {
+          "params": 24576,
+          "flops_forward": 0
+        }
+      },
+      "model": {
+        "attention_flops": 19791209299968,
+        "flops_forward": 734804261732352,
+        "kv_cache": 4831838208,
+        "params": 174604259328,
+        "params_non_embedding": 173961510912
+      }
+    }
+  ]
+}
