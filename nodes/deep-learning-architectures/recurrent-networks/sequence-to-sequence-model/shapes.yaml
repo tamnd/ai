@@ -1,0 +1,61 @@
+# SPDX-License-Identifier: MIT
+# The shape contract of a sequence-to-sequence model in the form of Sutskever et al. (2014) (spec 08.6): an L-layer
+# LSTM encoder and an L-layer LSTM decoder with separate weights, a source and a target embedding, and a softmax layer
+# on the decoder's top state. Each LSTM layer is the one of the LSTM page, with one bias. The encoder's final hidden
+# and cell states of every layer are the vector v, the initial state of the decoder.
+# The FLOPs count the products only, a multiply-add as 2; the gate activations, the softmax and the embedding lookups
+# are left out, as on the page of the LSTM.
+config:
+  src_vocab:   {meaning: "size of the source vocabulary, <EOS> included", symbol: "V_x", example: 7, sample: [3, 9]}
+  tgt_vocab:   {meaning: "size of the target vocabulary, <EOS> included", symbol: "V_y", example: 6, sample: [3, 9]}
+  embed_size:  {meaning: "width of the word embeddings of both languages", symbol: "d_e", example: 3, sample: [1, 4]}
+  hidden_size: {meaning: "number of memory cells of every LSTM layer", symbol: "d_h", example: 4, sample: [1, 5]}
+  n_layers:    {meaning: "number of LSTM layers in the encoder, and again in the decoder", symbol: "L", example: 2, sample: [1, 3]}
+axes:
+  B: {meaning: "batch", example: 2}
+  S: {meaning: "length of the source sentence, <EOS> included", example: 5}
+  T: {meaning: "length of the target sentence, <EOS> included", example: 4}
+  E: embed_size
+  H: hidden_size
+  L: n_layers
+  V: tgt_vocab
+blocks:
+  - id: embed
+    meaning: "the word embeddings of the source and of the target, looked up by token"
+    inputs: {src: "(B, S)", dec_in: "(B, T)"}
+    outputs: {xs: "(B, S, E)", ys: "(B, T, E)"}
+    params: "src_vocab * E + V * E"
+  - id: encoder
+    meaning: "L LSTM layers that read the source embeddings, reversed if the config says so; their final states are v"
+    eq: [encoder]
+    inputs: {xs: "(B, S, E)"}
+    outputs: {v_h: "(L, B, H)", v_c: "(L, B, H)"}
+    params: "4 * H * E + 4 * H * H + 4 * H + (L - 1) * (8 * H * H + 4 * H)"
+    flops_forward: "8 * B * S * H * E + 8 * B * S * H * H + (L - 1) * 16 * B * S * H * H"
+  - id: decoder
+    meaning: "L LSTM layers with their own weights that start from v and read <EOS>, y_1, ..., y_{T-1}"
+    eq: [decoder]
+    inputs: {ys: "(B, T, E)", v_h: "(L, B, H)", v_c: "(L, B, H)"}
+    outputs: {top: "(B, T, H)"}
+    params: "4 * H * E + 4 * H * H + 4 * H + (L - 1) * (8 * H * H + 4 * H)"
+    flops_forward: "8 * B * T * H * E + 8 * B * T * H * H + (L - 1) * 16 * B * T * H * H"
+  - id: softmax
+    meaning: "the affine layer on the decoder's top state whose softmax is p(y_t | v, y_1..y_{t-1})"
+    eq: [step]
+    inputs: {top: "(B, T, H)"}
+    outputs: {logits: "(B, T, V)"}
+    params: "H * V + V"
+    flops_forward: "2 * B * T * H * V"
+model:
+  params: {formula: "embed.params + encoder.params + decoder.params + softmax.params", symbol: "N", meaning: "all the parameters: the two embeddings, the two stacks and the softmax layer"}
+  weights: {formula: "src_vocab * E + V * E + 2 * (4 * H * E + 4 * H * H + (L - 1) * 8 * H * H) + H * V", meaning: "the same without the biases, as Sutskever et al. count them"}
+  recurrent_weights: {formula: "2 * (4 * H * E + 4 * H * H + (L - 1) * 8 * H * H)", meaning: "the weights of the LSTM layers of both stacks, without the biases"}
+  embedding_weights: {formula: "src_vocab * E + V * E", meaning: "the weights of the two embeddings"}
+  softmax_weights: {formula: "H * V", meaning: "the weights of the softmax layer, without its bias"}
+  state: {formula: "2 * L * H", meaning: "the numbers of the vector v that carries the source to the decoder: a hidden and a cell state per layer"}
+  flops_forward: {formula: "encoder.flops_forward + decoder.flops_forward + softmax.flops_forward", symbol: "C", meaning: "FLOPs of one teacher-forced forward pass over the batch, a multiply-add counted as 2"}
+  sources:
+    - {work: sutskever-2014-sequence-to-sequence-learning, locator: "Section 3.4", note: "the four layers, the 1000 cells, the 1000-dimensional embeddings, the vocabularies and the counts of 384M parameters, 64M recurrent connections and 8000 numbers"}
+    - {work: pytorch-torch-nn-lstm, locator: "the title page", note: "the order of the gates"}
+configs:
+  sutskever: {meaning: "the deep LSTM of Sutskever et al. on WMT'14 English to French", src_vocab: 160000, tgt_vocab: 80000, embed_size: 1000, hidden_size: 1000, n_layers: 4, source: {work: sutskever-2014-sequence-to-sequence-learning, locator: "Section 3.4"}}

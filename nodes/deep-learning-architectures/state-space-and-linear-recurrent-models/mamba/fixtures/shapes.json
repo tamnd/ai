@@ -1,0 +1,973 @@
+{
+  "note": "Written by aik shapes sample -w from shapes.yaml; do not edit. The tests of each implementation check shapes, param_count and flops against these values (spec 08.6, rule X09).",
+  "configs": [
+    {
+      "name": "example",
+      "kind": "example",
+      "config": {
+        "B": 2,
+        "D": 8,
+        "I": 16,
+        "K": 3,
+        "N": 4,
+        "R": 1,
+        "T": 8,
+        "V": 11,
+        "d_conv": 3,
+        "d_inner": 16,
+        "d_model": 8,
+        "d_state": 4,
+        "dt_rank": 1,
+        "expand": 2,
+        "n_layers": 2,
+        "vocab": 11
+      },
+      "blocks": {
+        "embed": {
+          "params": 88,
+          "flops_forward": 0,
+          "inputs": {
+            "tokens": [
+              2,
+              8
+            ]
+          },
+          "outputs": {
+            "r": [
+              2,
+              8,
+              8
+            ]
+          }
+        },
+        "head": {
+          "params": 8,
+          "flops_forward": 2816,
+          "inputs": {
+            "r": [
+              2,
+              8,
+              8
+            ]
+          },
+          "outputs": {
+            "logits": [
+              2,
+              8,
+              11
+            ]
+          }
+        },
+        "mixer": {
+          "params": 712,
+          "flops_forward": 19456,
+          "inputs": {
+            "r": [
+              2,
+              8,
+              8
+            ]
+          },
+          "outputs": {
+            "r": [
+              2,
+              8,
+              8
+            ]
+          },
+          "internals": {
+            "B_t": [
+              2,
+              8,
+              4
+            ],
+            "C_t": [
+              2,
+              8,
+              4
+            ],
+            "conv_state": [
+              2,
+              2,
+              16
+            ],
+            "delta": [
+              2,
+              8,
+              16
+            ],
+            "h": [
+              2,
+              16,
+              4
+            ],
+            "x": [
+              2,
+              8,
+              16
+            ],
+            "z": [
+              2,
+              8,
+              16
+            ]
+          }
+        }
+      },
+      "model": {
+        "elementwise_flops": 7168,
+        "flops_forward": 41728,
+        "params": 1520,
+        "projection_params": 768,
+        "recurrent_state": 384
+      }
+    },
+    {
+      "name": "sample-1",
+      "kind": "sample",
+      "config": {
+        "B": 2,
+        "D": 3,
+        "I": 6,
+        "K": 3,
+        "N": 4,
+        "R": 1,
+        "T": 7,
+        "V": 20,
+        "d_conv": 3,
+        "d_inner": 6,
+        "d_model": 3,
+        "d_state": 4,
+        "dt_rank": 1,
+        "expand": 2,
+        "n_layers": 3,
+        "vocab": 20
+      },
+      "blocks": {
+        "embed": {
+          "params": 60,
+          "flops_forward": 0,
+          "inputs": {
+            "tokens": [
+              2,
+              7
+            ]
+          },
+          "outputs": {
+            "r": [
+              2,
+              7,
+              3
+            ]
+          }
+        },
+        "head": {
+          "params": 3,
+          "flops_forward": 1680,
+          "inputs": {
+            "r": [
+              2,
+              7,
+              3
+            ]
+          },
+          "outputs": {
+            "logits": [
+              2,
+              7,
+              20
+            ]
+          }
+        },
+        "mixer": {
+          "params": 177,
+          "flops_forward": 3864,
+          "inputs": {
+            "r": [
+              2,
+              7,
+              3
+            ]
+          },
+          "outputs": {
+            "r": [
+              2,
+              7,
+              3
+            ]
+          },
+          "internals": {
+            "B_t": [
+              2,
+              7,
+              4
+            ],
+            "C_t": [
+              2,
+              7,
+              4
+            ],
+            "conv_state": [
+              2,
+              2,
+              6
+            ],
+            "delta": [
+              2,
+              7,
+              6
+            ],
+            "h": [
+              2,
+              6,
+              4
+            ],
+            "x": [
+              2,
+              7,
+              6
+            ],
+            "z": [
+              2,
+              7,
+              6
+            ]
+          }
+        }
+      },
+      "model": {
+        "elementwise_flops": 3528,
+        "flops_forward": 13272,
+        "params": 594,
+        "projection_params": 162,
+        "recurrent_state": 216
+      }
+    },
+    {
+      "name": "sample-2",
+      "kind": "sample",
+      "config": {
+        "B": 2,
+        "D": 6,
+        "I": 12,
+        "K": 4,
+        "N": 6,
+        "R": 3,
+        "T": 8,
+        "V": 19,
+        "d_conv": 4,
+        "d_inner": 12,
+        "d_model": 6,
+        "d_state": 6,
+        "dt_rank": 3,
+        "expand": 2,
+        "n_layers": 3,
+        "vocab": 19
+      },
+      "blocks": {
+        "embed": {
+          "params": 114,
+          "flops_forward": 0,
+          "inputs": {
+            "tokens": [
+              2,
+              8
+            ]
+          },
+          "outputs": {
+            "r": [
+              2,
+              8,
+              6
+            ]
+          }
+        },
+        "head": {
+          "params": 6,
+          "flops_forward": 3648,
+          "inputs": {
+            "r": [
+              2,
+              8,
+              6
+            ]
+          },
+          "outputs": {
+            "logits": [
+              2,
+              8,
+              19
+            ]
+          }
+        },
+        "mixer": {
+          "params": 594,
+          "flops_forward": 16128,
+          "inputs": {
+            "r": [
+              2,
+              8,
+              6
+            ]
+          },
+          "outputs": {
+            "r": [
+              2,
+              8,
+              6
+            ]
+          },
+          "internals": {
+            "B_t": [
+              2,
+              8,
+              6
+            ],
+            "C_t": [
+              2,
+              8,
+              6
+            ],
+            "conv_state": [
+              2,
+              3,
+              12
+            ],
+            "delta": [
+              2,
+              8,
+              12
+            ],
+            "h": [
+              2,
+              12,
+              6
+            ],
+            "x": [
+              2,
+              8,
+              12
+            ],
+            "z": [
+              2,
+              8,
+              12
+            ]
+          }
+        }
+      },
+      "model": {
+        "elementwise_flops": 11520,
+        "flops_forward": 52032,
+        "params": 1902,
+        "projection_params": 648,
+        "recurrent_state": 648
+      }
+    },
+    {
+      "name": "mamba_130m",
+      "kind": "named",
+      "config": {
+        "B": 1,
+        "D": 768,
+        "I": 1536,
+        "K": 4,
+        "N": 16,
+        "R": 48,
+        "T": 2048,
+        "V": 50280,
+        "d_conv": 4,
+        "d_inner": 1536,
+        "d_model": 768,
+        "d_state": 16,
+        "dt_rank": 48,
+        "expand": 2,
+        "n_layers": 24,
+        "vocab": 50280
+      },
+      "blocks": {
+        "embed": {
+          "params": 38615040,
+          "flops_forward": 0,
+          "inputs": {
+            "tokens": [
+              1,
+              2048
+            ]
+          },
+          "outputs": {
+            "r": [
+              1,
+              2048,
+              768
+            ]
+          }
+        },
+        "head": {
+          "params": 768,
+          "flops_forward": 158167203840,
+          "inputs": {
+            "r": [
+              1,
+              2048,
+              768
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1,
+              2048,
+              50280
+            ]
+          }
+        },
+        "mixer": {
+          "params": 3771648,
+          "flops_forward": 15401484288,
+          "inputs": {
+            "r": [
+              1,
+              2048,
+              768
+            ]
+          },
+          "outputs": {
+            "r": [
+              1,
+              2048,
+              768
+            ]
+          },
+          "internals": {
+            "B_t": [
+              1,
+              2048,
+              16
+            ],
+            "C_t": [
+              1,
+              2048,
+              16
+            ],
+            "conv_state": [
+              1,
+              3,
+              1536
+            ],
+            "delta": [
+              1,
+              2048,
+              1536
+            ],
+            "h": [
+              1,
+              1536,
+              16
+            ],
+            "x": [
+              1,
+              2048,
+              1536
+            ],
+            "z": [
+              1,
+              2048,
+              1536
+            ]
+          }
+        }
+      },
+      "model": {
+        "elementwise_flops": 3019898880,
+        "flops_forward": 527802826752,
+        "params": 129135360,
+        "projection_params": 84934656,
+        "recurrent_state": 700416
+      }
+    },
+    {
+      "name": "mamba_370m",
+      "kind": "named",
+      "config": {
+        "B": 1,
+        "D": 1024,
+        "I": 2048,
+        "K": 4,
+        "N": 16,
+        "R": 64,
+        "T": 2048,
+        "V": 50280,
+        "d_conv": 4,
+        "d_inner": 2048,
+        "d_model": 1024,
+        "d_state": 16,
+        "dt_rank": 64,
+        "expand": 2,
+        "n_layers": 48,
+        "vocab": 50280
+      },
+      "blocks": {
+        "embed": {
+          "params": 51486720,
+          "flops_forward": 0,
+          "inputs": {
+            "tokens": [
+              1,
+              2048
+            ]
+          },
+          "outputs": {
+            "r": [
+              1,
+              2048,
+              1024
+            ]
+          }
+        },
+        "head": {
+          "params": 1024,
+          "flops_forward": 210889605120,
+          "inputs": {
+            "r": [
+              1,
+              2048,
+              1024
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1,
+              2048,
+              50280
+            ]
+          }
+        },
+        "mixer": {
+          "params": 6667264,
+          "flops_forward": 27246198784,
+          "inputs": {
+            "r": [
+              1,
+              2048,
+              1024
+            ]
+          },
+          "outputs": {
+            "r": [
+              1,
+              2048,
+              1024
+            ]
+          },
+          "internals": {
+            "B_t": [
+              1,
+              2048,
+              16
+            ],
+            "C_t": [
+              1,
+              2048,
+              16
+            ],
+            "conv_state": [
+              1,
+              3,
+              2048
+            ],
+            "delta": [
+              1,
+              2048,
+              2048
+            ],
+            "h": [
+              1,
+              2048,
+              16
+            ],
+            "x": [
+              1,
+              2048,
+              2048
+            ],
+            "z": [
+              1,
+              2048,
+              2048
+            ]
+          }
+        }
+      },
+      "model": {
+        "elementwise_flops": 8053063680,
+        "flops_forward": 1518707146752,
+        "params": 371516416,
+        "projection_params": 301989888,
+        "recurrent_state": 1867776
+      }
+    },
+    {
+      "name": "mamba_790m",
+      "kind": "named",
+      "config": {
+        "B": 1,
+        "D": 1536,
+        "I": 3072,
+        "K": 4,
+        "N": 16,
+        "R": 96,
+        "T": 2048,
+        "V": 50280,
+        "d_conv": 4,
+        "d_inner": 3072,
+        "d_model": 1536,
+        "d_state": 16,
+        "dt_rank": 96,
+        "expand": 2,
+        "n_layers": 48,
+        "vocab": 50280
+      },
+      "blocks": {
+        "embed": {
+          "params": 77230080,
+          "flops_forward": 0,
+          "inputs": {
+            "tokens": [
+              1,
+              2048
+            ]
+          },
+          "outputs": {
+            "r": [
+              1,
+              2048,
+              1536
+            ]
+          }
+        },
+        "head": {
+          "params": 1536,
+          "flops_forward": 316334407680,
+          "inputs": {
+            "r": [
+              1,
+              2048,
+              1536
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1,
+              2048,
+              50280
+            ]
+          }
+        },
+        "mixer": {
+          "params": 14916096,
+          "flops_forward": 61001957376,
+          "inputs": {
+            "r": [
+              1,
+              2048,
+              1536
+            ]
+          },
+          "outputs": {
+            "r": [
+              1,
+              2048,
+              1536
+            ]
+          },
+          "internals": {
+            "B_t": [
+              1,
+              2048,
+              16
+            ],
+            "C_t": [
+              1,
+              2048,
+              16
+            ],
+            "conv_state": [
+              1,
+              3,
+              3072
+            ],
+            "delta": [
+              1,
+              2048,
+              3072
+            ],
+            "h": [
+              1,
+              3072,
+              16
+            ],
+            "x": [
+              1,
+              2048,
+              3072
+            ],
+            "z": [
+              1,
+              2048,
+              3072
+            ]
+          }
+        }
+      },
+      "model": {
+        "elementwise_flops": 12079595520,
+        "flops_forward": 3244428361728,
+        "params": 793204224,
+        "projection_params": 679477248,
+        "recurrent_state": 2801664
+      }
+    },
+    {
+      "name": "mamba_1_4b",
+      "kind": "named",
+      "config": {
+        "B": 1,
+        "D": 2048,
+        "I": 4096,
+        "K": 4,
+        "N": 16,
+        "R": 128,
+        "T": 2048,
+        "V": 50280,
+        "d_conv": 4,
+        "d_inner": 4096,
+        "d_model": 2048,
+        "d_state": 16,
+        "dt_rank": 128,
+        "expand": 2,
+        "n_layers": 48,
+        "vocab": 50280
+      },
+      "blocks": {
+        "embed": {
+          "params": 102973440,
+          "flops_forward": 0,
+          "inputs": {
+            "tokens": [
+              1,
+              2048
+            ]
+          },
+          "outputs": {
+            "r": [
+              1,
+              2048,
+              2048
+            ]
+          }
+        },
+        "head": {
+          "params": 2048,
+          "flops_forward": 421779210240,
+          "inputs": {
+            "r": [
+              1,
+              2048,
+              2048
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1,
+              2048,
+              50280
+            ]
+          }
+        },
+        "mixer": {
+          "params": 26441728,
+          "flops_forward": 108179488768,
+          "inputs": {
+            "r": [
+              1,
+              2048,
+              2048
+            ]
+          },
+          "outputs": {
+            "r": [
+              1,
+              2048,
+              2048
+            ]
+          },
+          "internals": {
+            "B_t": [
+              1,
+              2048,
+              16
+            ],
+            "C_t": [
+              1,
+              2048,
+              16
+            ],
+            "conv_state": [
+              1,
+              3,
+              4096
+            ],
+            "delta": [
+              1,
+              2048,
+              4096
+            ],
+            "h": [
+              1,
+              4096,
+              16
+            ],
+            "x": [
+              1,
+              2048,
+              4096
+            ],
+            "z": [
+              1,
+              2048,
+              4096
+            ]
+          }
+        }
+      },
+      "model": {
+        "elementwise_flops": 16106127360,
+        "flops_forward": 5614394671104,
+        "params": 1372178432,
+        "projection_params": 1207959552,
+        "recurrent_state": 3735552
+      }
+    },
+    {
+      "name": "mamba_2_8b",
+      "kind": "named",
+      "config": {
+        "B": 1,
+        "D": 2560,
+        "I": 5120,
+        "K": 4,
+        "N": 16,
+        "R": 160,
+        "T": 2048,
+        "V": 50280,
+        "d_conv": 4,
+        "d_inner": 5120,
+        "d_model": 2560,
+        "d_state": 16,
+        "dt_rank": 160,
+        "expand": 2,
+        "n_layers": 64,
+        "vocab": 50280
+      },
+      "blocks": {
+        "embed": {
+          "params": 128716800,
+          "flops_forward": 0,
+          "inputs": {
+            "tokens": [
+              1,
+              2048
+            ]
+          },
+          "outputs": {
+            "r": [
+              1,
+              2048,
+              2560
+            ]
+          }
+        },
+        "head": {
+          "params": 2560,
+          "flops_forward": 527224012800,
+          "inputs": {
+            "r": [
+              1,
+              2048,
+              2560
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1,
+              2048,
+              50280
+            ]
+          }
+        },
+        "mixer": {
+          "params": 41244160,
+          "flops_forward": 168778792960,
+          "inputs": {
+            "r": [
+              1,
+              2048,
+              2560
+            ]
+          },
+          "outputs": {
+            "r": [
+              1,
+              2048,
+              2560
+            ]
+          },
+          "internals": {
+            "B_t": [
+              1,
+              2048,
+              16
+            ],
+            "C_t": [
+              1,
+              2048,
+              16
+            ],
+            "conv_state": [
+              1,
+              3,
+              5120
+            ],
+            "delta": [
+              1,
+              2048,
+              5120
+            ],
+            "h": [
+              1,
+              5120,
+              16
+            ],
+            "x": [
+              1,
+              2048,
+              5120
+            ],
+            "z": [
+              1,
+              2048,
+              5120
+            ]
+          }
+        }
+      },
+      "model": {
+        "elementwise_flops": 26843545600,
+        "flops_forward": 11329066762240,
+        "params": 2768345600,
+        "projection_params": 2516582400,
+        "recurrent_state": 6225920
+      }
+    }
+  ]
+}

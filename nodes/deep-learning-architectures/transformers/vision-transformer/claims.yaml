@@ -1,0 +1,475 @@
+# The claims of the Vision Transformer page (spec 07). The build computes the labels.
+- id: c-def
+  type: attributive
+  text: "Dosovitskiy et al. find that the reliance on CNNs is not necessary in vision and that a pure transformer applied directly to sequences of image patches can perform very well on image classification tasks."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 1", stance: for}
+
+- id: c-best
+  type: empirical
+  text: "Pre-trained on JFT-300M, the best ViT reaches 88.55% on ImageNet, 90.72% on ImageNet-ReaL, 94.55% on CIFAR-100 and 77.63% on the VTAB suite of 19 tasks."
+  scope:
+    models: "ViT-H/14"
+    data: ["JFT-300M", "ImageNet", "ImageNet-ReaL", "CIFAR-100", "VTAB"]
+    setting: "supervised pre-training on JFT-300M, then fine-tuning on each task"
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 2", stance: for}
+
+- id: c-follow
+  type: attributive
+  text: "In the model design Dosovitskiy et al. follow the original Transformer as closely as possible, so that scalable NLP Transformer architectures and their efficient implementations can be used almost out of the box."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 3", stance: for}
+
+- id: c-patches
+  type: definitional
+  text: "An image x of H x W x C is reshaped into a sequence of N = HW/P^2 flattened 2D patches of P^2 C numbers, where (P, P) is the resolution of each patch; N is also the effective input sequence length of the Transformer."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 3", stance: for}
+
+- id: c-cls
+  type: definitional
+  text: "Similar to BERT's [class] token, a learnable embedding is prepended to the sequence of embedded patches, and its state at the output of the Transformer encoder serves as the image representation; the classification head is an MLP with one hidden layer at pre-training time and a single linear layer at fine-tuning time."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 3", stance: for}
+
+- id: c-pos
+  type: definitional
+  text: "Position embeddings are added to the patch embeddings to retain positional information; the ViT uses standard learnable 1D position embeddings, since no significant performance gains were observed from using more advanced 2D-aware position embeddings."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 3", stance: for}
+
+- id: c-prenorm
+  type: definitional
+  text: "The Transformer encoder consists of alternating layers of multiheaded self-attention and MLP blocks; Layernorm is applied before every block and residual connections after every block, and the MLP contains two layers with a GELU non-linearity."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "pp. 3 to 4", stance: for}
+
+- id: c-gelu
+  type: definitional
+  text: "The GELU activation function is xΦ(x), where Φ(x) is the standard Gaussian cumulative distribution function."
+  evidence:
+    - {work: "hendrycks-2016-gaussian-error-linear-units", role: original, locator: "the abstract", stance: for}
+
+- id: c-dh
+  type: definitional
+  text: "Multihead self-attention runs k self-attention operations, called heads, in parallel and projects their concatenated outputs; to keep compute and number of parameters constant when changing k, Dh is typically set to D/k."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 13", stance: for}
+
+- id: c-head-tanh
+  type: definitional
+  text: "The output of the [class] token is transformed into a class prediction via a small MLP with tanh as non-linearity in the single hidden layer, a design inherited from the Transformer model for text."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 16", stance: for}
+
+- id: c-gap
+  type: empirical
+  text: "An initial attempt at globally average-pooling the image-patch embeddings followed by a linear classifier performed very poorly, but this was neither due to the extra token nor to the GAP operation: the difference in performance is fully explained by the requirement for a different learning-rate, and both classifiers work similarly well."
+  scope:
+    models: "ViT with a class token and ViT with global average pooling"
+    data: ["JFT-300M", "ImageNet"]
+    setting: "5-shot linear evaluation on ImageNet after pre-training"
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "pp. 16 to 17", stance: for}
+
+- id: c-hybrid
+  type: definitional
+  text: "In the hybrid model the input sequence is formed from feature maps of a CNN, with the patch embedding projection E applied to patches extracted from the feature map; with patches of spatial size 1x1, the input sequence is the flattened feature map projected to the Transformer dimension."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 4", stance: for}
+
+- id: c-torch-tel
+  type: definitional
+  text: "In torch.nn.TransformerEncoderLayer, norm_first=True does layer norm prior to attention and feedforward operations; the activation defaults to relu and can be the string \"relu\" or \"gelu\", and layer_norm_eps defaults to 1e-05."
+  evidence:
+    - {work: "pytorch-torch-nn-transformerencoderlayer", role: original, locator: "p. 1", stance: for}
+
+- id: c-params
+  type: mathematical
+  text: "A ViT with N patches of P x P x C pixels, a class token, learned position embeddings, L pre-norm layers of width D with an MLP of width D_MLP, and a linear head to K classes has (P^2 C + 1) D + D + (N + 1) D + L (4 D^2 + 2 D D_MLP + 9 D + D_MLP) + 2 D + D K + K parameters."
+  assumes: ["affine patch embedding, qkv and output projections and MLP layers, each with a bias", "two layer normalizations per layer and a final one, each with a gain and a bias", "the linear head of fine-tuning, with no pre-logits layer"]
+  derivation: parameter-count
+
+- id: c-table1
+  type: definitional
+  text: "ViT-Base has 12 layers, hidden size 768, MLP size 3072, 12 heads and 86M parameters; ViT-Large has 24 layers, 1024, 4096, 16 heads and 307M; ViT-Huge has 32 layers, 1280, 5120, 16 heads and 632M."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 5", stance: for}
+
+- id: c-naming
+  type: definitional
+  text: "ViT-L/16 means the Large variant with 16 x 16 input patch size; the Transformer's sequence length is inversely proportional to the square of the patch size, so models with smaller patch size are computationally more expensive."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 5", stance: for}
+
+- id: c-params-models
+  type: mathematical
+  text: "With a linear head to 1,000 classes at 224 x 224 pixels, ViT-B/16 has 86,567,656 parameters, ViT-L/16 304,326,632, ViT-L/32 306,535,400 and ViT-H/14 632,045,800."
+  assumes: ["the count of c-params", "the configurations of Table 1 with the patch size of each name, C = 3 and K = 1000"]
+  derivation: parameter-count
+
+- id: c-encoder-share
+  type: mathematical
+  text: "The twelve encoder layers of ViT-B/16 hold 85,054,464 of its 86,567,656 parameters, 98.3%, and fine-tuning at 384 pixels adds 291,840 parameters, all in the position embeddings of the 380 extra tokens."
+  assumes: ["the count of c-params for ViT-B/16 with K = 1000", "576 patches at 384 pixels against 196 at 224"]
+  derivation: parameter-count
+
+- id: c-flops
+  type: mathematical
+  text: "A forward pass over B images costs B [2 N P^2 C D + L (8 n D^2 + 4 n^2 D + 4 n D D_MLP) + 2 D K] FLOPs in its matrix products, for n = N + 1 tokens."
+  assumes: ["the network of c-params", "a multiply-add counts as 2 FLOPs, and the softmax, the normalizations, the GELU and the additions are not counted"]
+  derivation: compute
+
+- id: c-attn-share
+  type: mathematical
+  text: "The share of an encoder layer's FLOPs that grows with the square of the number of tokens n is n / (n + 2 D + D_MLP): 4.1% for ViT-B/16 at 224 pixels, where n = 197, and 11.1% at 384, where n = 577."
+  assumes: ["the count of c-flops"]
+  derivation: compute
+
+- id: c-biquadratic
+  type: empirical
+  text: "In measurements of inference speed across input sizes, the theoretical bi-quadratic scaling of ViT with image size only barely starts happening for the largest models at the largest resolutions."
+  scope:
+    models: "ViT-B/32, ViT-L/32, ViT-B/16, ViT-L/16 and ViT-H/14"
+    data: []
+    setting: "peak images per second on one TPUv3 core across batch sizes, for several input resolutions"
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 19", stance: for}
+
+- id: c-table6
+  type: empirical
+  text: "The pre-training compute is 55 exaFLOPs for ViT-B/32, 224 for ViT-B/16, 196 for ViT-L/32 and 783 for ViT-L/16 trained for 7 epochs, and 1567 for ViT-L/16 and 4262 for ViT-H/14 trained for 14 epochs."
+  scope:
+    models: "ViT-B/32, ViT-B/16, ViT-L/32, ViT-L/16 and ViT-H/14"
+    data: ["JFT-300M"]
+    setting: "supervised pre-training, the compute as the paper reports it"
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 15", stance: for}
+
+- id: c-jft
+  type: definitional
+  text: "JFT has 18k classes and 303M high-resolution images."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 4", stance: for}
+
+- id: c-table6-check
+  type: mathematical
+  text: "Three times the forward FLOPs of c-flops, times the epochs and 303M images at 224 pixels, reproduces each pre-training compute of the ViT rows of Table 6 to within 2.1%, and all but ViT-B/32 to within 0.3%."
+  assumes: ["the count of c-flops with K = 1000 in place of the pre-training head", "a training step costs three forward passes", "the epochs and exaFLOPs of Table 6 and the 303M images of JFT"]
+  derivation: compute
+
+- id: c-memory
+  type: empirical
+  text: "In the largest batch-size each model can fit onto a core, large ViT models have a clear advantage in terms of memory-efficiency over ResNet models."
+  scope:
+    models: "ViT and ResNet models of several sizes"
+    data: []
+    setting: "largest batch on one TPUv3 core across input sizes"
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 19", stance: for}
+
+- id: c-train
+  type: attributive
+  text: "Dosovitskiy et al. train all models, including ResNets, using Adam with β1 = 0.9, β2 = 0.999, a batch size of 4096 and a high weight decay of 0.1, with a linear learning rate warmup and decay."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 5", stance: for}
+
+- id: c-train-res
+  type: attributive
+  text: "All models of the paper are trained with a learning rate warmup of 10k steps; for ImageNet it was beneficial to additionally apply gradient clipping at global norm 1; the training resolution is 224."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 13", stance: for}
+
+- id: c-dropout
+  type: attributive
+  text: "Dosovitskiy et al. found strong regularization to be key when training models from scratch on ImageNet; dropout, when used, is applied after every dense layer except for the qkv-projections and directly after adding positional- to patch embeddings."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 13", stance: for}
+
+- id: c-zero-head
+  type: definitional
+  text: "For fine-tuning, the pre-trained prediction head is removed and a zero-initialized D × K feedforward layer is attached, where K is the number of downstream classes."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 4", stance: for}
+
+- id: c-head-robust
+  type: attributive
+  text: "When transferring ViT models to another dataset, Dosovitskiy et al. remove the whole head (two linear layers) and replace it by a single, zero-initialized linear layer, which they found to be a little more robust than simply re-initializing the very last layer."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 14", stance: for}
+
+- id: c-sgd
+  type: attributive
+  text: "For fine-tuning Dosovitskiy et al. use SGD with momentum, batch size 512."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 5", stance: for}
+
+- id: c-ft384
+  type: attributive
+  text: "If not mentioned otherwise, the fine-tuning resolution of the paper is 384."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 14", stance: for}
+
+- id: c-interp
+  type: definitional
+  text: "When feeding images of higher resolution, the patch size stays the same, which results in a larger effective sequence length, and the pre-trained position embeddings are resized by 2D interpolation according to their location in the original image."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 4", stance: for}
+
+- id: c-only-2d
+  type: attributive
+  text: "Dosovitskiy et al. note that the resolution adjustment and the patch extraction are the only points at which an inductive bias about the 2D structure of the images is manually injected into the Vision Transformer."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 4", stance: for}
+
+- id: c-deit
+  type: empirical
+  text: "Trained on Imagenet only, on a single computer in less than 3 days, the reference vision transformer of Touvron et al. (86M parameters) achieves top-1 accuracy of 83.1% (single-crop) on ImageNet with no external data."
+  scope:
+    models: "DeiT-B, a ViT-B/16"
+    data: ["ImageNet"]
+    setting: "supervised training from scratch with strong augmentation and regularization"
+  evidence:
+    - {work: "touvron-2021-training-data-efficient-image", role: original, locator: "the abstract", stance: for}
+
+- id: c-selfsup
+  type: empirical
+  text: "With self-supervised pre-training by masked patch prediction, ViT-B/16 achieves 79.9% accuracy on ImageNet, a significant improvement of 2% to training from scratch, but still 4% behind supervised pre-training."
+  scope:
+    models: "ViT-B/16"
+    data: ["JFT-300M", "ImageNet"]
+    setting: "masked patch prediction, mimicking masked language modeling, then fine-tuning on ImageNet"
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 9", stance: for}
+
+- id: c-mae
+  type: empirical
+  text: "Masking a high proportion of the input image, e.g. 75%, with an encoder that operates only on the visible subset of patches, a vanilla ViT-Huge model achieves the best accuracy (87.8%) among methods that use only ImageNet-1K data."
+  scope:
+    models: "ViT-Huge pre-trained as a masked autoencoder"
+    data: ["ImageNet-1K"]
+    setting: "self-supervised pre-training by reconstructing missing pixels, then fine-tuning"
+  evidence:
+    - {work: "he-2021-masked-autoencoders-scalable-vision", role: original, locator: "the abstract", stance: for}
+
+- id: c-less-bias
+  type: attributive
+  text: "Dosovitskiy et al. note that the Vision Transformer has much less image-specific inductive bias than CNNs: only the MLP layers are local and translationally equivariant, while the self-attention layers are global, and the two-dimensional neighborhood structure is used very sparingly, when cutting the image into patches and when adjusting the position embeddings at fine-tuning time."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 4", stance: for}
+
+- id: c-learned-space
+  type: definitional
+  text: "The position embeddings at initialization time carry no information about the 2D positions of the patches, and all spatial relations between the patches have to be learned from scratch."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 4", stance: for}
+
+- id: c-perm
+  type: mathematical
+  text: "A ViT without position embeddings, reading its output from the class token or from the average of the patches, gives the same scores for an image and for any rearrangement of its patches, whatever its parameters."
+  assumes: ["no position embeddings", "a rearrangement moves whole patches of the grid and leaves each patch unchanged", "layer normalization, the MLP and the projections act on each token alone with shared weights"]
+  derivation: permutation
+
+- id: c-table8
+  type: empirical
+  text: "ViT-B/16 reaches 0.61382 on ImageNet 5-shot linear without positional embedding, 0.64206 with 1-D positional embedding, 0.64001 with 2-D positional embedding and 0.64032 with relative positional embeddings."
+  scope:
+    models: "ViT-B/16"
+    data: ["ImageNet"]
+    setting: "5-shot linear evaluation, position embeddings added at the input"
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 17", stance: for}
+
+- id: c-why-1d
+  type: attributive
+  text: "Dosovitskiy et al. speculate that since the encoder operates on patch-level inputs, whose spatial dimensions are much smaller, e.g. 14 × 14 as opposed to 224 × 224, learning to represent the spatial relations at this resolution is equally easy for the different positional encoding strategies."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 18", stance: for}
+
+- id: c-pos-learned
+  type: empirical
+  text: "The model learns to encode distance within the image in the similarity of position embeddings: closer patches tend to have more similar position embeddings, and patches in the same row or column have similar embeddings."
+  scope:
+    models: "ViT-L/32"
+    data: ["JFT-300M"]
+    setting: "cosine similarity of the learned position embeddings after pre-training"
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 8", stance: for}
+
+- id: c-pos-explains
+  type: attributive
+  text: "For Dosovitskiy et al., that the position embeddings learn to represent 2D image topology explains why hand-crafted 2D-aware embedding variants do not yield improvements."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 8", stance: for}
+
+- id: c-attn-distance
+  type: empirical
+  text: "Some heads attend to most of the image already in the lowest layers, while other attention heads have consistently small attention distances in the low layers, and the attention distance increases with network depth."
+  scope:
+    models: "a ViT with 16 heads per layer, and hybrid models"
+    data: ["JFT-300M"]
+    setting: "mean distance in image space spanned by the attention weights, per head and layer, averaged over images"
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 8", stance: for}
+
+- id: c-local-heads
+  type: attributive
+  text: "The highly localized attention is less pronounced in hybrid models that apply a ResNet before the Transformer, which suggests to Dosovitskiy et al. that it may serve a similar function as early convolutional layers in CNNs."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 8", stance: for}
+
+- id: c-cordonnier
+  type: mathematical
+  text: "A multi-head self-attention layer with Nh heads of dimension Dh, output dimension Dout and a relative positional encoding of dimension Dp ≥ 3 can express any convolutional layer of kernel size √Nh × √Nh and min(Dh, Dout) output channels."
+  assumes: ["a relative positional encoding of dimension at least 3", "stride 1"]
+  evidence:
+    - {work: "cordonnier-2020-relationship-self-attention-convolutional", role: original, locator: "p. 3", stance: for}
+
+- id: c-table2
+  type: empirical
+  text: "ViT-H/14 pre-trained on JFT reaches 88.55 on ImageNet, 90.72 on ImageNet ReaL, 99.50 on CIFAR-10, 94.55 on CIFAR-100, 97.56 on Oxford-IIIT Pets, 99.68 on Oxford Flowers-102 and 77.63 on VTAB for 2.5k TPUv3-core-days; BiT-L (ResNet152x4) reaches 87.54, 90.54, 99.37, 93.51, 96.62, 99.63 and 76.29 for 9.9k."
+  scope:
+    models: "ViT-H/14 and BiT-L (ResNet152x4)"
+    data: ["JFT-300M", "ImageNet", "ImageNet ReaL", "CIFAR-10", "CIFAR-100", "Oxford-IIIT Pets", "Oxford Flowers-102", "VTAB"]
+    setting: "pre-training on JFT-300M, fine-tuning on each task, mean of three fine-tuning runs"
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 6", stance: for}
+
+- id: c-table2-l16
+  type: empirical
+  text: "ViT-L/16 pre-trained on JFT reaches 87.76 on ImageNet for 0.68k TPUv3-core-days, and pre-trained on ImageNet-21k it reaches 85.30 for 0.23k."
+  scope:
+    models: "ViT-L/16"
+    data: ["JFT-300M", "ImageNet-21k", "ImageNet"]
+    setting: "pre-training, then fine-tuning on ImageNet, mean of three fine-tuning runs"
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 6", stance: for}
+
+- id: c-30days
+  type: empirical
+  text: "The ViT-L/16 model pre-trained on the public ImageNet-21k dataset could be trained using a standard cloud TPUv3 with 8 cores in approximately 30 days."
+  scope:
+    models: "ViT-L/16"
+    data: ["ImageNet-21k"]
+    setting: "supervised pre-training"
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 6", stance: for}
+
+- id: c-data-size
+  type: empirical
+  text: "When pre-trained on the smallest dataset, ImageNet, ViT-Large models underperform compared to ViT-Base models despite moderate regularization; with ImageNet-21k pre-training their performances are similar, and only with JFT-300M is the full benefit of larger models visible."
+  scope:
+    models: "ViT-B/32, ViT-B/16, ViT-L/32, ViT-L/16 and ViT-H/14"
+    data: ["ImageNet", "ImageNet-21k", "JFT-300M"]
+    setting: "pre-training on each dataset, then fine-tuning on ImageNet"
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 6", stance: for}
+
+- id: c-table5
+  type: empirical
+  text: "Fine-tuned on ImageNet, ViT-B/16 reaches 77.91 after pre-training on ImageNet, 83.97 after ImageNet-21k and 84.15 after JFT-300M, and ViT-L/16 reaches 76.53, 85.15 and 87.12."
+  scope:
+    models: "ViT-B/16 and ViT-L/16"
+    data: ["ImageNet", "ImageNet-21k", "JFT-300M"]
+    setting: "fine-tuning at 384 resolution, without Polyak averaging or 512 resolution"
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 15", stance: for}
+
+- id: c-subsets
+  type: empirical
+  text: "Vision Transformers overfit more than ResNets with comparable computational cost on smaller datasets: ViT-B/32 is slightly faster than ResNet50, performs much worse on the 9M subset, but better on 90M+ subsets."
+  scope:
+    models: "ViT-B/32 and ResNet50, ViT-L/16 and ResNet152x2"
+    data: ["random subsets of JFT-300M of 9M, 30M and 90M images"]
+    setting: "few-shot linear accuracy on ImageNet"
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 7", stance: for}
+
+- id: c-intuition
+  type: attributive
+  text: "For Dosovitskiy et al. this result reinforces the intuition that the convolutional inductive bias is useful for smaller datasets, but for larger ones, learning the relevant patterns directly from data is sufficient, even beneficial."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 7", stance: for}
+
+- id: c-scaling
+  type: empirical
+  text: "ViT uses approximately 2 − 4× less compute than ResNets to attain the same performance, averaged over 5 datasets; hybrids slightly outperform ViT at small computational budgets, but the difference vanishes for larger models; and Vision Transformers appear not to saturate within the range tried."
+  scope:
+    models: "ViT, ResNet (BiT) and hybrid models of several sizes"
+    data: ["JFT-300M", "five transfer datasets"]
+    setting: "transfer accuracy against pre-training compute"
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 8", stance: for}
+
+- id: c-shape
+  type: empirical
+  text: "Around a ViT with 8 layers, D = 1024, D_MLP = 2048 and a patch size of 32, scaling the depth results in the biggest improvements, clearly visible up until 64 layers, with diminishing returns already visible after 16 layers; scaling the width results in the smallest changes; and decreasing the patch size gives robust improvements without introducing parameters."
+  scope:
+    models: "ViT variants of different depth, width, MLP width and patch size"
+    data: ["JFT-300M", "ImageNet"]
+    setting: "5-shot linear evaluation on ImageNet"
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 16", stance: for}
+
+- id: c-zhai
+  type: empirical
+  text: "Zhai et al. train a ViT model with two billion parameters, which attains 90.45% top-1 accuracy on ImageNet."
+  scope:
+    models: "ViT-G/14"
+    data: ["JFT-3B", "ImageNet"]
+    setting: "supervised pre-training, then fine-tuning on ImageNet"
+  evidence:
+    - {work: "zhai-2022-scaling-vision-transformers", role: original, locator: "the abstract", stance: for}
+
+- id: c-small-data
+  type: empirical
+  text: "When trained on mid-sized datasets such as ImageNet without strong regularization, the models yield modest accuracies of a few percentage points below ResNets of comparable size, which Dosovitskiy et al. attribute to inductive biases inherent to CNNs, such as translation equivariance and locality, that Transformers lack."
+  scope:
+    models: "ViT and ResNets of comparable size"
+    data: ["ImageNet"]
+    setting: "supervised training on ImageNet alone"
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 1", stance: for}
+
+- id: c-pixels
+  type: definitional
+  text: "Naive application of self-attention to images would require that each pixel attends to every other pixel; with quadratic cost in the number of pixels, this does not scale to realistic input sizes."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 2", stance: for}
+
+- id: c-swin
+  type: definitional
+  text: "The Swin Transformer is a hierarchical Transformer whose representation is computed with shifted windows, limiting self-attention computation to non-overlapping local windows while allowing cross-window connection, with linear computational complexity with respect to image size."
+  evidence:
+    - {work: "liu-2021-swin-transformer-hierarchical-vision", role: original, locator: "the abstract", stance: for}
+
+- id: c-challenges
+  type: attributive
+  text: "Dosovitskiy et al. list as remaining challenges applying ViT to other computer vision tasks, such as detection and segmentation, and exploring self-supervised pre-training, where there is still a large gap to large-scale supervised pre-training."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 9", stance: for}
+
+- id: c-hist-local
+  type: historical
+  text: "Earlier applications of self-attention to images either combined it with convolutional networks or used local neighborhoods and other specialized attention patterns, which require complex engineering to be implemented efficiently on hardware accelerators."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 2", stance: for}
+
+- id: c-hist-cordonnier
+  type: historical
+  text: "Most related to the ViT is the model of Cordonnier et al. (2020), which extracts patches of size 2 × 2 from the input image and applies full self-attention on top; the small patch size makes it applicable only to small-resolution images."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 2", stance: for}
+
+- id: c-hist-igpt
+  type: historical
+  text: "Image GPT applies Transformers to image pixels after reducing image resolution and color space, is trained in an unsupervised fashion as a generative model, and achieves a maximal accuracy of 72% on ImageNet."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 2", stance: for}
+
+- id: c-hist-iclr
+  type: historical
+  text: "An Image is Worth 16x16 Words, arXiv 2010.11929, was published as a conference paper at ICLR 2021."
+  evidence:
+    - {work: "dosovitskiy-2021-image-worth-16x16-words", role: original, locator: "p. 1", stance: for}

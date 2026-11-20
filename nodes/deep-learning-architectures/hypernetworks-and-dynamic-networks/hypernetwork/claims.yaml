@@ -1,0 +1,436 @@
+# The claims of the Hypernetwork page (spec 07). The build computes the labels.
+- id: c-def
+  type: definitional
+  text: "Ha, Dai and Le use a small network, called a hypernetwork, to generate the weights for a larger network, called the main network; the main network maps raw inputs to their targets like any network, whereas the hypernetwork takes a set of inputs that contain information about the structure of the weights and generates the weights for that layer."
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 1", stance: for}
+
+- id: c-embedding
+  type: definitional
+  text: "A dynamic hypernetwork is a recurrent network that dynamically generates the weights of another recurrent network, so that the weights can vary across many time steps."
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 4", stance: for}
+
+- id: c-relaxed
+  type: attributive
+  text: "Ha et al. view convolutional and recurrent networks as two ends of a spectrum: recurrent networks impose weight sharing across layers, which makes them inflexible and difficult to learn due to vanishing gradients, while convolutional networks have no weight sharing at the expense of redundant parameters when deep; hypernetworks are a form of relaxed weight sharing that strikes a balance between the two."
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 3", stance: for}
+
+- id: c-embedding-static
+  type: definitional
+  text: "In Ha et al.'s hypernetworks the input is an embedding vector that describes the entire weights of a given layer, unlike HyperNEAT, whose inputs are virtual coordinates for each weight; the embeddings can be fixed parameters learned during end-to-end training, allowing approximate weight sharing within a layer and across layers of the main network."
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 1", stance: for}
+
+- id: c-embedding-dynamic
+  type: definitional
+  text: "The embedding vectors can also be generated dynamically by the hypernetwork, allowing the weights of a recurrent network to change over time steps and adapt to the input sequence."
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "pp. 1 to 2", stance: for}
+
+- id: c-main-result
+  type: attributive
+  text: "Ha et al.'s main result is that hypernetworks can generate non-shared weights for LSTM that work better than the standard version on character-level language modelling, handwriting generation and neural machine translation, while hypernetworks applied to convolutional networks achieve respectable results for image recognition with fewer learnable parameters."
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "pp. 1 to 2", stance: for}
+
+- id: c-genotype
+  type: attributive
+  text: "Ha et al. describe the relationship between a hypernetwork and its main network as similar to that between a genotype and a phenotype in nature."
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "the abstract, p. 1", stance: for}
+
+- id: c-two-layer
+  type: definitional
+  text: "The static hypernetwork is a two-layer linear network: the first layer projects the layer embedding z^j into N_in inputs with N_in matrices W_i in R^{d x N_z} and biases B_i in R^d, and the final layer projects each a_i into the slice K_i with a common tensor W_out in R^{f x N_out f x d} and a bias matrix B_out; the kernel K^j is the concatenation of the slices; d is fixed equal to N_z, although they can be different."
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 3", stance: for}
+
+- id: c-learnable
+  type: definitional
+  text: "The learnable parameters of the static hypernetwork are W_i, B_i, W_out and B_out together with all the layer embeddings z^j; during inference the model takes the learned embeddings to reproduce the kernel weights of each layer."
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 3", stance: for}
+
+- id: c-compact
+  type: attributive
+  text: "Ha et al. note that a two-layer linear hypernetwork is equivalent to a one-layer one, but that sharing W_out and B_out makes the two-layer hypernetwork more compact: a one-layer hypernetwork would have N_z x N_in x f x N_out x f learnable parameters, usually much more."
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 3", stance: for}
+
+- id: c-hss
+  type: attributive
+  text: "Ha et al. say that their construction of the generator is similar to the hierarchically semiseparable matrix approach of Xia et al. (2010)."
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 3", stance: for}
+
+- id: c-count-paper
+  type: attributive
+  text: "The total number of learnable parameters of the hypernetwork is N_z x D + d x (N_z + 1) x N_i + f x N_out x f x (d + 1), compared to D x N_in x f x N_out x f for the kernels of the main convolutional network."
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 3", stance: for}
+
+- id: c-basic-size
+  type: definitional
+  text: "In the residual networks of the experiments the N_i and N_out of every kernel are integer multiples of 16, so the hypernetwork generates kernels of this basic size and concatenates several basic kernels to form a larger one; a kernel with N_i = 32 and N_out = 64 tiles eight basic kernels, each generated by a unique embedding."
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 4", stance: for}
+
+- id: c-hyperrnn-def
+  type: definitional
+  text: "At every time step a HyperRNN takes as input the concatenation of the input x_t and the hidden state h_{t-1} of the main RNN and generates a vector hhat_t, which is used to generate the weights of the main RNN at the same time step; both are trained jointly with backpropagation and gradient descent."
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 4", stance: for}
+
+- id: c-eq5
+  type: definitional
+  text: "In the general HyperRNN the weights and the bias of the main RNN are W_h(z_h) = <W_hz, z_h>, W_x(z_x) = <W_xz, z_x> and b(z_b) = W_bz z_b + b_0, functions of the embeddings z_h, z_x and z_b, where W_hz is N_h x N_h x N_z, W_xz is N_h x N_x x N_z and W_bz is N_h x N_z."
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 5", stance: for}
+
+- id: c-eq6
+  type: definitional
+  text: "The HyperRNN cell has N_hhat hidden units, typically much smaller than N_h; as the embeddings of dimension N_z are typically smaller than N_hhat, a linear network projects the output of the cell into the embeddings."
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 5", stance: for}
+
+- id: c-memory-paper
+  type: attributive
+  text: "Ha et al. found the general form of eq. 5 often not practical because the memory it requires is N_z times the memory of a basic RNN, which limits the number of hidden units that can be used."
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 5", stance: for}
+
+- id: c-scaling-def
+  type: definitional
+  text: "The memory-efficient HyperRNN uses an intermediate vector d(z) in R^{N_h}, a linear projection of z called a weight scaling vector, and scales each row of a weight matrix W linearly by an element of d."
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "pp. 5 to 6", stance: for}
+
+- id: c-tradeoff
+  type: attributive
+  text: "With weight scaling vectors the ability to construct an entire weight matrix from a linear combination of N_z matrices is sacrificed, but the memory required is of the order of N_z times the number of hidden units instead of N_z times that of a basic RNN, and the row-level operation is equivalent to an element-wise multiplication and computationally much more efficient."
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 6", stance: for}
+
+- id: c-norm-similarity
+  type: attributive
+  text: "Ha et al. note similarities of the scaled HyperRNN to recurrent batch normalization and layer normalization, which linearly scale the inputs of the activation function using their first two moments, and to the multiplicative RNN and multiplicative integration RNN; the difference is that the scaling parameters of the HyperRNN can be different for each time step and for each input sample."
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 6", stance: for}
+
+- id: c-ln-combo
+  type: attributive
+  text: "Existing normalization approaches can work together with the HyperRNN, whose cell is then tasked with discovering a dynamical scaling policy that complements normalization, and Ha et al. experiment with two versions of the HyperLSTM, with and without layer normalization."
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 6", stance: for}
+
+- id: c-hyperlstm
+  type: definitional
+  text: "The HyperLSTM cell is a normal LSTM cell with layer normalization whose inputs are the concatenation of the input signal and the hidden units of the main LSTM; the embeddings of each of the four gates are linear projections of its hidden states."
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 20", stance: for}
+
+- id: c-dropout
+  type: definitional
+  text: "The main LSTM of the HyperLSTM has a single dropout gate on phi(g_t), as in recurrent dropout without memory loss; the dropout is generally applied only inside the main LSTM, not in the smaller HyperLSTM cell, and for larger systems to both networks."
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "pp. 19 to 20", stance: for}
+
+- id: c-mnist-setup
+  type: empirical
+  text: "For MNIST the network was trained with a 55000 / 5000 / 10000 split, early stopping on the validation samples, and Adam with a learning rate of 0.001 on mini-batches of 1000, with the training images padded to 30x30 and randomly cropped to 28x28."
+  scope:
+    models: "the MNIST convolutional network with a hypernetwork-generated second layer"
+    data: ["MNIST"]
+    setting: "Appendix A.3.1"
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 20", stance: for}
+
+- id: c-wrn-train
+  type: empirical
+  text: "The residual networks were trained with mini-batches of 128, using Nesterov momentum SGD for the normal version and Adam for the hypernetwork version, both with a learning rate schedule, and L2 regularization on the kernel weights and on the hypernetwork-generated kernel weights."
+  scope:
+    models: "WRN 40-1 and WRN 40-2, normal and hypernetwork versions"
+    data: ["CIFAR-10"]
+    setting: "Appendix A.3.2"
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "pp. 20 to 21", stance: for}
+
+- id: c-ptb-setup
+  type: empirical
+  text: "For character-level Penn Treebank the models were trained on mini-batches of 128 sequences of length 100 with Adam at a learning rate of 0.001 and gradient clipping of 1.0, with dropout on the input and output layers and recurrent dropout, all with a keep probability of 90%."
+  scope:
+    models: "HyperLSTM and the LSTM baselines"
+    data: ["Penn Treebank (character level)"]
+    setting: "Appendix A.3.3"
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "pp. 8 and 21", stance: for}
+
+- id: c-init
+  type: definitional
+  text: "In the HyperLSTM the biases of the HyperLSTM cell are initialized to zero and its weights orthogonally; of the projections to the embeddings, the first two have weights initialized to zero and biases to one, the third weights from a normal distribution of standard deviation 0.01; W_h and W_x are orthogonal, b_0 and W_bz zero, and W_hz and W_xz the constant 0.1/N_z, so that the scaling vectors are initialized to 0.1 rather than 1.0, following recurrent batch normalization."
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 20", stance: for}
+
+- id: c-64dof
+  type: attributive
+  text: "Ha et al. attribute the reduction in accuracy to the different layers of a deep network extracting different levels of features and requiring different kinds of filters; the hypernetwork enforces some commonality between every layer but offers each layer 64 degrees of freedom to distinguish itself."
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 8", stance: for}
+
+- id: c-mnist
+  type: empirical
+  text: "With a hypernetwork generating the 7x7x16x16 kernel of the second layer of a small two-layer convolutional network from an embedding of size N_z = 4, the test accuracy on MNIST was 99.24%, comparable to 99.28% for the conventional method; the 12,544 weights of the kernel were represented by an embedding of 4 parameters generated by a hypernetwork of 4240 parameters."
+  scope:
+    models: "a small two-layer convolutional network"
+    data: ["MNIST"]
+    setting: "Section 4.1 and Appendix A.3.1"
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 7", stance: for}
+
+- id: c-wrn-cost
+  type: empirical
+  text: "Using one hypernetwork to generate all the kernels of conv2, conv3 and conv4 of WRN 40-1 and WRN 40-2, 36 layers, with an embedding size of N_z = 64, the relaxed weight sharing cost about 1.25-1.5% in classification accuracy on CIFAR-10 while drastically reducing the number of parameters."
+  scope:
+    models: "WRN 40-1 and WRN 40-2"
+    data: ["CIFAR-10"]
+    setting: "Section 4.2"
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 7", stance: for}
+
+- id: c-wrn
+  type: empirical
+  text: "On CIFAR-10 the Hyper Residual Network 40-1 had a test error of 8.02% with 0.097 M parameters against 6.73% with 0.563 M for WRN 40-1, and the Hyper Residual Network 40-2 7.23% with 0.148 M against 5.66% with 2.236 M for WRN 40-2."
+  scope:
+    models: "WRN 40-1, WRN 40-2 and their hypernetwork versions"
+    data: ["CIFAR-10"]
+    setting: "Table 2"
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 8", stance: for}
+
+- id: c-ptb
+  type: empirical
+  text: "On character-level Penn Treebank with 1000 units, a HyperLSTM cell of 128 units and a signal size of 4, the HyperLSTM reached 1.265 bits per character on the test set with 4.91 M parameters, against 1.312 for an LSTM of 1000 units, 1.306 for an LSTM of 1250 units, 1.281 for a 2-layer LSTM and 1.267 for a layer norm LSTM; the layer norm HyperLSTM reached 1.250, with a large embedding of size 16 1.233, and with 2 layers 1.219."
+  scope:
+    models: "HyperLSTM, layer norm HyperLSTM and LSTM baselines"
+    data: ["Penn Treebank (character level)"]
+    setting: "Table 3 and Appendix A.3.3"
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "pp. 8, 9 and 21", stance: for}
+
+- id: c-ptb-reading
+  type: attributive
+  text: "Ha et al. suggest that by dynamically adjusting the weight scaling vectors the HyperLSTM cell learned a policy of scaling the inputs to the activation functions as efficient as the statistical moments-based strategy of layer norm, and that the gain of combining HyperLSTM with layer norm implies an adjustment policy that goes beyond moments-based regularization."
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 8", stance: for}
+
+- id: c-enwik8
+  type: empirical
+  text: "On enwik8 the HyperLSTM of 1800 units reached 1.391 bits per character on the test set with 18.71 M parameters, against 1.470 for an LSTM of 1800 units without recurrent dropout and 1.402 for a layer norm LSTM of 1800 units; the layer norm HyperLSTM reached 1.353 with 1800 units and 1.340 with 2048 units and 26.54 M parameters."
+  scope:
+    models: "HyperLSTM, layer norm HyperLSTM and LSTM baselines"
+    data: ["enwik8"]
+    setting: "Table 4"
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 9", stance: for}
+
+- id: c-converge
+  type: empirical
+  text: "On enwik8 the HyperLSTM converged quicker per training step than the LSTM and the layer norm LSTM."
+  scope:
+    models: "HyperLSTM, LSTM and layer norm LSTM"
+    data: ["enwik8"]
+    setting: "Figure 6"
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 9", stance: for}
+
+- id: c-weights-change
+  type: empirical
+  text: "In a passage sampled from the HyperLSTM trained on enwik8, the weights of the main RNN did not change much during words such as Europeans, possessions and reservation, and the large changes tended to happen between words or sometimes during brackets."
+  scope:
+    models: "HyperLSTM"
+    data: ["enwik8"]
+    setting: "Figure 4"
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 10", stance: for}
+
+- id: c-saturated
+  type: empirical
+  text: "In histograms of phi(c_t) during sampling, layer norm reduces saturation compared to the vanilla LSTM, while the HyperLSTM cell is saturated most of the time; its dynamic weight adjustment policy appears to be doing something very different from statistical normalization, although it ended up with similar performance."
+  scope:
+    models: "LSTM, layer norm LSTM and HyperLSTM"
+    data: ["enwik8"]
+    setting: "Figure 5"
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 10", stance: for}
+
+- id: c-iam
+  type: empirical
+  text: "On the IAM online handwriting database, 12179 handwritten lines from 221 writers, the HyperLSTM of 900 units had a log-loss of -1,162 on the validation set with 3.94 M parameters, the best of the table, against -1,055 for an LSTM of 900 units, -1,135 for a 2-layer LSTM of 650 units, -1,096 for a layer norm LSTM of 900 units and -1,067 for a layer norm HyperLSTM of 900 units."
+  scope:
+    models: "HyperLSTM, layer norm HyperLSTM and LSTM baselines"
+    data: ["IAM On-Line Handwriting Database"]
+    setting: "Table 5, with data augmentation, dropout and recurrent dropout"
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 11", stance: for}
+
+- id: c-iam-ln
+  type: empirical
+  text: "In handwriting generation layer norm did not combine well with the HyperLSTM, and the HyperLSTM of 900 units without layer norm achieved the best performance."
+  scope:
+    models: "HyperLSTM and layer norm HyperLSTM"
+    data: ["IAM On-Line Handwriting Database"]
+    setting: "Table 5"
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 11", stance: for}
+
+- id: c-regime
+  type: empirical
+  text: "In a handwriting sample of the HyperLSTM the large changes of the weights were concentrated at many discrete instances rather than slowly varying, which Ha et al. read as regime changes rather than gradual adjustments; many of them occurred between written words and sometimes between characters."
+  scope:
+    models: "HyperLSTM"
+    data: ["IAM On-Line Handwriting Database"]
+    setting: "Figure 7"
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 12", stance: for}
+
+- id: c-nmt
+  type: empirical
+  text: "Replacing the LSTM cells of the GNMT WPM-32K model with HyperLSTM cells gave 40.03 test BLEU on WMT'14 En to Fr (newstest2014) against 38.95, and a log perplexity of 0.993 against 1.027; an ensemble of 8 LSTMs had 40.35."
+  scope:
+    models: "GNMT WPM-32K with LSTM and with HyperLSTM cells"
+    data: ["WMT'14 English to French"]
+    setting: "Table 6"
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 12", stance: for}
+
+- id: c-coord
+  type: empirical
+  text: "A hypernetwork that receives the locations of the input pixel and of the weight, an 801 parameter four layer feed forward relu network generating the 784 x 256 = 200704 weights of the hidden layer of a 784-256-10 fully connected network, learned convolutional-like filters, but the best accuracy on MNIST was 93.5%, compared to 98.5% for the conventional fully connected network."
+  scope:
+    models: "a coordinate-based hypernetwork for a 784-256-10 fully connected network"
+    data: ["MNIST"]
+    setting: "Appendix A.1"
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 16", stance: for}
+
+- id: c-fastweights
+  type: historical
+  text: "Schmidhuber (1992; 1993) suggested the concept of fast weights, in which one network can produce context-dependent weight changes for a second network; small experiments demonstrated fast weights for feed forward networks, and the recurrent version was mentioned mainly as a thought experiment."
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 2", stance: for}
+
+- id: c-schlag
+  type: attributive
+  text: "Schlag et al. show the formal equivalence of linearised self-attention and the fast weight controllers of the early nineties, in which a slow network learns by gradient descent to program the fast weights of another network through additive outer products of keys and values."
+  evidence:
+    - {work: "schlag-2021-linear-transformers-fast-weight", role: original, locator: "the abstract, p. 1", stance: for}
+
+- id: c-hyperneat
+  type: historical
+  text: "In HyperNEAT, Compositional Pattern-Producing Networks are evolved to define the weight structure of a much larger main network, with a set of virtual coordinates for each weight as inputs; Compressed Weight Search fixes the structure and evolves the weights through a discrete cosine transform, and Differentiable Pattern Producing Networks evolve the structure but learn the weights."
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "pp. 1 to 2", stance: for}
+
+- id: c-end-to-end
+  type: attributive
+  text: "The main difference between Ha et al.'s approach and HyperNEAT is that their hypernetworks are trained end-to-end with gradient descent together with the main network, and are therefore more efficient."
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 2", stance: for}
+
+- id: c-related-conv
+  type: historical
+  text: "Earlier studies predicted certain parameters of a convolutional network by another network (Denil et al., 2013; Yang et al., 2015; Bertinetto et al., 2016; De Brabandere et al., 2016) but did not apply the approach to recurrent networks, which Ha et al. name a main contribution of their work."
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 2", stance: for}
+
+- id: c-hist-evolution
+  type: historical
+  text: "Ha et al.'s approach is inspired by evolutionary computing, where it is difficult to operate directly in large search spaces of millions of weights and a more efficient method is to evolve a smaller network that generates the structure of the weights of a larger one."
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 2", stance: for}
+
+- id: c-hist-small
+  type: historical
+  text: "Most reported results of HyperNEAT, Compressed Weight Search, DPPNs and ACDC-Networks were at small scales, which Ha et al. attribute to their being slow to train and requiring heuristics to be efficient."
+  evidence:
+    - {work: "ha-2016-hypernetworks", role: original, locator: "p. 2", stance: for}
+
+- id: c-affine
+  type: mathematical
+  text: "The kernel generated by the two-layer linear hypernetwork is an affine function of the embedding, and every slice K_i^j of every generated kernel lies in the affine subspace B_out + span{W_out[:, :, 1], ..., W_out[:, :, d]}, of dimension at most d, for every i and j."
+  assumes: ["the hypernetwork of eq-static with hidden size d and shared W_out and B_out"]
+  derivation: linear-hypernetwork
+
+- id: c-subspace
+  type: mathematical
+  text: "A one-layer linear map from z to the kernel can give each slice up to min(N_z, f N_out f) dimensions of its own, so its slices are not confined to one subspace of dimension d; the two-layer form restricts them to one shared subspace."
+  assumes: ["a one-layer hypernetwork K^j = <W, z^j> with a general W"]
+  derivation: linear-hypernetwork
+
+- id: c-tile-layout
+  type: mathematical
+  text: "In a kernel tiled from m_in m_out basic kernels, block (r, c), from input channels rN to (r + 1)N - 1 to output channels cN to (c + 1)N - 1, depends on one embedding only, and the kernel is affine in the concatenation of the embeddings."
+  assumes: ["the tiling of eq-tile with basic kernels of N channels", "embedding r m_out + c generates block (r, c)"]
+  derivation: linear-hypernetwork
+
+- id: c-params
+  type: mathematical
+  text: "A static hypernetwork that generates E basic kernels of N_in input and N_out output channels with f x f filters from embeddings of size N_z through a hidden layer of size d has N_z E + d (N_z + 1) N_in + f N_out f (d + 1) parameters, against E N_in f N_out f generated weights."
+  assumes: ["the hypernetwork of eq-static, one W_i and B_i for each input channel and a shared W_out and B_out"]
+  derivation: parameter-count
+
+- id: c-mnist-count
+  type: mathematical
+  text: "For a 7 x 7 kernel of 16 by 16 channels from an embedding of N_z = d = 4, the hypernetwork has 4,244 parameters including the embedding, 4,240 without it, for 12,544 weights, and a one-layer hypernetwork would have 50,176, four times the kernel."
+  assumes: ["f = 7, N_in = N_out = 16, N_z = d = 4 and E = 1"]
+  derivation: parameter-count
+
+- id: c-one-layer-count
+  type: mathematical
+  text: "A one-layer linear map from z to a basic kernel has N_z N_in f N_out f parameters, N_z times the kernel, so it saves parameters only when more than N_z basic kernels share it, while the shared part of the two-layer form, d (N_z + 1) N_in + f N_out f (d + 1), is smaller than one kernel when d + 1 is well below N_in."
+  assumes: ["the one-layer map has no bias", "the two-layer form of eq-static"]
+  derivation: parameter-count
+
+- id: c-wrn-count
+  type: mathematical
+  text: "For WRN 40-1 and WRN 40-2, whose 36 convolutions of 3 x 3 are tiled from basic kernels of 16 channels, N_z = d = 64 gives 242 and 966 basic kernels and hypernetworks of 91,408 and 137,744 parameters."
+  assumes: ["three groups of six blocks of two 3 x 3 convolutions of widths 16k, 32k and 64k after a first convolution to 16 channels", "the first convolution, the shortcuts, the normalization and the classifier are not generated"]
+  derivation: parameter-count
+
+- id: c-flops
+  type: mathematical
+  text: "Generating E basic kernels costs 2 E N_in d (N_z + f^2 N_out) FLOPs, counting a multiply-add as 2, once per forward pass whatever the batch size; the main network then costs what it would with ordinary kernels."
+  assumes: ["a multiply-add counts as 2 FLOPs and only the products are counted"]
+  derivation: parameter-count
+
+- id: c-rowscale
+  type: mathematical
+  text: "Scaling the rows of a matrix W by a vector delta and multiplying by v is the elementwise product delta * (W v)."
+  assumes: ["diag(delta) W scales row n of W by delta_n"]
+  derivation: weight-scaling
+
+- id: c-scaled-is-full
+  type: mathematical
+  text: "The scaled HyperRNN of eq. 8 is the general HyperRNN of eq. 5 whose tensors have the slices diag(W_hz[:, k]) W_h and diag(W_xz[:, k]) W_x, so it computes the same states."
+  assumes: ["the same hyper cell and biases in both forms"]
+  derivation: weight-scaling
+
+- id: c-rnn-params
+  type: mathematical
+  text: "A HyperRNN of N_h units, N_x inputs and embeddings of N_z has N_h (N_h + N_x) + 3 N_z N_h + N_h parameters in its main network in the scaled form and N_z N_h (N_h + N_x) + N_z N_h + N_h in the general form, plus N_hhat (N_hhat + N_h + N_x + 1) + 3 N_z N_hhat + 2 N_z in a hyper cell of N_hhat units; per sequence and step the general form builds N_h (N_h + N_x) numbers of weights and the scaled one 2 N_h."
+  assumes: ["the HyperRNN of eq-full and eq-scaled with the hyper cell of eq-hyper-cell"]
+  derivation: weight-scaling
+
+- id: c-memory
+  type: mathematical
+  text: "The weights of the general HyperRNN take N_z times the parameters of those of a basic RNN, and it builds (N_h + N_x) / 2 times as many numbers per step as the scaled form."
+  assumes: ["the counts of c-rnn-params"]
+  derivation: weight-scaling
+
+- id: c-init-scale
+  type: mathematical
+  text: "With the initialization of Appendix A.2.3 every weight scaling vector of the HyperLSTM equals 0.1 in every entry, for every input, until training moves the weights of the projections to z_h and z_x from zero."
+  assumes: ["W_hhat_h = W_hhat_x = 0, b_hhat_h = b_hhat_x = 1 and W_hz = W_xz = 0.1 / N_z in every entry"]
+  derivation: weight-scaling

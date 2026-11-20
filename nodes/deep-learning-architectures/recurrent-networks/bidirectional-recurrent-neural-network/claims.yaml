@@ -1,0 +1,315 @@
+# The claims of the bidirectional recurrent neural network page (spec 07). The build computes the labels.
+- id: c-def
+  type: attributive
+  text: "Schuster and Paliwal extend a regular RNN to a bidirectional recurrent neural network (BRNN), which can be trained without the limitation of using input information just up to a preset future frame, by training it simultaneously in positive and negative time direction."
+  evidence:
+    - {work: "schuster-1997-bidirectional-recurrent-neural-networks", role: original, locator: "the abstract", stance: for}
+
+- id: c-split
+  type: definitional
+  text: "The BRNN splits the state neurons of a regular RNN in a part that is responsible for the positive time direction (forward states) and a part for the negative time direction (backward states); outputs from forward states are not connected to inputs of backward states, and vice versa."
+  evidence:
+    - {work: "schuster-1997-bidirectional-recurrent-neural-networks", role: original, locator: "p. 3", stance: for}
+
+- id: c-graves-def
+  type: definitional
+  text: "Bidirectional RNNs process the data in both directions with two separate hidden layers, which are then fed forwards to the same output layer, iterating the backward layer from t = T to 1 and the forward layer from t = 1 to T."
+  evidence:
+    - {work: "graves-2013-speech-recognition-deep-recurrent", role: original, locator: "p. 2", stance: for}
+
+- id: c-deep
+  type: definitional
+  text: "In a deep bidirectional RNN every hidden layer receives input from both the forward and backward layers at the level below; with LSTM in the hidden layers this is the deep bidirectional LSTM."
+  evidence:
+    - {work: "graves-2013-speech-recognition-deep-recurrent", role: original, locator: "Section 2", stance: for}
+
+- id: c-lipton-compatible
+  type: attributive
+  text: "The LSTM and the BRNN are compatible ideas: the LSTM introduces a new basic unit from which to compose a hidden layer, while the BRNN concerns the wiring of the hidden layers, regardless of what nodes they contain."
+  evidence:
+    - {work: "lipton-2015-critical-review-recurrent", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-torch-concat
+  type: definitional
+  text: "In torch.nn.LSTM with bidirectional=True, D = 2 and the output, of size D * H_out at each step, contains a concatenation of the forward and reverse hidden states at each time step in the sequence."
+  evidence:
+    - {work: "pytorch-torch-nn-lstm", role: original, locator: "p. 1", stance: for}
+
+- id: c-lipton-equations
+  type: definitional
+  text: "Lipton et al. describe a BRNN by three equations: a forward hidden layer h(t) computed from x(t) and h(t-1), a backward hidden layer z(t) computed from x(t) and z(t+1), and the output ŷ(t) = softmax(W^yh h(t) + W^yz z(t) + b_y)."
+  evidence:
+    - {work: "lipton-2015-critical-review-recurrent", role: review, locator: "Section 4.2", stance: for}
+
+- id: c-boundary
+  type: attributive
+  text: "Schuster and Paliwal set the unknown forward state inputs at the first step and backward state inputs at the last step arbitrarily to a fixed value (0.5), and set the unknown local state derivatives at the boundaries to zero."
+  evidence:
+    - {work: "schuster-1997-bidirectional-recurrent-neural-networks", role: original, locator: "pp. 3 to 4", stance: for}
+
+- id: c-special-cases
+  type: attributive
+  text: "Without the backward states the BRNN structure simplifies to a regular unidirectional forward RNN, and if the forward states are taken out, a regular RNN with a reversed time axis results."
+  evidence:
+    - {work: "schuster-1997-bidirectional-recurrent-neural-networks", role: original, locator: "p. 3", stance: for}
+
+- id: c-torch-layout
+  type: definitional
+  text: "In torch.nn.LSTM, weight_ih_l[k] for k > 0 has shape (4*hidden_size, num_directions * hidden_size), weight_ih_l[k]_reverse is analogous to weight_ih_l[k] for the reverse direction, and for bidirectional LSTMs forward and backward are directions 0 and 1 respectively."
+  evidence:
+    - {work: "pytorch-torch-nn-lstm", role: original, locator: "p. 1", stance: for}
+
+- id: c-params
+  type: mathematical
+  text: "A network of L layers of D directions of d_h LSTM cells with one bias per gate, d_x inputs and an affine output to K classes has N = D[4 d_h (d_x + d_h) + 4 d_h] + (L - 1) D [4 d_h (D d_h + d_h) + 4 d_h] + D d_h K + K parameters, with every 4 replaced by 1 for tanh cells."
+  assumes: ["the first layer reads d_x features and every layer above it the D d_h outputs of the layer below", "each direction has input weights, recurrent weights and one bias for its four gates", "no peepholes and no projection"]
+  derivation: parameter-count
+
+- id: c-graves-weights
+  type: mathematical
+  text: "With d_x = 123 and K = 62, a three-layer bidirectional LSTM with 250 cells per direction has 3,783,062 parameters and a three-layer unidirectional LSTM with 421 cells has 3,783,168; both round to 3.8M, and they differ by 106."
+  assumes: ["the count of c-params with D = 2, d_h = 250 and with D = 1, d_h = 421, L = 3", "123 inputs and 61 phonemes plus the CTC blank, as in Section 4 of Graves et al. (2013)"]
+  derivation: parameter-count
+
+- id: c-graves-peepholes
+  type: definitional
+  text: "In the LSTM of Graves et al., the weight matrices from the cell to gate vectors are diagonal, so element m in each gate vector only receives input from element m of the cell vector."
+  evidence:
+    - {work: "graves-2013-speech-recognition-deep-recurrent", role: original, locator: "Section 2", stance: for}
+
+- id: c-torch-biases
+  type: mathematical
+  text: "torch.nn.LSTM keeps two biases for every gate, so its recurrent layers have 4 L D d_h more parameters than a network with one bias per gate, and the two biases only enter the function through their sum."
+  assumes: ["torch.nn.LSTM adds b_ih and b_hh to the pre-activation of every gate of every direction and layer", "the network of c-params without its output layer"]
+  derivation: parameter-count
+
+- id: c-flops
+  type: mathematical
+  text: "A forward pass over B sequences of T steps costs C = 8 D B T d_h (d_x + d_h) + 8 (L - 1) D B T d_h (D d_h + d_h) + 2 B T D d_h K FLOPs in its products."
+  assumes: ["the network of c-params", "a multiply-add counts as 2 FLOPs, and the gate nonlinearities, the elementwise products and the softmax are not counted"]
+  derivation: parameter-count
+
+- id: c-context
+  type: mathematical
+  text: "In a unidirectional network the output at step t is a function of x_1, ..., x_t only; in a bidirectional network with at least one layer the output at every step is a function of the whole input x_1, ..., x_T."
+  assumes: ["every cell of a layer at step t reads the output of the layer below at step t", "a unidirectional cell reads the state of step t - 1; in a bidirectional layer the forward cell reads step t - 1 and the backward cell step t + 1", "the output at step t reads only the top layer at step t"]
+  derivation: context-and-depth
+
+- id: c-latency
+  type: mathematical
+  text: "No output of a bidirectional network can be computed before the last input x_T is known, so its first output waits T - 1 steps longer than that of a unidirectional network."
+  assumes: ["the networks of c-context", "a cell step takes one unit of time once its inputs are known"]
+  derivation: context-and-depth
+
+- id: c-lipton-online
+  type: attributive
+  text: "The BRNN cannot run continuously, as it requires a fixed endpoint in both the future and in the past, and it is not an appropriate machine learning algorithm for the online setting, as it is implausible to receive information from the future."
+  evidence:
+    - {work: "lipton-2015-critical-review-recurrent", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-depth
+  type: mathematical
+  text: "The longest chain of cell steps that must run one after the other has length T + L - 1 in a unidirectional network of L layers and L T in a bidirectional one."
+  assumes: ["the networks of c-context", "a cell step takes one unit of time once its inputs are known, and any number of independent steps may run at once"]
+  derivation: context-and-depth
+
+- id: c-sequential
+  type: attributive
+  text: "Recurrent models generate a sequence of hidden states h_t as a function of the previous hidden state h_{t-1} and the input for position t, and this inherently sequential nature precludes parallelization within training examples."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 1", stance: for}
+
+- id: c-train-same
+  type: attributive
+  text: "The BRNN can principally be trained with the same algorithms as a regular unidirectional RNN because there are no interactions between the two types of state neurons and, therefore, it can be unfolded into a general feedforward network."
+  evidence:
+    - {work: "schuster-1997-bidirectional-recurrent-neural-networks", role: original, locator: "p. 3", stance: for}
+
+- id: c-graves-sgd
+  type: attributive
+  text: "Graves et al. trained all their networks using stochastic gradient descent, with learning rate 10^-4, momentum 0.9 and random initial weights drawn uniformly from [-0.1, 0.1]."
+  evidence:
+    - {work: "graves-2013-speech-recognition-deep-recurrent", role: original, locator: "Section 4", stance: for}
+
+- id: c-huang-bptt
+  type: attributive
+  text: "Huang et al. train bidirectional LSTM networks with backpropagation through time, doing the forward and backward passes for whole sentences and resetting the hidden states to 0 at the beginning of each sentence."
+  evidence:
+    - {work: "huang-2015-bidirectional-lstm-crf", role: original, locator: "p. 3", stance: for}
+
+- id: c-padding
+  type: mathematical
+  text: "Reversing the first n_b steps of each padded sequence, running the backward direction left to right and reversing its states again gives, at the real steps, the backward states of each sequence alone, and so does a reverse scan over all T steps that sets the state to zero after every padded step."
+  assumes: ["a batch of sequences of lengths n_b <= T, padded at the end to T steps", "the backward direction starts from a zero state"]
+  derivation: padding
+
+- id: c-padding-naive
+  type: mathematical
+  text: "Running the backward direction from step T without the reversal or the mask, on the raw padded batch, gives in general different states at every real step of a sequence with n_b < T."
+  assumes: ["the batch of c-padding", "a recurrent cell whose state depends on its input"]
+  derivation: padding
+
+- id: c-delay
+  type: attributive
+  text: "Delaying the output by some frames has been used successfully to improve results, but the optimal delay is task dependent and has to be found by trial and error on a validation test set."
+  evidence:
+    - {work: "schuster-1997-bidirectional-recurrent-neural-networks", role: original, locator: "pp. 2 to 3", stance: for}
+
+- id: c-bahdanau-recent
+  type: attributive
+  text: "Bahdanau et al. use a bidirectional RNN so that the annotation of each word summarizes both the preceding words and the following words, and note that, due to the tendency of RNNs to better represent recent inputs, the annotation will be focused on the words around it."
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-merge
+  type: attributive
+  text: "Merging the outputs of two separate networks, one for each time direction, by linear or logarithmic opinion pooling assumes their opinions to be independent, and it is generally not clear how to merge network outputs in an optimal way since different networks trained on the same data can no longer be regarded as independent."
+  evidence:
+    - {work: "schuster-1997-bidirectional-recurrent-neural-networks", role: original, locator: "p. 3", stance: for}
+
+- id: c-schuster-timit
+  type: empirical
+  text: "The TIMIT test recognition rates are 59.67% (MLP-1), 65.69% (MLP-3), 64.32% (MLP-5), 63.2% (FOR-RNN), 61.91% (BACK-RNN), 65.83% (FOR-RNN, one delay), 63.27% (FOR-RNN, two delay), 65.28% (MERGE) and 68.53% for the BRNN, the best performance."
+  scope:
+    models: "MLPs, forward, backward and delayed RNNs, a merged pair of RNNs, and a BRNN, each with approximately 13 000 free parameters"
+    data: ["TIMIT"]
+    setting: "phoneme classification of acoustic segments, 61 classes"
+    small_scale: true
+  evidence:
+    - {work: "schuster-1997-bidirectional-recurrent-neural-networks", role: original, locator: "p. 7", stance: for}
+
+- id: c-schuster-conclusion
+  type: attributive
+  text: "Schuster and Paliwal conclude that with the BRNN there is no need to merge outputs from two separate networks or to search for an optimal delay, and that, the number of free parameters having been kept approximately the same, the training time for the BRNN is about the same as for the other RNNs."
+  evidence:
+    - {work: "schuster-1997-bidirectional-recurrent-neural-networks", role: original, locator: "p. 9", stance: for}
+
+- id: c-graves-table
+  type: empirical
+  text: "The phoneme error rates on the TIMIT core test set are 37.6% for CTC-3l-500h-tanh (3.7M weights), 23.0% for CTC-1l-622h (3.8M), 19.6% for CTC-3l-421h-uni (3.8M) and 18.6% for CTC-3l-250h (3.8M)."
+  scope:
+    models: "CTC-trained recurrent networks with approximately the same number of weights: a three-layer tanh network, one-layer and three-layer bidirectional LSTMs, and a three-layer unidirectional LSTM"
+    data: ["TIMIT"]
+    setting: "phoneme recognition with CTC and beam search decoding"
+  evidence:
+    - {work: "graves-2013-speech-recognition-deep-recurrent", role: original, locator: "Table 1", stance: for}
+
+- id: c-graves-conclusion
+  type: attributive
+  text: "From four networks with approximately the same number of weights, Graves et al. conclude that LSTM works much better than tanh for this task, that bidirectional LSTM has a slight advantage over unidirectional LSTM, and that depth is more important than layer size."
+  evidence:
+    - {work: "graves-2013-speech-recognition-deep-recurrent", role: original, locator: "Section 4", stance: for}
+
+- id: c-graves-once
+  type: attributive
+  text: "All experiments of Graves et al. were run only once, so the variance due to random weight initialisation and weight noise is unknown."
+  evidence:
+    - {work: "graves-2013-speech-recognition-deep-recurrent", role: original, locator: "Section 4", stance: for}
+
+- id: c-huang-table
+  type: empirical
+  text: "On POS, CoNLL2000 and CoNLL2003, the LSTM scores 97.10, 92.88 and 79.82 and the BI-LSTM 97.30, 93.64 and 81.11 with random embeddings, and the LSTM 97.29, 92.99 and 83.74 and the BI-LSTM 97.40, 93.92 and 85.17 with Senna embeddings."
+  scope:
+    models: "LSTM and bidirectional LSTM taggers"
+    data: ["Penn TreeBank POS", "CoNLL 2000 chunking", "CoNLL 2003 named entity recognition"]
+    setting: "sequence tagging, accuracy for POS and F1 for chunking and NER"
+  evidence:
+    - {work: "huang-2015-bidirectional-lstm-crf", role: original, locator: "Table 2", stance: for}
+
+- id: c-huang-crf-table
+  type: empirical
+  text: "On POS, CoNLL2000 and CoNLL2003, the BI-LSTM-CRF scores 97.43, 94.13 and 84.26 with random embeddings and 97.55, 94.46 and 88.83 with Senna embeddings."
+  scope:
+    models: "bidirectional LSTM taggers with a CRF output layer"
+    data: ["Penn TreeBank POS", "CoNLL 2000 chunking", "CoNLL 2003 named entity recognition"]
+    setting: "sequence tagging, accuracy for POS and F1 for chunking and NER"
+  evidence:
+    - {work: "huang-2015-bidirectional-lstm-crf", role: original, locator: "Table 2", stance: for}
+
+- id: c-huang-superiority
+  type: attributive
+  text: "Huang et al. write that the results in their paper confirm the superiority of BI-LSTM compared to LSTM."
+  evidence:
+    - {work: "huang-2015-bidirectional-lstm-crf", role: original, locator: "p. 3", stance: for}
+
+- id: c-lipton-handwriting
+  type: empirical
+  text: "On handwriting collected from an interactive whiteboard, a bidirectional LSTM outperformed an HMM model by achieving 81.5% word-level accuracy, compared to 70.1% for the HMM."
+  scope:
+    models: "bidirectional LSTM and HMM"
+    data: ["handwriting recorded as pen coordinates on an interactive whiteboard"]
+    setting: "handwriting recognition, as reported by Lipton et al. from Graves et al. (2009)"
+  evidence:
+    - {work: "lipton-2015-critical-review-recurrent", role: review, locator: "Section 5.5", stance: for}
+
+- id: c-graves-deep
+  type: attributive
+  text: "Graves et al. write that, as far as they are aware, theirs is the first time deep LSTM has been applied to speech recognition, and that it yields a dramatic improvement over single-layer LSTM."
+  evidence:
+    - {work: "graves-2013-speech-recognition-deep-recurrent", role: original, locator: "Section 2", stance: for}
+
+- id: c-schuster-dependent
+  type: attributive
+  text: "In the second part of their paper, Schuster and Paliwal modify the bidirectional structure to allow efficient estimation of the conditional posterior probability of complete symbol sequences without making any explicit assumption about the shape of the distribution."
+  evidence:
+    - {work: "schuster-1997-bidirectional-recurrent-neural-networks", role: original, locator: "the abstract", stance: for}
+
+- id: c-huang-first
+  type: attributive
+  text: "Huang et al. describe their work as the first to apply a bidirectional LSTM CRF (BI-LSTM-CRF) model to NLP benchmark sequence tagging data sets."
+  evidence:
+    - {work: "huang-2015-bidirectional-lstm-crf", role: original, locator: "the abstract", stance: for}
+
+- id: c-elmo
+  type: definitional
+  text: "ELMo word vectors are learned functions of the internal states of a deep bidirectional language model (biLM), which is pre-trained on a large text corpus."
+  evidence:
+    - {work: "peters-2018-deep-contextualized-word-representations", role: original, locator: "the abstract", stance: for}
+
+- id: c-contrast
+  type: attributive
+  text: "Devlin et al. contrast BERT with Peters et al. (2018a), which uses a shallow concatenation of independently trained left-to-right and right-to-left LMs."
+  evidence:
+    - {work: "devlin-2019-bert", role: original, locator: "p. 2", stance: for}
+
+- id: c-bert
+  type: definitional
+  text: "BERT is designed to pre-train deep bidirectional representations from unlabeled text by jointly conditioning on both left and right context in all layers."
+  evidence:
+    - {work: "devlin-2019-bert", role: original, locator: "the abstract", stance: for}
+
+- id: c-bahdanau
+  type: definitional
+  text: "The encoder of Bahdanau et al. is a bidirectional RNN whose forward RNN reads the input sequence from x_1 to x_Tx and whose backward RNN reads it from x_Tx to x_1, and the annotation of each word x_j is the concatenation of the forward hidden state and the backward one."
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-torch-hn
+  type: definitional
+  text: "For bidirectional LSTMs, h_n is not equivalent to the last element of output; the former contains the final forward and reverse hidden states, while the latter contains the final forward hidden state and the initial reverse hidden state."
+  evidence:
+    - {work: "pytorch-torch-nn-lstm", role: original, locator: "p. 1", stance: for}
+
+- id: c-hist-schuster
+  type: historical
+  text: "Schuster and Paliwal published Bidirectional Recurrent Neural Networks in IEEE Transactions on Signal Processing, vol. 45, no. 11, November 1997."
+  evidence:
+    - {work: "schuster-1997-bidirectional-recurrent-neural-networks", role: original, locator: "p. 1", stance: for}
+
+- id: c-lipton-first
+  type: historical
+  text: "The BRNN was first described by Schuster and Paliwal [1997]; it has two layers of hidden nodes, both connected to input and output, the first with recurrent connections from the past time steps and the second with the direction of recurrent connections flipped."
+  evidence:
+    - {work: "lipton-2015-critical-review-recurrent", role: review, locator: "Section 4.2", stance: for}
+
+- id: c-hist-blstm
+  type: historical
+  text: "The combination of LSTM and BRNN, termed a BLSTM, was used on handwriting recognition and phoneme classification by Graves and Schmidhuber (2005) and Graves et al. (2009)."
+  evidence:
+    - {work: "lipton-2015-critical-review-recurrent", role: review, locator: "Section 4.2", stance: for}
+
+- id: c-hist-bahdanau
+  type: historical
+  text: "Bahdanau et al. propose a bidirectional RNN (Schuster and Paliwal, 1997) as their encoder, noting that it has been successfully used recently in speech recognition (Graves et al., 2013)."
+  evidence:
+    - {work: "bahdanau-2015-neural-machine-translation", role: original, locator: "Section 3.2", stance: for}

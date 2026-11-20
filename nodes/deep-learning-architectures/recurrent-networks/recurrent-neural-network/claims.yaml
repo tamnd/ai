@@ -1,0 +1,403 @@
+# The claims of the recurrent neural network page (spec 07). The build computes the labels.
+- id: c-def
+  type: definitional
+  text: "Recurrent neural networks are feedforward neural networks augmented by edges that span adjacent time steps; at time t, nodes with recurrent edges receive input from the current data point x(t) and from the hidden node values h(t-1) of the previous state."
+  evidence:
+    - {work: "lipton-2015-critical-review-recurrent", role: original, locator: "Section 3", stance: for}
+
+- id: c-unfolded
+  type: attributive
+  text: "Unfolded across time steps, a recurrent network can be interpreted not as cyclic but as a deep network with one layer per time step and shared weights across time steps."
+  evidence:
+    - {work: "lipton-2015-critical-review-recurrent", role: original, locator: "Section 3", stance: for}
+
+- id: c-mikolov-elman
+  type: definitional
+  text: "Mikolov et al. use a simple recurrent neural network or Elman network with an input layer x, a hidden or context layer s and an output layer y, where x(t) concatenates the vector w(t) of the current word with the output of the context layer at time t - 1, with a sigmoid on the hidden layer and a softmax on the output layer."
+  evidence:
+    - {work: "mikolov-2010-recurrent-neural-network-language-model", role: original, locator: "Section 2", stance: for}
+
+- id: c-torch-equations
+  type: definitional
+  text: "torch.nn.RNN applies an Elman RNN with a tanh or ReLU nonlinearity, computing h_t = tanh(x_t W_ih^T + b_ih + h_{t-1} W_hh^T + b_hh) for each element of the input sequence, with relu in place of tanh when the nonlinearity is 'relu'."
+  evidence:
+    - {work: "pytorch-torch-nn-rnn", role: original, locator: "the title page", stance: for}
+
+- id: c-torch-init
+  type: definitional
+  text: "torch.nn.RNN initializes all weights and biases from U(-sqrt(k), sqrt(k)) with k = 1/hidden_size."
+  evidence:
+    - {work: "pytorch-torch-nn-rnn", role: original, locator: "the title page", stance: for}
+
+- id: c-lipton-equations
+  type: definitional
+  text: "Lipton et al. write the forward pass of a simple recurrent network as h(t) = σ(W_hx x(t) + W_hh h(t-1) + b_h) and ŷ(t) = softmax(W_yh h(t) + b_y)."
+  evidence:
+    - {work: "lipton-2015-critical-review-recurrent", role: original, locator: "Section 3", stance: for}
+
+- id: c-mikolov-s0
+  type: attributive
+  text: "Mikolov et al. set the initial state s(0) to a vector of small values, like 0.1, and note that when processing a large amount of data the initialization is not crucial."
+  evidence:
+    - {work: "mikolov-2010-recurrent-neural-network-language-model", role: original, locator: "Section 2", stance: for}
+
+- id: c-params
+  type: mathematical
+  text: "One layer of eq-step with input size d_x and d_h units has d_h d_x + d_h^2 + 2 d_h parameters, the same number whatever the length of the sequence."
+  assumes: ["input weights W (d_x, d_h), recurrent weights U (d_h, d_h) and two biases of size d_h, as in torch.nn.RNN", "one layer, no readout"]
+  derivation: parameter-and-flop-count
+
+- id: c-one-bias
+  type: mathematical
+  text: "The two biases of eq-step only enter as their sum, so the layer computes the same functions with d_h d_x + d_h^2 + d_h parameters."
+  assumes: ["the layer of c-params"]
+  derivation: parameter-and-flop-count
+
+- id: c-gated-ratio
+  type: mathematical
+  text: "A GRU layer and an LSTM layer of the same sizes, with input weights, recurrent weights and two biases per block, have exactly 3 and 4 times the parameters of the simple layer and cost 3 and 4 times its FLOPs in their products."
+  assumes: ["the GRU has three blocks and the LSTM four, each of the form of the simple layer", "no peepholes and no projection", "a multiply-add counts as 2 FLOPs and only the matrix products are counted"]
+  derivation: parameter-and-flop-count
+
+- id: c-pixel-size
+  type: mathematical
+  text: "A recurrent layer of 100 units reading one pixel per step, as in the pixel-by-pixel MNIST experiments of Le et al., has 10,300 parameters."
+  assumes: ["the layer of c-params with d_x = 1 and d_h = 100"]
+  derivation: parameter-and-flop-count
+
+- id: c-le-factor4
+  type: attributive
+  text: "With 100 hidden units for all networks on the adding problem, the LSTMs had more parameters by a factor of about 4 and also took about 4 times as much computation per timestep."
+  evidence:
+    - {work: "le-2015-simple-way-initialize-recurrent", role: original, locator: "Section 4.1", stance: for}
+
+- id: c-flops
+  type: mathematical
+  text: "A forward pass of the layer over a batch of B sequences of T steps costs 2 B T d_h (d_x + d_h) FLOPs in its two matrix products."
+  assumes: ["a multiply-add counts as 2 FLOPs", "the nonlinearity and the additions of the biases are not counted"]
+  derivation: parameter-and-flop-count
+
+- id: c-sequential
+  type: attributive
+  text: "Recurrent models generate a sequence of hidden states h_t as a function of the previous hidden state h_{t-1} and the input for position t, and this inherently sequential nature precludes parallelization within training examples."
+  evidence:
+    - {work: "vaswani-2017-attention", role: original, locator: "Section 1", stance: for}
+
+- id: c-bptt-werbos
+  type: historical
+  text: "The unfolded network can be trained across many time steps using backpropagation; this algorithm, backpropagation through time (BPTT), was introduced by Werbos in 1990, and all recurrent networks in common current use apply it."
+  evidence:
+    - {work: "lipton-2015-critical-review-recurrent", role: original, locator: "Section 3", stance: for}
+
+- id: c-bptt-recursion
+  type: mathematical
+  text: "With g_t = dL/dh_t, e_t the part of it that comes from the loss at step t and δ_t = g_t ⊙ f'(a_t), the gradients satisfy g_T = e_T and g_{t-1} = e_{t-1} + δ_t U^T, and the same recursion gives dL/dh_0 = δ_1 U^T."
+  assumes: ["the layer of eq-step on one sequence, with row vectors", "a loss L that depends on the states h_1, ..., h_T"]
+  derivation: bptt-sum
+
+- id: c-bptt-sum
+  type: mathematical
+  text: "The gradients of the shared parameters are sums over the steps, dL/dU = Σ_t h_{t-1}^T δ_t, dL/dW = Σ_t x_t^T δ_t and dL/db_i = dL/db_h = Σ_t δ_t, each term being the gradient with respect to the copy of the parameter used at step t in the unrolled network."
+  assumes: ["the setting of c-bptt-recursion"]
+  derivation: bptt-sum
+
+- id: c-bptt-cost
+  type: mathematical
+  text: "Over a batch of B sequences of T steps, the backward pass costs 4 B T d_h (d_x + d_h) FLOPs in its products, twice the forward pass."
+  assumes: ["the setting of c-bptt-recursion", "the gradients with respect to the inputs, the weights and the previous state are all computed", "a multiply-add counts as 2 FLOPs"]
+  derivation: bptt-sum
+
+- id: c-bptt-memory
+  type: mathematical
+  text: "Backpropagation through time needs the T states, or the T pre-activations, of the forward pass, B T d_h numbers that grow with the length of the sequence."
+  assumes: ["the setting of c-bptt-recursion", "the states are stored rather than recomputed"]
+  derivation: bptt-sum
+
+- id: c-tbptt
+  type: attributive
+  text: "Truncated backpropagation through time (Williams and Zipser, 1989) sets a maximum number of time steps along which error can be propagated; with a small cutoff it alleviates the exploding gradient problem, but it requires that one sacrifice the ability to learn long-range dependencies."
+  evidence:
+    - {work: "lipton-2015-critical-review-recurrent", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-mikolov-tbptt
+  type: attributive
+  text: "Mikolov et al. describe their training algorithm as truncated backpropagation through time with τ = 1, which is not optimal, as the weights are updated based on the error vector computed only for the current time step."
+  evidence:
+    - {work: "mikolov-2010-recurrent-neural-network-language-model", role: original, locator: "Section 2", stance: for}
+
+- id: c-jacobian
+  type: mathematical
+  text: "The Jacobian of one step of eq-step with respect to the previous state, for column vectors, is J_t = diag(f'(a_t)) U^T, where a_t is the pre-activation of the step."
+  assumes: ["the layer of eq-step on one sequence", "f differentiable at every a_t"]
+  derivation: gradient-bound
+
+- id: c-product
+  type: mathematical
+  text: "For k < t, dh_t/dh_k = J_t J_{t-1} ... J_{k+1}, a product of t - k step Jacobians."
+  assumes: ["the setting of c-jacobian"]
+  derivation: gradient-bound
+
+- id: c-bound
+  type: mathematical
+  text: "If |f'| <= γ everywhere, the spectral norm of dh_t/dh_k is at most (γ σ_1(U))^(t-k), where σ_1(U) is the largest singular value of U."
+  assumes: ["the setting of c-jacobian", "|f'(a)| <= γ for every a"]
+  derivation: gradient-bound
+
+- id: c-vanish-sufficient
+  type: mathematical
+  text: "σ_1(U) < 1/γ is sufficient for dh_t/dh_k to vanish exponentially in t - k."
+  assumes: ["the setting of c-bound"]
+  derivation: gradient-bound
+
+- id: c-explode-necessary
+  type: mathematical
+  text: "σ_1(U) > 1/γ is necessary for dh_t/dh_k to grow exponentially in t - k."
+  assumes: ["the setting of c-bound"]
+  derivation: gradient-bound
+
+- id: c-gamma
+  type: mathematical
+  text: "The derivative of tanh and of relu is bounded by γ = 1, and that of the logistic sigmoid by γ = 1/4."
+  assumes: ["the derivative of relu at 0 is taken in [0, 1]"]
+  derivation: gradient-bound
+
+- id: c-hochreiter-decay
+  type: attributive
+  text: "With BPTT or RTRL, error signals going backwards in time tend to either blow up or vanish, because the temporal evolution of the backpropagated error exponentially depends on the size of the weights (Hochreiter 1991)."
+  evidence:
+    - {work: "hochreiter-1997-long-short-term-memory", role: original, locator: "Section 1", stance: for}
+
+- id: c-lipton-toy
+  type: attributive
+  text: "In a network with a single recurrent node, the contribution of an input to a later output either explodes or approaches zero exponentially fast, depending on whether the weight of the recurrent edge is above or below 1 in absolute value; with a sigmoid the vanishing gradient problem is more pressing, and with a rectified linear unit it is easier to imagine the exploding gradient."
+  evidence:
+    - {work: "lipton-2015-critical-review-recurrent", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-pascanu-condition
+  type: attributive
+  text: "It is sufficient for the largest eigenvalue λ1 of the recurrent weight matrix to be smaller than 1 for long term components to vanish (as t → ∞) and necessary for it to be larger than 1 for gradients to explode, with 1 replaced by 1/γ for a nonlinearity whose derivative is bounded by γ."
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "Section 2.1", stance: for}
+
+- id: c-clip-alg
+  type: definitional
+  text: "Pascanu et al. rescale the gradient ĝ to threshold ĝ / ||ĝ|| whenever ||ĝ|| >= threshold (Algorithm 1), an algorithm very similar to the one proposed by Tomas Mikolov, which clips the temporal components of the gradient element-wise."
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "p. 6", stance: for}
+
+- id: c-clip-threshold
+  type: attributive
+  text: "One good heuristic for setting the clipping threshold is to look at statistics on the average norm over a sufficiently large number of updates; for a given task and model size, training is not very sensitive to it and behaves well even for rather small thresholds."
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "p. 6", stance: for}
+
+- id: c-clip-not-reg
+  type: attributive
+  text: "Pascanu et al.'s results suggest that clipping the gradients solves an optimization issue and does not act as a regularizer, as both the training and the test error improve in general."
+  evidence:
+    - {work: "pascanu-2013-difficulty-training-recurrent", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-irnn-def
+  type: definitional
+  text: "Le et al. initialize the recurrent weight matrix to be the identity matrix and the biases to be zero, in a recurrent network of rectified linear units."
+  evidence:
+    - {work: "le-2015-simple-way-initialize-recurrent", role: original, locator: "Section 2", stance: for}
+
+- id: c-irnn-le
+  type: attributive
+  text: "In the absence of input, an RNN composed of ReLUs and initialized with the identity matrix, which Le et al. call an IRNN, just stays in the same state indefinitely, and its error derivatives remain constant provided no extra error-derivatives are added."
+  evidence:
+    - {work: "le-2015-simple-way-initialize-recurrent", role: original, locator: "Section 2", stance: for}
+
+- id: c-irnn-state
+  type: mathematical
+  text: "With relu, U = I, zero biases and zero inputs, a state h_0 >= 0 never changes: h_t = h_0 for every t."
+  assumes: ["the layer of eq-step with f = relu"]
+  derivation: identity-initialization
+
+- id: c-irnn-grad
+  type: mathematical
+  text: "If moreover every coordinate of h_0 is positive, dh_t/dh_k = I for every k < t."
+  assumes: ["the setting of c-irnn-state"]
+  derivation: identity-initialization
+
+- id: c-irnn-scaled
+  type: mathematical
+  text: "With relu, U = cI for 0 < c < 1, zero biases, zero inputs and h_0 >= 0, h_t = c^t h_0 and dh_t/dh_k = c^(t-k) I when h_0 is positive."
+  assumes: ["the layer of eq-step with f = relu"]
+  derivation: identity-initialization
+
+- id: c-irnn-forget
+  type: attributive
+  text: "Scaling the identity matrix by a small scalar is an effective mechanism to forget long range effects."
+  evidence:
+    - {work: "le-2015-simple-way-initialize-recurrent", role: original, locator: "Section 2", stance: for}
+
+- id: c-tanh-identity
+  type: mathematical
+  text: "With tanh, U = I, zero biases and zero inputs, a coordinate that starts at h_0 in (0, 1] decreases at every step and h_t sqrt(2t/3) → 1."
+  assumes: ["the layer of eq-step with f = tanh"]
+  derivation: identity-initialization
+
+- id: c-le-setup
+  type: attributive
+  text: "In Le et al.'s experiments the non-recurrent weights were initialized from a Gaussian with standard deviation 0.001, and the models were trained by SGD with a fixed learning rate and gradient clipping, chosen by a grid search over learning rates from 10^-9 to 10^-1 and clipping values 1, 10, 100 and 1000."
+  evidence:
+    - {work: "le-2015-simple-way-initialize-recurrent", role: original, locator: "Section 4", stance: for}
+
+- id: c-weiss-relu-hard
+  type: attributive
+  text: "ReLU-activated RNNs are known to be notoriously hard to train because of the exploding gradient problem."
+  evidence:
+    - {work: "weiss-2018-practical-computational-power-finite", role: original, locator: "Section 4", stance: for}
+
+- id: c-turing
+  type: attributive
+  text: "A finite-sized recurrent neural network with sigmoidal activation functions can simulate a universal Turing machine (Siegelmann and Sontag, 1991), which shows its expressive power but not that such a network can be found by gradient descent."
+  evidence:
+    - {work: "lipton-2015-critical-review-recurrent", role: original, locator: "Section 1.3", stance: for}
+
+- id: c-weiss-stronger
+  type: attributive
+  text: "Under finite precision, the LSTM and the Elman RNN with ReLU activation are strictly stronger than the RNN with a squashing activation and the GRU, because LSTMs and ReLU RNNs can easily implement counting behavior."
+  evidence:
+    - {work: "weiss-2018-practical-computational-power-finite", role: original, locator: "the abstract", stance: for}
+
+- id: c-weiss-srnn
+  type: attributive
+  text: "The finite-precision SRNN h_t = tanh(W x + U h_{t-1} + b) cannot designate unbounded counting dimensions, because its counting behavior is within a tanh activation, which makes it inherently unstable and bounded to a relatively narrow region."
+  evidence:
+    - {work: "weiss-2018-practical-computational-power-finite", role: original, locator: "Section 4", stance: for}
+
+- id: c-weiss-irnn
+  type: attributive
+  text: "Finite-precision IRNNs can perform unbounded counting conditioned on input symbols, representing each counter as two dimensions."
+  evidence:
+    - {work: "weiss-2018-practical-computational-power-finite", role: original, locator: "Section 4", stance: for}
+
+- id: c-mikolov-hidden
+  type: attributive
+  text: "The size of the context (hidden) layer of Mikolov et al.'s RNN language models is usually 30 to 500 hidden units."
+  evidence:
+    - {work: "mikolov-2010-recurrent-neural-network-language-model", role: original, locator: "Section 2", stance: for}
+
+- id: c-mikolov-results
+  type: empirical
+  text: "A mixture of several RNN language models gave around 50% reduction of perplexity against a strong backoff language model, and around 18% reduction of word error rate on the Wall Street Journal task against a backoff model trained on the same amount of data, and around 5% on the much harder NIST RT05 task."
+  scope:
+    models: "Elman RNN language models and their mixtures"
+    data: ["Wall Street Journal", "NIST RT05"]
+    setting: "language modelling for speech recognition, rescoring against backoff n-gram models"
+  evidence:
+    - {work: "mikolov-2010-recurrent-neural-network-language-model", role: original, locator: "the abstract", stance: for}
+
+- id: c-le-adding
+  type: empirical
+  text: "On the adding problem, both LSTMs and RNNs started to struggle when T was around 150; for T = 200, 300 and 400 no hyperparameter combination gave a good result for the tanh RNN, while the convergence of IRNNs was as good as that of LSTMs."
+  scope:
+    models: "tanh RNN, LSTM and IRNN with 100 hidden units"
+    data: ["adding problem, 100,000 training and 10,000 test sequences"]
+    setting: "SGD with gradient clipping after a grid search"
+  evidence:
+    - {work: "le-2015-simple-way-initialize-recurrent", role: original, locator: "Section 4.1", stance: for}
+    - {work: "le-2015-simple-way-initialize-recurrent", role: original, locator: "Table 1", stance: for}
+
+- id: c-le-mnist
+  type: empirical
+  text: "On MNIST with the 784 pixels presented one at a time, standard RNNs failed to work, even with ReLUs, whereas the IRNN achieved a 3% test error rate."
+  scope:
+    models: "tanh RNN, relu RNN, LSTM and IRNN with 100 hidden units"
+    data: ["MNIST, pixels in scanline order"]
+    setting: "classification after reading all 784 pixels, SGD with gradient clipping"
+  evidence:
+    - {work: "le-2015-simple-way-initialize-recurrent", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-le-mnist-lstm
+  type: empirical
+  text: "On MNIST with the pixels presented sequentially, the IRNN was better than the LSTM, achieving a 3% test set error compared to 34% for the LSTM."
+  scope:
+    models: "LSTM and IRNN with 100 hidden units"
+    data: ["MNIST, pixels in scanline order"]
+    setting: "classification after reading all 784 pixels, SGD with gradient clipping"
+  evidence:
+    - {work: "le-2015-simple-way-initialize-recurrent", role: original, locator: "Section 3", stance: for}
+
+- id: c-le-permuted
+  type: empirical
+  text: "With a fixed random permutation of the pixels, IRNNs were still better than LSTMs on the non-permuted pixels."
+  scope:
+    models: "LSTM and IRNN with 100 hidden units"
+    data: ["MNIST, pixels in a fixed random order"]
+    setting: "classification after reading all 784 pixels"
+  evidence:
+    - {work: "le-2015-simple-way-initialize-recurrent", role: original, locator: "Section 4.2", stance: for}
+
+- id: c-le-lm
+  type: empirical
+  text: "On the one billion word benchmark, the test perplexities are 68.8 for an LSTM of 512 units, 69.4 for an IRNN of 4 layers of 512 units, 70.2 for an IRNN of 1024 units with a linear projection to 512 units, 71.8 for a tanh RNN of 4 layers of 512 units and 72.5 for a tanh RNN of 1024 units with the projection."
+  scope:
+    models: "LSTM, IRNN and tanh RNN of about the same number of parameters"
+    data: ["One Billion Word benchmark, an output vocabulary of 1,000,000 words"]
+    setting: "language modelling"
+  evidence:
+    - {work: "le-2015-simple-way-initialize-recurrent", role: original, locator: "Table 3", stance: for}
+
+- id: c-le-speech-init
+  type: empirical
+  text: "On TIMIT, Le et al. initialized the recurrent matrices with 0.01 I, because the full identity led to slow convergence, worse results and sometimes divergence during training."
+  scope:
+    models: "iRNN"
+    data: ["TIMIT"]
+    setting: "phoneme recognition, frame classification"
+  evidence:
+    - {work: "le-2015-simple-way-initialize-recurrent", role: original, locator: "Section 4.4", stance: for}
+
+- id: c-le-speech
+  type: empirical
+  text: "The frame error rates (dev / test) on TIMIT are 35.0 / 36.2 for a tanh RNN of 500 neurons and 2 layers, 34.5 / 35.4 for an LSTM of 250 cells and 2 layers, 34.3 / 35.5 for an iRNN of 500 neurons and 2 layers, 33.0 / 33.8 for an iRNN of 5 layers and 35.6 / 37.0 for a tanh RNN of 5 layers."
+  scope:
+    models: "tanh RNN, LSTM and iRNN with 2 and 5 layers"
+    data: ["TIMIT"]
+    setting: "phoneme recognition, frame classification"
+  evidence:
+    - {work: "le-2015-simple-way-initialize-recurrent", role: original, locator: "Table 4", stance: for}
+
+- id: c-lipton-xor
+  type: empirical
+  text: "On a temporal XOR task, where a perfect system achieves an accuracy of 66.7%, the simple network of Elman approaches this maximum achievable score."
+  scope:
+    models: "Elman's simple recurrent network"
+    data: ["sequences of three-token XOR segments"]
+    setting: "next-token prediction"
+  evidence:
+    - {work: "lipton-2015-critical-review-recurrent", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-jordan
+  type: definitional
+  text: "Jordan's 1986 network is a feedforward network with a single hidden layer extended with special units, to which the output node values are fed and which feed these values to the hidden nodes at the following time step."
+  evidence:
+    - {work: "lipton-2015-critical-review-recurrent", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-hist-early
+  type: historical
+  text: "In 1982 Hopfield introduced a family of recurrent neural networks with pattern recognition capabilities, and an early architecture for supervised learning on sequences was introduced by Jordan in 1986."
+  evidence:
+    - {work: "lipton-2015-critical-review-recurrent", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-hist-elman
+  type: historical
+  text: "The architecture introduced by Elman in 1990 is simpler than the earlier Jordan architecture; Jordan calls his special units state units, while Elman calls a corresponding structure context units."
+  evidence:
+    - {work: "lipton-2015-critical-review-recurrent", role: original, locator: "Section 3.1", stance: for}
+
+- id: c-hist-difficulty
+  type: historical
+  text: "Learning with recurrent networks can be especially challenging due to the difficulty of learning long-range dependencies, as described by Bengio et al. (1994) and expanded upon by Hochreiter et al. (2001)."
+  evidence:
+    - {work: "lipton-2015-critical-review-recurrent", role: original, locator: "Section 3.2", stance: for}
+
+- id: c-hist-mikolov
+  type: historical
+  text: "Mikolov, Karafiát, Burget, Černocký and Khudanpur presented their recurrent neural network based language model at INTERSPEECH 2010 in Makuhari, Chiba, Japan."
+  evidence:
+    - {work: "mikolov-2010-recurrent-neural-network-language-model", role: original, locator: "p. 1045", stance: for}

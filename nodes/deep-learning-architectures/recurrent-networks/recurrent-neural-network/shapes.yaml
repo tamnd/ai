@@ -1,0 +1,43 @@
+# SPDX-License-Identifier: MIT
+# The shape contract of one simple (Elman) recurrent layer (spec 08.6), in the form of torch.nn.RNN with its two
+# bias vectors: h_t = f(x_t W + b_i + h_{t-1} U + b_h), with f = tanh or relu. Both nonlinearities have these shapes,
+# these parameters and these FLOPs.
+# The FLOPs count the products of the two projections only, a multiply-add as 2; the nonlinearity is left out, as on
+# the pages of the LSTM and the GRU.
+config:
+  input_size:  {meaning: "number of features of each input vector x_t", symbol: "d_x", example: 3, sample: [1, 5]}
+  hidden_size: {meaning: "number of units, the width of h_t", symbol: "d_h", example: 4, sample: [1, 6]}
+axes:
+  B: {meaning: "batch", example: 2}
+  T: {meaning: "length of the sequence", example: 5}
+  I: input_size
+  H: hidden_size
+blocks:
+  - id: step
+    meaning: "the input projection x_t W + b_i and the recurrent projection h_{t-1} U + b_h of every step, added and passed through f"
+    eq: [step]
+    inputs: {x: "(B, T, I)", h0: "(B, H)"}
+    outputs: {h: "(B, T, H)"}
+    internals: {a: "(B, T, H)"}
+    params: "H * I + H * H + 2 * H"
+    flops_forward: "2 * B * T * H * I + 2 * B * T * H * H"
+  - id: layer
+    of: [step]
+    inputs: {x: "(B, T, I)", h0: "(B, H)"}
+    outputs: {h: "(B, T, H)", h_T: "(B, H)"}
+    params: "H * I + H * H + 2 * H"
+model:
+  params: {formula: "layer.params", symbol: "N", meaning: "the parameters of one layer as torch.nn.RNN stores them: the input weights, the recurrent weights and two biases"}
+  flops_forward: {formula: "step.flops_forward", symbol: "C", meaning: "FLOPs of one forward pass over the batch, a multiply-add counted as 2; the nonlinearity is left out"}
+  state: {formula: "H", meaning: "numbers that the layer carries from one step to the next for one sequence: h_t alone"}
+  one_bias_params: {formula: "H * I + H * H + H", meaning: "the same layer with one bias: the two biases of torch.nn.RNN only enter as a sum"}
+  gru_params: {formula: "3 * H * I + 3 * H * H + 6 * H", meaning: "a GRU layer of the same width in the form of torch.nn.GRU, for comparison"}
+  lstm_params: {formula: "4 * H * I + 4 * H * H + 8 * H", meaning: "an LSTM layer of the same width in the form of torch.nn.LSTM, for comparison"}
+  gru_flops: {formula: "6 * B * T * H * I + 6 * B * T * H * H", meaning: "FLOPs of the projections of a GRU layer of the same width, counted the same way"}
+  lstm_flops: {formula: "8 * B * T * H * I + 8 * B * T * H * H", meaning: "FLOPs of the projections of an LSTM layer of the same width, counted the same way"}
+  sources:
+    - {work: pytorch-torch-nn-rnn, locator: "the title page", note: "the equation, the two biases and the shapes of the weights"}
+    - {work: le-2015-simple-way-initialize-recurrent, locator: "Section 4.2", note: "the width of the networks on pixel-by-pixel MNIST"}
+configs:
+  pixel: {meaning: "the networks of Le et al. on pixel-by-pixel MNIST: 100 units reading one pixel per step", input_size: 1, hidden_size: 100}
+  wide: {meaning: "a layer of 1024 units on inputs of 1024 features, to compare the cost with a GRU and an LSTM of the same width", input_size: 1024, hidden_size: 1024}

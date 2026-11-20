@@ -1,0 +1,55 @@
+# SPDX-License-Identifier: MIT
+# The shape contract of a deep bidirectional LSTM for sequence labelling (spec 08.6), the network of Graves, Mohamed
+# and Hinton (2013) with a softmax output at every step: L layers, each with D directions of H LSTM cells (D = 2 for
+# the bidirectional network, 1 for the unidirectional one), every upper layer reading the D * H outputs of the layer
+# below, and an affine layer from the top layer to K class scores. Each LSTM direction is the one of the LSTM page,
+# with one bias. A tanh cell has one block of weights where the LSTM has four: replace 4 by 1 in every formula.
+# The FLOPs count the products only, a multiply-add as 2; the gate activations and the softmax are left out.
+config:
+  input_size:  {meaning: "size of the input vector of a step", symbol: "d_x", example: 3, sample: [1, 4]}
+  hidden_size: {meaning: "number of LSTM cells of each direction of each layer", symbol: "d_h", example: 4, sample: [1, 5]}
+  n_layers:    {meaning: "number of bidirectional layers", symbol: "L", example: 2, sample: [1, 3]}
+  n_classes:   {meaning: "number of classes of a label", symbol: "K", example: 5, sample: [2, 6]}
+  directions:  {meaning: "2 for a bidirectional network, 1 for a unidirectional one", symbol: "D", example: 2, sample: [1, 2]}
+axes:
+  B: {meaning: "batch", example: 3}
+  T: {meaning: "length of the longest sequence of the batch", example: 6}
+  I: input_size
+  H: hidden_size
+  L: n_layers
+  K: n_classes
+  D: directions
+blocks:
+  - id: first
+    meaning: "the first layer: D directions that read the inputs, one from t = 1 to T and one from t = T to 1"
+    eq: [forward, backward, concat]
+    inputs: {x: "(B, T, I)"}
+    outputs: {out: "(B, T, D * H)"}
+    params: "D * (4 * H * (I + H) + 4 * H)"
+    flops_forward: "8 * D * B * T * H * (I + H)"
+  - id: upper
+    meaning: "the L - 1 layers above it, each reading both directions of the layer below at the same step"
+    eq: [forward, backward, concat]
+    inputs: {out: "(B, T, D * H)"}
+    outputs: {top: "(B, T, D * H)"}
+    params: "(L - 1) * D * (4 * H * (D * H + H) + 4 * H)"
+    flops_forward: "(L - 1) * 8 * D * B * T * H * (D * H + H)"
+  - id: output
+    meaning: "the affine layer on the top layer whose softmax is p(label_t | x_1..x_T)"
+    eq: [output]
+    inputs: {top: "(B, T, D * H)"}
+    outputs: {logits: "(B, T, K)"}
+    params: "D * H * K + K"
+    flops_forward: "2 * B * T * D * H * K"
+model:
+  params: {formula: "first.params + upper.params + output.params", symbol: "N", meaning: "all the parameters of the network"}
+  weights: {formula: "D * 4 * H * (I + H) + (L - 1) * D * 4 * H * (D * H + H) + D * H * K", meaning: "the same without the biases"}
+  recurrent_weights: {formula: "L * D * 4 * H * H", meaning: "the weights from a direction's state to its own next step, in all layers"}
+  state: {formula: "2 * L * D * H", meaning: "the numbers carried from step to step: a hidden and a cell state per direction and layer"}
+  flops_forward: {formula: "first.flops_forward + upper.flops_forward + output.flops_forward", symbol: "C", meaning: "FLOPs of one forward pass over the batch, a multiply-add counted as 2"}
+  sources:
+    - {work: graves-2013-speech-recognition-deep-recurrent, locator: "Section 2 and Table 1", note: "the deep bidirectional LSTM, every layer reading both directions of the layer below, and the networks of Table 1"}
+    - {work: pytorch-torch-nn-lstm, locator: "the title page", note: "the order of the gates and the input of size D * H of the upper layers"}
+configs:
+  ctc3l250h: {meaning: "CTC-3l-250h of Graves et al., a deep bidirectional LSTM on TIMIT: 123 inputs, 61 phonemes and the CTC blank", input_size: 123, hidden_size: 250, n_layers: 3, n_classes: 62, directions: 2, source: {work: graves-2013-speech-recognition-deep-recurrent, locator: "Section 4 and Table 1"}}
+  ctc3l421huni: {meaning: "CTC-3l-421h-uni of Graves et al., the unidirectional network with about the same number of weights", input_size: 123, hidden_size: 421, n_layers: 3, n_classes: 62, directions: 1, source: {work: graves-2013-speech-recognition-deep-recurrent, locator: "Section 4 and Table 1"}}
