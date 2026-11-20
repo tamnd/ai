@@ -1,0 +1,11 @@
+# Written by fixtures/make.py; do not edit.
+seed: 20140610
+config: {d_noise: 2, d_hidden: 5, d_data: 3, d_critic: 4}
+inputs: {B: 4, x: "standard normal", z: "standard normal", alpha: "uniform on [0, 1]"}
+loss: "minimax, nonsat, wgan, wgan_gp with lambda 10 and r1 with gamma 1, averaged over the batch"
+dtype: float64
+numpy: "2.4.6"
+files:
+  params-small.npz: {sha256: f964211e2bd5cd605dc6c679023362be7faf50a4d557b35a0457b48b51cf78ab}
+  input-small.npz: {sha256: beeb8a41276052f52e0211774898cc6b38588c078ab3113629bd9a3f37859682}
+  expected-small.npz: {sha256: 3203a02221a2f05274507ed8fff22dbbed47a81b2286fbc05162463774aa435b}
