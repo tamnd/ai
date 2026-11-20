@@ -1,0 +1,82 @@
+# SPDX-License-Identifier: MIT
+# The shape contract of the decoder-only Transformer language model (spec 08.6), in the form of GPT-2 and GPT-3: a token
+# embedding tied to the output layer, learned position embeddings, L pre-norm layers with causal multi-head
+# self-attention and an MLP of width F, and a final layer normalization. The sequence fills the context of T tokens.
+# The FLOPs count the matrix products only, a multiply-add as 2, and the products of the attention in full, the masked
+# half included; the softmax, the normalizations, the GELU, the additions and the lookups are left out.
+config:
+  vocab:    {meaning: "number of tokens in the vocabulary", symbol: "V", example: 11, sample: [2, 12]}
+  n_ctx:    {meaning: "length of the context, and of the sequences here", symbol: "n_{\\text{ctx}}", example: 8, sample: [1, 8]}
+  d_model:  {meaning: "width of the residual stream", symbol: "d_{\\text{model}}", example: 8}
+  n_heads:  {meaning: "number of attention heads", symbol: "h", example: 2}
+  d_head:   {meaning: "width of each head", symbol: "d_{\\text{head}}", formula: "d_model / n_heads"}
+  d_ff:     {meaning: "width of the hidden layer of the MLP", symbol: "d_{\\text{ff}}", example: 16, sample: [1, 8]}
+  n_layers: {meaning: "number of layers", symbol: "n_{\\text{layer}}", example: 2, sample: [1, 2]}
+axes:
+  B: {meaning: "batch", example: 2}
+  T: n_ctx
+  V: vocab
+  H: n_heads
+  D: d_head
+  M: d_model
+  F: d_ff
+  L: n_layers
+blocks:
+  - id: embed
+    meaning: "the token embedding looked up and the position embedding added"
+    eq: [embed]
+    inputs: {ids: "(B, T)"}
+    outputs: {tokens: "(B, T, M)"}
+    params: "V * M + T * M"
+  - id: attn
+    meaning: "causal multi-head self-attention of a layer, on the normalized states"
+    eq: [attn, mask]
+    inputs: {x: "(B, T, M)"}
+    outputs: {y: "(B, T, M)"}
+    internals: {q: "(B, H, T, D)", k: "(B, H, T, D)", v: "(B, H, T, D)", weights: "(B, H, T, T)"}
+    params: "4 * M * M + 4 * M"
+    flops_forward: "8 * B * T * M * M + 4 * B * T * T * M"
+  - id: mlp
+    meaning: "the MLP of a layer: two linear layers with a GELU between them"
+    eq: [layer]
+    inputs: {x: "(B, T, M)"}
+    outputs: {y: "(B, T, M)"}
+    internals: {hidden: "(B, T, F)"}
+    params: "2 * M * F + F + M"
+    flops_forward: "4 * B * T * M * F"
+  - id: norm
+    meaning: "layer normalization: a gain and a bias for each feature"
+    params: "2 * M"
+  - id: layer
+    of: [attn, mlp, norm, norm]
+    inputs: {x: "(B, T, M)"}
+    outputs: {y: "(B, T, M)"}
+    params: "4 * M * M + 2 * M * F + 9 * M + F"
+  - id: head
+    meaning: "the final layer normalization and the unembedding, the token embedding transposed"
+    eq: [logits]
+    inputs: {tokens: "(B, T, M)"}
+    outputs: {logits: "(B, T, V)"}
+    params: "2 * M"
+    flops_forward: "2 * B * T * M * V"
+model:
+  params: {formula: "embed.params + n_layers * layer.params + head.params", symbol: "N_{\\text{total}}", meaning: "all the parameters of the network"}
+  params_non_embedding: {formula: "n_layers * layer.params", symbol: "N", meaning: "the parameters of the layers, the model size N of Kaplan et al., biases and gains included"}
+  kv_cache: {formula: "2 * B * n_layers * T * M", meaning: "the numbers in the cache of keys and values after T tokens of B sequences"}
+  attention_flops: {formula: "n_layers * 4 * B * T * T * M", meaning: "the FLOPs of the products q k and A v, the only part that grows with the square of the context"}
+  flops_forward: {formula: "n_layers * (attn.flops_forward + mlp.flops_forward) + head.flops_forward", symbol: "C", meaning: "FLOPs of one forward pass over the batch, a multiply-add counted as 2"}
+  sources:
+    - {work: radford-2018-improving-language-understanding, locator: "p. 3", note: "eq. 2, the embeddings, the decoder blocks and the softmax over W_e transposed"}
+    - {work: radford-2019-language-models-unsupervised-multitask, locator: "p. 4", note: "Section 2.3, layer normalization at the input of each sub-block and after the last block"}
+    - {work: kaplan-2020-scaling-laws, locator: "p. 6", note: "eq. 2.1 and 2.2, N = 12 n_layer d_model^2 and C_forward = 2N + 2 n_layer n_ctx d_model"}
+configs:
+  gpt2_117m: {meaning: "the smallest GPT-2, with 64-wide heads assumed: Table 2 gives no head count, and the heads change no count", B: 1, vocab: 50257, n_ctx: 1024, d_model: 768, n_heads: 12, d_ff: 3072, n_layers: 12, source: {work: radford-2019-language-models-unsupervised-multitask, locator: "p. 4", note: "Table 2, d_ff = 4 d_model as in GPT-1, and the vocabulary and context of Section 2.3"}}
+  gpt2_1542m: {meaning: "the largest GPT-2, called GPT-2 in the paper, with 64-wide heads assumed", B: 1, vocab: 50257, n_ctx: 1024, d_model: 1600, n_heads: 25, d_ff: 6400, n_layers: 48, source: {work: radford-2019-language-models-unsupervised-multitask, locator: "p. 4"}}
+  gpt3_small: {meaning: "GPT-3 Small, 125M in Table 2.1", B: 1, vocab: 50257, n_ctx: 2048, d_model: 768, n_heads: 12, d_ff: 3072, n_layers: 12, source: {work: brown-2020-language-models-few-shot, locator: "p. 8", note: "Table 2.1, with d_ff = 4 d_model and n_ctx = 2048 from the text below it; the vocabulary is that of GPT-2, whose tokenization GPT-3 keeps"}}
+  gpt3_medium: {meaning: "GPT-3 Medium, 350M", B: 1, vocab: 50257, n_ctx: 2048, d_model: 1024, n_heads: 16, d_ff: 4096, n_layers: 24, source: {work: brown-2020-language-models-few-shot, locator: "p. 8"}}
+  gpt3_large: {meaning: "GPT-3 Large, 760M", B: 1, vocab: 50257, n_ctx: 2048, d_model: 1536, n_heads: 16, d_ff: 6144, n_layers: 24, source: {work: brown-2020-language-models-few-shot, locator: "p. 8"}}
+  gpt3_xl: {meaning: "GPT-3 XL, 1.3B; the table prints 24 heads of 128, which make 3072 and not the printed 2048, so 16 heads of 128 are used, which change no count", B: 1, vocab: 50257, n_ctx: 2048, d_model: 2048, n_heads: 16, d_ff: 8192, n_layers: 24, source: {work: brown-2020-language-models-few-shot, locator: "pp. 8 and 46", note: "Table 2.1, and the 1,320M parameters of Table D.1, which d_model = 2048 gives"}}
+  gpt3_2_7b: {meaning: "GPT-3 2.7B", B: 1, vocab: 50257, n_ctx: 2048, d_model: 2560, n_heads: 32, d_ff: 10240, n_layers: 32, source: {work: brown-2020-language-models-few-shot, locator: "p. 8"}}
+  gpt3_6_7b: {meaning: "GPT-3 6.7B", B: 1, vocab: 50257, n_ctx: 2048, d_model: 4096, n_heads: 32, d_ff: 16384, n_layers: 32, source: {work: brown-2020-language-models-few-shot, locator: "p. 8"}}
+  gpt3_13b: {meaning: "GPT-3 13B with d_model 5120; Table 2.1 prints 5140, but its 40 heads of 128 make 5120, and so do the 12,850M parameters of Table D.1", B: 1, vocab: 50257, n_ctx: 2048, d_model: 5120, n_heads: 40, d_ff: 20480, n_layers: 40, source: {work: brown-2020-language-models-few-shot, locator: "pp. 8 and 46", note: "Table 2.1, and the parameter counts of Table D.1"}}
+  gpt3_175b: {meaning: "GPT-3, 175B", B: 1, vocab: 50257, n_ctx: 2048, d_model: 12288, n_heads: 96, d_ff: 49152, n_layers: 96, source: {work: brown-2020-language-models-few-shot, locator: "p. 8"}}

@@ -360,7 +360,7 @@
   type: attributive
   text: "Press and Wolf find that the output matrix U of a neural language model is a valid word embedding, recommend tying it to the input embedding, and report a significant reduction in perplexity on a variety of neural network language models."
   evidence:
-    - {work: "press-2017-using-output-embedding", role: original, locator: "the abstract", stance: for}
+    - {work: "press-2017-output-embedding", role: original, locator: "the abstract", stance: for}
 
 - id: c-press-table5
   type: empirical
@@ -371,7 +371,7 @@
     scale: "66M and 51M parameters"
     setting: "word-level perplexity (Table 5)"
   evidence:
-    - {work: "press-2017-using-output-embedding", role: original, locator: "p. 3", stance: for}
+    - {work: "press-2017-output-embedding", role: original, locator: "p. 3", stance: for}
 
 - id: c-mikolov10-window
   type: attributive
@@ -395,7 +395,7 @@
   type: attributive
   text: "Press and Wolf note that in the untied model the only row of the input embedding updated at a step is that of the current input word, while every row of the output embedding is updated; with tying the two updates are summed into one matrix."
   evidence:
-    - {work: "press-2017-using-output-embedding", role: original, locator: "p. 2", stance: for}
+    - {work: "press-2017-output-embedding", role: original, locator: "p. 2", stance: for}
 
 - id: c-mikolov10-result
   type: empirical
