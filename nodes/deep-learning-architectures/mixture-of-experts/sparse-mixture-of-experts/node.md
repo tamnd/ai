@@ -33,6 +33,7 @@ sources:
   - {paper: "Lepikhin, Lee, Xu, Chen, Firat, Huang, Krikun, Shazeer and Chen (2020)", title: "GShard: Scaling Giant Models with Conditional Computation and Automatic Sharding", locator: "arXiv 2006.16668v1, Section 2 and Algorithm 1", note: "top-2 gating, expert capacity, local groups and the auxiliary loss"}
   - {paper: "Fedus, Zoph and Shazeer (2022)", title: "Switch Transformers: Scaling to Trillion Parameter Models with Simple and Efficient Sparsity", locator: "JMLR 23 (2022), arXiv 2101.03961v3, Sections 2 to 4", note: "top-1 routing, the capacity factor and the load-balancing loss"}
   - {paper: "Zoph, Bello, Kumar, Du, Huang, Dean, Shazeer and Fedus (2022)", title: "ST-MoE: Designing Stable and Transferable Sparse Expert Models", locator: "arXiv 2202.08906v2, Sections 3 and 4", note: "the router z-loss and the capacity and routing ablations"}
+  - {paper: "Jiang, Sablayrolles, Roux, Mensch, Savary, Bamford, Chaplot, de las Casas, Bou Hanna, Bressand and others (2024)", title: "Mixtral of Experts", locator: "arXiv 2401.04088v1, Sections 1, 2 and 5", note: "a decoder-only top-2 model with 8 experts per layer, and an analysis of what the router picks"}
 ---
 
 A sparse mixture of experts is a layer made of many parallel sub-networks, the experts, and a small router that sends each token to only a few of them.
@@ -221,6 +222,10 @@ In Fedus et al.'s Table 1, at capacity factor 1.0 Switch-Base ran at 1000 exampl
 They report up to 7 times faster pre-training than T5-Base and T5-Large on the same resources, and 4 times faster than T5-XXL with models of up to a trillion parameters. {#c-sw-speedup}
 With the auxiliary loss, the drop rate was typically below 1% of tokens and did not depend on the number of experts. {#c-sw-drop-rate}
 Zoph et al. scaled a sparse encoder-decoder, ST-MoE-32B, to 269 billion parameters at about the cost of a 32-billion-parameter dense model, and report strong transfer results on tasks including SuperGLUE, XSum and Natural Questions. {#c-st-269b}
+Mixtral 8x7B (Jiang et al. 2024) is a decoder-only model with the architecture of Mistral 7B, except that each layer has 8 feed-forward experts and a router picks two of them for every token at every layer. {#c-mixtral-top2}
+Each token so has access to 47B parameters but uses only 13B active parameters during inference (the abstract). {#c-mixtral-47b}
+
+Experts need not specialise by subject: Jiang et al. do not observe obvious patterns in the assignment of experts based on the topic of the text, and find the choice more aligned with the syntax than with the domain, especially at the first and last layers (Section 5). {#c-mixtral-routing}
 
 These results compare models at matched computation per token, not at matched parameter count or memory; a sparse model with many experts is compared with a dense model that has far fewer weights.
 

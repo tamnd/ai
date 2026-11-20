@@ -522,3 +522,25 @@
   text: "In those earlier works the mixture was the whole model; Eigen et al. (2013) used several mixtures with their own gating networks as parts of a deep model, and Shazeer et al. build on that use of the MoE as a general-purpose component."
   evidence:
     - {work: "shazeer-2017-sparsely-gated-mixture-of-experts", role: original, locator: "p. 3", stance: for}
+
+- id: c-mixtral-top2
+  type: definitional
+  text: "Mixtral has the same architecture as Mistral 7B, with the difference that each layer is composed of 8 feedforward blocks, and for every token, at each layer, a router network selects two experts."
+  evidence:
+    - {work: jiang-2024-mixtral-experts, role: original, locator: "p. 1", stance: for}
+
+- id: c-mixtral-47b
+  type: definitional
+  text: "Each token has access to 47B parameters, but only uses 13B active parameters during inference."
+  evidence:
+    - {work: jiang-2024-mixtral-experts, role: original, locator: "p. 1", stance: for}
+
+- id: c-mixtral-routing
+  type: empirical
+  text: "We do not observe obvious patterns in the assignment of experts based on the topic; the selection of experts appears to be more aligned with the syntax rather than the domain, especially at the initial and final layers."
+  scope:
+    models: "Mixtral 8x7B"
+    data: ["The Pile validation subsets"]
+    setting: "the expert chosen by the router at layers 0, 15 and 31"
+  evidence:
+    - {work: jiang-2024-mixtral-experts, role: original, locator: "p. 7, p. 8", stance: for}

@@ -70,7 +70,7 @@
 
 - id: c-telgarsky
   type: mathematical
-  text: "For any positive integer k, there exist neural networks with Theta(k^3) layers, Theta(1) nodes per layer and Theta(1) distinct parameters which cannot be approximated by networks with O(k) layers unless they have Omega(2^k) nodes; this holds for semi-algebraic gates, which include ReLU, maximum, indicator and piecewise polynomial functions."
+  text: "For any positive integer k, there exist neural networks with Theta(k^3) layers, Theta(1) nodes per layer and Theta(1) distinct parameters which cannot be approximated by networks with O(k) layers unless they are exponentially large in k; this holds for semi-algebraic gates, which include ReLU, maximum, indicator and piecewise polynomial functions."
   assumes: ["approximation in the L1 distance on the cube [0, 1]^d"]
   evidence:
     - {work: "telgarsky-2016-benefits-of-depth", role: original, locator: "the abstract", stance: for}
@@ -222,9 +222,9 @@
 
 - id: c-glorot-init
   type: attributive
-  text: "Glorot and Bengio ask for constant variance of the activations forward and of the gradients backward, which give the conditions n_i Var[W^i] = 1 and n_{i+1} Var[W^i] = 1; as a compromise they take Var[W^i] = 2 / (n_i + n_{i+1}), and they propose the normalized initialization W ~ U[-sqrt(6) / sqrt(n_j + n_{j+1}), sqrt(6) / sqrt(n_j + n_{j+1})]."
+  text: "To keep information flowing, Glorot and Bengio would like the variance of the activations and of the back-propagated gradients to stay the same from layer to layer, which gives n_i Var[W^i] = 1 and n_{i+1} Var[W^i] = 1; as a compromise between these two constraints they take Var[W^i] = 2 / (n_i + n_{i+1}), and they suggest the normalized initialization W ~ U[-sqrt(6) / sqrt(n_j + n_{j+1}), sqrt(6) / sqrt(n_j + n_{j+1})]."
   evidence:
-    - {work: "glorot-2010-understanding-difficulty-training", role: original, locator: "Section 4.2.1", stance: for}
+    - {work: "glorot-2010-understanding-difficulty-training", role: original, locator: "p. 4, p. 5", stance: for}
 
 - id: c-glorot-variance
   type: mathematical

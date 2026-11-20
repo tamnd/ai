@@ -205,8 +205,8 @@ On rotated MNIST, 10000 training and 50000 test digits, Cohen and Welling report
 On CIFAR-10 they replace the convolutions of All-CNN-C and of a 44-layer ResNet by p4 or p4m correlations with about the same number of parameters.
 The test errors without and with moderate augmentation are 9.44% and 8.86% for the planar All-CNN, 8.84% and 7.67% with p4, and 7.59% and 7.04% with p4m; for the ResNet44 they are 9.45% and 5.61% planar and 6.46% and 4.94% with p4m. {#c-cifar}
 A wider 26-layer ResNet trained with moderate augmentation has a test error of 5.27% with planar convolutions and 4.19% with p4m convolutions, which they compare with the 4.17% of a wide ResNet of 36.5 M parameters, against their 7.2 M. {#c-wide-resnet}
-Weiler and Cesa compare many equivariant models on rotated MNIST and bring the error from 2.28% for the P4CNN down to 0.682% for a model equivariant to 16 rotations and reflections whose symmetry is restricted to the 16 rotations at a later depth. {#c-weiler-mnist}
-On CIFAR, equivariant wide ResNets 28/10 of about the same number of parameters reach test errors of 2.91% on CIFAR-10 and 16.22% on CIFAR-100, against 3.87% and 18.80% for the planar model; with AutoAugment the errors are 2.05% and 14.30%, against 2.6% and 17.1%. {#c-weiler-cifar}
+Weiler and Cesa compare many equivariant models on rotated MNIST; a model equivariant to 16 rotations and reflections, restricted to the 16 rotations after its penultimate layer, reaches a test error of 0.682%, against 0.716% for their reimplementation of an earlier model. {#c-weiler-mnist}
+On CIFAR, equivariant wide ResNets 28/10 reach test errors of 2.91% on CIFAR-10 and 16.22% on CIFAR-100, against 3.87% and 18.80% for the planar model; with AutoAugment the errors are 2.05% and 14.30%, against 2.6% and 17.1%. {#c-weiler-cifar}
 These are reported results; this page has not reproduced them.
 
 ## Limitations
