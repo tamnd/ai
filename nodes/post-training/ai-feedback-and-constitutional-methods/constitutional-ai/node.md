@@ -35,6 +35,7 @@ sources:
   - {paper: "Bai et al. (2022a)", title: "Training a Helpful and Harmless Assistant with Reinforcement Learning from Human Feedback", locator: "the abstract, Sections 2.2 and 4.4", note: "the human-feedback baseline and its evasiveness"}
   - {paper: "Lee et al. (2024)", title: "RLAIF vs. RLHF: Scaling Reinforcement Learning from Human Feedback with AI Feedback", locator: "the abstract, Sections 1 to 5 and 7, pp. 4, 6, 8 and 9, the title page", note: "a direct comparison of AI and human feedback, position bias, labeler size and direct RLAIF"}
   - {paper: "Ouyang et al. (2022)", title: "Training language models to follow instructions with human feedback", locator: "Section 1", note: "whose preferences a human-feedback model learns"}
+  - {paper: "Ganguli et al. (2022)", title: "Red Teaming Language Models to Reduce Harms: Methods, Scaling Behaviors, and Lessons Learned", locator: "arXiv 2209.07858, pp. 1 and 2", note: "the released red-team attacks, the scaling of red-team difficulty by model type, and harmlessness through evasion"}
 ---
 
 Constitutional AI (CAI) trains an assistant to be harmless with a short list of principles written in natural language, the constitution, in place of human labels of which outputs are harmful.
@@ -65,6 +66,10 @@ They apply preference modeling and RLHF to make language models helpful and harm
 Crowdworkers chose the more helpful response in open-ended conversations for one dataset, and for the red-teaming dataset tried to elicit harmful responses and chose the more harmful one, a difference that the authors believe made it hard to train models both helpful and harmless. {#c-hh-datasets}
 That assistant often refused controversial questions and could get stuck giving evasive responses for the rest of a conversation, which Bai et al. (2022b) trace to crowdworkers rewarding evasiveness as a response to harmful inputs. {#c-hh-evasive}
 Bai et al. (2022a) themselves found RLHF policies giving the same exaggerated responses to all remotely sensitive questions, which they attribute to over-optimizing harmlessness and under-optimizing helpfulness. {#c-hh-tension}
+Bai et al. (2022b) collected their human-written red-team prompts as discussed and shared in the same group's red-teaming study, {#c-cai-prompts-ganguli}
+whose public release holds 38,961 attacks. {#c-ganguli-dataset}
+Across models from 2.7B to 52B parameters, RLHF models grew harder to red team with scale, while plain, prompted and rejection-sampling models stayed flat. {#c-ganguli-scale}
+Rejection sampling was the hardest to red team at every size, but the authors note that its answers were often harmless only because they were evasive, which is the failure constitutional AI sets out to fix. {#c-ganguli-rs-evasive}
 
 Write $x$ for a prompt, $y$ for a response, $\pi$ for the policy and $c_k$ for the $k$-th principle.
 The constitution of Bai et al. (2022b) has 16 principles. {#c-sixteen}
