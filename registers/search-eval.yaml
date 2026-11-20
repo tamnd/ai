@@ -115,7 +115,7 @@
 - {q: open weight language models from meta, class: question, want: llama}
 - {q: masked language model pretraining, class: question, want: bert}
 - {q: assign a label to a whole image, class: question, want: image-classification}
-- {q: attention mechanism architecture, class: question, want: transformer}
+- {q: attention mechanism architecture, class: question, want: [transformer, attention-mechanism, multi-head-attention]}
 - {q: dataset of labelled photos for vision research, class: question, want: imagenet}
 - {q: python deep learning library, class: question, want: pytorch}
 - {q: will bigger models become generally intelligent, class: question, want: does-scaling-lead-to-general-intelligence}
