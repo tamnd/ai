@@ -1,18 +1,18 @@
 {
-  "date": "2026-11-17",
-  "rows": 19123,
-  "items": 19123,
-  "new": 175,
+  "date": "2026-11-20",
+  "rows": 19124,
+  "items": 19124,
+  "new": 1,
   "updated": 0,
-  "unchanged": 18948,
+  "unchanged": 19123,
   "by_outcome": {
     "card": 3892,
-    "pending": 15231
+    "pending": 15232
   },
   "by_kind": {
     "hardware": 183,
     "model": 3709,
-    "policy": 410,
+    "policy": 411,
     "result": 7123,
     "work": 7698
   },
@@ -20,7 +20,7 @@
     "arxiv": 7698,
     "epoch-ai": 3892,
     "epoch-benchmarks": 5546,
-    "eur-lex": 235,
+    "eur-lex": 236,
     "federal-register": 175,
     "lmarena": 1577
   },

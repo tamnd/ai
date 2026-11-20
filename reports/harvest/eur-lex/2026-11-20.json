@@ -1,0 +1,23 @@
+{
+  "source": "eur-lex",
+  "date": "2026-11-20",
+  "adapter": "aik/0.1.64 harvest/eur-lex",
+  "licence": "the reuse policy of the Commission (Decision 2011/833/EU), with acknowledgement; only the Official Journal text is authentic",
+  "licence_class": "C",
+  "partial": false,
+  "snapshots": [
+    "b3:6dae12f60457489684e6150d8bac7a480403391001baaaab74094bfca9e93882"
+  ],
+  "requests": 2,
+  "rows": 236,
+  "new": 1,
+  "changed": 0,
+  "removed": 0,
+  "unchanged": 235,
+  "skipped": 56,
+  "notes": [
+    "15 skipped: announcements of the Official Journal",
+    "21 skipped: corrigenda, which correct the text of an act",
+    "20 skipped: works of the case law, the national measures, the parliamentary questions and the notices of the Official Journal (CELEX sectors 6 to 9, C and E)"
+  ]
+}
