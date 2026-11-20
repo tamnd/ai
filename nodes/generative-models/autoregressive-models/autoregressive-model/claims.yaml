@@ -1,0 +1,234 @@
+# The claims of the autoregressive model page (spec 07). The build computes the labels.
+- id: c-normalization
+  type: mathematical
+  text: "If each conditional p(x_d | x_<d) is a probability distribution over the values of x_d for every value of x_<d, the product of the conditionals in any fixed ordering is a probability distribution over x, and drawing x_1, then x_2 given x_1, and so on, draws exactly from it; no partition function is needed."
+  assumes: ["x takes values in a finite product of finite sets, or the conditionals are densities", "the ordering is fixed before the conditionals are evaluated"]
+  derivation: autoregressive-normalization
+
+- id: c-made-def
+  type: attributive
+  text: "Germain and colleagues mask the autoencoder's parameters to respect autoregressive constraints, so that each input is reconstructed only from previous inputs in a given ordering; constrained this way, the autoencoder outputs can be interpreted as a set of conditional probabilities, and their product as the full joint probability."
+  evidence:
+    - {work: "germain-2015-made-masked-autoencoder", role: original, locator: "p. 1", stance: for}
+
+- id: c-ae-not-likelihood
+  type: attributive
+  text: "If the hidden layer of an ordinary autoencoder is at least as large as the input, hidden units can each learn to copy a single input dimension and reconstruct all inputs perfectly, so its cross-entropy loss is not a proper log-likelihood: the implied distribution could be 1 for any x and not be properly normalized."
+  evidence:
+    - {work: "germain-2015-made-masked-autoencoder", role: original, locator: "p. 2", stance: for}
+
+- id: c-made-degrees
+  type: attributive
+  text: "MADE assigns each hidden unit an integer m(k) between 1 and D-1, the maximum number of input units it can be connected to; m(k) = D is disallowed because the unit would depend on all inputs and could not be used in any conditional, and m(k) = 0 because it would be constant. In the experiments m(k) was sampled from a uniform discrete distribution on 1 to D-1, independently for each hidden unit."
+  evidence:
+    - {work: "germain-2015-made-masked-autoencoder", role: original, locator: "p. 3", stance: for}
+
+- id: c-made-masks
+  type: mathematical
+  text: "With input degrees m_0 a permutation of 1..D, hidden degrees in 1..D-1, hidden masks 1[m_l(k') >= m_(l-1)(k)], output mask 1[m_0(d) > m_L(k)] and direct mask 1[m_0(d) > m_0(i)], every path from input i to output d passes through units whose degrees never decrease and must then strictly increase, so output d depends only on the inputs that come before d in the ordering, and the outputs define a valid autoregressive model for any values of the weights."
+  assumes: ["every hidden degree lies in [min of the previous layer's degrees, D - 1]"]
+  derivation: made-masks
+
+- id: c-made-direct
+  type: attributive
+  text: "Earlier autoregressive neural networks found it advantageous to use direct connections between the input and output layers; in MADE their mask simply needs to be a strictly lower diagonal matrix filled otherwise with ones, and Germain and colleagues used such direct connections in their experiments."
+  evidence:
+    - {work: "germain-2015-made-masked-autoencoder", role: original, locator: "p. 3", stance: for}
+
+- id: c-order-agnostic
+  type: attributive
+  text: "Order-agnostic training samples an ordering before each stochastic or minibatch update. It lets missing values be imputed by invoking an ordering where observed dimensions all come before unobserved ones, and it gives an ensemble on the fly, by sampling a set of orderings, computing the probability of x under each and averaging."
+  evidence:
+    - {work: "germain-2015-made-masked-autoencoder", role: original, locator: "p. 4", stance: for}
+
+- id: c-overregularize
+  type: attributive
+  text: "Germain and colleagues found that sampling masks for every example could over-regularize MADE and provoke underfitting; they therefore also sampled from a finite list of masks, cycling through it during training and averaging the probabilities of all masks in the list at test time."
+  evidence:
+    - {work: "germain-2015-made-masked-autoencoder", role: original, locator: "p. 5", stance: for}
+
+- id: c-made-speed
+  type: attributive
+  text: "MADE only requires one pass through the autoencoder rather than the D passes required by NADE, and in practice a single-layer MADE was an order of magnitude faster than a one-layer NADE of the same hidden layer size, because NADE's computations cannot be vectorized as efficiently."
+  evidence:
+    - {work: "germain-2015-made-masked-autoencoder", role: original, locator: "p. 6", stance: for}
+
+- id: c-made-timing
+  type: attributive
+  text: "On a K20 NVIDIA GPU with a single mask, one training epoch on binarized MNIST took about 14 and 44 seconds for one- and two-hidden-layer MADEs of 8000 units, and 33 and 100 seconds with 32 sampled masks, against about 130 seconds for a 500-unit NADE."
+  evidence:
+    - {work: "germain-2015-made-masked-autoencoder", role: original, locator: "p. 7", stance: for}
+
+- id: c-made-mnist
+  type: attributive
+  text: "On binarized MNIST the two-hidden-layer MADE with 32 masks reached a test negative log-likelihood of 86.64 nats, against 88.40 for a one-layer MADE with one mask, 88.33 for NADE with one hidden layer, 85.10 for EoNADE with two hidden layers and 128 orderings, and about 84.55 for an intractable two-layer DBN."
+  evidence:
+    - {work: "germain-2015-made-masked-autoencoder", role: original, locator: "p. 8", stance: for}
+
+- id: c-nade-def
+  type: attributive
+  text: "Larochelle and Murray model high-dimensional vectors of discrete variables by decomposing the joint distribution into tractable conditional distributions and modeling each conditional with a non-linear function similar to a conditional of an RBM, which avoids the RBM's intractable partition function; the model can also be read as an autoencoder wired so that its output assigns valid probabilities."
+  evidence:
+    - {work: "larochelle-2011-neural-autoregressive-distribution-estimator", role: original, locator: "the abstract", stance: for}
+
+- id: c-nade-cost
+  type: mathematical
+  text: "In NADE the hidden pre-activation of conditional i + 1 equals that of conditional i plus W_(.,i) v_i, so all D hidden vectors follow from one running sum in O(HD) operations, the same values that D separate passes compute in O(HD^2)."
+  assumes: ["the input weights W are shared across the conditionals"]
+  derivation: nade-incremental
+
+- id: c-nade-sharing
+  type: attributive
+  text: "The tied connections of NADE let the conditionals share computation: the activations of the i-th and (i+1)-th hidden layers differ by W_(.,i+1) v_(i+1), computable in O(H), so the complete cost of computing p(v) is O(HD) instead of the cost, quadratic in D, of a naive procedure that does not take advantage of the weight sharing."
+  evidence:
+    - {work: "larochelle-2011-neural-autoregressive-distribution-estimator", role: original, locator: "p. 3", stance: for}
+
+- id: c-nade-untied
+  type: attributive
+  text: "Larochelle and Murray found that untying the connections going in and out of the hidden units, learning a separate output matrix V, gave better distribution estimation and did not make NADE slower."
+  evidence:
+    - {work: "larochelle-2011-neural-autoregressive-distribution-estimator", role: original, locator: "p. 4", stance: for}
+
+- id: c-nade-ordering
+  type: attributive
+  text: "A dozen NADE models trained on different random orderings had test log-likelihood standard deviations of 0.045, 0.050 and 0.150 on mushrooms, dna and nips-0-12, small next to the uncertainty of a finite test set, so it did not seem necessary to optimize the ordering."
+  evidence:
+    - {work: "larochelle-2011-neural-autoregressive-distribution-estimator", role: original, locator: "p. 6", stance: for}
+
+- id: c-nade-mnist
+  type: attributive
+  text: "On binarized MNIST, NADE with 500 hidden units obtained an average test log-likelihood of -88.86, against -86.34 reported for an RBM with 500 hidden units trained with 25 steps of contrastive divergence and evaluated with an estimated partition function, -137.64 for a mixture of 500 Bernoullis and -97.45 for FVSBN."
+  evidence:
+    - {work: "larochelle-2011-neural-autoregressive-distribution-estimator", role: original, locator: "p. 6", stance: for}
+
+- id: c-pixelrnn-def
+  type: attributive
+  text: "PixelRNN scans an image row by row and pixel by pixel within each row, writing p(x) as the product of the conditional distributions p(x_i | x_1, ..., x_(i-1)) over the pixels, with the parameters of the predictions shared across all pixel positions."
+  evidence:
+    - {work: "van-den-oord-2016-pixel-recurrent-neural-networks", role: original, locator: "p. 2", stance: for}
+
+- id: c-pixel-discrete
+  type: attributive
+  text: "Each pixel is conditioned color by color, red, then green given red, then blue given both, and each channel variable takes one of 256 distinct values with a softmax; during training and evaluation the distributions are computed in parallel, while generation is sequential."
+  evidence:
+    - {work: "van-den-oord-2016-pixel-recurrent-neural-networks", role: original, locator: "p. 3", stance: for}
+
+- id: c-masks-ab
+  type: attributive
+  text: "Mask A is applied only to the first convolutional layer and restricts the connections to the neighboring pixels and to the colors of the current pixel already predicted; mask B is applied to all subsequent input-to-state convolutions and also allows the connection from a color to itself."
+  evidence:
+    - {work: "van-den-oord-2016-pixel-recurrent-neural-networks", role: original, locator: "p. 4", stance: for}
+
+- id: c-pixelcnn-sequential
+  type: attributive
+  text: "The advantage of parallelization of the PixelCNN over the PixelRNN is only available during training or during evaluation of test images; image generation is sequential for both kinds of networks, as each sampled pixel needs to be given as input back into the network."
+  evidence:
+    - {work: "van-den-oord-2016-pixel-recurrent-neural-networks", role: original, locator: "p. 5", stance: for}
+
+- id: c-softmax-better
+  type: attributive
+  text: "For the Row LSTM model with a softmax output distribution, van den Oord and colleagues obtained 3.06 bits/dim on the CIFAR-10 validation set, against 3.22 bits/dim for the same model with a mixture of conditional Gaussian scale mixtures."
+  evidence:
+    - {work: "van-den-oord-2016-pixel-recurrent-neural-networks", role: original, locator: "p. 6", stance: for}
+
+- id: c-pixelrnn-results
+  type: attributive
+  text: "On the CIFAR-10 test set the PixelCNN reached 3.14 bits/dim, the Row LSTM 3.07 and the Diagonal BiLSTM 3.00, and on ImageNet a PixelRNN reached 3.86 bits/dim at 32x32 and 3.63 at 64x64."
+  evidence:
+    - {work: "van-den-oord-2016-pixel-recurrent-neural-networks", role: original, locator: "p. 8", stance: for}
+
+- id: c-pixelrnn-mnist
+  type: attributive
+  text: "On binarized MNIST a Diagonal BiLSTM with 7 layers and h = 16 reached a test negative log-likelihood of 79.20 nats, against 81.30 for PixelCNN, 86.64 for MADE with two hidden layers and 32 masks, and 88.33 for NADE."
+  evidence:
+    - {work: "van-den-oord-2016-pixel-recurrent-neural-networks", role: original, locator: "p. 7", stance: for}
+
+- id: c-blind-spot-attr
+  type: attributive
+  text: "A stack of masked convolutions ignores a significant portion of the input image: the blind spot can cover as much as a quarter of the potential receptive field with 3x3 filters. Gated PixelCNN removes it with two stacks, a horizontal stack conditioned on the current row so far and an unmasked vertical stack on all rows above, whose output feeds the horizontal stack and never the reverse."
+  evidence:
+    - {work: "van-den-oord-2016-conditional-image-generation-pixelcnn", role: original, locator: "p. 3", stance: for}
+
+- id: c-blind-spot
+  type: mathematical
+  text: "For L layers of 3x3 masked convolutions, mask A then mask B, an output sees row i above it only out to column -i on the right, so of the 2L(L + 1) positions of the causal box of rows -L..-1, columns -L..L and the current row to the left, it misses L(L - 1)/2, a fraction that rises toward one quarter as L grows; the vertical and horizontal stacks see the whole box."
+  assumes: ["3x3 kernels with the masks of PixelCNN", "one channel per pixel, so the color masks play no role", "generic weights, so that no path cancels"]
+  derivation: masked-convolution-blind-spot
+
+- id: c-gated-unit
+  type: attributive
+  text: "Gated PixelCNN replaces the rectified linear units between the masked convolutions with the gated activation unit y = tanh(W_(k,f) * x) times sigma(W_(k,g) * x), elementwise, where sigma is the sigmoid and * the convolution."
+  evidence:
+    - {work: "van-den-oord-2016-conditional-image-generation-pixelcnn", role: original, locator: "p. 3", stance: for}
+
+- id: c-gated-results
+  type: attributive
+  text: "Gated PixelCNN reached 3.03 bits/dim on the CIFAR-10 test set against 3.00 for PixelRNN, and 3.83 and 3.57 bits/dim on 32x32 and 64x64 ImageNet against 3.86 and 3.63; it matched the Row LSTM PixelRNN in less than half the training time, 60 hours using 32 GPUs."
+  evidence:
+    - {work: "van-den-oord-2016-conditional-image-generation-pixelcnn", role: original, locator: "p. 5", stance: for}
+
+- id: c-class-conditional
+  type: attributive
+  text: "Conditioning a Gated PixelCNN on a one-hot ImageNet class gives it only about 0.003 bits per pixel of information; van den Oord and colleagues did not observe big differences in log-likelihood, but observed great improvements in the visual quality of the samples."
+  evidence:
+    - {work: "van-den-oord-2016-conditional-image-generation-pixelcnn", role: original, locator: "p. 5", stance: for}
+
+- id: c-wavenet-def
+  type: attributive
+  text: "WaveNet factorises the joint probability of a waveform x = (x_1, ..., x_T) as the product of the conditional probabilities p(x_t | x_1, ..., x_(t-1)), so each audio sample is conditioned on the samples at all previous timesteps, and is built from causal convolutions, which keep the prediction at timestep t from depending on any future timestep."
+  evidence:
+    - {work: "van-den-oord-2016-wavenet-generative-model-raw-audio", role: original, locator: "p. 2", stance: for}
+
+- id: c-wavenet-parallel
+  type: attributive
+  text: "At training time the conditional predictions for all timesteps of WaveNet can be made in parallel because all timesteps of the ground truth are known; when generating, the predictions are sequential, each sample being fed back into the network to predict the next."
+  evidence:
+    - {work: "van-den-oord-2016-wavenet-generative-model-raw-audio", role: original, locator: "p. 2", stance: for}
+
+- id: c-dilations
+  type: attributive
+  text: "In WaveNet the dilation is doubled for every layer up to a limit and then repeated, as 1, 2, 4, ..., 512, 1, 2, 4, ..., 512; each 1, 2, 4, ..., 512 block has a receptive field of size 1024, while causal convolutions without dilation need many layers or large filters, a receptive field of #layers + filter length - 1."
+  evidence:
+    - {work: "van-den-oord-2016-wavenet-generative-model-raw-audio", role: original, locator: "p. 3", stance: for}
+
+- id: c-receptive-field
+  type: mathematical
+  text: "A stack of causal convolutions with kernel size k and dilations d_1, ..., d_L, applied to the input shifted by one step, makes the prediction at time t depend on exactly the 1 + (k - 1)(d_1 + ... + d_L) values before t; for k = 2 and dilations 1, 2, ..., 512 this is 1024."
+  assumes: ["generic weights, so that no path cancels"]
+  derivation: dilated-receptive-field
+
+- id: c-mu-law
+  type: attributive
+  text: "Raw audio stored as 16-bit integers would need a softmax over 65,536 values per timestep, so WaveNet applies the mu-law companding transformation f(x) = sign(x) ln(1 + mu |x|) / ln(1 + mu), with mu = 255, and quantizes the result to 256 values."
+  evidence:
+    - {work: "van-den-oord-2016-wavenet-generative-model-raw-audio", role: original, locator: "pp. 3 to 4", stance: for}
+
+- id: c-gated-audio
+  type: attributive
+  text: "WaveNet uses the gated activation unit of the gated PixelCNN, and in initial experiments this non-linearity worked significantly better than the rectified linear activation function for modeling audio signals."
+  evidence:
+    - {work: "van-den-oord-2016-wavenet-generative-model-raw-audio", role: original, locator: "p. 4", stance: for}
+
+- id: c-wavenet-mos
+  type: attributive
+  text: "In subjective 5-scale mean opinion scores of naturalness, WaveNet conditioned on linguistic features and log F0 scored 4.21 in North American English and 4.08 in Mandarin Chinese, against 3.67 and 3.79 for an LSTM-RNN statistical parametric synthesizer and 3.86 and 3.47 for HMM-driven concatenative synthesis."
+  evidence:
+    - {work: "van-den-oord-2016-wavenet-generative-model-raw-audio", role: original, locator: "p. 6", stance: for}
+
+- id: c-wavenet-range
+  type: attributive
+  text: "The multi-speaker WaveNet had a receptive field of about 300 milliseconds and could only remember the last 2 to 3 phonemes it produced, which partly explains its lack of long-range coherence."
+  evidence:
+    - {work: "van-den-oord-2016-wavenet-generative-model-raw-audio", role: original, locator: "p. 5", stance: for}
+
+- id: c-kl
+  type: mathematical
+  text: "The expected negative log-likelihood of a model p under the data distribution q equals the entropy of q plus the KL divergence from q to p, so minimizing it minimizes KL(q || p), which is zero only at p = q; and the log of the mean probability over an ensemble of R mask sets is at least the mean of their log probabilities."
+  assumes: ["q is a distribution on a finite set and p > 0 wherever q > 0"]
+  derivation: likelihood-and-kl
+
+- id: c-params
+  type: mathematical
+  text: "A MADE with D inputs, one hidden layer of H units and direct connections has 2DH + H + D + D^2 parameters, masked entries included, and one pass on B vectors costs 2B(2DH + D^2) FLOPs counting a multiply-add as 2, which gives all D conditionals; ancestral sampling takes D passes, and NADE computes the same D conditionals in O(BDH) with its running sum."
+  assumes: ["only the matrix products are counted", "the masks are applied to the weights once, before the pass"]
+  derivation: parameter-and-flop-count
