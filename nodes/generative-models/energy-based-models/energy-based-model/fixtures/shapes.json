@@ -1,0 +1,299 @@
+{
+  "note": "Written by aik shapes sample -w from shapes.yaml; do not edit. The tests of each implementation check shapes, param_count and flops against these values (spec 08.6, rule X09).",
+  "configs": [
+    {
+      "name": "example",
+      "kind": "example",
+      "config": {
+        "B": 5,
+        "D": 4,
+        "H": 3,
+        "d_hidden": 3,
+        "d_visible": 4
+      },
+      "blocks": {
+        "down": {
+          "params": 4,
+          "flops_forward": 120,
+          "inputs": {
+            "h": [
+              5,
+              3
+            ]
+          },
+          "outputs": {
+            "v": [
+              5,
+              4
+            ]
+          }
+        },
+        "up": {
+          "params": 15,
+          "flops_forward": 120,
+          "inputs": {
+            "v": [
+              5,
+              4
+            ]
+          },
+          "outputs": {
+            "h": [
+              5,
+              3
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 240,
+        "params": 19
+      }
+    },
+    {
+      "name": "sample-1",
+      "kind": "sample",
+      "config": {
+        "B": 1,
+        "D": 8,
+        "H": 4,
+        "d_hidden": 4,
+        "d_visible": 8
+      },
+      "blocks": {
+        "down": {
+          "params": 8,
+          "flops_forward": 64,
+          "inputs": {
+            "h": [
+              1,
+              4
+            ]
+          },
+          "outputs": {
+            "v": [
+              1,
+              8
+            ]
+          }
+        },
+        "up": {
+          "params": 36,
+          "flops_forward": 64,
+          "inputs": {
+            "v": [
+              1,
+              8
+            ]
+          },
+          "outputs": {
+            "h": [
+              1,
+              4
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 128,
+        "params": 44
+      }
+    },
+    {
+      "name": "sample-2",
+      "kind": "sample",
+      "config": {
+        "B": 1,
+        "D": 6,
+        "H": 1,
+        "d_hidden": 1,
+        "d_visible": 6
+      },
+      "blocks": {
+        "down": {
+          "params": 6,
+          "flops_forward": 12,
+          "inputs": {
+            "h": [
+              1,
+              1
+            ]
+          },
+          "outputs": {
+            "v": [
+              1,
+              6
+            ]
+          }
+        },
+        "up": {
+          "params": 7,
+          "flops_forward": 12,
+          "inputs": {
+            "v": [
+              1,
+              6
+            ]
+          },
+          "outputs": {
+            "h": [
+              1,
+              1
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 24,
+        "params": 13
+      }
+    },
+    {
+      "name": "mixture",
+      "kind": "named",
+      "config": {
+        "B": 100,
+        "D": 8,
+        "H": 8,
+        "d_hidden": 8,
+        "d_visible": 8
+      },
+      "blocks": {
+        "down": {
+          "params": 8,
+          "flops_forward": 12800,
+          "inputs": {
+            "h": [
+              100,
+              8
+            ]
+          },
+          "outputs": {
+            "v": [
+              100,
+              8
+            ]
+          }
+        },
+        "up": {
+          "params": 72,
+          "flops_forward": 12800,
+          "inputs": {
+            "v": [
+              100,
+              8
+            ]
+          },
+          "outputs": {
+            "h": [
+              100,
+              8
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 25600,
+        "params": 80
+      }
+    },
+    {
+      "name": "usps_digits",
+      "kind": "named",
+      "config": {
+        "B": 1,
+        "D": 256,
+        "H": 500,
+        "d_hidden": 500,
+        "d_visible": 256
+      },
+      "blocks": {
+        "down": {
+          "params": 256,
+          "flops_forward": 256000,
+          "inputs": {
+            "h": [
+              1,
+              500
+            ]
+          },
+          "outputs": {
+            "v": [
+              1,
+              256
+            ]
+          }
+        },
+        "up": {
+          "params": 128500,
+          "flops_forward": 256000,
+          "inputs": {
+            "v": [
+              1,
+              256
+            ]
+          },
+          "outputs": {
+            "h": [
+              1,
+              500
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 512000,
+        "params": 128756
+      }
+    },
+    {
+      "name": "mnist",
+      "kind": "named",
+      "config": {
+        "B": 1,
+        "D": 784,
+        "H": 500,
+        "d_hidden": 500,
+        "d_visible": 784
+      },
+      "blocks": {
+        "down": {
+          "params": 784,
+          "flops_forward": 784000,
+          "inputs": {
+            "h": [
+              1,
+              500
+            ]
+          },
+          "outputs": {
+            "v": [
+              1,
+              784
+            ]
+          }
+        },
+        "up": {
+          "params": 392500,
+          "flops_forward": 784000,
+          "inputs": {
+            "v": [
+              1,
+              784
+            ]
+          },
+          "outputs": {
+            "h": [
+              1,
+              500
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 1568000,
+        "params": 393284
+      }
+    }
+  ]
+}

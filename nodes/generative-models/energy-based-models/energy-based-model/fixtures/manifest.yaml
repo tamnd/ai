@@ -1,0 +1,12 @@
+# Written by fixtures/make.py; do not edit.
+seed: 1903086890
+rbm: {d_visible: 4, d_hidden: 3}
+mlp: {d: 2, H: 5, gamma: 0.1}
+inputs: {B: 5, v: "binary vectors", x: "6 points of R^2", step: 0.05, noise: "N(0, 2^2) for NCE"}
+loss: "the gradients are of the mean log-likelihood of v (rbm) and of the mean energy of x (mlp)"
+dtype: float64
+numpy: "2.5.4"
+files:
+  params-small.npz: {sha256: 40cb356d6221843170d791342ff44f679a842f746d73e562d166e6ae137088f8}
+  input-small.npz: {sha256: e7620fdc176ba53b095ea002c82fbafbf2769b5224159001eb0a6489277df47b}
+  expected-small.npz: {sha256: 41377c03c78d53e3399b12178f033418ae8419388f58e682fbf18c0e60ebee58}
