@@ -58,6 +58,26 @@ def test_counts(c):
     assert sum(v.size for v in gan.init(np.random.default_rng(0), cfg).values()) == mod["params"]
 
 
+def flop_case(c):
+    """The forward call of a config of shapes.json, for aik flopcount: the generator on B noise vectors and the
+    discriminator on the B fakes and B data points."""
+    k = c["config"]
+    cfg = gan.config(k["d_noise"], k["d_hidden"], k["d_data"], k["d_critic"])
+    rng = np.random.default_rng(0)
+    z, x = rng.standard_normal((k["B"], k["d_noise"])), rng.standard_normal((k["B"], k["d_data"]))
+    return gan.forward, (gan.init(rng, cfg), z, x)
+
+
+def test_forward_scores_the_fakes_and_the_data():
+    rng = np.random.default_rng(3)
+    cfg = gan.config()
+    p = random_params(rng, cfg)
+    z, x = rng.standard_normal((4, 2)), rng.standard_normal((4, 3))
+    a_fake, a_data = gan.forward(p, z, x)
+    np.testing.assert_allclose(a_fake, gan.critic(p, gan.generate(p, z)[0])[0])
+    np.testing.assert_allclose(a_data, gan.critic(p, x)[0])
+
+
 def numeric_grads(f, p, keys, eps=1e-6):
     out = {}
     for k in keys:
