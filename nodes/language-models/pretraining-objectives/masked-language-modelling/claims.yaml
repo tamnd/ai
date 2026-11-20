@@ -1,0 +1,372 @@
+# The claims of the masked language modelling page (spec 07). The build computes the labels.
+- id: c-bert-see-itself
+  type: attributive
+  text: "Devlin et al. note that standard conditional language models can only be trained left-to-right or right-to-left, since bidirectional conditioning would allow each word to indirectly \"see itself\", and the model could trivially predict the target word in a multi-layered context."
+  evidence:
+    - {work: "devlin-2019-bert", role: original, locator: "p. 4", stance: for}
+
+- id: c-bert-mlm
+  type: definitional
+  text: "In order to train a deep bidirectional representation, they simply mask some percentage of the input tokens at random, and then predict those masked tokens; they refer to this procedure as a \"masked LM\" (MLM), although it is often referred to as a Cloze task in the literature (Taylor, 1953)."
+  evidence:
+    - {work: "devlin-2019-bert", role: original, locator: "p. 4", stance: for}
+
+- id: c-bert-rate
+  type: definitional
+  text: "Devlin et al. mask 15% of all WordPiece tokens in each sequence at random, and, in contrast to denoising auto-encoders, they only predict the masked words rather than reconstructing the entire input."
+  evidence:
+    - {work: "devlin-2019-bert", role: original, locator: "p. 4", stance: for}
+
+- id: c-bert-mismatch
+  type: attributive
+  text: "A downside is a mismatch between pre-training and fine-tuning, since the [MASK] token does not appear during fine-tuning."
+  evidence:
+    - {work: "devlin-2019-bert", role: original, locator: "p. 4", stance: for}
+
+- id: c-bert-801010
+  type: definitional
+  text: "To lessen it, the training data generator chooses 15% of the token positions at random for prediction, and replaces the chosen token with the [MASK] token 80% of the time, a random token 10% of the time and the unchanged token 10% of the time; then $T_i$ is used to predict the original token with cross entropy loss."
+  evidence:
+    - {work: "devlin-2019-bert", role: original, locator: "p. 4", stance: for}
+
+- id: c-bert-purpose
+  type: attributive
+  text: "Devlin et al. explain the 10% of unchanged tokens as a way to bias the representation towards the actual observed word, and the mix as a way to keep the encoder from knowing which words it will be asked to predict or which have been replaced by random words, so it is forced to keep a distributional contextual representation of every input token."
+  evidence:
+    - {work: "devlin-2019-bert", role: original, locator: "p. 12", stance: for}
+
+- id: c-bert-random-share
+  type: attributive
+  text: "They add that random replacement only occurs for 1.5% of all tokens (10% of 15%), which does not seem to harm the model's language understanding capability."
+  evidence:
+    - {work: "devlin-2019-bert", role: original, locator: "p. 12", stance: for}
+
+- id: c-roberta-static
+  type: attributive
+  text: "The original BERT implementation performed masking once during data preprocessing, resulting in a single static mask; the training data was duplicated 10 times so that each sequence is masked in 10 different ways over the 40 epochs of training, and each training sequence was seen with the same mask four times."
+  evidence:
+    - {work: "liu-2019-roberta", role: original, locator: "p. 4", stance: for}
+
+- id: c-roberta-dynamic-def
+  type: definitional
+  text: "Liu et al. compare this with dynamic masking, where the masking pattern is generated every time a sequence is fed to the model."
+  evidence:
+    - {work: "liu-2019-roberta", role: original, locator: "p. 4", stance: for}
+
+- id: c-spanbert-masking
+  type: definitional
+  text: "Joshi et al. choose the subset by iteratively sampling spans of text until the masking budget (e.g. 15% of the tokens) has been spent: at each iteration they sample a span length (number of words) from a geometric distribution, randomly (uniformly) select the starting point, always sample a sequence of complete words, and set p = 0.2 and clip the length at 10, which yields a mean span length of 3.8."
+  evidence:
+    - {work: "joshi-2019-spanbert", role: original, locator: "p. 3", stance: for}
+
+- id: c-spanbert-replace
+  type: definitional
+  text: "As in BERT they mask 15% of the tokens in total, replacing 80% of the masked tokens with [MASK], 10% with random tokens and 10% with the original tokens, but they perform this replacement at the span level and not for each token individually."
+  evidence:
+    - {work: "joshi-2019-spanbert", role: original, locator: "p. 3", stance: for}
+
+- id: c-spanbert-sbo
+  type: definitional
+  text: "Their span boundary objective predicts each token of a masked span using only the representations of the observed tokens at the boundaries."
+  evidence:
+    - {work: "joshi-2019-spanbert", role: original, locator: "p. 3", stance: for}
+
+- id: c-t5-objective
+  type: definitional
+  text: "For the encoder-decoder T5, Raffel et al. randomly sample and drop out 15% of tokens in the input sequence; all consecutive spans of dropped-out tokens are replaced by a single sentinel token, and the target is the dropped-out spans delimited by the same sentinel tokens, plus a final sentinel token to mark the end of the target sequence."
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "p. 13", stance: for}
+
+- id: c-t5-cost
+  type: attributive
+  text: "They chose to mask consecutive spans of tokens and only predict dropped-out tokens to reduce the computational cost of pre-training."
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "p. 13", stance: for}
+
+- id: c-fractions
+  type: mathematical
+  text: "With masking rate $r$ and $V'$ ordinary tokens, a share $0.8r$ of the input tokens are [MASK], $0.1r(1 - 1/V')$ are other words and $0.1r(1 + 1/V')$ are chosen but show their own word; at $r = 0.15$ just under 13.5% of the input differs from the text, and a sequence of $n$ tokens gives $0.15n$ masked LM loss terms against $n$ discriminator terms for ELECTRA, 6.67 times as many (76.8 against 512 at $n = 512$)."
+  assumes: ["the masking rate r is applied to ordinary tokens, and random replacements are uniform over the V′ ordinary tokens"]
+  derivation: corruption-fractions
+
+- id: c-span-mean
+  type: mathematical
+  text: "A geometric distribution with $p = 0.2$ truncated at 10 and renormalised has mean $(1 - 11 q^{10} + 10 q^{11}) / (p(1 - q^{10})) = 3.797$ with $q = 0.8$, which matches the 3.8 of Joshi et al.; capping the lengths at 10 instead would give $(1 - q^{10})/p = 4.463$, and the untruncated mean is 5."
+  assumes: ["span lengths follow Geo(p) on {1, 2, ...}, truncated at 10 and renormalised"]
+  derivation: span-length
+
+- id: c-t5-lengths
+  type: mathematical
+  text: "With $k$ noise tokens in $s$ runs, span corruption gives an input of $n - k + s$ tokens and a target of $k + s + 1$; for 500 tokens with 15% noise in 25 spans that is 450 and 101, while i.i.d. noise at 15% has $r + (n-1)r(1-r) = 63.77$ runs in expectation, a mean run of 1.18 tokens, an input of 488.77 tokens and a target of 139.77."
+  assumes: ["the k noise tokens form s maximal runs, each replaced by one sentinel; the target ends with one more sentinel"]
+  derivation: span-corruption-lengths
+
+- id: c-independence-gap
+  type: mathematical
+  text: "When two positions $a$ and $b$ are masked in the same example, the lowest expected masked LM loss for the pair is $H(A \\mid C) + H(B \\mid C)$, which exceeds the joint entropy $H(A, B \\mid C)$ by the mutual information $I(A; B \\mid C) \\ge 0$; in the \"New York\" example below the gap is $\\log 2$ nats."
+  assumes: ["the masked model predicts each masked position from the visible context C alone"]
+  derivation: independence-gap
+
+- id: c-bert-example
+  type: definitional
+  text: "Devlin et al. illustrate the masking procedure on the unlabeled sentence \"my dog is hairy\" when the random masking procedure chose the 4-th token, hairy: 80% of the time the word is replaced with the [MASK] token, my dog is hairy → my dog is [MASK]; 10% of the time with a random word, my dog is hairy → my dog is apple; and 10% of the time the word is kept unchanged, my dog is hairy → my dog is hairy."
+  evidence:
+    - {work: "devlin-2019-bert", role: original, locator: "p. 12", stance: for}
+
+- id: c-t5-example
+  type: definitional
+  text: "Raffel et al. illustrate span corruption on \"Thank you for inviting me to your party last week.\" with \"for\", \"inviting\" and \"last\" chosen: since \"for\" and \"inviting\" occur consecutively they are replaced by a single sentinel, the input is \"Thank you <X> me to your party <Y> week.\" and the target is \"<X> for inviting <Y> last <Z>\"."
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "p. 13", stance: for}
+
+- id: c-t5-rate
+  type: empirical
+  text: "Raffel et al. compare corruption rates of 10%, 15%, 25% and 50% and find that the corruption rate had a limited effect on the model's performance, except that 50% results in a significant degradation of performance on GLUE and SQuAD."
+  scope:
+    models: "T5 encoder-decoder, base size"
+    data: ["C4"]
+    scale: "2^35 tokens of pre-training (about 34B)"
+    setting: "corruption rates of 10% to 50%, i.i.d. replace-corrupted-spans objective, then fine-tuning on GLUE, CNNDM, SQuAD, SuperGLUE and WMT"
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "p. 23", stance: for}
+
+- id: c-wettig-40
+  type: empirical
+  text: "Wettig et al. find that masking 40% outperforms 15% for BERT-large size models on GLUE and SQuAD, and that an extremely high masking rate of 80% can still preserve 95% fine-tuning performance."
+  scope:
+    models: "BERT-large architecture"
+    data: ["English Wikipedia and BookCorpus"]
+    scale: "the 24hBERT efficient pre-training recipe"
+    setting: "masking rates from 15% to 80%, fine-tuning on GLUE and SQuAD"
+  evidence:
+    - {work: "wettig-2022-should-you-mask-15-percent", role: original, locator: "p. 1", stance: for}
+
+- id: c-wettig-strategy
+  type: empirical
+  text: "They also find that uniform masking requires a higher masking rate compared to sophisticated masking strategies such as span or PMI masking."
+  scope:
+    models: "BERT-large architecture"
+    data: ["English Wikipedia and BookCorpus"]
+    scale: "the 24hBERT efficient pre-training recipe"
+    setting: "uniform, span and PMI masking at several masking rates"
+  evidence:
+    - {work: "wettig-2022-should-you-mask-15-percent", role: original, locator: "p. 1", stance: for}
+
+- id: c-electra-large-mask
+  type: attributive
+  text: "For ELECTRA-Large, Clark et al. used a higher mask percent (25 instead of 15) because the generator was achieving high accuracy with 15% masking, resulting in very few replaced tokens."
+  evidence:
+    - {work: "clark-2020-electra", role: original, locator: "p. 13", stance: for}
+
+- id: c-t5-span
+  type: empirical
+  text: "Raffel et al. compare average span lengths of 2, 3, 5 and 10 at a corruption rate of 15% and find a limited difference, though the version with an average span length of 10 slightly underperforms the other values in some cases, and an average span length of 3 slightly (but significantly) outperforms the i.i.d. objective on most non-translation benchmarks."
+  scope:
+    models: "T5 encoder-decoder, base size"
+    data: ["C4"]
+    scale: "2^35 tokens of pre-training (about 34B)"
+    setting: "15% corruption with average span lengths 2, 3, 5 and 10 against i.i.d. noise, then fine-tuning"
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "p. 24", stance: for}
+
+- id: c-electra-lambda
+  type: attributive
+  text: "Clark et al. set λ, the weight for the discriminator objective in the loss, to 50."
+  evidence:
+    - {work: "clark-2020-electra", role: original, locator: "p. 13", stance: for}
+
+- id: c-electra-gen-size
+  type: empirical
+  text: "They find that models work best with generators 1/4-1/2 the size of the discriminator."
+  scope:
+    models: "ELECTRA-Small and ELECTRA-Base discriminators with generators of several sizes"
+    data: ["English Wikipedia and BooksCorpus"]
+    scale: "unknown"
+    setting: "GLUE dev score as a function of generator size"
+  evidence:
+    - {work: "clark-2020-electra", role: original, locator: "p. 5", stance: for}
+
+- id: c-electra-cost
+  type: attributive
+  text: "Clark et al. argue that masked language modelling incurs a substantial compute cost because the network only learns from 15% of the tokens per example."
+  evidence:
+    - {work: "clark-2020-electra", role: original, locator: "p. 1", stance: for}
+
+- id: c-bert-converge
+  type: empirical
+  text: "BERT's own appendix addresses the same worry: the MLM model does converge slightly slower than the LTR model, but in terms of absolute accuracy the MLM model begins to outperform the LTR model almost immediately."
+  scope:
+    models: "BERT-Base, MLM against left-to-right"
+    data: ["BooksCorpus and English Wikipedia"]
+    scale: "up to 1M pre-training steps"
+    setting: "MNLI dev accuracy during pre-training"
+  evidence:
+    - {work: "devlin-2019-bert", role: original, locator: "p. 16", stance: for}
+
+- id: c-bert-table5
+  type: empirical
+  text: "Devlin et al. ablate the objective with BERT-Base on the dev sets of MNLI-m, QNLI, MRPC, SST-2 and SQuAD: BERT-Base scores 84.4, 88.4, 86.7, 92.7 and 88.5; without next sentence prediction 83.9, 84.9, 86.5, 92.6 and 87.9; trained as a left-to-right model without next sentence prediction (\"LTR & No NSP\") 82.1, 84.3, 77.5, 92.1 and 77.8; and with a BiLSTM added on top of that 82.1, 84.1, 75.7, 91.6 and 84.9."
+  scope:
+    models: "BERT-Base"
+    data: ["BooksCorpus and English Wikipedia"]
+    scale: "same pre-training data and fine-tuning scheme as BERT-Base"
+    setting: "objective ablations; dev MNLI-m, QNLI, MRPC, SST-2 and SQuAD"
+  evidence:
+    - {work: "devlin-2019-bert", role: original, locator: "p. 8", stance: for}
+
+- id: c-bert-table8
+  type: empirical
+  text: "On the MNLI dev set and for NER fine-tuned and feature-based, Devlin et al. report 84.2, 95.4 and 94.9 for 80% [MASK], 10% same and 10% random; 84.3, 94.9 and 94.0 for [MASK] only; 84.1, 95.2 and 94.6 for 80% [MASK] and 20% random; 84.4, 95.2 and 94.7 for 80% [MASK] and 20% same; 83.7, 94.8 and 94.6 for 20% same and 80% random; and 83.6, 94.9 and 94.6 for random only."
+  scope:
+    models: "BERT-Base"
+    data: ["BooksCorpus and English Wikipedia"]
+    scale: "unknown"
+    setting: "masking-procedure ablations; dev MNLI and CoNLL-2003 NER, fine-tuned and feature-based"
+  evidence:
+    - {work: "devlin-2019-bert", role: original, locator: "p. 16", stance: for}
+
+- id: c-bert-table8-reading
+  type: empirical
+  text: "They read the table as saying that fine-tuning is surprisingly robust to different masking strategies, that using only the [MASK] strategy was problematic for the feature-based approach to NER, and that using only the random strategy performs much worse."
+  scope:
+    models: "BERT-Base"
+    data: ["BooksCorpus and English Wikipedia"]
+    scale: "unknown"
+    setting: "masking-procedure ablations; dev MNLI and CoNLL-2003 NER, fine-tuned and feature-based"
+  evidence:
+    - {work: "devlin-2019-bert", role: original, locator: "p. 16", stance: for}
+
+- id: c-wettig-801010
+  type: empirical
+  text: "With 40% masking, Wettig et al. find that same token predictions and random token corruptions deteriorate performance on most downstream tasks and that the 80-10-10 rule performs worse than simply using all [MASK], with the exception of SST-2; they suggest to use only [MASK] for MLM pre-training."
+  scope:
+    models: "BERT-large architecture"
+    data: ["English Wikipedia and BookCorpus"]
+    scale: "the 24hBERT efficient pre-training recipe"
+    setting: "40% masking with [MASK] only against same-token and random-token replacements; dev GLUE tasks"
+  evidence:
+    - {work: "wettig-2022-should-you-mask-15-percent", role: original, locator: "p. 7", stance: for}
+
+- id: c-roberta-table1
+  type: empirical
+  text: "On SQuAD 2.0, MNLI-m and SST-2, Liu et al. report 76.3, 84.3 and 92.8 for the published BERT-Base, 78.3, 84.3 and 92.5 for their reimplementation with static masking, and 78.7, 84.0 and 92.9 with dynamic masking; they find dynamic masking comparable or slightly better than static masking."
+  scope:
+    models: "BERT-Base reimplementation"
+    data: ["BooksCorpus and English Wikipedia"]
+    scale: "BERT-Base pre-training setup"
+    setting: "static against dynamic masking; dev SQuAD 2.0, MNLI-m and SST-2"
+  evidence:
+    - {work: "liu-2019-roberta", role: original, locator: "p. 4", stance: for}
+
+- id: c-wettig-table1
+  type: empirical
+  text: "With BERT-large models and an efficient pre-training recipe, Wettig et al. report a validation perplexity of 17.7 and dev scores of 84.2 (MNLI), 90.9 (QNLI) and 88.0 (SQuAD) at a 15% masking rate, 69.4, 84.5, 91.6 and 89.8 at 40%, and 1141.4, 80.8, 87.9 and 86.2 at 80%."
+  scope:
+    models: "BERT-large architecture"
+    data: ["English Wikipedia and BookCorpus; perplexity on the one billion word benchmark"]
+    scale: "the 24hBERT efficient pre-training recipe"
+    setting: "masking rates 15%, 40% and 80%; dev MNLI, QNLI and SQuAD"
+  evidence:
+    - {work: "wettig-2022-should-you-mask-15-percent", role: original, locator: "p. 2", stance: for}
+
+- id: c-wettig-table3
+  type: empirical
+  text: "They separate the corruption rate, how much of the input is changed, from the prediction rate, how many tokens are predicted, and find that more prediction helps and more corruption hurts: with 40% predicted, MNLI rises from 84.5 at 40% corruption to 85.7 at 20%, 86.3 at 10% and 86.9 at 5%."
+  scope:
+    models: "BERT-large architecture"
+    data: ["English Wikipedia and BookCorpus"]
+    scale: "the 24hBERT efficient pre-training recipe"
+    setting: "corruption and prediction rates set separately; dev MNLI"
+  evidence:
+    - {work: "wettig-2022-should-you-mask-15-percent", role: original, locator: "p. 6", stance: for}
+
+- id: c-spanbert-table6
+  type: empirical
+  text: "With bi-sequence training and next sentence prediction, Joshi et al. report dev scores on SQuAD 2.0, NewsQA, TriviaQA, coreference, MNLI-m, QNLI and the GLUE average of 83.8, 72.0, 76.3, 77.7, 86.7, 92.5 and 83.2 for subword tokens as in BERT; 84.3, 72.8, 77.1, 76.6, 86.3, 92.8 and 82.9 for whole words; and 85.4, 73.0, 78.8, 76.4, 87.0, 93.3 and 83.4 for geometric spans."
+  scope:
+    models: "SpanBERT models with bi-sequence training and NSP"
+    data: ["BooksCorpus and English Wikipedia"]
+    scale: "checkpoints at 1.2M steps"
+    setting: "masking schemes; dev SQuAD 2.0, NewsQA, TriviaQA, coreference, MNLI-m, QNLI and GLUE"
+  evidence:
+    - {work: "joshi-2019-spanbert", role: original, locator: "p. 8", stance: for}
+
+- id: c-spanbert-reading
+  type: empirical
+  text: "With the exception of coreference resolution, masking random spans is preferable to the other strategies they try, which include named entities and noun phrases."
+  scope:
+    models: "SpanBERT models with bi-sequence training and NSP"
+    data: ["BooksCorpus and English Wikipedia"]
+    scale: "checkpoints at 1.2M steps"
+    setting: "subword, whole word, named entity, noun phrase and geometric span masking"
+  evidence:
+    - {work: "joshi-2019-spanbert", role: original, locator: "p. 8", stance: for}
+
+- id: c-t5-table4
+  type: empirical
+  text: "On GLUE, CNNDM, SQuAD and SuperGLUE, Raffel et al. report 80.69, 18.94, 77.99 and 65.27 for prefix language modeling, 82.96, 19.17, 80.65 and 69.85 for the BERT-style objective and 73.17, 18.59, 67.61 and 58.47 for deshuffling, and find that the BERT-style objective performs best, though the prefix language modeling objective attains similar performance on the translation tasks."
+  scope:
+    models: "T5 encoder-decoder, base size"
+    data: ["C4"]
+    scale: "2^35 tokens of pre-training (about 34B)"
+    setting: "prefix LM, BERT-style and deshuffling objectives, then fine-tuning on GLUE, CNNDM, SQuAD, SuperGLUE and WMT"
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "p. 22", stance: for}
+
+- id: c-t5-table5
+  type: empirical
+  text: "Among variants of the BERT-style objective the MASS-style objective scores 82.32, 19.16, 80.10 and 69.28, replacing corrupted spans 83.28, 19.24, 80.88 and 71.36, and dropping corrupted tokens 84.44, 19.31, 80.52 and 68.67; in their setting all of these variants perform similarly."
+  scope:
+    models: "T5 encoder-decoder, base size"
+    data: ["C4"]
+    scale: "2^35 tokens of pre-training (about 34B)"
+    setting: "variants of the BERT-style objective, then fine-tuning on GLUE, CNNDM, SQuAD, SuperGLUE and WMT"
+  evidence:
+    - {work: "raffel-2020-t5", role: original, locator: "p. 22", stance: for}
+
+- id: c-electra-table5
+  type: empirical
+  text: "Clark et al. report GLUE scores of 85.0 for ELECTRA, 84.3 for All-Tokens MLM, 82.4 for Replace MLM, 82.4 for ELECTRA 15% and 82.2 for BERT in a compute-efficiency comparison."
+  scope:
+    models: "ELECTRA-Base sized models"
+    data: ["English Wikipedia and BooksCorpus"]
+    scale: "a compute-efficiency comparison at base size"
+    setting: "ELECTRA, All-Tokens MLM, Replace MLM, ELECTRA 15% and BERT; GLUE dev score"
+  evidence:
+    - {work: "clark-2020-electra", role: original, locator: "p. 9", stance: for}
+
+- id: c-electra-reading
+  type: attributive
+  text: "They conclude that a large amount of ELECTRA's improvement can be attributed to learning from all tokens and a smaller amount can be attributed to alleviating the pre-train fine-tune mismatch."
+  evidence:
+    - {work: "clark-2020-electra", role: original, locator: "p. 9", stance: for}
+
+- id: c-xlnet-original
+  type: attributive
+  text: "Yang et al. note that replacing [MASK] with original tokens does not solve the problem because original tokens can be only used with a small probability, otherwise the objective would be trivial to optimize."
+  evidence:
+    - {work: "yang-2019-xlnet", role: original, locator: "p. 3", stance: for}
+
+- id: c-xlnet-independence
+  type: attributive
+  text: "Yang et al. note that BERT factorizes the joint conditional probability of the masked tokens based on an independence assumption that all masked tokens are separately reconstructed."
+  evidence:
+    - {work: "yang-2019-xlnet", role: original, locator: "p. 3", stance: for}
+
+- id: c-xlnet-newyork
+  type: attributive
+  text: "Their example: with the targets [New, York] in \"New York is a city\", BERT's objective is log p(New | is a city) + log p(York | is a city), and the dependency between the pair (New, York) is omitted."
+  evidence:
+    - {work: "yang-2019-xlnet", role: original, locator: "p. 6", stance: for}
+
+- id: c-electra-real
+  type: definitional
+  text: "If the generator happens to generate the correct token, that token is considered \"real\" instead of \"fake\", and the generator is trained with maximum likelihood rather than adversarially, unlike a GAN."
+  evidence:
+    - {work: "clark-2020-electra", role: original, locator: "p. 3", stance: for}
+
+- id: c-xlnet-avoids
+  type: attributive
+  text: "XLNet trains an autoregressive model over random factorization orders, which naturally avoids the independence assumption and the pretrain-finetune discrepancy."
+  evidence:
+    - {work: "yang-2019-xlnet", role: original, locator: "p. 3", stance: for}
