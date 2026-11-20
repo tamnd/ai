@@ -2260,7 +2260,7 @@ RC8T1P jaeger
 MTREXA jais
 HP1WGG jais-30b-phase-1
 ZXDE85 jais-70b
-XPCY8T jamba
+XPCY8T jamba-v0-1
 EMFKTP jamba-1-5-large
 MZCDA3 jamba-1-5-mini
 HWB0SA jamba-1-6-large
@@ -6101,3 +6101,6 @@ FB5R3H burda-2015-importance-weighted-autoencoders
 9NJP4F kingma-2013-auto-encoding-variational-bayes
 S69KQ7 rezende-2014-stochastic-backpropagation-approximate
 KVBKEH variational-autoencoder
+YDFAM3 ai21labs-2024-jamba-v0-1-config
+2V1JK1 jamba
+3PK0YP lieber-2024-jamba

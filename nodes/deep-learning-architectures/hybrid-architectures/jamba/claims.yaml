@@ -1,0 +1,322 @@
+# The claims of the Jamba page (spec 07). The build computes the labels.
+- id: c-def
+  type: definitional
+  text: "Jamba is a base large language model based on a hybrid Transformer-Mamba mixture-of-experts (MoE) architecture that interleaves blocks of Transformer and Mamba layers, with MoE added in some of these layers to increase model capacity while keeping active parameter usage manageable."
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "p. 1", stance: for}
+
+- id: c-release
+  type: attributive
+  text: "Lieber et al. implement a 7B-based model with 12B active parameters and 52B total available parameters, designed to fit in a single 80GB GPU."
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "p. 1", stance: for}
+
+- id: c-transformer-drawbacks
+  type: attributive
+  text: "Lieber et al. name two drawbacks of the Transformer: its high memory and compute requirements hinder the processing of long contexts, where the key-value (KV) cache size becomes a limiting factor, and its lack of a single summary state entails slow inference and low throughput, since each generated token performs a computation on the entire context."
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "p. 2", stance: for}
+
+- id: c-rnn
+  type: attributive
+  text: "Older recurrent neural network (RNN) models summarize an arbitrarily long context in a single hidden state, but they are costly to train, since training cannot be parallelized across time steps, and they struggle with long distance relationships."
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "p. 2", stance: for}
+
+- id: c-ssm-lag
+  type: attributive
+  text: "State space models such as Mamba are more efficient to train than RNNs and more capable at handling long distance relationships, but still lag behind the performance of comparably sized Transformer language models."
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "p. 2", stance: for}
+
+- id: c-prior-hybrids
+  type: attributive
+  text: "Earlier attention-SSM hybrids were smaller or weaker: H3, with self-attention replacing the second and middle layers, was trained with up to 2.7B parameters and 400B tokens, and StripedHyena, a 7B model that interleaves attention and SSM layers, lags behind the attention-only Mistral-7B."
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "p. 2", stance: for}
+
+- id: c-first
+  type: attributive
+  text: "Lieber et al. describe Jamba as the first production-grade Attention-SSM hybrid model."
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "p. 2", stance: for}
+
+- id: c-moe-capacity
+  type: attributive
+  text: "MoE layers allow increasing model capacity (total number of available parameters) without increasing compute requirements (number of active parameters)."
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "p. 2", stance: for}
+
+- id: c-block
+  type: definitional
+  text: "A Jamba block contains l layers mixed at a ratio of a : m, meaning a attention layers for every m Mamba layers; each layer contains an attention or a Mamba module followed by a multi-layer perceptron (MLP), and every e layers the MLP may be replaced by an MoE layer with n experts, of which the top K are chosen at each token."
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "pp. 3 to 4", stance: for}
+
+- id: c-config-released
+  type: attributive
+  text: "The released configuration of Jamba-v0.1 sets attn_layer_period 8, attn_layer_offset 4, expert_layer_period 2 and expert_layer_offset 1."
+  evidence:
+    - {work: "ai21labs-2024-jamba-v0-1-config", role: original, locator: "p. 1", stance: for}
+
+- id: c-attn-moe
+  type: attributive
+  text: "Figure 1 of Lieber et al. shows a potential Attention MoE layer, which their architecture does not use, but future variants could."
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "p. 4", stance: for}
+
+- id: c-nope
+  type: attributive
+  text: "Lieber et al. found that with the Mamba layers, positional embeddings or mechanisms like RoPE are not necessary, and so they do not use any explicit positional information."
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "p. 5", stance: for}
+
+- id: c-rmsnorm
+  type: empirical
+  text: "When scaling to the larger model, Lieber et al. encountered large loss spikes, which they traced to large activation values in inner parts of the Mamba layers; adding RMSNorm to internal activations stabilized training and prevented additional loss spikes."
+  scope:
+    models: "the 7B-based Jamba model"
+    data: ["the in-house pretraining corpus of the paper"]
+    setting: "pretraining"
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "p. 12", stance: for}
+
+- id: c-standard
+  type: attributive
+  text: "Jamba uses load balancing for the MoE, grouped-query attention (GQA), SwiGLU activation functions, and a BPE tokenizer with a vocabulary of 64K in which each digit is a separate token and the dummy space of the Llama and Mistral tokenizers is removed."
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "p. 5", stance: for}
+
+- id: c-aux-coef
+  type: attributive
+  text: "The released configuration of Jamba-v0.1 sets router_aux_loss_coef to 0.001."
+  evidence:
+    - {work: "ai21labs-2024-jamba-v0-1-config", role: original, locator: "p. 1", stance: for}
+
+- id: c-config
+  type: attributive
+  text: "The released Jamba has 4 Jamba blocks, each with l = 8 layers, a ratio a : m = 1 : 7 of attention to Mamba layers, MoE every e = 2 layers, n = 16 experts in total and K = 2 experts used at each token."
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "p. 5", stance: for}
+
+- id: c-config-why
+  type: attributive
+  text: "The 1:7 ratio was chosen as the most compute-efficient variant amongst the best performing variants in the ablations, and n and e were balanced to fit in a single 80GB GPU with int8 weights, an average of approximately 8 experts per layer."
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "p. 5", stance: for}
+
+- id: c-config-sizes
+  type: attributive
+  text: "The released config.json sets hidden_size 4096, intermediate_size 14336, num_hidden_layers 32, num_attention_heads 32, num_key_value_heads 8, num_experts 16, num_experts_per_tok 2, mamba_d_state 16, mamba_d_conv 4, mamba_expand 2, mamba_dt_rank 256 and vocab_size 65536."
+  evidence:
+    - {work: "ai21labs-2024-jamba-v0-1-config", role: original, locator: "p. 1", stance: for}
+
+- id: c-params
+  type: mathematical
+  text: "With the released sizes, Jamba-v0.1 has 51,570,323,328 parameters, which round to the 52B total available parameters of Table 1."
+  assumes: ["the block of the released code: GQA attention without bias, Mamba layers with a convolution bias, no projection bias and RMSNorm on Δ, B and C, SwiGLU MLPs and experts without bias, a linear router without bias, two RMSNorms per layer, a final RMSNorm and an untied output layer", "the sizes of c-config-sizes"]
+  derivation: parameter-count
+
+- id: c-active
+  type: mathematical
+  text: "A token uses 12,110,311,296 parameters of Jamba-v0.1, the 12B active parameters of Table 1: each of the 16 mixtures leaves 14 experts unused, 224 experts of 3DF = 176,160,768 parameters."
+  assumes: ["the count of c-params", "K = 2 of n = 16 experts at each of the 16 MoE layers"]
+  derivation: parameter-count
+
+- id: c-experts-share
+  type: mathematical
+  text: "The 256 experts of Jamba-v0.1 hold 45,097,156,608 parameters, 87% of the model; the 28 Mamba layers hold 2,948,636,544 and the 4 attention layers 167,772,160."
+  assumes: ["the count of c-params"]
+  derivation: parameter-count
+
+- id: c-table1
+  type: empirical
+  text: "Table 1 of Lieber et al. compares Jamba (52B available, 12B active parameters, 4GB KV cache at 256K tokens in 16-bit) with Llama-2 (6.7B, 128GB), Mistral (7.2B, 32GB) and Mixtral (46.7B available, 12.9B active, 32GB)."
+  scope:
+    models: "Jamba, Llama-2 7B, Mistral 7B and Mixtral 8x7B"
+    data: []
+    setting: "the KV cache of a 256K-token context in 16-bit precision"
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "p. 4", stance: for}
+
+- id: c-throughput-attn
+  type: attributive
+  text: "With short sequences, attention operations take up a small fraction of the inference and training FLOPS, but with long sequences attention hogs most of the compute; Mamba layers are more compute-efficient, so increasing the ratio of Mamba layers improves throughput, especially for long sequences."
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "p. 4", stance: for}
+
+- id: c-kv-8x
+  type: mathematical
+  text: "With one attention layer in eight, the KV cache of Jamba is 8 times smaller than that of a Transformer of the same depth with the same grouped-query heads."
+  assumes: ["a KV cache of 2 B T G A numbers per attention layer", "the same G, A, B and T for both models"]
+  derivation: kv-cache
+
+- id: c-table1-cache
+  type: mathematical
+  text: "At 256K tokens in 16-bit precision, 4 attention layers with 8 key-value heads of size 128 hold exactly 4 GiB of keys and values, 32 such layers hold 32 GiB, and 32 layers with 32 key-value heads hold 128 GiB, the three cache sizes of Table 1."
+  assumes: ["a KV cache of 2 B T G A numbers per attention layer", "B = 1, T = 262,144 and 2 bytes per number"]
+  derivation: kv-cache
+
+- id: c-state-small
+  type: mathematical
+  text: "The 28 Mamba layers of Jamba-v0.1 keep 4,358,144 numbers of state at any length, 0.2% of the KV cache at 256K tokens, and an attention layer outgrows a Mamba layer after 76 tokens."
+  assumes: ["a Mamba layer keeps I(W - 1 + N) numbers, its convolution window and SSM state", "I = 8192, W = 4, N = 16, G = 8, A = 128"]
+  derivation: kv-cache
+
+- id: c-context-fit
+  type: empirical
+  text: "Jamba provides 2x the context length of Mixtral and 7x that of Llama-2-70B in a single A100 80GB GPU."
+  scope:
+    models: "Jamba, Mixtral 8x7B and Llama-2 70B"
+    data: []
+    setting: "the longest context that fits in a single A100 80GB GPU"
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "p. 5", stance: for}
+
+- id: c-throughput
+  type: empirical
+  text: "On a single A100 80GB GPU with int8 weights, 8K context length and 512 output tokens, Jamba allows processing of large batches with 3x the throughput of Mixtral, which does not fit a batch of 16; on 4 A100 GPUs without quantization at 128K tokens, Jamba obtains 3x the throughput of Mixtral."
+  scope:
+    models: "Jamba, Mixtral 8x7B and Llama-2 70B"
+    data: []
+    setting: "end-to-end generation throughput on A100 80GB GPUs"
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "p. 6", stance: for}
+
+- id: c-infra
+  type: attributive
+  text: "The model was trained on NVIDIA H100 GPUs with an in-house proprietary framework that uses FSDP and tensor, sequence and expert parallelism, on an in-house dataset of text data from the Web, books and code, with the last update in March 2024."
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "p. 6", stance: for}
+
+- id: c-1m
+  type: attributive
+  text: "Jamba was successfully trained on context lengths of up to 1M tokens, and the released model supports lengths of up to 256K tokens."
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "p. 5", stance: for}
+
+- id: c-base
+  type: attributive
+  text: "The released Jamba model is a pretrained base model, which did not go through alignment or instruction tuning, and does not have moderation mechanisms."
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "p. 3", stance: for}
+
+- id: c-nope-ablation
+  type: empirical
+  text: "Jamba with no explicit position information and Jamba with RoPE in the attention layers give similar results at 1.3B parameters and 250B tokens, and Lieber et al. suggest that the Mamba layers, placed before the attention layers, provide implicit position information."
+  scope:
+    models: "1.3B-parameter Jamba models"
+    data: ["250B tokens of the in-house pretraining corpus"]
+    setting: "ablation of positional information in the attention layers"
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "p. 12", stance: for}
+
+- id: c-bench
+  type: empirical
+  text: "Jamba scores 87.1 on HellaSwag against 86.7 for Mixtral and 85.3 for Llama-2 70B, 59.9 on GSM8K against 60.4 and 55.3, 67.4 on MMLU against 70.6 and 69.8, and 29.3 on HumanEval against 34.8 and 29.9; in most tasks Jamba performs comparably to Llama-2 70B and Mixtral."
+  scope:
+    models: "Jamba, Mixtral 8x7B, Llama-2 70B and other open models"
+    data: ["HellaSwag", "GSM8K", "MMLU", "HumanEval"]
+    setting: "the academic benchmarks of Table 2 with the shot counts of the paper"
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "p. 7", stance: for}
+
+- id: c-needle
+  type: empirical
+  text: "Jamba has excellent performance in the needle-in-a-haystack evaluation, which requires retrieving a simple statement planted in a long context window, although it uses only 4 attention layers."
+  scope:
+    models: "Jamba-v0.1"
+    data: ["needle-in-a-haystack"]
+    setting: "contexts of up to 256K tokens"
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "p. 7", stance: for}
+
+- id: c-longqa
+  type: empirical
+  text: "On five long-context question-answering datasets from L-Eval in a 3-shot format, Jamba outperforms Mixtral on most of the datasets as well as on average, an F1 of 0.44 against 0.43."
+  scope:
+    models: "Jamba and Mixtral 8x7B"
+    data: ["L-Eval: LongFQA, CUAD, NarrativeQA, NQ, SFiction"]
+    setting: "3-shot long-context question answering"
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "p. 9", stance: for}
+
+- id: c-ablation-ratio
+  type: empirical
+  text: "At 1.3B parameters and 250B tokens, the hybrid Jamba model outperforms the pure attention and pure Mamba models, with an OLLM score of 37.2 against 36.4 and 36.1 and HellaSwag 65.1 against 62.4 and 62.6, and the ratios a : m = 1:3 and 1:7 show virtually no performance difference."
+  scope:
+    models: "1.3B-parameter attention, Mamba and Jamba models without MoE"
+    data: ["250B tokens of the in-house pretraining corpus", "OLLM", "HellaSwag", "WinoGrande", "NQ"]
+    setting: "ablation of the ratio of attention to Mamba layers"
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "p. 9", stance: for}
+
+- id: c-ablation-7b
+  type: empirical
+  text: "At 7B parameters and 50B tokens, pure Mamba is quite competitive but lags slightly behind pure attention, an OLLM score of 35.3 against 36.1, and the hybrid without MoE outperforms both with 36.6."
+  scope:
+    models: "7B-parameter attention, Mamba and Jamba models without MoE"
+    data: ["50B tokens of the in-house pretraining corpus", "OLLM"]
+    setting: "ablation of the architecture at the 7B scale"
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "p. 10", stance: for}
+
+- id: c-icl
+  type: empirical
+  text: "Pure Mamba does substantially worse than pure attention on IMDB, QuAC and NarrativeQA, 48.8 against 84.1 on IMDB, while the hybrid performs similarly to attention, 90.9; pure Mamba often does not follow the correct format, answering \"Very Good\" or \"3/10\" where the labels are \"Positive\" and \"Negative\"."
+  scope:
+    models: "1.3B-parameter attention, Mamba and Jamba models"
+    data: ["IMDB", "QuAC", "NarrativeQA"]
+    setting: "few-shot evaluation after pretraining"
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "p. 11", stance: for}
+
+- id: c-icl-hypothesis
+  type: attributive
+  text: "Lieber et al. hypothesize that the failure of pure Mamba points to a difficulty of SSMs with in-context learning (ICL), which has been linked to induction heads, and note that the hybrid does in-context learning even when only 1 out of 8 layers is an attention layer."
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "p. 11", stance: for}
+
+- id: c-induction-heads
+  type: empirical
+  text: "In a 1.3B hybrid Attention-Mamba model, Lieber et al. found 12 heads, in all three attention layers (layers 4, 12 and 20), whose attention from the last token focuses on the labels from the few-shot examples."
+  scope:
+    models: "a 1.3B-parameter Jamba model without MoE"
+    data: ["IMDB few-shot prompts"]
+    setting: "inspection of attention patterns"
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "p. 11", stance: for}
+
+- id: c-moe-helps
+  type: empirical
+  text: "At 7B parameters and 50B tokens, adding MoE with n = 16 experts, K = 2 and e = 2 improves the hybrid Attention-Mamba model, the OLLM score from 36.6 to 38.1 and NQ from 15.4 to 18.9."
+  scope:
+    models: "7B-parameter Jamba models with and without MoE"
+    data: ["50B tokens of the in-house pretraining corpus", "OLLM", "NQ"]
+    setting: "ablation of the mixture of experts"
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "pp. 11 to 12", stance: for}
+
+- id: c-tradeoffs
+  type: attributive
+  text: "Decreasing the ratio of attention layers reduces the memory footprint of the KV cache and improves throughput but may lower the model's capabilities; a larger n increases capacity at the cost of memory, a larger K increases active parameters and compute, and a larger e decreases capacity, compute and memory."
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "p. 4", stance: for}
+
+- id: c-pure-mamba
+  type: attributive
+  text: "The ablation models of Lieber et al. include pure attention, pure Mamba with Mamba layers interleaved with MLP layers, and hybrids without MoE at a : m ratios of 1:3 and 1:7."
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "p. 9", stance: for}
+
+- id: c-weights
+  type: attributive
+  text: "Lieber et al. release Jamba, with 12B active parameters and 52B total available parameters, under the Apache 2.0 license."
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "p. 2", stance: for}
+
+- id: c-history
+  type: historical
+  text: "Lieber et al. posted Jamba to arXiv as 2403.19887 and released the model at huggingface.co/ai21labs/Jamba-v0.1."
+  evidence:
+    - {work: "lieber-2024-jamba", role: original, locator: "p. 1", stance: for}

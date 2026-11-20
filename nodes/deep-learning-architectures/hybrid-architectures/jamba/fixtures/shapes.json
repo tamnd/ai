@@ -1,0 +1,845 @@
+{
+  "note": "Written by aik shapes sample -w from shapes.yaml; do not edit. The tests of each implementation check shapes, param_count and flops against these values (spec 08.6, rule X09).",
+  "configs": [
+    {
+      "name": "example",
+      "kind": "example",
+      "config": {
+        "A": 4,
+        "B": 2,
+        "D": 8,
+        "F": 12,
+        "G": 1,
+        "H": 2,
+        "I": 16,
+        "N": 4,
+        "R": 2,
+        "T": 6,
+        "U": 2,
+        "V": 13,
+        "W": 3,
+        "X": 4,
+        "block_len": 4,
+        "d_conv": 3,
+        "d_ff": 12,
+        "d_inner": 16,
+        "d_model": 8,
+        "d_state": 4,
+        "dt_rank": 2,
+        "expand": 2,
+        "head_dim": 4,
+        "moe_every": 2,
+        "n_blocks": 1,
+        "n_experts": 4,
+        "n_heads": 2,
+        "n_kv": 1,
+        "n_moe": 2,
+        "q_per_kv": 2,
+        "quarter": 1,
+        "top_k": 2,
+        "vocab": 13
+      },
+      "blocks": {
+        "attn": {
+          "params": 192,
+          "flops_forward": 6912,
+          "inputs": {
+            "r": [
+              2,
+              6,
+              8
+            ]
+          },
+          "outputs": {
+            "r": [
+              2,
+              6,
+              8
+            ]
+          },
+          "internals": {
+            "k": [
+              2,
+              6,
+              1,
+              4
+            ],
+            "q": [
+              2,
+              6,
+              1,
+              2,
+              4
+            ],
+            "scores": [
+              2,
+              1,
+              2,
+              6,
+              6
+            ]
+          }
+        },
+        "embed": {
+          "params": 104,
+          "flops_forward": 0,
+          "inputs": {
+            "tokens": [
+              2,
+              6
+            ]
+          },
+          "outputs": {
+            "r": [
+              2,
+              6,
+              8
+            ]
+          }
+        },
+        "head": {
+          "params": 112,
+          "flops_forward": 2496,
+          "inputs": {
+            "r": [
+              2,
+              6,
+              8
+            ]
+          },
+          "outputs": {
+            "logits": [
+              2,
+              6,
+              13
+            ]
+          }
+        },
+        "mamba": {
+          "params": 746,
+          "flops_forward": 15360,
+          "inputs": {
+            "r": [
+              2,
+              6,
+              8
+            ]
+          },
+          "outputs": {
+            "r": [
+              2,
+              6,
+              8
+            ]
+          },
+          "internals": {
+            "delta": [
+              2,
+              6,
+              16
+            ],
+            "h": [
+              2,
+              6,
+              16,
+              4
+            ],
+            "x": [
+              2,
+              6,
+              16
+            ],
+            "z": [
+              2,
+              6,
+              16
+            ]
+          }
+        },
+        "mlp": {
+          "params": 304,
+          "flops_forward": 6912,
+          "inputs": {
+            "r": [
+              2,
+              6,
+              8
+            ]
+          },
+          "outputs": {
+            "r": [
+              2,
+              6,
+              8
+            ]
+          }
+        },
+        "moe": {
+          "params": 1200,
+          "flops_forward": 14592,
+          "inputs": {
+            "r": [
+              2,
+              6,
+              8
+            ]
+          },
+          "outputs": {
+            "r": [
+              2,
+              6,
+              8
+            ]
+          },
+          "internals": {
+            "probs": [
+              12,
+              4
+            ],
+            "top": [
+              12,
+              2
+            ]
+          }
+        }
+      },
+      "model": {
+        "active_params": 4502,
+        "flops_forward": 98496,
+        "kv_cache": 96,
+        "params": 5654,
+        "recurrent_state": 576
+      }
+    },
+    {
+      "name": "sample-1",
+      "kind": "sample",
+      "config": {
+        "A": 4,
+        "B": 2,
+        "D": 4,
+        "F": 16,
+        "G": 1,
+        "H": 1,
+        "I": 8,
+        "N": 1,
+        "R": 3,
+        "T": 6,
+        "U": 2,
+        "V": 8,
+        "W": 3,
+        "X": 3,
+        "block_len": 8,
+        "d_conv": 3,
+        "d_ff": 16,
+        "d_inner": 8,
+        "d_model": 4,
+        "d_state": 1,
+        "dt_rank": 3,
+        "expand": 2,
+        "head_dim": 4,
+        "moe_every": 2,
+        "n_blocks": 1,
+        "n_experts": 3,
+        "n_heads": 1,
+        "n_kv": 1,
+        "n_moe": 4,
+        "q_per_kv": 1,
+        "quarter": 2,
+        "top_k": 2,
+        "vocab": 8
+      },
+      "blocks": {
+        "attn": {
+          "params": 64,
+          "flops_forward": 2688,
+          "inputs": {
+            "r": [
+              2,
+              6,
+              4
+            ]
+          },
+          "outputs": {
+            "r": [
+              2,
+              6,
+              4
+            ]
+          },
+          "internals": {
+            "k": [
+              2,
+              6,
+              1,
+              4
+            ],
+            "q": [
+              2,
+              6,
+              1,
+              1,
+              4
+            ],
+            "scores": [
+              2,
+              1,
+              1,
+              6,
+              6
+            ]
+          }
+        },
+        "embed": {
+          "params": 32,
+          "flops_forward": 0,
+          "inputs": {
+            "tokens": [
+              2,
+              6
+            ]
+          },
+          "outputs": {
+            "r": [
+              2,
+              6,
+              4
+            ]
+          }
+        },
+        "head": {
+          "params": 36,
+          "flops_forward": 768,
+          "inputs": {
+            "r": [
+              2,
+              6,
+              4
+            ]
+          },
+          "outputs": {
+            "logits": [
+              2,
+              6,
+              8
+            ]
+          }
+        },
+        "mamba": {
+          "params": 221,
+          "flops_forward": 4032,
+          "inputs": {
+            "r": [
+              2,
+              6,
+              4
+            ]
+          },
+          "outputs": {
+            "r": [
+              2,
+              6,
+              4
+            ]
+          },
+          "internals": {
+            "delta": [
+              2,
+              6,
+              8
+            ],
+            "h": [
+              2,
+              6,
+              8,
+              1
+            ],
+            "x": [
+              2,
+              6,
+              8
+            ],
+            "z": [
+              2,
+              6,
+              8
+            ]
+          }
+        },
+        "mlp": {
+          "params": 200,
+          "flops_forward": 4608,
+          "inputs": {
+            "r": [
+              2,
+              6,
+              4
+            ]
+          },
+          "outputs": {
+            "r": [
+              2,
+              6,
+              4
+            ]
+          }
+        },
+        "moe": {
+          "params": 596,
+          "flops_forward": 9504,
+          "inputs": {
+            "r": [
+              2,
+              6,
+              4
+            ]
+          },
+          "outputs": {
+            "r": [
+              2,
+              6,
+              4
+            ]
+          },
+          "internals": {
+            "probs": [
+              12,
+              3
+            ],
+            "top": [
+              12,
+              2
+            ]
+          }
+        }
+      },
+      "model": {
+        "active_params": 4095,
+        "flops_forward": 88128,
+        "kv_cache": 96,
+        "params": 4863,
+        "recurrent_state": 336
+      }
+    },
+    {
+      "name": "sample-2",
+      "kind": "sample",
+      "config": {
+        "A": 2,
+        "B": 2,
+        "D": 2,
+        "F": 5,
+        "G": 1,
+        "H": 1,
+        "I": 4,
+        "N": 1,
+        "R": 3,
+        "T": 6,
+        "U": 1,
+        "V": 10,
+        "W": 1,
+        "X": 4,
+        "block_len": 4,
+        "d_conv": 1,
+        "d_ff": 5,
+        "d_inner": 4,
+        "d_model": 2,
+        "d_state": 1,
+        "dt_rank": 3,
+        "expand": 2,
+        "head_dim": 2,
+        "moe_every": 2,
+        "n_blocks": 2,
+        "n_experts": 4,
+        "n_heads": 1,
+        "n_kv": 1,
+        "n_moe": 2,
+        "q_per_kv": 1,
+        "quarter": 1,
+        "top_k": 1,
+        "vocab": 10
+      },
+      "blocks": {
+        "attn": {
+          "params": 16,
+          "flops_forward": 960,
+          "inputs": {
+            "r": [
+              2,
+              6,
+              2
+            ]
+          },
+          "outputs": {
+            "r": [
+              2,
+              6,
+              2
+            ]
+          },
+          "internals": {
+            "k": [
+              2,
+              6,
+              1,
+              2
+            ],
+            "q": [
+              2,
+              6,
+              1,
+              1,
+              2
+            ],
+            "scores": [
+              2,
+              1,
+              1,
+              6,
+              6
+            ]
+          }
+        },
+        "embed": {
+          "params": 20,
+          "flops_forward": 0,
+          "inputs": {
+            "tokens": [
+              2,
+              6
+            ]
+          },
+          "outputs": {
+            "r": [
+              2,
+              6,
+              2
+            ]
+          }
+        },
+        "head": {
+          "params": 22,
+          "flops_forward": 480,
+          "inputs": {
+            "r": [
+              2,
+              6,
+              2
+            ]
+          },
+          "outputs": {
+            "logits": [
+              2,
+              6,
+              10
+            ]
+          }
+        },
+        "mamba": {
+          "params": 81,
+          "flops_forward": 1440,
+          "inputs": {
+            "r": [
+              2,
+              6,
+              2
+            ]
+          },
+          "outputs": {
+            "r": [
+              2,
+              6,
+              2
+            ]
+          },
+          "internals": {
+            "delta": [
+              2,
+              6,
+              4
+            ],
+            "h": [
+              2,
+              6,
+              4,
+              1
+            ],
+            "x": [
+              2,
+              6,
+              4
+            ],
+            "z": [
+              2,
+              6,
+              4
+            ]
+          }
+        },
+        "mlp": {
+          "params": 34,
+          "flops_forward": 720,
+          "inputs": {
+            "r": [
+              2,
+              6,
+              2
+            ]
+          },
+          "outputs": {
+            "r": [
+              2,
+              6,
+              2
+            ]
+          }
+        },
+        "moe": {
+          "params": 132,
+          "flops_forward": 912,
+          "inputs": {
+            "r": [
+              2,
+              6,
+              2
+            ]
+          },
+          "outputs": {
+            "r": [
+              2,
+              6,
+              2
+            ]
+          },
+          "internals": {
+            "probs": [
+              12,
+              4
+            ],
+            "top": [
+              12,
+              1
+            ]
+          }
+        }
+      },
+      "model": {
+        "active_params": 864,
+        "flops_forward": 17568,
+        "kv_cache": 96,
+        "params": 1224,
+        "recurrent_state": 48
+      }
+    },
+    {
+      "name": "jamba_v0_1",
+      "kind": "named",
+      "config": {
+        "A": 128,
+        "B": 1,
+        "D": 4096,
+        "F": 14336,
+        "G": 8,
+        "H": 32,
+        "I": 8192,
+        "N": 16,
+        "R": 256,
+        "T": 262144,
+        "U": 2,
+        "V": 65536,
+        "W": 4,
+        "X": 16,
+        "block_len": 8,
+        "d_conv": 4,
+        "d_ff": 14336,
+        "d_inner": 8192,
+        "d_model": 4096,
+        "d_state": 16,
+        "dt_rank": 256,
+        "expand": 2,
+        "head_dim": 128,
+        "moe_every": 2,
+        "n_blocks": 4,
+        "n_experts": 16,
+        "n_heads": 32,
+        "n_kv": 8,
+        "n_moe": 4,
+        "q_per_kv": 4,
+        "quarter": 2,
+        "top_k": 2,
+        "vocab": 65536
+      },
+      "blocks": {
+        "attn": {
+          "params": 41943040,
+          "flops_forward": 1147890139398144,
+          "inputs": {
+            "r": [
+              1,
+              262144,
+              4096
+            ]
+          },
+          "outputs": {
+            "r": [
+              1,
+              262144,
+              4096
+            ]
+          },
+          "internals": {
+            "k": [
+              1,
+              262144,
+              8,
+              128
+            ],
+            "q": [
+              1,
+              262144,
+              8,
+              4,
+              128
+            ],
+            "scores": [
+              1,
+              8,
+              4,
+              262144,
+              262144
+            ]
+          }
+        },
+        "embed": {
+          "params": 268435456,
+          "flops_forward": 0,
+          "inputs": {
+            "tokens": [
+              1,
+              262144
+            ]
+          },
+          "outputs": {
+            "r": [
+              1,
+              262144,
+              4096
+            ]
+          }
+        },
+        "head": {
+          "params": 268439552,
+          "flops_forward": 140737488355328,
+          "inputs": {
+            "r": [
+              1,
+              262144,
+              4096
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1,
+              262144,
+              65536
+            ]
+          }
+        },
+        "mamba": {
+          "params": 105308448,
+          "flops_forward": 55181739819008,
+          "inputs": {
+            "r": [
+              1,
+              262144,
+              4096
+            ]
+          },
+          "outputs": {
+            "r": [
+              1,
+              262144,
+              4096
+            ]
+          },
+          "internals": {
+            "delta": [
+              1,
+              262144,
+              8192
+            ],
+            "h": [
+              1,
+              262144,
+              8192,
+              16
+            ],
+            "x": [
+              1,
+              262144,
+              8192
+            ],
+            "z": [
+              1,
+              262144,
+              8192
+            ]
+          }
+        },
+        "mlp": {
+          "params": 176168960,
+          "flops_forward": 92358976733184,
+          "inputs": {
+            "r": [
+              1,
+              262144,
+              4096
+            ]
+          },
+          "outputs": {
+            "r": [
+              1,
+              262144,
+              4096
+            ]
+          }
+        },
+        "moe": {
+          "params": 2818646016,
+          "flops_forward": 184752313204736,
+          "inputs": {
+            "r": [
+              1,
+              262144,
+              4096
+            ]
+          },
+          "outputs": {
+            "r": [
+              1,
+              262144,
+              4096
+            ]
+          },
+          "internals": {
+            "probs": [
+              262144,
+              16
+            ],
+            "top": [
+              262144,
+              2
+            ]
+          }
+        }
+      },
+      "model": {
+        "active_params": 12110311296,
+        "flops_forward": 10711167399886848,
+        "kv_cache": 2147483648,
+        "params": 51570323328,
+        "recurrent_state": 4358144
+      }
+    }
+  ]
+}

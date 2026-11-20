@@ -1,0 +1,10 @@
+# Written by fixtures/make.py; do not edit.
+seed: 202403
+config: {vocab: 13, d_model: 8, n_blocks: 1, block_len: 4, moe_every: 2, n_experts: 4, top_k: 2, d_ff: 12, n_heads: 2, n_kv: 1, d_state: 4, d_conv: 3, expand: 2, dt_rank: 2, aux: 0.01, eps: 1e-06}
+inputs: {B: 2, T: 6, init_scale: 0.5, jitter: 0.2}
+dtype: float64
+numpy: "2.5.4"
+files:
+  params-small.npz: {sha256: df6af8057205aa3a205d810a400683f5695728e0468f891ba77e61f5c5bb2914}
+  input-small.npz: {sha256: b5316d49a1089120138756ab8a00fb57c1e7cb36875d475d44f2c1db6287ad08}
+  expected-small.npz: {sha256: 69e2aace03b51a00e2d35b9e1522f75e49a12b8823c3016ea65453cd51549a19}
