@@ -459,3 +459,27 @@
   text: "The rejection sampling scheme of speculative decoding can be reused with the heads to generate responses with the same distribution as the original model, but it cannot further enhance the acceleration rate; a typical acceptance scheme instead selects reasonable candidates while maintaining a similar generation quality."
   evidence:
     - {work: "cai-2024-medusa-multiple-decoding-heads", role: original, locator: "p. 2", stance: for}
+
+- id: c-sh-bandwidth
+  type: attributive
+  text: "Shazeer writes that incremental inference, where parallelization over the sequence is impossible, is often slow due to the memory-bandwidth cost of repeatedly loading the large keys and values tensors."
+  evidence:
+    - {work: "shazeer-2019-fast-transformer-decoding", role: original, locator: "p. 1", stance: for}
+
+- id: c-sh-mqa
+  type: attributive
+  text: "Multi-query attention shares the keys and values across all of the attention heads, greatly reducing the size of these tensors and hence the memory bandwidth requirements of incremental decoding, with only minor quality degradation from the baseline."
+  evidence:
+    - {work: "shazeer-2019-fast-transformer-decoding", role: original, locator: "p. 1", stance: for}
+
+- id: c-ai-bottleneck
+  type: attributive
+  text: "Ainslie et al. write that autoregressive decoder inference is a severe bottleneck for Transformer models due to the memory bandwidth overhead from loading decoder weights and all attention keys and values at every decoding step."
+  evidence:
+    - {work: "ainslie-2023-gqa", role: original, locator: "p. 1", stance: for}
+
+- id: c-ai-gqa
+  type: attributive
+  text: "Grouped-query attention uses an intermediate number of key-value heads, and uptrained GQA achieves quality close to multi-head attention with comparable speed to MQA."
+  evidence:
+    - {work: "ainslie-2023-gqa", role: original, locator: "p. 1", stance: for}

@@ -28,6 +28,8 @@ sources:
   - {paper: "Leviathan, Kalman and Matias (2023)", title: "Fast Inference from Transformers via Speculative Decoding", locator: "arXiv 2211.17192v2, Sections 1 to 4 and Appendix A", note: "speculative sampling, Algorithm 1, the acceptance rate, the expected tokens, walltime and arithmetic analysis, and the T5, GPT-like and LaMDA results"}
   - {paper: "Chen, Borgeaud, Irving, Lespiau, Sifre and Jumper (2023)", title: "Accelerating Large Language Model Decoding with Speculative Sampling", locator: "arXiv 2302.01318v1, Sections 1 to 5 and the proof of Theorem 1", note: "the same rule found independently, the draft-model design for Chinchilla 70B, and the speedups and the effect of K"}
   - {paper: "Cai, Li, Geng, Peng, Lee, Chen and Dao (2024)", title: "Medusa: Simple LLM Inference Acceleration Framework with Multiple Decoding Heads", locator: "arXiv 2401.10774v3, the abstract and Sections 1 and 2", note: "extra decoding heads and tree attention instead of a draft model"}
+  - {paper: "Shazeer (2019)", title: "Fast Transformer Decoding: One Write-Head is All You Need", locator: "arXiv 1911.02150v1, p. 1", note: "the memory-bandwidth bottleneck of incremental decoding and multi-query attention"}
+  - {paper: "Ainslie, Lee-Thorp, de Jong, Zemlyanskiy, Lebrón and Sanghai (2023)", title: "GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints", locator: "arXiv 2305.13245v3, p. 1", note: "decoder inference bound by loading weights and keys and values, and grouped-query attention"}
 ---
 
 Speculative decoding samples from a large autoregressive model, the target, several tokens per call instead of one.
@@ -50,6 +52,11 @@ Speculative execution, a common optimization in processors such as branch predic
 The resources are there because inference from large models is often bottlenecked not on arithmetic but on memory bandwidth and communication, so additional computation may be available. {#c-le-memory}
 Chen et al. make the same point: transformer sampling is typically memory-bandwidth bound, and scoring a short continuation in parallel with the target model has a latency comparable to sampling a single token from it. {#c-ch-bandwidth}
 Chen et al. developed their method concurrently and independently of Leviathan et al. and state that the core idea is the same. {#c-ch-concurrent}
+The bottleneck was named earlier by Shazeer (2019): incremental decoding cannot be parallelized over the sequence and is slow because it reloads the large key and value tensors at every step. {#c-sh-bandwidth}
+Ainslie et al. (2023) add the decoder weights, which are also loaded at every decoding step. {#c-ai-bottleneck}
+Multi-query attention attacks the bottleneck by sharing keys and values across heads, at a minor cost in quality, {#c-sh-mqa}
+and grouped-query attention keeps a few key-value heads to get close to multi-head quality at close to multi-query speed. {#c-ai-gqa}
+Those methods shrink the memory traffic per token by changing the model; speculative decoding leaves the model alone and spends the idle arithmetic on scoring several tokens per load.
 Other techniques, such as distillation, sparsification, quantization and architecture modification, make inference more efficient for all tokens but usually also change the outputs of the model. {#c-le-other-methods}
 Knowledge distillation can still help, by giving a better draft.
 Leviathan et al. suggest that further improvements might be obtained from approximation models with custom training procedures, such as standard distillation with soft targets from $M_p$, or optimizing $M_q$ for $\alpha$ directly. {#c-le-distill-draft}
