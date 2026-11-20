@@ -1,0 +1,535 @@
+# The claims of the continued-pretraining page (spec 07). The build computes the labels.
+
+# Setting
+
+- id: c-gup-goal
+  type: attributive
+  text: "Continual pre-training continues to pre-train existing models on new data instead of re-training them, and its goal is to minimize the loss on new data while maintaining low loss on previous data."
+  evidence:
+    - {work: "gupta-2023-rewarm-continual-pretraining", role: original, locator: "p. 1", stance: for}
+
+- id: c-ibr-setting
+  type: attributive
+  text: "Ibrahim et al. study an LLM that is randomly initialized and pre-trained on datasets D0, D1, ..., DN−1 in sequence, where N ≥ 2 and each dataset has at least 100B tokens."
+  evidence:
+    - {work: "ibrahim-2024-continual-pretraining-strategies", role: original, locator: "p. 3", stance: for}
+
+- id: c-gur-dapt
+  type: attributive
+  text: "Across four domains (biomedical and computer science publications, news, and reviews) and eight classification tasks, a second phase of pretraining in-domain, domain-adaptive pretraining, leads to performance gains under both high- and low-resource settings."
+  evidence:
+    - {work: "gururangan-2020-dont-stop-pretraining", role: original, locator: "p. 1", stance: for}
+
+- id: c-pmb-paradigm
+  type: attributive
+  text: "The prevailing mixed-domain paradigm initializes domain-specific pretraining with a general-domain language model and inherits its vocabulary."
+  evidence:
+    - {work: "gu-2021-domain-specific-biomedical-pretraining", role: original, locator: "p. 2", stance: for}
+
+- id: c-cp-compute
+  type: mathematical
+  text: "At a fixed model size training compute is proportional to tokens, so continuing a model already trained on D0 costs tokens(D1) where re-training on the union costs tokens(D0) + tokens(D1): 300B instead of 600B tokens for Ibrahim et al.'s Pile and SlimPajama."
+  assumes: ["training compute is about 6 times parameters times tokens", "the continued model is the same size as the re-trained one"]
+  derivation: continued-pretraining-arithmetic
+
+# Learning rate
+
+- id: c-ibr-rewarm
+  type: attributive
+  text: "If the learning rate was cosine-decayed from a large value ηmax to a small value ηmin during pre-training, re-warming and re-decaying it from O(ηmax) to O(ηmin) improves adaptation to a new dataset compared to continuing from small learning rates O(ηmin)."
+  evidence:
+    - {work: "ibrahim-2024-continual-pretraining-strategies", role: original, locator: "p. 4", stance: for}
+
+- id: c-ibr-maxlr
+  type: attributive
+  text: "Decreasing the schedule's maximum learning rate can help reduce forgetting, whereas increasing it can improve adaptation."
+  evidence:
+    - {work: "ibrahim-2024-continual-pretraining-strategies", role: original, locator: "p. 4", stance: for}
+
+- id: c-gup-rewarm
+  type: attributive
+  text: "Re-warming first increases the loss on upstream and downstream data, but in the longer run it improves the downstream performance, outperforming models trained from scratch."
+  evidence:
+    - {work: "gupta-2023-rewarm-continual-pretraining", role: original, locator: "p. 1", stance: for}
+
+- id: c-gup-warmlen
+  type: attributive
+  text: "The length of the warmup phase does not appear to have a significant effect on the Pile and SlimPajama validation losses."
+  evidence:
+    - {work: "gupta-2023-rewarm-continual-pretraining", role: original, locator: "p. 3", stance: for}
+
+- id: c-gup-latest
+  type: attributive
+  text: "In Gupta et al.'s setup, selecting earlier checkpoints for continued training does not lead to improvement in downstream performance, so they continue from the latest checkpoint."
+  evidence:
+    - {work: "gupta-2023-rewarm-continual-pretraining", role: original, locator: "p. 6", stance: for}
+
+- id: c-ibr-samedata
+  type: attributive
+  text: "Re-warming hurts even without a shift: continuing on the Pile with ηmax = 3·10−4 gives a peak increase of the Pile validation loss of 0.1, against an increase of 0.35 with the same schedule when continuing on SlimPajama."
+  evidence:
+    - {work: "ibrahim-2024-continual-pretraining-strategies", role: original, locator: "p. 20", stance: for}
+
+- id: c-ibr-infinite
+  type: attributive
+  text: "Infinite learning rate schedules, which transition into a high constant learning rate across tasks, are promising alternatives to cosine decay schedules."
+  evidence:
+    - {work: "ibrahim-2024-continual-pretraining-strategies", role: original, locator: "p. 4", stance: for}
+
+- id: c-cp-cosine
+  type: mathematical
+  text: "The re-decayed cosine schedule η(s) = ηmin + (ηmax − ηmin)(1 + cos πs)/2, with s the fraction of the decay done, starts at ηmax, ends at ηmin, and passes the midpoint (ηmax + ηmin)/2 halfway."
+  assumes: ["s runs from 0 to 1 over the decay"]
+  derivation: continued-pretraining-arithmetic
+
+- id: c-par-base
+  type: attributive
+  text: "Parmar et al. start on top of a 15B parameter language model that has seen 8T tokens of pretraining data."
+  evidence:
+    - {work: "parmar-2024-reuse-dont-retrain", role: original, locator: "p. 1", stance: for}
+
+- id: c-par-recipe
+  type: attributive
+  text: "Their recipe starts with a distribution similar to the pretraining set that places larger weight on high quality sources, then moves to one that incorporates QA data and upweights areas of model weakness; the learning rate starts from the pretrained model's ηmin and decays with cosine annealing to a hundredth of it, and the switch occurs when it reaches a fifth of its start."
+  evidence:
+    - {work: "parmar-2024-reuse-dont-retrain", role: original, locator: "p. 4", stance: for}
+
+- id: c-cp-switch
+  type: mathematical
+  text: "On a cosine decay from 4.5e-5 to 4.5e-7 the learning rate reaches a fifth of its start, 9e-6, about 71% of the way through, so the second distribution gets roughly the last 29% of the tokens."
+  assumes: ["the decay is the cosine of c-cp-cosine with s proportional to tokens"]
+  derivation: continued-pretraining-arithmetic
+
+- id: c-par-gain
+  type: attributive
+  text: "On top of the well-trained 15B parameter model, the recipe gives an improvement of 9% in average model accuracy compared to the baseline of continued training on the pretraining set."
+  evidence:
+    - {work: "parmar-2024-reuse-dont-retrain", role: original, locator: "p. 1", stance: for}
+
+- id: c-par-wsd
+  type: attributive
+  text: "Ablations with the WSD annealing schedule were not competitive with cosine annealing."
+  evidence:
+    - {work: "parmar-2024-reuse-dont-retrain", role: original, locator: "p. 7", stance: for}
+
+# Replay
+
+- id: c-ibr-match
+  type: attributive
+  text: "A combination of learning rate re-warming, re-decaying and replay of previous data is sufficient to match the performance of fully re-training from scratch on all available data, as measured by the final loss and the average score on several language model evaluation benchmarks."
+  evidence:
+    - {work: "ibrahim-2024-continual-pretraining-strategies", role: original, locator: "p. 1", stance: for}
+
+- id: c-ibr-cer
+  type: attributive
+  text: "Compute-equivalent replay keeps the tokens fixed: with D0 and D1 of 100B tokens each, the model with 5% replay sees 100B unique tokens of D0, then 95B unique tokens of D1 plus 5B replayed tokens from D0, for a total of 200B tokens."
+  evidence:
+    - {work: "ibrahim-2024-continual-pretraining-strategies", role: original, locator: "p. 7", stance: for}
+
+- id: c-ibr-fractions
+  type: attributive
+  text: "The runs that match re-training use 5% replay for SlimPajama and 25% replay for German."
+  evidence:
+    - {work: "ibrahim-2024-continual-pretraining-strategies", role: original, locator: "p. 3", stance: for}
+
+- id: c-ibr-1pct
+  type: attributive
+  text: "Even a replay of 1% significantly reduces forgetting on the Pile compared to the no-replay baselines, with little impact on downstream performance for 1%, 5%, and 10% replay."
+  evidence:
+    - {work: "ibrahim-2024-continual-pretraining-strategies", role: original, locator: "p. 14", stance: for}
+
+- id: c-ibr-strong
+  type: attributive
+  text: "Replay significantly reduces forgetting across both shifts, but the stronger shift requires more replay to mitigate forgetting to the same extent."
+  evidence:
+    - {work: "ibrahim-2024-continual-pretraining-strategies", role: original, locator: "p. 14", stance: for}
+
+- id: c-ibr-50
+  type: attributive
+  text: "With 50% replay the model adapts significantly worse to D1, yet it attains or surpasses the final average validation performance of the baseline trained on D1 ∪ D0 while seeing 150B fewer SlimPajama tokens."
+  evidence:
+    - {work: "ibrahim-2024-continual-pretraining-strategies", role: original, locator: "p. 14", stance: for}
+
+- id: c-ibr-apps
+  type: attributive
+  text: "Glorioso et al. applied re-warming, re-decaying and 60% replay in a decay phase over 50B tokens of high-quality data, and DeepSeek-AI used 30% replay of pre-training data to continually pre-train DeepSeekV2 on 6T tokens."
+  evidence:
+    - {work: "ibrahim-2024-continual-pretraining-strategies", role: original, locator: "p. 4", stance: for}
+
+- id: c-cp-replay-cost
+  type: mathematical
+  text: "With replay fraction r a run of T tokens sees (1 − r)T new tokens, so reaching the new tokens of a run without replay takes 1/(1 − r) times as many tokens: about 1.05 times for 5% replay, 4/3 for 25% and twice for 50%."
+  assumes: ["the replay fraction is a fraction of tokens", "every new token is seen once"]
+  derivation: continued-pretraining-arithmetic
+
+- id: c-cp-mixture
+  type: mathematical
+  text: "If each sequence comes from the old data with probability r and from the new data otherwise, the expected loss of a batch is r L_old(θ) + (1 − r) L_new(θ), so replay minimises a weighted sum of the two losses and its expected gradient is the same weighted sum of their gradients."
+  assumes: ["sequences are drawn independently", "the loss of a batch is the mean of per-sequence losses"]
+  derivation: continued-pretraining-arithmetic
+
+- id: c-cl-nl
+  type: attributive
+  text: "To help the model retain natural language understanding skills, Code Llama samples a small proportion of its batches from a natural language dataset."
+  evidence:
+    - {work: "roziere-2023-code-llama", role: original, locator: "p. 3", stance: for}
+
+- id: c-cl-rehearsal
+  type: attributive
+  text: "To prevent regressing on general coding and language understanding, Code Llama - Instruct is also trained with a small proportion of data from the code dataset (6%) and the natural language dataset (2%)."
+  evidence:
+    - {work: "roziere-2023-code-llama", role: original, locator: "p. 5", stance: for}
+
+- id: c-lle-mix
+  type: attributive
+  text: "Llemma's training mixture is 95% Proof-Pile-2, 2% the Pile with ArXiv removed, and 3% the GitHub subset of RedPajama."
+  evidence:
+    - {work: "azerbayev-2023-llemma", role: original, locator: "p. 3", stance: for}
+
+- id: c-ewc-spring
+  type: attributive
+  text: "Elastic weight consolidation implements its constraint as a quadratic penalty that can be imagined as a spring anchoring the parameters to the previous solution, stiffer for the parameters that matter more to the old task."
+  evidence:
+    - {work: "kirkpatrick-2017-elastic-weight-consolidation", role: original, locator: "p. 2", stance: for}
+
+- id: c-ewc-fisher
+  type: attributive
+  text: "EWC approximates the posterior as a Gaussian with mean given by the old parameters and a diagonal precision given by the diagonal of the Fisher information matrix, which can be computed from first-order derivatives alone."
+  evidence:
+    - {work: "kirkpatrick-2017-elastic-weight-consolidation", role: original, locator: "p. 3", stance: for}
+
+- id: c-ewc-loss
+  type: attributive
+  text: "The function L that EWC minimizes is L_B(θ) + Σ_i (λ/2) F_i (θ_i − θ_A,i)², where L_B(θ) is the loss for task B only, λ sets how important the old task is compared to the new one and i labels each parameter."
+  evidence:
+    - {work: "kirkpatrick-2017-elastic-weight-consolidation", role: original, locator: "p. 3", stance: for}
+
+- id: c-cp-ewc
+  type: mathematical
+  text: "For a new-task loss that is quadratic in one parameter, (a/2)(θ − θ_B)², the EWC objective is minimized at (a θ_B + λF θ_A)/(a + λF), a precision-weighted average that moves from the new optimum θ_B towards the old value θ_A as λF grows."
+  assumes: ["a > 0 and λF ≥ 0", "the parameter is scalar or the Fisher matrix is diagonal"]
+  derivation: continued-pretraining-arithmetic
+
+- id: c-lor-cpt
+  type: attributive
+  text: "With ≈20B unstructured tokens of continued pretraining on programming and mathematics, LoRA in the standard low-rank settings substantially underperforms full finetuning, but better maintains the base model's performance on tasks outside the target domain."
+  evidence:
+    - {work: "biderman-2024-lora-learns-less-forgets-less", role: original, locator: "p. 1", stance: for}
+
+- id: c-lor-rank
+  type: attributive
+  text: "Full finetuning learns perturbations with a rank that is 10-100× greater than typical LoRA configurations."
+  evidence:
+    - {work: "biderman-2024-lora-learns-less-forgets-less", role: original, locator: "p. 1", stance: for}
+
+# Vocabulary
+
+- id: c-cui-chars
+  type: attributive
+  text: "The original LLaMA vocabulary covers less than a thousand Chinese characters, and since unknown UTF-8 characters fall back to bytes, each Chinese character splits into 3-4 byte tokens."
+  evidence:
+    - {work: "cui-2023-chinese-llama", role: original, locator: "p. 3", stance: for}
+
+- id: c-cui-merge
+  type: attributive
+  text: "Chinese LLaMA trains a Chinese SentencePiece tokenizer of 20,000 tokens, merges it into the LLaMA tokenizer by taking the union of their vocabularies to get 49,953 tokens, and resizes the word embeddings and language model head from V × H to V′ × H, appending the new rows so that the embeddings of the original tokens remain unaffected."
+  evidence:
+    - {work: "cui-2023-chinese-llama", role: original, locator: "p. 4", stance: for}
+
+- id: c-cui-half
+  type: attributive
+  text: "The number of tokens generated by the Chinese LLaMA tokenizer is approximately half of those generated by the original LLaMA tokenizer."
+  evidence:
+    - {work: "cui-2023-chinese-llama", role: original, locator: "p. 4", stance: for}
+
+- id: c-cui-twostage
+  type: attributive
+  text: "For the basic Chinese LLaMA-7B, stage 1 fixes the transformer encoders and trains only the embeddings, and stage 2 adds LoRA adapters and trains the embeddings, LM heads and LoRA parameters."
+  evidence:
+    - {work: "cui-2023-chinese-llama", role: original, locator: "p. 6", stance: for}
+
+- id: c-cp-vocab
+  type: mathematical
+  text: "Growing the vocabulary from 32,000 to 49,953 adds 17,953 rows to both the embedding and the output head, 2 × 17,953 × 4,096 ≈ 147 million new parameters at a hidden size of 4,096."
+  assumes: ["the embedding and the output head are separate matrices", "the hidden size is 4,096, as in LLaMA-7B"]
+  derivation: continued-pretraining-arithmetic
+
+- id: c-cp-meaninit
+  type: mathematical
+  text: "If the k new output rows are the mean of the V old ones, each new logit is the mean of the old logits, so the new tokens take at most k/(V + k) of the probability and the KL divergence from the old next-token distribution to the new one is at most log(1 + k/V), about 0.45 nats for k = 17,953 and V = 32,000."
+  assumes: ["the output layer has no bias", "the old rows and the hidden state are unchanged"]
+  derivation: continued-pretraining-arithmetic
+
+- id: c-bio-vocab
+  type: attributive
+  text: "BioBERT kept the original WordPiece vocabulary of BERT-base, for compatibility with BERT and because any new words may still be represented by frequent subwords."
+  evidence:
+    - {work: "lee-2019-biobert", role: original, locator: "p. 3", stance: for}
+
+- id: c-pmb-frag
+  type: attributive
+  text: "BERT divides naloxone into four pieces and shatters acetyltransferase into seven, while both terms appear in the vocabulary of PubMedBERT."
+  evidence:
+    - {work: "gu-2021-domain-specific-biomedical-pretraining", role: original, locator: "p. 5", stance: for}
+
+# Context length
+
+- id: c-cl-lcft
+  type: attributive
+  text: "Code Llama's long context fine-tuning presents sequences of 16,384 tokens, up from 4,096, and increases the RoPE base period from 10,000 to 1,000,000."
+  evidence:
+    - {work: "roziere-2023-code-llama", role: original, locator: "p. 4", stance: for}
+
+- id: c-xio-cpt
+  type: attributive
+  text: "Xiong et al. continually pretrain Llama 2 checkpoints with increased sequence length while keeping the same number of tokens per batch, for a total of 400B tokens over 100,000 steps."
+  evidence:
+    - {work: "xiong-2023-long-context-scaling", role: original, locator: "p. 3", stance: for}
+
+- id: c-xio-base
+  type: attributive
+  text: "They increase the base frequency b of RoPE from 10,000 to 500,000, which reduces the rotation angles of each dimension."
+  evidence:
+    - {work: "xiong-2023-long-context-scaling", role: original, locator: "p. 7", stance: for}
+
+- id: c-cp-rope
+  type: mathematical
+  text: "With RoPE frequencies b^(−2i/d), pair i has wavelength 2π b^(2i/d) positions; raising b from 10,000 to 1,000,000 leaves the fastest pair at 2π and stretches the slowest pair of a 128-dimensional head about 93 times, from about 54,000 to about 5 million positions."
+  assumes: ["the head dimension d is 128", "pairs are indexed i = 0, ..., d/2 − 1"]
+  derivation: continued-pretraining-arithmetic
+
+- id: c-xio-quality
+  type: attributive
+  text: "Often the quality of the data plays a more critical role than the length of texts for long-context continual pretraining."
+  evidence:
+    - {work: "xiong-2023-long-context-scaling", role: original, locator: "p. 3", stance: for}
+
+- id: c-xio-lr
+  type: attributive
+  text: "The 7B/13B models use learning rate 2e−5 with a cosine schedule and 2000 warm-up steps, and the larger 34B/70B models need a smaller learning rate (1e−5) to get monotonically decreasing validation losses."
+  evidence:
+    - {work: "xiong-2023-long-context-scaling", role: original, locator: "p. 3", stance: for}
+
+- id: c-xio-save
+  type: attributive
+  text: "Continual pretraining from short context models can save around 40% FLOPs while imposing almost no loss on performance."
+  evidence:
+    - {work: "xiong-2023-long-context-scaling", role: original, locator: "p. 10", stance: for}
+
+- id: c-xio-law
+  type: attributive
+  text: "The validation loss can be fit as a power law in the context length plus a constant, with a different set of constants for each model size."
+  evidence:
+    - {work: "xiong-2023-long-context-scaling", role: original, locator: "p. 1", stance: for}
+
+- id: c-lle-rope
+  type: attributive
+  text: "Before training Llemma 7B, the RoPE base period of the Code Llama 7B initialization was contracted from 1,000,000 to 10,000."
+  evidence:
+    - {work: "azerbayev-2023-llemma", role: original, locator: "p. 3", stance: for}
+
+# Domains
+
+- id: c-gur-loss
+  type: attributive
+  text: "RoBERTa trained on each domain for 12.5K steps, a single pass on each domain dataset, and its masked LM loss decreased in all domains except News, where it rose marginally."
+  evidence:
+    - {work: "gururangan-2020-dont-stop-pretraining", role: original, locator: "p. 3", stance: for}
+
+- id: c-gur-irrelevant
+  type: attributive
+  text: "DAPT significantly outperforms adapting to an irrelevant domain, and in most settings exposure to more data without considering domain relevance is detrimental to end-task performance."
+  evidence:
+    - {work: "gururangan-2020-dont-stop-pretraining", role: original, locator: "p. 4", stance: for}
+
+- id: c-gur-tapt
+  type: attributive
+  text: "Task-adaptive pretraining, a second phase of pretraining on the task's unlabeled training data for 100 epochs with masking probability 0.15, consistently improves the RoBERTa baseline for all tasks across domains."
+  evidence:
+    - {work: "gururangan-2020-dont-stop-pretraining", role: original, locator: "p. 5", stance: for}
+
+- id: c-gur-taptcost
+  type: attributive
+  text: "TAPT is much less expensive to run than DAPT, and its performance is often competitive with that of DAPT."
+  evidence:
+    - {work: "gururangan-2020-dont-stop-pretraining", role: original, locator: "p. 5", stance: for}
+
+- id: c-gur-transfer
+  type: attributive
+  text: "Though TAPT is effective, it is harmful when applied across tasks."
+  evidence:
+    - {work: "gururangan-2020-dont-stop-pretraining", role: original, locator: "p. 6", stance: for}
+
+- id: c-cl-init
+  type: attributive
+  text: "All Code Llama models are initialized with Llama 2 model weights and trained on 500B tokens from a code-heavy dataset, except Code Llama 70B, which was trained on 1T tokens; the Python models are further specialized on 100B tokens."
+  evidence:
+    - {work: "roziere-2023-code-llama", role: original, locator: "p. 3", stance: for}
+
+- id: c-cl-lr
+  type: attributive
+  text: "Retaining the original learning rate of the Llama 2 base model gave better results for Code Llama 7B than changing it, and the 13B, 34B and 70B models use 3e−4, 1.5e−4 and 1.5e−4."
+  evidence:
+    - {work: "roziere-2023-code-llama", role: original, locator: "p. 6", stance: for}
+
+- id: c-cl-scratch
+  type: attributive
+  text: "Llama 2 was trained on 2T tokens including only 80B tokens of code; a 7B model trained from scratch on Code Llama's data mix ends with the loss Code Llama 7B had at about half of its training, with 240B less training tokens."
+  evidence:
+    - {work: "roziere-2023-code-llama", role: original, locator: "p. 13", stance: for}
+
+- id: c-cp-codetokens
+  type: mathematical
+  text: "Code Llama's 500B tokens at 85% code hold about 425B tokens of code, over five times the 80B tokens of code in Llama 2's pretraining."
+  assumes: ["the 85% is a fraction of tokens"]
+  derivation: continued-pretraining-arithmetic
+
+- id: c-lle-data
+  type: attributive
+  text: "Proof-Pile-2 is a 55B-token mixture of scientific papers, web data containing mathematics, and mathematical code."
+  evidence:
+    - {work: "azerbayev-2023-llemma", role: original, locator: "p. 2", stance: for}
+
+- id: c-lle-tokens
+  type: attributive
+  text: "Llemma continues training the Code Llama models on Proof-Pile-2 with a standard autoregressive language modeling objective, the 7B model for 200B tokens and the 34B model for 50B tokens."
+  evidence:
+    - {work: "azerbayev-2023-llemma", role: original, locator: "p. 3", stance: for}
+
+- id: c-lle-lr
+  type: attributive
+  text: "For Llemma 7B the learning rate is warmed up to 1·10−4 over 500 steps, then set to cosine decay to 1/30th of the maximum learning rate."
+  evidence:
+    - {work: "azerbayev-2023-llemma", role: original, locator: "p. 3", stance: for}
+
+- id: c-dsm-corpus
+  type: attributive
+  text: "DeepSeekMath 7B continues pretraining DeepSeek-Coder-Base-v1.5 7B with 120B math-related tokens sourced from Common Crawl, together with natural language and code data."
+  evidence:
+    - {work: "shao-2024-deepseekmath", role: original, locator: "p. 1", stance: for}
+
+- id: c-dsm-init
+  type: attributive
+  text: "Starting from a code training model is a better choice than a general LLM, and the math training also improves the model on MMLU and BBH."
+  evidence:
+    - {work: "shao-2024-deepseekmath", role: original, locator: "p. 2", stance: for}
+
+- id: c-dsm-mix
+  type: attributive
+  text: "The DeepSeekMath-Base training data is 56% from the DeepSeekMath Corpus, 4% from AlgebraicStack, 10% from arXiv, 20% Github code, and the remaining 10% natural language data from Common Crawl in both English and Chinese."
+  evidence:
+    - {work: "shao-2024-deepseekmath", role: original, locator: "p. 8", stance: for}
+
+- id: c-cp-epochs
+  type: mathematical
+  text: "Llemma 7B's 200B tokens at 95% Proof-Pile-2 are 190B tokens, about 3.5 passes over the 55B-token corpus, and DeepSeekMath's 500B tokens at 56% are 280B tokens, about 2.3 passes over its 120B-token corpus."
+  assumes: ["the mixture weights are fractions of tokens"]
+  derivation: continued-pretraining-arithmetic
+
+- id: c-pmb-scratch
+  type: attributive
+  text: "For domains with abundant unlabeled text, such as biomedicine, pretraining language models from scratch results in substantial gains over continual pretraining of general-domain language models."
+  evidence:
+    - {work: "gu-2021-domain-specific-biomedical-pretraining", role: original, locator: "p. 1", stance: for}
+
+- id: c-pmb-abstracts
+  type: attributive
+  text: "Biomedicine has over thirty million abstracts in PubMed and adds over a million each year."
+  evidence:
+    - {work: "gu-2021-domain-specific-biomedical-pretraining", role: original, locator: "p. 5", stance: for}
+
+- id: c-bio-init
+  type: attributive
+  text: "Whenever the Wiki + Books corpora were used for pre-training, BioBERT was initialized with the pre-trained BERT model, for computational efficiency."
+  evidence:
+    - {work: "lee-2019-biobert", role: original, locator: "p. 3", stance: for}
+
+- id: c-bio-cost
+  type: attributive
+  text: "BioBERT was pretrained on biomedical corpora for 23 days on eight NVIDIA V100 GPUs."
+  evidence:
+    - {work: "lee-2019-biobert", role: original, locator: "p. 2", stance: for}
+
+- id: c-bio-gains
+  type: attributive
+  text: "BioBERT outperforms previous models on biomedical named entity recognition (0.62% F1 improvement), relation extraction (2.80% F1) and question answering (12.24% MRR)."
+  evidence:
+    - {work: "lee-2019-biobert", role: original, locator: "p. 1", stance: for}
+
+- id: c-che-hurt
+  type: attributive
+  text: "Continued training on domain-specific raw corpora endows the model with domain knowledge but drastically hurts its prompting ability for question answering."
+  evidence:
+    - {work: "cheng-2024-adapting-via-reading-comprehension", role: original, locator: "p. 1", stance: for}
+
+- id: c-che-method
+  type: attributive
+  text: "Cheng et al. transform raw corpora into reading comprehension texts, enriching each raw text with a series of tasks related to its content."
+  evidence:
+    - {work: "cheng-2024-adapting-via-reading-comprehension", role: original, locator: "p. 1", stance: for}
+
+- id: c-che-mining
+  type: attributive
+  text: "The comprehension tasks are mined from the raw text with a handful of mining patterns."
+  evidence:
+    - {work: "cheng-2024-adapting-via-reading-comprehension", role: original, locator: "p. 4", stance: for}
+
+- id: c-che-mix
+  type: attributive
+  text: "Mixing the reading comprehension texts with general instructions, the optimal ratios for biomedicine, finance, and law are 1 : 1, 1 : 2, and 1 : 1."
+  evidence:
+    - {work: "cheng-2024-adapting-via-reading-comprehension", role: original, locator: "p. 6", stance: for}
+
+- id: c-che-bbg
+  type: attributive
+  text: "The resulting 7B model achieves competitive performance with domain-specific models of much larger scales, such as BloombergGPT-50B."
+  evidence:
+    - {work: "cheng-2024-adapting-via-reading-comprehension", role: original, locator: "p. 1", stance: for}
+
+- id: c-ent-ineff
+  type: attributive
+  text: "Knowledge acquisition from pretraining is data-inefficient: to learn a given fact, models must be trained on hundreds to thousands of diverse representations of it."
+  evidence:
+    - {work: "yang-2024-synthetic-continued-pretraining", role: original, locator: "p. 1", stance: for}
+
+- id: c-ent-method
+  type: attributive
+  text: "EntiGraph extracts salient entities from the source documents and then generates diverse text by drawing connections between the sampled entities."
+  evidence:
+    - {work: "yang-2024-synthetic-continued-pretraining", role: original, locator: "p. 1", stance: for}
+
+- id: c-ent-setup
+  type: attributive
+  text: "Yang et al. use EntiGraph to generate 455M synthetic tokens from 1.3M real tokens using gpt-4-turbo, then continually pretrain Llama 3 8B on the synthetic tokens."
+  evidence:
+    - {work: "yang-2024-synthetic-continued-pretraining", role: original, locator: "p. 2", stance: for}
+
+- id: c-ent-replay
+  type: attributive
+  text: "EntiGraph CPT continually pretrains Llama 3 8B Base on the 455M token EntiGraph corpus for 2 epochs with replay on RedPajama."
+  evidence:
+    - {work: "yang-2024-synthetic-continued-pretraining", role: original, locator: "p. 7", stance: for}
+
+- id: c-ent-acc
+  type: attributive
+  text: "Continued pretraining on the EntiGraph corpus improves closed-book QA accuracy from 39.49% for Llama 3 8B Base to 56.22%."
+  evidence:
+    - {work: "yang-2024-synthetic-continued-pretraining", role: original, locator: "p. 8", stance: for}
+
+- id: c-ent-raw
+  type: attributive
+  text: "Raw CPT, continued pretraining on the raw source documents, performs even worse than Llama 3 8B Base."
+  evidence:
+    - {work: "yang-2024-synthetic-continued-pretraining", role: original, locator: "p. 8", stance: for}
+
+- id: c-ent-rag
+  type: attributive
+  text: "With 455M EntiGraph tokens, synthetic continued pretraining provides 80% of the accuracy improvement of having the source documents available at inference time."
+  evidence:
+    - {work: "yang-2024-synthetic-continued-pretraining", role: original, locator: "p. 2", stance: for}
+
+- id: c-lor-forget
+  type: attributive
+  text: "LoRA mitigates forgetting more than common regularization techniques such as weight decay and dropout."
+  evidence:
+    - {work: "biderman-2024-lora-learns-less-forgets-less", role: original, locator: "p. 1", stance: for}
