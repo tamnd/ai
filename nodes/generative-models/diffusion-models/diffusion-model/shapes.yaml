@@ -1,0 +1,38 @@
+# SPDX-License-Identifier: MIT
+# The shape contract of the diffusion model of the page (spec 08.6): a noise-prediction network eps_theta(x_t, t) with
+# one tanh hidden layer of d_hidden units on the concatenation of x_t, of d_data dimensions, and a sinusoidal embedding
+# of the step t, of d_time dimensions. One evaluation maps a batch of B noisy points to B noise predictions; a training
+# step evaluates it once, and a sampler evaluates it once per step, n_steps times for the ancestral sampler. The FLOPs
+# count the products only, a multiply-add as 2; the biases, the embedding, tanh and the update are left out, and so is
+# the backward pass.
+config:
+  d_data:   {meaning: "dimension of a data point x_0 and of every x_t", symbol: "D", example: 3, sample: [1, 6]}
+  d_hidden: {meaning: "width of the hidden layer of the noise-prediction network", symbol: "H", example: 5, sample: [1, 8]}
+  d_time:   {meaning: "dimension of the sinusoidal embedding of the step t", symbol: "E", example: 4, sample: [1, 8]}
+  n_steps:  {meaning: "number of diffusion steps T", symbol: "T", example: 10, sample: [1, 50]}
+axes:
+  B: {meaning: "batch of noisy points", example: 4, sample: [1, 6]}
+  D: d_data
+  H: d_hidden
+  E: d_time
+  T: n_steps
+blocks:
+  - id: hidden
+    meaning: "the hidden layer h = tanh([x_t, e(t)] W1 + b1) on the noisy point and the embedding of its step"
+    eq: [eps-model]
+    inputs: {x: "(B, D)", e: "(B, E)"}
+    outputs: {h: "(B, H)"}
+    params: "(D + E) * H + H"
+    flops_forward: "2 * B * (D + E) * H"
+  - id: output
+    meaning: "the noise prediction eps = h W2 + b2"
+    eq: [eps-model]
+    inputs: {h: "(B, H)"}
+    outputs: {eps: "(B, D)"}
+    params: "H * D + D"
+    flops_forward: "2 * B * H * D"
+model:
+  params: {formula: "hidden.params + output.params", symbol: "P", meaning: "all weights and biases of the noise-prediction network"}
+  flops_forward: {formula: "hidden.flops_forward + output.flops_forward", symbol: "C", meaning: "FLOPs of one evaluation of eps_theta on B points, a multiply-add counted as 2; ancestral sampling costs T times as much"}
+configs:
+  two_modes: {meaning: "the network of the test that learns two Gaussian modes in the plane, at its batch of 256", d_data: 2, d_hidden: 64, d_time: 16, n_steps: 100, B: 256}
