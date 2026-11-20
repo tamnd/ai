@@ -1,0 +1,251 @@
+# The claims of the tree-of-thoughts page (spec 07). The build computes the labels.
+
+# The method
+
+- id: c-tot-frame
+  type: attributive
+  text: "Tree of Thoughts generalizes chain-of-thought prompting and enables exploration over coherent units of text, thoughts, that serve as intermediate steps toward problem solving, letting the model consider multiple reasoning paths, self-evaluate choices, and look ahead or backtrack when necessary."
+  evidence:
+    - {work: "yao-2023-tree-of-thoughts", role: original, locator: "p. 1", stance: for}
+
+- id: c-tot-state
+  type: attributive
+  text: "ToT frames a problem as a search over a tree, where each node is a state s = [x, z1...i] holding the input and the sequence of thoughts so far."
+  evidence:
+    - {work: "yao-2023-tree-of-thoughts", role: original, locator: "p. 3", stance: for}
+
+- id: c-tot-four
+  type: attributive
+  text: "An instantiation of ToT answers four questions: how to decompose the process into thought steps, how to generate potential thoughts from each state, how to heuristically evaluate states, and what search algorithm to use."
+  evidence:
+    - {work: "yao-2023-tree-of-thoughts", role: original, locator: "p. 3", stance: for}
+
+- id: c-tot-gen
+  type: attributive
+  text: "Sampling i.i.d. thoughts from a CoT prompt works better when the thought space is rich, such as a paragraph per thought, while proposing thoughts sequentially in one propose prompt works better when the thought space is more constrained, such as a word or a line, because proposing in the same context avoids duplication."
+  evidence:
+    - {work: "yao-2023-tree-of-thoughts", role: original, locator: "p. 3", stance: for}
+
+- id: c-tot-eval
+  type: attributive
+  text: "The state evaluator either values each state independently with a value prompt that outputs a scalar or a classification such as sure/likely/impossible, or votes across states by comparing them in a vote prompt; the valuations do not need to be perfect, only approximately helpful for decision making."
+  evidence:
+    - {work: "yao-2023-tree-of-thoughts", role: original, locator: "p. 4", stance: for}
+
+- id: c-tot-search
+  type: attributive
+  text: "Breadth-first search keeps the b most promising states per step and was used where the tree depth is limited (T ≤ 3) with b ≤ 5; depth-first search explores the most promising state first, prunes a subtree when the evaluator deems it impossible below a value threshold, and backtracks to the parent state."
+  evidence:
+    - {work: "yao-2023-tree-of-thoughts", role: original, locator: "p. 4", stance: for}
+
+- id: c-tot-special
+  type: attributive
+  text: "IO, CoT, CoT-SC and self-refinement can be seen as special cases of ToT, trees of limited depth and breadth, and no extra training is needed: a pre-trained LM is sufficient."
+  evidence:
+    - {work: "yao-2023-tree-of-thoughts", role: original, locator: "p. 4", stance: for}
+
+# Derivation
+
+- id: c-d-size
+  type: mathematical
+  text: "A Game of 24 state with n numbers has C(n, 2) · 6 moves, so a full tree from four numbers has 36 · 18 · 6 = 3888 leaves, slightly fewer for inputs where a move produces zero."
+  assumes: ["six operations: +, ×, both subtractions, both divisions"]
+  derivation: tree-search-arithmetic
+
+- id: c-d-chains
+  type: mathematical
+  text: "Under a step-wise model where each sampled thought keeps the problem solvable with probability q, n chains succeed with probability 1 − (1 − q^T)^n and a breadth-one tree with k proposals and a perfect evaluator succeeds with (1 − (1 − q)^k)^T; at q = 0.4, T = 3 and fifteen thoughts each, five chains give 0.2816 and the tree 0.7844."
+  assumes: ["steps are independent", "a wrong step cannot be undone", "the evaluator is perfect"]
+  derivation: tree-search-arithmetic
+
+- id: c-d-prune
+  type: mathematical
+  text: "An evaluator that discards the only good state with probability δ per step keeps it through T steps with probability (1 − δ)^T, which at δ = 0.1 is 0.729 for T = 3 and 0.3487 for T = 10."
+  assumes: ["breadth one", "no backtracking"]
+  derivation: tree-search-arithmetic
+
+- id: c-d-calls
+  type: mathematical
+  text: "Breadth-first search with depth T, breadth b, k proposals and v evaluation samples expands 1 + b(T − 1) states, produces k times as many candidates and makes v · k · (1 + b(T − 1)) evaluation calls: 11, 55 and 165 for T = 3, b = 5, k = 5, v = 3."
+  assumes: ["one generation call per expanded state", "every candidate is evaluated"]
+  derivation: tree-search-arithmetic
+
+- id: c-d-uct
+  type: mathematical
+  text: "With w = 1 and 10 parent visits, UCT scores a child with mean value 0.6 and 5 visits at 1.2786 and a child with mean value 0.2 and 1 visit at 1.7174, so the less visited child is selected; an unvisited child scores infinity."
+  assumes: ["UCT(s) = V(s) + w · sqrt(ln N(p) / N(s))"]
+  derivation: tree-search-arithmetic
+
+- id: c-d-xie
+  type: mathematical
+  text: "With the score C^λ · P^(1 − λ) at λ = 0.5, a step with generation probability 0.9 and judged correctness 0.2 scores 0.4243, below a step with 0.5 and 0.9 that scores 0.6708; at λ = 0 the score is the generation probability alone."
+  assumes: ["λ weighs the correctness confidence"]
+  derivation: tree-search-arithmetic
+
+- id: c-d-tokens
+  type: mathematical
+  text: "At 67 completion tokens per chain-of-thought sample, the 5.5k completion tokens of a tree search buy about 82 samples, and the cost per solved problem is $1.00 for the tree and $0.96 for the best of 100 chains."
+  assumes: ["the figures of Table 7 of Yao et al."]
+  derivation: tree-search-arithmetic
+
+# Evidence
+
+- id: c-tot-24-setup
+  type: attributive
+  text: "For the Game of 24, Yao et al. scraped 1,362 games from 4nums.com, sorted by human solving time, and tested on the relatively hard games indexed 901 to 1,000; success requires a valid equation that equals 24 and uses each input number exactly once."
+  evidence:
+    - {work: "yao-2023-tree-of-thoughts", role: original, locator: "p. 5", stance: for}
+
+- id: c-tot-24-bfs
+  type: attributive
+  text: "In the Game of 24, ToT runs breadth-first search keeping the best b = 5 candidates per step, prompting the model to evaluate each thought candidate as sure/maybe/impossible with regard to reaching 24, and samples values 3 times for each thought."
+  evidence:
+    - {work: "yao-2023-tree-of-thoughts", role: original, locator: "p. 5", stance: for}
+
+- id: c-tot-24
+  type: attributive
+  text: "In the Game of 24, IO, CoT and CoT-SC prompting achieve only 7.3%, 4.0% and 9.0% success rates, while ToT with a breadth of b = 1 achieves 45% and b = 5 achieves 74%."
+  evidence:
+    - {work: "yao-2023-tree-of-thoughts", role: original, locator: "p. 6", stance: for}
+
+- id: c-tot-best100
+  type: attributive
+  text: "Best of 100 CoT samples achieve a success rate of 49%, still much worse than exploring more nodes in ToT, and around 60% of CoT samples already failed the task after generating the first step."
+  evidence:
+    - {work: "yao-2023-tree-of-thoughts", role: original, locator: "p. 6", stance: for}
+
+- id: c-tot-writing
+  type: attributive
+  text: "In creative writing, average GPT-4 coherency scores across 100 tasks are 7.56 for ToT against 6.19 for IO and 6.93 for CoT, and humans prefer ToT over CoT in 41 out of 100 passage pairs and CoT over ToT in 21."
+  evidence:
+    - {work: "yao-2023-tree-of-thoughts", role: original, locator: "p. 6", stance: for}
+
+- id: c-tot-cross-setup
+  type: attributive
+  text: "The mini crosswords task uses 20 test games of 5 × 5 mini crosswords from GooBix, where the input describes the 5 horizontal clues and 5 vertical clues and the output is a board of 25 letters."
+  evidence:
+    - {work: "yao-2023-tree-of-thoughts", role: original, locator: "p. 7", stance: for}
+
+- id: c-tot-cross
+  type: attributive
+  text: "In mini crosswords, IO and CoT prompting have a word-level success rate less than 16%, while ToT with depth-first search limited to 100 steps achieves a word-level success rate of 60% and solves 4 out of 20 games, and 7/20 when outputting from the oracle best DFS state."
+  evidence:
+    - {work: "yao-2023-tree-of-thoughts", role: original, locator: "p. 8", stance: for}
+
+- id: c-tot-ablate
+  type: attributive
+  text: "Ablating the pruning makes performance generally worse, and an ablation without backtracking, similar to a greedy breadth-one search, performs poorly with a word-level success of only 20%."
+  evidence:
+    - {work: "yao-2023-tree-of-thoughts", role: original, locator: "p. 8", stance: for}
+
+- id: c-tot-gen-bottleneck
+  type: attributive
+  text: "With GPT-3.5, ToT reaches 19% on the Game of 24 against 74% with GPT-4; GPT-4 generation with GPT-3.5 evaluation reaches 64% and GPT-3.5 generation with GPT-4 evaluation reaches 31%, suggesting the bottleneck is thought generation."
+  evidence:
+    - {work: "yao-2023-tree-of-thoughts", role: original, locator: "p. 14", stance: for}
+
+- id: c-tot-cost
+  type: attributive
+  text: "In the Game of 24, ToT requires 5.5k completion tokens per problem, close to 100 CoT trials (6.7k tokens), at $0.74 per case against $0.47 for the best of 100 CoT samples, and ToT could require 5-100 times more generated tokens than CoT in general."
+  evidence:
+    - {work: "yao-2023-tree-of-thoughts", role: original, locator: "p. 14", stance: for}
+
+- id: c-xie-gain
+  type: attributive
+  text: "Self-evaluation guided stochastic beam search surpasses the corresponding Codex-backboned baselines in few-shot accuracy by 6.34%, 9.56% and 5.46% on GSM8K, AQuA and StrategyQA."
+  evidence:
+    - {work: "xie-2023-self-evaluation-guided-beam-search", role: original, locator: "p. 1", stance: for}
+
+- id: c-xie-cost
+  type: attributive
+  text: "With Llama-2, self-evaluation guided search achieves 46.1% on GSM8K with a cost of 12.6k tokens, compared with 41.8% for self-consistency at 13.9k tokens."
+  evidence:
+    - {work: "xie-2023-self-evaluation-guided-beam-search", role: original, locator: "p. 6", stance: for}
+
+- id: c-rap-result
+  type: attributive
+  text: "RAP achieves an average success rate of 64% on Blocksworld plan generation while CoT fails almost completely, and LLaMA-33B with RAP surpasses GPT-4 with CoT by 33% relative improvement."
+  evidence:
+    - {work: "hao-2023-reasoning-planning-world-model", role: original, locator: "p. 2", stance: for}
+
+- id: c-rap-gsm
+  type: attributive
+  text: "On GSM8K, RAP answers 48.8% of the problems correctly with 20 iterations of MCTS, outperforming chain-of-thought and least-to-most prompting with self-consistency."
+  evidence:
+    - {work: "hao-2023-reasoning-planning-world-model", role: original, locator: "p. 8", stance: for}
+
+- id: c-lats-result
+  type: attributive
+  text: "LATS reaches 92.7% accuracy for programming on HumanEval with GPT-4 and an average score of 75.9 on WebShop with GPT-3.5, comparable to gradient-based fine-tuning."
+  evidence:
+    - {work: "zhou-2024-language-agent-tree-search", role: original, locator: "p. 1", stance: for}
+
+# Limitations
+
+- id: c-tot-limits
+  type: attributive
+  text: "Deliberate search such as ToT might not be necessary for many tasks that GPT-4 already excels at, and search methods like ToT require more resources than sampling methods in order to improve task performances."
+  evidence:
+    - {work: "yao-2023-tree-of-thoughts", role: original, locator: "p. 9", stance: for}
+
+- id: c-tot-prune-wrong
+  type: attributive
+  text: "When a crossword is actually solved, the state evaluator might still deem some words impossible and prune, because 5 × 5 crosswords have some rare or obsolete words that GPT-4 cannot recognize; without pruning the search found the correct solution for 4/20 games, 3 of which ToT with pruning cannot solve within 100 steps."
+  evidence:
+    - {work: "yao-2023-tree-of-thoughts", role: original, locator: "p. 8", stance: for}
+
+- id: c-lats-limits
+  type: attributive
+  text: "LATS has a higher computational cost than simpler prompting methods like ReAct or Reflexion, and it assumes the ability to revert to earlier states in decision-making environments, which may not be universally applicable."
+  evidence:
+    - {work: "zhou-2024-language-agent-tree-search", role: original, locator: "p. 9", stance: for}
+
+# Variants
+
+- id: c-xie-method
+  type: attributive
+  text: "Xie et al. combine the language model probability with a correctness confidence C in [0, 1] that the model assigns to each reasoning step, and run stochastic beam search that samples k beams without replacement from a distribution proportional to exp(E/τ), which becomes vanilla beam search as τ → 0."
+  evidence:
+    - {work: "xie-2023-self-evaluation-guided-beam-search", role: original, locator: "p. 4", stance: for}
+
+- id: c-xie-lambda
+  type: attributive
+  text: "Xie et al. set λ = 0.5 for all datasets; setting λ to 1 (E = C) or 0 (E = P) decreases GSM8K performance from 80.2% to 74.5% and 77.1%, respectively."
+  evidence:
+    - {work: "xie-2023-self-evaluation-guided-beam-search", role: original, locator: "p. 8", stance: for}
+
+- id: c-rap-method
+  type: attributive
+  text: "Reasoning via Planning (RAP) repurposes the LLM as both a world model and a reasoning agent and incorporates a planning algorithm based on Monte Carlo Tree Search for strategic exploration in the reasoning space."
+  evidence:
+    - {work: "hao-2023-reasoning-planning-world-model", role: original, locator: "p. 1", stance: for}
+
+- id: c-lats-method
+  type: attributive
+  text: "LATS integrates Monte Carlo Tree Search to enable LMs as agents, along with LM-powered value functions and self-reflections, and incorporates an environment for external feedback."
+  evidence:
+    - {work: "zhou-2024-language-agent-tree-search", role: original, locator: "p. 1", stance: for}
+
+- id: c-lats-uct
+  type: attributive
+  text: "LATS selects nodes with the upper confidence bound UCT(s) = V(s) + w·sqrt(ln N(p)/N(s)), where N(s) is the number of visits to node s and p its parent."
+  evidence:
+    - {work: "zhou-2024-language-agent-tree-search", role: original, locator: "p. 4", stance: for}
+
+- id: c-got-method
+  type: attributive
+  text: "Graph of Thoughts models an LLM thought as a vertex and a dependency between thoughts as an edge, so arbitrary thoughts can be aggregated by constructing vertices that have more than one incoming edge."
+  evidence:
+    - {work: "besta-2024-graph-of-thoughts", role: original, locator: "p. 1", stance: for}
+
+- id: c-got-result
+  type: attributive
+  text: "On sorting, Graph of Thoughts improves upon CoT and ToT by about 70% and 62% in the quality of sorting while reducing costs by more than 31% over ToT."
+  evidence:
+    - {work: "besta-2024-graph-of-thoughts", role: original, locator: "p. 2", stance: for}
+
+- id: c-sos-result
+  type: attributive
+  text: "Stream of Search pretrains a language model on streams of search generated by heuristic solvers for the game of Countdown, which increases search accuracy by 25% over models trained to predict only the optimal search trajectory; finetuned with APA and STaR, the models solve 36% of previously unsolved problems."
+  evidence:
+    - {work: "gandhi-2024-stream-of-search", role: original, locator: "p. 1", stance: for}
