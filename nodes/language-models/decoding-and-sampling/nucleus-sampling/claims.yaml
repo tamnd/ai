@@ -1,0 +1,351 @@
+# Claims of nucleus-sampling.
+
+- id: c-ho-proposal
+  type: attributive
+  text: "Holtzman et al. propose Nucleus Sampling, which avoids text degeneration by truncating the unreliable tail of the probability distribution, sampling from the dynamic nucleus of tokens containing the vast majority of the probability mass."
+  evidence:
+    - {work: "holtzman-2020-curious-case-neural-text-degeneration", role: original, locator: "p. 1", stance: for}
+
+- id: c-ho-task
+  type: attributive
+  text: "Given a sequence of m tokens x_1 ... x_m as context, the task of open-ended generation is to generate the next n continuation tokens to obtain the completed sequence x_1 ... x_{m+n}, forming a coherent continuation from the given context."
+  evidence:
+    - {work: "holtzman-2020-curious-case-neural-text-degeneration", role: original, locator: "p. 3", stance: for}
+
+- id: c-ho-directed
+  type: attributive
+  text: "In directed generation, such as machine translation, data-to-text generation and summarization, the output is a constrained transformation of the input; generation is usually performed using beam search, and since output is tightly scoped by the input, repetition and genericness are not as problematic."
+  evidence:
+    - {work: "holtzman-2020-curious-case-neural-text-degeneration", role: original, locator: "p. 3", stance: for}
+
+- id: c-ho-degeneration
+  type: attributive
+  text: "Maximization-based decoding methods such as beam search lead to degeneration: output text that is bland, incoherent, or gets stuck in repetitive loops."
+  evidence:
+    - {work: "holtzman-2020-curious-case-neural-text-degeneration", role: original, locator: "p. 1", stance: for}
+
+- id: c-ho-pure-incoherent
+  type: attributive
+  text: "Pure sampling, sampling directly from the probabilities predicted by the model, results in text that is incoherent and almost unrelated to the context."
+  evidence:
+    - {work: "holtzman-2020-curious-case-neural-text-degeneration", role: original, locator: "p. 2", stance: for}
+
+- id: c-ho-tail
+  type: attributive
+  text: "Holtzman et al. blame the unreliable tail, composed of tens of thousands of candidate tokens with relatively low probability that are over-represented in the aggregate."
+  evidence:
+    - {work: "holtzman-2020-curious-case-neural-text-degeneration", role: original, locator: "p. 2", stance: for}
+
+- id: c-ho-nucleus-size
+  type: attributive
+  text: "The vast majority of probability mass at each time step is concentrated in the nucleus, a small subset of the vocabulary that tends to range between one and a thousand candidates."
+  evidence:
+    - {work: "holtzman-2020-curious-case-neural-text-degeneration", role: original, locator: "p. 2", stance: for}
+
+- id: c-ho-top-p-set
+  type: attributive
+  text: "In the account of Meister et al., Holtzman et al. (2020) consider the smallest nucleus, that is subset, of words whose cumulative probability mass exceeds a chosen threshold."
+  evidence:
+    - {work: "meister-2023-locally-typical-sampling", role: original, locator: "p. 8", stance: for}
+
+- id: c-ho-renormalize
+  type: attributive
+  text: "With p' the sum of the probabilities in V(p), the original distribution is re-scaled to P(x | x_{1:i-1}) / p' if x is in V(p) and 0 otherwise, and the next word is sampled from it."
+  evidence:
+    - {work: "holtzman-2020-curious-case-neural-text-degeneration", role: original, locator: "p. 5", stance: for}
+
+- id: c-ho-practice
+  type: attributive
+  text: "In practice nucleus sampling means selecting the highest probability tokens whose cumulative probability mass exceeds the pre-chosen threshold p, and the size of the sampling set adjusts dynamically based on the shape of the probability distribution at each time step."
+  evidence:
+    - {work: "holtzman-2020-curious-case-neural-text-degeneration", role: original, locator: "p. 5", stance: for}
+
+- id: c-ho-top-k
+  type: attributive
+  text: "Top-k sampling samples from the set of size k which maximizes the sum of P(x | x_{1:i-1}), re-scaled as in equation 3; the scaling factor p' can vary wildly at each time-step, in contrast to Nucleus Sampling."
+  evidence:
+    - {work: "holtzman-2020-curious-case-neural-text-degeneration", role: original, locator: "p. 5", stance: for}
+
+- id: c-ho-temperature
+  type: attributive
+  text: "Given the logits u and temperature t, the softmax is re-estimated as exp(u_l / t) divided by the sum over l' of exp(u_l' / t); setting t in [0, 1) skews the distribution towards high probability events, which implicitly lowers the mass in the tail distribution."
+  evidence:
+    - {work: "holtzman-2020-curious-case-neural-text-degeneration", role: original, locator: "p. 6", stance: for}
+
+- id: c-ho-setup
+  type: attributive
+  text: "Holtzman et al. use GPT-2 Large (762M parameters), trained on WebText, and generate 5,000 text passages which end upon reaching an end-of-document token or a maximum length of 200 tokens, conditioned on the initial paragraph (restricted to 1-40 tokens) of documents in the held-out portion of WebText."
+  evidence:
+    - {work: "holtzman-2020-curious-case-neural-text-degeneration", role: original, locator: "p. 6", stance: for}
+
+- id: c-ho-perplexity
+  type: empirical
+  text: "The perplexity of the human text is 12.38; greedy decoding gives 1.50, beam search with b = 16 gives 1.48, pure sampling 22.73, top-k = 40 gives 6.88, top-k = 40 with t = 0.7 gives 3.48, and nucleus sampling with p = 0.95 gives 13.13."
+  scope:
+    models: "GPT-2 Large (762M parameters)"
+    data: ["webtext"]
+    scale: "unknown"
+    setting: "open-ended continuation of held-out WebText paragraphs, 5,000 passages of up to 200 tokens"
+  evidence:
+    - {work: "holtzman-2020-curious-case-neural-text-degeneration", role: original, locator: "p. 7", stance: for}
+
+- id: c-ho-repetition
+  type: empirical
+  text: "In the Repetition % row of Table 1, human text scores 0.28, greedy decoding 73.66, beam search with b = 16 28.94, and nucleus sampling with p = 0.95 0.36."
+  scope:
+    models: "GPT-2 Large (762M parameters)"
+    data: ["webtext"]
+    scale: "unknown"
+    setting: "open-ended continuation of held-out WebText paragraphs, 5,000 passages of up to 200 tokens"
+  evidence:
+    - {work: "holtzman-2020-curious-case-neural-text-degeneration", role: original, locator: "p. 7", stance: for}
+
+- id: c-ho-repetition-range
+  type: empirical
+  text: "Nucleus Sampling and top-k sampling have the least repetition for reasonable parameter ranges, and generations from temperature sampling have more repetition unless very high temperatures are used."
+  scope:
+    models: "GPT-2 Large (762M parameters)"
+    data: ["webtext"]
+    scale: "unknown"
+    setting: "open-ended continuation of held-out WebText paragraphs, 5,000 passages of up to 200 tokens"
+  evidence:
+    - {work: "holtzman-2020-curious-case-neural-text-degeneration", role: original, locator: "p. 9", stance: for}
+
+- id: c-ho-zipf
+  type: empirical
+  text: "In the vocabulary distributions, pure sampling is the closest to the human distribution, followed by Nucleus Sampling."
+  scope:
+    models: "GPT-2 Large (762M parameters)"
+    data: ["webtext"]
+    scale: "unknown"
+    setting: "open-ended continuation of held-out WebText paragraphs, 5,000 passages of up to 200 tokens"
+  evidence:
+    - {work: "holtzman-2020-curious-case-neural-text-degeneration", role: original, locator: "p. 8", stance: for}
+
+- id: c-ho-self-bleu
+  type: empirical
+  text: "On Self-BLEU, common values of t in [0.5, 1] and k in [1, 100] result in high self-similarity, whereas normal values of p in [0.9, 1) closely match the human distribution of text."
+  scope:
+    models: "GPT-2 Large (762M parameters)"
+    data: ["webtext"]
+    scale: "unknown"
+    setting: "unconditional generations from stochastic decoding methods"
+  evidence:
+    - {work: "holtzman-2020-curious-case-neural-text-degeneration", role: original, locator: "p. 8", stance: for}
+
+- id: c-ho-huse
+  type: empirical
+  text: "The HUSE evaluation, which jointly assesses quality and diversity, demonstrates that Nucleus Sampling is the best overall decoding strategy."
+  scope:
+    models: "GPT-2 Large (762M parameters)"
+    data: ["webtext"]
+    scale: "unknown"
+    setting: "open-ended continuation of held-out WebText paragraphs, 5,000 passages of up to 200 tokens"
+  evidence:
+    - {work: "holtzman-2020-curious-case-neural-text-degeneration", role: original, locator: "p. 2", stance: for}
+
+- id: c-ho-natural-not-max
+  type: empirical
+  text: "The per-token probability of natural text is, on average, much lower than text generated by beam search, and natural language rarely remains in a high probability zone for multiple consecutive time steps."
+  scope:
+    models: "GPT-2 Large (762M parameters)"
+    data: ["webtext"]
+    scale: "unknown"
+    setting: "open-ended continuation of held-out WebText paragraphs, 5,000 passages of up to 200 tokens"
+  evidence:
+    - {work: "holtzman-2020-curious-case-neural-text-degeneration", role: original, locator: "p. 7", stance: for}
+
+- id: c-ho-conjecture
+  type: attributive
+  text: "Holtzman et al. conjecture that human-written text not being the most probable text is an intrinsic property of human language, which makes solving the problem simply by training larger models or improving neural architectures using standard per-word learning objectives unlikely."
+  evidence:
+    - {work: "holtzman-2020-curious-case-neural-text-degeneration", role: original, locator: "p. 7", stance: for}
+
+- id: c-ho-repeat-loop
+  type: empirical
+  text: "The probability of a repeated phrase increases with each repetition, creating a positive feedback loop."
+  scope:
+    models: "GPT-2 Large (762M parameters)"
+    data: ["webtext"]
+    scale: "unknown"
+    setting: "phrases repeated in the context"
+  evidence:
+    - {work: "holtzman-2020-curious-case-neural-text-degeneration", role: original, locator: "p. 5", stance: for}
+
+- id: c-ho-k-problem
+  type: attributive
+  text: "The use of a constant k is sub-optimal across varying contexts: if k is small, in some contexts there is a risk of generating bland or generic text, while if k is large the top-k vocabulary will include inappropriate candidates which will have their probability of being sampled increased by the renormalization."
+  evidence:
+    - {work: "holtzman-2020-curious-case-neural-text-degeneration", role: original, locator: "p. 6", stance: for}
+
+- id: c-ho-gpt2-top-k
+  type: attributive
+  text: "The top-quality generations obtained from GPT-2 rely on randomness in the decoding method, in particular through top-k sampling, as in Fan et al. (2018)."
+  evidence:
+    - {work: "holtzman-2020-curious-case-neural-text-degeneration", role: original, locator: "pp. 1 and 2", stance: for}
+
+- id: c-fan-scheme
+  type: attributive
+  text: "Fan et al. generate stories using a top-k random sampling scheme, randomly sampling from the k = 10 most likely candidates at each timestep."
+  evidence:
+    - {work: "fan-2018-hierarchical-neural-story-generation", role: original, locator: "p. 5", stance: for}
+
+- id: c-fan-top-k
+  type: attributive
+  text: "Fan et al. find this sampling strategy substantially more effective than beam search, which tends to produce common phrases and repetitive text from the training set."
+  evidence:
+    - {work: "fan-2018-hierarchical-neural-story-generation", role: original, locator: "p. 5", stance: for}
+
+- id: c-fan-why
+  type: attributive
+  text: "Completely random sampling can introduce very unlikely words, which can damage generation as the model has not seen such mistakes at training time, and the restriction of sampling from the 10 most likely candidates reduces the risk of these low-probability samples."
+  evidence:
+    - {work: "fan-2018-hierarchical-neural-story-generation", role: original, locator: "p. 6", stance: for}
+
+- id: c-he-overtruncate
+  type: attributive
+  text: "Top-p sampling can truncate words with up to (1 - p) probability simply because other high-probability words cover probability p; for the prompt My name, the word is is assigned 0.96 probability by GPT-2, but less likely candidates 's, was and isn should not be truncated."
+  evidence:
+    - {work: "hewitt-2022-truncation-sampling-desmoothing", role: original, locator: "p. 5", stance: for}
+
+- id: c-he-donald
+  type: attributive
+  text: "GPT-2 large assigns probability 0.96 to the word Trump for a document starting with Donald, and eta-sampling allows multiple possible continuations, unlike top-p = 0.95."
+  evidence:
+    - {work: "hewitt-2022-truncation-sampling-desmoothing", role: original, locator: "p. 2", stance: for}
+
+- id: c-he-desmoothing
+  type: attributive
+  text: "Hewitt et al. propose thinking of a neural language model as a mixture of a true distribution and a smoothing distribution, so that truncation algorithms aim to perform desmoothing, estimating a subset of the support of the true distribution."
+  evidence:
+    - {work: "hewitt-2022-truncation-sampling-desmoothing", role: original, locator: "p. 1", stance: for}
+
+- id: c-he-eta
+  type: attributive
+  text: "Eta-sampling allows the set of words x in V with P_θ(x | x<i) > η, where η = min(ϵ, α exp(−h)), α is in [0, 1], and exp(−h) is the probability of a word in the uniform distribution of entropy h."
+  evidence:
+    - {work: "hewitt-2022-truncation-sampling-desmoothing", role: original, locator: "p. 5", stance: for}
+
+- id: c-he-alpha
+  type: attributive
+  text: "To expose a single hyperparameter, Hewitt et al. set alpha = sqrt(epsilon), and for intuition suggest epsilon of about 0.0009."
+  evidence:
+    - {work: "hewitt-2022-truncation-sampling-desmoothing", role: original, locator: "p. 5", stance: for}
+
+- id: c-he-results
+  type: attributive
+  text: "Compared to previous algorithms, eta-sampling generates more plausible long English documents according to humans and is better at breaking out of repetition."
+  evidence:
+    - {work: "hewitt-2022-truncation-sampling-desmoothing", role: original, locator: "p. 1", stance: for}
+
+- id: c-me-hypothesis
+  type: attributive
+  text: "Meister et al. hypothesize that for text to be perceived as natural, each word should have an information content close to its expected information content given prior context."
+  evidence:
+    - {work: "meister-2023-locally-typical-sampling", role: original, locator: "p. 2", stance: for}
+
+- id: c-me-algorithm
+  type: attributive
+  text: "Locally typical sampling computes the conditional entropy, sorts words by the absolute distance of their information content from it in O(|V| log |V|) time, and greedily takes words from this list until their cumulative probability exceeds the threshold tau, so it can be implemented with the same efficiency as nucleus or top-k sampling."
+  evidence:
+    - {work: "meister-2023-locally-typical-sampling", role: original, locator: "p. 9", stance: for}
+
+- id: c-me-hparams
+  type: attributive
+  text: "After a hyperparameter sweep using MAUVE, Meister et al. found k = 30 or 40 and nucleus thresholds of 0.9 or 0.95 best for top-k and nucleus sampling, and tau = 0.2 and tau = 0.95 best for locally typical sampling on story generation and abstractive summarization respectively."
+  evidence:
+    - {work: "meister-2023-locally-typical-sampling", role: original, locator: "p. 10", stance: for}
+
+- id: c-me-results
+  type: empirical
+  text: "In comparison to nucleus and top-k sampling, locally typical sampling offers competitive performance in abstractive summarization and story generation in terms of quality while consistently reducing degenerate repetitions."
+  scope:
+    models: "fine-tuned language generators"
+    data: ["abstractive-summarization", "story-generation"]
+    scale: "unknown"
+    setting: "automatic and human evaluations"
+  evidence:
+    - {work: "meister-2023-locally-typical-sampling", role: original, locator: "p. 1", stance: for}
+
+- id: c-mp-problem
+  type: attributive
+  text: "Popular sampling methods like top-p (nucleus sampling) often struggle to balance quality and diversity, especially at higher temperatures, leading to incoherent or repetitive outputs."
+  evidence:
+    - {work: "nguyen-2025-min-p-sampling", role: original, locator: "p. 1", stance: for}
+
+- id: c-mp-rule
+  type: attributive
+  text: "Min-p sampling takes p_max, the maximum probability in the distribution, scales a base probability threshold p_base in (0, 1] by it to give p_scaled = p_base x p_max, keeps the tokens whose probabilities are greater than or equal to p_scaled, and samples from them according to their normalized probabilities."
+  evidence:
+    - {work: "nguyen-2025-min-p-sampling", role: original, locator: "p. 3", stance: for}
+
+- id: c-mp-after-temperature
+  type: attributive
+  text: "After applying temperature scaling, the scaled threshold p_scaled is computed, and tokens with probabilities below this threshold are filtered out before sampling."
+  evidence:
+    - {work: "nguyen-2025-min-p-sampling", role: original, locator: "p. 4", stance: for}
+
+- id: c-mp-gpqa
+  type: empirical
+  text: "On GPQA Main with Mistral 7B, min-p sampling consistently achieves higher accuracy than the other sampling methods across all temperature settings."
+  scope:
+    models: "Mistral 7B"
+    data: ["gpqa"]
+    scale: "unknown"
+    setting: "5-shot prompting, several sampling methods and temperatures"
+  evidence:
+    - {work: "nguyen-2025-min-p-sampling", role: original, locator: "p. 7", stance: for}
+
+- id: c-tp-prefix
+  type: mathematical
+  text: "If m is the least index with q_1 + ... + q_m >= p, the first m tokens form a smallest set of tokens with total probability at least p, and every smallest such set has m tokens."
+  assumes: ["a distribution q_1 >= q_2 >= ... >= q_V on a finite vocabulary, sorted from the largest", "0 < p <= 1"]
+  derivation: top-p-set
+
+- id: c-tp-mass
+  type: mathematical
+  text: "The kept mass p' = q_1 + ... + q_m satisfies p <= p' < p + q_m."
+  assumes: ["a distribution q_1 >= q_2 >= ... >= q_V on a finite vocabulary, sorted from the largest", "0 < p <= 1"]
+  derivation: top-p-set
+
+- id: c-tp-tv
+  type: mathematical
+  text: "The total variation distance between P and the renormalized truncation P' is 1 - p', the removed mass; for the nucleus it is at most 1 - p, and for top-k it is 1 - p_k', the mass outside the k largest probabilities, which depends on the context."
+  assumes: ["a distribution q_1 >= q_2 >= ... >= q_V on a finite vocabulary, sorted from the largest", "0 < p <= 1", "P' is P restricted to the kept set and divided by its mass p'"]
+  derivation: top-p-set
+
+- id: c-tp-limits
+  type: mathematical
+  text: "If q_1 >= p the nucleus is the single top token, and if p > 1 - q_s, where q_s is the smallest positive probability, the nucleus is every token with positive probability."
+  assumes: ["a distribution q_1 >= q_2 >= ... >= q_V on a finite vocabulary, sorted from the largest", "0 < p <= 1"]
+  derivation: top-p-set
+
+- id: c-tp-monotone
+  type: mathematical
+  text: "The nucleus is monotone in p: raising p never removes a token from it."
+  assumes: ["a distribution q_1 >= q_2 >= ... >= q_V on a finite vocabulary, sorted from the largest", "0 < p <= 1", "ties broken by a fixed order of the tokens"]
+  derivation: top-p-set
+
+- id: c-temp-order
+  type: mathematical
+  text: "For t > 0 the tempered distribution has the same order of tokens as the logits, so the top-k set does not depend on t."
+  assumes: ["logits u_1, ..., u_V and the tempered distribution softmax(u / t) with t > 0", "ties broken by a fixed order of the tokens"]
+  derivation: temperature
+
+- id: c-temp-limits
+  type: mathematical
+  text: "As t tends to 0 from above the tempered distribution tends to the uniform distribution on the tokens with the largest logit, and as t tends to infinity to the uniform distribution on the vocabulary."
+  assumes: ["logits u_1, ..., u_V and the tempered distribution softmax(u / t) with t > 0"]
+  derivation: temperature
+
+- id: c-temp-entropy
+  type: mathematical
+  text: "The entropy of the tempered distribution has derivative Var(u) / t^3 >= 0 in t, the variance taken under the tempered distribution, so it is non-decreasing in t."
+  assumes: ["logits u_1, ..., u_V and the tempered distribution softmax(u / t) with t > 0"]
+  derivation: temperature
+
+- id: c-temp-nucleus
+  type: mathematical
+  text: "For every m the total probability of the m tokens with the largest logits is non-increasing in t, so for a fixed p the nucleus at a lower temperature has at most as many tokens as at a higher one."
+  assumes: ["logits u_1, ..., u_V and the tempered distribution softmax(u / t) with t > 0"]
+  derivation: temperature
