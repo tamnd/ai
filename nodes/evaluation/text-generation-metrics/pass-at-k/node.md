@@ -28,6 +28,8 @@ sources:
   - {paper: "Chen et al. (2021)", title: "Evaluating Large Language Models Trained on Code", locator: "arXiv 2107.03374v2, pp. 1 to 6 and Appendix A (p. 19)", note: "the definition, the unbiased estimator (1), the stable product of Figure 3, HumanEval, and the bias of the plug-in estimate"}
   - {paper: "Kulal et al. (2019)", title: "SPoC: Search-based Pseudocode to Code", locator: "arXiv 1906.04908v1, the abstract, Sections 2 and 6", note: "the success rate at a budget of B trials, the measure that Chen et al. call pass@k"}
   - {paper: "Austin et al. (2021)", title: "Program Synthesis with Large Language Models", locator: "arXiv 2108.07732v1, Sections 3 and 4.4 to 4.7", note: "MBPP, tasks solved by any of 80 samples, held-out tests, and the sampling strategy"}
+  - {paper: "Chowdhery et al. (2022)", title: "PaLM: Scaling Language Modeling with Pathways", locator: "arXiv 2204.02311, p. 23", note: "pass@k with sampled fractions instead of the unbiased estimator, and the decoding settings"}
+  - {paper: "Jain et al. (2024)", title: "LiveCodeBench: Holistic and Contamination Free Evaluation of Large Language Models for Code", locator: "arXiv 2403.07974v2, pp. 3, 4 and 9", note: "release-date windows against contamination and the pass@1 protocol"}
 ---
 
 pass@k scores a code model by running its code.
@@ -149,6 +151,9 @@ A program that passes weak tests can still be wrong, and pass@k says nothing abo
 
 The benchmark must not be in the training data.
 Chen et al. wrote the HumanEval problems by hand because their models were trained on a large part of GitHub, which already holds solutions to problems from many sources. {#c-handwritten}
+Hand-written problems stay clean only until they or close copies reach the web.
+LiveCodeBench instead tags each contest problem with its release date and scores a new model only on problems released after its training cutoff. {#c-lcb-cutoff}
+DeepSeek, GPT-4-O and Codestral dropped sharply on LeetCode problems released after Aug 2023, Oct 2023 and Jan 2024 respectively, which the authors read as likely contamination of the older problems. {#c-lcb-drop}
 Running the samples is itself a risk, since generated code can be wrong or harmful; Chen et al. ran it in a sandbox built on the gVisor container runtime. {#c-sandbox}
 
 The metric is binary per problem and weighs every problem the same.
@@ -169,6 +174,8 @@ In their setting the system may use the public tests during its search, must out
 Austin et al. (2021) draw 80 samples per MBPP problem at temperature 0.5, run them against the tests, and report the fraction of tasks solved by any sample, which is the case $k = n = 80$. {#c-austin-metric}
 For APPS, Hendrycks et al. (2021) report the percentage of problems with a correct solution, called strict accuracy, and the percentage of unit tests passed, as Chen et al. summarize. {#c-apps-metrics}
 The second gives partial credit; Chen et al. use only strict accuracy.
+Chowdhery et al. (2022) count a problem as solved when any of $k$ samples solves it, following Kulal et al., but do not use the unbiased estimator; they report the share of samples that solve the task, with greedy decoding for $k = 1$ and nucleus sampling at $p = 0.95$ and temperature 0.8 for $k > 1$. {#c-palm-estimator}
+LiveCodeBench reports pass@1 from 10 samples per problem at temperature 0.2 and top-$p$ 0.95, as the fraction of correct programs, which is the unbiased estimator with $k = 1$, $n = 10$. {#c-lcb-protocol}
 
 ## Implementations
 

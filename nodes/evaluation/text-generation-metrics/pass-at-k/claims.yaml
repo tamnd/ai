@@ -264,3 +264,32 @@
     setting: "fraction of samples solving each task against their average BLEU"
   evidence:
     - {work: "austin-2021-program-synthesis-large-language-models", role: original, locator: "p. 10", stance: for}
+
+- id: c-lcb-cutoff
+  type: attributive
+  text: "LiveCodeBench collects problems from weekly contests on competition platforms and tags them with a release date, and for newer models only considers problems released after the model's cutoff date."
+  evidence:
+    - {work: "jain-2024-livecodebench", role: original, locator: "p. 3", stance: for}
+
+- id: c-lcb-drop
+  type: empirical
+  text: "We observe a stark drop in the performance of DeepSeek, GPT-4-O, and Codestral on LeetCode problems released after Aug 2023, Oct 2023, and Jan 2024. These results highlight likely contamination in older problems."
+  scope:
+    models: "DeepSeek, GPT-4-O and Codestral"
+    data: ["LiveCodeBench LeetCode problems, May 2023 onward"]
+    scale: "unknown"
+    setting: "code generation scored with pass@1 over monthly release windows"
+  evidence:
+    - {work: "jain-2024-livecodebench", role: original, locator: "p. 4", stance: for}
+
+- id: c-lcb-protocol
+  type: attributive
+  text: "LiveCodeBench uses the Pass@1 metric, generating 10 candidate answers for each problem with nucleus sampling at temperature 0.2 and top p 0.95 and calculating the fraction of programs that are correct."
+  evidence:
+    - {work: "jain-2024-livecodebench", role: original, locator: "p. 9", stance: for}
+
+- id: c-palm-estimator
+  type: attributive
+  text: "Following Kulal et al. (2019), PaLM draws k samples per problem and counts a problem as solved if any sample solves it, but does not use the estimator from Chen et al. (2021), instead reporting the percentage of samples that solves the task, with greedy decoding for k = 1 and nucleus sampling with p = 0.95 and temperature 0.8 for k > 1."
+  evidence:
+    - {work: "chowdhery-2022-palm", role: original, locator: "p. 23", stance: for}
