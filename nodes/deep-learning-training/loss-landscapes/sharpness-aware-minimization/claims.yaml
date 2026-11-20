@@ -440,3 +440,31 @@
   text: "Figure 1 of Foret et al. contrasts a sharp minimum reached by a ResNet trained with SGD with a wide minimum reached by the same ResNet trained with SAM."
   evidence:
     - {work: "foret-2021-sharpness-aware-minimization", role: original, locator: "p. 2", stance: for}
+
+- id: c-cohen-progressive
+  type: empirical
+  text: "So long as the sharpness, the maximum eigenvalue of the training loss Hessian, is less than the value 2/η, it tends to continually rise; we call this phenomenon progressive sharpening."
+  scope:
+    models: "fully-connected networks, VGG and ResNet, among other architectures"
+    data: [cifar-10]
+    scale: "unknown"
+    setting: "full-batch gradient descent with step size η"
+  evidence:
+    - {work: "cohen-2021-gradient-descent-edge-stability", role: original, locator: "p. 1", stance: for}
+
+- id: c-cohen-eos
+  type: empirical
+  text: "In the Edge of Stability regime, the maximum eigenvalue of the training loss Hessian hovers just above the value 2/(step size), and the training loss behaves non-monotonically over short timescales, yet consistently decreases over long timescales."
+  scope:
+    models: "fully-connected networks, VGG and ResNet, among other architectures"
+    data: [cifar-10]
+    scale: "unknown"
+    setting: "full-batch gradient descent"
+  evidence:
+    - {work: "cohen-2021-gradient-descent-edge-stability", role: original, locator: "p. 1", stance: for}
+
+- id: c-cohen-no-generalization
+  type: attributive
+  text: "In this paper, sharpness strictly means the maximum eigenvalue of the training loss Hessian; we do not claim that this quantity has any connection to generalization."
+  evidence:
+    - {work: "cohen-2021-gradient-descent-edge-stability", role: original, locator: "p. 2", stance: for}
