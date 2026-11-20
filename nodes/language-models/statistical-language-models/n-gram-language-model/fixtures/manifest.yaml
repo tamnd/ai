@@ -1,0 +1,10 @@
+# Written by fixtures/make.py; do not edit.
+seed: 1312300
+source: {words: 2000, end: 0.12, zipf_global: 1.2, zipf_context: 2.0, spread: 2.5, mix: [0.25, 0.35, 0.4], train: 6000, test: 300}
+models: "Kneser-Ney orders 1 to 4, interpolated and modified; Stupid Backoff order 3, alpha 0.4; infinity-gram"
+contexts: "(empty); w3; w0 w5; w9 w9 w9; zzz w1 w2"
+dtype: float64
+numpy: "2.5.4"
+files:
+  input-small.npz: {sha256: eae6efe8daff201a5bbcdc1d62c017178880d42aca354db2f0996a43a10a94d7}
+  expected-small.npz: {sha256: bb92d603101df262329f1661f1aad6947f854e265471fe002ce2ba8e96c89b2e}
