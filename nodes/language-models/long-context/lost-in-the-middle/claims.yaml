@@ -1,0 +1,662 @@
+# The claims of the lost-in-the-middle page (spec 07). The build computes the labels.
+
+# The finding
+
+- id: c-liu-u
+  type: empirical
+  text: "Liu et al. observe that performance is often highest when relevant information occurs at the beginning or end of the input context, and significantly degrades when models must access relevant information in the middle of long contexts, even for explicitly long-context models."
+  scope:
+    models: "MPT-30B-Instruct, LongChat-13B (16K), GPT-3.5-Turbo and Claude-1.3, with their extended-context versions"
+    data: ["NaturalQuestions-Open", "synthetic key-value retrieval"]
+    scale: "contexts of 10 to 30 documents, or 75 to 300 key-value pairs"
+    setting: "zero-shot prompting with greedy decoding, the relevant item moved through the context"
+  evidence:
+    - {work: "liu-2024-lost-in-the-middle", role: original, locator: "p. 1", stance: for}
+
+- id: c-liu-tasks
+  type: attributive
+  text: "Liu et al. analyze the performance of language models on two tasks that require identifying relevant information in their input contexts: multi-document question answering and key-value retrieval."
+  evidence:
+    - {work: "liu-2024-lost-in-the-middle", role: original, locator: "p. 1", stance: for}
+
+- id: c-liu-models
+  type: attributive
+  text: "Liu et al. run controlled experiments with open models, MPT-30B-Instruct and LongChat-13B (16K), and closed models, OpenAI's GPT-3.5-Turbo and Anthropic's Claude-1.3."
+  evidence:
+    - {work: "liu-2024-lost-in-the-middle", role: original, locator: "p. 1", stance: for}
+
+- id: c-liu-primacy
+  type: attributive
+  text: "Liu et al. call the advantage of relevant information at the very beginning of the input context primacy bias and the advantage at its end recency bias, and the resulting curve U-shaped."
+  evidence:
+    - {work: "liu-2024-lost-in-the-middle", role: original, locator: "p. 2", stance: for}
+
+- id: c-liu-protocol
+  type: attributive
+  text: "Liu et al. argue that to claim that a language model can robustly use information within long input contexts, it is necessary to show that its performance is minimally affected by the position of the relevant information in the input context, for example a minimal difference in best- and worst-case performance."
+  evidence:
+    - {work: "liu-2024-lost-in-the-middle", role: original, locator: "p. 3", stance: for}
+
+# The multi-document setting
+
+- id: c-liu-mdqa
+  type: attributive
+  text: "In the multi-document question answering task of Liu et al., the model inputs are a question to answer and k documents, where exactly one of the documents contains the answer to the question and k − 1 distractor documents do not."
+  evidence:
+    - {work: "liu-2024-lost-in-the-middle", role: original, locator: "p. 3", stance: for}
+
+- id: c-liu-nq
+  type: attributive
+  text: "Liu et al. instantiate the task with NaturalQuestions-Open, taking the 2655 queries where the annotated long answer is a paragraph, and use passages of at most 100 tokens from Wikipedia as documents."
+  evidence:
+    - {work: "liu-2024-lost-in-the-middle", role: original, locator: "p. 3", stance: for}
+
+- id: c-liu-distractors
+  type: attributive
+  text: "The distractors are the k − 1 Wikipedia chunks most relevant to the query that do not contain any of the NaturalQuestions-annotated answers, found with Contriever fine-tuned on MS-MARCO."
+  evidence:
+    - {work: "liu-2024-lost-in-the-middle", role: original, locator: "p. 3", stance: for}
+
+- id: c-liu-modulate
+  type: attributive
+  text: "To modulate the position of relevant information Liu et al. adjust the order of the documents, and to modulate the input context length they increase or decrease the number of retrieved documents that do not contain the answer."
+  evidence:
+    - {work: "liu-2024-lost-in-the-middle", role: original, locator: "p. 4", stance: for}
+
+- id: c-liu-accuracy
+  type: attributive
+  text: "Liu et al. use accuracy as the primary evaluation metric, judging whether any of the correct answers taken from the NaturalQuestions annotations appear in the predicted output."
+  evidence:
+    - {work: "liu-2024-lost-in-the-middle", role: original, locator: "p. 4", stance: for}
+
+- id: c-liu-ivgi
+  type: attributive
+  text: "The setup is similar to the needle-in-a-haystack experiments of Ivgi et al. (2023), who compare question answering performance when the relevant paragraph is placed at the beginning of the input or at a random position, and find that encoder-decoder models do significantly better when it is at the start."
+  evidence:
+    - {work: "liu-2024-lost-in-the-middle", role: original, locator: "p. 4", stance: for}
+
+- id: c-liu-windows
+  type: attributive
+  text: "MPT-30B-Instruct has a maximum context length of 8192 tokens and uses ALiBi to represent positional information; LongChat-13B (16K) extends the LLaMA-13B context window from 2048 to 16384 tokens by using condensed rotary positional embeddings before fine-tuning with 16384-token sequences."
+  evidence:
+    - {work: "liu-2024-lost-in-the-middle", role: original, locator: "p. 5", stance: for}
+
+- id: c-liu-closed-book
+  type: empirical
+  text: "In the closed-book setting, with no documents, GPT-3.5-Turbo answers 56.1% and Claude-1.3 48.3% of the questions; in the oracle setting, with only the document that contains the answer, they answer 88.3% and 76.1%."
+  scope:
+    models: "GPT-3.5-Turbo and Claude-1.3"
+    data: ["NaturalQuestions-Open"]
+    scale: "2655 questions"
+    setting: "closed-book and oracle prompting"
+  evidence:
+    - {work: "liu-2024-lost-in-the-middle", role: original, locator: "p. 5", stance: for}
+
+- id: c-liu-drop
+  type: empirical
+  text: "GPT-3.5-Turbo's multi-document QA performance can drop by more than 20%; in the worst case, performance in the 20- and 30-document settings is lower than performance without any input documents, the closed-book 56.1%."
+  scope:
+    models: "GPT-3.5-Turbo"
+    data: ["NaturalQuestions-Open"]
+    scale: "20 and 30 documents"
+    setting: "multi-document question answering, the answer document moved through the context"
+  evidence:
+    - {work: "liu-2024-lost-in-the-middle", role: original, locator: "p. 6", stance: for}
+
+- id: c-liu-extended
+  type: empirical
+  text: "When the input context fits in the context window of both a model and its extended-context counterpart, as the 10- and 20-document settings do for GPT-3.5-Turbo and GPT-3.5-Turbo (16K), their performance as a function of the position of the relevant information is nearly superimposed."
+  scope:
+    models: "GPT-3.5-Turbo and GPT-3.5-Turbo (16K)"
+    data: ["NaturalQuestions-Open"]
+    scale: "10 and 20 documents"
+    setting: "multi-document question answering"
+  evidence:
+    - {work: "liu-2024-lost-in-the-middle", role: original, locator: "p. 6", stance: for}
+
+- id: c-liu-random-distractors
+  type: empirical
+  text: "With random rather than retrieved distractors all models have higher absolute accuracy, but they still struggle to reason over their entire input context, so the degradation is not solely due to an inability to identify relevant documents."
+  scope:
+    models: "the six models of the main experiments"
+    data: ["NaturalQuestions-Open"]
+    scale: "the multi-document settings"
+    setting: "random Wikipedia distractors"
+  evidence:
+    - {work: "liu-2024-lost-in-the-middle", role: original, locator: "p. 15", stance: for}
+
+- id: c-liu-random-order
+  type: empirical
+  text: "With the k − 1 distractor documents randomly shuffled and the instruction saying that the search results are ordered randomly, Liu et al. continue to see a U-shaped performance curve."
+  scope:
+    models: "the six models of the main experiments"
+    data: ["NaturalQuestions-Open"]
+    scale: "the multi-document settings"
+    setting: "shuffled distractors, stated in the prompt"
+  evidence:
+    - {work: "liu-2024-lost-in-the-middle", role: original, locator: "p. 15", stance: for}
+
+- id: c-liu-gpt4
+  type: empirical
+  text: "On a subset of 500 random multi-document QA examples with 20 total documents, GPT-4 (8K) achieves higher absolute performance than any other language model, but still shows a U-shaped performance curve."
+  scope:
+    models: "GPT-4 (8K)"
+    data: ["NaturalQuestions-Open"]
+    scale: "500 examples, 20 documents"
+    setting: "multi-document question answering"
+  evidence:
+    - {work: "liu-2024-lost-in-the-middle", role: original, locator: "p. 16", stance: for}
+
+# Key-value retrieval
+
+- id: c-liu-kv
+  type: attributive
+  text: "In the synthetic key-value retrieval task, the inputs are a string-serialized JSON object with k key-value pairs, each key and value a unique randomly generated UUID, and a key within the object; the goal is to return the value associated with the specified key."
+  evidence:
+    - {work: "liu-2024-lost-in-the-middle", role: original, locator: "p. 6", stance: for}
+
+- id: c-liu-kv-results
+  type: empirical
+  text: "With 75, 140 and 300 key-value pairs (500 examples each), Claude-1.3 and Claude-1.3 (100K) do nearly perfectly at all evaluated input context lengths, while GPT-3.5-Turbo, GPT-3.5-Turbo (16K) and MPT-30B-Instruct have the lowest performance when they must access key-value pairs in the middle of their input context."
+  scope:
+    models: "Claude-1.3, GPT-3.5-Turbo and MPT-30B-Instruct, with extended-context versions"
+    data: ["synthetic key-value retrieval"]
+    scale: "75, 140 and 300 pairs"
+    setting: "exact retrieval of a value by its key"
+  evidence:
+    - {work: "liu-2024-lost-in-the-middle", role: original, locator: "p. 7", stance: for}
+
+# Variations
+
+- id: c-liu-encdec
+  type: empirical
+  text: "Evaluated within its 2048-token training-time window, Flan-UL2 is relatively robust to the position of relevant information, with a 1.9% absolute difference between best- and worst-case performance; on sequences longer than 2048 tokens its performance degrades when relevant information is placed in the middle, and Flan-T5-XXL shows a similar trend."
+  scope:
+    models: "Flan-UL2 and Flan-T5-XXL"
+    data: ["NaturalQuestions-Open"]
+    scale: "10, 20 and 30 documents"
+    setting: "encoder-decoder models inside and beyond their training sequence length"
+  evidence:
+    - {work: "liu-2024-lost-in-the-middle", role: original, locator: "p. 8", stance: for}
+
+- id: c-liu-bidirectional
+  type: attributive
+  text: "Liu et al. hypothesize that encoder-decoder models may make better use of their context windows because their bidirectional encoder allows processing each document in the context of future documents."
+  evidence:
+    - {work: "liu-2024-lost-in-the-middle", role: original, locator: "p. 8", stance: for}
+
+- id: c-liu-query-aware
+  type: empirical
+  text: "Placing the query before and after the data, query-aware contextualization, lets all models achieve near-perfect performance on the 75, 140 and 300 key-value pair settings; GPT-3.5-Turbo (16K) with it is perfect with 300 pairs, against a worst case of 45.6% without it."
+  scope:
+    models: "the six models of the main experiments"
+    data: ["synthetic key-value retrieval"]
+    scale: "75, 140 and 300 pairs"
+    setting: "query repeated before and after the data"
+  evidence:
+    - {work: "liu-2024-lost-in-the-middle", role: original, locator: "p. 8", stance: for}
+
+- id: c-liu-query-aware-qa
+  type: empirical
+  text: "Query-aware contextualization minimally affects performance trends in multi-document question answering; it slightly improves performance when the relevant information is located at the very beginning of the input context, but slightly decreases performance in other settings."
+  scope:
+    models: "the six models of the main experiments"
+    data: ["NaturalQuestions-Open"]
+    scale: "the multi-document settings"
+    setting: "query repeated before and after the documents"
+  evidence:
+    - {work: "liu-2024-lost-in-the-middle", role: original, locator: "p. 8", stance: for}
+
+- id: c-liu-base
+  type: empirical
+  text: "Both MPT-30B and MPT-30B-Instruct exhibit a U-shaped performance curve; instruction fine-tuning slightly reduces the worst-case performance disparity from nearly 10% between the base model's best- and worst-case performance to around 4%."
+  scope:
+    models: "MPT-30B and MPT-30B-Instruct"
+    data: ["NaturalQuestions-Open"]
+    scale: "30B parameters"
+    setting: "multi-document question answering, base against instruction-tuned"
+  evidence:
+    - {work: "liu-2024-lost-in-the-middle", role: original, locator: "p. 9", stance: for}
+
+- id: c-liu-llama-size
+  type: empirical
+  text: "Among Llama-2 models, the 7B models are solely recency-biased, while the 13B and 70B models exhibit a U-shaped performance curve."
+  scope:
+    models: "Llama-2 7B, 13B and 70B, base and chat"
+    data: ["NaturalQuestions-Open"]
+    scale: "7B to 70B parameters, 20 documents"
+    setting: "multi-document question answering"
+  evidence:
+    - {work: "liu-2024-lost-in-the-middle", role: original, locator: "p. 10", stance: for}
+
+- id: c-liu-llama-13b
+  type: empirical
+  text: "The 13B Llama-2 base model has a 20-point accuracy disparity between best- and worst-case performance; additional fine-tuning reduces it to a 10-point worst-case degradation, while the 70B models with and without additional fine-tuning have largely similar trends."
+  scope:
+    models: "Llama-2 13B and 70B, base and chat"
+    data: ["NaturalQuestions-Open"]
+    scale: "13B and 70B parameters, 20 documents"
+    setting: "supervised fine-tuning and RLHF against the base model"
+  evidence:
+    - {work: "liu-2024-lost-in-the-middle", role: original, locator: "p. 17", stance: for}
+
+- id: c-liu-small
+  type: attributive
+  text: "Liu et al. hypothesize that earlier work did not observe primacy bias in language models because the models studied were too small, less than 1B parameters."
+  evidence:
+    - {work: "liu-2024-lost-in-the-middle", role: original, locator: "p. 17", stance: for}
+
+- id: c-liu-open-domain
+  type: empirical
+  text: "In open-domain question answering with retrieved Wikipedia documents, using 50 documents instead of 20 only marginally improves performance, by about 1.5% for GPT-3.5-Turbo and about 1% for claude-1.3, so model performance saturates long before retriever recall."
+  scope:
+    models: "GPT-3.5-Turbo and Claude-1.3"
+    data: ["NaturalQuestions-Open"]
+    scale: "up to 50 retrieved documents"
+    setting: "retriever-reader with Contriever"
+  evidence:
+    - {work: "liu-2024-lost-in-the-middle", role: original, locator: "p. 3", stance: for}
+
+- id: c-liu-rerank
+  type: attributive
+  text: "Liu et al. suggest that effective reranking of retrieved documents, pushing relevant information closer to the start of the input context, or ranked list truncation, retrieving fewer documents when appropriate, may improve how language-model-based readers use retrieved context."
+  evidence:
+    - {work: "liu-2024-lost-in-the-middle", role: original, locator: "p. 10", stance: for}
+
+- id: c-liu-perplexity
+  type: attributive
+  text: "Liu et al. note that many prior efforts evaluate perplexity on a diverse web corpus as a proxy for the ability to process long contexts, and that their work shows precise knowledge access on long contexts may be an added challenge."
+  evidence:
+    - {work: "liu-2024-lost-in-the-middle", role: original, locator: "p. 11", stance: for}
+
+- id: c-liu-serial
+  type: attributive
+  text: "Liu et al. connect the U-shaped curve to the serial-position effect of psychology (Ebbinghaus, 1913; Murdock, 1962): in free-association recall of elements from a list, humans tend to best remember the first and last elements of the list."
+  evidence:
+    - {work: "liu-2024-lost-in-the-middle", role: original, locator: "p. 11", stance: for}
+
+- id: c-liu-surprising
+  type: attributive
+  text: "Liu et al. find a serial-position-like effect in language models perhaps surprising, since the self-attention mechanisms underlying Transformer language models are technically equally capable of retrieving any token from their contexts."
+  evidence:
+    - {work: "liu-2024-lost-in-the-middle", role: original, locator: "p. 11", stance: for}
+
+# Replications
+
+- id: c-pey-synthwiki
+  type: attributive
+  text: "The task documents of Peysakhovich and Lerer are one-paragraph biographies of fictional individuals generated by a language model, and the model is asked simple questions that can be readily answered from the document."
+  evidence:
+    - {work: "peysakhovich-2023-attention-sorting-recency-bias", role: original, locator: "p. 1", stance: for}
+
+- id: c-pey-no-prior
+  type: attributive
+  text: "The distractors are biographies of other fictional individuals; because all data is generated, models cannot use their prior knowledge to help with the task, which Peysakhovich and Lerer call the SynthWiki task."
+  evidence:
+    - {work: "peysakhovich-2023-attention-sorting-recency-bias", role: original, locator: "p. 2", stance: for}
+
+- id: c-pey-degrade
+  type: empirical
+  text: "Increasing the number of distractors degrades performance across small open source and larger proprietary models, with the smallest degradation in Claude-1-Instant and Claude-2, a larger one in GPT-3.5 and TogetherLlama, and catastrophic degradation in the remaining open source models."
+  scope:
+    models: "Llama-2-7B-32k and its Instruct version, YaRN Llama-2-7B-64k, WizardLM Code-Llama-7B, GPT-3.5, Claude-1-Instant and Claude-2"
+    data: ["SynthWiki"]
+    scale: "contexts of 1,000 to 30,000 Llama tokens"
+    setting: "extractive question answering with one relevant document"
+  evidence:
+    - {work: "peysakhovich-2023-attention-sorting-recency-bias", role: original, locator: "p. 2", stance: for}
+
+- id: c-pey-replication
+  type: empirical
+  text: "Peysakhovich and Lerer see a general replication of the lost in the middle results, but as context gets longer, and in togetherLlama in particular, the primacy bias towards early documents becomes smaller and mostly the recency bias remains."
+  scope:
+    models: "four 7B open models built on Llama-2"
+    data: ["SynthWiki"]
+    scale: "1,000, 16,000 and 30,000 context tokens"
+    setting: "accuracy against the position of the true document"
+  evidence:
+    - {work: "peysakhovich-2023-attention-sorting-recency-bias", role: original, locator: "p. 4", stance: for}
+
+- id: c-hs-reproduce
+  type: empirical
+  text: "Hsieh et al. reproduce the lost-in-the-middle phenomenon with Vicuna-7b-v1.5-16k on 20 documents, and find that the model's response exhibits a strong bias towards the document at the first position, regardless of the gold document's location, whether the documents keep their original order or are randomly shuffled."
+  scope:
+    models: "Vicuna-7b-v1.5-16k"
+    data: ["NaturalQuestions"]
+    scale: "K = 20 documents"
+    setting: "error analysis of wrong answers with the gold document at position 10"
+  evidence:
+    - {work: "hsieh-2024-found-in-the-middle-calibrating-attention", role: original, locator: "p. 3", stance: for}
+
+- id: c-zh-gap
+  type: attributive
+  text: "Zhang et al. measure the effect on the multi-document question answering task of Liu et al. with ten documents per question, reporting the average accuracy over the ten positions of the key document and the gap between the best and the worst accuracy."
+  evidence:
+    - {work: "zhang-2024-found-in-the-middle-ms-poe", role: original, locator: "p. 4", stance: for}
+
+# Related findings
+
+- id: c-levy-drop
+  type: empirical
+  text: "Levy et al. find that LLMs quickly degrade in their reasoning capabilities even on input length of 3000 tokens, much shorter than their technical maximum, with a drop in accuracy from 0.92 to 0.68 on average over all tested models."
+  scope:
+    models: "GPT-3.5, GPT-4, Gemini Pro, Mistral Medium and Mixtral 8x7B"
+    data: ["FLenQA"]
+    scale: "inputs of 250 to 3000 tokens"
+    setting: "True/False reasoning over two key paragraphs padded with irrelevant text"
+  evidence:
+    - {work: "levy-2024-same-task-more-tokens", role: original, locator: "p. 2", stance: for}
+
+- id: c-levy-design
+  type: attributive
+  text: "Levy et al. isolate the effect of input length using multiple versions of the same sample, each extended with padding of different lengths, types and locations."
+  evidence:
+    - {work: "levy-2024-same-task-more-tokens", role: original, locator: "p. 1", stance: for}
+
+- id: c-levy-ppl
+  type: attributive
+  text: "Levy et al. report that the traditional metric of next word prediction correlates negatively with performance of LLMs on their reasoning dataset."
+  evidence:
+    - {work: "levy-2024-same-task-more-tokens", role: original, locator: "p. 1", stance: for}
+
+- id: c-levy-cot
+  type: empirical
+  text: "Chain-of-thought prompting increases accuracy over non-CoT prompting by a roughly constant amount across context lengths, far from closing the drop due to long context; the only exception is GPT-4, in which the gap between CoT and normal prompting increases as the input is longer."
+  scope:
+    models: "GPT-3.5, GPT-4, Gemini Pro, Mistral Medium and Mixtral 8x7B"
+    data: ["FLenQA"]
+    scale: "inputs up to 3000 tokens"
+    setting: "chain-of-thought against direct prompting"
+  evidence:
+    - {work: "levy-2024-same-task-more-tokens", role: original, locator: "p. 2", stance: for}
+
+- id: c-ruler-niah
+  type: empirical
+  text: "On RULER, despite achieving nearly perfect accuracy in the vanilla needle-in-a-haystack test, almost all models exhibit large performance drops as the context length increases; while these models all claim context sizes of 32K tokens or greater, only half of them can maintain satisfactory performance at the length of 32K."
+  scope:
+    models: "17 long-context language models"
+    data: ["RULER"]
+    scale: "13 tasks, 4K to 128K tokens"
+    setting: "synthetic retrieval, multi-hop tracing, aggregation and question answering"
+  evidence:
+    - {work: "hsieh-2024-ruler-real-context-size", role: original, locator: "p. 1", stance: for}
+
+- id: c-ruler-effective
+  type: attributive
+  text: "RULER grades each model with a fixed threshold, the performance of the Llama2-7b model at the 4K context length, and reports the maximum length exceeding the threshold as the effective length beside the claimed length."
+  evidence:
+    - {work: "hsieh-2024-ruler-real-context-size", role: original, locator: "p. 6", stance: for}
+
+- id: c-an-niah
+  type: attributive
+  text: "An et al. argue that near-perfect performance on Needle-in-the-Haystack may overestimate long-context capabilities, because it uses a document-style context familiar from pre-training and a forward retrieval pattern, in which the retrieved information directly follows the retrieval keyword."
+  evidence:
+    - {work: "an-2024-make-your-llm-fully-utilize-context", role: original, locator: "p. 6", stance: for}
+
+# Explanations
+
+- id: c-hs-attn-u
+  type: empirical
+  text: "Hsieh et al. find that LLMs exhibit a U-shaped attention bias where the tokens at the beginning and at the end of the input receive higher attention, regardless of their relevance."
+  scope:
+    models: "Vicuna-7b-v1.5-16k"
+    data: ["NaturalQuestions"]
+    scale: "K = 20 documents"
+    setting: "attention weights averaged over layers and heads when predicting the next token"
+  evidence:
+    - {work: "hsieh-2024-found-in-the-middle-calibrating-attention", role: original, locator: "p. 1", stance: for}
+
+- id: c-hs-shuffled
+  type: empirical
+  text: "The U-shaped attention pattern persists even after randomly shuffling the document order, suggesting that the bias does not depend on the documents' actual content."
+  scope:
+    models: "Vicuna-7b-v1.5-16k"
+    data: ["NaturalQuestions"]
+    scale: "K = 20 documents"
+    setting: "average attention per document, original and shuffled order"
+  evidence:
+    - {work: "hsieh-2024-found-in-the-middle-calibrating-attention", role: original, locator: "p. 4", stance: for}
+
+- id: c-hs-used
+  type: empirical
+  text: "Among the examples where the model answers wrongly, the document most likely used in the answer falls in the half of documents with higher model attention in 526 examples (74%) and in the lower half in 186 (26%)."
+  scope:
+    models: "Vicuna-7b-v1.5-16k"
+    data: ["NaturalQuestions"]
+    scale: "K = 20 documents"
+    setting: "TF-IDF similarity between the response and each document"
+  evidence:
+    - {work: "hsieh-2024-found-in-the-middle-calibrating-attention", role: original, locator: "p. 4", stance: for}
+
+- id: c-hs-additive
+  type: empirical
+  text: "Hsieh et al. model the attention to a document as rel(x) + bias(k) + ε, the relevance of the document plus a positional bias plus noise; the linear model gives a Spearman rank correlation of 0.76 on quadruplets collected from NaturalQuestion."
+  scope:
+    models: "Vicuna-7b-v1.5-16k"
+    data: ["NaturalQuestions"]
+    scale: "K = 20 documents"
+    setting: "differences of attention for two documents at two positions"
+  evidence:
+    - {work: "hsieh-2024-found-in-the-middle-calibrating-attention", role: original, locator: "p. 5", stance: for}
+
+- id: c-hs-conditions
+  type: empirical
+  text: "On 100 randomly sampled NaturalQuestion examples with K = 20 documents, the share of valid pairs is 83% for the condition that attention rises with positional bias when the document is fixed, and 72% for the condition that it rises with relevance when the position is fixed."
+  scope:
+    models: "Vicuna-7b-v1.5-16k"
+    data: ["NaturalQuestions"]
+    scale: "100 examples, K = 20 documents"
+    setting: "pairs of documents and positions"
+  evidence:
+    - {work: "hsieh-2024-found-in-the-middle-calibrating-attention", role: original, locator: "p. 5", stance: for}
+
+- id: c-pey-attention
+  type: empirical
+  text: "At long context lengths, all three open models studied by Peysakhovich and Lerer show a strong bias towards attending to the most recent tokens, as well as a weaker bias towards the initial tokens, and all attend much more strongly to relevant documents than to distractor documents."
+  scope:
+    models: "three 7B open models built on Llama-2"
+    data: ["SynthWiki"]
+    scale: "1,000, 16,000 and 30,000 context tokens"
+    setting: "attention of the first generated token, averaged over layers and heads"
+  evidence:
+    - {work: "peysakhovich-2023-attention-sorting-recency-bias", role: original, locator: "p. 5", stance: for}
+
+- id: c-pey-prior
+  type: attributive
+  text: "Peysakhovich and Lerer suggest that in pre-training documents the most informative tokens for predicting a particular token are typically the most recent ones, which induces a learned bias to attend to recent tokens."
+  evidence:
+    - {work: "peysakhovich-2023-attention-sorting-recency-bias", role: original, locator: "p. 1", stance: for}
+
+- id: c-pey-rope
+  type: attributive
+  text: "Peysakhovich and Lerer add that the rotary positional embedding (RoPE) scheme of the open models they study has an inductive bias towards reduced attention at long distances, which may make it even easier to learn to attend preferentially to recent tokens."
+  evidence:
+    - {work: "peysakhovich-2023-attention-sorting-recency-bias", role: original, locator: "p. 1", stance: for}
+
+- id: c-zh-factors
+  type: attributive
+  text: "Zhang et al. attribute lost in the middle to two factors: causal attention, where preceding tokens undergo a higher number of attention processes so that models disproportionately favor initial tokens, and the long-term decay effect of RoPE, which diminishes the attention score of distantly positioned tokens."
+  evidence:
+    - {work: "zhang-2024-found-in-the-middle-ms-poe", role: original, locator: "p. 4", stance: for}
+
+- id: c-xiao-sink
+  type: attributive
+  text: "Xiao et al. find that a surprisingly large amount of attention score is allocated to the initial tokens of autoregressive LLMs, irrespective of their relevance, and attribute it to the Softmax, which requires attention scores to sum up to one, together with the initial tokens being visible to almost all subsequent tokens."
+  evidence:
+    - {work: "xiao-2024-efficient-streaming-attention-sinks", role: original, locator: "p. 2", stance: for}
+
+- id: c-an-hypothesis
+  type: attributive
+  text: "An et al. hypothesize that lost in the middle stems from a bias in general training data: in auto-regressive pre-training the loss on the next token is more likely to be influenced by a few nearby tokens, and in supervised fine-tuning the system message is typically presented at the beginning of the context."
+  evidence:
+    - {work: "an-2024-make-your-llm-fully-utilize-context", role: original, locator: "p. 2", stance: for}
+
+# Mitigations
+
+- id: c-hs-calibration
+  type: attributive
+  text: "Hsieh et al. call Attn(x, k) − Attn(x_dum, k), the attention to a document minus the attention to a dummy document at the same position, calibrated attention, and the overall calibration mechanism found-in-the-middle."
+  evidence:
+    - {work: "hsieh-2024-found-in-the-middle-calibrating-attention", role: original, locator: "p. 6", stance: for}
+
+- id: c-hs-rank
+  type: empirical
+  text: "For ranking the relevance of retrieved documents, the calibrated attention outperforms popular existing approaches by up to 48 points."
+  scope:
+    models: "Vicuna-7b-v1.5-16k"
+    data: ["NaturalQuestions"]
+    scale: "K = 10 and 20 documents"
+    setting: "gold document in the middle of the input"
+  evidence:
+    - {work: "hsieh-2024-found-in-the-middle-calibrating-attention", role: original, locator: "p. 2", stance: for}
+
+- id: c-hs-rag
+  type: empirical
+  text: "Found-in-the-middle attention calibration outperforms the uncalibrated baseline by up to 10 percentage points across tasks and models, and by 6 to 10 points when the gold document is placed mid-sequence."
+  scope:
+    models: "Vicuna-7b-v1.5-16k and tulu-2-7b"
+    data: ["NaturalQuestions", "SynthWiki"]
+    scale: "K = 10 and 20 documents"
+    setting: "retrieval-augmented question answering"
+  evidence:
+    - {work: "hsieh-2024-found-in-the-middle-calibrating-attention", role: original, locator: "p. 7", stance: for}
+
+- id: c-hs-capable
+  type: attributive
+  text: "Hsieh et al. conclude that, if calibrated appropriately, language models can locate relevant information even when it is hidden in the middle of the input."
+  evidence:
+    - {work: "hsieh-2024-found-in-the-middle-calibrating-attention", role: original, locator: "p. 6", stance: for}
+
+- id: c-pey-sorting
+  type: attributive
+  text: "Attention sorting performs one step of decoding, sorts documents by the attention they receive with the highest attention going last, repeats the process, and generates the answer with the newly sorted context."
+  evidence:
+    - {work: "peysakhovich-2023-attention-sorting-recency-bias", role: original, locator: "p. 1", stance: for}
+
+- id: c-pey-one-sort
+  type: empirical
+  text: "A re-sorting iteration moves the relevant document closer to the end of the context on average, but for documents far away from the end one single sort may leave them in the middle; TogetherLlama gains little after 2 iterations, while the other models keep improving up to 5 attention sorts."
+  scope:
+    models: "four 7B open models built on Llama-2"
+    data: ["SynthWiki"]
+    scale: "16,000 and 30,000 context tokens"
+    setting: "repeated attention sorting"
+  evidence:
+    - {work: "peysakhovich-2023-attention-sorting-recency-bias", role: original, locator: "p. 5", stance: for}
+
+- id: c-pey-doubling
+  type: empirical
+  text: "Attention sorting substantially helps WizardCoder and YaRN, particularly with repeated application, more than doubling their accuracy at 30k context length."
+  scope:
+    models: "WizardLM Code-Llama-7B and YaRN Llama-2-7B-64k"
+    data: ["SynthWiki"]
+    scale: "30,000 context tokens"
+    setting: "repeated attention sorting"
+  evidence:
+    - {work: "peysakhovich-2023-attention-sorting-recency-bias", role: original, locator: "p. 2", stance: for}
+
+- id: c-zh-rescale
+  type: attributive
+  text: "Zhang et al. substitute the position m in RoPE with m/r, forcing long-distance tokens to reside in a shorter range, which can potentially alleviate the long-term decay effects by a factor of r."
+  evidence:
+    - {work: "zhang-2024-found-in-the-middle-ms-poe", role: original, locator: "p. 4", stance: for}
+
+- id: c-zh-favored
+  type: empirical
+  text: "With a small re-scaling ratio such as 0.5, models focus more on the most recent part of the context, while with a large ratio such as 2.5 they favour the beginning; an enhanced average accuracy is observed with a ratio near 1.5."
+  scope:
+    models: "Llama-2-7B-Chat and Vicuna-7B"
+    data: ["multi-document question answering of Liu et al."]
+    scale: "ten documents, 500 samples per position"
+    setting: "one re-scaling ratio for the whole model"
+  evidence:
+    - {work: "zhang-2024-found-in-the-middle-ms-poe", role: original, locator: "p. 4", stance: for}
+
+- id: c-zh-heads
+  type: attributive
+  text: "Zhang et al. observe that different attention heads exhibit varying sensitivity to the position shift of the relevant document, and Ms-PoE assigns distinct scaling ratios to different heads, the factor increasing monotonically from position-aware heads to position-unaware heads."
+  evidence:
+    - {work: "zhang-2024-found-in-the-middle-ms-poe", role: original, locator: "p. 2", stance: for}
+
+- id: c-zh-result
+  type: empirical
+  text: "Ms-PoE achieves an average accuracy gain of up to 3.8 on the ZeroSCROLLS benchmark over the original LLMs, without fine-tuning."
+  scope:
+    models: "Llama-2, StableBeluga and Vicuna"
+    data: ["ZeroSCROLLS"]
+    scale: "7B and 13B models"
+    setting: "plug-and-play change of position indices at inference"
+  evidence:
+    - {work: "zhang-2024-found-in-the-middle-ms-poe", role: original, locator: "p. 1", stance: for}
+
+- id: c-an-in2
+  type: attributive
+  text: "Information-intensive (IN2) training uses a synthesized long-context question-answer dataset in which the answer requires fine-grained awareness of a short segment of about 128 tokens within a synthesized context of 4K to 32K tokens, or the integration and reasoning of information from two or more such segments."
+  evidence:
+    - {work: "an-2024-make-your-llm-fully-utilize-context", role: original, locator: "p. 1", stance: for}
+
+- id: c-an-film
+  type: empirical
+  text: "Applying IN2 training to Mistral-7B gives FILM-7B, which improves the F1 score on NarrativeQA from 23.5 to 26.9 while keeping MMLU accuracy comparable, 59.3 to 59.2."
+  scope:
+    models: "Mistral-7B and FILM-7B"
+    data: ["NarrativeQA", "MMLU"]
+    scale: "7B parameters, 32K context window"
+    setting: "fine-tuning on about 1.4M synthesized long-context examples"
+  evidence:
+    - {work: "an-2024-make-your-llm-fully-utilize-context", role: original, locator: "p. 1", stance: for}
+
+- id: c-an-val
+  type: empirical
+  text: "In Table 1 of An et al., quantified performances on VAL Probing, the All Avg and Gap are 85.9 and 13.9 for FILM-7B, 47.3 and 56.2 for Mistral-7B-Instruct-v0.2, and 79.0 and 32.1 for GPT-4-Turbo."
+  scope:
+    models: "FILM-7B, Mistral-7B-Instruct-v0.2 and GPT-4-Turbo"
+    data: ["VAL Probing"]
+    scale: "contexts of about 32K tokens"
+    setting: "sentence, function and entity retrieval at varied positions"
+  evidence:
+    - {work: "an-2024-make-your-llm-fully-utilize-context", role: original, locator: "p. 6", stance: for}
+
+- id: c-an-gap
+  type: attributive
+  text: "An et al. quantify long-context performance with two metrics: the average score across the entire context length, and the min-max gap, the difference between the maximum and minimum performances over positions, where a smaller gap signifies greater robustness."
+  evidence:
+    - {work: "an-2024-make-your-llm-fully-utilize-context", role: original, locator: "p. 8", stance: for}
+
+# The derivation
+
+- id: c-pb-calibration
+  type: mathematical
+  text: "Under the additive model Attn(x, k) = rel(x) + bias(k) with no noise, the calibrated attention Attn(x, k) − Attn(x_dum, k) equals rel(x) − rel(x_dum) and does not depend on the position k."
+  assumes: ["attention is relevance plus a position term"]
+  derivation: position-bias-models
+
+- id: c-pb-calibration-noise
+  type: mathematical
+  text: "If the additive model holds up to noise of size at most δ, calibrated attention is within 2δ of rel(x) − rel(x_dum), and any two documents whose relevance differs by more than 4δ are ranked correctly whatever their positions."
+  assumes: ["attention is relevance plus a position term plus noise bounded by delta"]
+  derivation: position-bias-models
+
+- id: c-pb-sort-monotone
+  type: mathematical
+  text: "If attention rises strictly with relevance and never falls with position, and the gold document is strictly the most relevant, every document before the gold one stays before it after a step of attention sorting, so the gold document never moves earlier."
+  assumes: ["attention is f(relevance, position), strictly increasing in relevance and non-decreasing in position"]
+  derivation: position-bias-models
+
+- id: c-pb-sort-one-step
+  type: mathematical
+  text: "With attention rel + βk, a gold document at position p of K is placed last by one sort when its relevance exceeds that of every other document by more than β(K − p)."
+  assumes: ["attention is relevance plus beta times the position"]
+  derivation: position-bias-models
+
+- id: c-pb-sort-stall
+  type: mathematical
+  text: "Without that margin repeated sorting can stall: with attention rel + 0.2k, relevances 1.0, 0.9 and 0.9 and the gold document first, the attentions are 1.2, 1.3 and 1.5, already in order, and the gold document stays first under every number of sorts."
+  assumes: ["attention is relevance plus 0.2 times the position, counted from 1"]
+  derivation: position-bias-models
+
+- id: c-pb-rescale
+  type: mathematical
+  text: "Under RoPE the score of a query and a key depends only on the difference of their positions, so dividing all positions by r makes the score at distance D equal to the unscaled score at distance D/r."
+  assumes: ["plain rotary position embedding with no other position term"]
+  derivation: position-bias-models
