@@ -1,0 +1,11 @@
+# Written by fixtures/make.py; do not edit.
+seed: 20060728
+config: {d_in: 6, d_hidden: 5, n_hidden: 1, d_code: 2, act: sigmoid, code_act: linear, out: sigmoid, tied: false}
+inputs: {B: 4, x: "uniform on [0, 1]"}
+loss: "eq-cross-entropy, summed over the components and averaged over the batch"
+dtype: float64
+numpy: "2.5.4"
+files:
+  params-small.npz: {sha256: 5030c546dfc2e155c9e6ac2057651b123fe5d1ffa044b0d5d5394ec1df8bcd6b}
+  input-small.npz: {sha256: 483eef8949dece3d3b9a1016ce5a05376ac76eb63bd31774614269ceb878a132}
+  expected-small.npz: {sha256: 8bd82df547f112b013c784f7c9338c48f5bca3f7a279db3eaaf4d3e8d0920b7e}
