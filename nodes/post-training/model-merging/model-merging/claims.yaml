@@ -1,0 +1,443 @@
+# The claims of the model-merging page (spec 07). The build computes the labels.
+
+# Setting
+
+- id: c-mr-shared
+  type: attributive
+  text: "Merging, averaging the parameters of models, is generally only feasible when the models being averaged share a common architecture and initialization."
+  evidence:
+    - {work: "matena-2022-fisher-merging", role: original, locator: "p. 2", stance: for}
+
+- id: c-ws-basin
+  type: attributive
+  text: "Wortsman et al. observe that fine-tuned large pre-trained models often appear to lie in a single low error basin, and that averaging the weights of multiple models fine-tuned with different hyperparameter configurations often improves accuracy and robustness."
+  evidence:
+    - {work: "wortsman-2022-model-soups", role: original, locator: "p. 1", stance: for}
+
+- id: c-wf-lmc
+  type: attributive
+  text: "Neyshabur et al. found that fine-tuning the same model twice end to end yields two solutions connected by a linear path in weight space along which error remains low, known as linear mode connectivity."
+  evidence:
+    - {work: "wortsman-2022-wise-ft", role: original, locator: "p. 3", stance: for}
+
+- id: c-fr-stable
+  type: attributive
+  text: "Networks trained from one point with different samples of SGD noise become stable early in training, at 3% of training for ResNet-20 on CIFAR-10 and 20% for ResNet-50 on ImageNet, after which the outcome of optimization is determined to a linearly connected minimum."
+  evidence:
+    - {work: "frankle-2019-linear-mode-connectivity-lottery", role: original, locator: "p. 2", stance: for}
+
+- id: c-ai-perm
+  type: attributive
+  text: "For any trained weights there is an entire equivalence class of functionally equivalent weight assignments, obtained by permuting units, and which element training converges to is determined only by the random seed."
+  evidence:
+    - {work: "ainsworth-2023-git-re-basin", role: original, locator: "p. 3", stance: for}
+
+# Averages
+
+- id: c-ws-cost
+  type: attributive
+  text: "Unlike a conventional ensemble, a model soup averages many models without incurring any additional inference or memory costs."
+  evidence:
+    - {work: "wortsman-2022-model-soups", role: original, locator: "p. 1", stance: for}
+
+- id: c-ws-greedy
+  type: attributive
+  text: "The greedy soup sorts the models in decreasing order of validation set accuracy and adds each model as a potential ingredient, keeping it only if performance on a held-out validation set improves, so on the held-out validation set the greedy soup can be no worse than any individual model."
+  evidence:
+    - {work: "wortsman-2022-model-soups", role: original, locator: "p. 3", stance: for}
+
+- id: c-ws-learned
+  type: attributive
+  text: "The learned soup optimizes model interpolation weights by gradient-based minibatch optimization and requires simultaneously loading all models in memory."
+  evidence:
+    - {work: "wortsman-2022-model-soups", role: original, locator: "p. 3", stance: for}
+
+- id: c-wf-def
+  type: attributive
+  text: "WiSE-FT linearly interpolates between the zero-shot and fine-tuned models with a mixing coefficient α ∈ [0, 1], θ_α = (1 − α)·θ_zero-shot + α·θ_fine-tuned."
+  evidence:
+    - {work: "wortsman-2022-wise-ft", role: original, locator: "p. 2", stance: for}
+
+- id: c-wf-linear
+  type: attributive
+  text: "When only a linear classifier is fine-tuned, WiSE-FT is equivalent to ensembling the outputs of the two models."
+  evidence:
+    - {work: "wortsman-2022-wise-ft", role: original, locator: "p. 3", stance: for}
+
+- id: c-wf-half
+  type: attributive
+  text: "α = 0.5 yields close to optimal performance across a range of WiSE-FT experiments, and Wortsman et al. recommend α = 0.5 when no domain knowledge is available."
+  evidence:
+    - {work: "wortsman-2022-wise-ft", role: original, locator: "p. 6", stance: for}
+
+- id: c-iz-def
+  type: attributive
+  text: "Stochastic Weight Averaging is an equally weighted average of the points traversed by SGD with a cyclical or high constant learning rate, which leads to better generalization than conventional training."
+  evidence:
+    - {work: "izmailov-2018-stochastic-weight-averaging", role: original, locator: "p. 1", stance: for}
+
+- id: c-iz-alg
+  type: attributive
+  text: "SWA starts from a pretrained model, continues training with a cyclical or constant learning rate, captures the models at the minimum values of the learning rate or at each epoch for a constant rate, and averages their weights."
+  evidence:
+    - {work: "izmailov-2018-stochastic-weight-averaging", role: original, locator: "p. 4", stance: for}
+
+- id: c-iz-update
+  type: attributive
+  text: "The SWA average is updated as w_SWA ← (w_SWA·n_models + w)/(n_models + 1), which only requires computing a weighted sum of the weights of two networks."
+  evidence:
+    - {work: "izmailov-2018-stochastic-weight-averaging", role: original, locator: "p. 5", stance: for}
+
+- id: c-iz-bn
+  type: attributive
+  text: "If the network uses batch normalization, SWA runs one additional pass over the data to compute the running mean and standard deviation of the activations for the w_SWA weights, since these statistics are not collected during training."
+  evidence:
+    - {work: "izmailov-2018-stochastic-weight-averaging", role: original, locator: "p. 5", stance: for}
+
+# Task arithmetic
+
+- id: c-il-def
+  type: attributive
+  text: "A task vector specifies a direction in the weight space of a pre-trained model, such that movement in that direction improves performance on the task, and is built by subtracting the weights of a pre-trained model from the weights of the same model after fine-tuning on a task."
+  evidence:
+    - {work: "ilharco-2023-task-arithmetic", role: original, locator: "p. 1", stance: for}
+
+- id: c-il-ops
+  type: attributive
+  text: "Ilharco et al. negate a task vector, τ_new = −τ; add task vectors, τ_new = Σ_i τ_i; and, when tasks form an analogy “A is to B as C is to D”, use τ_new = τ_C + (τ_B − τ_A); the edited weights are θ_new = θ + λτ_new, where λ is determined using held-out validation sets."
+  evidence:
+    - {work: "ilharco-2023-task-arithmetic", role: original, locator: "p. 3", stance: for}
+
+# Fisher merging
+
+- id: c-mr-iso
+  type: attributive
+  text: "If the posterior of each model is approximated by an isotropic Gaussian with mean set to the model's parameters, maximizing Σ_i log p(θ | θ_i, I) has the closed-form solution θ* = (1/M) Σ_i θ_i, an average of the model parameters."
+  evidence:
+    - {work: "matena-2022-fisher-merging", role: original, locator: "p. 3", stance: for}
+
+- id: c-mr-lam
+  type: attributive
+  text: "Matena and Raffel add model-specific weights λ_i ≥ 0 with Σ_i λ_i = 1, which change the isotropic solution to θ* = Σ_i λ_i θ_i."
+  evidence:
+    - {work: "matena-2022-fisher-merging", role: original, locator: "p. 3", stance: for}
+
+- id: c-mr-merge
+  type: attributive
+  text: "Fisher merging approximates each model's posterior by a Gaussian with mean θ_i and precision F_i, the diagonal approximate Fisher, and maximizes Σ_i λ_i log p(θ | θ_i, F_i), which sets each parameter to Σ_i λ_i F_i θ_i / Σ_i λ_i F_i."
+  evidence:
+    - {work: "matena-2022-fisher-merging", role: original, locator: "p. 4", stance: for}
+
+- id: c-mr-fisher
+  type: attributive
+  text: "The diagonal Fisher is estimated as the average over N training examples of E_{y∼p_θ(y|x_i)}(∇_θ log p_θ(y|x_i))², with the expectation over y sampled or computed exactly when the number of classes is small, at roughly the cost of training on N examples."
+  evidence:
+    - {work: "matena-2022-fisher-merging", role: original, locator: "p. 4", stance: for}
+
+- id: c-mr-kl
+  type: attributive
+  text: "The Fisher information relates parameter changes to output changes: E_x[D_KL(p_θ(y|x) ‖ p_{θ+δ}(y|x))] ≈ ½ δᵀF_θδ as δ → 0."
+  evidence:
+    - {work: "matena-2022-fisher-merging", role: original, locator: "p. 4", stance: for}
+
+- id: c-mr-num
+  type: attributive
+  text: "Where the Fisher is close to zero across all models for a parameter, Matena and Raffel default to the parameter's value in a privileged target model, a choice that had little impact on performance."
+  evidence:
+    - {work: "matena-2022-fisher-merging", role: original, locator: "p. 4", stance: for}
+
+- id: c-mr-heads
+  type: attributive
+  text: "Parameters that do not appear in all models, such as task-specific classification heads, are left out of the merge and kept unchanged."
+  evidence:
+    - {work: "matena-2022-fisher-merging", role: original, locator: "p. 5", stance: for}
+
+# TIES
+
+- id: c-ya-interf
+  type: attributive
+  text: "Yadav et al. identify two sources of interference when merging: redundant parameter values and disagreement on the sign of a given parameter's values across models."
+  evidence:
+    - {work: "yadav-2023-ties-merging", role: original, locator: "p. 1", stance: for}
+
+- id: c-ya-steps
+  type: attributive
+  text: "TIES-merging trims each task vector to its top-k% values by magnitude, elects for each parameter the sign with the greater total movement, γ_m = sgn(Σ_t τ̂_t), and takes a disjoint mean over the models whose sign agrees with it, which always ignores the zero values; the merged model is θ_init + λτ_m."
+  evidence:
+    - {work: "yadav-2023-ties-merging", role: original, locator: "p. 5", stance: for}
+
+# DARE
+
+- id: c-yu-def
+  type: attributive
+  text: "DARE randomly drops delta parameters δ^t = θ_SFT − θ_PRE with a drop rate p, using a Bernoulli mask, and rescales the remaining ones by 1/(1 − p), then adds the result to θ_PRE."
+  evidence:
+    - {work: "yu-2024-dare-super-mario", role: original, locator: "p. 3", stance: for}
+
+- id: c-yu-proof
+  type: attributive
+  text: "For a linear layer the expectation of each output after dropping with ratio p and rescaling by γ is h_PRE + (1 − p)·γ·Δh, so setting γ = 1/(1 − p) makes the expected output equal to the original."
+  evidence:
+    - {work: "yu-2024-dare-super-mario", role: original, locator: "p. 3", stance: for}
+
+- id: c-yu-plugin
+  type: attributive
+  text: "DARE is a plug-and-play module that can be applied before any model merging method, such as Average Merging, Fisher Merging, RegMean and TIES-Merging."
+  evidence:
+    - {work: "yu-2024-dare-super-mario", role: original, locator: "p. 5", stance: for}
+
+- id: c-ai-barrier
+  type: attributive
+  text: "Ainsworth et al. measure approximations to convexity by the loss barrier, max_{λ∈[0,1]} L((1 − λ)Θ_A + λΘ_B) − ½(L(Θ_A) + L(Θ_B)), which is non-negative."
+  evidence:
+    - {work: "ainsworth-2023-git-re-basin", role: original, locator: "p. 3", stance: for}
+
+- id: c-ai-lap
+  type: attributive
+  text: "Matching the units of two networks by their weights or activations is a linear assignment problem per layer, for which efficient polynomial-time algorithms are known."
+  evidence:
+    - {work: "ainsworth-2023-git-re-basin", role: original, locator: "p. 4", stance: for}
+
+# Derivation
+
+- id: c-mm-ta
+  type: mathematical
+  text: "With task vectors τ_t = θ_t − θ_pre, θ_pre + λ Σ_t τ_t = (1 − nλ)θ_pre + λ Σ_t θ_t: λ = 1/n gives the uniform average of the n fine-tuned models, and one task vector with λ = α gives WiSE-FT's (1 − α)θ_pre + αθ_1."
+  assumes: ["all models share one architecture and one pre-trained starting point"]
+  derivation: model-merging-arithmetic
+
+- id: c-mm-fisher
+  type: mathematical
+  text: "The gradient of Σ_i λ_i log N(θ; θ_i, diag(F_i)⁻¹) in θ_j is Σ_i λ_i F_ij(θ_ij − θ_j), which is zero at θ_j = Σ_i λ_i F_ij θ_ij / Σ_i λ_i F_ij; when all F_i are equal this is Σ_i λ_i θ_i, the isotropic merge."
+  assumes: ["the Fisher values are non-negative and their weighted sum is positive for each parameter"]
+  derivation: model-merging-arithmetic
+
+- id: c-mm-linear
+  type: mathematical
+  text: "If a model's output is linear in the merged parameters, as for a linear classifier on fixed features, the output of a weighted average of weights equals the same weighted average of the outputs, so weight averaging and output ensembling coincide; through a nonlinearity they differ."
+  assumes: ["the models differ only in parameters on which the output depends linearly"]
+  derivation: model-merging-arithmetic
+
+- id: c-mm-dare
+  type: mathematical
+  text: "Each DARE entry is δ/(1 − p) with probability 1 − p and 0 otherwise, so its mean is δ and its variance δ²p/(1 − p), which is 9δ² at p = 0.9 and 99δ² at p = 0.99."
+  assumes: ["the drop decisions are independent Bernoulli draws with probability p < 1"]
+  derivation: model-merging-arithmetic
+
+- id: c-mm-swa
+  type: mathematical
+  text: "The update w ← (w·n + w_new)/(n + 1) keeps the arithmetic mean of the n + 1 captured weights exactly, so SWA stores one extra copy of the weights however many it averages."
+  assumes: ["the captures are added one at a time and n counts those already averaged"]
+  derivation: model-merging-arithmetic
+
+- id: c-mm-shrink
+  type: mathematical
+  text: "When the elected sign of a parameter is positive, the disjoint mean of its positive entries is at least the plain mean of all n entries, because negative entries and zeros can only lower the sum or raise the count; the same holds with the signs reversed."
+  assumes: ["at least one entry has the elected sign"]
+  derivation: model-merging-arithmetic
+
+- id: c-mm-barrier
+  type: mathematical
+  text: "The loss barrier is at least ½|L(Θ_A) − L(Θ_B)|, because the maximum includes both endpoints, and it is zero when the loss is convex along the segment and equal at its ends."
+  assumes: ["the maximum is over a set of λ that includes 0 and 1"]
+  derivation: model-merging-arithmetic
+
+- id: c-mm-perm
+  type: mathematical
+  text: "Permuting the hidden units of a one-hidden-layer network leaves its function unchanged, but averaging the network with its permuted copy generally changes the function; undoing the permutation before averaging gives back the network."
+  assumes: ["the hidden layer applies an elementwise nonlinearity"]
+  derivation: model-merging-arithmetic
+
+# Worked example
+
+- id: c-mm-we-ties
+  type: mathematical
+  text: "For the task vectors (0.5, −0.2, 0.05, 0.8, −0.6), (−0.45, −0.4, 0.02, 0.6, 0.1) and (0.4, 0.1, −0.01, −0.05, −0.7) with k = 60%, TIES-merging gives τ_m = (0.45, −0.4, 0, 0.7, −0.65), against the plain mean (0.15, −0.167, 0.02, 0.45, −0.4)."
+  assumes: ["ties at the trimming threshold do not occur"]
+  derivation: model-merging-arithmetic
+
+- id: c-mm-we-fisher
+  type: mathematical
+  text: "For θ_1 = (1, 0) and θ_2 = (0, 1) with diagonal Fishers (3, 1) and (1, 1) and equal weights, Fisher merging gives (0.75, 0.5), against the plain average (0.5, 0.5)."
+  assumes: ["equal model weights λ_1 = λ_2 = 1/2"]
+  derivation: model-merging-arithmetic
+
+# Hyperparameters
+
+- id: c-ya-top20
+  type: attributive
+  text: "Keeping only the top 20% of each task vector's values by magnitude, resetting the rest to their initial value, delivers results comparable to retaining all parameters."
+  evidence:
+    - {work: "yadav-2023-ties-merging", role: original, locator: "p. 4", stance: for}
+
+- id: c-ya-recipe
+  type: attributive
+  text: "Without a validation set, Yadav et al. use a TIES-merging recipe that keeps the top-20% parameters in the task vector and sets λ = 1, and compare it with task arithmetic at the recommended λ = 0.4."
+  evidence:
+    - {work: "yadav-2023-ties-merging", role: original, locator: "p. 6", stance: for}
+
+- id: c-yu-scale
+  type: attributive
+  text: "The more parameters a language model has, the larger the drop rate p DARE can tolerate, and at 70 billion parameters DARE can eliminate up to 99% of delta parameters with minimal impact on performance."
+  evidence:
+    - {work: "yu-2024-dare-super-mario", role: original, locator: "p. 1", stance: for}
+
+# Evidence
+
+- id: c-ws-vitg
+  type: attributive
+  text: "A model soup of ViT-G models achieves 90.94% on ImageNet, surpassing the 90.88% of CoAtNet while requiring 25% fewer FLOPs at inference time."
+  evidence:
+    - {work: "wortsman-2022-model-soups", role: original, locator: "p. 2", stance: for}
+
+- id: c-ws-table
+  type: attributive
+  text: "For CLIP ViT-B/32 fine-tuned on ImageNet, the individual model chosen from the sweep by validation accuracy reaches 80.38% on ImageNet and 47.83% on distribution shifts, the uniform soup 79.97% and 51.45%, the greedy soup 81.03% and 50.75%, the learned soup 80.89% and 51.07%, and the ensemble 81.19% and 50.77%."
+  evidence:
+    - {work: "wortsman-2022-model-soups", role: original, locator: "p. 6", stance: for}
+
+- id: c-ws-five
+  type: attributive
+  text: "From sweeps of 72 fine-tuned CLIP models and 12 fine-tuned ALIGN models, the greedy soup selects 5 models in both cases."
+  evidence:
+    - {work: "wortsman-2022-model-soups", role: original, locator: "p. 6", stance: for}
+
+- id: c-wf-gain
+  type: attributive
+  text: "On ImageNet and five derived distribution shifts, WiSE-FT improves accuracy under distribution shift by 4 to 6 percentage points over prior work while increasing ImageNet accuracy by 1.6 pp, at no additional computational cost during fine-tuning or inference."
+  evidence:
+    - {work: "wortsman-2022-wise-ft", role: original, locator: "p. 1", stance: for}
+
+- id: c-iz-flat
+  type: attributive
+  text: "SGD generally converges to a point near the boundary of the wide flat region of optimal points, while SWA finds a point centred in this region, often with slightly worse train loss but substantially better test error."
+  evidence:
+    - {work: "izmailov-2018-stochastic-weight-averaging", role: original, locator: "p. 2", stance: for}
+
+- id: c-iz-imnet
+  type: attributive
+  text: "Running SWA for just 10 epochs on ImageNet gives a 0.8% improvement for ResNet-50 and DenseNet-161."
+  evidence:
+    - {work: "izmailov-2018-stochastic-weight-averaging", role: original, locator: "p. 2", stance: for}
+
+- id: c-il-neg
+  type: attributive
+  text: "Negating task vectors reduces the accuracy of a pre-trained ViT-L/14 by 45.8 percentage points on the target tasks, with little loss on the control task."
+  evidence:
+    - {work: "ilharco-2023-task-arithmetic", role: original, locator: "p. 4", stance: for}
+
+- id: c-il-tox
+  type: attributive
+  text: "For GPT-2 Large, negative task vectors decrease the amount of toxic generations by 6×, while resulting in a model with comparable perplexity on a control task."
+  evidence:
+    - {work: "ilharco-2023-task-arithmetic", role: original, locator: "p. 4", stance: for}
+
+- id: c-il-add
+  type: attributive
+  text: "Adding two task vectors maintains 98.9% of the accuracy, and the average performance on the entire set of tasks increases as more task vectors are added."
+  evidence:
+    - {work: "ilharco-2023-task-arithmetic", role: original, locator: "p. 2", stance: for}
+
+- id: c-il-orth
+  type: attributive
+  text: "Task vectors from different tasks are typically close to orthogonal, which Ilharco et al. speculate enables the combination of task vectors via addition with minimal interference."
+  evidence:
+    - {work: "ilharco-2023-task-arithmetic", role: original, locator: "p. 7", stance: for}
+
+- id: c-mr-ens
+  type: attributive
+  text: "Merging fine-tuned BERT-Base checkpoints for RTE, MRPC and SST-2, Fisher merging significantly outperforms isotropic merging in all cases and attains comparable performance to prediction ensembling."
+  evidence:
+    - {work: "matena-2022-fisher-merging", role: original, locator: "p. 5", stance: for}
+
+- id: c-ya-gain
+  type: attributive
+  text: "For in-domain evaluation, TIES-merging outperforms the strongest baseline by an average of 2.3% and 1.7% absolute in NLP and vision settings."
+  evidence:
+    - {work: "yadav-2023-ties-merging", role: original, locator: "p. 3", stance: for}
+
+- id: c-ya-ntasks
+  type: attributive
+  text: "As the number of merged tasks increases the performance of all methods decreases; when merging two tasks TIES-merging and task arithmetic lose almost nothing while simple averaging suffers a 10% drop, and task arithmetic declines more rapidly than TIES-merging."
+  evidence:
+    - {work: "yadav-2023-ties-merging", role: original, locator: "p. 8", stance: for}
+
+- id: c-ya-conflict
+  type: attributive
+  text: "Sign conflicts occur even when merging only 2 models, and the likelihood of a sign conflict increases with the number of models being merged."
+  evidence:
+    - {work: "yadav-2023-ties-merging", role: original, locator: "p. 5", stance: for}
+
+- id: c-yu-small
+  type: attributive
+  text: "SFT delta parameter value ranges are typically small, within 0.002, and DARE can eliminate 90% or even 99% of them."
+  evidence:
+    - {work: "yu-2024-dare-super-mario", role: original, locator: "p. 1", stance: for}
+
+- id: c-yu-merge
+  type: attributive
+  text: "Merging decoder language models with DARE and task arithmetic gives gains of 3.18% for LM & Math over Math on GSM8K and 19.57% for LM & Code over Code on MBPP."
+  evidence:
+    - {work: "yu-2024-dare-super-mario", role: original, locator: "p. 2", stance: for}
+
+- id: c-ai-zero
+  type: attributive
+  text: "After weight matching, wider models exhibit better linear mode connectivity, and wide ResNets on CIFAR-10 reach zero-barrier linear mode connectivity."
+  evidence:
+    - {work: "ainsworth-2023-git-re-basin", role: original, locator: "p. 7", stance: for}
+
+# Limitations
+
+- id: c-ws-barrier
+  type: attributive
+  text: "The uniform soup outperforms every individual model only when all individual models achieve high accuracy; there can be an error barrier between fine-tuned models, mainly when fine-tuning with high learning rates."
+  evidence:
+    - {work: "wortsman-2022-model-soups", role: original, locator: "p. 6", stance: for}
+
+- id: c-ws-calib
+  type: attributive
+  text: "While ensembles improve model calibration, model soups do not have the same effect."
+  evidence:
+    - {work: "wortsman-2022-model-soups", role: original, locator: "p. 8", stance: for}
+
+- id: c-ws-22k
+  type: attributive
+  text: "For an ImageNet22k pre-trained model the greedy soup still provides improvements on ImageNet, but these are less substantial than when fine-tuning CLIP and ALIGN."
+  evidence:
+    - {work: "wortsman-2022-model-soups", role: original, locator: "p. 8", stance: for}
+
+- id: c-il-limit
+  type: attributive
+  text: "Task vectors are restricted to models with the same architecture, since they depend on element-wise operations on model weights, and Ilharco et al. perform arithmetic only on models fine-tuned from the same pre-trained initialization."
+  evidence:
+    - {work: "ilharco-2023-task-arithmetic", role: original, locator: "p. 8", stance: for}
+
+- id: c-mr-far
+  type: attributive
+  text: "Since the Fisher information is a local property of a single parameter value, Fisher merging might be less performant for models whose parameters are far apart in parameter space."
+  evidence:
+    - {work: "matena-2022-fisher-merging", role: original, locator: "p. 4", stance: for}
+
+- id: c-yu-rescale
+  type: attributive
+  text: "The rescale operation is crucial to DARE: dropping 30% or 40% of delta parameters without rescaling noticeably leads to worse results."
+  evidence:
+    - {work: "yu-2024-dare-super-mario", role: original, locator: "p. 2", stance: for}
+
+- id: c-yu-cpt
+  type: attributive
+  text: "Once models undergo continuous pre-training, the delta parameters can rapidly reach around 0.03, making DARE infeasible."
+  evidence:
+    - {work: "yu-2024-dare-super-mario", role: original, locator: "p. 2", stance: for}
+
+- id: c-yu-ft
+  type: attributive
+  text: "Dropping only 10% of the fine-tuned parameters, the combination of pre-trained and delta parameters, leads to a catastrophic decrease in performance, even approaching zero."
+  evidence:
+    - {work: "yu-2024-dare-super-mario", role: original, locator: "p. 2", stance: for}
+
+- id: c-il-free
+  type: attributive
+  text: "Task arithmetic has no extra cost at inference time in terms of memory or compute, since it only does element-wise operations on model weights."
+  evidence:
+    - {work: "ilharco-2023-task-arithmetic", role: original, locator: "p. 2", stance: for}
