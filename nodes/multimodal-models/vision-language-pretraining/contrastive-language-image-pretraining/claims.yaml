@@ -1,0 +1,275 @@
+# The claims of the contrastive-language-image-pretraining page (spec 07). The build computes the labels.
+
+# The method
+
+- id: c-clip-task
+  type: attributive
+  text: "The simple pre-training task of predicting which caption goes with which image is an efficient and scalable way to learn image representations from scratch on a dataset of 400 million (image, text) pairs collected from the internet, and after pre-training natural language is used to reference learned visual concepts, enabling zero-shot transfer of the model to downstream tasks."
+  evidence:
+    - {work: "radford-2021-learning-transferable-visual-models", role: original, locator: "p. 1", stance: for}
+
+- id: c-clip-batch
+  type: attributive
+  text: "Given a batch of N (image, text) pairs, CLIP is trained to predict which of the N × N possible pairings across a batch actually occurred, by maximizing the cosine similarity of the image and text embeddings of the N real pairs while minimizing the cosine similarity of the embeddings of the N² − N incorrect pairings, and it optimizes a symmetric cross entropy loss over these similarity scores."
+  evidence:
+    - {work: "radford-2021-learning-transferable-visual-models", role: original, locator: "p. 4", stance: for}
+
+- id: c-clip-temp
+  type: attributive
+  text: "The learnable temperature parameter τ was initialized to the equivalent of 0.07 and clipped to prevent scaling the logits by more than 100, which was found necessary to prevent training instability, and CLIP uses a very large minibatch size of 32,768."
+  evidence:
+    - {work: "radford-2021-learning-transferable-visual-models", role: original, locator: "p. 5", stance: for}
+
+- id: c-clip-wit
+  type: attributive
+  text: "To cover a broad set of visual concepts, the 400 million pairs were collected by searching for pairs whose text includes one of a set of 500,000 queries, balancing the results by including up to 20,000 (image, text) pairs per query; the dataset is called WIT for WebImageText."
+  evidence:
+    - {work: "radford-2021-learning-transferable-visual-models", role: original, locator: "pp. 3 to 4", stance: for}
+
+- id: c-clip-eff
+  type: attributive
+  text: "A transformer language model that predicts the caption learns zero-shot ImageNet classification 3x slower than a baseline that predicts a bag-of-words encoding of the text, and swapping the prediction objective for the contrastive objective of CLIP further improves efficiency another 4x."
+  evidence:
+    - {work: "radford-2021-learning-transferable-visual-models", role: original, locator: "p. 3", stance: for}
+
+- id: c-clip-prompt
+  type: attributive
+  text: "Using the prompt template “A photo of a {label}.” is a good default that helps specify the text is about the content of the image, and just using this prompt improves accuracy on ImageNet by 1.3%."
+  evidence:
+    - {work: "radford-2021-learning-transferable-visual-models", role: original, locator: "p. 7", stance: for}
+
+- id: c-clip-ens
+  type: attributive
+  text: "On ImageNet, ensembling 80 different context prompts improves performance by an additional 3.5% over the single default prompt, and together prompt engineering and ensembling improve ImageNet accuracy by almost 5%."
+  evidence:
+    - {work: "radford-2021-learning-transferable-visual-models", role: original, locator: "p. 8", stance: for}
+
+- id: c-clip-train
+  type: attributive
+  text: "CLIP trains all models for 32 epochs; the RN50x64 model took 18 days to train on 592 V100 GPUs, while the ViT-L/14 Vision Transformer took 12 days on 256 V100 GPUs."
+  evidence:
+    - {work: "radford-2021-learning-transferable-visual-models", role: original, locator: "p. 5", stance: for}
+
+- id: c-cv-loss
+  type: attributive
+  text: "ConVIRT learns from medical images paired with report text using a bidirectional contrastive objective: an image-to-text loss of the same form as the InfoNCE loss, with cosine similarity and a temperature parameter τ, and a text-to-image loss, combined with a scalar weight λ in [0, 1]."
+  evidence:
+    - {work: "zhang-2022-contrastive-learning-medical-visual", role: original, locator: "pp. 6 to 7", stance: for}
+
+# Derivation
+
+- id: c-d-logn
+  type: mathematical
+  text: "When every logit in a row is equal the contrastive loss is log N, 10.3972 nats for a batch of 32,768 pairs and 9.7041 for 16,384, so the loss of untrained encoders starts near log N."
+  assumes: ["the embeddings carry no information about which caption matches"]
+  derivation: contrastive-loss-arithmetic
+
+- id: c-d-floor
+  type: mathematical
+  text: "With logit scale s, positives at cosine 1 and N − 1 negatives at cosine c, the softmax loss cannot go below log(1 + (N − 1) e^(−s(1 − c))): for N = 32,768 and c = 0 this is 9.3973 at s = 1, 0.020268 at s = 1/0.07 and below 10^−38 at s = 100."
+  assumes: ["cosine similarities lie in [−1, 1]"]
+  derivation: contrastive-loss-arithmetic
+
+- id: c-d-sig
+  type: mathematical
+  text: "With the sigmoid loss and every cosine near 0, a bias of 0 makes each of the 32,767 negatives of an image cost log 2, 22,712.3 nats in total against 0.6931 for its positive, while t = 10 and b = −10 make them cost 1.4876 in total against 10.0000454 for the positive."
+  assumes: ["the logit is t times the cosine plus b"]
+  derivation: contrastive-loss-arithmetic
+
+- id: c-d-mem
+  type: mathematical
+  text: "A full N × N matrix of 32-bit logits takes 4 GiB at N = 2^15 and 4 TiB at N = 2^20; the softmax loss needs whole rows on each of D devices, 4 GiB per device for N = 2^20 and D = 2^10, while the sigmoid loss can work in blocks of (N/D)^2 logits, 4 MiB each."
+  assumes: ["32-bit floats", "the softmax normalizer sums over the whole row"]
+  derivation: contrastive-loss-arithmetic
+
+- id: c-d-steps
+  type: mathematical
+  text: "A batch of 32,768 pairs has 1,073,709,056 negative pairs, and 32 epochs over 400 million pairs are 12.8 billion samples seen, or 390,625 steps."
+  assumes: ["every pair in an epoch is seen once"]
+  derivation: contrastive-loss-arithmetic
+
+- id: c-d-zs
+  type: mathematical
+  text: "The zero-shot classifier is linear in the image embedding with one weight row per class written by the text encoder; with 80 prompts for each of 1,000 classes the text encoder runs 80,000 times once and the classifier is cached."
+  assumes: ["prompt embeddings are averaged after normalization"]
+  derivation: contrastive-loss-arithmetic
+
+# Evidence
+
+- id: c-clip-76
+  type: attributive
+  text: "CLIP improves zero-shot accuracy on ImageNet from a proof of concept 11.5% to 76.2% and matches the performance of the original ResNet-50 despite using none of the 1.28 million crowd-labeled training examples available for this dataset."
+  evidence:
+    - {work: "radford-2021-learning-transferable-visual-models", role: original, locator: "p. 6", stance: for}
+
+- id: c-clip-27
+  type: attributive
+  text: "Across a 27 dataset evaluation suite, a zero-shot CLIP classifier outperforms a fully supervised linear classifier fitted on ResNet-50 features on 16 datasets, including ImageNet."
+  evidence:
+    - {work: "radford-2021-learning-transferable-visual-models", role: original, locator: "p. 8", stance: for}
+
+- id: c-clip-robust
+  type: attributive
+  text: "All zero-shot CLIP models improve effective robustness by a large amount and reduce the size of the gap between ImageNet accuracy and accuracy under distribution shift by up to 75%."
+  evidence:
+    - {work: "radford-2021-learning-transferable-visual-models", role: original, locator: "p. 14", stance: for}
+
+- id: c-clip-adapt
+  type: attributive
+  text: "Adapting CLIP to the ImageNet distribution with a logistic regression classifier increases its ImageNet accuracy by 9.2% to 85.4% overall, but average accuracy under distribution shift slightly decreases."
+  evidence:
+    - {work: "radford-2021-learning-transferable-visual-models", role: original, locator: "p. 14", stance: for}
+
+- id: c-align-data
+  type: attributive
+  text: "ALIGN follows the procedures of the Conceptual Captions dataset but applies only simple frequency-based filtering instead of its complex filtering and post-processing, giving a noisy dataset of over one billion image alt-text pairs that is two orders of magnitude larger than Conceptual Captions."
+  evidence:
+    - {work: "jia-2021-scaling-visual-vision-language", role: original, locator: "p. 1", stance: for}
+
+- id: c-align-arch
+  type: attributive
+  text: "ALIGN uses EfficientNet-L2 as the image encoder and BERT-Large as the text encoder, trained from scratch with a normalized softmax loss, and the temperature is learned together with all the other parameters instead of being swept manually."
+  evidence:
+    - {work: "jia-2021-scaling-visual-vision-language", role: original, locator: "pp. 3 to 4", stance: for}
+
+- id: c-align-batch
+  type: attributive
+  text: "ALIGN is trained on 1024 Cloud TPUv3 cores with 16 positive pairs on each core, so the total effective batch size is 16384."
+  evidence:
+    - {work: "jia-2021-scaling-visual-vision-language", role: original, locator: "p. 4", stance: for}
+
+- id: c-align-76
+  type: attributive
+  text: "Zero-shot image classification with ALIGN, feeding the class names into the text encoder, achieves 76.4% top-1 accuracy in ImageNet without using any of its training samples."
+  evidence:
+    - {work: "jia-2021-scaling-visual-vision-language", role: original, locator: "p. 2", stance: for}
+
+- id: c-align-ret
+  type: attributive
+  text: "In the zero-shot setting, ALIGN gets more than 7% improvement in image retrieval task compared to CLIP on Flickr30K and MSCOCO."
+  evidence:
+    - {work: "jia-2021-scaling-visual-vision-language", role: original, locator: "p. 4", stance: for}
+
+- id: c-oc-power
+  type: attributive
+  text: "Experiments with models trained on up to two billion image-text pairs identify power law scaling for multiple downstream tasks including zero-shot classification, retrieval, linear probing, and end-to-end fine-tuning."
+  evidence:
+    - {work: "cherti-2022-reproducible-scaling-laws-contrastive", role: original, locator: "p. 1", stance: for}
+
+- id: c-oc-dist
+  type: attributive
+  text: "The training distribution plays a key role in scaling laws, as the OpenAI and OpenCLIP models exhibit different scaling behavior despite identical model architectures and similar training recipes."
+  evidence:
+    - {work: "cherti-2022-reproducible-scaling-laws-contrastive", role: original, locator: "p. 1", stance: for}
+
+- id: c-oc-alpha
+  type: attributive
+  text: "Fitting power laws E = βC^α on the Pareto frontier gives scaling coefficients α of −0.11 for OpenCLIP and −0.16 for CLIP on zero-shot top-1 ImageNet, and −0.13 and −0.24 on the ImageNet robustness datasets."
+  evidence:
+    - {work: "cherti-2022-reproducible-scaling-laws-contrastive", role: original, locator: "p. 7", stance: for}
+
+- id: c-oc-h14
+  type: attributive
+  text: "A ViT-H/14 trained on LAION-2B reaches 78.0% zero-shot ImageNet accuracy, against 75.5% for the CLIP ViT-L/14 trained on WIT-400M and 75.2% for a ViT-L/14 trained on LAION-2B."
+  evidence:
+    - {work: "cherti-2022-reproducible-scaling-laws-contrastive", role: original, locator: "p. 2", stance: for}
+
+- id: c-cv-data
+  type: attributive
+  text: "In all 4 medical image classification tasks, ConVIRT requires only 10% as much labeled training data as an ImageNet initialized counterpart to achieve better or comparable performance."
+  evidence:
+    - {work: "zhang-2022-contrastive-learning-medical-visual", role: original, locator: "p. 3", stance: for}
+
+- id: c-sig-small
+  type: attributive
+  text: "The sigmoid loss performs significantly better than the softmax loss when the batch size is smaller than 16 k, and as the train batch size grows the gap closes."
+  evidence:
+    - {work: "zhai-2023-sigmoid-loss-language-image", role: original, locator: "p. 2", stance: for}
+
+- id: c-sig-sat
+  type: attributive
+  text: "A SigLiT model was trained at a batch size of one million, but performance for both sigmoid and softmax saturates at around 32 k batch size."
+  evidence:
+    - {work: "zhai-2023-sigmoid-loss-language-image", role: original, locator: "p. 4", stance: for}
+
+- id: c-sig-cheap
+  type: attributive
+  text: "Combined with Locked-image Tuning, with only four TPUv4 chips, a SigLiT model achieves 84.5% ImageNet zero-shot accuracy in two days."
+  evidence:
+    - {work: "zhai-2023-sigmoid-loss-language-image", role: original, locator: "p. 1", stance: for}
+
+# Limitations
+
+- id: c-clip-weak
+  type: attributive
+  text: "Zero-shot CLIP is quite weak on several specialized, complex, or abstract tasks such as satellite image classification, lymph node tumor detection, counting objects in synthetic scenes, German traffic sign recognition and recognizing distance to the nearest car."
+  evidence:
+    - {work: "radford-2021-learning-transferable-visual-models", role: original, locator: "p. 9", stance: for}
+
+- id: c-clip-mnist
+  type: attributive
+  text: "CLIP only achieves 88% accuracy on the handwritten digits of MNIST, and an embarrassingly simple baseline of logistic regression on raw pixels outperforms zero-shot CLIP."
+  evidence:
+    - {work: "radford-2021-learning-transferable-visual-models", role: original, locator: "p. 19", stance: for}
+
+- id: c-clip-1000x
+  type: attributive
+  text: "Around a 1000x increase in compute is estimated to be required for zero-shot CLIP to reach the overall performance of task-specific models, which is infeasible to train with current hardware."
+  evidence:
+    - {work: "radford-2021-learning-transferable-visual-models", role: original, locator: "p. 19", stance: for}
+
+- id: c-clip-fewshot
+  type: attributive
+  text: "CLIP does not optimize for few-shot performance directly, and fitting linear classifiers on top of its features results in a counter-intuitive drop in performance when transitioning from a zero-shot to a few-shot setting."
+  evidence:
+    - {work: "radford-2021-learning-transferable-visual-models", role: original, locator: "p. 20", stance: for}
+
+- id: c-clip-bias
+  type: attributive
+  text: "The image-text pairs are unfiltered and uncurated and result in CLIP models learning many social biases."
+  evidence:
+    - {work: "radford-2021-learning-transferable-visual-models", role: original, locator: "p. 20", stance: for}
+
+- id: c-gap-what
+  type: attributive
+  text: "Different data modalities such as images and texts are embedded at arm's length in the shared representation of multi-modal models, a geometric phenomenon called the modality gap."
+  evidence:
+    - {work: "liang-2022-mind-gap-modality-gap", role: original, locator: "p. 1", stance: for}
+
+- id: c-gap-cone
+  type: attributive
+  text: "The representation of a common deep neural network is restricted to a narrow cone, so in a multi-modal model with two encoders the representations of the two modalities are clearly apart when the model is initialized, and during optimization contrastive learning keeps them separated by a distance influenced by the temperature parameter in the loss function."
+  evidence:
+    - {work: "liang-2022-mind-gap-modality-gap", role: original, locator: "p. 1", stance: for}
+
+- id: c-gap-shift
+  type: attributive
+  text: "At CLIP's learned final temperature, the default gap distance of 0.82 achieves the global minimum of the contrastive loss, and shifting the embeddings toward closing the gap increases the loss."
+  evidence:
+    - {work: "liang-2022-mind-gap-modality-gap", role: original, locator: "p. 7", stance: for}
+
+- id: c-gap-zs
+  type: attributive
+  text: "Simply modifying the gap's distance can improve CLIP's zero-shot performance and fairness."
+  evidence:
+    - {work: "liang-2022-mind-gap-modality-gap", role: original, locator: "p. 2", stance: for}
+
+# Variants
+
+- id: c-sig-def
+  type: attributive
+  text: "The sigmoid loss operates solely on image-text pairs and does not require a global view of the pairwise similarities for normalization, unlike standard contrastive learning with softmax normalization."
+  evidence:
+    - {work: "zhai-2023-sigmoid-loss-language-image", role: original, locator: "p. 1", stance: for}
+
+- id: c-sig-init
+  type: attributive
+  text: "Because the many negatives would dominate the loss at initialization, SigLIP introduces a learnable bias term b similar to the temperature t and initializes t' and b to log 10 and −10, so training starts roughly close to the prior."
+  evidence:
+    - {work: "zhai-2023-sigmoid-loss-language-image", role: original, locator: "p. 3", stance: for}
+
+- id: c-sig-mem
+  type: attributive
+  text: "The sigmoid loss is symmetric, requires just a single pass, and a typical implementation requires less memory than the softmax loss."
+  evidence:
+    - {work: "zhai-2023-sigmoid-loss-language-image", role: original, locator: "p. 2", stance: for}
