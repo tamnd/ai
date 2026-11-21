@@ -1,0 +1,307 @@
+# The claims of the language-model mathematical reasoning page (spec 07). The build computes the labels.
+
+# The finding
+
+- id: c-gsm-weak
+  type: attributive
+  text: "Language models can match human performance on many tasks, but they still struggle to robustly perform multi-step mathematical reasoning, and even very large transformer models fail to achieve high test performance on GSM8K despite the conceptual simplicity of the problem distribution."
+  evidence:
+    - {work: "cobbe-2021-training-verifiers", role: original, locator: "p. 1", stance: for}
+
+- id: c-math-low
+  type: attributive
+  text: "On MATH, large language models achieved accuracies ranging from 3.0% to 6.9%, though they achieve up to 15% accuracy on the easiest difficulty level and generate step-by-step solutions that are coherent and on-topic even when incorrect."
+  evidence:
+    - {work: "hendrycks-2021-measuring-mathematical", role: original, locator: "p. 2", stance: for}
+
+- id: c-dsm-result
+  type: attributive
+  text: "DeepSeekMath 7B, which continues pretraining with 120B math-related tokens sourced from Common Crawl, achieves 51.7% on the competition-level MATH benchmark without relying on external toolkits and voting techniques, and self-consistency over 64 samples achieves 60.9%."
+  evidence:
+    - {work: "shao-2024-deepseekmath", role: original, locator: "p. 1", stance: for}
+
+- id: c-gs-claim
+  type: attributive
+  text: "The performance of models declines when only the numerical values in the question are altered in the GSM-Symbolic benchmark, and their performance significantly deteriorates as the number of clauses in a question increases."
+  evidence:
+    - {work: "mirzadeh-2025-gsm-symbolic", role: original, locator: "p. 1", stance: for}
+
+- id: c-gs-noop-abs
+  type: attributive
+  text: "When a single clause that appears relevant to the question is added, performance drops significantly (up to 65%) across all models tested, even though the added clause does not contribute to the reasoning chain needed to reach the final answer."
+  evidence:
+    - {work: "mirzadeh-2025-gsm-symbolic", role: original, locator: "p. 1", stance: for}
+
+- id: c-1k-abs
+  type: attributive
+  text: "On GSM1k, there are accuracy drops of up to 8% against GSM8k, with several families of models displaying evidence of systematic overfitting across almost all model sizes."
+  evidence:
+    - {work: "zhang-2024-careful-examination-large", role: original, locator: "p. 1", stance: for}
+
+- id: c-1k-gen
+  type: attributive
+  text: "All models, including the most overfit ones, are still capable of successfully generalizing to new mathematical grade school problems, albeit occasionally at lower rates than their benchmark numbers would suggest."
+  evidence:
+    - {work: "zhang-2024-careful-examination-large", role: original, locator: "p. 3", stance: for}
+
+# Derivation
+
+- id: c-d-chain
+  type: mathematical
+  text: "If each step is right with probability p independently and wrong steps cannot be undone, a T-step problem is solved with probability p^T: at p = 0.95 this is 0.9025, 0.8145, 0.6634 and 0.4401 for T = 2, 4, 8 and 16."
+  assumes: ["steps are independent", "a wrong step is never repaired"]
+  derivation: compounding-errors-and-benchmark-noise
+
+- id: c-d-shape
+  type: mathematical
+  text: "Under a constant per-step accuracy successive accuracies keep a constant ratio, but the GSM-Symbolic levels of Gemma2-9b-it (84.4, 79.1, 68.1, 41.8) give ratios 0.937, 0.861 and 0.614 and those of Phi-3.5-mini-instruct 0.937, 0.789 and 0.691, while GPT-4o-mini gives 0.991, 0.884 and 0.893."
+  assumes: ["a clause is treated as one step"]
+  derivation: compounding-errors-and-benchmark-noise
+
+- id: c-d-digits
+  type: mathematical
+  text: "The j lowest digits of a product depend only on the j lowest digits of each factor, since a · b mod 10^j = (a mod 10^j)(b mod 10^j) mod 10^j; 200,000 random draws cover all 10^4 combinations behind the two lowest digits but only 0.1813 of the 10^6 pairs of three-digit numbers."
+  assumes: ["draws are uniform and independent"]
+  derivation: compounding-errors-and-benchmark-noise
+
+- id: c-d-spread
+  type: mathematical
+  text: "If template i is solved with probability p_i over its instances, accuracy on a set of one instance per template has standard deviation sqrt(Σ p_i (1 − p_i)) / 100, which is 0 when correctness depends only on the template and at most 4.07 points at a mean of 0.791; a spread of 3.0 points means Σ p_i (1 − p_i) = 9.0."
+  assumes: ["100 templates", "greedy decoding"]
+  derivation: compounding-errors-and-benchmark-noise
+
+- id: c-d-gap
+  type: mathematical
+  text: "At an accuracy of 0.8 the standard error of the difference between accuracies on 1205 and 1319 independent problems is 1.59 points, so an 8-point drop is 5.02 standard errors and drops under about 3.2 points are within sampling noise."
+  assumes: ["the two sets are of equal difficulty"]
+  derivation: compounding-errors-and-benchmark-noise
+
+- id: c-d-vote
+  type: mathematical
+  text: "With samples right with probability 0.4, majority voting over 5, 15 and 41 samples is right with probability 0.7149, 0.9951 and 1.0000 when wrong answers never repeat, but 0.4039, 0.3411 and 0.2493 when one fixed wrong answer has probability 0.5."
+  assumes: ["samples are independent", "ties are broken at random"]
+  derivation: compounding-errors-and-benchmark-noise
+
+- id: c-d-passk
+  type: mathematical
+  text: "The unbiased pass@k estimate 1 − C(n − c, k)/C(n, k) with n = 256 is 0.0391 at k = 1 and 0.9470 at k = 64 for c = 10, and 0.25 at k = 64 for a single right sample."
+  assumes: ["samples are exchangeable"]
+  derivation: compounding-errors-and-benchmark-noise
+
+# Evidence
+
+- id: c-gsm-data
+  type: attributive
+  text: "GSM8K consists of 8.5K high quality grade school math problems created by human problem writers, segmented into 7.5K training problems and 1K test problems, which take between 2 and 8 steps to solve using basic arithmetic operations."
+  evidence:
+    - {work: "cobbe-2021-training-verifiers", role: original, locator: "p. 3", stance: for}
+
+- id: c-gsm-extrap
+  type: attributive
+  text: "Assuming a log-linear trend, a finetuned model with 10^16 parameters would be required to reach an 80% solve rate on GSM8K when using the full training set."
+  evidence:
+    - {work: "cobbe-2021-training-verifiers", role: original, locator: "p. 6", stance: for}
+
+- id: c-gsm-direct
+  type: attributive
+  text: "If a 6B model is finetuned to directly output the final answer without any intermediate steps, performance drops drastically from 20.6% to 5.2%."
+  evidence:
+    - {work: "cobbe-2021-training-verifiers", role: original, locator: "p. 7", stance: for}
+
+- id: c-gsm-verif
+  type: attributive
+  text: "Compared to a finetuning baseline, the use of verifiers results in approximately the same performance boost as a 30x model size increase, and verifiers scale significantly better with increased data."
+  evidence:
+    - {work: "cobbe-2021-training-verifiers", role: original, locator: "p. 2", stance: for}
+
+- id: c-math-data
+  type: attributive
+  text: "The MATH dataset consists of 12,500 problems from high school math competitions, each with a full step-by-step solution, and its answers are unique after normalization, allowing MATH to be scored with exact match."
+  evidence:
+    - {work: "hendrycks-2021-measuring-mathematical", role: original, locator: "p. 1", stance: for}
+
+- id: c-math-split
+  type: attributive
+  text: "MATH has 12,500 problems, 7,500 training and 5,000 test."
+  evidence:
+    - {work: "hendrycks-2021-measuring-mathematical", role: original, locator: "p. 4", stance: for}
+
+- id: c-math-human
+  type: attributive
+  text: "A computer science PhD student who does not especially like mathematics attained approximately 40% on MATH, while a three-time IMO gold medalist attained 90%."
+  evidence:
+    - {work: "hendrycks-2021-measuring-mathematical", role: original, locator: "p. 2", stance: for}
+
+- id: c-math-scale
+  type: attributive
+  text: "Assuming a log-linear scaling trend, models would need around 10^35 parameters to achieve 40% accuracy on MATH, which is impractical."
+  evidence:
+    - {work: "hendrycks-2021-measuring-mathematical", role: original, locator: "p. 3", stance: for}
+
+- id: c-math-steps
+  type: attributive
+  text: "Having models generate step-by-step solutions before producing an answer actually decreased accuracy relative to immediately outputting a final answer, while having models train on solutions increases relative accuracy by 10%."
+  evidence:
+    - {work: "hendrycks-2021-measuring-mathematical", role: original, locator: "p. 2", stance: for}
+
+- id: c-cot-gsm
+  type: attributive
+  text: "On GSM8K, PaLM 540B reaches a solve rate of 17.9 with standard prompting and 56.9 with chain-of-thought prompting."
+  evidence:
+    - {work: "wei-2022-chain-of-thought-prompting", role: original, locator: "p. 20", stance: for}
+
+- id: c-min-data
+  type: attributive
+  text: "Minerva models were trained on a dataset of 38.5B tokens from webpages filtered for mathematical content and from papers submitted to the arXiv preprint server."
+  evidence:
+    - {work: "lewkowycz-2022-solving-quantitative-reasoning", role: original, locator: "p. 5", stance: for}
+
+- id: c-min-table
+  type: attributive
+  text: "PaLM 540B scores 8.8% on MATH, Minerva 540B 33.6% and Minerva 540B with majority voting 50.3%, and on GSM8k 56.5%, 58.8% and 78.5%."
+  evidence:
+    - {work: "lewkowycz-2022-solving-quantitative-reasoning", role: original, locator: "p. 8", stance: for}
+
+- id: c-min-vote
+  type: attributive
+  text: "Majority voting significantly improves performance over greedy decoding, saturates faster than pass@k, with 97% of the large k accuracy achieved at k = 64 for MATH, and performs significantly better than log-likelihood reranking."
+  evidence:
+    - {work: "lewkowycz-2022-solving-quantitative-reasoning", role: original, locator: "p. 8", stance: for}
+
+- id: c-min-fp
+  type: attributive
+  text: "While the pass@256 accuracy is 84.5% for the 62B model, false positives account for part of it; after removing false positives, the pass@256 accuracy is estimated to be bigger than 68%."
+  evidence:
+    - {work: "lewkowycz-2022-solving-quantitative-reasoning", role: original, locator: "p. 10", stance: for}
+
+- id: c-min-mod
+  type: attributive
+  text: "For twenty problems the 62B model answered correctly, modifying the framing or the numbers left accuracy before and after the modification correlated, with no clear bias in favor of the original formulation, suggestive of minimal memorization."
+  evidence:
+    - {work: "lewkowycz-2022-solving-quantitative-reasoning", role: original, locator: "p. 11", stance: for}
+
+- id: c-light
+  type: attributive
+  text: "A process-supervised reward model solves 78.2% of problems from a representative subset of the MATH test set."
+  evidence:
+    - {work: "lightman-2023-lets-verify-step", role: original, locator: "p. 2", stance: for}
+
+- id: c-dsm-grpo
+  type: attributive
+  text: "Reinforcement learning with GRPO improves DeepSeekMath-Instruct both in-domain (GSM8K: 82.9% → 88.2%, MATH: 46.8% → 51.7%) and out-of-domain (CMATH: 84.6% → 88.8%)."
+  evidence:
+    - {work: "shao-2024-deepseekmath", role: original, locator: "p. 2", stance: for}
+
+- id: c-gs-setup
+  type: attributive
+  text: "GSM-Symbolic uses 100 templates and 50 samples per template, giving 50 datasets of 100 examples each, evaluated with Chain-of-Thought prompting with 8-shots and greedy decoding."
+  evidence:
+    - {work: "mirzadeh-2025-gsm-symbolic", role: original, locator: "p. 5", stance: for}
+
+- id: c-gs-gap
+  type: attributive
+  text: "All models exhibit a non-negligible variance across different sets; for the Gemma2-9B the gap between the worst performance and the best performance is more than 12%."
+  evidence:
+    - {work: "mirzadeh-2025-gsm-symbolic", role: original, locator: "p. 5", stance: for}
+
+- id: c-gs-right
+  type: attributive
+  text: "The performance on the original GSM8K questions used as templates is often more than one standard deviation away from the center of the GSM-Symbolic distribution, frequently on the right side, which holds for 21 out of 25 models; one explanation could be data contamination."
+  evidence:
+    - {work: "mirzadeh-2025-gsm-symbolic", role: original, locator: "p. 6", stance: for}
+
+- id: c-gs-names
+  type: attributive
+  text: "The variance is lower when changing names compared to numbers, and the original GSM8K accuracy of models is much closer to the center of the changed proper names distribution, in contrast to changed numbers or both."
+  evidence:
+    - {work: "mirzadeh-2025-gsm-symbolic", role: original, locator: "p. 7", stance: for}
+
+- id: c-gs-levels
+  type: attributive
+  text: "As the difficulty increases from GSM-M1 to GSM-Symb, GSM-P1 and GSM-P2, the performance decreases and the variance increases, and the rate of accuracy drop also increases as the difficulty increases."
+  evidence:
+    - {work: "mirzadeh-2025-gsm-symbolic", role: original, locator: "p. 8", stance: for}
+
+- id: c-gs-convert
+  type: attributive
+  text: "Models tend to convert statements to operations without truly understanding their meaning, for instance interpreting statements about discount as multiplication regardless of the context."
+  evidence:
+    - {work: "mirzadeh-2025-gsm-symbolic", role: original, locator: "p. 9", stance: for}
+
+- id: c-gs-noop
+  type: attributive
+  text: "On GSM-NoOp there is a catastrophic performance decline across all tested models, with the Phi-3-mini model experiencing over a 65% drop and even stronger models such as o1-preview showing significant declines."
+  evidence:
+    - {work: "mirzadeh-2025-gsm-symbolic", role: original, locator: "p. 9", stance: for}
+
+- id: c-gs-o1
+  type: attributive
+  text: "The o1-preview model demonstrates robust performance across all levels of difficulty, but both o1-preview and o1-mini experience a significant performance drop on GSM-NoOp."
+  evidence:
+    - {work: "mirzadeh-2025-gsm-symbolic", role: original, locator: "p. 18", stance: for}
+
+- id: c-ic-data
+  type: attributive
+  text: "GSM-IC adds to each base problem of an easy subset of GSM8K one irrelevant sentence that does not affect the solution; the full benchmark consists of 58,052 examples."
+  evidence:
+    - {work: "shi-2023-distracted-irrelevant-context", role: original, locator: "p. 4", stance: for}
+
+- id: c-ic-18
+  type: attributive
+  text: "Among the original problems that can be solved by baseline prompts with greedy decoding, no more than 18% can be consistently solved for all types of irrelevant information."
+  evidence:
+    - {work: "shi-2023-distracted-irrelevant-context", role: original, locator: "p. 2", stance: for}
+
+- id: c-ic-sc
+  type: attributive
+  text: "Self-consistency improves the performance of all prompting techniques on GSM-IC, and the recall rate of the correct answer is as high as 99.7% with 20 samples per problem."
+  evidence:
+    - {work: "shi-2023-distracted-irrelevant-context", role: original, locator: "p. 2", stance: for}
+
+- id: c-ic-fix
+  type: attributive
+  text: "Adding irrelevant information to the exemplars shown in the prompt consistently boosts the performance, and the same holds for adding an instruction to ignore irrelevant context."
+  evidence:
+    - {work: "shi-2023-distracted-irrelevant-context", role: original, locator: "p. 2", stance: for}
+
+- id: c-1k-data
+  type: attributive
+  text: "GSM1k is a newly constructed collection of 1205 grade school level math problems designed to mirror GSM8k, created solely with human annotators, without assistance from any LLM or other synthetic data source."
+  evidence:
+    - {work: "zhang-2024-careful-examination-large", role: original, locator: "p. 2", stance: for}
+
+- id: c-1k-r2
+  type: attributive
+  text: "There is a positive relationship (Spearman's r2 = 0.36) between a model's probability of generating an example from GSM8k and its performance gap between GSM8k and GSM1k, suggesting that some models may have partially memorized GSM8k."
+  evidence:
+    - {work: "zhang-2024-careful-examination-large", role: original, locator: "p. 1", stance: for}
+
+- id: c-dz-mul
+  type: attributive
+  text: "Off-the-shelf ChatGPT and GPT4 achieve only 55% and 59% accuracies on 3-digit by 3-digit multiplication."
+  evidence:
+    - {work: "dziri-2023-faith-and-fate", role: original, locator: "p. 1", stance: for}
+
+- id: c-dz-ft
+  type: attributive
+  text: "GPT3 finetuned on about 1.8M multiplication pairs, or with question-scratchpad pairs, achieves near-perfect performance in-distribution but fails in generalizing to out-of-domain cases with wider or deeper computation graphs."
+  evidence:
+    - {work: "dziri-2023-faith-and-fate", role: original, locator: "p. 5", stance: for}
+
+- id: c-dz-ig
+  type: attributive
+  text: "Relative information gain indicates that the first digits of the output of multiplication highly correlate with the first digits of each input number, and the last digits of the output rely solely on the last digits of each input number."
+  evidence:
+    - {work: "dziri-2023-faith-and-fate", role: original, locator: "p. 6", stance: for}
+
+- id: c-dz-mem
+  type: attributive
+  text: "82.3% of the final correct answers for 4-digit by 2-digit multiplications, a setting unseen during training, had at least one error in the computation graph but still produced correct answers."
+  evidence:
+    - {work: "dziri-2023-faith-and-fate", role: original, locator: "p. 7", stance: for}
+
+- id: c-dz-theory
+  type: attributive
+  text: "Under reasonable assumptions, the probability of incorrect predictions converges exponentially to about 1 for abstract compositional tasks, and the proofs apply to autoregressive LMs in general."
+  evidence:
+    - {work: "dziri-2023-faith-and-fate", role: original, locator: "p. 9", stance: for}
