@@ -1,5 +1,5 @@
 ---
-tag: NEW-energy-based-model
+tag: FHRW99
 kind: architecture
 slug: energy-based-model
 name: Energy-based model

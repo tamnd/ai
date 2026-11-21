@@ -1,5 +1,5 @@
 ---
-tag: NEW-latent-diffusion-model
+tag: 6RFDJ1
 kind: architecture
 slug: latent-diffusion-model
 name: Latent diffusion model

@@ -1,5 +1,5 @@
 ---
-tag: NEW-autoregressive-model
+tag: W3G34P
 kind: architecture
 slug: autoregressive-model
 name: Autoregressive model

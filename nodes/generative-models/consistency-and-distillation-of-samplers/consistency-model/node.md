@@ -1,5 +1,5 @@
 ---
-tag: NEW-consistency-model
+tag: ZAFCTV
 kind: architecture
 slug: consistency-model
 name: Consistency model

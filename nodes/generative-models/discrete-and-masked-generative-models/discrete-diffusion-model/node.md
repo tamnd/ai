@@ -1,5 +1,5 @@
 ---
-tag: NEW-discrete-diffusion-model
+tag: 5GYB7S
 kind: architecture
 slug: discrete-diffusion-model
 name: Discrete diffusion model

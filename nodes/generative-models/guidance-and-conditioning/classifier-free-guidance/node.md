@@ -1,5 +1,5 @@
 ---
-tag: NEW-classifier-free-guidance
+tag: DSB2H8
 kind: method
 slug: classifier-free-guidance
 name: Classifier-free guidance
