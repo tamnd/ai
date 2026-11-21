@@ -1,5 +1,5 @@
 ---
-tag: NEW-energy-based-model
+tag: 05S18M
 kind: architecture
 slug: energy-based-model
 name: Energy-based model

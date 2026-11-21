@@ -1,5 +1,5 @@
 ---
-tag: NEW-autoregressive-model
+tag: 35WSHD
 kind: architecture
 slug: autoregressive-model
 name: Autoregressive model
