@@ -1,0 +1,303 @@
+# The claims of the language-model planning page (spec 07). The build computes the labels.
+
+# The finding
+
+- id: c-plb-motive
+  type: attributive
+  text: "Most claims about LLM planning capabilities are based on common sense tasks, where it becomes hard to tell whether LLMs are planning or merely retrieving from their vast world knowledge."
+  evidence:
+    - {work: "valmeekam-2023-planbench", role: original, locator: "p. 1", stance: for}
+
+- id: c-cr-12
+  type: attributive
+  text: "LLMs' ability to generate executable plans autonomously is rather limited, with GPT-4 having an average success rate of about 12% across the domains, the highest rate among the models tested."
+  evidence:
+    - {work: "valmeekam-2023-planning-abilities-critical-investigation", role: original, locator: "p. 1", stance: for}
+
+- id: c-cr-pattern
+  type: attributive
+  text: "These results strongly suggest that whatever accidental planning performance LLMs display is likely connected to pattern matching rather than reasoning, which should be robust to name change."
+  evidence:
+    - {work: "valmeekam-2023-planning-abilities-critical-investigation", role: original, locator: "p. 7", stance: for}
+
+- id: c-o1-llm
+  type: attributive
+  text: "Across vanilla LLMs on 600 Blocksworld problems the top result was LLaMA 3.1 405B with 62.6% accuracy, while on Mystery Blocksworld no LLM achieves even 5%."
+  evidence:
+    - {work: "valmeekam-2024-llms-still-cant-plan-o1", role: original, locator: "p. 2", stance: for}
+
+- id: c-o1-main
+  type: attributive
+  text: "o1-preview correctly answers 97.8% of the 600 Blocksworld instances; on Mystery Blocksworld it answers 52.8% correctly and on Randomized Mystery Blocksworld 37.3%, sharply contrasting the flat zeroes of previous models."
+  evidence:
+    - {work: "valmeekam-2024-llms-still-cant-plan-o1", role: original, locator: "p. 4", stance: for}
+
+- id: c-mo-pos
+  type: attributive
+  text: "Auto-regressive LLMs cannot, by themselves, do planning or self-verification, and should be viewed as universal approximate knowledge sources."
+  evidence:
+    - {work: "kambhampati-2024-llm-modulo-frameworks", role: original, locator: "p. 1", stance: for}
+
+# Benchmarks
+
+- id: c-plb-design
+  type: attributive
+  text: "PlanBench is an extensible benchmark suite based on the kinds of domains used in the automated planning community, especially in the International Planning Competition, to test the capabilities of LLMs in planning or reasoning about actions and change."
+  evidence:
+    - {work: "valmeekam-2023-planbench", role: original, locator: "p. 1", stance: for}
+
+- id: c-plb-domains
+  type: attributive
+  text: "PlanBench is initialized with two IPC domains, Blocksworld and Logistics, with obfuscated versions that use misleading words or random alphanumeric strings, about 26250 prompts in all."
+  evidence:
+    - {work: "valmeekam-2023-planbench", role: original, locator: "p. 2", stance: for}
+
+- id: c-plb-classical
+  type: attributive
+  text: "A classical planning problem is the tuple P = ⟨D, I, G⟩ of a domain, an initial state and a goal specification; an action is executable only if its preconditions hold, and its effects add and delete predicates."
+  evidence:
+    - {work: "valmeekam-2023-planbench", role: original, locator: "p. 3", stance: for}
+
+- id: c-plb-verify
+  type: attributive
+  text: "In the plan verification task the LLM is asked whether a candidate plan is valid; if it answers no, it must identify the first inexecutable action and at least one missing precondition, or at least one missing goal condition."
+  evidence:
+    - {work: "valmeekam-2023-planbench", role: original, locator: "p. 7", stance: for}
+
+- id: c-plb-600
+  type: attributive
+  text: "The Blocksworld domain has 600 instances which vary in the number of objects and the optimal plan length, and the Logistics domain 285 instances."
+  evidence:
+    - {work: "valmeekam-2023-planbench", role: original, locator: "p. 8", stance: for}
+
+- id: c-o1-range
+  type: attributive
+  text: "The 600 Blocksworld instances range from three to five blocks and require plans of between 2 to 16 steps to solve."
+  evidence:
+    - {work: "valmeekam-2024-llms-still-cant-plan-o1", role: original, locator: "p. 4", stance: for}
+
+- id: c-cr-obf-names
+  type: attributive
+  text: "Mystery Blocksworld obfuscates action names, so that pickup becomes attack and unstack becomes feast, and predicate names, so that ontable becomes planet and handempty becomes harmony; from the perspective of standard planners the domains are essentially identical."
+  evidence:
+    - {work: "valmeekam-2023-planning-abilities-critical-investigation", role: original, locator: "p. 7", stance: for}
+
+- id: c-cr-mcdermott
+  type: attributive
+  text: "Obfuscated domains were originally introduced into the International Planning Competition by Drew McDermott in 1998, to check whether the competition planners were truly domain independent."
+  evidence:
+    - {work: "valmeekam-2023-planning-abilities-critical-investigation", role: original, locator: "p. 7", stance: for}
+
+# Derivation
+
+- id: c-d-states
+  type: mathematical
+  text: "Blocksworld with n blocks has a(n) hand-empty states, the sum of the Lah numbers, with a(n) = (2n − 1) a(n − 1) − (n − 1)(n − 2) a(n − 2): 13, 73 and 501 for three, four and five blocks, and 22, 125 and 866 states in all once a held block is allowed; a(20) is about 3.277 × 10^20."
+  assumes: ["four actions: pick up, put down, stack and unstack", "one hand"]
+  derivation: blocksworld-and-generate-test
+
+- id: c-d-length
+  type: mathematical
+  text: "Unstacking every tower and rebuilding the goal towers gives a plan of 2u + 2g ≤ 4(n − 1) actions, where u and g count the blocks on other blocks at the start and at the goal, and breadth-first search finds longest optimal plans of 8, 12 and 16 actions for three, four and five blocks."
+  assumes: ["full goal states", "the plan ends with the hand empty"]
+  derivation: blocksworld-and-generate-test
+
+- id: c-d-stack
+  type: mathematical
+  text: "A table-to-stack problem of n blocks needs exactly 2(n − 1) actions, 6 for four blocks and 38 for twenty, by the same procedure at every size."
+  assumes: ["every block starts on the table", "the goal is a single tower of all n blocks"]
+  derivation: blocksworld-and-generate-test
+
+- id: c-d-sound
+  type: mathematical
+  text: "With a sound verifier and K independent attempts that each succeed with probability p, generate-test succeeds with probability 1 − (1 − p)^K and returns only correct plans; at p = 0.4 and K = 15 this is 0.99953."
+  assumes: ["attempts are independent", "the verifier accepts exactly the correct plans"]
+  derivation: blocksworld-and-generate-test
+
+- id: c-d-unsound
+  type: mathematical
+  text: "A verifier with true positive rate t and false positive rate f returns a correct plan with probability p t / (p t + (1 − p) f) · (1 − r^K), r = 1 − p t − (1 − p) f; at p = 0.4, t = 0.982 and f = 0.8445 this is 0.4367 for any K ≥ 2."
+  assumes: ["rounds are independent", "the loop stops at the first accepted plan"]
+  derivation: blocksworld-and-generate-test
+
+- id: c-d-time
+  type: mathematical
+  text: "At 40.43 seconds per Blocksworld problem for o1-preview against 0.265 seconds for Fast Downward, the reasoning model is 152.6 times slower, and 314.6 times slower on Mystery Blocksworld at 83.37 seconds."
+  assumes: ["the average times of Table 2 of Valmeekam et al. (2024)"]
+  derivation: blocksworld-and-generate-test
+
+# Evidence
+
+- id: c-plb-table
+  type: attributive
+  text: "On Blocksworld plan generation GPT-4 solved 206 of 600 instances (34.3%) and Instruct-GPT3 41 of 600 (6.8%), and in plan verification GPT-4 answered 352 of 600 (58.6%) correctly."
+  evidence:
+    - {work: "valmeekam-2023-planbench", role: original, locator: "p. 10", stance: for}
+
+- id: c-cr-obf
+  type: attributive
+  text: "With zero-shot prompting and natural language input, GPT-4 solved 210 of 600 instances in Blocksworld but only 1 instance in the deceptive Mystery Blocksworld domain and 0 in the randomized mystery domain."
+  evidence:
+    - {work: "valmeekam-2023-planning-abilities-critical-investigation", role: original, locator: "p. 7", stance: for}
+
+- id: c-cr-cot
+  type: attributive
+  text: "Chain of thought prompting does not significantly improve performance over one-shot natural language prompts."
+  evidence:
+    - {work: "valmeekam-2023-planning-abilities-critical-investigation", role: original, locator: "p. 7", stance: for}
+
+- id: c-cr-ft
+  type: attributive
+  text: "GPT-3 fine-tuned on 1,000 Blocksworld instances separate from the test set solved only 122 of the 600 test instances, approximately 20%."
+  evidence:
+    - {work: "valmeekam-2023-planning-abilities-critical-investigation", role: original, locator: "p. 6", stance: for}
+
+- id: c-cr-human
+  type: attributive
+  text: "In an IRB-approved user study, 39 of 50 participants (78%) came up with a valid plan for a Blocksworld instance, and 35 of the 39 (89.7%) came up with an optimal plan."
+  evidence:
+    - {work: "valmeekam-2023-planning-abilities-critical-investigation", role: original, locator: "p. 7", stance: for}
+
+- id: c-co-261
+  type: attributive
+  text: "On table-to-stack problems GPT-4's zero-shot performance over 261 instances is 3.8%, and with the stacking chain-of-thought prompt it improves to 59.3%."
+  evidence:
+    - {work: "stechly-2024-chain-of-thoughtlessness", role: original, locator: "p. 6", stance: for}
+
+- id: c-co-only
+  type: attributive
+  text: "Of prompts of varying granularity on table-to-stack problems, only the most specific and least applicable prompt retains anywhere near this performance improvement."
+  evidence:
+    - {work: "stechly-2024-chain-of-thoughtlessness", role: original, locator: "p. 6", stance: for}
+
+- id: c-co-claim
+  type: attributive
+  text: "Chain of thought prompts give meaningful performance improvements only when they are exceedingly specific to their problem class, and those improvements quickly deteriorate as the size n of the query stack grows past the size of stacks shown in the examples."
+  evidence:
+    - {work: "stechly-2024-chain-of-thoughtlessness", role: original, locator: "p. 1", stance: for}
+
+- id: c-co-other
+  type: attributive
+  text: "Scalable versions of three synthetic problems previously used to study chain of thought, Coin Flip, Last Letter Concatenation and multi-step arithmetic, were built with replicated chain of thought prompts."
+  evidence:
+    - {work: "stechly-2024-chain-of-thoughtlessness", role: original, locator: "p. 3", stance: for}
+
+- id: c-o1-large
+  type: attributive
+  text: "On 110 larger Blocksworld problems of 6 to 20 blocks requiring 20 to 40 step optimal plans, o1-preview only manages 23.63%."
+  evidence:
+    - {work: "valmeekam-2024-llms-still-cant-plan-o1", role: original, locator: "p. 4", stance: for}
+
+- id: c-o1-unsolv
+  type: attributive
+  text: "On 100 unsolvable Blocksworld instances o1-preview correctly identified only 27% as unsolvable, returned an empty plan in 19% and a full plan in the remaining 54%; on Randomized Mystery Blocksworld 11.5% of solvable instances are incorrectly claimed to be impossible."
+  evidence:
+    - {work: "valmeekam-2024-llms-still-cant-plan-o1", role: original, locator: "p. 5", stance: for}
+
+- id: c-o1-time
+  type: attributive
+  text: "o1-preview took 40.43 seconds per Blocksworld instance and 83.37 seconds per Mystery Blocksworld instance on average, against 0.265 seconds for Fast Downward, which solved 600 of 600 instances."
+  evidence:
+    - {work: "valmeekam-2024-llms-still-cant-plan-o1", role: original, locator: "p. 3", stance: for}
+
+- id: c-o1-cost
+  type: attributive
+  text: "Per 100 instances o1-preview cost $42.12 and o1-mini $3.69, and LRMs are significantly more expensive than LLMs."
+  evidence:
+    - {work: "valmeekam-2024-llms-still-cant-plan-o1", role: original, locator: "p. 6", stance: for}
+
+- id: c-o1-fd
+  type: attributive
+  text: "Classical planners like Fast Downward achieve 100% on the dataset in a fraction of the time, compute and cost, while providing guarantees that their answers are correct."
+  evidence:
+    - {work: "valmeekam-2024-llms-still-cant-plan-o1", role: original, locator: "p. 6", stance: for}
+
+- id: c-rap-result
+  type: attributive
+  text: "RAP achieves an average success rate of 64% on Blocksworld plan generation while CoT fails almost completely, and LLaMA-33B with RAP surpasses GPT-4 with CoT by 33% relative improvement."
+  evidence:
+    - {work: "hao-2023-reasoning-planning-world-model", role: original, locator: "p. 2", stance: for}
+
+# LLM-Modulo
+
+- id: c-mo-frame
+  type: attributive
+  text: "An LLM-Modulo Framework combines LLMs with external critics, verifiers and humans, a name loosely inspired by SAT Modulo Theories."
+  evidence:
+    - {work: "kambhampati-2024-llm-modulo-frameworks", role: original, locator: "p. 2", stance: for}
+
+- id: c-mo-sound
+  type: attributive
+  text: "In such a framework the guarantees, if any, come in terms of the soundness of the external verifier."
+  evidence:
+    - {work: "kambhampati-2024-llm-modulo-frameworks", role: original, locator: "p. 4", stance: for}
+
+- id: c-cr-lpg
+  type: attributive
+  text: "Seeding the local-search planner LPG with LLM plans made the average number of search steps much lower than with an empty or a random seed plan, so the LLM plans help the search of the underlying planner."
+  evidence:
+    - {work: "valmeekam-2023-planning-abilities-critical-investigation", role: original, locator: "p. 3", stance: for}
+
+- id: c-cr-mys-lpg
+  type: attributive
+  text: "In the Mystery Blocksworld domain the LLM seed plan gives only a meager reduction in search steps over the random plan and uses more steps than the empty plan."
+  evidence:
+    - {work: "valmeekam-2023-planning-abilities-critical-investigation", role: original, locator: "p. 9", stance: for}
+
+- id: c-cr-back
+  type: attributive
+  text: "With the sound verifier VAL back-prompting GPT-4 for up to 15 rounds on failed instances, GPT-4 solved 41 of 50 (82%) in Blocksworld, 35 of 50 (70%) in Logistics and 5 of 50 (10%) in deceptive Mystery Blocksworld."
+  evidence:
+    - {work: "valmeekam-2023-planning-abilities-critical-investigation", role: original, locator: "p. 9", stance: for}
+
+- id: c-cq-table
+  type: attributive
+  text: "On 100 instances of the Blocksworld domain, with GPT-4 as generator, the generator LLM only without backprompting reached 40/100 (40%), the LLM+LLM system with backprompting 55/100 (55%) and the LLM+VAL system with backprompting 88/100 (88%)."
+  evidence:
+    - {work: "valmeekam-2023-self-critiquing-plans", role: original, locator: "p. 4", stance: for}
+
+- id: c-cq-fp
+  type: attributive
+  text: "The verifier LLM judged 61 of 100 final plans correctly but produced 38 false positives, deeming invalid plans valid; its true positive rate was 98.2% and its false positive rate 84.45%."
+  evidence:
+    - {work: "valmeekam-2023-self-critiquing-plans", role: original, locator: "p. 4", stance: for}
+
+- id: c-cq-feedback
+  type: attributive
+  text: "In the LLM+VAL system, only binary feedback gave 74% accuracy and binary with first error or all errors feedback 86%; the amount of feedback provided to the LLM seems to have minimal influence on its performance improvement."
+  evidence:
+    - {work: "valmeekam-2023-self-critiquing-plans", role: original, locator: "p. 5", stance: for}
+
+# Embodied planning
+
+- id: c-hu-indist
+  type: attributive
+  text: "Large models can produce action plans indistinguishable from those by humans, but frequently are not executable in the environment."
+  evidence:
+    - {work: "huang-2022-language-models-zero-shot-planners", role: original, locator: "p. 1", stance: for}
+
+- id: c-hu-exec
+  type: attributive
+  text: "Biasing model generation and translating the steps to admissible actions improved the executability of action plans from 18% to 79%, without modifying model parameters."
+  evidence:
+    - {work: "huang-2022-language-models-zero-shot-planners", role: original, locator: "p. 3", stance: for}
+
+- id: c-hu-trade
+  type: attributive
+  text: "Human evaluation reveals a trade-off between executability and correctness."
+  evidence:
+    - {work: "huang-2022-language-models-zero-shot-planners", role: original, locator: "p. 1", stance: for}
+
+# Open questions
+
+- id: c-mo-train
+  type: attributive
+  text: "If soundness guarantees are not insisted on, it is in principle possible to train LLMs discriminatively to learn to verify plans."
+  evidence:
+    - {work: "kambhampati-2024-llm-modulo-frameworks", role: original, locator: "p. 6", stance: for}
+
+- id: c-o1-guar
+  type: attributive
+  text: "While o1-preview may provide higher accuracy than LLMs, it still fails to provide any correctness guarantees, and it is unclear that it is at all cost-effective."
+  evidence:
+    - {work: "valmeekam-2024-llms-still-cant-plan-o1", role: original, locator: "p. 6", stance: for}
