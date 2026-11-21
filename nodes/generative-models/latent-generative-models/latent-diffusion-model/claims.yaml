@@ -1,0 +1,180 @@
+# The claims of the latent diffusion model page (spec 07). The build computes the labels.
+- id: c-ldm-def
+  type: attributive
+  text: "To enable diffusion model training on limited computational resources while retaining their quality and flexibility, latent diffusion models apply them in the latent space of powerful pretrained autoencoders, which reaches a near-optimal point between complexity reduction and detail preservation; cross-attention layers turn them into generators for general conditioning inputs such as text or bounding boxes."
+  evidence:
+    - {work: "rombach-2021-high-resolution-image-synthesis-latent", role: original, locator: "p. 1", stance: for}
+
+- id: c-perceptual-semantic
+  type: attributive
+  text: "Learning a likelihood-based model can be divided roughly into a perceptual compression stage, which removes high-frequency details but learns little semantic variation, and a semantic compression stage, in which the generative model learns the semantic and conceptual composition of the data; latent diffusion first trains an autoencoder that provides a lower-dimensional, perceptually equivalent space and then trains diffusion models in it, in two distinct phases."
+  evidence:
+    - {work: "rombach-2021-high-resolution-image-synthesis-latent", role: original, locator: "p. 2", stance: for}
+
+- id: c-autoencoder
+  type: attributive
+  text: "The perceptual compression model is an autoencoder trained by a combination of a perceptual loss and a patch-based adversarial objective, which confines the reconstructions to the image manifold by enforcing local realism and avoids the blurriness of pixel-space L2 or L1 objectives; the encoder maps x in R^{H x W x 3} to z in R^{h x w x c} and downsamples by a factor f = H/h = W/w = 2^m."
+  evidence:
+    - {work: "rombach-2021-high-resolution-image-synthesis-latent", role: original, locator: "pp. 3 to 4", stance: for}
+
+- id: c-regularization
+  type: attributive
+  text: "To avoid arbitrarily high-variance latent spaces, latent diffusion uses two kinds of regularization: KL-reg imposes a slight KL penalty towards a standard normal on the learned latent, similar to a VAE, while VQ-reg uses a vector quantization layer within the decoder, which can be interpreted as a VQGAN with the quantization layer absorbed by the decoder."
+  evidence:
+    - {work: "rombach-2021-high-resolution-image-synthesis-latent", role: original, locator: "p. 4", stance: for}
+
+- id: c-scale-estimate
+  type: attributive
+  text: "The KL term is weighted by a factor of about 10^-6, or the VQ variant uses a high codebook dimensionality; for a KL-regularized latent space the latent is rescaled to unit standard deviation by an estimate of the component-wise variance computed from the first batch of data, and for a VQ-regularized space z is extracted before the quantization layer, which is absorbed into the decoder."
+  evidence:
+    - {work: "rombach-2021-high-resolution-image-synthesis-latent", role: original, locator: "p. 29", stance: for}
+
+- id: c-snr
+  type: attributive
+  text: "The signal-to-noise ratio induced by the variance of the latent space, Var(z)/sigma_t^2, significantly affects the results; for a KL-regularized latent it is very high, so the model allocates a lot of semantic detail early in the reverse process, rescaling by the component-wise standard deviation reduces it, and the VQ-regularized space has a variance close to 1 and needs no rescaling."
+  evidence:
+    - {work: "rombach-2021-high-resolution-image-synthesis-latent", role: original, locator: "pp. 7, 20", stance: for}
+
+- id: c-scale-snr
+  type: mathematical
+  text: "Under q(z_t | z_0) = N(sqrt(abar_t) z_0, (1 - abar_t) I), scaling a latent by k multiplies its signal-to-noise ratio abar_t Var(z) / (1 - abar_t) by k^2 at every step; with the linear schedule of 1000 steps from 1e-4 to 2e-2, the first step with SNR below 1 is step 259 for unit variance and step 620 for standard deviation 7."
+  assumes: ["the latent has variance v in every coordinate", "the linear schedule beta_t from 1e-4 to 2e-2 over 1000 steps, indexed from 0"]
+  derivation: latent-scale-and-snr
+
+- id: c-vqvae-def
+  type: attributive
+  text: "VQ-VAE defines a deterministic posterior categorical distribution over K codes and a uniform prior, so that the KL divergence is constant and equal to log K; since the quantization has no real gradient, the gradient is approximated like the straight-through estimator by copying gradients from the decoder input z_q(x) to the encoder output z_e(x)."
+  evidence:
+    - {work: "oord-2017-neural-discrete-representation-learning", role: original, locator: "p. 3", stance: for}
+
+- id: c-vq-loss
+  type: attributive
+  text: "The VQ-VAE loss has three terms: the decoder optimizes only the reconstruction term, the encoder optimizes the reconstruction and the commitment term, and the embeddings are optimized by the middle, codebook term; the algorithm was robust to beta, with results unchanged for values from 0.1 to 2.0, and beta = 0.25 was used in all experiments."
+  evidence:
+    - {work: "oord-2017-neural-discrete-representation-learning", role: original, locator: "p. 4", stance: for}
+
+- id: c-straight-through
+  type: mathematical
+  text: "For L = <g, z_q> + mean |sg(z_e) - e_k|^2 + beta mean |z_e - sg(e_k)|^2 with z_q = z_e + sg(e_k - z_e) and n quantized vectors, the gradient in z_e is g + 2 beta (z_e - e_k) / n, and the gradient in code e_j is -2/n times the sum of (z_e - e_j) over the vectors assigned to j, with no contribution from g."
+  assumes: ["the assignments k are held fixed, which holds almost everywhere", "the two terms are averaged over the n vectors"]
+  derivation: vq-straight-through
+
+- id: c-ema
+  type: attributive
+  text: "For the set of n_i encoder outputs closest to dictionary item e_i, the optimal value for e_i has a closed form solution, the average of the elements in the set, an update typically used in algorithms such as K-Means; with minibatches, exponential moving averages are used as an online version of this update, with gamma = 0.99 found to work well in practice."
+  evidence:
+    - {work: "oord-2017-neural-discrete-representation-learning", role: original, locator: "p. 11", stance: for}
+
+- id: c-codebook-ema
+  type: mathematical
+  text: "With the assignments fixed, the codebook term sum_i sum_j |z_{i,j} - e_i|^2 is minimized by the mean of the vectors assigned to each code; the EMA codebook e_i = m_i / N_i with N_i and m_i decayed by the same gamma puts e_i exactly at the batch mean after one step from N_i = m_i = 0, and keeps it there when every batch has the same means."
+  assumes: ["code i has at least one assigned vector", "0 <= gamma < 1"]
+  derivation: codebook-mean-and-ema
+
+- id: c-vqvae-compression
+  type: attributive
+  text: "VQ-VAE compresses 128 x 128 x 3 images to a 32 x 32 x 1 discrete latent space with K = 512, a reduction of 128 x 128 x 3 x 8 / (32 x 32 x 9), about 42.6 in bits, and models the images by training a PixelCNN prior over the discrete latents."
+  evidence:
+    - {work: "oord-2017-neural-discrete-representation-learning", role: original, locator: "p. 5", stance: for}
+
+- id: c-vqvae2
+  type: attributive
+  text: "VQ-VAE-2 represents a 256 x 256 image by a 64 x 64 bottom and a 32 x 32 top map of codes; these discrete representations are over 30 times smaller than the original image, and training and sampling the autoregressive prior over them is about 30 times faster than in pixel space."
+  evidence:
+    - {work: "razavi-2019-generating-diverse-high-fidelity-images", role: original, locator: "pp. 2, 4", stance: for}
+
+- id: c-vqgan
+  type: attributive
+  text: "VQGAN replaces the L2 reconstruction loss of VQ-VAE by a perceptual loss and adds an adversarial loss with a patch-based discriminator, weighted by the adaptive weight lambda = grad[L_rec] / (grad[L_GAN] + delta) at the last decoder layer with delta = 10^-6 for numerical stability, and applies a single attention layer at the lowest resolution."
+  evidence:
+    - {work: "esser-2020-taming-transformers-high-resolution-image", role: original, locator: "p. 4", stance: for}
+
+- id: c-ldm-loss
+  type: attributive
+  text: "The latent diffusion objective is the noise-prediction loss on z_t, the noised latent; the network is a time-conditional U-Net, z_t can be obtained efficiently from the encoder during training since the forward process is fixed, and samples from p(z) are decoded to image space with a single pass through the decoder."
+  evidence:
+    - {work: "rombach-2021-high-resolution-image-synthesis-latent", role: original, locator: "p. 4, Eq. 2", stance: for}
+
+- id: c-cross-attn
+  type: attributive
+  text: "A domain-specific encoder tau_theta projects the condition y to an intermediate representation in R^{M x d_tau}, which is mapped to the intermediate layers of the U-Net through cross-attention with Q = W_Q phi(z_t), K = W_K tau(y) and V = W_V tau(y); tau_theta and epsilon_theta are jointly optimized, and tau_theta can be parameterized by domain experts such as transformers when y is a text prompt."
+  evidence:
+    - {work: "rombach-2021-high-resolution-image-synthesis-latent", role: original, locator: "pp. 4 to 5, Eq. 3", stance: for}
+
+- id: c-single-token
+  type: mathematical
+  text: "With a single context token, M = 1, the softmax attention weight is 1 for every query, so the cross-attention output is the value W_V tau(y), independent of the features: one-token cross-attention is a learned bias per condition."
+  assumes: ["the softmax is over the M context tokens"]
+  derivation: single-token-cross-attention
+
+- id: c-cfg
+  type: attributive
+  text: "Classifier-free guidance jointly trains a conditional and an unconditional model as one network by replacing the condition with a null token with probability p_uncond, and samples with the guided prediction (1 + w) epsilon(z, c) - w epsilon(z)."
+  evidence:
+    - {work: "ho-2022-classifier-free-diffusion-guidance", role: original, locator: "pp. 4 to 5, Algorithms 1 and 2", stance: for}
+
+- id: c-lsgm
+  type: attributive
+  text: "LSGM trains a score-based generative model in a latent space within the variational autoencoder framework, end to end, which makes the model more expressive, applicable to non-continuous data, and able to learn smoother models in a smaller space with fewer network evaluations; it achieves an FID of 2.10 on CIFAR-10 and sampling two orders of magnitude faster than previous score-based models on CelebA-HQ-256."
+  evidence:
+    - {work: "vahdat-2021-score-based-generative-modeling-latent", role: original, locator: "p. 1", stance: for}
+
+- id: c-lsgm-ce
+  type: attributive
+  text: "LSGM decomposes the KL term of the VAE bound into the negative encoder entropy and the cross entropy between the encoder distribution and the score-based prior, and derives a denoising score matching expression for the cross entropy, since the KL form would need the score of the marginal of the diffused encoder distribution, which is unavailable when the encoder is trained."
+  evidence:
+    - {work: "vahdat-2021-score-based-generative-modeling-latent", role: original, locator: "pp. 3 to 4, Eqs. 5 to 6", stance: for}
+
+- id: c-two-stage-bound
+  type: mathematical
+  text: "The VAE bound with prior p_theta(z_0) equals reconstruction minus the encoder entropy H(q(z_0 | x)) plus the cross entropy CE(q(z_0 | x) || p_theta(z_0)); averaged over the data, the cross-entropy term is the cross entropy from the aggregate posterior q(z_0) to the prior, minimized over priors exactly at p_theta = q(z_0)."
+  assumes: ["q(z_0 | x) has a density with finite entropy", "the prior family contains q(z_0)"]
+  derivation: two-stage-bound
+
+- id: c-dit-patch
+  type: attributive
+  text: "For 256 x 256 x 3 images the DiT latent z has shape 32 x 32 x 4; patchify turns it into T = (I/p)^2 tokens, so halving the patch size p quadruples T and at least quadruples the transformer Gflops, while changing p has no meaningful impact on the number of parameters."
+  evidence:
+    - {work: "peebles-2022-scalable-diffusion-models-transformers", role: original, locator: "p. 4", stance: for}
+
+- id: c-adaln-zero
+  type: attributive
+  text: "Initializing the MLP that regresses the adaLN parameters to output the zero vector for every alpha initializes the full DiT block as the identity function; this adaLN-Zero block gives a lower FID than cross-attention and in-context conditioning while being the most compute-efficient, and cross-attention adds roughly 15% to the Gflops."
+  evidence:
+    - {work: "peebles-2022-scalable-diffusion-models-transformers", role: original, locator: "pp. 5 to 6", stance: for}
+
+- id: c-adaln-identity
+  type: mathematical
+  text: "The block x + alpha * F((1 + gamma) * LN(x) + beta) with alpha the output of a zero-initialized linear layer is the identity at initialization; at that point the loss gradient in the alpha weights is generally non-zero while the gradient in every weight of F and of the gamma and beta weights is zero."
+  assumes: ["alpha, gamma and beta are produced by a linear layer of the condition whose alpha rows are zero", "F is differentiable"]
+  derivation: adaln-zero-identity
+
+- id: c-dit
+  type: attributive
+  text: "DiT-XL/2 reaches an FID of 2.27 on class-conditional ImageNet 256 x 256 at 118.6 Gflops, and across DiT configurations higher Gflops, from more depth, more width or more input tokens, consistently give lower FID."
+  evidence:
+    - {work: "peebles-2022-scalable-diffusion-models-transformers", role: original, locator: "pp. 1 to 2", stance: for}
+
+- id: c-downsampling-tradeoff
+  type: attributive
+  text: "Comparing downsampling factors f in {1, 2, 4, 8, 16, 32}, small factors lead to slow training progress and overly large values cause stagnating fidelity after few steps; LDM-{4-16} strike a good balance between efficiency and perceptually faithful results, with a gap of 38 in FID between pixel-based LDM-1 and LDM-8 after 2M training steps, and LDM-4 and -8 offer the best conditions for high-quality synthesis."
+  evidence:
+    - {work: "rombach-2021-high-resolution-image-synthesis-latent", role: original, locator: "p. 5", stance: for}
+
+- id: c-results
+  type: attributive
+  text: "Unconditional LDM-4 reaches an FID of 5.11 on CelebA-HQ 256; the 400M-parameter class-conditional LDM-4-G reaches 3.60 on ImageNet with classifier-free guidance at s = 1.5; the 1.45B-parameter text-to-image LDM-KL-8-G reaches 12.63 on MS-COCO with guidance; on LSUN-Bedrooms LDM comes close to ADM despite using half its parameters and four times less training resources."
+  evidence:
+    - {work: "rombach-2021-high-resolution-image-synthesis-latent", role: original, locator: "pp. 5 to 7", stance: for}
+
+- id: c-params
+  type: mathematical
+  text: "The denoiser of this page has NcH + EH + H + (C + 1)Md + Hd + d^2 + dH + HNc + Nc parameters, and one call on B latents costs 2B(NcH + EH + Hd + Md^2 + MdH + Md + MH + HNc) FLOPs, a multiply-add counted as 2, leaving out biases, the time embedding, the nonlinearities and the softmax."
+  assumes: ["the parameter shapes of param_shapes", "dense matrix products"]
+  derivation: parameter-and-flop-count
+
+- id: c-compression-ratio
+  type: mathematical
+  text: "A latent with downsampling factor f and c channels has 3f^2/c times fewer numbers than an RGB image, 48 for f = 8 and c = 4; a code of K entries per position costs log2 K bits against 24 bits per RGB pixel, so f = 4 and K = 512 give 24 x 16 / 9, about 42.7, times fewer bits."
+  assumes: ["8 bits per colour channel", "H and W divisible by f"]
+  derivation: compression-ratio

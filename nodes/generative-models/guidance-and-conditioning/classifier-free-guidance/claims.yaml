@@ -1,0 +1,180 @@
+# The claims of the classifier-free guidance page (spec 07). The build computes the labels.
+- id: c-cg-def
+  type: attributive
+  text: "Classifier guidance trains a classifier p_phi(y | x_t, t) on noisy images and uses its gradients to guide the diffusion sampling process towards an arbitrary class label y; it is a simple, compute-efficient method for trading off diversity for fidelity."
+  evidence:
+    - {work: "dhariwal-2021-diffusion-models-beat-gans", role: original, locator: "pp. 1, 6", stance: for}
+
+- id: c-cg-scale
+  type: attributive
+  text: "Classifier gradients had to be scaled by a constant factor larger than 1: with a scale of 1 the classifier assigned reasonable probabilities, around 50%, to the desired classes, but the samples did not match the intended classes upon visual inspection; since s times the gradient of log p(y | x) is the gradient of log (1/Z) p(y | x)^s, a larger gradient scale focuses more on the modes of the classifier, potentially desirable for higher fidelity but less diverse samples."
+  evidence:
+    - {work: "dhariwal-2021-diffusion-models-beat-gans", role: original, locator: "p. 8", stance: for}
+
+- id: c-cg-corgi
+  type: attributive
+  text: "For the class Pembroke Welsh corgi, guidance with classifier scale 1.0 gave samples with FID 33.0, and scale 10.0 gave much more class-consistent samples with FID 12.0."
+  evidence:
+    - {work: "dhariwal-2021-diffusion-models-beat-gans", role: original, locator: "pp. 7 to 8", stance: for}
+
+- id: c-cg-precision
+  type: attributive
+  text: "Classifier guidance improves precision at the cost of recall; with it, diffusion models reached an FID of 2.97 on ImageNet 128x128 and matched BigGAN-deep even with as few as 25 forward passes per sample."
+  evidence:
+    - {work: "dhariwal-2021-diffusion-models-beat-gans", role: original, locator: "pp. 1, 8", stance: for}
+
+- id: c-cfg-def
+  type: attributive
+  text: "Classifier-free guidance jointly trains an unconditional and a conditional diffusion model as a single neural network, by setting the condition c to the null token with probability p_uncond during training, and samples with the linear combination (1 + w) eps(z, c) - w eps(z) of the two score estimates; joint training is extremely simple to implement and adds no parameters."
+  evidence:
+    - {work: "ho-2022-classifier-free-diffusion-guidance", role: original, locator: "pp. 4 to 5", stance: for}
+
+- id: c-cfg-implicit
+  type: attributive
+  text: "Classifier-free guidance uses no classifier gradient, so it cannot be interpreted as a gradient-based adversarial attack on an image classifier; it is inspired by an implicit classifier p^i(c | z) proportional to p(z | c)/p(z), and since the network's score estimates are not generally conservative vector fields, the guided estimate is not in general the gradient of any classifier."
+  evidence:
+    - {work: "ho-2022-classifier-free-diffusion-guidance", role: original, locator: "p. 5", stance: for}
+
+- id: c-cfg-results
+  type: attributive
+  text: "On ImageNet, the best FID came with a small amount of guidance (w = 0.1 or w = 0.3) and the best Inception score with strong guidance (w >= 4); at w = 0.3 the 128 x 128 FID outperforms the classifier-guided ADM-G, and in between lies a trade-off of decreasing sample variety and increasing individual sample fidelity."
+  evidence:
+    - {work: "ho-2022-classifier-free-diffusion-guidance", role: original, locator: "p. 7", stance: for}
+
+- id: c-cfg-puncond
+  type: attributive
+  text: "Among p_uncond in {0.1, 0.2, 0.5}, p_uncond = 0.5 consistently performed worse than 0.1 and 0.2, so only a small portion of the model's capacity needs to be dedicated to the unconditional generation task."
+  evidence:
+    - {work: "ho-2022-classifier-free-diffusion-guidance", role: original, locator: "p. 8", stance: for}
+
+- id: c-cfg-speed
+  type: attributive
+  text: "Each sampling step of classifier-free guidance evaluates the denoising model twice, and sampling speed is a potential disadvantage, since classifier guidance can use a smaller, faster classifier network."
+  evidence:
+    - {work: "ho-2022-classifier-free-diffusion-guidance", role: original, locator: "pp. 8 to 9", stance: for}
+
+- id: c-cfg-intuition
+  type: attributive
+  text: "The intuition for guidance is that it decreases the unconditional likelihood of the sample while increasing the conditional likelihood; classifier-free guidance does this with a negative score term; it increases sample fidelity at the expense of diversity, which raises the question of whether decreased diversity is acceptable."
+  evidence:
+    - {work: "ho-2022-classifier-free-diffusion-guidance", role: original, locator: "p. 9", stance: for}
+
+- id: c-glide
+  type: attributive
+  text: "For text conditioning, GLIDE sometimes replaces text captions with an empty sequence during training and guides with eps(x_t | empty) + s (eps(x_t | c) - eps(x_t | empty)), s >= 1; classifier-free guidance lets a single model leverage its own knowledge rather than a separate classifier and simplifies guidance on information, such as text, that is difficult to predict with a classifier."
+  evidence:
+    - {work: "nichol-2021-glide-towards-photorealistic-image", role: original, locator: "p. 5", stance: for}
+
+- id: c-glide-pareto
+  type: attributive
+  text: "Increasing the guidance scale traded diversity for fidelity, classifier-free guidance was (nearly) Pareto optimal against CLIP guidance on MS-COCO 64 x 64, and humans disagreed with CLIP score, finding classifier-free guidance to yield higher-quality samples that agree more with the prompt; the reported MS-COCO 256 x 256 FID used scale 1.5, which gave the best FID."
+  evidence:
+    - {work: "nichol-2021-glide-towards-photorealistic-image", role: original, locator: "pp. 8 to 9", stance: for}
+
+- id: c-imagen-weight
+  type: attributive
+  text: "Imagen samples with the adjusted prediction w eps(z_t, c) + (1 - w) eps(z_t), dropping c during training with probability for example 10%; w = 1 disables classifier-free guidance, and Imagen depends critically on it for effective text conditioning."
+  evidence:
+    - {work: "saharia-2022-photorealistic-text-image-diffusion", role: original, locator: "p. 4", stance: for}
+
+- id: c-imagen-saturation
+  type: attributive
+  text: "Increasing the classifier-free guidance weight improves image-text alignment but damages image fidelity, producing highly saturated and unnatural images; this is due to a train-test mismatch, since high guidance weights cause x-predictions to exceed the bounds [-1, 1] of the training data, and because the model is applied to its own output the sampling sometimes even diverges."
+  evidence:
+    - {work: "saharia-2022-photorealistic-text-image-diffusion", role: original, locator: "p. 4", stance: for}
+
+- id: c-imagen-threshold
+  type: attributive
+  text: "Static thresholding clips the x-prediction elementwise to [-1, 1] and is essential to sampling with large guidance weights but still gives over-saturated, less detailed images; dynamic thresholding sets s to a percentile of the absolute pixel values and, if s > 1, thresholds to [-s, s] and divides by s, which gave significantly better photorealism and image-text alignment at very large guidance weights."
+  evidence:
+    - {work: "saharia-2022-photorealistic-text-image-diffusion", role: original, locator: "p. 4", stance: for}
+
+- id: c-lin-rescale
+  type: attributive
+  text: "When the guidance weight w is large the scale of the guided output becomes very big, causing image over-exposure; Lin and colleagues rescale the guided output by the ratio of the standard deviations of the positive and the guided output and mix the rescaled and the plain guided output with a factor phi, finding w = 7.5 and phi = 0.7 to work well."
+  evidence:
+    - {work: "lin-2023-common-diffusion-noise-schedules", role: original, locator: "p. 4", stance: for}
+
+- id: c-lin-phi
+  type: attributive
+  text: "With rescale factor phi = 0, regular classifier-free guidance, images tend to overexpose, and setting phi between 0.5 and 0.75 produced the most appealing results."
+  evidence:
+    - {work: "lin-2023-common-diffusion-noise-schedules", role: original, locator: "p. 6", stance: for}
+
+- id: c-interval
+  type: attributive
+  text: "Guidance is harmful toward the beginning of the sampling chain (high noise levels), largely unnecessary toward the end (low noise levels) and only beneficial in the middle; applying the guidance weight only on an interval (sigma_lo, sigma_hi] of noise levels improved the record FID on ImageNet-512 from 1.81 to 1.40 and lowers the sampling cost through fewer guidance evaluations."
+  evidence:
+    - {work: "kynkaanniemi-2024-applying-guidance-limited-interval", role: original, locator: "pp. 1, 4", stance: for}
+
+- id: c-interval-modedrop
+  type: attributive
+  text: "In a two-dimensional toy example, guidance with weight w = 6 at every noise level leads to a catastrophic mode drop, and disabling guidance at high sigma restores both modes of the conditional distribution."
+  evidence:
+    - {work: "kynkaanniemi-2024-applying-guidance-limited-interval", role: original, locator: "p. 3", stance: for}
+
+- id: c-not-diffusion
+  type: attributive
+  text: "Solving the diffusion ODE with the guided score does not produce samples from p_w(x | c; 0), because p_w(x | c; sigma) does not represent a valid heat diffusion of it; the samples are pushed towards higher values of the implied density at each noise level, which can lead to distorted sampling trajectories, greatly exaggerated truncation, mode dropping and over-saturation of colors."
+  evidence:
+    - {work: "karras-2024-guiding-diffusion-model-bad", role: original, locator: "p. 3", stance: for}
+
+- id: c-autoguidance
+  type: attributive
+  text: "Guiding a diffusion model with a smaller, less-trained version of itself instead of an unconditional model, called autoguidance, gives control over image quality without compromising the amount of variation and also applies to unconditional models; with EDM2-S on ImageNet-512 it improved FID from 2.56 to 1.34, and with EDM2-XXL to 1.25."
+  evidence:
+    - {work: "karras-2024-guiding-diffusion-model-bad", role: original, locator: "pp. 1, 5 to 6", stance: for}
+
+- id: c-conventions
+  type: mathematical
+  text: "Ho and Salimans' (1 + w) eps_c - w eps_null is the scale s = 1 + w of eps_null + s (eps_c - eps_null), and the weight w eps_c + (1 - w) eps_null of Imagen and Karras and colleagues is s itself; since the x0, v and score parameterizations are affine in eps with weights summing to 1, guiding any of them gives the same sample, while the rescale of Lin and colleagues does not commute with the conversion."
+  assumes: ["both outputs come from the same z_t and t", "the conversions use the variance-preserving coefficients sqrt(abar_t) and sqrt(1 - abar_t)"]
+  derivation: guidance-conventions
+
+- id: c-tilted-score
+  type: mathematical
+  text: "With exact noise predictors, the guided noise eps(z_t) + s (eps(z_t, c) - eps(z_t)) is -sqrt(1 - abar_t) times the score of the tilted density p_t(z_t | c)^s p_t(z_t)^(1 - s), which is proportional to p_t(z_t) p_t(c | z_t)^s."
+  assumes: ["eps(z_t) = -sqrt(1 - abar_t) grad log p_t(z_t) and likewise for the conditional"]
+  derivation: implicit-classifier
+
+- id: c-cg-equivalence
+  type: mathematical
+  text: "With exact models, classifier-free guidance at scale s equals classifier guidance with the exact noisy classifier at scale s on the unconditional model and at scale s - 1 on the conditional model."
+  assumes: ["the classifier is the Bayes posterior p_t(c | z_t) of the same noisy distribution"]
+  derivation: implicit-classifier
+
+- id: c-perturbed-mean
+  type: mathematical
+  text: "If the log-classifier is linear in x_t around the mean mu of the Gaussian reverse step N(mu, Sigma), with gradient g at mu, then N(mu, Sigma) p_phi(y | x_t)^s is proportional to N(mu + s Sigma g, Sigma), which is Dhariwal and Nichol's Algorithm 1 with gradient scale s."
+  assumes: ["log p_phi(y | x_t) is linear in x_t, or its first-order Taylor expansion at mu is used"]
+  derivation: perturbed-gaussian-mean
+
+- id: c-tilted-gaussian
+  type: mathematical
+  text: "For p_1 = N(m_1, v_1) and p_0 = N(m_0, v_0), the tilted density p_1^s p_0^(1 - s) is integrable exactly when s/v_1 + (1 - s)/v_0 > 0, and then it is N(m_s, v_s) with 1/v_s = s/v_1 + (1 - s)/v_0 and m_s = m_1 + (1 - s)(v_s/v_0)(m_0 - m_1); if v_1 <= v_0 it is integrable for every s >= 0, and for s > 1 its variance is below v_1 and its mean lies beyond m_1, away from m_0."
+  assumes: ["one-dimensional Gaussians with v_0, v_1 > 0", "s >= 0"]
+  derivation: tilted-gaussian
+
+- id: c-ode-variance
+  type: mathematical
+  text: "Guiding the exact noise predictors of N(m_1, v_1) and N(m_0, v_0) with scale s and running the probability-flow ODE from N(0, 1) at sigma_T gives an output variance (1 + sigma_T^2)(v_1/(v_1 + sigma_T^2))^s (v_0/(v_0 + sigma_T^2))^(1 - s), which tends to v_1^s v_0^(1 - s); for s > 1 this is smaller than the variance of the tilted density, so the guided ODE does not sample it."
+  assumes: ["one-dimensional Gaussian data, v_0, v_1 > 0", "the exact ODE in x = z/sqrt(abar) and sigma = sqrt((1 - abar)/abar)"]
+  derivation: guided-ode-variance
+
+- id: c-rescale-std
+  type: mathematical
+  text: "Lin and colleagues' Eqs. 15 and 16 equal the single multiplication x_cfg (phi sigma_pos/sigma_cfg + 1 - phi) of their Algorithm 2, its factor does not depend on whether the standard deviation divides by n or n - 1, and the output's standard deviation is phi sigma_pos + (1 - phi) sigma_cfg."
+  assumes: ["sigma_cfg > 0", "0 <= phi <= 1"]
+  derivation: rescale
+
+- id: c-threshold-bounds
+  type: mathematical
+  text: "Static thresholding is the Euclidean projection of the x-prediction onto the cube [-1, 1]^n; dynamic thresholding with percentile p equals clip(x/s, -1, 1) with s = max(perc_p(|x|), 1), maps into the same cube, equals static thresholding when perc_p(|x|) <= 1, and leaves at least floor((p/100)(n - 1)) + 1 coordinates unclipped, all divided by the same s."
+  assumes: ["the percentile uses linear interpolation between order statistics", "0 <= p <= 100"]
+  derivation: thresholding
+
+- id: c-sampling-cost
+  type: mathematical
+  text: "For the denoiser of the page, with P = DH + EH + (C + 1)H + H + HD + D parameters and C_f = 2B(DH + EH + HD) FLOPs per evaluation, a sampler of N steps costs N C_f unguided, 2N C_f guided at every step and (N + k) C_f guided on an interval containing k steps; with 32 DDIM steps and the interval (0.28, 2.90], 12 steps fall inside, so 44 evaluations replace 64."
+  assumes: ["a guided step evaluates the conditional and the null model once each", "the linear schedule of 1000 steps from 1e-4 to 2e-2 and 32 evenly spaced steps from 999 to 0"]
+  derivation: sampling-cost

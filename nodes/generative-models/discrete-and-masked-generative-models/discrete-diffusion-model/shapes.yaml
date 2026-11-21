@@ -1,0 +1,36 @@
+# SPDX-License-Identifier: MIT
+# The shape contract of the denoiser on the page (spec 08.6): a network that reads a partly masked sequence of seq_len
+# tokens, each one of vocab data tokens or the mask, as a one-hot vector of length L (K + 1), passes it through one
+# tanh hidden layer of width hidden, and returns logits over the K data tokens at every position. The mask gets no
+# logit, which is the zero-masking half of SUBS; carrying unmasked tokens over happens after the network. The FLOPs
+# count the two matrix products only, a multiply-add as 2; the biases, the tanh and the softmax are left out.
+config:
+  seq_len: {meaning: "number of tokens in a sequence", symbol: "L", example: 3, sample: [1, 8]}
+  vocab:   {meaning: "number of data tokens, not counting the mask", symbol: "K", example: 3, sample: [2, 8]}
+  hidden:  {meaning: "width of the hidden layer", symbol: "H", example: 5, sample: [1, 16]}
+axes:
+  B: {meaning: "batch of partly masked sequences", example: 4, sample: [1, 6]}
+  L: seq_len
+  K: vocab
+  H: hidden
+blocks:
+  - id: embed
+    meaning: "the hidden layer tanh(onehot(z) W1 + b1) on the flattened one-hot of the masked sequence"
+    eq: [subs]
+    inputs: {z: "(B, L)"}
+    outputs: {h: "(B, H)"}
+    params: "L * (K + 1) * H + H"
+    flops_forward: "2 * B * L * (K + 1) * H"
+  - id: head
+    meaning: "the logits h W2 + b2 over the K data tokens at each of the L positions"
+    eq: [subs, mdlm]
+    inputs: {h: "(B, H)"}
+    outputs: {logits: "(B, L, K)"}
+    params: "H * L * K + L * K"
+    flops_forward: "2 * B * H * L * K"
+model:
+  params: {formula: "embed.params + head.params", symbol: "P", meaning: "the weights and biases of the two layers of the denoiser"}
+  flops_forward: {formula: "embed.flops_forward + head.flops_forward", symbol: "C", meaning: "FLOPs of one denoiser call on B sequences; ancestral sampling with T steps costs at most T calls, MaskGIT exactly T"}
+configs:
+  markov: {meaning: "the denoiser of the test trained on four tokens over three symbols, one row per sequence and mask of the exact bound (81 sequences times 15 masks)", seq_len: 4, vocab: 3, hidden: 32, B: 1215}
+  text8_chunk: {meaning: "a denoiser of this form on a chunk of 256 characters of text8, whose 27 symbols are the 26 letters and the space, per chunk", seq_len: 256, vocab: 27, hidden: 512, B: 1}

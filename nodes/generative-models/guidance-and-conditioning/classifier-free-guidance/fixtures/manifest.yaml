@@ -1,0 +1,11 @@
+# Written by fixtures/make.py; do not edit.
+seed: 2207125980
+denoiser: {dim: 3, hidden: 5, temb: 4, classes: 2}
+inputs: {B: 4, schedule: "linear betas 1e-4 to 2e-2 over 1000 steps", guidance: "s = 3 on (2, 3, 4, 4) predictions, rescale phi = 0.7, dynamic threshold at the 90th percentile", ddim: "two-component mixture, s2 = 0.1, class 0, s = 2 in the interval (0.3, 3.0], steps 999, 600, 300, 100, 0"}
+loss: "the noise-prediction loss, the squared error summed over the sample and averaged over the batch"
+dtype: float64
+numpy: "2.5.4"
+files:
+  params-small.npz: {sha256: 3f0c26e35f18f7785e02d0bffb2c2b94743ea48e6342e729f486a8935fce6606}
+  input-small.npz: {sha256: d536795f57e3fc5ed004afe61c9b01534dd844b6dd58dc4301e21ceb41d5da3c}
+  expected-small.npz: {sha256: 99b47fefb61e5c41be2e3720b7f3e93b44695e4690d9359b61f225e28658013d}

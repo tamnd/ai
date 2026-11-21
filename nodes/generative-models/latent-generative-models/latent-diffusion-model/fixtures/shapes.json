@@ -1,0 +1,415 @@
+{
+  "note": "Written by aik shapes sample -w from shapes.yaml; do not edit. The tests of each implementation check shapes, param_count and flops against these values (spec 08.6, rule X09).",
+  "configs": [
+    {
+      "name": "example",
+      "kind": "example",
+      "config": {
+        "B": 4,
+        "C": 2,
+        "E": 4,
+        "H": 5,
+        "M": 2,
+        "N": 2,
+        "attn": 3,
+        "c": 2,
+        "channels": 2,
+        "classes": 2,
+        "ctx_tokens": 2,
+        "d": 3,
+        "hidden": 5,
+        "positions": 2,
+        "temb": 4
+      },
+      "blocks": {
+        "cross_attention": {
+          "params": 57,
+          "flops_forward": 632,
+          "inputs": {
+            "h": [
+              4,
+              5
+            ],
+            "y": [
+              4
+            ]
+          },
+          "outputs": {
+            "h2": [
+              4,
+              5
+            ]
+          }
+        },
+        "embed": {
+          "params": 45,
+          "flops_forward": 320,
+          "inputs": {
+            "t": [
+              4
+            ],
+            "z": [
+              4,
+              2,
+              2
+            ]
+          },
+          "outputs": {
+            "h": [
+              4,
+              5
+            ]
+          }
+        },
+        "head": {
+          "params": 24,
+          "flops_forward": 160,
+          "inputs": {
+            "h2": [
+              4,
+              5
+            ]
+          },
+          "outputs": {
+            "eps": [
+              4,
+              4
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 1112,
+        "params": 126
+      }
+    },
+    {
+      "name": "sample-1",
+      "kind": "sample",
+      "config": {
+        "B": 4,
+        "C": 3,
+        "E": 6,
+        "H": 15,
+        "M": 1,
+        "N": 6,
+        "attn": 4,
+        "c": 2,
+        "channels": 2,
+        "classes": 3,
+        "ctx_tokens": 1,
+        "d": 4,
+        "hidden": 15,
+        "positions": 6,
+        "temb": 6
+      },
+      "blocks": {
+        "cross_attention": {
+          "params": 152,
+          "flops_forward": 1240,
+          "inputs": {
+            "h": [
+              4,
+              15
+            ],
+            "y": [
+              4
+            ]
+          },
+          "outputs": {
+            "h2": [
+              4,
+              15
+            ]
+          }
+        },
+        "embed": {
+          "params": 285,
+          "flops_forward": 2160,
+          "inputs": {
+            "t": [
+              4
+            ],
+            "z": [
+              4,
+              6,
+              2
+            ]
+          },
+          "outputs": {
+            "h": [
+              4,
+              15
+            ]
+          }
+        },
+        "head": {
+          "params": 192,
+          "flops_forward": 1440,
+          "inputs": {
+            "h2": [
+              4,
+              15
+            ]
+          },
+          "outputs": {
+            "eps": [
+              4,
+              12
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 4840,
+        "params": 629
+      }
+    },
+    {
+      "name": "sample-2",
+      "kind": "sample",
+      "config": {
+        "B": 2,
+        "C": 2,
+        "E": 8,
+        "H": 15,
+        "M": 4,
+        "N": 7,
+        "attn": 1,
+        "c": 4,
+        "channels": 4,
+        "classes": 2,
+        "ctx_tokens": 4,
+        "d": 1,
+        "hidden": 15,
+        "positions": 7,
+        "temb": 8
+      },
+      "blocks": {
+        "cross_attention": {
+          "params": 43,
+          "flops_forward": 572,
+          "inputs": {
+            "h": [
+              2,
+              15
+            ],
+            "y": [
+              2
+            ]
+          },
+          "outputs": {
+            "h2": [
+              2,
+              15
+            ]
+          }
+        },
+        "embed": {
+          "params": 555,
+          "flops_forward": 2160,
+          "inputs": {
+            "t": [
+              2
+            ],
+            "z": [
+              2,
+              7,
+              4
+            ]
+          },
+          "outputs": {
+            "h": [
+              2,
+              15
+            ]
+          }
+        },
+        "head": {
+          "params": 448,
+          "flops_forward": 1680,
+          "inputs": {
+            "h2": [
+              2,
+              15
+            ]
+          },
+          "outputs": {
+            "eps": [
+              2,
+              28
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 4412,
+        "params": 1046
+      }
+    },
+    {
+      "name": "mixture",
+      "kind": "named",
+      "config": {
+        "B": 256,
+        "C": 3,
+        "E": 16,
+        "H": 64,
+        "M": 2,
+        "N": 4,
+        "attn": 8,
+        "c": 2,
+        "channels": 2,
+        "classes": 3,
+        "ctx_tokens": 2,
+        "d": 8,
+        "hidden": 64,
+        "positions": 4,
+        "temb": 16
+      },
+      "blocks": {
+        "cross_attention": {
+          "params": 1152,
+          "flops_forward": 925696,
+          "inputs": {
+            "h": [
+              256,
+              64
+            ],
+            "y": [
+              256
+            ]
+          },
+          "outputs": {
+            "h2": [
+              256,
+              64
+            ]
+          }
+        },
+        "embed": {
+          "params": 1600,
+          "flops_forward": 786432,
+          "inputs": {
+            "t": [
+              256
+            ],
+            "z": [
+              256,
+              4,
+              2
+            ]
+          },
+          "outputs": {
+            "h": [
+              256,
+              64
+            ]
+          }
+        },
+        "head": {
+          "params": 520,
+          "flops_forward": 262144,
+          "inputs": {
+            "h2": [
+              256,
+              64
+            ]
+          },
+          "outputs": {
+            "eps": [
+              256,
+              8
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 1974272,
+        "params": 3272
+      }
+    },
+    {
+      "name": "imagenet_f8",
+      "kind": "named",
+      "config": {
+        "B": 1,
+        "C": 1000,
+        "E": 256,
+        "H": 1024,
+        "M": 1,
+        "N": 1024,
+        "attn": 512,
+        "c": 4,
+        "channels": 4,
+        "classes": 1000,
+        "ctx_tokens": 1,
+        "d": 512,
+        "hidden": 1024,
+        "positions": 1024,
+        "temb": 256
+      },
+      "blocks": {
+        "cross_attention": {
+          "params": 1823232,
+          "flops_forward": 2624512,
+          "inputs": {
+            "h": [
+              1,
+              1024
+            ],
+            "y": [
+              1
+            ]
+          },
+          "outputs": {
+            "h2": [
+              1,
+              1024
+            ]
+          }
+        },
+        "embed": {
+          "params": 4457472,
+          "flops_forward": 8912896,
+          "inputs": {
+            "t": [
+              1
+            ],
+            "z": [
+              1,
+              1024,
+              4
+            ]
+          },
+          "outputs": {
+            "h": [
+              1,
+              1024
+            ]
+          }
+        },
+        "head": {
+          "params": 4198400,
+          "flops_forward": 8388608,
+          "inputs": {
+            "h2": [
+              1,
+              1024
+            ]
+          },
+          "outputs": {
+            "eps": [
+              1,
+              4096
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 19926016,
+        "params": 10479104
+      }
+    }
+  ]
+}
