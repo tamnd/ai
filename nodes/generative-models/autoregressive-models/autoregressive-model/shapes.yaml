@@ -1,0 +1,34 @@
+# SPDX-License-Identifier: MIT
+# The shape contract of the autoregressive model on the page (spec 08.6): a MADE over d_data binary variables with one
+# masked ReLU hidden layer of d_hidden units and a masked direct connection from the inputs to the outputs. One pass maps
+# a batch of B vectors to the B x D logits of every conditional p(x_d = 1 | x_<d) at once; sampling takes D passes. The
+# FLOPs count the matrix products only, a multiply-add as 2, with the masks applied to the weights beforehand and their
+# zeros counted; the biases, ReLU, the sigmoid and the backward pass are left out.
+config:
+  d_data:   {meaning: "number of binary variables of a data vector x, and of logits", symbol: "D", example: 4, sample: [2, 8]}
+  d_hidden: {meaning: "width of the masked hidden layer", symbol: "H", example: 6, sample: [1, 10]}
+axes:
+  B: {meaning: "batch of data vectors", example: 3, sample: [1, 6]}
+  D: d_data
+  H: d_hidden
+blocks:
+  - id: hidden
+    meaning: "the masked hidden layer h = relu(x (W1 * M1) + b1)"
+    eq: [made]
+    inputs: {x: "(B, D)"}
+    outputs: {h: "(B, H)"}
+    params: "D * H + H"
+    flops_forward: "2 * B * D * H"
+  - id: output
+    meaning: "the logits a = h (V * MV) + x (A * MA) + c, the masked output layer plus the masked direct connection"
+    eq: [made]
+    inputs: {h: "(B, H)", x: "(B, D)"}
+    outputs: {a: "(B, D)"}
+    params: "H * D + D + D * D"
+    flops_forward: "2 * B * (H * D + D * D)"
+model:
+  params: {formula: "hidden.params + output.params", symbol: "P", meaning: "all weights and biases of the MADE, masked entries included"}
+  flops_forward: {formula: "hidden.flops_forward + output.flops_forward", symbol: "C", meaning: "FLOPs of one pass on B vectors, which gives all D conditionals; ancestral sampling costs D passes"}
+configs:
+  mixture: {meaning: "the MADE of the test that learns a mixture of three binary prototypes, at its batch of 100", d_data: 8, d_hidden: 48, B: 100}
+  binarized_mnist: {meaning: "a one-hidden-layer MADE of Germain et al. on 28 x 28 binarized MNIST, 500 hidden units, minibatch 100", d_data: 784, d_hidden: 500, B: 100}
