@@ -1,0 +1,13 @@
+# Written by fixtures/make.py; do not edit.
+seed: 150203509
+config: {d_data: 4, hidden: [6], direct: true, order: [3, 1, 4, 2]}
+nade: {D: 4, H: 3}
+wavenet: {K: 5, C: 3, kernel: 2, dilations: [1, 2]}
+inputs: {B: 5, x: "binary vectors", seq: "2 integer sequences of length 9 in 0..4", audio: "8 samples in [-1, 1]"}
+loss: "the negative log-likelihood of the MADE, summed over variables and averaged over the batch"
+dtype: float64
+numpy: "2.5.4"
+files:
+  params-small.npz: {sha256: b05bfe2235d5187b31d74e5ef5dcfdf814547dec9aaf87116f1ddb87df9b8d4a}
+  input-small.npz: {sha256: 8e0e991c86688d70a30d16e2a7a97a24fe73ea282cb8b913b4ac0e9b188fca6f}
+  expected-small.npz: {sha256: 8d8590d9f9d64ec29b069acd579a27c7a2a07d7be2425a41eac986b1cc586a78}

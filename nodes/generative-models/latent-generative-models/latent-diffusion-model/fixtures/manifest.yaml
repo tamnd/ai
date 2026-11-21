@@ -1,0 +1,11 @@
+# Written by fixtures/make.py; do not edit.
+seed: 2112107520
+denoiser: {positions: 2, channels: 2, hidden: 5, temb: 4, ctx_tokens: 2, attn: 3, classes: 2}
+inputs: {B: 4, schedule: "linear betas 1e-4 to 2e-2 over 1000 steps", autoencoder: "f = 4, c = 2 on six signals of length 8", vq: "beta = 0.25, gamma = 0.99", ddim: "two-component mixture, s2 = 0.1, steps 999, 600, 300, 0"}
+loss: "the noise-prediction loss of eq-ldm, the squared error summed over the latent and averaged over the batch"
+dtype: float64
+numpy: "2.5.4"
+files:
+  params-small.npz: {sha256: 82233aacb2f2f2612b2908f7a1082b0b64acddac2090d93eaeaf77416cc13e3a}
+  input-small.npz: {sha256: 111833d9fc6c7dcb78155503ee242566a7e9437f0d2f7a98046ec0e4b9d276c7}
+  expected-small.npz: {sha256: 277ec767e36e1695b278d0fa56d5aea7f2543b292289d8bf8e216793427c69f4}

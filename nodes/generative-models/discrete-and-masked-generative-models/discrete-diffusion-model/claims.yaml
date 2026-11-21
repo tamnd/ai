@@ -1,0 +1,222 @@
+# The claims of the discrete diffusion model page (spec 07). The build computes the labels.
+- id: c-d3pm-def
+  type: attributive
+  text: "D3PMs generalize the multinomial diffusion model of Hoogeboom et al. by going beyond corruption processes with uniform transition probabilities, to transition matrices that mimic Gaussian kernels in continuous space, matrices based on nearest neighbours in embedding space, and matrices that introduce absorbing states; the third connects diffusion models to autoregressive and mask-based generative models."
+  evidence:
+    - {work: "austin-2021-structured-denoising-diffusion-discrete", role: original, locator: "p. 1", stance: for}
+
+- id: c-multinomial-def
+  type: attributive
+  text: "In multinomial diffusion, for each next timestep a little amount of uniform noise over the K classes is introduced, and with a large probability the previous value x_{t-1} is sampled; the marginal q(x_t | x_0) is again categorical, and the categorical posterior q(x_{t-1} | x_t, x_0) can be computed in closed form."
+  evidence:
+    - {work: "hoogeboom-2021-argmax-flows-multinomial-diffusion", role: original, locator: "p. 5, Eqs. 11 to 13", stance: for}
+
+- id: c-x0-param
+  type: attributive
+  text: "Under the x0-parameterization p(x_{t-1} | x_t) is proportional to the sum over x0 of q(x_{t-1}, x_t | x0) p(x0 | x_t); the KL divergence to the posterior is zero if the prediction puts all its probability mass on the original x0, the sparsity pattern of Q_t determines the sparsity pattern of the ideal reverse transition, which the parameterization ensures automatically, and it allows inference with skips of k steps at a time."
+  evidence:
+    - {work: "austin-2021-structured-denoising-diffusion-discrete", role: original, locator: "p. 5, Eq. 4", stance: for}
+
+- id: c-multinomial-is-uniform
+  type: mathematical
+  text: "For the uniform transition matrices Q_t = (1 - beta_t) I + beta_t 11^T / K, the D3PM posterior proportional to x_t Q_t^T times x_0 Qbar_{t-1} equals the multinomial diffusion posterior proportional to [alpha_t x_t + (1 - alpha_t)/K] times [alpha-bar_{t-1} x_0 + (1 - alpha-bar_{t-1})/K], with alpha_t = 1 - beta_t, for a one-hot x_0 and for any probability vector in its place."
+  assumes: ["Q_t and its products are the uniform matrices", "x_t is one-hot"]
+  derivation: multinomial-posterior
+
+- id: c-aux-loss
+  type: attributive
+  text: "D3PMs are trained with L_lambda = L_vb + lambda E[-log p(x0 | x_t)], an auxiliary denoising objective added to the variational bound; under the x0-parameterization both terms are minimized exactly when the prediction has all its mass on the data point x0, and training with this loss led to improved quality of image samples."
+  evidence:
+    - {work: "austin-2021-structured-denoising-diffusion-discrete", role: original, locator: "p. 5, Eq. 5", stance: for}
+
+- id: c-x0-optimum
+  type: mathematical
+  text: "For one categorical token whose forward chain ends at the stationary distribution of a uniform or absorbing process, the x0-parameterized reverse step with the data distribution q(x0) as the prediction, whatever x_t is, equals the true reverse step q(x_{t-1} | x_t), so the expected variational bound equals the entropy of the data, its minimum; the posterior q(x0 | x_t) as the prediction gives the same step under absorbing noise but a larger bound under uniform noise, because the parameterization multiplies by q(x_t | x0) and the posterior contains that factor a second time."
+  assumes: ["one token, so the prediction can depend only on x_t", "the prior p(x_T) is the marginal q(x_T)", "every q(x_t) is positive"]
+  derivation: x0-parameterization-optimum
+
+- id: c-subs
+  type: attributive
+  text: "The SUBS parameterization of MDLM makes two substitutions: zero masking probabilities, setting the logit of the mask to minus infinity so that the prediction gives the mask no probability, as for clean data; and carry-over unmasking, copying an unmasked z_t to the output so that unmasked latents are carried over; each simplification leads to improved likelihood."
+  evidence:
+    - {work: "sahoo-2024-simple-effective-masked-diffusion-language", role: original, locator: "p. 4", stance: for}
+
+- id: c-mdlm-mlm
+  type: attributive
+  text: "The continuous-time objective of MDLM is a weighted average of masked language modeling losses, which establishes a connection between generative diffusion models and encoder-only BERT models, gives a principled way to choose a randomized masking rate, and endows BERT-style models with principled generation."
+  evidence:
+    - {work: "sahoo-2024-simple-effective-masked-diffusion-language", role: original, locator: "p. 5", stance: for}
+
+- id: c-md4-ce
+  type: attributive
+  text: "The continuous-time variational objective of masked diffusion models is a simple weighted integral of cross-entropy losses."
+  evidence:
+    - {work: "shi-2024-simplified-generalized-masked-diffusion", role: original, locator: "p. 1", stance: for}
+
+- id: c-mdlm-invariant
+  type: attributive
+  text: "The diffusion loss of MDLM is invariant to the functional form of alpha_t, which the authors verify empirically."
+  evidence:
+    - {work: "sahoo-2024-simple-effective-masked-diffusion-language", role: original, locator: "p. 5", stance: for}
+
+- id: c-md4-snr
+  type: attributive
+  text: "As for continuous state-space diffusions, the ELBO of masked diffusion depends on the signal-to-noise ratio at its endpoints and is otherwise invariant to the noise schedule."
+  evidence:
+    - {work: "shi-2024-simplified-generalized-masked-diffusion", role: original, locator: "p. 4", stance: for}
+
+- id: c-mask-coefficient
+  type: mathematical
+  text: "For a denoiser that does not depend on t and a masking schedule decreasing continuously from alpha_0 = 1 to alpha_1 = 0, the continuous-time bound of masked diffusion on a sequence of length L equals the sum over the nonempty sets M of masked positions of (L - |M|)! (|M| - 1)! / L! times the cross-entropy of the denoiser at the positions of M given x with M masked; the coefficient is a Beta integral and does not depend on the schedule."
+  assumes: ["alpha_t is differentiable and decreasing with alpha_0 = 1 and alpha_1 = 0", "the denoiser does not depend on t", "tokens are masked independently"]
+  derivation: masked-bound-coefficients
+
+- id: c-any-order
+  type: mathematical
+  text: "If the denoiser at each masked position is the true conditional distribution of that token given the visible tokens, the continuous-time bound of masked diffusion equals -log p(x) for every x: the coefficients of c-mask-coefficient are the probabilities that a uniformly random order of revealing the tokens passes through each set of masked positions, divided by its size, and along every order the cross-entropies sum to -log p(x) by the chain rule."
+  assumes: ["the assumptions of c-mask-coefficient", "p(x) > 0"]
+  derivation: any-order-chain-rule
+
+- id: c-mdlm-caching
+  type: attributive
+  text: "When no token changes between steps of MDLM's sampler, the denoiser's output can be cached and its function evaluations saved, which is possible because the denoiser does not depend on time; SEDD cannot cache this way because its network models time-dependent rates and must be conditioned on time."
+  evidence:
+    - {work: "sahoo-2024-simple-effective-masked-diffusion-language", role: original, locator: "p. 6", stance: for}
+
+- id: c-sampler-collisions
+  type: mathematical
+  text: "With the exact conditional denoiser, the ancestral sampler of masked diffusion returns a mixture of the data distribution, given that no step reveals two or more tokens, and some other distribution, so its total variation distance from the data is at most the probability that some step reveals two or more tokens; under the linear schedule with T equal steps each token is revealed at a step that is uniform and independent of the others, that probability is 1 - T! / ((T - L)! T^L) for T >= L and 1 for T < L, and with T = 1 the sampler draws every token from its marginal."
+  assumes: ["the denoiser is the true conditional of each masked token given the visible tokens", "the reveal decisions use randomness independent of the token values"]
+  derivation: ancestral-sampler-collisions
+
+- id: c-maskgit-decode
+  type: attributive
+  text: "MaskGIT's iterative decoding repeats four steps: predict probabilities for all masked locations in parallel; sample a token at each masked location and use its probability as a confidence score, set to 1.0 for unmasked positions; compute the number of tokens to mask, n = ceil(gamma(t/T) N), from the mask scheduling function gamma; and mask the n tokens of lowest confidence."
+  evidence:
+    - {work: "chang-2022-maskgit-masked-generative-image-transformer", role: original, locator: "p. 4", stance: for}
+
+- id: c-maskgit-one-pass
+  type: attributive
+  text: "In theory MaskGIT could infer all tokens and generate the entire image in a single pass, but the authors find this challenging due to its inconsistency with the training task."
+  evidence:
+    - {work: "chang-2022-maskgit-masked-generative-image-transformer", role: original, locator: "p. 4", stance: for}
+
+- id: c-maskgit-cosine
+  type: attributive
+  text: "The mask scheduling function of MaskGIT is used in both training and iterative decoding; concave functions generally obtained better FID and IS than the linear function, followed by the convex ones, and cosine slightly edged out square in all scores, which made it the default."
+  evidence:
+    - {work: "chang-2022-maskgit-masked-generative-image-transformer", role: original, locator: "p. 8", stance: for}
+
+- id: c-sedd-score-entropy
+  type: attributive
+  text: "Score entropy compares a learned score with the concrete score p(y)/p(x) with weights w_xy and the normalizing constant function K(a) = a(log a - 1), which ensures that it is non-negative; it is a Bregman divergence with F = -log, so it is non-negative, symmetric and convex, and it generalizes the cross-entropy loss to positive values."
+  evidence:
+    - {work: "lou-2023-discrete-diffusion-ratios-data-distribution", role: original, locator: "p. 3, Definition 3.1 and Eq. 5", stance: for}
+
+- id: c-score-entropy-min
+  type: mathematical
+  text: "Each term of score entropy is a (r - log r - 1) with a the true ratio and r = s / a, which is non-negative and zero exactly at s = a, so with positive weights score entropy is zero exactly at the concrete score and positive elsewhere; the denoising score entropy differs from it by a quantity that does not depend on s, so the two have the same minimizer and the same gradient."
+  assumes: ["every probability is positive", "the weights are positive", "p is the perturbation of p0 by a kernel, p(x) = sum over x0 of p(x | x0) p0(x0)"]
+  derivation: score-entropy-minimum
+
+- id: c-sedd-dse
+  type: attributive
+  text: "If p is a perturbation of a base density p0 by a transition kernel, score entropy is equivalent, up to a constant independent of theta, to the denoising score entropy, which replaces the unknown ratio p(y)/p(x) with the known ratio p(y | x0)/p(x | x0) in an expectation over x0 and x."
+  evidence:
+    - {work: "lou-2023-discrete-diffusion-ratios-data-distribution", role: original, locator: "p. 3, Theorem 3.4", stance: for}
+
+- id: c-absorbing-ratio
+  type: mathematical
+  text: "Under masking noise with visibility alpha in (0, 1), the ratio of the marginal probability of a partly masked sequence with a masked position i filled in with y to the marginal probability of the sequence itself is alpha / (1 - alpha) times p(x_i = y | the visible tokens)."
+  assumes: ["tokens are masked independently with probability 1 - alpha", "the partly masked sequence has positive probability"]
+  derivation: absorbing-concrete-score
+
+- id: c-params
+  type: mathematical
+  text: "The one-hidden-layer denoiser on the one-hot of L tokens over K symbols and the mask, with H hidden units and logits over the K symbols at every position, has L(K + 1)H + H + HLK + LK parameters; one call on B sequences costs 2BL(K + 1)H + 2BHLK FLOPs for its two matrix products, and the exact bound of one sequence costs 2^L - 1 calls, one per nonempty set of masked positions."
+  assumes: ["a multiply-add counts as 2 FLOPs", "the biases, the tanh and the softmax are left out of the FLOPs"]
+  derivation: parameter-and-flop-count
+
+- id: c-mdlm-ablation
+  type: attributive
+  text: "Removing carry-over unmasking from SUBS increased the perplexity of MDLM by about 1.5 points, while further removing zero masking made no meaningful difference, and a model trained with T = 1000 discrete steps was worse by 0.1 than the continuous-time one."
+  evidence:
+    - {work: "sahoo-2024-simple-effective-masked-diffusion-language", role: original, locator: "p. 9", stance: for}
+
+- id: c-d3pm-text8
+  type: attributive
+  text: "On text8 with 1000 steps, D3PM reached at most 1.61 bits per character with uniform noise, 1.59 with nearest-neighbour noise and 1.45 with absorbing noise trained by L_lambda with lambda = 0.01, against 1.23 for a transformer decoder, all of them standard 12-layer transformers; with 20 steps the bounds were 1.79, 1.75 and 1.56."
+  evidence:
+    - {work: "austin-2021-structured-denoising-diffusion-discrete", role: original, locator: "p. 6, Table 1", stance: for}
+
+- id: c-hoog-text8
+  type: attributive
+  text: "Multinomial text diffusion reached at most 1.72 bits per character on text8 and 1.75 on enwik8."
+  evidence:
+    - {work: "hoogeboom-2021-argmax-flows-multinomial-diffusion", role: original, locator: "p. 7", stance: for}
+
+- id: c-d3pm-lm1b
+  type: attributive
+  text: "On LM1B with 1000 steps, D3PM reached test perplexities of at most 137.9 with uniform noise, 149.5 with nearest-neighbour noise and 76.9 with absorbing noise, against 43.6 for the authors' autoregressive transformer."
+  evidence:
+    - {work: "austin-2021-structured-denoising-diffusion-discrete", role: original, locator: "p. 7, Table 2", stance: for}
+
+- id: c-mdlm-results
+  type: attributive
+  text: "On LM1B, MDLM trained for 33B tokens reached a perplexity bound of at most 27.04 against at most 32.79 for SEDD trained as long, a 17% improvement, and at most 23.00 after 327B tokens, against 22.32 and 20.86 for an autoregressive transformer trained for 33B and 327B tokens, getting within 14% of the autoregressive baseline; on OpenWebText it reached at most 23.21 against at most 24.10 for SEDD and 17.54 for an autoregressive transformer."
+  evidence:
+    - {work: "sahoo-2024-simple-effective-masked-diffusion-language", role: original, locator: "pp. 6 to 7, Tables 1 and 2", stance: for}
+
+- id: c-md4-results
+  type: attributive
+  text: "On text8 MD4 reached at most 1.37 bits per character and GenMD4 at most 1.34, against 1.39 for SEDD with absorbing noise and 1.45 for D3PM with absorbing noise; on pixel-level image modelling MD4 reached 2.75 bits per dimension on CIFAR-10 and 3.40 on ImageNet 64 x 64, better than autoregressive models of similar sizes."
+  evidence:
+    - {work: "shi-2024-simplified-generalized-masked-diffusion", role: original, locator: "p. 9", stance: for}
+
+- id: c-sedd-results
+  type: attributive
+  text: "For comparable model sizes, SEDD reduced perplexity by 25 to 75% relative to existing language diffusion paradigms, was competitive with autoregressive models, beat GPT-2 on a majority of the zero-shot perplexity tasks, and matched the sample quality of GPT-2 with 32 times fewer network evaluations."
+  evidence:
+    - {work: "lou-2023-discrete-diffusion-ratios-data-distribution", role: original, locator: "pp. 1, 6 to 7", stance: for}
+
+- id: c-maskgit-results
+  type: attributive
+  text: "On ImageNet 256 x 256, MaskGIT reached an FID of 6.18 against 15.78 for VQGAN, without beam search, top-k or nucleus sampling, or classifier guidance, and 7.32 at 512 x 512; it decoded an image in 8 steps instead of the 256 of autoregressive decoding and was 30 to 64 times faster than VQGAN's decoding."
+  evidence:
+    - {work: "chang-2022-maskgit-masked-generative-image-transformer", role: original, locator: "pp. 2, 5", stance: for}
+
+- id: c-md4-instability
+  type: attributive
+  text: "SEDD has training instabilities, likely due to the score parameterization breaking the consistency between the forward and reverse processes, and the learned state-dependent schedules of GenMD4 can overfit to dataset statistics, which makes them less effective for zero-shot transfer."
+  evidence:
+    - {work: "shi-2024-simplified-generalized-masked-diffusion", role: original, locator: "p. 8", stance: for}
+
+- id: c-mdlm-sar
+  type: attributive
+  text: "MDLM can generate sequences of arbitrary length with a semi-autoregressive decoding scheme that generates blocks one after another, conditioning each on the last part of the previous one."
+  evidence:
+    - {work: "sahoo-2024-simple-effective-masked-diffusion-language", role: original, locator: "p. 6", stance: for}
+
+- id: c-bert-one-step
+  type: attributive
+  text: "BERT is a one-step diffusion model: a D3PM transition matrix that combines a uniform transition matrix with an absorbing state at the [MASK] token, used for a one-step diffusion process in which q(x1 | x0) replaces 10% of tokens with [MASK] and 5% uniformly at random, leads precisely to the BERT denoising objective, since L_T is a constant independent of theta for a fixed prior."
+  evidence:
+    - {work: "austin-2021-structured-denoising-diffusion-discrete", role: original, locator: "p. 5", stance: for}
+
+- id: c-ar-diffusion
+  type: attributive
+  text: "Autoregressive models are discrete diffusion models: a diffusion process that deterministically masks the tokens one by one in sequence, with as many steps as tokens, has a posterior that is a delta function at every position but one, so the KL term reduces to the cross-entropy loss of an autoregressive model."
+  evidence:
+    - {work: "austin-2021-structured-denoising-diffusion-discrete", role: original, locator: "pp. 5 to 6", stance: for}
+
+- id: c-mlm-reweighted
+  type: attributive
+  text: "A D3PM with an absorbing state, trained on the ELBO with the x0-parameterization, reduces to a reweighted version of the objective of generative masked language models, which mask k tokens according to a schedule and learn to predict them from the context."
+  evidence:
+    - {work: "austin-2021-structured-denoising-diffusion-discrete", role: original, locator: "p. 6", stance: for}
+
+- id: c-md4-cosine
+  type: attributive
+  text: "The cosine schedule, originally proposed in MaskGIT, slows down the unmasking process at the beginning of the reverse generation, which results in a lower chance of conflicting tokens being unmasked simultaneously at the start of generation and enhances the overall generation quality."
+  evidence:
+    - {work: "shi-2024-simplified-generalized-masked-diffusion", role: original, locator: "p. 3", stance: for}
