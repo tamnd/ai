@@ -1,0 +1,409 @@
+# The claims of the neural probabilistic language model page (spec 07). The build computes the labels.
+- id: c-bengio-curse
+  type: attributive
+  text: "Bengio et al. note that learning the joint probability function of sequences of words is intrinsically difficult because of the curse of dimensionality: a word sequence on which the model will be tested is likely to be different from all the word sequences seen during training."
+  evidence:
+    - {work: "bengio-2003-neural-probabilistic-language-model", role: original, locator: "p. 1", stance: for}
+
+- id: c-bengio-free-parameters
+  type: attributive
+  text: "Modelling the joint distribution of 10 consecutive words in a natural language with a vocabulary of size 100,000 has potentially 10^50 − 1 free parameters."
+  evidence:
+    - {work: "bengio-2003-neural-probabilistic-language-model", role: original, locator: "p. 1", stance: for}
+
+- id: c-bengio-idea
+  type: definitional
+  text: "Bengio et al. summarise the approach in three steps: associate with each word in the vocabulary a distributed word feature vector in R^m, express the joint probability function of word sequences in terms of the feature vectors of these words, and learn simultaneously the word feature vectors and the parameters of that probability function."
+  evidence:
+    - {work: "bengio-2003-neural-probabilistic-language-model", role: original, locator: "p. 3", stance: for}
+
+- id: c-bengio-generalise
+  type: attributive
+  text: "\"Similar\" words are expected to have a similar feature vector, and because the probability function is a smooth function of these feature values, the presence of one sentence in the training data increases the probability of its combinatorial number of neighbours in sentence space."
+  evidence:
+    - {work: "bengio-2003-neural-probabilistic-language-model", role: original, locator: "p. 4", stance: for}
+
+- id: c-bengio-model
+  type: definitional
+  text: "The network computes the unnormalised log-probabilities y = b + Wx + U tanh(d + Hx), with the hyperbolic tangent applied element by element and W optionally zero (no direct connections), and a softmax output layer guarantees positive probabilities summing to 1."
+  evidence:
+    - {work: "bengio-2003-neural-probabilistic-language-model", role: original, locator: "p. 7", stance: for}
+    - {work: "bengio-2003-neural-probabilistic-language-model", role: original, locator: "p. 6", stance: for}
+
+- id: c-bengio-two-layers
+  type: attributive
+  text: "Bengio et al. note that there are really two hidden layers: the shared word features layer C, which has no non-linearity, and the ordinary hyperbolic tangent hidden layer."
+  evidence:
+    - {work: "bengio-2003-neural-probabilistic-language-model", role: original, locator: "p. 6", stance: for}
+
+- id: c-bengio-objective
+  type: definitional
+  text: "Training looks for the parameters that maximise the training corpus penalised log-likelihood L = (1/T) Σ_t log f(w_t, w_t−1, ..., w_t−n+1; θ) + R(θ), where in the experiments R is a weight decay penalty applied only to the weights of the network and to C, not to the biases."
+  evidence:
+    - {work: "bengio-2003-neural-probabilistic-language-model", role: original, locator: "p. 6", stance: for}
+
+- id: c-bengio-schedule
+  type: attributive
+  text: "Bengio et al. train by stochastic gradient ascent with the learning rate ε_t = ε_0 / (1 + rt) after t updates, with ε_0 = 10^−3 and r = 10^−8."
+  evidence:
+    - {work: "bengio-2003-neural-probabilistic-language-model", role: original, locator: "p. 11", stance: for}
+
+- id: c-bengio-output-gradient
+  type: attributive
+  text: "Bengio et al. set ∂L/∂y_j ← 1_{j==w_t} − p_j, update b_j ← b_j + ε ∂L/∂y_j, and back-propagate through the hidden layer with ∂L/∂o_k ← (1 − a_k^2) ∂L/∂a_k."
+  evidence:
+    - {work: "bengio-2003-neural-probabilistic-language-model", role: original, locator: "p. 10", stance: for}
+
+- id: c-softmax-gradient
+  type: mathematical
+  text: "The gradient of the negative log-likelihood with respect to a logit is the model probability minus the indicator of the target, so it sums to zero over the vocabulary and is non-zero for every word, and the factor at a tanh unit is 1 − a^2."
+  assumes: ["the output is a softmax of real logits", "a = tanh(o) for the hidden unit"]
+  derivation: softmax-gradient
+
+- id: c-bengio-mixture-reason
+  type: attributive
+  text: "The interpolated n-gram was used to form a mixture with the networks since they appear to make \"errors\" in very different ways."
+  evidence:
+    - {work: "bengio-2003-neural-probabilistic-language-model", role: original, locator: "p. 12", stance: for}
+
+- id: c-param-count
+  type: mathematical
+  text: "The network of Eq. 1 has |V|(1 + nm + h) + h(1 + (n − 1)m) free parameters with direct connections and |V|(1 + m + h) + h(1 + (n − 1)m) without them; the AP News network with |V| = 17,964, h = 60, n = 6 and m = 100 has 11,904,264 parameters, 95.2 MB as 8-byte floats."
+  assumes: ["the parameters are b, d, U, W, H and C of Eq. 1", "8 bytes per parameter for the size"]
+  derivation: parameter-count
+
+- id: c-bengio-param-formula
+  type: attributive
+  text: "Bengio et al. give the same number of free parameters and call |V|(nm + h) the dominating factor."
+  evidence:
+    - {work: "bengio-2003-neural-probabilistic-language-model", role: original, locator: "p. 7", stance: for}
+
+- id: c-output-share
+  type: mathematical
+  text: "In that network the weighted sums of the output units take 99.7% of the multiply-adds of one example, and the output terms |V|(nm + h) are 99.6% of the parameters."
+  assumes: ["the cost of one example is counted in multiply-adds of the weighted sums", "the AP News network with direct connections"]
+  derivation: parameter-count
+
+- id: c-tree-normalised
+  type: mathematical
+  text: "With each word a leaf of a binary tree and the probability of the word the product of sigmoid branch probabilities along its path, the probabilities sum to one over the vocabulary for every hidden vector with no sum over the vocabulary, and one word costs one sigmoid per node on its path."
+  assumes: ["a full binary tree with one leaf per word", "branch probabilities sigmoid(z) and sigmoid(−z) at each node"]
+  derivation: tree-softmax
+
+- id: c-huffman-depth
+  type: mathematical
+  text: "A balanced tree has leaf depths floor(log2 |V|) or ceil(log2 |V|), and a Huffman tree built from the word frequencies q has mean depth between the unigram entropy H(q) in bits and H(q) + 1; for |V| = 10,000 a balanced tree needs 13 or 14 sigmoids per word against 10,000 softmax terms."
+  assumes: ["the tree is fixed before training", "the mean depth is weighted by the same frequencies q that built the Huffman tree"]
+  derivation: tree-softmax
+
+- id: c-nce-limit
+  type: mathematical
+  text: "With k noise samples from P_n, the noise-contrastive gradient with respect to the score of word w is k P_n(w) / (P(w) + k P_n(w)) times P_d(w) − P(w); the factor tends to 1 as k grows, which leaves the maximum-likelihood gradient for a normalised model, the gap falls like 1/k, and P = P_d is a stationary point for every k."
+  assumes: ["the expected NCE objective over the data and noise distributions", "P_n(w) > 0 for every word"]
+  derivation: nce-gradient
+
+- id: c-mixture-bound
+  type: mathematical
+  text: "By concavity of the logarithm, a mixture with fixed weight w has perplexity at most PP_p^w PP_q^(1 − w), so a half-half mixture is no worse than the geometric mean of the two perplexities; for Bengio et al.'s MLP9 at 276 and the trigram at 336 that bound is 304.5, and the reported mixture MLP10 reaches 252."
+  assumes: ["the mixture weight is fixed, not tuned on the test text", "the test perplexities of Table 1 of Bengio et al. (2003)"]
+  derivation: mixture-bound
+
+- id: c-bengio-more-context
+  type: empirical
+  text: "On Brown, going from 2 words of context to 4 words brought improvements to the neural network, not to the n-grams."
+  scope:
+    models: "neural probabilistic language models and n-gram models"
+    data: ["Brown corpus"]
+    scale: "800,000 training words, |V| = 16,383"
+    setting: "validation and test perplexity (Table 1)"
+  evidence:
+    - {work: "bengio-2003-neural-probabilistic-language-model", role: original, locator: "p. 12", stance: for}
+
+- id: c-bengio-m
+  type: attributive
+  text: "The feature size m is far smaller than the vocabulary; Bengio et al. use m = 30, 60 or 100 against a vocabulary of about 17,000."
+  evidence:
+    - {work: "bengio-2003-neural-probabilistic-language-model", role: original, locator: "p. 3", stance: for}
+
+- id: c-bengio-hidden
+  type: empirical
+  text: "Bengio et al. find the hidden units useful, comparing MLP3 with MLP1 and MLP4 with MLP2 on Brown."
+  scope:
+    models: "neural probabilistic language models with and without a hidden layer"
+    data: ["Brown corpus"]
+    scale: "800,000 training words, |V| = 16,383"
+    setting: "test perplexity (Table 1)"
+  evidence:
+    - {work: "bengio-2003-neural-probabilistic-language-model", role: original, locator: "p. 12", stance: for}
+
+- id: c-bengio-direct
+  type: empirical
+  text: "Without direct connections the Brown network took twice as much time to converge (20 epochs instead of 10), albeit to a slightly lower perplexity."
+  scope:
+    models: "neural probabilistic language models with and without direct connections"
+    data: ["Brown corpus"]
+    scale: "800,000 training words, |V| = 16,383"
+    setting: "stochastic gradient ascent with early stopping"
+  evidence:
+    - {work: "bengio-2003-neural-probabilistic-language-model", role: original, locator: "p. 12", stance: for}
+
+- id: c-bengio-decay
+  type: attributive
+  text: "A weight decay penalty of 10^−4 was used in the Brown experiments and 10^−5 in the AP News experiments, selected by a few trials on validation perplexity."
+  evidence:
+    - {work: "bengio-2003-neural-probabilistic-language-model", role: original, locator: "p. 12", stance: for}
+
+- id: c-bengio-bottleneck
+  type: attributive
+  text: "Bengio et al. identify the computation of the activations of the output layer as the computational bottleneck of the neural implementation."
+  evidence:
+    - {work: "bengio-2003-neural-probabilistic-language-model", role: original, locator: "p. 7", stance: for}
+
+- id: c-mikolov13-cost
+  type: attributive
+  text: "Mikolov et al. write the cost of one example of the feedforward model as Q = N × D + N × D × H + H × V, with N context words, D-dimensional features, H hidden units and V words, and call H × V the dominating term; with binary tree representations of the vocabulary the number of output units to evaluate falls to around log2 V, and most of the complexity is then caused by the term N × D × H."
+  evidence:
+    - {work: "mikolov-2013-efficient-estimation-word-representations", role: original, locator: "p. 3", stance: for}
+
+- id: c-mikolov13-huffman
+  type: attributive
+  text: "With a Huffman tree only about log2(unigram perplexity(V)) outputs need evaluation, which for a vocabulary of one million words gives about two times speedup in evaluation over a balanced tree."
+  evidence:
+    - {work: "mikolov-2013-efficient-estimation-word-representations", role: original, locator: "p. 3", stance: for}
+
+- id: c-bengio-ap-time
+  type: empirical
+  text: "Training on AP News ran only 5 epochs, over 3 weeks using 40 CPUs, without signs of overfitting on the validation set."
+  scope:
+    models: "neural probabilistic language model with n = 6, h = 60, m = 100"
+    data: ["AP News 1995 and 1996"]
+    scale: "13,994,528 training words, |V| = 17,964"
+    setting: "parameter-parallel training on a cluster"
+  evidence:
+    - {work: "bengio-2003-neural-probabilistic-language-model", role: original, locator: "p. 12", stance: for}
+
+- id: c-bengio-overhead
+  type: empirical
+  text: "The communication overhead of the parameter-parallel implementation was only 1/15th of the total time for one training epoch."
+  scope:
+    models: "neural probabilistic language model"
+    data: ["AP News 1995 and 1996"]
+    scale: "one training epoch"
+    setting: "parameter-parallel processing over the output units with MPI"
+  evidence:
+    - {work: "bengio-2003-neural-probabilistic-language-model", role: original, locator: "p. 10", stance: for}
+
+- id: c-mikolov10-time
+  type: empirical
+  text: "Mikolov et al. report about 6 hours to train their basic recurrent model on the Brown corpus (800K words, 100 hidden units), while Bengio reports 113 days for a basic implementation and 26 hours with importance sampling."
+  scope:
+    models: "basic recurrent language model and the feedforward model of Bengio et al."
+    data: ["Brown corpus"]
+    scale: "800K words, 100 hidden units"
+    setting: "wall-clock training time as reported"
+  evidence:
+    - {work: "mikolov-2010-recurrent-neural-network-language-model", role: original, locator: "p. 3", stance: for}
+
+- id: c-bengio-importance
+  type: attributive
+  text: "Importance sampling for the output layer gave a 100-fold speed-up (Bengio and Senécal, 2003)."
+  evidence:
+    - {work: "bengio-2003-neural-probabilistic-language-model", role: original, locator: "p. 15", stance: for}
+
+- id: c-morin-speedup
+  type: attributive
+  text: "Morin and Bengio report a speed-up of about 200 during both training and recognition from a hierarchical decomposition of the conditional probabilities, with a binary hierarchical clustering constrained by WordNet."
+  evidence:
+    - {work: "morin-2005-hierarchical-neural-network-language-model", role: original, locator: "p. 1", stance: for}
+
+- id: c-mnih-predicted-speed
+  type: attributive
+  text: "Mnih and Teh compute that for a model with a 2-word context, 100-dimensional feature vectors and a 10K vocabulary, an NCE update using 25 noise samples should be about 45 times faster than a maximum-likelihood update."
+  evidence:
+    - {work: "mnih-2012-fast-simple-algorithm-neural-language-models", role: original, locator: "p. 5", stance: for}
+
+- id: c-bengio-brown-data
+  type: attributive
+  text: "Brown has 1,181,041 words, split into 800,000 training, 200,000 validation and 181,041 test words; its 47,578 distinct words were reduced to |V| = 16,383 by merging rare words."
+  evidence:
+    - {work: "bengio-2003-neural-probabilistic-language-model", role: original, locator: "p. 11", stance: for}
+
+- id: c-bengio-ap-data
+  type: attributive
+  text: "The AP News training set has 13,994,528 words, the validation and test sets 963,138 and 963,071, and the 148,721 distinct words were reduced to |V| = 17,964."
+  evidence:
+    - {work: "bengio-2003-neural-probabilistic-language-model", role: original, locator: "p. 11", stance: for}
+
+- id: c-bengio-table1
+  type: empirical
+  text: "On Brown, the network with the lowest validation perplexity, mixed with the trigram, has test perplexity 252, against 336 for the deleted interpolation trigram, 323 for the modified Kneser-Ney back-off trigram and 312 for a class-based back-off model with 500 classes."
+  scope:
+    models: "neural probabilistic language models, interpolated, Kneser-Ney back-off and class-based n-grams"
+    data: ["Brown corpus"]
+    scale: "800,000 training words, 181,041 test words, |V| = 16,383"
+    setting: "test perplexity (Table 1)"
+  evidence:
+    - {work: "bengio-2003-neural-probabilistic-language-model", role: original, locator: "p. 13", stance: for}
+
+- id: c-bengio-33
+  type: empirical
+  text: "The deleted interpolation trigram has a test perplexity 33% above that of the neural network with the lowest validation perplexity, and the difference is 24% for the class-based n-gram with 500 word classes."
+  scope:
+    models: "neural probabilistic language model and n-gram models"
+    data: ["Brown corpus"]
+    scale: "800,000 training words, |V| = 16,383"
+    setting: "test perplexity (Table 1 caption)"
+  evidence:
+    - {work: "bengio-2003-neural-probabilistic-language-model", role: original, locator: "p. 13", stance: for}
+
+- id: c-bengio-table2
+  type: empirical
+  text: "On the AP News corpus, MLP10, with n = 6, h = 60, m = 100, direct connections and the mixture, scores 104 valid. and 109 test, against 126 and 132 for Del. Int. and 112 and 117 for back-off KN with n = 5."
+  scope:
+    models: "neural probabilistic language model with n = 6, h = 60, m = 100, mixed with the trigram; n-gram models"
+    data: ["AP News 1995 and 1996"]
+    scale: "13,994,528 training words, |V| = 17,964"
+    setting: "validation and test perplexity (Table 2)"
+  evidence:
+    - {work: "bengio-2003-neural-probabilistic-language-model", role: original, locator: "p. 14", stance: for}
+
+- id: c-bengio-result
+  type: empirical
+  text: "Bengio et al. report a test perplexity difference of about 24% on Brown and about 8% on AP News between the network and the n-gram chosen on the validation set."
+  scope:
+    models: "neural probabilistic language models and smoothed n-gram models"
+    data: ["Brown corpus", "AP News 1995 and 1996"]
+    scale: "about 1 million and 14 million training words"
+    setting: "test perplexity"
+  evidence:
+    - {work: "bengio-2003-neural-probabilistic-language-model", role: original, locator: "p. 12", stance: for}
+
+- id: c-bengio-mixing-helps
+  type: empirical
+  text: "Mixing the output probabilities of the neural network with the interpolated trigram always helped to reduce perplexity."
+  scope:
+    models: "neural probabilistic language models mixed with an interpolated trigram"
+    data: ["Brown corpus"]
+    scale: "800,000 training words"
+    setting: "fixed mixture weight 0.5 (Table 1)"
+  evidence:
+    - {work: "bengio-2003-neural-probabilistic-language-model", role: original, locator: "p. 12", stance: for}
+
+- id: c-morin-train-time
+  type: empirical
+  text: "On a Brown corpus with |V| = 10,000, Morin and Bengio measure 462.6 ms per training example for the original network, 6.73 ms with importance sampling and 1.79 ms with the hierarchical model, a 258-fold speed-up."
+  scope:
+    models: "neural probabilistic language model with full softmax, importance sampling and the hierarchical decomposition"
+    data: ["Brown corpus"]
+    scale: "900,000 training words, |V| = 10,000"
+    setting: "time per training example on 1.2 GHz Athlon processors (Table 1)"
+  evidence:
+    - {work: "morin-2005-hierarchical-neural-network-language-model", role: original, locator: "p. 5", stance: for}
+
+- id: c-morin-perplexity
+  type: empirical
+  text: "Test perplexity is 268.7 for an interpolated trigram, 249.1 for a class-based model, 195.3 for the original neural network, 192.6 for importance sampling and 220.7 for the hierarchical model."
+  scope:
+    models: "trigram, class-based and neural language models"
+    data: ["Brown corpus"]
+    scale: "900,000 training words, |V| = 10,000"
+    setting: "test perplexity (Table 3)"
+  evidence:
+    - {work: "morin-2005-hierarchical-neural-network-language-model", role: original, locator: "p. 6", stance: for}
+
+- id: c-morin-conclusion
+  type: attributive
+  text: "Morin and Bengio conclude that a speed-up of around 200-fold can be achieved with only a little degradation in generalisation performance."
+  evidence:
+    - {work: "morin-2005-hierarchical-neural-network-language-model", role: original, locator: "p. 6", stance: for}
+
+- id: c-mnih-abstract
+  type: attributive
+  text: "Mnih and Teh report that noise-contrastive estimation reduces training times by more than an order of magnitude without affecting the quality of the resulting models."
+  evidence:
+    - {work: "mnih-2012-fast-simple-algorithm-neural-language-models", role: original, locator: "p. 1", stance: for}
+
+- id: c-mnih-ptb
+  type: empirical
+  text: "On the Penn Treebank with 930K training words and a 10K vocabulary, more noise samples gave better models, 25 samples were sufficient to match the maximum-likelihood model, and NCE training was 14 times faster than maximum-likelihood training."
+  scope:
+    models: "log-bilinear language model with a two-word context and 100-dimensional features"
+    data: ["Penn Treebank"]
+    scale: "930K training words, 10K vocabulary"
+    setting: "test perplexity and training time, NCE against maximum likelihood (Table 1)"
+  evidence:
+    - {work: "mnih-2012-fast-simple-algorithm-neural-language-models", role: original, locator: "p. 5", stance: for}
+
+- id: c-mnih-fixed-z
+  type: empirical
+  text: "Fixing the normalising constants to 1 instead of learning them did not affect the performance of the resulting models."
+  scope:
+    models: "neural language models trained with NCE"
+    data: ["Penn Treebank"]
+    scale: "930K training words"
+    setting: "per-context normalising constants fixed or learned"
+  evidence:
+    - {work: "mnih-2012-fast-simple-algorithm-neural-language-models", role: original, locator: "p. 4", stance: for}
+
+- id: c-mnih-noise
+  type: empirical
+  text: "The unigram noise distribution led to much better test perplexity than the uniform one for 1, 5, 25 and 100 noise samples, with the gap shrinking from almost 100 for one sample to under 15 for 100."
+  scope:
+    models: "log-bilinear language model trained with NCE"
+    data: ["Penn Treebank"]
+    scale: "930K training words, 10K vocabulary"
+    setting: "unigram against uniform noise (Table 2)"
+  evidence:
+    - {work: "mnih-2012-fast-simple-algorithm-neural-language-models", role: original, locator: "p. 5", stance: for}
+
+- id: c-press-abstract
+  type: attributive
+  text: "Press and Wolf find that the output matrix U of a neural language model is a valid word embedding, recommend tying it to the input embedding, and report a significant reduction in perplexity on a variety of neural network language models."
+  evidence:
+    - {work: "press-2017-using-output-embedding", role: original, locator: "the abstract", stance: for}
+
+- id: c-press-table5
+  type: empirical
+  text: "On the Penn Treebank, tying shrinks the large LSTM model of Zaremba et al. from 66M to 51M parameters and lowers its test perplexity from 78.4 to 74.3, while the training perplexity rises from 37.8 to 48.5."
+  scope:
+    models: "large two-layer LSTM language model of Zaremba et al. with dropout, untied and tied"
+    data: ["Penn Treebank"]
+    scale: "66M and 51M parameters"
+    setting: "word-level perplexity (Table 5)"
+  evidence:
+    - {work: "press-2017-using-output-embedding", role: original, locator: "p. 3", stance: for}
+
+- id: c-mikolov10-window
+  type: attributive
+  text: "Mikolov et al. call it a major deficiency that a feedforward network has to use a fixed-length context specified ad hoc before training, which usually means that it sees only five to ten preceding words."
+  evidence:
+    - {work: "mikolov-2010-recurrent-neural-network-language-model", role: original, locator: "p. 1", stance: for}
+
+- id: c-bengio-blowup
+  type: attributive
+  text: "Bengio et al. note that in theory, with weight decay on W and H but not on C, W and H could converge towards zero while C would blow up, though they did not observe this with stochastic gradient ascent."
+  evidence:
+    - {work: "bengio-2003-neural-probabilistic-language-model", role: original, locator: "p. 7", stance: for}
+
+- id: c-bengio-energy
+  type: attributive
+  text: "In the network above, the distributed word features are used only for the input words; Bengio et al. describe a variant in which the output word is also represented by its feature vector and the network outputs an energy that can be read as an unnormalised log-probability of the whole sub-sequence."
+  evidence:
+    - {work: "bengio-2003-neural-probabilistic-language-model", role: original, locator: "p. 14", stance: for}
+
+- id: c-press-updates
+  type: attributive
+  text: "Press and Wolf note that in the untied model the only row of the input embedding updated at a step is that of the current input word, while every row of the output embedding is updated; with tying the two updates are summed into one matrix."
+  evidence:
+    - {work: "press-2017-using-output-embedding", role: original, locator: "p. 2", stance: for}
+
+- id: c-mikolov10-result
+  type: empirical
+  text: "Mikolov et al. obtain around 50% reduction of perplexity by using a mixture of several recurrent language models, compared to a backoff language model."
+  scope:
+    models: "mixture of several recurrent neural network language models against a backoff n-gram model"
+    data: ["Wall Street Journal"]
+    scale: "as in the abstract of Mikolov et al. (2010)"
+    setting: "perplexity"
+  evidence:
+    - {work: "mikolov-2010-recurrent-neural-network-language-model", role: original, locator: "p. 1", stance: for}
