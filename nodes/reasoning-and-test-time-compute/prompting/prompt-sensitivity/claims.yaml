@@ -1,0 +1,295 @@
+# The claims of the prompt-sensitivity page (spec 07). The build computes the labels.
+
+# The finding
+
+- id: c-zh-abs
+  type: attributive
+  text: "Few-shot learning with GPT-3 can be unstable: the choice of prompt format, training examples, and even the order of the training examples can cause accuracy to vary, and varying the permutation of the training examples can cause accuracy to go from near chance (54.3%) to 93.4%."
+  evidence:
+    - {work: "zhao-2021-calibrate-before-use", role: original, locator: "pp. 1 to 3", stance: for}
+
+- id: c-sc-abs
+  type: attributive
+  text: "Several widely used open-source LLMs are extremely sensitive to subtle changes in prompt formatting in few-shot settings, with performance differences of up to 76 accuracy points when evaluated using LLaMA-2-13B, and sensitivity remains even when increasing model size, the number of few-shot examples, or performing instruction tuning."
+  evidence:
+    - {work: "sclar-2024-quantifying-sensitivity-spurious-features", role: original, locator: "p. 1", stance: for}
+
+- id: c-mz-abs
+  type: attributive
+  text: "An analysis of single-prompt evaluations across 6.5M instances, involving 20 different LLMs and 39 tasks from 3 benchmarks, finds that different instruction templates lead to very different performance, both absolute and relative."
+  evidence:
+    - {work: "mizrahi-2024-state-of-what-art", role: original, locator: "p. 1", stance: for}
+
+- id: c-wb-abs
+  type: attributive
+  text: "With over 30 prompt templates manually written for natural language inference, models learn just as fast with many prompts that are intentionally irrelevant or even pathologically misleading as they do with instructively good prompts, and such patterns hold even for models as large as 175 billion parameters and for instruction-tuned models."
+  evidence:
+    - {work: "webson-2022-prompt-based-models-understand", role: original, locator: "p. 1", stance: for}
+
+- id: c-opro-sim
+  type: attributive
+  text: "With the PaLM 2-L scorer on the GSM8K test set, “Let’s think step by step.” achieves accuracy 71.8, “Let’s solve the problem together.” has accuracy 60.5, while the accuracy of “Let’s work together to solve this problem step by step.” is only 49.4, although it is the semantic combination of the two."
+  evidence:
+    - {work: "yang-2024-large-language-models-optimizers", role: original, locator: "p. 13", stance: for}
+
+# Derivation
+
+- id: c-d-thresh
+  type: mathematical
+  text: "With two classes, contextual calibration predicts the positive class exactly when its probability exceeds the content-free probability a, so it replaces the threshold 0.5 by a and subtracts logit(a) from every log-odds; a content-free probability of 0.62 is a shift of 0.4895."
+  assumes: ["W = diag(p_cf)^-1 and b = 0"]
+  derivation: calibration-orderings-and-format-spread
+
+- id: c-d-orders
+  type: mathematical
+  text: "k demonstrations have k! orders, 24 for k = 4 and 40,320 for k = 8, and four demonstrations of two balanced classes have C(4, 2) = 6 label patterns."
+  assumes: ["demonstrations are distinct"]
+  derivation: calibration-orderings-and-format-spread
+
+- id: c-d-range
+  type: mathematical
+  text: "If accuracy under a random format is normal with standard deviation σ, the expected range over m formats is 2σ E[max of m standard normals]: 1.1284σ, 3.0775σ, 3.8953σ and 5.7965σ for m = 2, 10, 24 and 320, so a spread over 10 formats is expected to be 0.531 of the spread over 320."
+  assumes: ["format effects are independent and normal"]
+  derivation: calibration-orderings-and-format-spread
+
+- id: c-d-noise
+  type: mathematical
+  text: "An accuracy of 0.5 on 1,000 items has a standard error of 1.58 points, so ten equally good formats measured on separate samples would differ by 4.87 points on average from noise alone; on shared items two formats that disagree on 10% of items have a difference with standard error 1.0 point."
+  assumes: ["items are independent"]
+  derivation: calibration-orderings-and-format-spread
+
+- id: c-d-flip
+  type: mathematical
+  text: "If a format moves each of two models by a normal amount of standard deviation σ with correlation ρ, the weaker model comes out ahead with probability Φ(−Δ / (σ sqrt(2(1 − ρ)))): 0.3886, 0.2398 and 0.0786 for gaps Δ of 2, 5 and 10 points at σ = 5 and ρ = 0, and 0.3446 for Δ = 2 at ρ = 0.5."
+  assumes: ["format effects are normal"]
+  derivation: calibration-orderings-and-format-spread
+
+- id: c-d-select
+  type: mathematical
+  text: "Choosing the highest-scoring of m equally good prompts on a development set of 100 items at true accuracy 0.7 overstates the winner's accuracy by 4.583 E[max of m standard normals] points on average: 7.05 for m = 10 and 8.93 for m = 24."
+  assumes: ["the prompts have the same true accuracy", "scores are independent"]
+  derivation: calibration-orderings-and-format-spread
+
+# Evidence
+
+- id: c-zh-models
+  type: attributive
+  text: "Zhao et al. run their experiments on three sizes of GPT-3 (2.7B, 13B, and 175B parameters) as well as GPT-2 (1.5B parameters), accessing GPT-3 using the OpenAI API."
+  evidence:
+    - {work: "zhao-2021-calibrate-before-use", role: original, locator: "p. 3", stance: for}
+
+- id: c-zh-vary
+  type: attributive
+  text: "GPT-3's accuracy depends highly on both selection and permutation of training examples: with a fixed prompt format and different random sets of training examples, accuracy is evaluated for all possible permutations."
+  evidence:
+    - {work: "zhao-2021-calibrate-before-use", role: original, locator: "p. 3", stance: for}
+
+- id: c-zh-format
+  type: attributive
+  text: "Keeping the training examples and permutations fixed while varying the prompt format over an additional 14 manually designed formats for SST-2, some of the formats are better than others on average, but all of the formats still suffer from high variance across different training sets."
+  evidence:
+    - {work: "zhao-2021-calibrate-before-use", role: original, locator: "p. 4", stance: for}
+
+- id: c-zh-biases
+  type: attributive
+  text: "The variance arises because language models are biased towards outputting answers that are frequent in the prompt (majority label bias), towards the end of the prompt (recency bias), and common in the pre-training data (common token bias)."
+  evidence:
+    - {work: "zhao-2021-calibrate-before-use", role: original, locator: "p. 4", stance: for}
+
+- id: c-zh-maj
+  type: attributive
+  text: "On the validation set for 4-shot LAMA with GPT-3 2.7B, 50.2% of the model predictions are a repeat of one of the four training answers, while the correct repeat rate is 24.7%."
+  evidence:
+    - {work: "zhao-2021-calibrate-before-use", role: original, locator: "p. 4", stance: for}
+
+- id: c-zh-tok
+  type: attributive
+  text: "On DBPedia, a balanced 14-way topic classification dataset, GPT-3 predicts the book class 11 times more often than the artist class, and there is a moderate correlation (r = 0.67) between the frequency of a DBPedia label name and the rate at which GPT-3 predicts its class."
+  evidence:
+    - {work: "zhao-2021-calibrate-before-use", role: original, locator: "p. 5", stance: for}
+
+- id: c-zh-thresh
+  type: attributive
+  text: "For one sentiment prompt with 67% accuracy, if the classification threshold could be set optimally (p(Positive) = 0.68), the classifier would be highly accurate (94% on the validation set)."
+  evidence:
+    - {work: "zhao-2021-calibrate-before-use", role: original, locator: "p. 5", stance: for}
+
+- id: c-zh-cal
+  type: attributive
+  text: "Contextual calibration obtains the label probabilities for a content-free input such as N/A, sets W = diag(p_cf)^-1 and b to the all-zero vector, and makes test predictions by taking the argmax of W p + b."
+  evidence:
+    - {work: "zhao-2021-calibrate-before-use", role: original, locator: "p. 5", stance: for}
+
+- id: c-zh-gain
+  type: attributive
+  text: "Contextual calibration consistently improves GPT-3 and GPT-2's accuracy (up to 30.0% absolute) across different choices of the prompt format and examples, and makes the accuracy more stable across different prompts."
+  evidence:
+    - {work: "zhao-2021-calibrate-before-use", role: original, locator: "p. 2", stance: for}
+
+- id: c-zh-var
+  type: attributive
+  text: "Contextual calibration reduces the variance considerably in a majority of cases, and it does not increase variance by much in the remaining cases."
+  evidence:
+    - {work: "zhao-2021-calibrate-before-use", role: original, locator: "p. 6", stance: for}
+
+- id: c-lu-abs
+  type: attributive
+  text: "The order in which few-shot samples are provided matters; the effect is present across model sizes, is not related to a specific subset of samples, and a good permutation for one model is not transferable to another."
+  evidence:
+    - {work: "lu-2022-fantastically-ordered-prompts", role: original, locator: "p. 1", stance: for}
+
+- id: c-lu-fig
+  type: attributive
+  text: "Some permutations have comparable performance (over 85% accuracy) to supervised training for sentiment classification, while others perform close to random (around 50%); increasing the model size somewhat addresses this, but the problem is still present for some text classification tasks for models with billions of parameters."
+  evidence:
+    - {work: "lu-2022-fantastically-ordered-prompts", role: original, locator: "p. 2", stance: for}
+
+- id: c-lu-transfer
+  type: attributive
+  text: "A specific permutation's performance may drop from 88.7% to 51.6% by changing the underlying model from GPT2-XL (1.5B) to GPT2-Large (0.8B)."
+  evidence:
+    - {work: "lu-2022-fantastically-ordered-prompts", role: original, locator: "p. 3", stance: for}
+
+- id: c-lu-more
+  type: attributive
+  text: "Increasing the number of training samples leads to increases in performance, but a high level of variance remains, even with a large number of samples, and can even increase."
+  evidence:
+    - {work: "lu-2022-fantastically-ordered-prompts", role: original, locator: "p. 3", stance: for}
+
+- id: c-lu-degen
+  type: attributive
+  text: "The majority of failing prompts suffer from highly unbalanced predicted label distributions, and although calibration leads to much higher performance, the variance remains high."
+  evidence:
+    - {work: "lu-2022-fantastically-ordered-prompts", role: original, locator: "p. 4", stance: for}
+
+- id: c-lu-method
+  type: attributive
+  text: "Lu et al. rank candidate orderings on an artificial probing set generated by the language model itself, using Global Entropy (GlobalE), the entropy of the predicted labels, and Local Entropy (LocalE), the average prediction entropy per data point."
+  evidence:
+    - {work: "lu-2022-fantastically-ordered-prompts", role: original, locator: "p. 5", stance: for}
+
+- id: c-lu-gain
+  type: attributive
+  text: "Selecting orderings by entropy statistics on the probing set yields a 13% relative improvement for GPT-family models across eleven different established text classification tasks."
+  evidence:
+    - {work: "lu-2022-fantastically-ordered-prompts", role: original, locator: "p. 1", stance: for}
+
+- id: c-sc-avg
+  type: attributive
+  text: "Accuracy varies by up to 76 points for LLaMA-2-13B between equivalent formats, and by about 10 accuracy points on average across 50+ tasks and several models."
+  evidence:
+    - {work: "sclar-2024-quantifying-sensitivity-spurious-features", role: original, locator: "p. 1", stance: for}
+
+- id: c-sc-median
+  type: attributive
+  text: "Across tasks there is a median spread of 7.5 accuracy points across choices in the model and the number of few-shot examples; 20% of tasks consistently result in a spread of at least 15 accuracy points for all LLaMA-2 settings and at least 9 points for all Falcon settings, and several tasks have a spread over 70 accuracy points."
+  evidence:
+    - {work: "sclar-2024-quantifying-sensitivity-spurious-features", role: original, locator: "p. 5", stance: for}
+
+- id: c-sc-lower
+  type: attributive
+  text: "Because this analysis uses only 10 randomly sampled formats, it represents a lower bound of the true spreads for each task."
+  evidence:
+    - {work: "sclar-2024-quantifying-sensitivity-spurious-features", role: original, locator: "p. 5", stance: for}
+
+- id: c-sc-reverse
+  type: attributive
+  text: "Comparison trends between models are often reversed just by choosing different formats: LLaMA-2-13B and -70B reverse trend by at least d = 0.02 with probability 0.141, and LLaMA-2-7B and Falcon-7B with probability 0.140."
+  evidence:
+    - {work: "sclar-2024-quantifying-sensitivity-spurious-features", role: original, locator: "p. 5", stance: for}
+
+- id: c-sc-weak
+  type: attributive
+  text: "Format performance only weakly correlates between models, which puts into question the methodological validity of comparing models with an arbitrarily chosen, fixed prompt format."
+  evidence:
+    - {work: "sclar-2024-quantifying-sensitivity-spurious-features", role: original, locator: "p. 1", stance: for}
+
+- id: c-sc-gpt
+  type: attributive
+  text: "FormatSpread does not require access to the model weights, and with GPT3.5 it finds a spread up to 56 accuracy points with a median spread of 6.4 accuracy points across 320 formats and 53 tasks at a cost of under 10 USD on average per task."
+  evidence:
+    - {work: "sclar-2024-quantifying-sensitivity-spurious-features", role: original, locator: "p. 2", stance: for}
+
+- id: c-sc-thompson
+  type: attributive
+  text: "FormatSpread explores the space of formats as a bandit problem with Thompson sampling, modelling each format's accuracy as a Beta distribution since each data point evaluation is a Bernoulli trial."
+  evidence:
+    - {work: "sclar-2024-quantifying-sensitivity-spurious-features", role: original, locator: "p. 4", stance: for}
+
+- id: c-sc-report
+  type: attributive
+  text: "Future research would benefit from reporting a performance spread over a sufficient sample of plausible formats, instead of simply reporting the formatting used and its performance."
+  evidence:
+    - {work: "sclar-2024-quantifying-sensitivity-spurious-features", role: original, locator: "p. 2", stance: for}
+
+- id: c-wb-setup
+  type: attributive
+  text: "Webson and Pavlick evaluate language models on NLI in zero-shot and few-shot settings using more than 30 manually written templates and 13 sets of LM target words, for a total of over 390 prompts."
+  evidence:
+    - {work: "webson-2022-prompt-based-models-understand", role: original, locator: "p. 1", stance: for}
+
+- id: c-wb-target
+  type: attributive
+  text: "Models are much more sensitive to the choice of the LM target words as opposed to the meaning of the instruction templates."
+  evidence:
+    - {work: "webson-2022-prompt-based-models-understand", role: original, locator: "p. 2", stance: for}
+
+- id: c-wb-null
+  type: attributive
+  text: "Models trained with null templates perform far worse than all other categories of templates."
+  evidence:
+    - {work: "webson-2022-prompt-based-models-understand", role: original, locator: "p. 5", stance: for}
+
+- id: c-mz-tau
+  type: attributive
+  text: "Overall, 15 tasks out of 25 have instruction template paraphrases with negative Kendall's τ, indicating mostly disagreeing LLM rankings."
+  evidence:
+    - {work: "mizrahi-2024-state-of-what-art", role: original, locator: "p. 6", stance: for}
+
+- id: c-mz-alpaca
+  type: attributive
+  text: "The performance of Alpaca-13B with the original instruction templates outperformed its average performance over paraphrases by more than one standard deviation in 7 out of 10 LMentry tasks."
+  evidence:
+    - {work: "mizrahi-2024-state-of-what-art", role: original, locator: "p. 6", stance: for}
+
+- id: c-mz-edit
+  type: attributive
+  text: "Major differences in performance can occur even for very similar paraphrase pairs: the Flan-T5-large model demonstrated an average performance degradation of 28% when changing the word excludes to lacks, while the Flan-T5-XL model showed an average performance improvement of 46% on that same edit."
+  evidence:
+    - {work: "mizrahi-2024-state-of-what-art", role: original, locator: "p. 6", stance: for}
+
+- id: c-mz-metrics
+  type: attributive
+  text: "Mizrahi et al. define the maximum performance (MaxP) of a model on a task as the maximum performance across all instruction templates, and the average performance (AvgP) as the mean over all instruction templates."
+  evidence:
+    - {work: "mizrahi-2024-state-of-what-art", role: original, locator: "p. 7", stance: for}
+
+- id: c-ape-abs
+  type: attributive
+  text: "Automatically generated instructions achieve better or comparable performance to the instructions generated by human annotators on 24/24 Instruction Induction tasks and 17/21 curated BIG-Bench tasks."
+  evidence:
+    - {work: "zhou-2023-large-language-models-human-level", role: original, locator: "p. 1", stance: for}
+
+- id: c-ape-kojima
+  type: attributive
+  text: "Zero-Shot-CoT, prepending Let's think step by step to the response, improves the zero-shot performance of InstructGPT on MultiArith from 17.7 to 78.7 and on GSM8K from 10.4 to 40.7."
+  evidence:
+    - {work: "zhou-2023-large-language-models-human-level", role: original, locator: "p. 7", stance: for}
+
+- id: c-ape-cot
+  type: attributive
+  text: "APE produces the prompt Let's work this out in a step by step way to be sure we have the right answer, which further improves performance from 78.7 to 82.0 on MultiArith and from 40.7 to 43.0 on GSM8K."
+  evidence:
+    - {work: "zhou-2023-large-language-models-human-level", role: original, locator: "p. 7", stance: for}
+
+- id: c-opro-abs
+  type: attributive
+  text: "With a variety of LLMs, the prompts optimized by OPRO outperform human-designed prompts by up to 8% on GSM8K, and by up to 50% on Big-Bench Hard tasks."
+  evidence:
+    - {work: "yang-2024-large-language-models-optimizers", role: original, locator: "p. 1", stance: for}
+
+- id: c-opro-table
+  type: attributive
+  text: "With PaLM 2-L as the scorer, zero-shot GSM8K test accuracy is 71.8 with Let's think step by step, 58.8 with Let's work this out in a step by step way to be sure we have the right answer, 34.0 with the empty string, and 80.2 with Take a deep breath and work on this problem step-by-step."
+  evidence:
+    - {work: "yang-2024-large-language-models-optimizers", role: original, locator: "p. 1", stance: for}
