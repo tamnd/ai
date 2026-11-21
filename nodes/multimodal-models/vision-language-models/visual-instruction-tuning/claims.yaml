@@ -1,0 +1,333 @@
+# The claims of the visual-instruction-tuning page (spec 07). The build computes the labels.
+
+# The method
+
+- id: c-lv-data
+  type: attributive
+  text: "To create instruction-following data involving visual content, LLaVA uses language-only GPT-4 or ChatGPT as the teacher, both of which accept only text as input, and encodes an image for the text-only GPT through two symbolic representations: captions that describe the visual scene from various perspectives, and bounding boxes that localize the objects in the scene."
+  evidence:
+    - {work: "liu-2023-visual-instruction-tuning", role: original, locator: "p. 3", stance: for}
+
+- id: c-lv-158
+  type: attributive
+  text: "LLaVA collects 158K unique language-image instruction-following samples in total, including 58K in conversations, 23K in detailed description, and 77k in complex reasoning."
+  evidence:
+    - {work: "liu-2023-visual-instruction-tuning", role: original, locator: "p. 4", stance: for}
+
+- id: c-lv-proj
+  type: attributive
+  text: "LLaVA uses a simple linear layer to connect image features into the word embedding space: a trainable projection matrix W converts the visual feature Zv = g(Xv) of the CLIP encoder into language embedding tokens Hv = W · Zv, which have the same dimensionality as the word embedding space in the language model."
+  evidence:
+    - {work: "liu-2023-visual-instruction-tuning", role: original, locator: "p. 4", stance: for}
+
+- id: c-lv-vicuna
+  type: attributive
+  text: "LLaVA connects the open-set visual encoder of CLIP with the language decoder Vicuna and fine-tunes end-to-end on the generated instructional vision-language data."
+  evidence:
+    - {work: "liu-2023-visual-instruction-tuning", role: original, locator: "p. 2", stance: for}
+
+- id: c-lv-s1
+  type: attributive
+  text: "In stage 1, pre-training for feature alignment, CC3M is filtered to 595K image-text pairs converted to single-turn instructions, and both the visual encoder and LLM weights are kept frozen while the likelihood is maximized with the projection matrix W as the only trainable parameters, which can be understood as training a compatible visual tokenizer for the frozen LLM."
+  evidence:
+    - {work: "liu-2023-visual-instruction-tuning", role: original, locator: "p. 5", stance: for}
+
+- id: c-lv-s2
+  type: attributive
+  text: "In stage 2 the visual encoder weights stay frozen and both the pre-trained weights of the projection layer and the LLM are updated, so the trainable parameters are θ = {W, ϕ}."
+  evidence:
+    - {work: "liu-2023-visual-instruction-tuning", role: original, locator: "p. 5", stance: for}
+
+- id: c-lv-hp
+  type: attributive
+  text: "All LLaVA models are trained with 8× A100s, pre-training on the filtered CC-595K subset for 1 epoch with a learning rate of 2e-3 and a batch size of 128, and fine-tuning on LLaVA-Instruct-158K for 3 epochs with a learning rate of 2e-5 and a batch size of 32."
+  evidence:
+    - {work: "liu-2023-visual-instruction-tuning", role: original, locator: "p. 5", stance: for}
+
+- id: c-lv-hours
+  type: attributive
+  text: "With 8× A100s, pretraining on CC-595K completes within 4 hours and finetuning on Instruct-158K completes within 10 hours."
+  evidence:
+    - {work: "liu-2023-visual-instruction-tuning", role: original, locator: "p. 20", stance: for}
+
+- id: c-fl-frozen
+  type: attributive
+  text: "Flamingo models leverage two complementary pre-trained and frozen models, a vision model which can perceive visual scenes and a large language model which performs a basic form of reasoning, and novel architecture components are added in between these models to connect them."
+  evidence:
+    - {work: "alayrac-2022-flamingo-visual-language-model", role: original, locator: "p. 3", stance: for}
+
+- id: c-fl-resampler
+  type: attributive
+  text: "The Perceiver Resampler takes as input a variable number of image or video features from the vision encoder and produces a fixed number of visual outputs (64), reducing the computational complexity of the vision-text cross-attention, by learning a predefined number of latent input queries which are fed to a Transformer and cross-attend to the visual features."
+  evidence:
+    - {work: "alayrac-2022-flamingo-visual-language-model", role: original, locator: "p. 5", stance: for}
+
+- id: c-fl-tanh
+  type: attributive
+  text: "Flamingo freezes the pretrained LM blocks and inserts gated cross-attention dense blocks between the original layers, trained from scratch; each new layer's output is multiplied by tanh(α) before it is added to the residual, where α is a layer-specific learnable scalar initialized to 0, so at initialization the model output matches that of the pretrained LM."
+  evidence:
+    - {work: "alayrac-2022-flamingo-visual-language-model", role: original, locator: "p. 5", stance: for}
+
+- id: c-fl-sizes
+  type: attributive
+  text: "Flamingo builds on the 1.4B, 7B, and 70B parameter Chinchilla models, giving Flamingo-3B, Flamingo-9B and Flamingo-80B, and uses a pretrained and frozen NFNet-F6 vision encoder trained with a contrastive objective on image and text pairs."
+  evidence:
+    - {work: "alayrac-2022-flamingo-visual-language-model", role: original, locator: "pp. 5 to 6", stance: for}
+
+- id: c-fl-mask
+  type: attributive
+  text: "At a given text token, Flamingo attends to the visual tokens of the image that appeared just before it in the interleaved sequence, rather than to all previous images; it uses only up to 5 images per sequence when training on interleaved data yet benefits from sequences of up to 32 shots of images or videos and texts during evaluation."
+  evidence:
+    - {work: "alayrac-2022-flamingo-visual-language-model", role: original, locator: "p. 6", stance: for}
+
+- id: c-fl-m3w
+  type: attributive
+  text: "The MultiModal MassiveWeb (M3W) dataset extracts text and images from the HTML of approximately 43 million webpages, and from each document a random subsequence of L = 256 tokens is sampled with up to the first N = 5 images; Flamingo also trains on ALIGN with 1.8 billion images paired with alt-text, LTIP with 312 million image and text pairs, and VTP with 27 million short videos."
+  evidence:
+    - {work: "alayrac-2022-flamingo-visual-language-model", role: original, locator: "p. 6", stance: for}
+
+- id: c-fl-loss
+  type: attributive
+  text: "Flamingo is trained by minimizing a weighted sum of per-dataset expected negative log-likelihoods of text given the visual inputs; tuning the per-dataset weights is key to performance, and gradients are accumulated over all datasets, which outperforms a round-robin approach."
+  evidence:
+    - {work: "alayrac-2022-flamingo-visual-language-model", role: original, locator: "p. 6", stance: for}
+
+- id: c-b2-qf
+  type: attributive
+  text: "The Q-Former of BLIP-2 is initialized with the pre-trained weights of BERT-base with randomly initialized cross-attention layers inserted every other transformer block, contains 188M parameters, and uses 32 learnable queries of dimension 768, so the output Z (32 × 768) is much smaller than the frozen image features, for example 257 × 1024 for ViT-L/14."
+  evidence:
+    - {work: "li-2023-blip-2-bootstrapping-language-image", role: original, locator: "p. 3", stance: for}
+
+- id: c-b2-obj
+  type: attributive
+  text: "In the representation learning stage BLIP-2 jointly optimizes three objectives that share the same input format and model parameters, image-text contrastive learning, image-grounded text generation and image-text matching, each with a different attention mask between queries and text; for contrastive learning it takes the highest similarity between any query output and the text embedding as the image-text similarity."
+  evidence:
+    - {work: "li-2023-blip-2-bootstrapping-language-image", role: original, locator: "p. 3", stance: for}
+
+- id: c-b2-fc
+  type: attributive
+  text: "In the generative stage BLIP-2 uses a fully-connected layer to linearly project the output query embeddings Z into the dimension of the LLM's text embedding, and the projected query embeddings are prepended to the input text embeddings, where they function as soft visual prompts that condition the frozen LLM."
+  evidence:
+    - {work: "li-2023-blip-2-bootstrapping-language-image", role: original, locator: "p. 4", stance: for}
+
+- id: c-b2-cost
+  type: attributive
+  text: "BLIP-2 pre-trains for 250k steps in the first stage and 80k steps in the second on 129M images, and on a single 16-A100(40G) machine the model with ViT-g and FlanT5-XXL requires less than 6 days for the first stage and less than 3 days for the second stage."
+  evidence:
+    - {work: "li-2023-blip-2-bootstrapping-language-image", role: original, locator: "p. 4", stance: for}
+
+- id: c-l15-recipe
+  type: attributive
+  text: "LLaVA-1.5 makes simple modifications to LLaVA, using CLIP-ViT-L-336px with an MLP projection and adding academic-task-oriented VQA data with response formatting prompts; the final 13B checkpoint uses 1.2M publicly available data and finishes full training in about 1 day on a single 8-A100 node."
+  evidence:
+    - {work: "liu-2023-improved-baselines-visual-instruction", role: original, locator: "p. 1", stance: for}
+
+- id: c-l15-fmt
+  type: attributive
+  text: "Liu et al. append a single response formatting prompt, Answer the question using a single word or phrase, at the end of VQA questions when short answers are wanted, because LLaVA falls short on academic benchmarks that require short-form answers and tends to answer yes for yes/no questions due to the lack of such data in the training distribution."
+  evidence:
+    - {work: "liu-2023-improved-baselines-visual-instruction", role: original, locator: "p. 3", stance: for}
+
+- id: c-l15-hours
+  type: attributive
+  text: "Because of the increased input resolution of 336², training LLaVA-1.5 takes about twice as long as LLaVA: about 6 hours of pretraining and about 20 hours of visual instruction tuning, using 8× A100s."
+  evidence:
+    - {work: "liu-2023-improved-baselines-visual-instruction", role: original, locator: "p. 4", stance: for}
+
+# Derivation
+
+- id: c-d-pope
+  type: mathematical
+  text: "On a POPE split with as many yes questions as no questions, a model that always answers yes has accuracy 0.5, precision 0.5, recall 1 and F1 2/3, which is the 50.00 accuracy and 66.67 F1 reported for MultiModal-GPT on the popular and adversarial splits."
+  assumes: ["the split is balanced 1:1", "precision and recall are taken for the yes class"]
+  derivation: vision-language-arithmetic
+
+- id: c-d-tokens
+  type: mathematical
+  text: "A ViT-L/14 at 224 pixels makes (224/14)² = 256 patch tokens, 257 with the class token, and at 336 pixels 24² = 576; feeding five images through a 336-pixel linear projection costs 2,880 visual tokens in the LLM context, against 160 with 32 Q-Former queries and 320 with 64 Perceiver Resampler outputs."
+  assumes: ["one visual token per patch", "no token merging"]
+  derivation: vision-language-arithmetic
+
+- id: c-d-gate
+  type: mathematical
+  text: "With y' = y + tanh(α) f(y, x) and α = 0 the gated block is the identity, and since tanh'(0) = 1 the first gradient reaches α as the inner product of the upstream gradient with f(y, x), while every weight inside f gets a gradient multiplied by tanh(0) = 0."
+  assumes: ["f is differentiable", "α is a scalar per layer"]
+  derivation: vision-language-arithmetic
+
+- id: c-d-ratio
+  type: mathematical
+  text: "188 million Q-Former parameters against 10.2 billion trainable parameters for Flamingo-80B is a ratio of 54.3."
+  assumes: ["the counts are those reported for the two models"]
+  derivation: vision-language-arithmetic
+
+- id: c-d-sum
+  type: mathematical
+  text: "58K conversations, 23K detailed descriptions and 77K complex reasoning samples add up to 158K."
+  assumes: ["the three subsets do not overlap"]
+  derivation: vision-language-arithmetic
+
+- id: c-d-compute
+  type: mathematical
+  text: "About 26 hours on 8 A100s is about 208 A100-hours for LLaVA-1.5, while 1536 TPU chips for 15 days is 552,960 chip-hours for Flamingo, about 2,658 times more device-hours."
+  assumes: ["the device counts are used for the full run", "an A100-hour and a TPU-chip-hour are counted as one device-hour each"]
+  derivation: vision-language-arithmetic
+
+- id: c-d-params
+  type: mathematical
+  text: "From a 1024-wide CLIP feature to a 5120-wide LLM embedding, a linear projection has 1024 × 5120 = 5,242,880 weights, and a two-layer MLP with a 5120-wide hidden layer has 1024 × 5120 + 5120 × 5120 = 31,457,280 weights, under 0.25% of a 13-billion-parameter LLM."
+  assumes: ["biases are ignored", "the LLM width is 5120"]
+  derivation: vision-language-arithmetic
+
+# Evidence
+
+- id: c-lv-85
+  type: attributive
+  text: "LLaVA yields an 85.1% relative score compared with GPT-4 on a synthetic multimodal instruction-following dataset, and when fine-tuned on Science QA the synergy of LLaVA and GPT-4 reaches an accuracy of 92.53%."
+  evidence:
+    - {work: "liu-2023-visual-instruction-tuning", role: original, locator: "p. 1", stance: for}
+
+- id: c-lv-50
+  type: attributive
+  text: "On LLaVA-Bench (COCO), with instruction tuning the model's ability of following user instructions improves by over 50 points, and adding a small amount of detailed description and complex reasoning questions improves the overall capability by 7 points."
+  evidence:
+    - {work: "liu-2023-visual-instruction-tuning", role: original, locator: "p. 7", stance: for}
+
+- id: c-lv-sqa
+  type: attributive
+  text: "On ScienceQA, LLaVA using the visual features before the last layer, predicting reasons first and trained for 12 epochs yields 90.92% accuracy, close to the previous 91.68%."
+  evidence:
+    - {work: "liu-2023-visual-instruction-tuning", role: original, locator: "p. 8", stance: for}
+
+- id: c-lv-judge
+  type: attributive
+  text: "LLaVA-Bench is scored by feeding the question, the ground-truth textual descriptions and the responses of both assistants to a text-only GPT-4 judge that rates helpfulness, relevance, accuracy and level of detail on a scale of 1 to 10."
+  evidence:
+    - {work: "liu-2023-visual-instruction-tuning", role: original, locator: "p. 6", stance: for}
+
+- id: c-fl-1000
+  type: attributive
+  text: "On 6 of 16 tasks, Flamingo also outperforms fine-tuned models despite using only 32 task-specific examples, around 1000 times less task-specific training data."
+  evidence:
+    - {work: "alayrac-2022-flamingo-visual-language-model", role: original, locator: "p. 4", stance: for}
+
+- id: c-fl-abl-data
+  type: attributive
+  text: "Removing the interleaved image-text dataset M3W leads to a decrease of more than 17% in performance while removing the conventional paired image-text pairs also decreases performance by 9.8%."
+  evidence:
+    - {work: "alayrac-2022-flamingo-visual-language-model", role: original, locator: "pp. 8 to 9", stance: for}
+
+- id: c-fl-abl-gate
+  type: attributive
+  text: "Without the 0-initialized tanh gating the overall score drops by 4.2%, and disabling the gating leads to training instabilities."
+  evidence:
+    - {work: "alayrac-2022-flamingo-visual-language-model", role: original, locator: "p. 9", stance: for}
+
+- id: c-fl-abl-freq
+  type: attributive
+  text: "Inserting GATED XATTN-DENSE blocks every fourth block accelerates training by 66% while only decreasing the overall score by 1.9%, and the blocks are added every fourth layer for Flamingo-9B and every seventh for Flamingo-80B."
+  evidence:
+    - {work: "alayrac-2022-flamingo-visual-language-model", role: original, locator: "p. 9", stance: for}
+
+- id: c-fl-abl-lm
+  type: attributive
+  text: "Training the language model from scratch decreases performance by 12.9%, and fine-tuning the pretrained language model also leads to a drop of 8.0%, an instance of catastrophic forgetting."
+  evidence:
+    - {work: "alayrac-2022-flamingo-visual-language-model", role: original, locator: "p. 9", stance: for}
+
+- id: c-fl-abl-vis
+  type: attributive
+  text: "The NFNet-F6 vision encoder has a +5.8% advantage over the CLIP ViT-L/14 and +8.0% over a smaller NFNet-F0 encoder."
+  evidence:
+    - {work: "alayrac-2022-flamingo-visual-language-model", role: original, locator: "p. 9", stance: for}
+
+- id: c-fl-compute
+  type: attributive
+  text: "In the compute details, the main run was trained on 1536 TPU chips for 15 days."
+  evidence:
+    - {work: "alayrac-2022-flamingo-visual-language-model", role: original, locator: "p. 21", stance: for}
+
+- id: c-b2-87
+  type: attributive
+  text: "BLIP-2 outperforms Flamingo80B by 8.7% on zero-shot VQAv2 with 54x fewer trainable parameters."
+  evidence:
+    - {work: "li-2023-blip-2-bootstrapping-language-image", role: original, locator: "p. 1", stance: for}
+
+- id: c-b2-okvqa
+  type: attributive
+  text: "On OK-VQA BLIP-2 comes second to Flamingo80B, which the authors attribute to OK-VQA focusing more on open-world knowledge and to the 70B Chinchilla language model holding more knowledge than the 11B FlanT5XXL; a stronger image encoder or a stronger LLM both lead to better performance."
+  evidence:
+    - {work: "li-2023-blip-2-bootstrapping-language-image", role: original, locator: "p. 6", stance: for}
+
+- id: c-b2-noreps
+  type: attributive
+  text: "Without representation learning, both types of LLMs give substantially lower performance on zero-shot VQA, and OPT suffers from catastrophic forgetting where performance drastically degrades as training proceeds."
+  evidence:
+    - {work: "li-2023-blip-2-bootstrapping-language-image", role: original, locator: "p. 7", stance: for}
+
+- id: c-l15-mme
+  type: attributive
+  text: "Merely including VQAv2 in training improves LLaVA's score on MME from 809.6 to 1323.8, and replacing the linear projection with a two-layer MLP connector improves the multimodal capabilities further."
+  evidence:
+    - {work: "liu-2023-improved-baselines-visual-instruction", role: original, locator: "p. 3", stance: for}
+
+- id: c-l15-rethink
+  type: attributive
+  text: "LLaVA-1.5 outperforms 80B IDEFICS, a Flamingo-like model with billions of trainable parameters for cross-modal connection, which leads the authors to rethink the benefits of the vision samplers and the necessity of additional large-scale pretraining for multimodal instruction-following."
+  evidence:
+    - {work: "liu-2023-improved-baselines-visual-instruction", role: original, locator: "p. 6", stance: for}
+
+# Limitations
+
+- id: c-pope-def
+  type: attributive
+  text: "Object hallucination in large vision-language models refers to generating contents that are inconsistent with ground-truth objects in the given image, and objects that frequently appear in the visual instructions or co-occur with the image objects are prone to be hallucinated."
+  evidence:
+    - {work: "li-2023-evaluating-object-hallucination-large", role: original, locator: "p. 1", stance: for}
+
+- id: c-pope-chair
+  type: attributive
+  text: "Although two captioning instructions have similar meanings, models prompted by the second can give doubled values of the CHAIR metrics compared with the first, and the performance order of some models also changes."
+  evidence:
+    - {work: "li-2023-evaluating-object-hallucination-large", role: original, locator: "p. 4", stance: for}
+
+- id: c-pope-hr
+  type: attributive
+  text: "The HR_A@10 and HR_C@10 (dining table) of all evaluated models are near 0.5 and 0.6, so on average about half of the hallucinated objects in each image belong to the top 10 most frequently appearing objects."
+  evidence:
+    - {work: "li-2023-evaluating-object-hallucination-large", role: original, locator: "p. 5", stance: for}
+
+- id: c-pope-method
+  type: attributive
+  text: "POPE formulates object hallucination evaluation as a binary classification task that prompts the model to output Yes or No to questions of the form Is there a <object> in the image?, with the ratio between ground-truth and nonexistent objects set at 1:1, and samples the nonexistent objects at random, from the most frequent objects, or from the objects that co-occur most with the ground-truth objects."
+  evidence:
+    - {work: "li-2023-evaluating-object-hallucination-large", role: original, locator: "p. 6", stance: for}
+
+- id: c-pope-yes
+  type: attributive
+  text: "On 500 MSCOCO images with 6 questions each, LLaVA, MultiModal-GPT and mPLUG-Owl have F1 scores below 70 and answer Yes near 99% of the time, and the performance of every model decreases from the random setting to the popular and adversarial settings."
+  evidence:
+    - {work: "li-2023-evaluating-object-hallucination-large", role: original, locator: "p. 7", stance: for}
+
+- id: c-l15-res
+  type: attributive
+  text: "Hallucination on detailed descriptions is significantly reduced when the model's inputs are scaled to higher resolutions like 448², which suggests that models learn to hallucinate when the input resolution is not sufficient to discern the details in the training data."
+  evidence:
+    - {work: "liu-2023-improved-baselines-visual-instruction", role: original, locator: "p. 8", stance: for}
+
+- id: c-lv-bag
+  type: attributive
+  text: "LLaVA answers yes when asked if strawberry-flavored yogurt is present although the fridge contains only yogurt and strawberries, which indicates that at times it perceives the image as a bag of patches."
+  evidence:
+    - {work: "liu-2023-visual-instruction-tuning", role: original, locator: "p. 7", stance: for}
+
+- id: c-fl-lim
+  type: attributive
+  text: "Flamingo inherits the weaknesses of pretrained language models, whose priors may play a role in occasional hallucinations and ungrounded guesses; its classification performance lags behind that of contrastive models; and in-context learning is highly sensitive to the demonstrations, with inference cost and performance that scale poorly with the number of shots."
+  evidence:
+    - {work: "alayrac-2022-flamingo-visual-language-model", role: original, locator: "p. 10", stance: for}
+
+- id: c-b2-icl
+  type: attributive
+  text: "Experiments with BLIP-2 do not observe an improved VQA performance when the LLM is given in-context VQA examples, which the authors attribute to a pretraining dataset that contains only a single image-text pair per sample."
+  evidence:
+    - {work: "li-2023-blip-2-bootstrapping-language-image", role: original, locator: "p. 8", stance: for}
