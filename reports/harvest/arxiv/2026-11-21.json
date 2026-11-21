@@ -1,0 +1,33 @@
+{
+  "source": "arxiv",
+  "date": "2026-11-21",
+  "adapter": "aik/0.1.64 harvest/arxiv",
+  "licence": "CC0-1.0",
+  "licence_class": "A",
+  "partial": false,
+  "snapshots": [
+    "b3:7a9720b9afb2d6cdee07d814c7d6b488f8f0f920c0dbe746bdf13b1bb77edd71",
+    "b3:6d49c48ee6e7ba2cd5c30c4cc87f3d3147b3bc83fd3385a98b5f88f38ad68e3d",
+    "b3:ff56bcba9a302da9246f2dcd36cdad93acf071347842347a0ca4842e95a6aefb",
+    "b3:6a5ad48008a20ec6819e18d56db25abf6987a3f84b913b77717f25876d85db33",
+    "b3:f74f1de7aaa5d83758806a5c51ba70dc38fa7d314ff3a1b80d24da2039eafe3f",
+    "b3:1e3d0a3b21b189020157c3a9460721fc58349dff621bf7fba85263bc63faaabc",
+    "b3:58b7af814d0de40df341959c86812b4afea0b56994c8485253320e96e1b08749",
+    "b3:0845b47c2755f8ffda835685828bcc0491a83d5c2d4bf14a0f6f3936019a8177",
+    "b3:79db01dabe63d4f4a0cc6f28e38bcb4b427cacc1344ab9d4c9217a09904e5b39",
+    "b3:5da72fae3e434c31ba49c37e7adea301a1aeedc6dc8841bfada89a35c2fa7060",
+    "b3:580a538028059aa1398c47f09b0478bdab131ff4eb54baece186f6a8f59f7a51",
+    "b3:f85d98377214bc4e6a9e80352f215ac51f7c0a7f54e12959e1a760d778bcbadf",
+    "b3:f5956087eafe8483a061ecac26b6fa9ab1b7cbc06406feb1d9940bd2daaff25a",
+    "b3:353ddcfada98e6f5e7f8a2c29eeb62ecf2b8a070c83426c6f99b9b74f8a7a2bc",
+    "b3:df3845cf9daa7b5fe8bf7ebfc0426636525cd00733b6e0edde1bab72ed75925d",
+    "b3:43ddfb033fd766eeca25de225f9046d98691484ad5c52e134e3964f5b0eb9f49",
+    "b3:2f6fde446de72f8e468e018aefd1d0fb88b19159212e7a15bab1f5eb86602dbb"
+  ],
+  "requests": 18,
+  "rows": 6144,
+  "new": 1,
+  "changed": 6,
+  "removed": 1493,
+  "unchanged": 6137
+}
