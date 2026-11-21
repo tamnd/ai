@@ -1,5 +1,5 @@
 ---
-tag: NEW-classifier-free-guidance
+tag: FBA4MH
 kind: method
 slug: classifier-free-guidance
 name: Classifier-free guidance

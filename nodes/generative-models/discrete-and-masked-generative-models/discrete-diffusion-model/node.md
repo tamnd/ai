@@ -1,5 +1,5 @@
 ---
-tag: NEW-discrete-diffusion-model
+tag: K4EAZQ
 kind: architecture
 slug: discrete-diffusion-model
 name: Discrete diffusion model

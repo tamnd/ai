@@ -1,5 +1,5 @@
 ---
-tag: NEW-latent-diffusion-model
+tag: D5Q9E6
 kind: architecture
 slug: latent-diffusion-model
 name: Latent diffusion model

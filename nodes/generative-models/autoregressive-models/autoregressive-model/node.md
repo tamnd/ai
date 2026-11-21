@@ -1,5 +1,5 @@
 ---
-tag: NEW-autoregressive-model
+tag: 1573RG
 kind: architecture
 slug: autoregressive-model
 name: Autoregressive model
