@@ -1,5 +1,5 @@
 ---
-tag: NEW-energy-based-model
+tag: XJKBJY
 kind: architecture
 slug: energy-based-model
 name: Energy-based model

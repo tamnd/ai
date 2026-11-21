@@ -1,5 +1,5 @@
 ---
-tag: NEW-autoregressive-model
+tag: QSRRRF
 kind: architecture
 slug: autoregressive-model
 name: Autoregressive model

@@ -1,5 +1,5 @@
 ---
-tag: NEW-discrete-diffusion-model
+tag: N79XJF
 kind: architecture
 slug: discrete-diffusion-model
 name: Discrete diffusion model
