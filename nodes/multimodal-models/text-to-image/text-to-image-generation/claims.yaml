@@ -1,0 +1,401 @@
+# The claims of the text-to-image-generation page (spec 07). The build computes the labels.
+
+# The method
+
+- id: c-de-stream
+  type: attributive
+  text: "DALL-E trains a transformer to autoregressively model the text and image tokens as a single stream of data, and with sufficient data and scale this approach is competitive with previous domain-specific models when evaluated in a zero-shot fashion."
+  evidence:
+    - {work: "ramesh-2021-zero-shot-text-image-generation", role: original, locator: "p. 1", stance: for}
+
+- id: c-de-dvae
+  type: attributive
+  text: "In stage 1, DALL-E trains a discrete variational autoencoder (dVAE) to compress each 256×256 RGB image into a 32 × 32 grid of image tokens, each element of which can assume 8192 possible values, which reduces the context size of the transformer by a factor of 192 without a large degradation in visual quality."
+  evidence:
+    - {work: "ramesh-2021-zero-shot-text-image-generation", role: original, locator: "p. 2", stance: for}
+
+- id: c-de-concat
+  type: attributive
+  text: "In stage 2, DALL-E concatenates up to 256 BPE-encoded text tokens with the 32 × 32 = 1024 image tokens and trains an autoregressive transformer to model the joint distribution over the text and image tokens."
+  evidence:
+    - {work: "ramesh-2021-zero-shot-text-image-generation", role: original, locator: "p. 2", stance: for}
+
+- id: c-de-12b
+  type: attributive
+  text: "The prior over text and image tokens is a 12-billion parameter sparse transformer; the lowercased caption is BPE-encoded with at most 256 tokens and vocabulary size 16,384, and the image is encoded with 32 × 32 = 1024 tokens with vocabulary size 8192."
+  evidence:
+    - {work: "ramesh-2021-zero-shot-text-image-generation", role: original, locator: "p. 4", stance: for}
+
+- id: c-de-weights
+  type: attributive
+  text: "Since DALL-E is primarily interested in image modeling, it multiplies the cross-entropy loss for the text by 1/8 and the cross-entropy loss for the image by 7/8."
+  evidence:
+    - {work: "ramesh-2021-zero-shot-text-image-generation", role: original, locator: "p. 4", stance: for}
+
+- id: c-de-data
+  type: attributive
+  text: "To scale up to 12-billion parameters, DALL-E collects 250 million text-images pairs from the internet, a dataset that does not include MS-COCO but does include Conceptual Captions and a filtered subset of YFCC100M."
+  evidence:
+    - {work: "ramesh-2021-zero-shot-text-image-generation", role: original, locator: "p. 4", stance: for}
+
+- id: c-de-rerank
+  type: attributive
+  text: "DALL-E reranks the samples drawn from the transformer using a pretrained contrastive model, which assigns a score based on how well the image matches the caption, and all samples use reranking with N = 512 unless otherwise stated."
+  evidence:
+    - {work: "ramesh-2021-zero-shot-text-image-generation", role: original, locator: "pp. 6 to 7", stance: for}
+
+- id: c-gl-cfg
+  type: attributive
+  text: "GLIDE compares two guidance strategies for text-conditional diffusion, CLIP guidance and classifier-free guidance, and finds that the latter is preferred by human evaluators for both photorealism and caption similarity."
+  evidence:
+    - {work: "nichol-2021-glide-towards-photorealistic-image", role: original, locator: "p. 1", stance: for}
+
+- id: c-uc-two
+  type: attributive
+  text: "unCLIP is a two-stage model: a prior that generates a CLIP image embedding given a text caption, and a decoder that generates an image conditioned on the image embedding."
+  evidence:
+    - {work: "ramesh-2022-hierarchical-text-conditional-image-generation", role: original, locator: "p. 1", stance: for}
+
+- id: c-uc-chain
+  type: attributive
+  text: "unCLIP stacks a prior P(zi|y) and a decoder P(x|zi,y) into P(x|y) = P(x,zi|y) = P(x|zi,y)P(zi|y), where the first equality holds because zi is a deterministic function of x and the second because of the chain rule."
+  evidence:
+    - {work: "ramesh-2022-hierarchical-text-conditional-image-generation", role: original, locator: "p. 3", stance: for}
+
+- id: c-uc-decoder
+  type: attributive
+  text: "The unCLIP decoder enables classifier-free guidance by randomly setting the CLIP embeddings to zero 10% of the time and randomly dropping the text caption 50% of the time during training, and two diffusion upsamplers go from 64×64 to 256×256 and then to 1024×1024 resolution."
+  evidence:
+    - {work: "ramesh-2022-hierarchical-text-conditional-image-generation", role: original, locator: "p. 4", stance: for}
+
+- id: c-uc-pca
+  type: attributive
+  text: "For the autoregressive prior, unCLIP retains only 319 principal components out of the original 1,024 dimensions of the CLIP image embedding and quantizes each of the 319 dimensions into 1,024 discrete buckets."
+  evidence:
+    - {work: "ramesh-2022-hierarchical-text-conditional-image-generation", role: original, locator: "p. 4", stance: for}
+
+- id: c-uc-diffprior
+  type: attributive
+  text: "The unCLIP diffusion prior is a decoder-only Transformer that predicts the unnoised CLIP image embedding directly with a mean-squared error loss, instead of the epsilon-prediction formulation."
+  evidence:
+    - {work: "ramesh-2022-hierarchical-text-conditional-image-generation", role: original, locator: "p. 5", stance: for}
+
+- id: c-im-arch
+  type: attributive
+  text: "Imagen comprises a frozen T5-XXL encoder to map input text into a sequence of embeddings and a 64×64 image diffusion model, followed by two super-resolution diffusion models for generating 256×256 and 1024×1024 images."
+  evidence:
+    - {work: "saharia-2022-photorealistic-text-image-diffusion", role: original, locator: "pp. 1 to 3", stance: for}
+
+- id: c-im-cfg
+  type: attributive
+  text: "Imagen samples with the adjusted x-prediction (zt − σε̃)/αt, where ε̃(zt,c) = wε(zt,c) + (1 − w)ε(zt); setting w = 1 disables classifier-free guidance and increasing w > 1 strengthens its effect."
+  evidence:
+    - {work: "saharia-2022-photorealistic-text-image-diffusion", role: original, locator: "p. 4", stance: for}
+
+- id: c-im-mismatch
+  type: attributive
+  text: "Increasing the classifier-free guidance weight improves image-text alignment but damages image fidelity, producing highly saturated and unnatural images, because high guidance weights cause x-predictions to exceed the bounds [−1,1] of the training data, a train-test mismatch."
+  evidence:
+    - {work: "saharia-2022-photorealistic-text-image-diffusion", role: original, locator: "p. 4", stance: for}
+
+- id: c-im-dyn
+  type: attributive
+  text: "Dynamic thresholding sets s at each sampling step to a certain percentile absolute pixel value in the x-prediction, and if s > 1, thresholds the x-prediction to the range [−s,s] and then divides by s, pushing saturated pixels inwards."
+  evidence:
+    - {work: "saharia-2022-photorealistic-text-image-diffusion", role: original, locator: "p. 4", stance: for}
+
+- id: c-im-p
+  type: attributive
+  text: "Imagen compares static thresholding with dynamic thresholding at p = 99.5 on 256 × 256 samples using a guidance weight of 5 for both the base model and the super-resolution model."
+  evidence:
+    - {work: "saharia-2022-photorealistic-text-image-diffusion", role: original, locator: "p. 26", stance: for}
+
+- id: c-im-aug
+  type: attributive
+  text: "Imagen uses noise conditioning augmentation for both super-resolution models: the low-resolution conditioning image is corrupted with Gaussian noise at a random aug_level during training, the model is conditioned on aug_level, and inference sweeps over its values."
+  evidence:
+    - {work: "saharia-2022-photorealistic-text-image-diffusion", role: original, locator: "p. 5", stance: for}
+
+- id: c-im-xattn
+  type: attributive
+  text: "Imagen conditions its base model on a pooled text embedding added to the diffusion timestep embedding and on the entire sequence of text embeddings through cross attention at multiple resolutions."
+  evidence:
+    - {work: "saharia-2022-photorealistic-text-image-diffusion", role: original, locator: "p. 5", stance: for}
+
+- id: c-im-train
+  type: attributive
+  text: "Imagen trains a 2B parameter model for 64 × 64 synthesis and 600M and 400M parameter models for the two super-resolution stages, with a batch size of 2048 and 2.5M training steps for all models, on 256 TPU-v4 chips for the base model and 128 TPU-v4 chips for both super-resolution models."
+  evidence:
+    - {work: "saharia-2022-photorealistic-text-image-diffusion", role: original, locator: "p. 6", stance: for}
+
+- id: c-im-data
+  type: attributive
+  text: "Imagen drops text embeddings with 10% probability for classifier-free guidance and trains on internal datasets with ≈ 460M image-text pairs and the publicly available Laion dataset with ≈ 400M image-text pairs."
+  evidence:
+    - {work: "saharia-2022-photorealistic-text-image-diffusion", role: original, locator: "p. 7", stance: for}
+
+- id: c-pa-seq2seq
+  type: attributive
+  text: "Parti treats text-to-image generation as a sequence-to-sequence modeling problem, akin to machine translation, with sequences of image tokens as the target outputs rather than text tokens in another language, using a ViT-VQGAN image tokenizer and an encoder-decoder Transformer scaled up to 20B parameters."
+  evidence:
+    - {work: "yu-2022-scaling-autoregressive-models-content-rich", role: original, locator: "p. 2", stance: for}
+
+- id: c-pa-tok
+  type: attributive
+  text: "Parti's ViT-VQGAN learns 8192 image token classes for the codebook, and the image tokens are fixed to 1024, that is 32×32 latent codes from a 256 × 256 input image, with a maximum of 128 text tokens."
+  evidence:
+    - {work: "yu-2022-scaling-autoregressive-models-content-rich", role: original, locator: "pp. 5 to 6", stance: for}
+
+- id: c-pa-cfg
+  type: attributive
+  text: "Parti samples with I = G(z) + λ(G(z,c) − G(z)), where λ is the weight of classifier-free guidance, and finds that it has a significant improvement on the output image-text alignment, especially on challenging text prompts."
+  evidence:
+    - {work: "yu-2022-scaling-autoregressive-models-content-rich", role: original, locator: "p. 7", stance: for}
+
+- id: c-pa-rerank
+  type: attributive
+  text: "Parti finds contrastive reranking complementary to classifier-free guidance and, compared with the 512 images used in DALL-E, samples just 16 images per text prompt, reranked by the alignment score of a CoCa model."
+  evidence:
+    - {work: "yu-2022-scaling-autoregressive-models-content-rich", role: original, locator: "p. 7", stance: for}
+
+- id: c-pa-encdec
+  type: attributive
+  text: "At the scale of 350-million to 750-million parameters, the encoder-decoder variants of Parti outperformed decoder-only ones in both training loss and text-to-image generation quality."
+  evidence:
+    - {work: "yu-2022-scaling-autoregressive-models-content-rich", role: original, locator: "p. 6", stance: for}
+
+- id: c-ldm-text
+  type: attributive
+  text: "For text-to-image modeling, Rombach et al. train a 1.45B parameter KL-regularized latent diffusion model conditioned on language prompts on LAION-400M, with a transformer text encoder mapped into the UNet via multi-head cross-attention."
+  evidence:
+    - {work: "rombach-2021-high-resolution-image-synthesis-latent", role: original, locator: "p. 7", stance: for}
+
+# Evidence
+
+- id: c-de-human
+  type: attributive
+  text: "In a best-of-five human vote against DF-GAN on MS-COCO captions, the DALL-E sample was chosen as the most realistic 90.0% of the time and as the image best matching a shared caption 93.3% of the time."
+  evidence:
+    - {work: "ramesh-2021-zero-shot-text-image-generation", role: original, locator: "p. 7", stance: for}
+
+- id: c-de-fid
+  type: attributive
+  text: "DALL-E obtains an FID score on MS-COCO within 2 points of the best prior approach despite never training on the captions, but on CUB there is a nearly 40-point gap in FID between DALL-E and the leading prior approach."
+  evidence:
+    - {work: "ramesh-2021-zero-shot-text-image-generation", role: original, locator: "p. 7", stance: for}
+
+- id: c-de-rr32
+  type: attributive
+  text: "FID and IS for MS-COCO improve as the sample size used for reranking with the contrastive model is increased, a trend that continues up to a sample size of 32, after which DALL-E observes diminishing returns."
+  evidence:
+    - {work: "ramesh-2021-zero-shot-text-image-generation", role: original, locator: "p. 7", stance: for}
+
+- id: c-gl-dalle
+  type: attributive
+  text: "GLIDE samples are preferred to those from DALL-E 87% of the time when evaluated for photorealism and 69% of the time when evaluated for caption similarity."
+  evidence:
+    - {work: "nichol-2021-glide-towards-photorealistic-image", role: original, locator: "p. 1", stance: for}
+
+- id: c-uc-fid
+  type: attributive
+  text: "On MS-COCO 256 × 256, unCLIP reaches a zero-shot FID of 10.39 with the diffusion prior and 10.63 with the autoregressive prior, against 12.24 for GLIDE."
+  evidence:
+    - {work: "ramesh-2022-hierarchical-text-conditional-image-generation", role: original, locator: "p. 13", stance: for}
+
+- id: c-uc-human
+  type: attributive
+  text: "Against GLIDE, unCLIP with the diffusion prior is preferred for photorealism 48.9% ± 3.1% of the time, for caption similarity 45.3% ± 3.0% and for diversity 70.5% ± 2.8%."
+  evidence:
+    - {work: "ramesh-2022-hierarchical-text-conditional-image-generation", role: original, locator: "p. 11", stance: for}
+
+- id: c-im-fid
+  type: attributive
+  text: "Imagen reaches a zero-shot FID-30K of 7.27 on COCO, against 12.24 for GLIDE and 10.39 for DALL-E 2, and lower than the 7.55 of Make-A-Scene trained on COCO."
+  evidence:
+    - {work: "saharia-2022-photorealistic-text-image-diffusion", role: original, locator: "p. 7", stance: for}
+
+- id: c-im-human
+  type: attributive
+  text: "Against original COCO images, Imagen samples are chosen as more photorealistic 39.5% of the time, 43.9% on prompts without people, and score 91.4 on alignment against 91.9 for the original images."
+  evidence:
+    - {work: "saharia-2022-photorealistic-text-image-diffusion", role: original, locator: "p. 7", stance: for}
+
+- id: c-im-scale
+  type: attributive
+  text: "Scaling the text encoder size improves Imagen's image-text alignment and image fidelity, and scaling the text encoder is significantly more impactful than scaling the U-Net size."
+  evidence:
+    - {work: "saharia-2022-photorealistic-text-image-diffusion", role: original, locator: "pp. 7 to 8", stance: for}
+
+- id: c-im-t5clip
+  type: attributive
+  text: "T5-XXL and CLIP text encoders perform similarly on the COCO validation set in CLIP and FID scores, but human raters prefer T5-XXL over CLIP on DrawBench across all 11 categories."
+  evidence:
+    - {work: "saharia-2022-photorealistic-text-image-diffusion", role: original, locator: "p. 8", stance: for}
+
+- id: c-im-xattn-res
+  type: attributive
+  text: "Conditioning over the sequence of text embeddings with cross attention significantly outperforms simple mean or attention based pooling in both sample fidelity and image-text alignment."
+  evidence:
+    - {work: "saharia-2022-photorealistic-text-image-diffusion", role: original, locator: "p. 8", stance: for}
+
+- id: c-pa-fid
+  type: attributive
+  text: "Parti reaches a zero-shot FID of 7.23 and a finetuned FID of 3.22 on MS-COCO, and 15.97 zero-shot and 8.39 finetuned on Localized Narratives."
+  evidence:
+    - {work: "yu-2022-scaling-autoregressive-models-content-rich", role: original, locator: "p. 4", stance: for}
+
+- id: c-cb-sd2
+  type: attributive
+  text: "In human evaluation of Stable Diffusion v2 on T2I-CompBench, the spatial relationship score is 0.3467, against 0.9827 for non-spatial relationships."
+  evidence:
+    - {work: "huang-2023-t2i-compbench-comprehensive-benchmark-open", role: original, locator: "Tables 3 to 4", stance: for}
+
+- id: c-cb-hard
+  type: attributive
+  text: "According to the human evaluation results, spatial relationship is the most challenging sub-category for text-to-image models, attribute binding (shape) is also challenging, and non-spatial relationship is the easiest sub-category."
+  evidence:
+    - {work: "huang-2023-t2i-compbench-comprehensive-benchmark-open", role: original, locator: "Section 6.3", stance: for}
+
+# Limitations and failure modes
+
+- id: c-de-blur
+  type: attributive
+  text: "Training on the tokens of the dVAE encoder lets DALL-E allocate modeling capacity to low-frequency information, but the heavy compression also renders it unable to produce high-frequency details."
+  evidence:
+    - {work: "ramesh-2021-zero-shot-text-image-generation", role: original, locator: "p. 7", stance: for}
+
+- id: c-uc-bind
+  type: attributive
+  text: "unCLIP is worse at binding attributes to objects than a corresponding GLIDE model, which Ramesh et al. hypothesize occurs because the CLIP embedding itself does not explicitly bind attributes to objects."
+  evidence:
+    - {work: "ramesh-2022-hierarchical-text-conditional-image-generation", role: original, locator: "p. 16", stance: for}
+
+- id: c-uc-text
+  type: attributive
+  text: "unCLIP struggles at producing coherent text, possibly because the CLIP embedding does not precisely encode spelling information of rendered text, and the BPE encoding obscures the spelling of the words in a caption from the model."
+  evidence:
+    - {work: "ramesh-2022-hierarchical-text-conditional-image-generation", role: original, locator: "p. 17", stance: for}
+
+- id: c-im-coco
+  type: attributive
+  text: "Imagen's photorealism preference rate rises to 43.6% on COCO prompts with no people, which Saharia et al. take as indicating Imagen's limited ability to generate photorealistic people."
+  evidence:
+    - {work: "saharia-2022-photorealistic-text-image-diffusion", role: original, locator: "p. 7", stance: for}
+
+- id: c-im-limits
+  type: attributive
+  text: "FID is not fully aligned with perceptual quality and CLIP is ineffective at counting, so Imagen uses human evaluation to assess image quality and caption similarity."
+  evidence:
+    - {work: "saharia-2022-photorealistic-text-image-diffusion", role: original, locator: "p. 5", stance: for}
+
+- id: c-im-laion
+  type: attributive
+  text: "A recent audit of one of Imagen's data sources, LAION-400M, uncovered a wide range of inappropriate content including pornographic imagery, racist slurs, and harmful social stereotypes."
+  evidence:
+    - {work: "saharia-2022-photorealistic-text-image-diffusion", role: original, locator: "p. 9", stance: for}
+
+- id: c-pa-count
+  type: attributive
+  text: "Parti can reliably produce up to seven objects of the same type, beyond that it is mostly imprecise, and when there are counts of multiple types of entities there is a near complete failure."
+  evidence:
+    - {work: "yu-2022-scaling-autoregressive-models-content-rich", role: original, locator: "p. 22", stance: for}
+
+- id: c-cb-fail
+  type: attributive
+  text: "Text-to-image models often fail to compose multiple objects with different attributes and relationships into a complex and coherent scene: given the prompt \"a blue bench on the left of a green car\", a model might bind attributes to the wrong objects or generate the spatial layout incorrectly."
+  evidence:
+    - {work: "huang-2023-t2i-compbench-comprehensive-benchmark-open", role: original, locator: "Section 1", stance: for}
+
+# Variants
+
+- id: c-im-drawbench
+  type: attributive
+  text: "DrawBench contains 11 categories of prompts, testing colors, numbers of objects, spatial relations, text in the scene and unusual interactions between objects, and comprises 200 prompts in total."
+  evidence:
+    - {work: "saharia-2022-photorealistic-text-image-diffusion", role: original, locator: "p. 6", stance: for}
+
+- id: c-pa-p2
+  type: attributive
+  text: "PartiPrompts is a set of over 1600 English prompts, each associated with one of 12 categories and one of 11 challenge aspects."
+  evidence:
+    - {work: "yu-2022-scaling-autoregressive-models-content-rich", role: original, locator: "pp. 4 and 12", stance: for}
+
+- id: c-cb-set
+  type: attributive
+  text: "T2I-CompBench consists of 6,000 compositional text prompts from 3 categories, attribute binding, object relationships and complex compositions, and 6 sub-categories."
+  evidence:
+    - {work: "huang-2023-t2i-compbench-comprehensive-benchmark-open", role: original, locator: "the abstract", stance: for}
+
+- id: c-cb-gors
+  type: attributive
+  text: "GORS fine-tunes Stable Diffusion v2 on generated images that highly align with the compositional prompts, with the fine-tuning loss weighted by the reward, the alignment score between prompt and image."
+  evidence:
+    - {work: "huang-2023-t2i-compbench-comprehensive-benchmark-open", role: original, locator: "Section 1", stance: for}
+
+# Derivation
+
+- id: c-d-tokens
+  type: mathematical
+  text: "A 256 × 256 RGB image has 196,608 values; a 32 × 32 grid of 1,024 tokens cuts the image context by 196,608 / 1,024 = 192, and with up to 256 caption tokens a DALL-E sequence has at most 1,280 tokens."
+  assumes: ["one token per grid cell", "the caption is padded to 256 tokens"]
+  derivation: text-to-image-arithmetic
+
+- id: c-d-bits
+  type: mathematical
+  text: "A grid of 1,024 tokens over 8,192 codes holds at most 13,312 bits, against 1,572,864 bits for the 8-bit 256 × 256 RGB image."
+  assumes: ["8 bits per colour value", "log2 8192 = 13"]
+  derivation: text-to-image-arithmetic
+
+- id: c-d-cfg
+  type: mathematical
+  text: "Parti's G(z) + λ(G(z,c) − G(z)) equals Imagen's wε_c + (1 − w)ε_u with w = λ, and because the x-prediction (z − σε)/α is affine in ε and the weights sum to 1, guided noise gives the guided x-prediction w x̂_c + (1 − w) x̂_u."
+  assumes: ["α and σ do not depend on the condition"]
+  derivation: text-to-image-arithmetic
+
+- id: c-d-implicit
+  type: mathematical
+  text: "Guidance on logits l_u + λ(l_c − l_u) samples in proportion to p(x | c) · p(c | x)^(λ − 1), the conditional model reweighted by an implicit classifier."
+  assumes: ["p_c and p_u are the softmaxes of l_c and l_u", "Bayes' rule p(x|c)/p(x) = p(c|x)/p(c)"]
+  derivation: text-to-image-arithmetic
+
+- id: c-d-range
+  type: mathematical
+  text: "If both x-predictions lie in [−1, 1], the guided x-prediction lies in [−(2w − 1), 2w − 1] for w ≥ 1, and the bound is reached when they disagree in sign; at w = 8 a pixel with x̂_c = 0.9 and x̂_u = 0 becomes 7.2."
+  assumes: ["w ≥ 1"]
+  derivation: text-to-image-arithmetic
+
+- id: c-d-toy
+  type: mathematical
+  text: "In the numpy model with Gaussian images and exact denoisers, at t = 0.5 static thresholding pins 54% of 4,096 pixels at ±1 for w = 4 and 76% for w = 8, while dynamic thresholding at p = 99.5 pins 0.5% at both."
+  assumes: ["the data, seed and schedule of the check file"]
+  derivation: text-to-image-arithmetic
+
+- id: c-d-pool
+  type: mathematical
+  text: "A generator that sees only the mean of the caption's word embeddings gives a caption and its attribute-swapped twin the same distribution, so it is right on at most half of such pairs; with 4 cells and 6 colours the ceiling is 7/72 ≈ 0.097."
+  assumes: ["targets are uniform over the 1,296 images", "every caption names each position once"]
+  derivation: text-to-image-arithmetic
+
+- id: c-d-bestn
+  type: mathematical
+  text: "Best-of-N with a perfect scorer is right with probability 1 − (1 − p)^N; doubling N gains most near N = ln 2 / (−ln(1 − p)), about 6.6 for p = 0.1, and from N = 32 to 512 adds under 3.5 points at p = 0.1."
+  assumes: ["samples are independent", "the scorer always finds a correct sample when there is one"]
+  derivation: text-to-image-arithmetic
+
+- id: c-d-pca
+  type: mathematical
+  text: "Keeping 319 of 1,024 principal components shortens the AR prior's sequence by 1,024 / 319 = 3.21."
+  assumes: ["one token per kept component"]
+  derivation: text-to-image-arithmetic
+
+- id: c-d-budget
+  type: mathematical
+  text: "Batch 2,048 for 2.5M steps is 5.12 billion examples per Imagen model, about 6.0 passes over 860M pairs; DALL-E's batch 1,024 for 430,000 updates is 440.32M examples, about 1.76 passes over 250M pairs."
+  assumes: ["pairs are sampled uniformly"]
+  derivation: text-to-image-arithmetic
+
+- id: c-d-powersgd
+  type: mathematical
+  text: "PowerSGD's compression rate 1 − 5r/(8 d_model) is 83.3%, 85.1% and 85.9% for (r, d_model) = (512, 1,920), (640, 2,688) and (896, 3,968)."
+  assumes: ["the rate formula DALL-E gives"]
+  derivation: text-to-image-arithmetic
