@@ -1,5 +1,5 @@
 ---
-tag: NEW-discrete-diffusion-model
+tag: Q354CC
 kind: architecture
 slug: discrete-diffusion-model
 name: Discrete diffusion model

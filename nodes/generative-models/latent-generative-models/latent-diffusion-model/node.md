@@ -1,5 +1,5 @@
 ---
-tag: NEW-latent-diffusion-model
+tag: 67PJM7
 kind: architecture
 slug: latent-diffusion-model
 name: Latent diffusion model
