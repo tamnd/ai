@@ -1,0 +1,265 @@
+{
+  "note": "Written by aik shapes sample -w from shapes.yaml; do not edit. The tests of each implementation check shapes, param_count and flops against these values (spec 08.6, rule X09).",
+  "configs": [
+    {
+      "name": "example",
+      "kind": "example",
+      "config": {
+        "B": 4,
+        "H": 5,
+        "K": 3,
+        "L": 3,
+        "hidden": 5,
+        "seq_len": 3,
+        "vocab": 3
+      },
+      "blocks": {
+        "embed": {
+          "params": 65,
+          "flops_forward": 480,
+          "inputs": {
+            "z": [
+              4,
+              3
+            ]
+          },
+          "outputs": {
+            "h": [
+              4,
+              5
+            ]
+          }
+        },
+        "head": {
+          "params": 54,
+          "flops_forward": 360,
+          "inputs": {
+            "h": [
+              4,
+              5
+            ]
+          },
+          "outputs": {
+            "logits": [
+              4,
+              3,
+              3
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 840,
+        "params": 119
+      }
+    },
+    {
+      "name": "sample-1",
+      "kind": "sample",
+      "config": {
+        "B": 5,
+        "H": 10,
+        "K": 2,
+        "L": 2,
+        "hidden": 10,
+        "seq_len": 2,
+        "vocab": 2
+      },
+      "blocks": {
+        "embed": {
+          "params": 70,
+          "flops_forward": 600,
+          "inputs": {
+            "z": [
+              5,
+              2
+            ]
+          },
+          "outputs": {
+            "h": [
+              5,
+              10
+            ]
+          }
+        },
+        "head": {
+          "params": 44,
+          "flops_forward": 400,
+          "inputs": {
+            "h": [
+              5,
+              10
+            ]
+          },
+          "outputs": {
+            "logits": [
+              5,
+              2,
+              2
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 1000,
+        "params": 114
+      }
+    },
+    {
+      "name": "sample-2",
+      "kind": "sample",
+      "config": {
+        "B": 1,
+        "H": 2,
+        "K": 7,
+        "L": 4,
+        "hidden": 2,
+        "seq_len": 4,
+        "vocab": 7
+      },
+      "blocks": {
+        "embed": {
+          "params": 66,
+          "flops_forward": 128,
+          "inputs": {
+            "z": [
+              1,
+              4
+            ]
+          },
+          "outputs": {
+            "h": [
+              1,
+              2
+            ]
+          }
+        },
+        "head": {
+          "params": 84,
+          "flops_forward": 112,
+          "inputs": {
+            "h": [
+              1,
+              2
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1,
+              4,
+              7
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 240,
+        "params": 150
+      }
+    },
+    {
+      "name": "markov",
+      "kind": "named",
+      "config": {
+        "B": 1215,
+        "H": 32,
+        "K": 3,
+        "L": 4,
+        "hidden": 32,
+        "seq_len": 4,
+        "vocab": 3
+      },
+      "blocks": {
+        "embed": {
+          "params": 544,
+          "flops_forward": 1244160,
+          "inputs": {
+            "z": [
+              1215,
+              4
+            ]
+          },
+          "outputs": {
+            "h": [
+              1215,
+              32
+            ]
+          }
+        },
+        "head": {
+          "params": 396,
+          "flops_forward": 933120,
+          "inputs": {
+            "h": [
+              1215,
+              32
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1215,
+              4,
+              3
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 2177280,
+        "params": 940
+      }
+    },
+    {
+      "name": "text8_chunk",
+      "kind": "named",
+      "config": {
+        "B": 1,
+        "H": 512,
+        "K": 27,
+        "L": 256,
+        "hidden": 512,
+        "seq_len": 256,
+        "vocab": 27
+      },
+      "blocks": {
+        "embed": {
+          "params": 3670528,
+          "flops_forward": 7340032,
+          "inputs": {
+            "z": [
+              1,
+              256
+            ]
+          },
+          "outputs": {
+            "h": [
+              1,
+              512
+            ]
+          }
+        },
+        "head": {
+          "params": 3545856,
+          "flops_forward": 7077888,
+          "inputs": {
+            "h": [
+              1,
+              512
+            ]
+          },
+          "outputs": {
+            "logits": [
+              1,
+              256,
+              27
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 14417920,
+        "params": 7216384
+      }
+    }
+  ]
+}

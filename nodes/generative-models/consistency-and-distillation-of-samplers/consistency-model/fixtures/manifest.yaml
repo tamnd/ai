@@ -1,0 +1,12 @@
+# Written by fixtures/make.py; do not edit.
+seed: 2303014690
+model: {dim: 3, hidden: 5, temb: 4, sigma_data: 0.5, eps: 0.002, T: 80}
+inputs: {B: 4, levels: "karras_steps(18), pairs (t_n, t_n+1) for n = 0, 4, 11, 16", teacher: "one Heun step of the ODE of a two-component mixture, s2 = 0.1, weights 0.3 and 0.7", sample: "5 samples, one step at T = 80 then tau = 0.8", pd: "log-SNR 1.5, 0.5, -0.5, teacher x-predictions tanh(z) and half of it"}
+losses: "distillation: squared l2 against the target network, lambda = 1; training: Pseudo-Huber with c = 0.00054 sqrt(3), lambda = 1 / (t_n+1 - t_n), the target the student itself"
+target: "the parameters minus_* are the target network theta-; ema is W1 after one update with mu = 0.95"
+dtype: float64
+numpy: "2.5.4"
+files:
+  params-small.npz: {sha256: ed445dfc346d69bf83b8affb7318e4d618e1542abde1b19d55ab6080fe184a2c}
+  input-small.npz: {sha256: 33c950fd8f3365c27d136ed3b18f29d92158c94afcaef1429d6bd3cb00c9aaec}
+  expected-small.npz: {sha256: 589fa1be56ac9b1025acb19a32bc168486e51b8151225ff20e535200490fccf8}

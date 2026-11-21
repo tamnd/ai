@@ -1,0 +1,300 @@
+{
+  "note": "Written by aik shapes sample -w from shapes.yaml; do not edit. The tests of each implementation check shapes, param_count and flops against these values (spec 08.6, rule X09).",
+  "configs": [
+    {
+      "name": "example",
+      "kind": "example",
+      "config": {
+        "B": 4,
+        "C": 2,
+        "D": 3,
+        "E": 4,
+        "H": 5,
+        "classes": 2,
+        "dim": 3,
+        "hidden": 5,
+        "temb": 4
+      },
+      "blocks": {
+        "embed": {
+          "params": 55,
+          "flops_forward": 280,
+          "inputs": {
+            "t": [
+              4
+            ],
+            "y": [
+              4
+            ],
+            "z": [
+              4,
+              3
+            ]
+          },
+          "outputs": {
+            "h": [
+              4,
+              5
+            ]
+          }
+        },
+        "head": {
+          "params": 18,
+          "flops_forward": 120,
+          "inputs": {
+            "h": [
+              4,
+              5
+            ]
+          },
+          "outputs": {
+            "eps": [
+              4,
+              3
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 400,
+        "params": 73
+      }
+    },
+    {
+      "name": "sample-1",
+      "kind": "sample",
+      "config": {
+        "B": 3,
+        "C": 5,
+        "D": 8,
+        "E": 8,
+        "H": 11,
+        "classes": 5,
+        "dim": 8,
+        "hidden": 11,
+        "temb": 8
+      },
+      "blocks": {
+        "embed": {
+          "params": 253,
+          "flops_forward": 1056,
+          "inputs": {
+            "t": [
+              3
+            ],
+            "y": [
+              3
+            ],
+            "z": [
+              3,
+              8
+            ]
+          },
+          "outputs": {
+            "h": [
+              3,
+              11
+            ]
+          }
+        },
+        "head": {
+          "params": 96,
+          "flops_forward": 528,
+          "inputs": {
+            "h": [
+              3,
+              11
+            ]
+          },
+          "outputs": {
+            "eps": [
+              3,
+              8
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 1584,
+        "params": 349
+      }
+    },
+    {
+      "name": "sample-2",
+      "kind": "sample",
+      "config": {
+        "B": 4,
+        "C": 1,
+        "D": 3,
+        "E": 5,
+        "H": 13,
+        "classes": 1,
+        "dim": 3,
+        "hidden": 13,
+        "temb": 5
+      },
+      "blocks": {
+        "embed": {
+          "params": 143,
+          "flops_forward": 832,
+          "inputs": {
+            "t": [
+              4
+            ],
+            "y": [
+              4
+            ],
+            "z": [
+              4,
+              3
+            ]
+          },
+          "outputs": {
+            "h": [
+              4,
+              13
+            ]
+          }
+        },
+        "head": {
+          "params": 42,
+          "flops_forward": 312,
+          "inputs": {
+            "h": [
+              4,
+              13
+            ]
+          },
+          "outputs": {
+            "eps": [
+              4,
+              3
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 1144,
+        "params": 185
+      }
+    },
+    {
+      "name": "mixture",
+      "kind": "named",
+      "config": {
+        "B": 256,
+        "C": 3,
+        "D": 2,
+        "E": 16,
+        "H": 64,
+        "classes": 3,
+        "dim": 2,
+        "hidden": 64,
+        "temb": 16
+      },
+      "blocks": {
+        "embed": {
+          "params": 1472,
+          "flops_forward": 589824,
+          "inputs": {
+            "t": [
+              256
+            ],
+            "y": [
+              256
+            ],
+            "z": [
+              256,
+              2
+            ]
+          },
+          "outputs": {
+            "h": [
+              256,
+              64
+            ]
+          }
+        },
+        "head": {
+          "params": 130,
+          "flops_forward": 65536,
+          "inputs": {
+            "h": [
+              256,
+              64
+            ]
+          },
+          "outputs": {
+            "eps": [
+              256,
+              2
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 655360,
+        "params": 1602
+      }
+    },
+    {
+      "name": "imagenet_latent",
+      "kind": "named",
+      "config": {
+        "B": 1,
+        "C": 1000,
+        "D": 4096,
+        "E": 256,
+        "H": 1024,
+        "classes": 1000,
+        "dim": 4096,
+        "hidden": 1024,
+        "temb": 256
+      },
+      "blocks": {
+        "embed": {
+          "params": 5482496,
+          "flops_forward": 8912896,
+          "inputs": {
+            "t": [
+              1
+            ],
+            "y": [
+              1
+            ],
+            "z": [
+              1,
+              4096
+            ]
+          },
+          "outputs": {
+            "h": [
+              1,
+              1024
+            ]
+          }
+        },
+        "head": {
+          "params": 4198400,
+          "flops_forward": 8388608,
+          "inputs": {
+            "h": [
+              1,
+              1024
+            ]
+          },
+          "outputs": {
+            "eps": [
+              1,
+              4096
+            ]
+          }
+        }
+      },
+      "model": {
+        "flops_forward": 17301504,
+        "params": 9680896
+      }
+    }
+  ]
+}

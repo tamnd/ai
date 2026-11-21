@@ -1,0 +1,52 @@
+# SPDX-License-Identifier: MIT
+# The shape contract of the denoiser on the page (spec 08.6): a network that reads a noisy latent of positions by
+# channels numbers, flattened to D = N c, adds a sinusoidal embedding of the time step through Wt, passes it through a
+# tanh layer of width hidden, lets that layer attend to ctx_tokens learned context tokens of width attn for the class,
+# applies a second tanh, and returns the predicted noise as the noisy latent plus a linear read-out. The class table
+# has one extra row for the null class of classifier-free guidance. The FLOPs count the matrix products and the two
+# small attention contractions, a multiply-add as 2; biases, the time embedding, tanh and softmax are left out.
+config:
+  positions:  {meaning: "number of latent positions, h w for an image latent", symbol: "N", example: 2, sample: [1, 8]}
+  channels:   {meaning: "channels of the latent at each position", symbol: "c", example: 2, sample: [1, 4]}
+  hidden:     {meaning: "width of the hidden layer", symbol: "H", example: 5, sample: [1, 16]}
+  temb:       {meaning: "width of the sinusoidal time embedding, even", symbol: "E", example: 4, sample: [2, 8]}
+  ctx_tokens: {meaning: "context tokens per class, the M of tau(y)", symbol: "M", example: 2, sample: [1, 4]}
+  attn:       {meaning: "width of the context tokens and of the queries and keys", symbol: "d", example: 3, sample: [1, 8]}
+  classes:    {meaning: "number of classes, not counting the null class", symbol: "C", example: 2, sample: [1, 5]}
+axes:
+  B: {meaning: "batch of noisy latents", example: 4, sample: [1, 6]}
+  N: positions
+  c: channels
+  H: hidden
+  E: temb
+  M: ctx_tokens
+  d: attn
+  C: classes
+blocks:
+  - id: embed
+    meaning: "the hidden layer tanh(z W1 + emb(t) Wt + b1) on the flattened latent and the time embedding"
+    eq: [ldm]
+    inputs: {z: "(B, N, c)", t: "(B)"}
+    outputs: {h: "(B, H)"}
+    params: "N * c * H + E * H + H"
+    flops_forward: "2 * B * (N * c * H + E * H)"
+  - id: cross_attention
+    meaning: "queries h Wq against the keys ctx[y] Wk and values ctx[y] Wv of the class tokens, added to h before a tanh"
+    eq: [cross-attn]
+    inputs: {h: "(B, H)", y: "(B)"}
+    outputs: {h2: "(B, H)"}
+    params: "(C + 1) * M * d + H * d + d * d + d * H"
+    flops_forward: "2 * B * (H * d + M * d * d + M * d * H + M * d + M * H)"
+  - id: head
+    meaning: "the predicted noise z + h2 W2 + b2"
+    eq: [ldm]
+    inputs: {h2: "(B, H)"}
+    outputs: {eps: "(B, N * c)"}
+    params: "H * N * c + N * c"
+    flops_forward: "2 * B * H * N * c"
+model:
+  params: {formula: "embed.params + cross_attention.params + head.params", symbol: "P", meaning: "the weights, biases and class tokens of the denoiser"}
+  flops_forward: {formula: "embed.flops_forward + cross_attention.flops_forward + head.flops_forward", symbol: "C_f", meaning: "FLOPs of one denoiser call on B latents; DDIM with S steps costs S calls, 2 S with classifier-free guidance"}
+configs:
+  mixture: {meaning: "the denoiser of the test, trained on latents of 4 positions by 2 channels from three classes, one Adam batch", positions: 4, channels: 2, hidden: 64, temb: 16, ctx_tokens: 2, attn: 8, classes: 3, B: 256}
+  imagenet_f8: {meaning: "a denoiser of this form on the 32 x 32 x 4 latent of a 256 x 256 image with f = 8, one image", positions: 1024, channels: 4, hidden: 1024, temb: 256, ctx_tokens: 1, attn: 512, classes: 1000, B: 1}
