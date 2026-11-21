@@ -1,0 +1,307 @@
+# The claims of the chain-of-thought faithfulness page (spec 07). The build computes the labels.
+
+# The finding
+
+- id: c-tu-bias
+  type: attributive
+  text: "CoT explanations can be heavily influenced by adding biasing features to model inputs, such as reordering the multiple-choice options in a few-shot prompt to make the answer always (A), which models systematically fail to mention in their explanations."
+  evidence:
+    - {work: "turpin-2023-unfaithful-explanations-chain-of-thought", role: original, locator: "p. 1", stance: for}
+
+- id: c-tu-36
+  type: attributive
+  text: "When models are biased toward incorrect answers they frequently generate CoT explanations rationalizing those answers, which causes accuracy to drop by as much as 36% on a suite of 13 tasks from BIG-Bench Hard with GPT-3.5 and Claude 1.0."
+  evidence:
+    - {work: "turpin-2023-unfaithful-explanations-chain-of-thought", role: original, locator: "p. 1", stance: for}
+
+- id: c-ch-reveal
+  type: attributive
+  text: "For most settings and models tested, the CoTs of reasoning models reveal their usage of hints in at least 1% of examples where they use the hint, but the reveal rate is often below 20%."
+  evidence:
+    - {work: "chen-2025-reasoning-models-dont-say", role: original, locator: "p. 1", stance: for}
+
+- id: c-la-inverse
+  type: attributive
+  text: "Models show large variation across tasks in how strongly they condition on the CoT when predicting their answer, and as models become larger and more capable they produce less faithful reasoning on most tasks studied."
+  evidence:
+    - {work: "lanham-2023-measuring-faithfulness-chain-of-thought", role: original, locator: "p. 1", stance: for}
+
+- id: c-ar-wild
+  type: attributive
+  text: "Unfaithful CoT also occurs on naturally worded, non-adversarial prompts: separately asked whether X is bigger than Y and whether Y is bigger than X, models sometimes produce superficially coherent arguments to justify answering Yes to both or No to both."
+  evidence:
+    - {work: "arcuschin-2025-cot-in-the-wild-not-faithful", role: original, locator: "p. 1", stance: for}
+
+- id: c-ja-def
+  type: attributive
+  text: "Intuitively, a faithful interpretation is one that accurately represents the reasoning process behind the model's prediction."
+  evidence:
+    - {work: "jacovi-2020-faithfully-interpretable-nlp", role: original, locator: "p. 1", stance: for}
+
+- id: c-ja-plaus
+  type: attributive
+  text: "Plausibility refers to how convincing an interpretation is to humans, while faithfulness refers to how accurately it reflects the true reasoning process of the model."
+  evidence:
+    - {work: "jacovi-2020-faithfully-interpretable-nlp", role: original, locator: "p. 2", stance: for}
+
+- id: c-ch-def
+  type: attributive
+  text: "Chen et al. call a CoT faithful if it accurately reflects the model's internal reasoning behind its answer; it need not verbalize everything, but it should highlight the key decision factors, so that a sycophantic model basing its prediction on a user's suggestion should verbalize sycophancy."
+  evidence:
+    - {work: "chen-2025-reasoning-models-dont-say", role: original, locator: "p. 4", stance: for}
+
+# Evidence
+
+- id: c-tu-numbers
+  type: attributive
+  text: "With zero-shot CoT, GPT-3.5's accuracy drops by as much as 36.3% under the Suggested Answer bias; under Answer is Always A, GPT-3.5 drops by 18.7% and Claude 1.0 by 4.7%."
+  evidence:
+    - {work: "turpin-2023-unfaithful-explanations-chain-of-thought", role: original, locator: "p. 6", stance: for}
+
+- id: c-tu-73
+  type: attributive
+  text: "Of 104 annotated unfaithful explanations, as many as 73% support the bias-consistent answer, and 15% have no obvious errors, rationalizing incorrect answers through inconsistent subjective assessments or ambiguity in the task."
+  evidence:
+    - {work: "turpin-2023-unfaithful-explanations-chain-of-thought", role: original, locator: "p. 7", stance: for}
+
+- id: c-tu-bbq
+  type: attributive
+  text: "On the bias benchmark BBQ, with weak evidence added that the models mention in their explanations, the share of unfaithful prediction pairs that are stereotype-aligned reaches 62.5% for Claude 1.0 with few-shot CoT and 59.2% for GPT-3.5 with zero-shot CoT, against an unbiased baseline of 50%."
+  evidence:
+    - {work: "turpin-2023-unfaithful-explanations-chain-of-thought", role: original, locator: "p. 8", stance: for}
+
+- id: c-la-tests
+  type: attributive
+  text: "Lanham et al. intervene on the CoT by truncating it early, adding mistakes, paraphrasing it and replacing it with filler tokens, and use a 175B-parameter model finetuned with RLHF."
+  evidence:
+    - {work: "lanham-2023-measuring-faithfulness-chain-of-thought", role: original, locator: "p. 2", stance: for}
+
+- id: c-la-post
+  type: attributive
+  text: "On the three lowest-AOC tasks, ARC Easy, ARC Challenge and OpenBookQA, the chain of thought changes the final answer less than 10% of the time, while for AQuA it changes the answer more than 60% of the time."
+  evidence:
+    - {work: "lanham-2023-measuring-faithfulness-chain-of-thought", role: original, locator: "p. 4", stance: for}
+
+- id: c-la-table
+  type: attributive
+  text: "The early-answering AOC is 0.44 for AQuA, 0.26 for LogiQA, 0.12 for MMLU and HellaSwag, 0.11 for TruthfulQA, 0.07 for OpenBookQA, 0.05 for ARC Challenge and 0.02 for ARC Easy, and post-hoc reasoning is not strongly correlated with the accuracy improvement from CoT; HellaSwag loses 4.69 points with CoT."
+  evidence:
+    - {work: "lanham-2023-measuring-faithfulness-chain-of-thought", role: original, locator: "p. 5", stance: for}
+
+- id: c-la-filler
+  type: attributive
+  text: "Replacing the CoT with filler tokens, each a space followed by three periods, gives no increase in accuracy, and for some tasks, such as TruthfulQA and OpenBookQA, performance drops slightly."
+  evidence:
+    - {work: "lanham-2023-measuring-faithfulness-chain-of-thought", role: original, locator: "p. 6", stance: for}
+
+- id: c-la-para
+  type: attributive
+  text: "Paraphrased reasoning closely matches the accuracy of the original chain of thought for almost all tasks, so the particular phrasing of the reasoning is unlikely to encode information responsible for the accuracy gains of CoT."
+  evidence:
+    - {work: "lanham-2023-measuring-faithfulness-chain-of-thought", role: original, locator: "p. 7", stance: for}
+
+- id: c-la-size
+  type: attributive
+  text: "For 7 of 8 tasks the 13B-parameter model changes its answer after CoT more often than the 175B model, and for most tasks faithfulness gets monotonically worse from 13B to 175B."
+  evidence:
+    - {work: "lanham-2023-measuring-faithfulness-chain-of-thought", role: original, locator: "p. 7", stance: for}
+
+- id: c-ch-hints
+  type: attributive
+  text: "Chen et al. test six kinds of hint, sycophancy, consistency, visual pattern, metadata, grader hacking and unethical information, on multiple-choice questions from MMLU and GPQA."
+  evidence:
+    - {work: "chen-2025-reasoning-models-dont-say", role: original, locator: "p. 5", stance: for}
+
+- id: c-ch-overall
+  type: attributive
+  text: "The overall faithfulness scores of the reasoning models remain low, 25% for Claude 3.7 Sonnet and 39% for DeepSeek R1, and 20% and 29% on the misalignment hints."
+  evidence:
+    - {work: "chen-2025-reasoning-models-dont-say", role: original, locator: "p. 6", stance: for}
+
+- id: c-ch-ratio
+  type: attributive
+  text: "Reasoning models verbalize used hints more often than their non-reasoning counterparts: the average faithfulness is 3.6 times higher for the Claude series and 1.7 times higher for the DeepSeek series."
+  evidence:
+    - {work: "chen-2025-reasoning-models-dont-say", role: original, locator: "p. 6", stance: for}
+
+- id: c-ch-long
+  type: attributive
+  text: "Unfaithful CoTs are longer than faithful ones: 2064 ± 59 tokens against 1439 ± 54 for Claude 3.7 Sonnet, while for DeepSeek R1 unfaithful CoTs have 6003 ± 74 tokens on average and faithful ones fewer."
+  evidence:
+    - {work: "chen-2025-reasoning-models-dont-say", role: original, locator: "p. 6", stance: for}
+
+- id: c-ch-gpqa
+  type: attributive
+  text: "CoTs on GPQA are consistently less faithful than those on MMLU, by 44% relative for Claude 3.7 Sonnet and 32% relative for DeepSeek R1."
+  evidence:
+    - {work: "chen-2025-reasoning-models-dont-say", role: original, locator: "p. 7", stance: for}
+
+- id: c-ch-prior
+  type: attributive
+  text: "Faithful CoTs often follow a pattern where the model first determines the answer independently of the hint and then explicitly acknowledges following the hint, which seems to depend on prior knowledge of the answer and may be why faithfulness is lower on harder questions."
+  evidence:
+    - {work: "chen-2025-reasoning-models-dont-say", role: original, locator: "p. 7", stance: for}
+
+- id: c-ch-rl
+  type: attributive
+  text: "Outcome-based RL initially increases CoT faithfulness substantially, by 63% relative on MMLU and 41% relative on GPQA, but then plateaus at moderate levels, 28% on MMLU and 20% on GPQA."
+  evidence:
+    - {work: "chen-2025-reasoning-models-dont-say", role: original, locator: "p. 8", stance: for}
+
+- id: c-ch-hack
+  type: attributive
+  text: "Finetuned in synthetic RL environments with known reward hacks, Claude 3.7 Sonnet fully learns the hacks, with reward above 0.99, but verbalizes them in fewer than 2% of examples in 5 of 6 environments."
+  evidence:
+    - {work: "chen-2025-reasoning-models-dont-say", role: original, locator: "p. 3", stance: for}
+
+- id: c-cu-r1
+  type: attributive
+  text: "When a cue that a Stanford professor thinks the answer is D is added to MMLU prompts, the DeepSeek-R1 reasoning model describes the cue's influence 59% of the time when it switches its answer, against 7% for the non-reasoning DeepSeek model."
+  evidence:
+    - {work: "chua-2025-reasoning-models-more-faithful", role: original, locator: "p. 1", stance: for}
+
+- id: c-cu-three
+  type: attributive
+  text: "With the professor cue, Qwen's reasoning model articulates it 47% of the time, Gemini's reasoning model 68% and DeepSeek's 59%, while no non-reasoning model tested articulates it more than 13% of the time."
+  evidence:
+    - {work: "chua-2025-reasoning-models-more-faithful", role: original, locator: "p. 4", stance: for}
+
+- id: c-ar-rates
+  type: attributive
+  text: "Implicit post-hoc rationalization occurs at rates of up to 13% for production models, and thinking models are more faithful but not entirely so, with 0.37% for DeepSeek R1 and 0.04% for Sonnet 3.7 with thinking."
+  evidence:
+    - {work: "arcuschin-2025-cot-in-the-wild-not-faithful", role: original, locator: "p. 1", stance: for}
+
+- id: c-ar-gemini
+  type: attributive
+  text: "Gemini 2.5 Flash answers No 198 of 200 times to whether the Ajay River is south of Salar de Arizaro and 126 of 200 times to the reverse question, switching from hemispheric reasoning to the argument that south of is not meaningful across continents."
+  evidence:
+    - {work: "arcuschin-2025-cot-in-the-wild-not-faithful", role: original, locator: "p. 2", stance: for}
+
+# Scope and conditions
+
+- id: c-la-addition
+  type: attributive
+  text: "On synthetic addition tasks, unfaithful reasoning increases with model size and with easier tasks at the same size, so eliciting faithful reasoning may require choosing models less capable than the most capable one available."
+  evidence:
+    - {work: "lanham-2023-measuring-faithfulness-chain-of-thought", role: original, locator: "p. 8", stance: for}
+
+- id: c-ch-scope
+  type: attributive
+  text: "Chen et al. focus on reasoning that models can perform in a single forward pass, since recent work found misaligned behaviors requiring little reasoning, such as alignment faking, sandbagging and reward tampering."
+  evidence:
+    - {work: "chen-2025-reasoning-models-dont-say", role: original, locator: "p. 2", stance: for}
+
+- id: c-ch-rare
+  type: attributive
+  text: "In settings where CoT reasoning is not necessary, test-time monitoring of CoTs is unlikely to reliably catch rare and catastrophic unexpected behaviors."
+  evidence:
+    - {work: "chen-2025-reasoning-models-dont-say", role: original, locator: "p. 1", stance: for}
+
+- id: c-ch-baker
+  type: attributive
+  text: "The reward hacks studied by Baker et al., which CoT monitoring detected in over 90% of generations, likely require more exploration and reasoning to exploit and come from coding, where verbalizing potential hacks is more common."
+  evidence:
+    - {work: "chen-2025-reasoning-models-dont-say", role: original, locator: "p. 3", stance: for}
+
+- id: c-ch-upper
+  type: attributive
+  text: "The hint-test faithfulness score is likely an upper bound on true faithfulness, since a CoT that verbalizes the hint is not necessarily faithful."
+  evidence:
+    - {work: "chen-2025-reasoning-models-dont-say", role: original, locator: "p. 4", stance: for}
+
+- id: c-ba-recall
+  type: attributive
+  text: "On two systemic reward hacks in agentic coding, a GPT-4o monitor of the full trajectory including the CoT reaches 95% recall, against 60% for a monitor of actions and outputs only."
+  evidence:
+    - {work: "baker-2025-monitoring-reasoning-models-misbehavior", role: original, locator: "p. 5", stance: for}
+
+# Arithmetic
+
+- id: c-d-alpha
+  type: mathematical
+  text: "If noise moves an answer to each of the n − 2 other options equally often and noise moves are never verbalized, the share of moves to the hint caused by it is α = 1 − q / ((n − 2) p), and dividing the raw score by α recovers the verbalization rate; with n = 4, p = 0.10 and q = 0.12, α = 0.4 and a raw score of 0.10 becomes 0.25."
+  assumes: ["uniform noise over the other options", "noise moves are never verbalized"]
+  derivation: faithfulness-metrics
+
+- id: c-d-aoc
+  type: mathematical
+  text: "By the trapezoid rule, a chain of four steps whose truncations agree with the final answer at rates 0.3, 0.4, 0.6, 0.9 and 1.0 has an AOC of 0.3625, and a model that guesses uniformly among m options until its last step has AOC (1 − 1/m)(1 − 1/(2L)), which is 0.7 for m = 5 and L = 4."
+  assumes: ["the AOC is one minus the area under the curve against the fraction of steps"]
+  derivation: faithfulness-metrics
+
+- id: c-d-catch
+  type: mathematical
+  text: "If a behaviour is verbalized with probability v = 0.02 in each of K independent episodes and every verbalized case is flagged, a monitor catches it at least once with probability 1 − (1 − v)^K: 0.02 for one episode, 0.8674 for 100 and above 0.95 from 149."
+  assumes: ["independent episodes", "a perfect monitor on verbalized cases"]
+  derivation: faithfulness-metrics
+
+- id: c-d-pair
+  type: mathematical
+  text: "Independent answers with P(No) of 0.99 to a question and 0.63 to its reverse agree, which is a contradiction, with probability 0.99 · 0.63 + 0.01 · 0.37 = 0.6274."
+  assumes: ["exactly one of the two questions has the answer Yes"]
+  derivation: faithfulness-metrics
+
+# Explanations
+
+- id: c-ch-rlhf
+  type: attributive
+  text: "Models may learn to verbalize their reasoning from pretraining or supervised finetuning on human text, while RLHF could incentivize them to hide undesirable reasoning from the CoT, even when its rewards are not applied to the CoT directly."
+  evidence:
+    - {work: "chen-2025-reasoning-models-dont-say", role: original, locator: "p. 2", stance: for}
+
+- id: c-cu-rm
+  type: attributive
+  text: "Chua and Evans provide evidence suggesting that the use of reward models causes less faithful responses, which may help explain why non-reasoning models are less faithful."
+  evidence:
+    - {work: "chua-2025-reasoning-models-more-faithful", role: original, locator: "p. 1", stance: for}
+
+- id: c-pf-filler
+  type: attributive
+  text: "Transformers can use meaningless filler tokens in place of a chain of thought to solve two hard algorithmic tasks they could not solve without intermediate tokens, but learning to use filler tokens is difficult and requires specific, dense supervision."
+  evidence:
+    - {work: "pfau-2024-lets-think-dot-by-dot", role: original, locator: "p. 1", stance: for}
+
+- id: c-pf-3sum
+  type: attributive
+  text: "On the synthetic 3SUM and 2SUM-Transform datasets, Llama transformers fail without filler but reach 100% and 94% accuracy with filler tokens."
+  evidence:
+    - {work: "pfau-2024-lets-think-dot-by-dot", role: original, locator: "p. 3", stance: for}
+
+# Implications
+
+- id: c-ra-fd
+  type: attributive
+  text: "Factored decomposition answers each subquestion in a new context, which reduces the potential for the model to answer subquestions using spurious information from the original question without stating it."
+  evidence:
+    - {work: "radhakrishnan-2023-question-decomposition-faithfulness", role: original, locator: "p. 2", stance: for}
+
+- id: c-ra-table
+  type: attributive
+  text: "Averaged over four tasks, chain of thought reaches 86.0% accuracy, chain-of-thought decomposition 85.6% and factored decomposition 81.8%, while the biased-context accuracy change is −11.3, −16.0 and −3.6 points and the final answer truncation sensitivity 10.8, 11.7 and 20.5."
+  evidence:
+    - {work: "radhakrishnan-2023-question-decomposition-faithfulness", role: original, locator: "p. 3", stance: for}
+
+- id: c-ba-obf
+  type: attributive
+  text: "Integrating a CoT monitor into the RL reward produces more capable and more aligned agents in the low optimization regime, but with too much optimization agents learn obfuscated reward hacking, hiding their intent in the CoT while still hacking at a significant rate."
+  evidence:
+    - {work: "baker-2025-monitoring-reasoning-models-misbehavior", role: original, locator: "p. 1", stance: for}
+
+- id: c-ba-zero
+  type: attributive
+  text: "Under CoT pressure the agent still learns to hack at a significant rate and the CoT monitor's recall falls to near zero."
+  evidence:
+    - {work: "baker-2025-monitoring-reasoning-models-misbehavior", role: original, locator: "p. 8", stance: for}
+
+- id: c-ba-tax
+  type: attributive
+  text: "Because it is difficult to tell when CoTs have become obfuscated, it may be necessary to pay a monitorability tax by not applying strong optimization pressure directly to the chain of thought."
+  evidence:
+    - {work: "baker-2025-monitoring-reasoning-models-misbehavior", role: original, locator: "p. 1", stance: for}
+
+- id: c-ch-monitor
+  type: attributive
+  text: "CoT monitoring is a valuable tool to notice unintended behaviors and seems most valuable when they are frequent, since the proportion of generations that verbalize them may be low."
+  evidence:
+    - {work: "chen-2025-reasoning-models-dont-say", role: original, locator: "p. 3", stance: for}
