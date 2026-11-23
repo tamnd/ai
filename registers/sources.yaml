@@ -85,3 +85,17 @@
   facts: titles, authors, dates, categories, DOIs and journal references; texts keep their own licences
   credit: Thank you to arXiv for use of its open access interoperability.
   note: The metadata is CC0; the abstracts are not kept.
+- id: aiid
+  name: AI Incident Database
+  url: https://incidentdatabase.ai/research/snapshots/
+  owner: Responsible AI Collaborative
+  licence: CC-BY-SA-4.0
+  checked: "2026-11-14"
+  class: B
+  access: the weekly snapshot export (a MongoDB dump with CSV files)
+  rate: 1 request per 2 s
+  schedule: weekly
+  standing: secondary-reference
+  facts: incident ids, titles, dates and the entities that the database names; never the descriptions
+  credit: AI Incident Database, Responsible AI Collaborative (CC BY-SA 4.0), https://incidentdatabase.ai
+  note: 'The snapshot''s license.txt: the database is CC BY-SA 4.0 unless noted; report contents keep their own rights (Q-23).'

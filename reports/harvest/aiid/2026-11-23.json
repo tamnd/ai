@@ -1,0 +1,18 @@
+{
+  "source": "aiid",
+  "date": "2026-11-23",
+  "adapter": "aik/0.1.62 harvest/aiid",
+  "licence": "CC-BY-SA-4.0",
+  "licence_class": "B",
+  "partial": false,
+  "snapshots": [
+    "b3:f8147c95c1da07b6caa65956fa1522eb9bbdca45dd56b9bd27780c24e166a5e5",
+    "b3:3962b7805949b9fce92f38f3bdba9fff44c62a42ae11d85a0e28e97aff0fb753"
+  ],
+  "requests": 4,
+  "rows": 1817,
+  "new": 1817,
+  "changed": 0,
+  "removed": 0,
+  "unchanged": 0
+}
