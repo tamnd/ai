@@ -1,30 +1,32 @@
 {
-  "date": "2026-11-20",
-  "rows": 22508,
-  "items": 22318,
-  "new": 0,
+  "date": "2026-11-23",
+  "rows": 23072,
+  "items": 22882,
+  "new": 564,
   "updated": 0,
   "unchanged": 22318,
   "by_outcome": {
     "card": 3892,
-    "pending": 18426
+    "pending": 18990
   },
   "by_kind": {
     "hardware": 183,
     "model": 3709,
+    "person": 564,
     "policy": 411,
     "result": 7123,
     "work": 10892
   },
   "by_source": {
     "arxiv": 10892,
+    "awards": 564,
     "epoch-ai": 3892,
     "epoch-benchmarks": 5546,
     "eur-lex": 236,
     "federal-register": 175,
     "lmarena": 1577
   },
-  "conflicts": 62,
+  "conflicts": 63,
   "sample": [
     {
       "key": "name=model=commandr",
@@ -397,6 +399,12 @@
       "a": "u:federal_register:2022-08319",
       "b": "u:federal_register:2024-30263",
       "why": "both are rows of the register"
+    },
+    {
+      "key": "name=person=bertholdkphorn",
+      "a": "awards:Q30306148",
+      "b": "awards:Q65030206",
+      "why": "the wikidata ids differ: Q30306148 and Q65030206"
     }
   ]
 }

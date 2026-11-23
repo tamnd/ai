@@ -85,3 +85,17 @@
   facts: titles, authors, dates, categories, DOIs and journal references; texts keep their own licences
   credit: Thank you to arXiv for use of its open access interoperability.
   note: The metadata is CC0; the abstracts are not kept.
+- id: awards
+  name: Award lists (from Wikidata)
+  url: https://www.wikidata.org/wiki/Property:P166
+  owner: Wikimedia Foundation
+  licence: CC0-1.0
+  checked: "2026-11-15"
+  class: A
+  access: one SPARQL query on the QLever endpoint (qlever.dev/api/wikidata) for the recipients (P166, with the year P585) of the awards of harvest.Awards; the robots.txt of query.wikidata.org disallows /sparql
+  rate: 1 request per 2 s
+  schedule: weekly
+  standing: secondary-reference
+  facts: the recipients of each award and the years
+  credit: Wikidata (CC0)
+  note: the Turing Award covers all of computing, so a recipient needs AI work to be a node (19.6)
