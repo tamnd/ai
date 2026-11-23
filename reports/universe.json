@@ -1,22 +1,27 @@
 {
-  "date": "2026-11-20",
-  "rows": 22508,
-  "items": 22318,
-  "new": 0,
+  "date": "2026-11-23",
+  "rows": 24325,
+  "items": 24135,
+  "new": 1817,
   "updated": 0,
   "unchanged": 22318,
+  "decided_by_rule": {
+    "S-I1": 1817
+  },
   "by_outcome": {
-    "card": 3892,
+    "card": 5709,
     "pending": 18426
   },
   "by_kind": {
     "hardware": 183,
+    "incident": 1817,
     "model": 3709,
     "policy": 411,
     "result": 7123,
     "work": 10892
   },
   "by_source": {
+    "aiid": 1817,
     "arxiv": 10892,
     "epoch-ai": 3892,
     "epoch-benchmarks": 5546,
@@ -24,7 +29,7 @@
     "federal-register": 175,
     "lmarena": 1577
   },
-  "conflicts": 62,
+  "conflicts": 63,
   "sample": [
     {
       "key": "name=model=commandr",
@@ -397,6 +402,12 @@
       "a": "u:federal_register:2022-08319",
       "b": "u:federal_register:2024-30263",
       "why": "both are rows of the register"
+    },
+    {
+      "key": "name=incident=jewishbabystrollersprovidedantisemiticgoogleimagesallegedlyresultingfromhatespeechcampaign",
+      "a": "aiid:1057",
+      "b": "aiid:88",
+      "why": "the aiid ids differ: 1057 and 88"
     }
   ]
 }
