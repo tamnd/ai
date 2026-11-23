@@ -1,0 +1,21 @@
+{
+  "source": "awards",
+  "date": "2026-11-23",
+  "adapter": "aik/0.1.62 harvest/awards",
+  "licence": "CC0-1.0",
+  "licence_class": "A",
+  "partial": false,
+  "snapshots": [
+    "b3:86e4c95ad1699f7a1a0d1b1120d027a8f0a61ca9afe031cc7e12388f5beecdf7"
+  ],
+  "requests": 4,
+  "rows": 564,
+  "new": 564,
+  "changed": 0,
+  "removed": 0,
+  "unchanged": 0,
+  "skipped": 7,
+  "notes": [
+    "7 recipients with no English label or not a person or a work"
+  ]
+}
