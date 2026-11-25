@@ -1,31 +1,37 @@
 {
-  "date": "2026-11-20",
-  "rows": 22508,
-  "items": 22318,
-  "new": 0,
-  "updated": 0,
-  "unchanged": 22318,
+  "date": "2026-11-25",
+  "rows": 19084,
+  "items": 26473,
+  "new": 4155,
+  "updated": 42,
+  "unchanged": 22276,
   "by_outcome": {
     "card": 3892,
-    "pending": 18426
+    "pending": 22581
   },
   "by_kind": {
     "hardware": 183,
     "model": 3709,
     "policy": 411,
     "result": 7123,
-    "work": 10892
+    "work": 15047
   },
   "by_source": {
-    "arxiv": 10892,
+    "arxiv": 15047,
     "epoch-ai": 3892,
     "epoch-benchmarks": 5546,
     "eur-lex": 236,
     "federal-register": 175,
     "lmarena": 1577
   },
-  "conflicts": 62,
+  "conflicts": 64,
   "sample": [
+    {
+      "key": "doi=10.1109/jiot.2026.3744837",
+      "a": "u:arxiv:2601.08044",
+      "b": "arxiv:2502.01835",
+      "why": "the arxiv ids differ: 2601.08044 and 2502.01835"
+    },
     {
       "key": "name=model=commandr",
       "a": "u:epoch:Command R",
@@ -397,6 +403,12 @@
       "a": "u:federal_register:2022-08319",
       "b": "u:federal_register:2024-30263",
       "why": "both are rows of the register"
+    },
+    {
+      "key": "name=work=hippofunctionalmemorycoordinatequeryableattentionforirregulartimeseries",
+      "a": "arxiv:2610.24501",
+      "b": "arxiv:2611.28465",
+      "why": "the arxiv ids differ: 2610.24501 and 2611.28465"
     }
   ]
 }
